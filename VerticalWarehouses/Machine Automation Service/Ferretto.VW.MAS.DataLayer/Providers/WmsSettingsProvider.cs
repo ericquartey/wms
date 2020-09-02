@@ -185,6 +185,126 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
         }
 
+        public bool SocketLinkIsEnabled
+        {
+            get
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return false;
+                }
+
+                lock (this.dataContext)
+                {
+                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkIsEnabled;
+                }
+            }
+            set
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return;
+                }
+
+                lock (this.dataContext)
+                {
+                    var settings = this.dataContext.WmsSettings.Single();
+
+                    settings.SocketLinkIsEnabled = value;
+                }
+            }
+        }
+
+        public int SocketLinkPolling
+        {
+            get
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return 0;
+                }
+
+                lock (this.dataContext)
+                {
+                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkPolling;
+                }
+            }
+            set
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return;
+                }
+
+                lock (this.dataContext)
+                {
+                    var settings = this.dataContext.WmsSettings.Single();
+
+                    settings.SocketLinkPolling = value;
+                }
+            }
+        }
+
+        public int SocketLinkPort
+        {
+            get
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return 0;
+                }
+
+                lock (this.dataContext)
+                {
+                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkPort;
+                }
+            }
+            set
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return;
+                }
+
+                lock (this.dataContext)
+                {
+                    var settings = this.dataContext.WmsSettings.Single();
+
+                    settings.SocketLinkPort = value;
+                }
+            }
+        }
+
+        public int SocketLinkTimeout
+        {
+            get
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return 0;
+                }
+
+                lock (this.dataContext)
+                {
+                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkTimeout;
+                }
+            }
+            set
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return;
+                }
+
+                lock (this.dataContext)
+                {
+                    var settings = this.dataContext.WmsSettings.Single();
+
+                    settings.SocketLinkTimeout = value;
+                }
+            }
+        }
+
         public int TimeSyncIntervalMilliseconds
         {
             get

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,8 @@ namespace Ferretto.VW.MAS.SocketLink
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
+
         private CancellationTokenSource cancellationTokenSource;
 
         #endregion
@@ -48,7 +51,8 @@ namespace Ferretto.VW.MAS.SocketLink
             IEventAggregator eventAggregator,
             IDataLayerService dataLayerService,
             ILogger<SocketLinkSyncService> logger,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            IWmsSettingsProvider wmsSettingsProvider)
         {
             if (eventAggregator is null)
             {
@@ -58,6 +62,7 @@ namespace Ferretto.VW.MAS.SocketLink
             this.dataLayerService = dataLayerService ?? throw new ArgumentNullException(nameof(dataLayerService));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new System.ArgumentNullException(nameof(wmsSettingsProvider));
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
         }
 
@@ -212,7 +217,7 @@ namespace Ferretto.VW.MAS.SocketLink
         {
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                if (true)
+                if (this.wmsSettingsProvider.SocketLinkIsEnabled)
                 {
                     this.logger.LogDebug("SocketLink Starting  service");
 
