@@ -2175,4 +2175,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
     <value>Picking operations on unit n.</value>
   </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Refilling operation on unit n.</value>
+  </data>
 </root>

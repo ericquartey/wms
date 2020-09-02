@@ -2186,6 +2186,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refilling operation on unit n..
+        /// </summary>
+        public static string IdDrawerActivityRefillingHeader {
+            get {
+                return ResourceManager.GetString("IdDrawerActivityRefillingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you have picked up items, put them back in the original compartment..
         /// </summary>
         public static string IfPickedItemsPutThemBackInTheOriginalCompartment {
