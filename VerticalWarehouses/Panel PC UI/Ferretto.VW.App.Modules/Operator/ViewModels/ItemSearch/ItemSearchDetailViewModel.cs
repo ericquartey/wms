@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private IEnumerable<OperationReason> reasons;
 
-        private DelegateCommand requestItemPickCommand;
+        private DelegateCommand requestItemPickCommandDetail;
 
         #endregion
 
@@ -138,10 +138,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.reasons, value);
         }
 
-        public ICommand RequestItemPickCommand =>
-                                    this.requestItemPickCommand
+        public ICommand RequestItemPickCommandDetail =>
+                                    this.requestItemPickCommandDetail
             ??
-            (this.requestItemPickCommand = new DelegateCommand(
+            (this.requestItemPickCommandDetail = new DelegateCommand(
                 async () => await this.RequestItemPickAsync(),
                 this.CanRequestItemPick));
 
@@ -219,6 +219,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
 
+                this.Reasons = null;
+
                 this.NavigationService.GoBack();
             }
             catch (Exception ex)
@@ -236,6 +238,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.Reasons = null;
 
             this.IsBackNavigationAllowed = true;
 
@@ -265,7 +269,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.requestItemPickCommand?.RaiseCanExecuteChanged();
+            this.requestItemPickCommandDetail?.RaiseCanExecuteChanged();
+            this.cancelReasonCommand?.RaiseCanExecuteChanged();
+            this.confirmReasonCommand?.RaiseCanExecuteChanged();
         }
 
         private void CancelReason()

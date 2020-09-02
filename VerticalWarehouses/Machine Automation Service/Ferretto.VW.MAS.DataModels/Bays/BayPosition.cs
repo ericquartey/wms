@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double Height { get; set; }
 
+        public bool IsBlocked { get; set; }
+
         public bool IsUpper =>
             this.Location is LoadingUnitLocation.CarouselBay1Up
             ||

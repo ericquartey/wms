@@ -258,7 +258,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     if (bay == null
                         || bay.Positions.Count() == 1
-                        || bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination).IsUpper
+                        || bay.Positions.Any(x => x.Location == this.Mission.LoadUnitDestination && x.IsUpper)
+                        || bay.Positions.Any(x => x.IsUpper && x.IsBlocked)
                         || bay.Carousel is null)
                     {
                         if (bay.External != null)
@@ -572,6 +573,29 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 targetBay,
                 messageStatus);
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        public void NotifyAssignedMissionChanged(
+            BayNumber bayNumber,
+            int? missionId)
+        {
+            var data = new AssignedMissionChangedMessageData
+            {
+                BayNumber = bayNumber,
+                MissionId = missionId,
+            };
+
+            var notificationMessage = new NotificationMessage(
+                data,
+                $"Mission assigned to bay {bayNumber} has changed.",
+                MessageActor.WebApi,
+                MessageActor.MachineManager,
+                MessageType.AssignedMissionChanged,
+                bayNumber);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
         }
 
         public void SendPositionNotification(string description)

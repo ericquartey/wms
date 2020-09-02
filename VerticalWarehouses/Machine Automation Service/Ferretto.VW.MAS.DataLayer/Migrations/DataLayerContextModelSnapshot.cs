@@ -163,6 +163,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("Height");
 
+                    b.Property<bool>("IsBlocked");
+
                     b.Property<int?>("LoadingUnitId");
 
                     b.Property<string>("Location")

@@ -40,17 +40,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bay3ZeroChainIsVisible;
 
+        private bool isBay1ExternalPresent;
+
         private bool isBay1PositionDownPresent;
 
         private bool isBay1PositionUpPresent;
 
-        private bool isBayExternalPresent;
+        private bool isBay2ExternalPresent;
 
         private bool isBay2PositionDownPresent;
 
         private bool isBay2PositionUpPresent;
 
         private bool isBay2Present;
+
+        private bool isBay3ExternalPresent;
 
         private bool isBay3PositionDownPresent;
 
@@ -95,17 +99,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool IsBay1ExternalPresent { get => this.isBay1ExternalPresent; private set => this.SetProperty(ref this.isBay1ExternalPresent, value); }
+
         public bool IsBay1PositionDownPresent { get => this.isBay1PositionDownPresent; private set => this.SetProperty(ref this.isBay1PositionDownPresent, value); }
 
         public bool IsBay1PositionUpPresent { get => this.isBay1PositionUpPresent; private set => this.SetProperty(ref this.isBay1PositionUpPresent, value); }
 
-        public bool IsBayExternalPresent { get => this.isBayExternalPresent; private set => this.SetProperty(ref this.isBayExternalPresent, value); }
+        public bool IsBay2ExternalPresent { get => this.isBay2ExternalPresent; private set => this.SetProperty(ref this.isBay2ExternalPresent, value); }
 
         public bool IsBay2PositionDownPresent { get => this.isBay2PositionDownPresent; private set => this.SetProperty(ref this.isBay2PositionDownPresent, value); }
 
         public bool IsBay2PositionUpPresent { get => this.isBay2PositionUpPresent; private set => this.SetProperty(ref this.isBay2PositionUpPresent, value); }
 
         public bool IsBay2Present { get => this.isBay2Present; private set => this.SetProperty(ref this.isBay2Present, value); }
+
+        public bool IsBay3ExternalPresent { get => this.isBay3ExternalPresent; private set => this.SetProperty(ref this.isBay3ExternalPresent, value); }
 
         public bool IsBay3PositionDownPresent { get => this.isBay3PositionDownPresent; private set => this.SetProperty(ref this.isBay3PositionDownPresent, value); }
 
@@ -178,14 +186,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBay1PositionDownPresent = (bay1?.IsDouble ?? false) || (!bay1?.Positions?.Any(o => o.IsUpper) ?? false);
             this.IsBay1PositionUpPresent = (bay1?.IsDouble ?? false) || (bay1?.Positions?.Any(o => o.IsUpper) ?? false);
 
-            if (bays.Any(f => f.IsExternal == true))
-            {
-                this.IsBayExternalPresent = true;
-            }
-            else
-            {
-                this.IsBayExternalPresent = false;
-            }
+            this.IsBay1ExternalPresent = (bay1?.IsExternal ?? false);
+            this.IsBay2ExternalPresent = (bay2?.IsExternal ?? false);
+            this.IsBay3ExternalPresent = (bay3?.IsExternal ?? false);
 
             this.IsBay2PositionDownPresent = (bay2?.IsDouble ?? false) || (!bay2?.Positions?.Any(o => o.IsUpper) ?? false);
             this.IsBay2PositionUpPresent = (bay2?.IsDouble ?? false) || (bay2?.Positions?.Any(o => o.IsUpper) ?? false);

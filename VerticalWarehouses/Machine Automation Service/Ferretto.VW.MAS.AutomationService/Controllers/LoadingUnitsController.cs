@@ -285,7 +285,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 {
                     await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber);
                 }
-                catch (WmsWebApiException ex)
+                catch (Exception ex)
                 {
                     this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
                 }

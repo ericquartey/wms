@@ -1234,9 +1234,6 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Code" xml:space="preserve">
     <value>Codice</value>
   </data>
-  <data name="BarcodeNotRecognized" xml:space="preserve">
-    <value>Codice a barre '{0}' non riconosciuto.</value>
-  </data>
   <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
     <value>La pagina corrente non supporta la scansione di codici a barre.</value>
   </data>
@@ -1757,5 +1754,29 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="UnitWeight" xml:space="preserve">
     <value>Peso unitario [g]</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>Operazione confermata tramite codice a barre.</value>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>Alcuni campi del codice a barre '{0}' non coincidono con quelli dell'articolo.</value>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>Alcuni campi del codice a barre '{0}' non coincidono con quelli dell'articolo. Ricominciare.</value>
+  </data>
+  <data name="BarcodeOperationValidated" xml:space="preserve">
+    <value>Articolo validato tramite codice a barre.</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>Specificare la quantità prima di confermare.</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Codice a barre '{0}' non riconosciuto.</value>
+  </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>La richiesta di versamento per l'articolo {0} (quantità {1}) è stata accettata.</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Operazione di prelievo su cassetto n.</value>
   </data>
 </root>

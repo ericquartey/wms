@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     errorsProvider.RecordNew(MachineErrorCode.FirstTestFailed, machineProvider.BayTestNumber);
                     return false;
                 }
-                this.Logger.LogInformation($"First test started for Load Unit {loadUnitId.Value} on Bay {machineProvider.BayTestNumber}");
+                this.Logger.LogInformation($"First test started for Load Unit {loadUnitId.Value} on Bay {machineProvider.BayTestNumber} for {machineProvider.RequiredCycles} cells");
             }
 
             var returnValue = false;
@@ -602,6 +602,42 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        private bool CloseShutter(IBaysDataProvider bayProvider, IMachineResourcesProvider sensorsProvider, IShutterProvider shutterProvider)
+        {
+            if (this.machineVolatileDataProvider.IsShutterHomingActive.Any(x => x.Value))
+            {
+                return true;
+            }
+
+            var bays = bayProvider.GetAll().Where(x =>
+                        x.Shutter != null
+                        && x.Shutter.Type != ShutterType.NotSpecified
+                        && x.CurrentMission == null
+                        && x.Positions.All(p => p.LoadingUnit == null));
+
+            var generated = false;
+
+            if (bays.Any())
+            {
+                foreach (var bay in bays)
+                {
+                    var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                    if (sensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed
+                        && sensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half
+                        )
+                    {
+                        shutterProvider.Move(ShutterMovementDirection.Down, bypassConditions: false, bay.Number, MessageActor.MachineManager);
+                        this.machineVolatileDataProvider.IsShutterHomingActive[bay.Number] = true;
+                        generated = true;
+                        this.Logger.LogDebug($"Close Shutter: bay {bay.Number}");
+                        break;
+                    }
+                }
+            }
+
+            return generated;
+        }
+
         private bool GenerateHoming(IBaysDataProvider bayProvider, IMachineResourcesProvider sensorsProvider)
         {
             if (this.machineVolatileDataProvider.IsHomingActive)
@@ -697,6 +733,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
+            var shutterProvider = serviceProvider.GetRequiredService<IShutterProvider>();
+
             switch (this.machineVolatileDataProvider.Mode)
             {
                 case MachineMode.SwitchingToAutomatic:
@@ -750,6 +788,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                         else if (!activeMissions.Any(m => m.Status == MissionStatus.Executing
                                 && m.Step > MissionStep.New)
+                            && !this.CloseShutter(bayProvider, machineResourcesProvider, shutterProvider)
                             && !this.GenerateHoming(bayProvider, machineResourcesProvider)
                             )
                         {
@@ -827,7 +866,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.FirstTest:
                     {
-                        if (!this.ScheduleFirstTestMissions(serviceProvider))
+                        var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+                        if (!this.CloseShutter(bayProvider, machineResourcesProvider, shutterProvider)
+                            && !this.GenerateHoming(bayProvider, machineResourcesProvider)
+                            && !this.ScheduleFirstTestMissions(serviceProvider)
+                            )
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             this.Logger.LogInformation($"First test terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
@@ -1099,6 +1142,28 @@ namespace Ferretto.VW.MAS.MissionManager
             this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
         }
 
+        private async Task OnShutterPositioning(NotificationMessage message, IServiceProvider serviceProvider)
+        {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.Waiting && m.Status != MissionStatus.New))
+            {
+                if (message.Status == MessageStatus.OperationEnd
+                    && message.Data is ShutterPositioningMessageData data
+                    )
+                {
+                    this.machineVolatileDataProvider.IsShutterHomingActive[message.TargetBay] = false;
+                    await this.InvokeSchedulerAsync(serviceProvider);
+                }
+                else if (message.Status == MessageStatus.OperationError
+                    || message.Status == MessageStatus.OperationRunningStop
+                    || message.Status == MessageStatus.OperationFaultStop
+                    )
+                {
+                    this.machineVolatileDataProvider.IsShutterHomingActive[message.TargetBay] = false;
+                }
+            }
+        }
+
         /// <summary>
         /// we get this message every hour
         /// </summary>
@@ -1174,53 +1239,61 @@ namespace Ferretto.VW.MAS.MissionManager
             var missionsWmsWebService = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IMissionsWmsWebService>();
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
-            var wmsMission = await missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
-            var newOperations = wmsMission.Operations.Where(o =>
-                o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed
-                &&
-                o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
-
-            if (newOperations.Any())
+            try
             {
-                if (mission.Status is MissionStatus.New)
+                var wmsMission = await missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
+                var newOperations = wmsMission.Operations.Where(o =>
+                    o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed
+                    &&
+                    o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
+
+                if (newOperations.Any())
                 {
-                    // activate new mission
-                    var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-                    var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
-                    if (sourceCell is null)
+                    if (mission.Status is MissionStatus.New)
                     {
-                        this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} cannot start because LoadUnit {mission.LoadUnitId} is not in a cell.");
+                        // activate new mission
+                        var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
+                        var sourceCell = cellsProvider.GetByLoadingUnitId(mission.LoadUnitId);
+                        if (sourceCell is null)
+                        {
+                            this.Logger.LogDebug($"Bay {bayNumber}: WMS mission {mission.WmsId} cannot start because LoadUnit {mission.LoadUnitId} is not in a cell.");
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} Activate.", mission.TargetBay, mission.WmsId.Value);
+                            serviceProvider
+                                .GetRequiredService<IMoveLoadUnitProvider>()
+                                .ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
+                        }
                     }
-                    else
+                    else if (mission.Status is MissionStatus.Waiting)
                     {
-                        this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} Activate.", mission.TargetBay, mission.WmsId.Value);
+                        var newOperation = newOperations.OrderBy(o => o.Priority).First();
+                        this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+
                         serviceProvider
-                            .GetRequiredService<IMoveLoadUnitProvider>()
-                            .ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
+                            .GetRequiredService<IBaysDataProvider>()
+                            .AssignMission(mission.TargetBay, mission);
+
+                        this.NotifyAssignedMissionChanged(mission.TargetBay, wmsMission.Id);
                     }
                 }
-                else if (mission.Status is MissionStatus.Waiting)
+                else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
                 {
-                    var newOperation = newOperations.OrderBy(o => o.Priority).First();
-                    this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+                    // wms mission is finished
+                    mission.Status = MissionStatus.Completed;
+                    missionsDataProvider.Update(mission);
+                    baysDataProvider.ClearMission(bayNumber);
 
-                    serviceProvider
-                        .GetRequiredService<IBaysDataProvider>()
-                        .AssignMission(mission.TargetBay, mission);
+                    this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
 
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, wmsMission.Id);
+                    //    this.CompleteCurrentMissionInBay(bayNumber, mission, serviceProvider);
                 }
             }
-            else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
+            catch (Exception ex)
             {
-                // wms mission is finished
-                mission.Status = MissionStatus.Completed;
-                missionsDataProvider.Update(mission);
-                baysDataProvider.ClearMission(bayNumber);
-
-                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
-
-                //    this.CompleteCurrentMissionInBay(bayNumber, mission, serviceProvider);
+                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
             }
         }
 

@@ -518,6 +518,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void OnMissionChanged(MissionChangedEventArgs e)
         {
+            this.IsBusyConfirmingOperation = false;
             this.IsNewOperationAvailable =
                 this.WmsDataProvider.IsEnabled
                 &&
@@ -532,6 +533,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         o.Status != MissionOperationStatus.Completed
                         &&
                         o.Id != this.MissionOperationsService.ActiveWmsOperation.Id));
+            //if (this.MissionOperationsService.ActiveMachineMission is null)
+            //{
+            //    this.NavigationService.GoBackTo(
+            //        nameof(Utils.Modules.Operator),
+            //        Utils.Modules.Operator.ItemOperations.WAIT);
+
+            //}
         }
 
         private void SelectItemCompartment()

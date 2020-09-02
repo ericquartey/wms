@@ -129,11 +129,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
 
-        public bool IsTestShutterVisible => this.MachineService.HasShutter;
-
         public bool IsTestShutterBypassed => this.BayShutter.IsBypassed;
 
         public bool IsTestShutterCompleted => this.BayShutter.IsCompleted && !this.BayShutter.IsBypassed;
+
+        public bool IsTestShutterVisible => this.MachineService.HasShutter;
 
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
@@ -143,7 +143,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.testShutterCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestShutter),
                 () => this.CanExecuteCommand() &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual /*|| this.MachineModeService.MachineMode == MachineMode.Test*/) &&
                       (this.BayShutter.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();

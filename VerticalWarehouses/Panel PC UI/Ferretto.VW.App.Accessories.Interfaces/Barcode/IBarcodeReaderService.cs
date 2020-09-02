@@ -10,6 +10,8 @@ namespace Ferretto.VW.App.Accessories.Interfaces
 
         DeviceModel DeviceModel { get; set; }
 
+        void SimulateRead(string barcode);
+
         #endregion
 
         #region Methods

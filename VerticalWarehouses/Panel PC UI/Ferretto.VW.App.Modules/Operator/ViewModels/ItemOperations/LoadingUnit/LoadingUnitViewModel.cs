@@ -384,9 +384,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 do
                 {
-                    await Task.Delay(500);
-                    await this.GetLoadingUnitsAsync();
-                }
+                        await Task.Delay(500);
+                        await this.GetLoadingUnitsAsync();
+                    }
                 while (this.IsVisible);
             });
         }
@@ -520,9 +520,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
 
                 // if (activeOperation != null && activeOperation.CompartmentId != null && activeOperation.CompartmentId > 0)
-                if (activeOperation != null && activeOperation.CompartmentId > 0)
+                if (activeOperation != null && activeOperation.CompartmentId > 0 && activeOperation.ItemId > 0)
                 {
-                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId).FirstOrDefault();
+                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId && s.ItemId == activeOperation.ItemId).FirstOrDefault();
                     this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
                 }
                 else if (!this.MachineService.Loadunits.Any(l => l.Id == this.LoadingUnit?.Id && l.Status == LoadingUnitStatus.InBay))
@@ -588,18 +588,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.reasonNotes);
 
                     await this.OnDataRefreshAsync();
+                    this.IsBusyConfirmingOperation = false;
+                }
+                else
+                {
+                    this.IsBusyConfirmingOperation = false;
                 }
 
                 this.HideOperation();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
+                this.IsBusyConfirmingOperation = false;
                 this.ShowNotification(ex);
             }
             finally
             {
                 this.IsWaitingForResponse = false;
-                this.IsBusyConfirmingOperation = false;
                 this.Reasons = null;
                 this.RaiseCanExecuteChanged();
             }
@@ -656,13 +661,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (operationType == OperatorApp.Pick)
                 {
-                    this.InputQuantity = null;
+                    this.InputQuantity = 0;
                     this.IsPickVisible = !this.IsPickVisible;
                     this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.PickingQuantity"), this.MeasureUnit);
                 }
                 else if (operationType == OperatorApp.Put)
                 {
-                    this.InputQuantity = null;
+                    this.InputQuantity = 0;
                     this.IsPutVisible = !this.IsPutVisible;
                     this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.PutQuantity"), this.MeasureUnit);
                 }
