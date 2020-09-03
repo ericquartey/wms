@@ -387,6 +387,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (machineProvider.ExecutedCycles > setupRecord.PerformedCycles)
                 {
                     setupProceduresDataProvider.IncreasePerformedCycles(setupRecord, machineProvider.RequiredCycles.Value);
+                    this.Logger.LogDebug($"Full test increment cycles on Bay {machineProvider.BayTestNumber}");
                 }
             }
 

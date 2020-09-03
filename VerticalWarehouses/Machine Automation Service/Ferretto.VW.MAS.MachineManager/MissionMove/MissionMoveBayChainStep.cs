@@ -371,7 +371,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 //this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
                 //throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
-                this.Logger.LogInformation($"Move Bay chain not allowed at the moment. Wait for another resume.");
+                this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotRemoved);
             }
 #endif
         }
