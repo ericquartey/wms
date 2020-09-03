@@ -2178,4 +2178,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
     <value>Refilling operation on unit n.</value>
   </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Pick article </value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Put article </value>
+  </data>
 </root>
