@@ -22,6 +22,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(1)]
             public double Id { get; set; }
 
+            [Id(7)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BayPosition_IsBlocked))]
+            public double IsBlocked { get; set; }
+
             [ScaffoldColumn(false)]
             public bool IsUpper { get; set; }
 

@@ -133,6 +133,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load unit non available.
+        /// </summary>
+        public static string BayPositionDisabled {
+            get {
+                return ResourceManager.GetString("BayPositionDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid sensors.
         /// </summary>
         public static string BottomLevelBayEmpty {

@@ -127,8 +127,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsExternalBayCalibrationVisible => this.MachineService.Bays.Any(f => f.IsExternal);
 
-        public bool IsTestBayVisible => this.MachineService.HasBayExternal || this.MachineService.HasCarousel;
-
         public bool IsTestShutterBypassed => this.BayShutter.IsBypassed;
 
         public bool IsTestShutterCompleted => this.BayShutter.IsCompleted && !this.BayShutter.IsBypassed;

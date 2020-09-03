@@ -123,6 +123,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity)
         {
+            this.logger.Debug($"User requested to partially complete operation '{operationId}' with quantity {quantity}.");
             var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
 
             if (operationToComplete.Status is MissionOperationStatus.Executing)
@@ -263,13 +264,13 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private async Task RefreshActiveMissionAsync()
         {
-            var newMachineMission = await this.RetrieveActiveMissionAsync();
-            MissionWithLoadingUnitDetails newWmsMission = null;
-            MissionOperation newWmsOperation = null;
-            MissionOperationInfo newWmsOperationInfo = null;
-
             try
             {
+                var newMachineMission = await this.RetrieveActiveMissionAsync();
+                MissionWithLoadingUnitDetails newWmsMission = null;
+                MissionOperation newWmsOperation = null;
+                MissionOperationInfo newWmsOperationInfo = null;
+
                 if (newMachineMission != null && newMachineMission.WmsId.HasValue)
                 {
                     this.logger.Debug($"Active mission has WMS id '{newMachineMission.WmsId}'.");
@@ -303,6 +304,10 @@ namespace Ferretto.VW.App.Modules.Operator
                         await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id);
                     }
                 }
+                else
+                {
+                    this.logger.Trace($"No Active mission.");
+                }
 
                 if (newMachineMission?.Id != this.ActiveMachineMission?.Id
                    ||
@@ -328,6 +333,10 @@ namespace Ferretto.VW.App.Modules.Operator
                     this.ActiveWmsOperation = newWmsOperation;
 
                     this.RaiseMissionChangedEvent();
+                }
+                else
+                {
+                    this.logger.Trace($"No mission changed.");
                 }
             }
             catch (Exception ex)

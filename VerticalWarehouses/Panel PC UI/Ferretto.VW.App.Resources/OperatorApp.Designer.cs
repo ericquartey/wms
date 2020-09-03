@@ -2177,6 +2177,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Picking operations on unit n..
+        /// </summary>
+        public static string IdDrawerActivityPickingPageHeader {
+            get {
+                return ResourceManager.GetString("IdDrawerActivityPickingPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refilling operation on unit n..
+        /// </summary>
+        public static string IdDrawerActivityRefillingHeader {
+            get {
+                return ResourceManager.GetString("IdDrawerActivityRefillingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you have picked up items, put them back in the original compartment..
         /// </summary>
         public static string IfPickedItemsPutThemBackInTheOriginalCompartment {
@@ -4031,6 +4049,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick article .
+        /// </summary>
+        public static string PickArticle {
+            get {
+                return ResourceManager.GetString("PickArticle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Picked quantity [{0}].
         /// </summary>
         public static string PickedQuantity {
@@ -4112,11 +4139,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Put article .
+        /// </summary>
+        public static string PutArticle {
+            get {
+                return ResourceManager.GetString("PutArticle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Put quantity [{0}].
         /// </summary>
         public static string PutQuantity {
             get {
                 return ResourceManager.GetString("PutQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put request for item {0} (q.ty {1}) was accepted..
+        /// </summary>
+        public static string PutRequestWasAccepted {
+            get {
+                return ResourceManager.GetString("PutRequestWasAccepted", resourceCulture);
             }
         }
         

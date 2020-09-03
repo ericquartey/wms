@@ -1773,4 +1773,19 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="BarcodeNotRecognized" xml:space="preserve">
     <value>Codice a barre '{0}' non riconosciuto.</value>
   </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>La richiesta di versamento per l'articolo {0} (quantità {1}) è stata accettata.</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Operazione di prelievo su cassetto n.</value>
+  </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Operazione di versamento su cassetto n.</value>
+  </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Prelievo articolo </value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Versamento Articolo </value>
+  </data>
 </root>

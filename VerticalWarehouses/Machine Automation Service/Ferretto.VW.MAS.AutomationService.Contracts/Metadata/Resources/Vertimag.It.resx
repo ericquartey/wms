@@ -159,6 +159,9 @@
   <data name="BayPosition_Height" xml:space="preserve">
     <value>Quota</value>
   </data>
+  <data name="BayPosition_IsBlocked" xml:space="preserve">
+    <value>Bloccata</value>
+  </data>
   <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
     <value>Altezza massima doppia</value>
   </data>

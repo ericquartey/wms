@@ -5,13 +5,13 @@
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls">
 
   <DataGrid ItemsSource="{Binding Items}"
+            RowHeight="50"
             SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
     <DataGrid.Columns>
       <DataGridTextColumn x:Name="Column1"
-                          Width="100"
+                          Width="2*"
                           Binding="{Binding Path=ItemCode}"
                           Header="{Resources:Loc OperatorApp.ItemSearchGridItem}">
-
         <DataGridTextColumn.CellStyle>
           <Style TargetType="DataGridCell">
             <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -26,7 +26,7 @@
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
       <DataGridTextColumn x:Name="Column2"
-                          Width="*"
+                          Width="5*"
                           Binding="{Binding Path=ItemDescription}"
                           Header="{Resources:Loc OperatorApp.ItemSearchGridDescription}">
         <DataGridTextColumn.ElementStyle>
@@ -34,6 +34,7 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="5,0,5,0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
           </Style>
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
