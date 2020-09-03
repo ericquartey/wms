@@ -208,9 +208,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    var settings = this.dataContext.WmsSettings.Single();
-
-                    settings.SocketLinkIsEnabled = value;
+                    this.dataContext.WmsSettings.Single().SocketLinkIsEnabled = value;
+                    this.dataContext.SaveChanges();
                 }
             }
         }
@@ -238,9 +237,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    var settings = this.dataContext.WmsSettings.Single();
-
-                    settings.SocketLinkPolling = value;
+                    this.dataContext.WmsSettings.Single().SocketLinkPolling = value;
+                    this.dataContext.SaveChanges();
                 }
             }
         }
@@ -268,9 +266,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    var settings = this.dataContext.WmsSettings.Single();
-
-                    settings.SocketLinkPort = value;
+                    this.dataContext.WmsSettings.Single().SocketLinkPort = value;
+                    this.dataContext.SaveChanges();
                 }
             }
         }
@@ -298,9 +295,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    var settings = this.dataContext.WmsSettings.Single();
-
-                    settings.SocketLinkTimeout = value;
+                    this.dataContext.WmsSettings.Single().SocketLinkTimeout = value;
+                    this.dataContext.SaveChanges();
                 }
             }
         }

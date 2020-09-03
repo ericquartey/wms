@@ -230,9 +230,9 @@ namespace Ferretto.VW.MAS.SocketLink
 
         private void PeridicAction(Socket socket, ref DateTime periodicActivity)
         {
-            if (this.wmsSettingsProvider.SocketLinkTimeout > 0)
+            if (this.wmsSettingsProvider.SocketLinkPolling > 0)
             {
-                if (DateTime.Now > periodicActivity.AddSeconds(this.wmsSettingsProvider.SocketLinkTimeout))
+                if (DateTime.Now > periodicActivity.AddSeconds(this.wmsSettingsProvider.SocketLinkPolling))
                 {
                     periodicActivity = DateTime.Now;
                     var msgResponse = "";

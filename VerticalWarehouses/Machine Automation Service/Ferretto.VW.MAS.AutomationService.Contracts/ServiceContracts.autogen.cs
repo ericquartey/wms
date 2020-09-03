@@ -2129,6 +2129,27 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<string> GetIpEndpointAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetSocketLinkPollingAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetSocketLinkPollingAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetSocketLinkPortAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetSocketLinkPortAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetSocketLinkTimeoutAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetSocketLinkTimeoutAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetTimeSyncIntervalMillisecondsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2150,11 +2171,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> IsTimeSyncEnabledAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateAsync(bool isEnabled, string httpUrl);
+        System.Threading.Tasks.Task<bool> SocketLinkIsEnabledAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateAsync(bool isEnabled, string httpUrl, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<bool> SocketLinkIsEnabledAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateIsTimeSyncEnabledAsync();
@@ -4930,6 +4958,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("ServiceUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Uri ServiceUrl { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SocketLinkIsEnabled", Required = Newtonsoft.Json.Required.Always)]
+        public bool SocketLinkIsEnabled { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SocketLinkPolling", Required = Newtonsoft.Json.Required.Always)]
+        public int SocketLinkPolling { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SocketLinkPort", Required = Newtonsoft.Json.Required.Always)]
+        public int SocketLinkPort { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SocketLinkTimeout", Required = Newtonsoft.Json.Required.Always)]
+        public int SocketLinkTimeout { get; set; }
     
         [Newtonsoft.Json.JsonProperty("TimeSyncIntervalMilliseconds", Required = Newtonsoft.Json.Required.Always)]
         public int TimeSyncIntervalMilliseconds { get; set; }

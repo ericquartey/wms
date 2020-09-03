@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 keyColumn: "Id",
                 keyValue: -1,
                 columns: new[] { "SocketLinkPolling", "SocketLinkPort", "SocketLinkTimeout" },
-                values: new object[] { 120, 7075, 600 });
+                values: new object[] { 0, 7075, 600 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
