@@ -2186,6 +2186,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refilling operation on unit n..
+        /// </summary>
+        public static string IdDrawerActivityRefillingHeader {
+            get {
+                return ResourceManager.GetString("IdDrawerActivityRefillingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If you have picked up items, put them back in the original compartment..
         /// </summary>
         public static string IfPickedItemsPutThemBackInTheOriginalCompartment {
@@ -4040,6 +4049,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick article .
+        /// </summary>
+        public static string PickArticle {
+            get {
+                return ResourceManager.GetString("PickArticle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Picked quantity [{0}].
         /// </summary>
         public static string PickedQuantity {
@@ -4117,6 +4135,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Put {
             get {
                 return ResourceManager.GetString("Put", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put article .
+        /// </summary>
+        public static string PutArticle {
+            get {
+                return ResourceManager.GetString("PutArticle", resourceCulture);
             }
         }
         

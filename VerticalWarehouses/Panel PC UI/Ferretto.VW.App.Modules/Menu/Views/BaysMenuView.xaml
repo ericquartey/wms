@@ -118,19 +118,6 @@
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"
                                         Visibility="{Binding IsTestShutterVisible, Converter={StaticResource BTVC}}"/>
 
-                    <controls:PpcButton Title="{res:Loc InstallationApp.BayTestMenuTitle}"
-                                        Margin="0,0,30,30"
-                                        Padding="-2,1,0,0"
-                                        Abbrevation="4.3.5"
-                                        BorderBrush="{DynamicResource FerrettoOrange}"
-                                        Command="{Binding TestBayCommand}"
-                                        Content="{res:Loc InstallationApp.BayTestMenuDescription}"
-                                        IsBypassed="False"
-                                        IsCompleted="False"
-                                        IsEnabled="False"
-                                        Kind="Account"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="{Binding IsTestBayVisible, Converter={StaticResource BTVC}}" />
                 </WrapPanel>
             </Grid>
 

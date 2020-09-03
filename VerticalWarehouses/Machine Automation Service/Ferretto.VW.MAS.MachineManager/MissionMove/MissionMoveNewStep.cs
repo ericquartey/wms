@@ -358,7 +358,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                if (showErrors)
+                                if (showErrors
+                                    || !bay.Positions.Any(p => p.LoadingUnit is null && !p.IsBlocked)
+                                    )
                                 {
                                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
                                 }

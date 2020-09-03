@@ -8,6 +8,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
+        public MoveTestMessageData()
+        {
+        }
+
         public MoveTestMessageData(int executedCycles, int requiredCycles, List<int> loadUnitsToTest, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.ExecutedCycles = executedCycles;

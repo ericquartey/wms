@@ -35,8 +35,7 @@
                  Text="{Resources:Loc OperatorApp.ItemDetailHeader}" />
     </StackPanel>
 
-    <Grid Grid.Row="1"
-          Visibility="{Binding Reasons, Converter={StaticResource RTVIC}}">
+    <Grid Grid.Row="1">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
@@ -246,19 +245,27 @@
                            Mask="{Binding Item.PickTolerance, StringFormat=F{0}}"
                            MinValue="0" />
 
-        <controls:PpcButton Grid.Row="3"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding RequestItemPickCommandDetail}"
-                            Content="{Resources:Loc OperatorApp.ItemSearchCall}"
-                            IsBusy="{Binding IsBusyRequestingItemPick}"
-                            Style="{StaticResource ConfirmButton}" />
+        <StackPanel Grid.Row="3"
+                    VerticalAlignment="Bottom"
+                    Orientation="Vertical">
+          <controls:PpcButton Margin="15,7,15,0"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding RequestItemPickCommandDetail}"
+                              Content="{Resources:Loc OperatorApp.Pick}"
+                              IsBusy="{Binding IsBusyRequestingItemPick}"
+                              Style="{StaticResource ConfirmButton}" />
+
+          <controls:PpcButton Margin="7,7,15,0"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding RequestItemPutCommandDetail}"
+                              Content="{Resources:Loc OperatorApp.Put}"
+                              IsBusy="{Binding IsBusyRequestingItemPut}"
+                              Style="{StaticResource ConfirmButton}" />
+        </StackPanel>
 
       </Grid>
     </Grid>
-
-    <views:ReasonsView Grid.Row="1"
-                       Visibility="{Binding Reasons, Converter={StaticResource RTVC}}" />
   </Grid>
 </ctrls:View>

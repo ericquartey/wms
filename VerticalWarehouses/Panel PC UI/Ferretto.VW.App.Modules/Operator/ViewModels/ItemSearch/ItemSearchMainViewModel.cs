@@ -80,6 +80,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int maxKnownIndexSelection;
 
+        private List<ProductInMachine> productInCurrentMachine;
+
         private SubscriptionToken productsChangedToken;
 
         private int? reasonId;
@@ -427,11 +429,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.isBusyRequestingItemPick)
             {
-                ExecuteItemPickAsync();
+                await this.ExecuteItemPickAsync();
             }
             else
             {
-                ExecuteItemPutAsync();
+                await this.ExecuteItemPutAsync();
             }
         }
 
@@ -532,6 +534,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   .GetEvent<PubSubEvent<ProductsChangedEventArgs>>()
                   .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
 
+            this.productInCurrentMachine = new List<ProductInMachine>();
+
             await base.OnAppearedAsync();
         }
 
@@ -621,7 +625,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return;
                 }
 
-                this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                var model = await this.identityService.GetAsync();
+
+                if (model is null)
+                {
+                    this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                }
+                else
+                {
+                    this.productInCurrentMachine.Clear();
+
+                    foreach (var item in newItems.ToList())
+                    {
+                        for (int i = 0; i < item.Machines.Count(); i++)
+                        {
+                            if (item.Machines.ElementAt(i).Id == model.Id)
+                            {
+                                this.productInCurrentMachine.Add(item);
+                            }
+                        }
+                    }
+                }
+
+                this.items.AddRange(this.productInCurrentMachine.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+
+                //this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
 
                 if (this.items.Count == 0)
                 {
