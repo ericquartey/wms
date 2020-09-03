@@ -5,9 +5,11 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -300,6 +302,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
 #if CHECK_BAY_SENSOR
+            var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+
             if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                 && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
                 && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id)
@@ -358,16 +362,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
 #if CHECK_BAY_SENSOR
-            else if (this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(bay.Number))
+            else if (!machineResourcesProvider.IsDrawerInBayBottom(bay.Number))
             {
                 this.ErrorsProvider.RecordNew(MachineErrorCode.BottomLevelBayEmpty, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.BottomLevelBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             else
             {
-                //this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
-                //throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
-                this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotRemoved);
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 #endif
         }

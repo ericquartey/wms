@@ -73,7 +73,31 @@ namespace Ferretto.VW.App.Services
               .AuthenticateWithBearerTokenAsync(bearerToken);
 
             this.UserName = userClaims.Name;
-            this.AccessLevel = userClaims.AccessLevel;
+            switch ((int)userClaims.AccessLevel)
+            {
+                case 0:
+                    //this.AccessLevel = UserAccessLevel.Support;
+                    this.AccessLevel = UserAccessLevel.Operator;
+                    break;
+
+                case 1:
+                    //this.AccessLevel = UserAccessLevel.Admin;
+                    this.AccessLevel = UserAccessLevel.Operator;
+                    break;
+
+                case 2:
+                    //this.AccessLevel = UserAccessLevel.Installer;
+                    this.AccessLevel = UserAccessLevel.Operator;
+                    break;
+
+                case 3:
+                    this.AccessLevel = UserAccessLevel.Operator;
+                    break;
+
+                default:
+                    this.AccessLevel = UserAccessLevel.NoAccess;
+                    break;
+            }
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userClaims.Name, this.AccessLevel));
 
             Analytics.TrackEvent("Login", new Dictionary<string, string>
