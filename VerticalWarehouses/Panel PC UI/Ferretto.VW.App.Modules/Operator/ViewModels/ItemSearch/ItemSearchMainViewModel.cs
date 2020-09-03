@@ -625,31 +625,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return;
                 }
 
-                //var model = await this.identityService.GetAsync();
+                var model = await this.identityService.GetAsync();
 
-                //if (model is null)
-                //{
-                //    this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
-                //}
-                //else
-                //{
-                //    this.productInCurrentMachine.Clear();
+                if (model is null)
+                {
+                    this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                }
+                else
+                {
+                    this.productInCurrentMachine.Clear();
 
-                //    foreach (var item in newItems.ToList())
-                //    {
-                //        for (int i = 0; i < item.Machines.Count(); i++)
-                //        {
-                //            if (item.Machines.ElementAt(i).Id == model.Id)
-                //            {
-                //                this.productInCurrentMachine.Add(item);
-                //            }
-                //        }
-                //    }
-                //}
+                    foreach (var item in newItems.ToList())
+                    {
+                        for (int i = 0; i < item.Machines.Count(); i++)
+                        {
+                            if (item.Machines.ElementAt(i).Id == model.Id)
+                            {
+                                this.productInCurrentMachine.Add(item);
+                            }
+                        }
+                    }
+                }
 
-                //this.items.AddRange(this.productInCurrentMachine.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                this.items.AddRange(this.productInCurrentMachine.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
 
-                this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                //this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
 
                 if (this.items.Count == 0)
                 {

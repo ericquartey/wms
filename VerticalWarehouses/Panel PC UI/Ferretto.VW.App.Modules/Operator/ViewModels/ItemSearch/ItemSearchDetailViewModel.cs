@@ -299,10 +299,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return
                 this.Item != null
                 &&
-                this.Item.AvailableQuantity.HasValue
-                &&
-                this.Item.AvailableQuantity.Value > 0
-                &&
                 this.InputQuantity.HasValue
                 &&
                 this.InputQuantity > 0
