@@ -369,8 +369,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
-                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
-                throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
+                //this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
+                //throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotRemoved);
             }
 #endif
         }
