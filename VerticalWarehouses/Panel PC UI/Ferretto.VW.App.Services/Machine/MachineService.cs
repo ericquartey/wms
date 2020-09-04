@@ -23,7 +23,7 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private const int MaximumFragmentation = 30;
+        private const int MaximumFragmentation = 50;
 
         private readonly IBayManager bayManagerService;
 
@@ -401,7 +401,7 @@ namespace Ferretto.VW.App.Services
                     setupStatus.VerticalResolutionCalibration.IsCompleted &&
                     setupStatus.VerticalOffsetCalibration.IsCompleted;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
