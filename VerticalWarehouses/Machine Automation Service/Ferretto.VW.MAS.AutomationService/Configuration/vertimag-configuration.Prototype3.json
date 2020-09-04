@@ -340,7 +340,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 19,
                   "Number": 0,
                   "Position": 210.0,
                   "Speed": 200.0
@@ -350,7 +349,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 18,
                   "Number": 1,
                   "Position": 350.0,
                   "Speed": 650.0
@@ -360,7 +358,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 17,
                   "Number": 2,
                   "Position": 740.0,
                   "Speed": 650.0
@@ -370,7 +367,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 25,
                   "Number": 3,
                   "Position": 1000.0,
                   "Speed": 100.0
@@ -380,7 +376,6 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 15,
                   "Number": 4,
                   "Position": 1216.0,
                   "Speed": 630.0
@@ -397,7 +392,6 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 8,
                   "Number": 0,
                   "Position": 140.0,
                   "Speed": 630.0
@@ -407,7 +401,6 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 14,
                   "Number": 1,
                   "Position": 300.0,
                   "Speed": 100.0
@@ -417,7 +410,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 13,
                   "Number": 2,
                   "Position": 800.0,
                   "Speed": 650.0
@@ -427,7 +419,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 12,
                   "Number": 3,
                   "Position": 900.0,
                   "Speed": 650.0
@@ -437,7 +428,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 11,
                   "Number": 4,
                   "Position": 1216.0,
                   "Speed": 650.0
@@ -454,7 +444,6 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 23,
                   "Number": 0,
                   "Position": 140.0,
                   "Speed": 630.0
@@ -464,7 +453,6 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 22,
                   "Number": 1,
                   "Position": 300.0,
                   "Speed": 100.0
@@ -474,7 +462,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 21,
                   "Number": 2,
                   "Position": 800.0,
                   "Speed": 650.0
@@ -484,7 +471,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 16,
                   "Number": 3,
                   "Position": 900.0,
                   "Speed": 650.0
@@ -494,7 +480,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 20,
                   "Number": 4,
                   "Position": 1216.0,
                   "Speed": 650.0
@@ -511,7 +496,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 10,
                   "Number": 0,
                   "Position": 210.0,
                   "Speed": 200.0
@@ -521,7 +505,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 9,
                   "Number": 1,
                   "Position": 350.0,
                   "Speed": 650.0
@@ -531,7 +514,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 7,
                   "Number": 2,
                   "Position": 740.0,
                   "Speed": 650.0
@@ -541,7 +523,6 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 24,
                   "Number": 3,
                   "Position": 1000.0,
                   "Speed": 100.0
@@ -551,7 +532,6 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 26,
                   "Number": 4,
                   "Position": 1216.0,
                   "Speed": 630.0
