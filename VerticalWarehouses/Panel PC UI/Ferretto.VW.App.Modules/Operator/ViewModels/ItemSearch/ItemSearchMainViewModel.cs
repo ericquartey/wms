@@ -629,6 +629,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (!newItems.Any())
                 {
+                    this.RaisePropertyChanged(nameof(this.Items));
                     return;
                 }
 
@@ -678,6 +679,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
             }
             //catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (TaskCanceledException)
+            {
+                // normal situation
+                this.items.Clear();
+                this.SelectedItem = null;
+                this.currentItemIndex = 0;
+                this.maxKnownIndexSelection = 0;
+            }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
@@ -942,6 +951,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
                     }
                 }
+            }
+            catch (TaskCanceledException)
+            {
+                // normal situation
             }
             catch (Exception ex)
             {
