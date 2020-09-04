@@ -431,6 +431,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     await this.machineLoadingUnitsWebService.RemoveTestUnitAsync(unit);
                 }
 
+                foreach (var unit in this.TestUnits)
+                {
+                    await this.machineLoadingUnitsWebService.RemoveTestUnitAsync(unit);
+                }
+
                 this.LoadingUnits = this.Convert(this.MachineService.Loadunits);
 
                 this.TestUnits.Clear();

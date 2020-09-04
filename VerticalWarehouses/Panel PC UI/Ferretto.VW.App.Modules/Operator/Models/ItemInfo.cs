@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
                 this.IsQtyOnMachine = product?.Machines.Any(m => m.Id == machineId && m.ItemAvailableQuantity > 0) == true;
 
                 this.MachinesInfo = string.Join(", ", product.Machines.Select(m => m.Nickname).ToArray());
-                this.AvailableQuantity = (double?)product.Machines.Sum(m => m.ItemAvailableQuantity);
+                this.AvailableQuantity = (double?)product.Machines.Where(w => w.Id == machineId).Sum(m => m.ItemAvailableQuantity);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             if (item.Machines?.Any() == true)
             {
                 this.MachinesInfo = string.Join(", ", item.Machines.Select(m => m.Nickname).ToArray());
-                this.AvailableQuantity = item.Machines.Sum(m => m.AvailableQuantityItem);
+                this.AvailableQuantity = item.Machines.Where(w => w.Id == machineId).Sum(m => m.AvailableQuantityItem);
             }
         }
 

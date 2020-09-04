@@ -1782,4 +1782,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
     <value>Operazione di versamento su cassetto n.</value>
   </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Prelievo articolo </value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Versamento Articolo </value>
+  </data>
 </root>

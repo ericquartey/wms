@@ -112,6 +112,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.LoggingInUsingCard"), Services.Models.NotificationSeverity.Info);
 
                 var claims = await this.authenticationService.LogInAsync(e.Token);
+                if (claims.AccessLevel != UserAccessLevel.NoAccess)
+                {
+                    ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
+                }
 
                 await this.NavigateToMainMenuAsync(claims);
             }
@@ -146,6 +150,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.AuthenticatingUser"), Services.Models.NotificationSeverity.Info);
 
                 var claims = await this.authenticationService.LogInAsync(e.SerialNumber);
+                if (claims.AccessLevel != UserAccessLevel.NoAccess)
+                {
+                    ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
+                }
 
                 await this.NavigateToMainMenuAsync(claims);
             }
@@ -217,6 +225,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     this.ClearNotifications();
                     var bearerToken = e.GetBearerToken();
                     var claims = await this.authenticationService.LogInAsync(bearerToken);
+                    if (claims.AccessLevel != UserAccessLevel.NoAccess)
+                    {
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
+                    }
 
                     await this.NavigateToMainMenuAsync(claims);
                 }

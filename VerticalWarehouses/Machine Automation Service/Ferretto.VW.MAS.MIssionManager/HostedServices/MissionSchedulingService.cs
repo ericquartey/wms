@@ -387,6 +387,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (machineProvider.ExecutedCycles > setupRecord.PerformedCycles)
                 {
                     setupProceduresDataProvider.IncreasePerformedCycles(setupRecord, machineProvider.RequiredCycles.Value);
+                    this.Logger.LogDebug($"Full test increment cycles on Bay {machineProvider.BayTestNumber}");
                 }
             }
 
@@ -1171,7 +1172,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <returns></returns>
         private void OnTimePeriodElapsed(IServiceProvider serviceProvider)
         {
-            // at midnight it is time do do some housework
+            // at midnight it is time to do some housework
             if (DateTime.UtcNow.Hour == 0)
             {
                 this.Logger.LogInformation($"OnTimePeriodElapsed");
@@ -1180,8 +1181,14 @@ namespace Ferretto.VW.MAS.MissionManager
                 // clean missions
                 missionsDataProvider.PurgeWmsMissions();
 
-                // elevator homing every new day
+                // elevator and bay chain homing every new day
                 this.machineVolatileDataProvider.IsHomingExecuted = false;
+
+                var bayDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null))
+                {
+                    this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                }
             }
 
             this.servicingProvider.UpdateServiceStatus();
