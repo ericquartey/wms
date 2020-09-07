@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.MAS.SocketLink\Ferretto.VW.MAS.SocketLink.csproj" />
   </ItemGroup>
 
   <ItemGroup>
