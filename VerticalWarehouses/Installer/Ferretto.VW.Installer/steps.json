@@ -169,7 +169,7 @@
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 21,
-      "title": "Ato-avvio installer",
+      "title": "Auto-avvio installer",
       "description": "Imposta il programma di installazione in modo che parta al prossimo riavvio.",
       "script": "scripts/autostart_installer.ps1",
       "skipOnResume": "true",
