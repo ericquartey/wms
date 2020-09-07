@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.SocketLink.Providers;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 
@@ -19,6 +20,8 @@ namespace Ferretto.VW.MAS.SocketLink
 
             services.AddHostedService<SocketLinkSyncService>();
             services.AddScoped<ISocketLinkSyncProvider, SocketLinkProvider>();
+
+            services.AddScoped<ISystemSocketLinkProvider, SystemSocketLinkProvider>();
 
             return services;
         }

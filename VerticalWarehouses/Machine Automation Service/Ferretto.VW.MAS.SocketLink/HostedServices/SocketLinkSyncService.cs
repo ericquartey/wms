@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.SocketLink.Models;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,6 +31,8 @@ namespace Ferretto.VW.MAS.SocketLink
         private readonly NotificationEvent notificationEvent;
 
         private readonly IServiceScopeFactory serviceScopeFactory;
+
+        private readonly PubSubEvent<SocketLinkChangeRequestEventArgs> socketLinkChangeRequestEventArgs;
 
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
@@ -58,6 +61,7 @@ namespace Ferretto.VW.MAS.SocketLink
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new System.ArgumentNullException(nameof(wmsSettingsProvider));
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
+            this.socketLinkChangeRequestEventArgs = eventAggregator.GetEvent<PubSubEvent<SocketLinkChangeRequestEventArgs>>();
         }
 
         #endregion
@@ -86,6 +90,11 @@ namespace Ferretto.VW.MAS.SocketLink
                    ThreadOption.PublisherThread,
                    false,
                    m => m.Type is CommonUtils.Messages.Enumerations.MessageType.WmsEnableChanged);
+
+            this.socketLinkChangeRequestEventArgs.Subscribe(
+                this.OnSyncStateChangeRequested,
+                ThreadOption.PublisherThread,
+                false);
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)
@@ -225,6 +234,18 @@ namespace Ferretto.VW.MAS.SocketLink
 
                     this.Disable();
                 }
+            }
+        }
+
+        private void OnSyncStateChangeRequested(SocketLinkChangeRequestEventArgs e)
+        {
+            if (e.Enable)
+            {
+                this.Enable();
+            }
+            else
+            {
+                this.Disable();
             }
         }
 
