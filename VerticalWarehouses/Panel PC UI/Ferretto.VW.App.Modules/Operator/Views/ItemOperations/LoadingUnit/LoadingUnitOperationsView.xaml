@@ -166,14 +166,18 @@
     </Border>
 
     <Grid>
-      <Path Style="{StaticResource AdjustIndicatorStyle}"
+      <!--<Path Style="{StaticResource AdjustIndicatorStyle}"
             Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}" />
 
       <Path Style="{StaticResource PickIndicatorStyle}"
             Visibility="{Binding IsPickVisible, Converter={StaticResource BTVC}}" />
 
       <Path Style="{StaticResource PutIndicatorStyle}"
-            Visibility="{Binding IsPutVisible, Converter={StaticResource BTVC}}" />
+            Visibility="{Binding IsPutVisible, Converter={StaticResource BTVC}}" />-->
+
+      <Path Style="{StaticResource PutIndicatorStyle}"
+            Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}" />
+
     </Grid>
 
   </Grid>
