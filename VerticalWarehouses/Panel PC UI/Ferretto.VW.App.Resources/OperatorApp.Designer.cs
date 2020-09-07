@@ -637,6 +637,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading articles....
+        /// </summary>
+        public static string ChargeItem {
+            get {
+                return ResourceManager.GetString("ChargeItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close line.
         /// </summary>
         public static string CloseLine {

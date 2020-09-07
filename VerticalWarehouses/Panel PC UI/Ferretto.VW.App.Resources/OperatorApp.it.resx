@@ -1788,4 +1788,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="PutArticle" xml:space="preserve">
     <value>Versamento Articolo </value>
   </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>Caricamento articoli in corso...</value>
+  </data>
 </root>

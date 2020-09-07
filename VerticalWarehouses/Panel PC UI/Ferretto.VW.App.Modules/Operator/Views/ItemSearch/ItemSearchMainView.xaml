@@ -7,6 +7,7 @@
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+            xmlns:gif="http://wpfanimatedgif.codeplex.com"
             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
             xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:in="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
@@ -65,7 +66,8 @@
               Background="{DynamicResource PpcBackground}"
               BorderBrush="{DynamicResource PpcBorderBrush}"
               BorderThickness="{DynamicResource PpcBorderThickness}"
-              CornerRadius="0">
+              CornerRadius="0"
+              Visibility="{Binding Appear, Converter={StaticResource BTVC}}">
         <Grid Margin="20">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -158,6 +160,13 @@
         </Grid>
 
       </Border>
+
+      <TextBlock Grid.Row="1"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{Resources:Loc OperatorApp.ChargeItem}"
+                 Visibility="{Binding Appear, Converter={StaticResource BTVIC}}" />
 
       <Grid Grid.Row="1"
             Grid.Column="1"
