@@ -105,7 +105,7 @@
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding HorizontalChainCalibration}"
                                         Content="{res:Loc InstallationApp.HorizontalChainCalibrationDescription}"
-                                        IsBypassed="{Binding IsHorizChainBypassed}"
+                                        IsBypassed="{Binding IsHorizontalChainBypassed}"
                                         IsCompleted="{Binding IsHorizChainCompleted}"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />

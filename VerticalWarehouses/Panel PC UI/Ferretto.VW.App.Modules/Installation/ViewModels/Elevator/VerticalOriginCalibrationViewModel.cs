@@ -82,6 +82,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.MachineManualMode | EnableMask.MachinePoweredOn;
 
+        public bool IsExecutingProcedure => this.MachineService.MachineStatus.IsMoving;
+
         public double LowerBound
         {
             get => this.lowerBound;
