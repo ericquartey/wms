@@ -17,8 +17,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineSocketLinkWebService socketLinkWebService;
-
         private readonly IMachineWmsStatusWebService wmsStatusWebService;
 
         private bool areSettingsChanged;
@@ -53,11 +51,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public WmsSettingsViewModel(IMachineWmsStatusWebService wmsStatusWebService, IMachineSocketLinkWebService socketLinkWebService)
+        public WmsSettingsViewModel(IMachineWmsStatusWebService wmsStatusWebService)
             : base(PresentationMode.Installer)
         {
             this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
-            this.socketLinkWebService = socketLinkWebService ?? throw new ArgumentNullException(nameof(socketLinkWebService));
         }
 
         #endregion
@@ -351,7 +348,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.UpdateSocketLinkStatusAsync();
+
                 await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl, this.SocketLinkIsEnabled, this.SocketLinkPort, this.SocketLinkTimeout, this.SocketLinkPolling);
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"));
                 this.AreSettingsChanged = false;
@@ -370,16 +367,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task UpdateSocketLinkStatusAsync()
-        {
-            var socketLinkEnabled = await this.wmsStatusWebService.SocketLinkIsEnabledAsync();
-
-            if (socketLinkEnabled != this.SocketLinkIsEnabled)
-            {
-                await this.socketLinkWebService.SocketLinkSetEnableSyncAsync(this.SocketLinkIsEnabled);
             }
         }
 

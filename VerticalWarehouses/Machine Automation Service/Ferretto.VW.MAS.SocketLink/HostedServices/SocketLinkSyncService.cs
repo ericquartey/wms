@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.SocketLink
                    this.OnDataLayerReady,
                    ThreadOption.PublisherThread,
                    false,
-                   m => m.Type is CommonUtils.Messages.Enumerations.MessageType.WmsEnableChanged);
+                   m => m.Type is CommonUtils.Messages.Enumerations.MessageType.SocketLinkEnableChanged);
 
             this.socketLinkChangeRequestEventArgs.Subscribe(
                 this.OnSyncStateChangeRequested,
@@ -117,8 +117,8 @@ namespace Ferretto.VW.MAS.SocketLink
 
         private void Enable()
         {
-            this.Disable();
-
+            //this.Disable();
+     
             Task.Run(this.ExecutePollingAsync);
         }
 

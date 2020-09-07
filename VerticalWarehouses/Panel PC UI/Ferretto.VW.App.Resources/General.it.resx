@@ -430,12 +430,14 @@
     <value>Abilitato Socket Link</value>
   </data>
   <data name="SocketLinkPolling" xml:space="preserve">
-    <value>Intervallo di polling (secondi)</value>
+    <value>Intervallo di polling</value>
+    <comment>Intervallo di polling in secondi (0 = off)</comment>
   </data>
   <data name="SocketLinkPort" xml:space="preserve">
     <value>Porta</value>
   </data>
   <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>Timeout (secondi)</value>
+    <value>Timeout</value>
+    <comment>Timeout in secondi (0 = off)</comment>
   </data>
 </root>

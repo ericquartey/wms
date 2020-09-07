@@ -466,12 +466,14 @@
     <value>Enable Socket Link</value>
   </data>
   <data name="SocketLinkPolling" xml:space="preserve">
-    <value>Polling interval (seconds)</value>
+    <value>Polling interval</value>
+    <comment>Polling interval in seconds (0 = off)</comment>
   </data>
   <data name="SocketLinkPort" xml:space="preserve">
     <value>Port</value>
   </data>
   <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>Timeout (seconds)</value>
+    <value>Timeout</value>
+    <comment>Timeout in seconds (0 = off)</comment>
   </data>
 </root>

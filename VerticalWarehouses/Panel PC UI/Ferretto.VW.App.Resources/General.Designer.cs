@@ -817,7 +817,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Polling interval (seconds).
+        ///   Looks up a localized string similar to Polling interval.
         /// </summary>
         public static string SocketLinkPolling {
             get {
@@ -835,7 +835,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout (seconds).
+        ///   Looks up a localized string similar to Timeout.
         /// </summary>
         public static string SocketLinkTimeout {
             get {
