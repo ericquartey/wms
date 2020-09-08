@@ -25,8 +25,6 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         private readonly ConcurrentQueue<string> messagesToBeSendQueue;
 
-        private readonly string parametersRaw;
-
         private readonly int tcpTimeout = 2000;
 
         private IPAddress ipAddress = IPAddress.Parse(IP_ADDRESS_DEFAULT);
@@ -63,8 +61,6 @@ namespace Ferretto.VW.Devices.LaserPointer
         #region Properties
 
         public IPAddress IpAddress => this.ipAddress;
-
-        public string ParametersRaw => this.parametersRaw;
 
         public int Port => this.port;
 

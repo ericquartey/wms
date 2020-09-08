@@ -35,7 +35,7 @@ namespace Ferretto.VW.TelemetryService.Models
 
         public int Priority { get; set; }
 
-        public string Stage { get; set; }
+        public string Stage { get; set; } = string.Empty!;
 
         public string? Status { get; set; }
 

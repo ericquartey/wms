@@ -10,9 +10,9 @@ namespace Ferretto.VW.TelemetryService.Models
         [PrimaryKey]
         public int Id { get; set; }
 
-        public string ModelName { get; set; }
+        public string ModelName { get; set; } = string.Empty!;
 
-        public string SerialNumber { get; set; }
+        public string SerialNumber { get; set; } = string.Empty!;
 
         #endregion
     }

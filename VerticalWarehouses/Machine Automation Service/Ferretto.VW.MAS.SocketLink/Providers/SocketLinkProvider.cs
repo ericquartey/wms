@@ -307,7 +307,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 {
                     cmdResponse.AddPayload((int)SocketLinkCommand.AlarmResetResponseResult.errorInParameters);
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
-                    cmdResponse.AddPayload($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (Exception ex)
@@ -340,7 +340,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (Exception ex)
@@ -387,7 +387,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(1)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(1)})");
                 }
             }
             catch (TrayNumberException)
@@ -495,7 +495,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (Exception ex)
@@ -558,7 +558,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload((int)SocketLinkCommand.RequestResetResponseResult.errorInDeletionRequest);
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
-                    cmdResponse.AddPayload($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (Exception ex)
@@ -593,7 +593,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (Exception ex)
@@ -643,7 +643,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"inalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (Exception ex)
