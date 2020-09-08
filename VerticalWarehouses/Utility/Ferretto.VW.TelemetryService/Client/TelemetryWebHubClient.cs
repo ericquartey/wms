@@ -103,13 +103,16 @@ namespace Ferretto.VW.TelemetryService
 
             foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
             {
-                var success = await this.TrySendScreenShotAsync(machine.SerialNumber, screenShot.BayNumber, screenShot.TimeStamp, screenShot.Image, persistOnSendFailure: false);
-                if (success)
+                if (screenShot.Image != null)
                 {
-                    await realm.WriteAsync(r =>
+                    var success = await this.TrySendScreenShotAsync(machine.SerialNumber, screenShot.BayNumber, screenShot.TimeStamp, screenShot.Image, persistOnSendFailure: false);
+                    if (success)
                     {
-                        r.Remove(screenShot);
-                    });
+                        await realm.WriteAsync(r =>
+                        {
+                            r.Remove(screenShot);
+                        });
+                    }
                 }
             }
         }

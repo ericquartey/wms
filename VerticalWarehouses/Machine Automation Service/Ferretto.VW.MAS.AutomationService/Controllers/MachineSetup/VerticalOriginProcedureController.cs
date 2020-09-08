@@ -1,14 +1,11 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -20,7 +17,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly IElevatorProvider elevatorProvider;
+
+        private readonly ILogger<VerticalOriginProcedureController> logger;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -29,12 +28,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public VerticalOriginProcedureController(
-            IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider)
+            IElevatorProvider elevatorProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
+            ILogger<VerticalOriginProcedureController> logger
+            )
         {
-            this.eventAggregator = eventAggregator;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
@@ -72,13 +74,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null, true);
-
-            this.PublishCommand(
-                homingData,
-                "Execute Homing Command",
-                MessageActor.DeviceManager,
-                MessageType.Homing);
+            this.logger.LogDebug($"Start Homing from UI");
+            this.elevatorProvider.Homing(Axis.HorizontalAndVertical,
+                Calibration.FindSensor,
+                loadUnitId: null,
+                showErrors: true,
+                this.BayNumber,
+                MessageActor.WebApi);
 
             return this.Accepted();
         }
@@ -88,33 +90,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            var messageData = new StopMessageData(StopRequestReason.Stop);
-            this.PublishCommand(
-                messageData,
-                $"Stop Vertical Origin Procedure",
-                MessageActor.DeviceManager,
-                MessageType.Stop);
+            this.logger.LogDebug($"Stop elevator from UI");
+            this.elevatorProvider.Stop(this.BayNumber, MessageActor.WebApi);
 
             return this.Accepted();
-        }
-
-        [Obsolete("Move message publishing to providers.")]
-        protected void PublishCommand(
-            IMessageData messageData,
-            string description,
-            MessageActor receiver,
-            MessageType messageType)
-        {
-            this.eventAggregator
-                .GetEvent<CommandEvent>()
-                .Publish(
-                    new CommandMessage(
-                        messageData,
-                        description,
-                        receiver,
-                        MessageActor.WebApi,
-                        messageType,
-                        this.BayNumber));
         }
 
         #endregion
