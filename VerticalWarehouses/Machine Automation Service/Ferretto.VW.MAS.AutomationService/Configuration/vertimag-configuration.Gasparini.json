@@ -61,7 +61,6 @@
           "Speed": 130.0
         },
         "Inverter": {
-          "Id": 1,
           "Index": "Slave3",
           "Parameters": [],
           "TcpPort": 0,
@@ -113,7 +112,6 @@
           },
           "Id": 1,
           "Inverter": {
-            "Id": 2,
             "Index": "Slave2",
             "Parameters": [],
             "TcpPort": 0,
@@ -162,7 +160,6 @@
           "HomingFastSpeed": 25.0,
           "Id": 1,
           "Inverter": {
-            "Id": 3,
             "Index": "MainInverter",
             "IpAddress": "192.168.0.100",
             "Parameters": [],
