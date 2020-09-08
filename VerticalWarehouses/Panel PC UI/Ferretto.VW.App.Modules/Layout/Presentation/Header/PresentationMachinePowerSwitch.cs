@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public bool IsMachinePoweredOn
         {
             get => this.isMachinePoweredOn;
-            set => this.SetProperty(ref this.isMachinePoweredOn, value);
+            set => this.SetProperty(ref this.isMachinePoweredOn, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsUnknownState
@@ -114,6 +114,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 !this.isBusy
                 &&
                 !this.isUnknownState;
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.UpdatePowerState(this.machineModeService.MachinePower);
         }
 
         private void Dispose(bool disposing)

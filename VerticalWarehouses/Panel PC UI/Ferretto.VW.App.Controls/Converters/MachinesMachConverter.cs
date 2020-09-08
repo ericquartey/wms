@@ -13,13 +13,20 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is IEnumerable<Machine> machines &&
-                parameter is int machineId)
+            try
             {
-                return machines.Any(m => m.Id == machineId);
-            }
+                if (value is IEnumerable<Machine> machines &&
+                parameter is int machineId)
+                {
+                    return machines.Any(m => m.Id == machineId);
+                }
 
-            return false;
+                return false;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -14,38 +14,52 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool bValue)
+            try
             {
-                return (bValue == true) ? Resources.Localized.Get("InstallationApp.True") : Resources.Localized.Get("InstallationApp.False");
-            }
+                if (value is bool bValue)
+                {
+                    return (bValue == true) ? Resources.Localized.Get("InstallationApp.True") : Resources.Localized.Get("InstallationApp.False");
+                }
 
-            return Resources.Localized.Get("InstallationApp.False");
+                return Resources.Localized.Get("InstallationApp.False");
+            }
+            catch(Exception)
+            {
+                return Resources.Localized.Get("InstallationApp.False");
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var retValue = false;
-            if (!string.IsNullOrEmpty(value.ToString()))
+            try
             {
-                switch (value.ToString().ToLower(culture))
+                var retValue = false;
+                if (!string.IsNullOrEmpty(value.ToString()))
                 {
-                    case "true":
-                    case "vero":
-                        retValue = true;
-                        break;
+                    switch (value.ToString().ToLower(culture))
+                    {
+                        case "true":
+                        case "vero":
+                            retValue = true;
+                            break;
 
-                    case "false":
-                    case "falso":
-                        retValue = false;
-                        break;
+                        case "false":
+                        case "falso":
+                            retValue = false;
+                            break;
 
-                    default:
-                        retValue = false;
-                        break;
+                        default:
+                            retValue = false;
+                            break;
+                    }
                 }
-            }
 
-            return retValue;
+                return retValue;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
         #endregion

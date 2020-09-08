@@ -11,14 +11,22 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            try
             {
-                case WarehouseSide.Back:
-                    return Resources.Localized.Get("General.WarehouseSide_Back");
+                switch (value)
+                {
+                    case WarehouseSide.Back:
+                        return Resources.Localized.Get("General.WarehouseSide_Back");
 
-                case WarehouseSide.Front:
-                    return Resources.Localized.Get("General.WarehouseSide_Front");
+                    case WarehouseSide.Front:
+                        return Resources.Localized.Get("General.WarehouseSide_Front");
+                }
             }
+            catch(Exception)
+            {
+                return value;
+            }
+            
 
             return string.Empty;
         }

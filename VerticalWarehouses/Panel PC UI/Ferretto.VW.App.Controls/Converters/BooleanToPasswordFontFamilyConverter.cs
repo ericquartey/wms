@@ -13,22 +13,29 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (targetType == typeof(FontFamily))
+            try
             {
-                if (TruthyAssertor.IsTruthy(value))
+                if (targetType == typeof(FontFamily))
                 {
-                    var assembly = Assembly.GetAssembly(this.GetType());
-                    var assemblyName = assembly.GetName().Name;
-                    //Uri baseUri = new Uri($"pack://application:,,,/{ assemblyName };component/Fonts/");
-                    return new FontFamily(new Uri("pack://application:,,,/"), $"./{assemblyName};component/Fonts/#Password");
+                    if (TruthyAssertor.IsTruthy(value))
+                    {
+                        var assembly = Assembly.GetAssembly(this.GetType());
+                        var assemblyName = assembly.GetName().Name;
+                        //Uri baseUri = new Uri($"pack://application:,,,/{ assemblyName };component/Fonts/");
+                        return new FontFamily(new Uri("pack://application:,,,/"), $"./{assemblyName};component/Fonts/#Password");
+                    }
+                    else
+                    {
+                        return DependencyProperty.UnsetValue;
+                    }
                 }
-                else
-                {
-                    return DependencyProperty.UnsetValue;
-                }
-            }
 
-            return value;
+                return value;
+            }
+            catch(Exception)
+            {
+                return value;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
