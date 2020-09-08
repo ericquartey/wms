@@ -7,15 +7,17 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
+        bool IsWmsEnabled { get; }
+
         MachineMode MachineMode { get; }
 
         MachinePowerState MachinePower { get; }
 
-        Task OnUpdateServiceAsync();
-
         #endregion
 
         #region Methods
+
+        Task OnUpdateServiceAsync();
 
         Task PowerOffAsync();
 

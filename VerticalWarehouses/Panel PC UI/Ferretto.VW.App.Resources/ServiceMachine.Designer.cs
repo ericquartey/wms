@@ -196,6 +196,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wms missions present but wms not active.
+        /// </summary>
+        public static string MissionsWmsNotActive {
+            get {
+                return ResourceManager.GetString("MissionsWmsNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay chain movement in progress....
         /// </summary>
         public static string MovementBayChainInProgress {

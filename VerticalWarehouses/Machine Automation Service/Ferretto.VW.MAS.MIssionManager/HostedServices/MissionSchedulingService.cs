@@ -842,7 +842,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                 {
                                     await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
                                 }
-                                else
+                                else if(bay.Number < BayNumber.ElevatorBay)
                                 {
                                     this.Logger.LogWarning("Scheduling missions on bay {number} is not allowed: bay is not active.", bay.Number);
                                 }
@@ -1238,7 +1238,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (!serviceProvider.GetRequiredService<IWmsSettingsProvider>().IsEnabled)
             {
-                this.Logger.LogTrace("Skipping scheduling of WMS mission {wmsId}, because WMS is not enabled.", mission.WmsId);
+                this.Logger.LogError("WMS mission {wmsId} can not start because WMS is not enabled.", mission.WmsId);
                 return;
             }
 
