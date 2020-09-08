@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly ICellsProvider cellsProvider;
 
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
@@ -41,6 +43,7 @@ namespace Ferretto.VW.MAS.MissionManager
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineMissionsProvider missionsProvider,
             IMissionsDataProvider missionsDataProvider,
+            IBaysDataProvider baysDataProvider,
             ILogger<MissionSchedulingService> logger)
         {
             if (eventAggregator is null)
@@ -53,6 +56,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -182,14 +186,24 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber, MissionType missionType)
         {
-            this.logger.LogDebug(
-              "Queuing local recall mission for loading unit {loadingUnitId} from bay {sourceBayNumber}.",
-              loadingUnitId,
-              sourceBayNumber);
+            var bay = this.baysDataProvider.GetByNumber(sourceBayNumber);
+            if (bay.Positions.Any(x => x.LoadingUnit?.Id == loadingUnitId))
+            {
+                this.logger.LogDebug(
+                  "Queuing local recall mission for loading unit {loadingUnitId} from bay {sourceBayNumber}.",
+                  loadingUnitId,
+                  sourceBayNumber);
+                var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber, missionType);
 
-            var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber, missionType);
-
-            this.NotifyNewMachineMissionAvailable(mission.TargetBay);
+                this.NotifyNewMachineMissionAvailable(mission.TargetBay);
+            }
+            else
+            {
+                this.logger.LogError(
+                  "Load unit {loadingUnitId} not in bay {sourceBayNumber}",
+                  loadingUnitId,
+                  sourceBayNumber);
+            }
         }
 
         private bool CompactDownCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
