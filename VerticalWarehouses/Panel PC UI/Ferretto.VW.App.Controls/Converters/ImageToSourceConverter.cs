@@ -13,18 +13,25 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Image image)
+            try
             {
-                var ms = new MemoryStream();
-                image.Save(ms, image.RawFormat);
-                ms.Seek(0, SeekOrigin.Begin);
-                var bi = new BitmapImage();
-                bi.BeginInit();
-                bi.StreamSource = ms;
-                bi.EndInit();
-                return bi;
+                if (value is Image image)
+                {
+                    var ms = new MemoryStream();
+                    image.Save(ms, image.RawFormat);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    var bi = new BitmapImage();
+                    bi.BeginInit();
+                    bi.StreamSource = ms;
+                    bi.EndInit();
+                    return bi;
+                }
+                return null;
             }
-            return null;
+            catch(Exception)
+            {
+                return null;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

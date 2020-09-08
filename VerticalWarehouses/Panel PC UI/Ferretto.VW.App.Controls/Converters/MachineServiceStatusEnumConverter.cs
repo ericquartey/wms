@@ -11,22 +11,29 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            try
             {
-                case MachineServiceStatus.Expired:
-                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Expired");
+                switch (value)
+                {
+                    case MachineServiceStatus.Expired:
+                        return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Expired");
 
-                case MachineServiceStatus.Expiring:
-                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Expiring");
+                    case MachineServiceStatus.Expiring:
+                        return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Expiring");
 
-                case MachineServiceStatus.Valid:
-                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Valid");
+                    case MachineServiceStatus.Valid:
+                        return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Valid");
 
-                case MachineServiceStatus.Completed:
-                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Completed");
+                    case MachineServiceStatus.Completed:
+                        return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Completed");
 
-                default:
-                    return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Unknown");
+                    default:
+                        return Resources.Localized.Get("OperatorApp.MachineServiceStatus_Unknown");
+                }
+            }
+            catch(Exception)
+            {
+                return value;
             }
         }
 

@@ -11,20 +11,27 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            try
             {
-                case HealthStatus.Healthy:
-                    return Resources.Localized.Get("InstallationApp.WmsOn");
+                switch (value)
+                {
+                    case HealthStatus.Healthy:
+                        return Resources.Localized.Get("InstallationApp.WmsOn");
 
-                case HealthStatus.Unknown:
-                case HealthStatus.Unhealthy:
-                case HealthStatus.Degraded:
-                case HealthStatus.Initialized:
-                case HealthStatus.Initializing:
-                    return Resources.Localized.Get("InstallationApp.WmsOff");
+                    case HealthStatus.Unknown:
+                    case HealthStatus.Unhealthy:
+                    case HealthStatus.Degraded:
+                    case HealthStatus.Initialized:
+                    case HealthStatus.Initializing:
+                        return Resources.Localized.Get("InstallationApp.WmsOff");
+                }
+
+                return string.Empty;
             }
-
-            return string.Empty;
+            catch(Exception)
+            {
+                return value;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

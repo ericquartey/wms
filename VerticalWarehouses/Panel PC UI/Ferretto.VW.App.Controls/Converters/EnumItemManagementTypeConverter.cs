@@ -11,19 +11,26 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            try
             {
-                case ItemManagementType.FIFO:
-                    return Resources.Localized.Get("OperatorApp.ItemManagementType_FIFO");
+                switch (value)
+                {
+                    case ItemManagementType.FIFO:
+                        return Resources.Localized.Get("OperatorApp.ItemManagementType_FIFO");
 
-                case ItemManagementType.Volume:
-                    return Resources.Localized.Get("OperatorApp.ItemManagementType_Volume");
+                    case ItemManagementType.Volume:
+                        return Resources.Localized.Get("OperatorApp.ItemManagementType_Volume");
 
-                case ItemManagementType.NotSpecified:
-                    return Resources.Localized.Get("OperatorApp.ItemManagementType_NotSpecified");
+                    case ItemManagementType.NotSpecified:
+                        return Resources.Localized.Get("OperatorApp.ItemManagementType_NotSpecified");
+                }
+
+                return string.Empty;
             }
-
-            return string.Empty;
+            catch(Exception)
+            {
+                return value;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

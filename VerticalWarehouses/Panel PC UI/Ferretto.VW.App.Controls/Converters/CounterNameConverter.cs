@@ -16,22 +16,29 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            try
             {
-                case "TotalLoadUnitsInBay1":
-                    return Resources.Localized.Get("InstallationApp.TotalLoadUnitsInBay1");
+                switch (value)
+                {
+                    case "TotalLoadUnitsInBay1":
+                        return Resources.Localized.Get("InstallationApp.TotalLoadUnitsInBay1");
 
-                case "TotalLoadUnitsInBay2":
-                    return Resources.Localized.Get("InstallationApp.TotalLoadUnitsInBay2");
+                    case "TotalLoadUnitsInBay2":
+                        return Resources.Localized.Get("InstallationApp.TotalLoadUnitsInBay2");
 
-                case "TotalLoadUnitsInBay3":
-                    return Resources.Localized.Get("InstallationApp.TotalLoadUnitsInBay3");
+                    case "TotalLoadUnitsInBay3":
+                        return Resources.Localized.Get("InstallationApp.TotalLoadUnitsInBay3");
 
-                case "TotalMissions":
-                    return Resources.Localized.Get("InstallationApp.TotalMissions");
+                    case "TotalMissions":
+                        return Resources.Localized.Get("InstallationApp.TotalMissions");
 
-                default: //None
-                    return Resources.Localized.Get("InstallationApp.None");
+                    default: //None
+                        return Resources.Localized.Get("InstallationApp.None");
+                }
+            }
+            catch(Exception)
+            {
+                return value;
             }
         }
 
