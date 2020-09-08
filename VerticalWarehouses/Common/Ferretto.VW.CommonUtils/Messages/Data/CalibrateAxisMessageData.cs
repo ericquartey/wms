@@ -1,12 +1,15 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class CalibrateAxisMessageData : ICalibrateAxisMessageData
     {
         #region Constructors
+
+        public CalibrateAxisMessageData()
+        {
+        }
 
         public CalibrateAxisMessageData(
             Axis axisToCalibrate,

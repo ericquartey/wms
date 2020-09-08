@@ -402,7 +402,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.SelectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == lastItemId);
                 }
-                else if (this.Items.Count() == 1)
+                else if (this.Items?.Count() == 1)
                 {
                     this.SelectedItem = this.Items.First();
                 }

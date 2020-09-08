@@ -4,69 +4,71 @@
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls">
 
-    <DataGrid ItemsSource="{Binding ItemsCompartments}"
-              SelectedItem="{Binding SelectedItemCompartment, Mode=OneWay}">
-        <DataGrid.Columns>
-            <DataGridTextColumn x:Name="Column1"
-                                Width="120"
-                                Binding="{Binding Path=ItemCode}"
-                                Header="{Resources:Loc OperatorApp.ItemCode}">
-                <DataGridTextColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="1,0,0,0" />
-                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                    </Style>
-                </DataGridTextColumn.CellStyle>
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="ItemDescriptionColumn"
-                                Width="*"
-                                Binding="{Binding Path=ItemDescription}"
-                                Header="{Resources:Loc OperatorApp.ItemDescription}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Left" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="Margin" Value="5,0,5,0" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="StockColumn"
-                                Width="100"
-                                Header="{Resources:Loc OperatorApp.CompartmentStock}">
-                <DataGridTextColumn.Binding>
-                    <MultiBinding StringFormat="{}{0} {1}">
-                        <Binding Path="Stock" />
-                        <Binding Path="ItemMeasureUnit" />
-                    </MultiBinding>
-                </DataGridTextColumn.Binding>
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Right" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="Margin" Value="5,0,5,0" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column4"
-                                Width="120"
-                                Binding="{Binding Path=Id}"
-                                Header="{Resources:Loc OperatorApp.Compartment}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="Margin" Value="5,0,5,0" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
+  <DataGrid ItemsSource="{Binding ItemsCompartments}"
+            RowHeight="50"
+            SelectedItem="{Binding SelectedItemCompartment, Mode=OneWay}">
+    <DataGrid.Columns>
+      <DataGridTextColumn x:Name="Column1"
+                          Width="1.5*"
+                          Binding="{Binding Path=ItemCode}"
+                          Header="{Resources:Loc OperatorApp.ItemCode}">
+        <DataGridTextColumn.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="1,0,0,0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+          </Style>
+        </DataGridTextColumn.CellStyle>
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="ItemDescriptionColumn"
+                          Width="3*"
+                          Binding="{Binding Path=ItemDescription}"
+                          Header="{Resources:Loc OperatorApp.ItemDescription}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="StockColumn"
+                          Width="100"
+                          Header="{Resources:Loc OperatorApp.CompartmentStock}">
+        <DataGridTextColumn.Binding>
+          <MultiBinding StringFormat="{}{0} {1}">
+            <Binding Path="Stock" />
+            <Binding Path="ItemMeasureUnit" />
+          </MultiBinding>
+        </DataGridTextColumn.Binding>
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column4"
+                          Width="100"
+                          Binding="{Binding Path=Id}"
+                          Header="{Resources:Loc OperatorApp.Compartment}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
 
-        </DataGrid.Columns>
-    </DataGrid>
+    </DataGrid.Columns>
+  </DataGrid>
 
 </UserControl>

@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IWmsDataProvider wmsDataProvider;
 
+        private bool appear;
+
         private int? areaId;
 
         private double? availableQuantity;
@@ -76,13 +78,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int? itemToPickId;
 
-        private string lastSearchItem;
+        //private string lastSearchItem;
 
         private int maxKnownIndexSelection;
 
-        private List<ProductInMachine> productInCurrentMachine;
-
         private SubscriptionToken productsChangedToken;
+
+        private List<ProductInMachine> productsInCurrentMachine;
 
         private int? reasonId;
 
@@ -136,6 +138,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public string ActiveContextName => this.isBusyLoadingNextPage ? null : OperationalContext.ItemsSearch.ToString();
+
+        public bool Appear
+        {
+            get => this.appear;
+            private set => this.SetProperty(ref this.appear, value, this.RaiseCanExecuteChanged);
+        }
 
         public double? AvailableQuantity
         {
@@ -195,6 +203,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem = null;
                         this.currentItemIndex = 0;
                         this.tokenSource = new CancellationTokenSource();
+                        await this.ReloadAllItems(this.tokenSource.Token);
                         await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
                     }).Start();
                 }
@@ -220,6 +229,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem = null;
                         this.currentItemIndex = 0;
                         this.tokenSource = new CancellationTokenSource();
+                        this.ReloadAllItems(this.tokenSource.Token);
                         await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
                     }).Start();
                 }
@@ -525,8 +535,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.Appear = false;
             this.InputQuantity = 0;
             this.Reasons = null;
+
             this.productsChangedToken =
               this.productsChangedToken
               ??
@@ -534,9 +546,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   .GetEvent<PubSubEvent<ProductsChangedEventArgs>>()
                   .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
 
-            this.productInCurrentMachine = new List<ProductInMachine>();
-
             await base.OnAppearedAsync();
+
+            await this.OnAppearItem();
         }
 
         public async Task RequestItemPickAsync(int itemId, string itemCode)
@@ -594,62 +606,65 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var newItems = await this.areasWebService.GetProductsAsync(
-                    this.areaId.Value,
-                    skip,
-                    DefaultPageSize,
-                    this.searchItem,
-                    this.IsGroupbyLot,
-                    this.isDistinctBySerialNumber,
-                    cancellationToken);
+                //var newItems = await this.areasWebService.GetProductsAsync(
+                //    this.areaId.Value,
+                //    skip,
+                //    DefaultPageSize,
+                //    this.searchItem,
+                //    this.IsGroupbyLot,
+                //    this.isDistinctBySerialNumber,
+                //    cancellationToken);
 
-                var totalNewItems = await this.areasWebService.GetProductsAsync(
-                    this.areaId.Value,
-                    0,
-                    0,
-                    this.searchItem,
-                    this.IsGroupbyLot,
-                    this.isDistinctBySerialNumber,
-                    cancellationToken);
+                //var totalNewItems = await this.areasWebService.GetProductsAsync(
+                //    this.areaId.Value,
+                //    0,
+                //    0,
+                //    this.searchItem,
+                //    this.IsGroupbyLot,
+                //    this.isDistinctBySerialNumber,
+                //    cancellationToken);
 
-                if (totalNewItems.Count() <= DefaultPageSize && this.lastSearchItem == this.searchItem && this.searchItem != null)
-                {
-                    this.lastSearchItem = this.searchItem;
-                    return;
-                }
+                //if (totalNewItems.Count() <= DefaultPageSize && this.lastSearchItem == this.searchItem && this.searchItem != null)
+                //{
+                //    this.lastSearchItem = this.searchItem;
+                //    return;
+                //}
 
-                this.lastSearchItem = this.searchItem;
+                //this.lastSearchItem = this.searchItem;
+
+                var newItems = this.productsInCurrentMachine.Skip(skip).Take(DefaultPageSize);
 
                 if (!newItems.Any())
                 {
+                    this.RaisePropertyChanged(nameof(this.Items));
                     return;
                 }
 
-                var model = await this.identityService.GetAsync();
+                //var model = await this.identityService.GetAsync();
 
-                if (model is null)
-                {
-                    this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
-                }
-                else
-                {
-                    this.productInCurrentMachine.Clear();
+                //if (model is null)
+                //{
+                //    this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                //}
+                //else
+                //{
+                //    this.productInCurrentMachine.Clear();
 
-                    foreach (var item in newItems.ToList())
-                    {
-                        for (int i = 0; i < item.Machines.Count(); i++)
-                        {
-                            if (item.Machines.ElementAt(i).Id == model.Id)
-                            {
-                                this.productInCurrentMachine.Add(item);
-                            }
-                        }
-                    }
-                }
+                //    foreach (var item in newItems.ToList())
+                //    {
+                //        for (int i = 0; i < item.Machines.Count(); i++)
+                //        {
+                //            if (item.Machines.ElementAt(i).Id == model.Id)
+                //            {
+                //                this.productInCurrentMachine.Add(item);
+                //            }
+                //        }
+                //    }
+                //}
 
-                this.items.AddRange(this.productInCurrentMachine.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                //this.items.AddRange(this.productInCurrentMachine.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
 
-                //this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                this.items.AddRange(newItems.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
 
                 if (this.items.Count == 0)
                 {
@@ -670,9 +685,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsDistinctBySerialNumberEnabled = true;
                 }
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            //catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (TaskCanceledException)
             {
-                this.ShowNotification(ex);
+                // normal situation
+                this.items.Clear();
+                this.SelectedItem = null;
+                this.currentItemIndex = 0;
+                this.maxKnownIndexSelection = 0;
+            }
+            catch (Exception ex)
+            {
+                if (this.appear)
+                {
+                    this.ShowNotification(ex);
+                }
+
                 this.items.Clear();
                 this.SelectedItem = null;
                 this.currentItemIndex = 0;
@@ -829,8 +857,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SelectedItem != null;
         }
 
+        private async Task OnAppearItem()
+        {
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+            await this.ReloadAllItems(this.tokenSource.Token);
+            await this.RefreshItemsAsync();
+
+            this.RaisePropertyChanged(nameof(this.Items));
+            this.Appear = true;
+        }
+
         private async Task OnProductsChangedAsync(ProductsChangedEventArgs e)
         {
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+            await this.ReloadAllItems(this.tokenSource.Token);
             await this.RefreshItemsAsync();
         }
 
@@ -888,6 +932,59 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.SearchItemAsync(startIndex, this.tokenSource.Token);
         }
 
+        private async Task ReloadAllItems(CancellationToken cancellationToken)
+        {
+            this.productsInCurrentMachine = new List<ProductInMachine>();
+
+            try
+            {
+                if (this.areaId is null)
+                {
+                    var machineIdentity = await this.identityService.GetAsync();
+                    this.areaId = machineIdentity.AreaId;
+                }
+
+                var totalProducts = await this.areasWebService.GetProductsAsync(
+                    this.areaId.Value,
+                    0,
+                    0,
+                    this.searchItem,
+                    this.IsGroupbyLot,
+                    this.isDistinctBySerialNumber,
+                    cancellationToken);
+
+                var model = await this.identityService.GetAsync();
+
+                if (model is null)
+                {
+                    this.items.AddRange(totalProducts.Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+                }
+                else
+                {
+                    this.productsInCurrentMachine.Clear();
+
+                    foreach (var item in totalProducts.ToList())
+                    {
+                            for (int i = 0; i < item.Machines.Count(); i++)
+                            {
+                                if (item.Machines.ElementAt(i).Id == model.Id)
+                                {
+                                    this.productsInCurrentMachine.Add(item);
+                                }
+                            }
+                        }
+                    }
+                }
+            catch (TaskCanceledException)
+            {
+                // normal situation
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         private void Scroll(object parameter)
         {
             var scrollChangedEventArgs = parameter as ScrollChangedEventArgs;
@@ -900,7 +997,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.maxKnownIndexSelection = last;
                 }
 
-                if (last > Math.Max((this.items.Count + 1) - ItemsToCheckBeforeLoad, DefaultPageSize - ItemsToCheckBeforeLoad))
+                if (last >= Math.Max((this.items.Count + 1) - ItemsToCheckBeforeLoad, DefaultPageSize - ItemsToCheckBeforeLoad - 1))
                 {
                     this.IsSearching = true;
                     this.tokenSource = new CancellationTokenSource();
@@ -1012,12 +1109,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 const int callDelayMilliseconds = 500;
 
-                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token)
-                    .ContinueWith(
-                        async t => await this.SearchItemAsync(0, this.tokenSource.Token),
-                        this.tokenSource.Token,
-                        TaskContinuationOptions.NotOnCanceled,
-                        TaskScheduler.Current);
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
+                await this.ReloadAllItems(this.tokenSource.Token);
+                await this.SearchItemAsync(0, this.tokenSource.Token);
             }
             catch (TaskCanceledException)
             {
