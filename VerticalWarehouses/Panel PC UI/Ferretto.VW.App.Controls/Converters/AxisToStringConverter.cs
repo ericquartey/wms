@@ -15,22 +15,29 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            try
             {
-                case Axis.BayChain:
-                    return Resources.Localized.Get("InstallationApp.BayChain");
+                switch (value)
+                {
+                    case Axis.BayChain:
+                        return Resources.Localized.Get("InstallationApp.BayChain");
 
-                case Axis.Horizontal:
-                    return Resources.Localized.Get("InstallationApp.Horizontal");
+                    case Axis.Horizontal:
+                        return Resources.Localized.Get("InstallationApp.Horizontal");
 
-                case Axis.HorizontalAndVertical:
-                    return Resources.Localized.Get("InstallationApp.HorizontalAndVertical");
+                    case Axis.HorizontalAndVertical:
+                        return Resources.Localized.Get("InstallationApp.HorizontalAndVertical");
 
-                case Axis.Vertical:
-                    return Resources.Localized.Get("InstallationApp.Vertical");
+                    case Axis.Vertical:
+                        return Resources.Localized.Get("InstallationApp.Vertical");
 
-                default: //None
-                    return Resources.Localized.Get("InstallationApp.None");
+                    default: //None
+                        return Resources.Localized.Get("InstallationApp.None");
+                }
+            }
+            catch(Exception)
+            {
+                return "";
             }
         }
 

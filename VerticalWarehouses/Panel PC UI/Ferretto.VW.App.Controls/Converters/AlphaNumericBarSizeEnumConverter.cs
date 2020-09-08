@@ -11,24 +11,31 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            AlphaNumericBarSize size;
-            Enum.TryParse(value.ToString(), out size);
-            switch (size)
+            try
             {
-                case AlphaNumericBarSize.ExtraLarge:
-                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeXL");
+                AlphaNumericBarSize size;
+                Enum.TryParse(value.ToString(), out size);
+                switch (size)
+                {
+                    case AlphaNumericBarSize.ExtraLarge:
+                        return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeXL");
 
-                case AlphaNumericBarSize.ExtraSmall:
-                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeXS");
+                    case AlphaNumericBarSize.ExtraSmall:
+                        return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeXS");
 
-                case AlphaNumericBarSize.Large:
-                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeL");
+                    case AlphaNumericBarSize.Large:
+                        return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeL");
 
-                case AlphaNumericBarSize.Medium:
-                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeM");
+                    case AlphaNumericBarSize.Medium:
+                        return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeM");
 
-                default:
-                    return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeS");
+                    default:
+                        return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeS");
+                }
+            }
+            catch(Exception)
+            {
+                return "";
             }
         }
 
