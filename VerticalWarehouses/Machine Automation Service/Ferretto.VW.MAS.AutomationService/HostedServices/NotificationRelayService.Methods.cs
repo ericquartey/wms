@@ -241,6 +241,31 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.SensorsChanged(message);
         }
 
+        //private async Task OnSocketLinkEnableChanged(IServiceProvider serviceProvider)
+        //{
+        //    var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
+        //    var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+        //    //if (wmsSettingsProvider.SocketLinkIsEnabled)
+        //    //{
+        //    //    wmsSettingsProvider.IsConnected = false;
+        //    //    await dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
+        //    //}
+        //    //else
+        //    //{
+        //    //    try
+        //    //    {
+        //    //        if (dataHubClient.IsConnected)
+        //    //        {
+        //    //            await dataHubClient.DisconnectAsync();
+        //    //        }
+        //    //    }
+        //    //    catch
+        //    //    {
+        //    //        // do nothing
+        //    //    }
+        //    //}
+        //}
+
         private async Task OnSystemTimeChangedAsync()
         {
             await this.installationHub.Clients.All.SystemTimeChanged();

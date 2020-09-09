@@ -113,6 +113,8 @@ namespace Ferretto.VW.App.Services
 
         private bool isMissionInErrorByLoadUnitOperations;
 
+        private bool isMissionWms;
+
         private bool isShutterThreeSensors;
 
         private bool isTuningCompleted;
@@ -290,6 +292,12 @@ namespace Ferretto.VW.App.Services
             private set => this.SetProperty(ref this.isMissionInErrorByLoadUnitOperations, value);
         }
 
+        public bool IsMissionWms
+        {
+            get => this.isMissionWms;
+            private set => this.SetProperty(ref this.isMissionWms, value);
+        }
+
         public bool IsShutterThreeSensors
         {
             get => this.isShutterThreeSensors;
@@ -301,6 +309,8 @@ namespace Ferretto.VW.App.Services
             get => this.isTuningCompleted;
             private set => this.SetProperty(ref this.isTuningCompleted, value);
         }
+
+        public bool IsWmsEnabled => this.machineModeService.IsWmsEnabled;
 
         public IEnumerable<LoadingUnit> Loadunits
         {
@@ -600,9 +610,12 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+                var missions = (await this.missionsWebService.GetAllAsync());
+                this.IsMissionInError = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
-                this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+                this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+
+                this.IsMissionWms = missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
@@ -978,9 +991,12 @@ namespace Ferretto.VW.App.Services
                             }
                             if (this.MachineStatus.IsMovingLoadingUnit)
                             {
-                                this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+                                var missions = (await this.missionsWebService.GetAllAsync());
+                                this.IsMissionInError = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
-                                this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+                                this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+
+                                this.IsMissionWms = missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
                             }
 
                             var embarkedLoadingUnit = await this.GetLodingUnitOnBoardAsync();
@@ -1337,9 +1353,13 @@ namespace Ferretto.VW.App.Services
 
         private async Task UpdateBay()
         {
-            this.IsMissionInError = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+            var missions = (await this.missionsWebService.GetAllAsync());
 
-            this.IsMissionInErrorByLoadUnitOperations = (await this.missionsWebService.GetAllAsync()).Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+            this.IsMissionInError = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+
+            this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+
+            this.IsMissionWms = missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
 
             // Devo aggiornare i dati delle posizioni della baia
             this.Bay = await this.bayManagerService.GetBayAsync();
@@ -1552,6 +1572,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
+                        else if (this.IsMissionWms && !this.IsWmsEnabled)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionsWmsNotActive"), NotificationSeverity.Warning);
+                        }
                         else if (view.Equals("CarouselCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
                                 !this.sensorsService.BayZeroChain)
                         {
@@ -1588,6 +1612,10 @@ namespace Ferretto.VW.App.Services
                         else if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
+                        }
+                        else if (this.IsMissionWms && !this.IsWmsEnabled)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionsWmsNotActive"), NotificationSeverity.Warning);
                         }
                         else if (this.isHomingStarted[Axis.Horizontal])
                         {
@@ -1632,6 +1660,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
+                        else if (this.IsMissionWms && !this.IsWmsEnabled)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionsWmsNotActive"), NotificationSeverity.Warning);
+                        }
                         else if (this.FragmentTotalPercent > MaximumFragmentation)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
@@ -1651,6 +1683,10 @@ namespace Ferretto.VW.App.Services
                         if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
+                        }
+                        else if (this.IsMissionWms && !this.IsWmsEnabled)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionsWmsNotActive"), NotificationSeverity.Warning);
                         }
                         else if (this.isHomingStarted[Axis.Horizontal])
                         {

@@ -14,6 +14,9 @@ namespace Ferretto.ServiceDesk.Telemetry
 
         int DetailCode { get; set; }
 
+        int InverterIndex { get; set; }
+
+
         DateTimeOffset OccurrenceDate { get; set; }
 
         DateTimeOffset? ResolutionDate { get; set; }

@@ -16,6 +16,14 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Uri ServiceUrl { get; set; }
 
+        public bool SocketLinkIsEnabled { get; set; }
+
+        public int SocketLinkPolling { get; set; }
+
+        public int SocketLinkPort { get; set; }
+
+        public int SocketLinkTimeout { get; set; }
+
         public int TimeSyncIntervalMilliseconds { get; set; }
 
         #endregion

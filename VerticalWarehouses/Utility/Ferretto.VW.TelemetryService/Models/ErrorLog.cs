@@ -19,6 +19,8 @@ namespace Ferretto.VW.TelemetryService.Models
         [PrimaryKey]
         public int Id { get; set; }
 
+        public int InverterIndex { get; set; }
+
         public Machine? Machine { get; set; }
 
         public int MachineId { get; set; }

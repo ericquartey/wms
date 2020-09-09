@@ -17,234 +17,236 @@
             ParentViewName="{x:Static modules:Operator.OPERATOR_MENU}"
             mc:Ignorable="d">
 
-    <Grid Margin="15,0,0,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+  <Grid Margin="15,0,0,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <StackPanel Grid.ColumnSpan="2"
-                    Orientation="Horizontal">
+    <StackPanel Grid.ColumnSpan="2"
+                Orientation="Horizontal">
 
-            <TextBlock Grid.ColumnSpan="2"
-                       Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
-                <Run Text="{res:Loc OperatorApp.LoadingUnit}" /> <Run Text="{Binding LoadingUnit.Id}" /> <Run Text="{res:Loc OperatorApp.LoadingUnitInBay}" />
-            </TextBlock>
-        </StackPanel>
+      <TextBlock Grid.ColumnSpan="2"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+        <Run Text="{res:Loc OperatorApp.LoadingUnit}" /> <Run Text="{Binding LoadingUnit.Id}" /> <Run Text="{res:Loc OperatorApp.LoadingUnitInBay}" />
+      </TextBlock>
+    </StackPanel>
 
-        <Grid Grid.Row="1"
-              Visibility="{Binding Reasons, Converter={StaticResource RTVIC}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+    <Grid Grid.Row="1"
+          Visibility="{Binding Reasons, Converter={StaticResource RTVIC}}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="0"
-                    Margin="0,0,0,0"
-                    Background="{DynamicResource PpcBackground}"
-                    BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}"
-                    CornerRadius="0">
-                <Grid Margin="20">
+      <Border Grid.Row="0"
+              Margin="0,0,0,0"
+              Background="{DynamicResource PpcBackground}"
+              BorderBrush="{DynamicResource PpcBorderBrush}"
+              BorderThickness="{DynamicResource PpcBorderThickness}"
+              CornerRadius="0">
+        <Grid Margin="20">
 
-                    <Border Grid.Row="1"
-                            Margin="50"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="{StaticResource PpcBackground}"
-                            BorderBrush="{StaticResource PpcBorderBrush}"
-                            BorderThickness="{StaticResource PpcBorderThickness}"
-                            CornerRadius="2,0,0,2"
-                            Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVIC}}">
-                        <StackPanel HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Orientation="Vertical">
-                            <TextBlock Margin="20"
-                                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
-                                <Run Text="{res:Loc OperatorApp.LoadingUnitPresenceId}" /> <Run Text="{Binding LoadingUnit.Id}" />
-                            </TextBlock>
-                            <TextBlock Margin="20,0"
-                                       HorizontalAlignment="Center"
-                                       Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
-                                <Run Text="(" /><Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
-                                <Run Text="{Binding LoadingUnit.Height, StringFormat={}{0:F2}}" /><Run Text="," />
-                                <Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
-                                <Run Text="{Binding LoadingUnit.NetWeight, StringFormat={}{0:F2}}" /><Run Text=")" />
-                            </TextBlock>
-                        </StackPanel>
+          <Border Grid.Row="1"
+                  Margin="50"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  Background="{StaticResource PpcBackground}"
+                  BorderBrush="{StaticResource PpcBorderBrush}"
+                  BorderThickness="{StaticResource PpcBorderThickness}"
+                  CornerRadius="2,0,0,2"
+                  Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVIC}}">
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+              <TextBlock Margin="20"
+                         Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                <Run Text="{res:Loc OperatorApp.LoadingUnitPresenceId}" /> <Run Text="{Binding LoadingUnit.Id}" />
+              </TextBlock>
+              <TextBlock Margin="20,0"
+                         HorizontalAlignment="Center"
+                         Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}">
+                <Run Text="(" /><Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}" /><Run Text=":" />
+                <Run Text="{Binding LoadingUnit.Height, StringFormat={}{0:F2}}" /><Run Text="," />
+                <Run Text="{res:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}" /><Run Text=":" />
+                <Run Text="{Binding LoadingUnit.NetWeight, StringFormat={}{0:F2}}" /><Run Text=")" />
+              </TextBlock>
+            </StackPanel>
 
-                    </Border>
+          </Border>
 
-                    <localControls:LoadingUnitControlView Grid.Row="1"
-                                                          Margin="0"
-                                                          Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}" />
+          <localControls:LoadingUnitControlView Grid.Row="1"
+                                                Margin="0"
+                                                Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}" />
 
-                </Grid>
-
-            </Border>
-
-            <Grid Grid.Row="0"
-                  Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Row="0"
-                            HorizontalAlignment="Right"
-                            IsEnabled="{Binding SelectedItemCompartment, Converter={StaticResource RTBIC}}">
-                    <controls:PpcButton Margin="15,0,15,0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Command="{Binding ChangeModeLoadingUnitCommand}"
-                                        Content="{res:Loc OperatorApp.LoadingUnit}"
-                                        Foreground="{DynamicResource FerrettoPureWhite}"
-                                        Kind="Grid"
-                                        TextBlock.TextAlignment="Center"
-                                        Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVC}}" />
-
-                    <controls:PpcButton Margin="15,0,15,0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top"
-                                        Command="{Binding ChangeModeListCommand}"
-                                        Content="{res:Loc OperatorApp.List}"
-                                        Foreground="{DynamicResource FerrettoPureWhite}"
-                                        Kind="Table"
-                                        TextBlock.TextAlignment="Center"
-                                        Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}" />
-
-                </StackPanel>
-
-                <StackPanel Grid.Row="1"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom">
-
-
-                    <Border x:Name="border"
-                            Width="160"
-                            Height="auto"
-                            Margin="15,15,15,15"
-                            Background="{DynamicResource PpcBackground}"
-                            BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}"
-                            SnapsToDevicePixels="True">
-
-                        <Grid Margin="4"
-                              UseLayoutRounding="True">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Margin="4,0"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource VWAPP_CardSensor}">
-                                <Run Text="{res:Loc OperatorApp.UnitId}" /><Run Text="{Binding UnitNumber}" />
-                            </TextBlock>
-
-                            <Grid Grid.Row="1"
-                                  Grid.RowSpan="2"
-                                  Grid.ColumnSpan="2">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Row="0"
-                                           Grid.Column="0"
-                                           Margin="5,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Small}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{res:Loc OperatorApp.Weight}" />
-
-                                <TextBlock Grid.Row="0"
-                                           Grid.Column="1"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding UnitWeight, StringFormat={}{0:F2} kg}" />
-
-                                <TextBlock Grid.Row="1"
-                                           Grid.Column="0"
-                                           Margin="5,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Small}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{res:Loc OperatorApp.Height}" />
-
-                                <TextBlock Grid.Row="1"
-                                           Grid.Column="1"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           FontSize="{StaticResource FontSize_Normal}"
-                                           Foreground="{DynamicResource PpcForeground}"
-                                           Text="{Binding UnitHeight, StringFormat={}{0:F2} mm}" />
-                            </Grid>
-
-                        </Grid>
-                    </Border>
-
-                    <controls:PpcButton Margin="15,0,15,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        BorderBrush="{StaticResource FerrettoBlue}"
-                                        Command="{Binding OperationCommand}"
-                                        CommandParameter="{res:Loc OperatorApp.Adjustment}"
-                                        Content="{x:Static res:OperatorApp.Adjustment}"
-                                        IsActive="{Binding IsAdjustmentVisible}"
-                                        Style="{DynamicResource PpcButtonMarkStyle}" />
-
-                    <controls:PpcButton Margin="15,15,15,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        BorderBrush="{StaticResource FerrettoBlue}"
-                                        Command="{Binding OperationCommand}"
-                                        CommandParameter="{res:Loc OperatorApp.Pick}"
-                                        Content="{x:Static res:OperatorApp.Pick}"
-                                        IsActive="{Binding IsPickVisible}"
-                                        Style="{DynamicResource PpcButtonMarkStyle}" />
-
-                    <controls:PpcButton Margin="15,15,15,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        BorderBrush="{StaticResource FerrettoBlue}"
-                                        Command="{Binding OperationCommand}"
-                                        CommandParameter="{res:Loc OperatorApp.Put}"
-                                        Content="{x:Static res:OperatorApp.Put}"
-                                        IsActive="{Binding IsPutVisible}"
-                                        Style="{DynamicResource PpcButtonMarkStyle}" />
-
-                    <controls:PpcButton Margin="15,15,15,0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        Command="{Binding RecallLoadingUnitCommand}"
-                                        Content="{Binding RecallLoadingUnitInfo}"
-                                        IsBusy="{Binding IsBusyConfirmingRecallOperation}"
-                                        Style="{StaticResource ConfirmButton}" />
-
-                </StackPanel>
-            </Grid>
         </Grid>
 
-        <localControls:ReasonsView Grid.Row="1"
-                                   Visibility="{Binding Reasons, Converter={StaticResource RTVC}}" />
+      </Border>
 
+      <Grid Grid.Row="0"
+            Grid.Column="1">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0"
+                    HorizontalAlignment="Right"
+                    IsEnabled="{Binding SelectedItemCompartment, Converter={StaticResource RTBIC}}">
+          <controls:PpcButton Margin="15,0,15,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Command="{Binding ChangeModeLoadingUnitCommand}"
+                              Content="{res:Loc OperatorApp.LoadingUnit}"
+                              Foreground="{DynamicResource FerrettoPureWhite}"
+                              Kind="Grid"
+                              TextBlock.TextAlignment="Center"
+                              Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVC}}" />
+
+          <controls:PpcButton Margin="15,0,15,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Command="{Binding ChangeModeListCommand}"
+                              Content="{res:Loc OperatorApp.List}"
+                              Foreground="{DynamicResource FerrettoPureWhite}"
+                              Kind="Table"
+                              TextBlock.TextAlignment="Center"
+                              Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}" />
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom">
+
+
+          <Border x:Name="border"
+                  Width="160"
+                  Height="auto"
+                  Margin="15,15,15,15"
+                  Background="{DynamicResource PpcBackground}"
+                  BorderBrush="{DynamicResource PpcBorderBrush}"
+                  BorderThickness="{DynamicResource PpcBorderThickness}"
+                  SnapsToDevicePixels="True">
+
+            <Grid Margin="4"
+                  UseLayoutRounding="True">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <TextBlock Margin="4,0"
+                         VerticalAlignment="Center"
+                         Style="{DynamicResource VWAPP_CardSensor}">
+                <Run Text="{res:Loc OperatorApp.UnitId}" /><Run Text="{Binding UnitNumber}" />
+              </TextBlock>
+
+              <Grid Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="2">
+
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Margin="5,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="{StaticResource FontSize_Small}"
+                           Foreground="{DynamicResource PpcForeground}"
+                           Text="{res:Loc OperatorApp.Weight}" />
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="{StaticResource FontSize_Normal}"
+                           Foreground="{DynamicResource PpcForeground}"
+                           Text="{Binding UnitWeight, StringFormat={}{0:F2} kg}" />
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="5,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="{StaticResource FontSize_Small}"
+                           Foreground="{DynamicResource PpcForeground}"
+                           Text="{res:Loc OperatorApp.Height}" />
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="{StaticResource FontSize_Normal}"
+                           Foreground="{DynamicResource PpcForeground}"
+                           Text="{Binding UnitHeight, StringFormat={}{0:F2} mm}" />
+              </Grid>
+
+            </Grid>
+          </Border>
+
+          <controls:PpcButton Margin="15,0,15,0"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Top"
+                              BorderBrush="{StaticResource FerrettoBlue}"
+                              Command="{Binding OperationCommand}"
+                              CommandParameter="{res:Loc OperatorApp.Adjustment}"
+                              Content="{x:Static res:OperatorApp.Adjustment}"
+                              IsActive="{Binding IsAdjustmentVisible}"
+                              Style="{DynamicResource PpcButtonMarkStyle}" />
+
+          <controls:PpcButton Margin="15,15,15,0"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Top"
+                              BorderBrush="{StaticResource FerrettoBlue}"
+                              Command="{Binding OperationCommand}"
+                              CommandParameter="{res:Loc OperatorApp.Pick}"
+                              Content="{x:Static res:OperatorApp.Pick}"
+                              IsActive="{Binding IsPickVisible}"
+                              Style="{DynamicResource PpcButtonMarkStyle}"
+                              Visibility="Collapsed" />
+
+          <controls:PpcButton Margin="15,15,15,0"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Top"
+                              BorderBrush="{StaticResource FerrettoBlue}"
+                              Command="{Binding OperationCommand}"
+                              CommandParameter="{res:Loc OperatorApp.Put}"
+                              Content="{x:Static res:OperatorApp.Put}"
+                              IsActive="{Binding IsPutVisible}"
+                              Style="{DynamicResource PpcButtonMarkStyle}"
+                              Visibility="Collapsed" />
+
+          <controls:PpcButton Margin="15,15,15,0"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Top"
+                              Command="{Binding RecallLoadingUnitCommand}"
+                              Content="{Binding RecallLoadingUnitInfo}"
+                              IsBusy="{Binding IsBusyConfirmingRecallOperation}"
+                              Style="{StaticResource ConfirmButton}" />
+
+        </StackPanel>
+      </Grid>
     </Grid>
+
+    <localControls:ReasonsView Grid.Row="1"
+                               Visibility="{Binding Reasons, Converter={StaticResource RTVC}}" />
+
+  </Grid>
 </ctrls:View>

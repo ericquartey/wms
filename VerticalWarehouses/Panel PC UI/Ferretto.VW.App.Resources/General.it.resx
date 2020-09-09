@@ -388,7 +388,7 @@
     <value>Disabilitato</value>
   </data>
   <data name="WmsEnabled" xml:space="preserve">
-    <value>Abilitato</value>
+    <value>Abilitato WMS</value>
   </data>
   <data name="DateFormatComplete" xml:space="preserve">
     <value>{0:dd.MM.yyyy HH:mm}</value>
@@ -425,5 +425,19 @@
   </data>
   <data name="BackShutterTest" xml:space="preserve">
     <value>Test in corso... Impossibile uscire dalla pagina</value>
+  </data>
+  <data name="SocketLinkEnabled" xml:space="preserve">
+    <value>Abilitato Socket Link</value>
+  </data>
+  <data name="SocketLinkPolling" xml:space="preserve">
+    <value>Intervallo di polling</value>
+    <comment>Intervallo di polling in secondi (0 = off)</comment>
+  </data>
+  <data name="SocketLinkPort" xml:space="preserve">
+    <value>Porta</value>
+  </data>
+  <data name="SocketLinkTimeout" xml:space="preserve">
+    <value>Timeout</value>
+    <comment>Timeout in secondi (0 = off)</comment>
   </data>
 </root>

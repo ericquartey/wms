@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.SocketLink;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -67,6 +68,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.wmsSettingsProvider.ServiceUrl?.ToString());
         }
 
+        [HttpGet("get-socketlink-polling")]
+        public ActionResult<int> GetSocketLinkPolling()
+        {
+            return this.Ok(this.wmsSettingsProvider.SocketLinkPolling);
+        }
+
+        [HttpGet("get-socketlink-port")]
+        public ActionResult<int> GetSocketLinkPort()
+        {
+            return this.Ok(this.wmsSettingsProvider.SocketLinkPort);
+        }
+
+        [HttpGet("get-socketlink-timeout")]
+        public ActionResult<int> GetSocketLinkTimeout()
+        {
+            return this.Ok(this.wmsSettingsProvider.SocketLinkTimeout);
+        }
+
         [HttpGet("get-time-sync-interval-milliseconds")]
         public ActionResult<int> GetTimeSyncIntervalMilliseconds()
         {
@@ -85,16 +104,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.wmsSettingsProvider.IsTimeSyncEnabled);
         }
 
+        [HttpGet("socketlink-is-enabled")]
+        public ActionResult<bool> SocketLinkIsEnabled()
+        {
+            return this.Ok(this.wmsSettingsProvider.SocketLinkIsEnabled);
+        }
+
         [HttpPut]
-        public async Task UpdateAsync(bool isEnabled, string httpUrl)
+        public async Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling)
         {
             if (isEnabled && string.IsNullOrEmpty(httpUrl))
             {
                 throw new ArgumentException("The url must be specified");
             }
 
+            if (isEnabled && socketLinkIsEnabled)
+            {
+                throw new ArgumentException("The Wms and Socket Link connot be enabled at the same time");
+            }
+
             this.wmsSettingsProvider.IsEnabled = isEnabled;
             this.wmsSettingsProvider.ServiceUrl = httpUrl is null ? null : new Uri(httpUrl);
+
+            this.wmsSettingsProvider.SocketLinkIsEnabled = socketLinkIsEnabled;
+            this.wmsSettingsProvider.SocketLinkPort = socketLinkPort;
+            this.wmsSettingsProvider.SocketLinkTimeout = socketLinkTimeout;
+            this.wmsSettingsProvider.SocketLinkPolling = socketLinkPolling;
         }
 
         [HttpPut("update-wms-time-settings")]

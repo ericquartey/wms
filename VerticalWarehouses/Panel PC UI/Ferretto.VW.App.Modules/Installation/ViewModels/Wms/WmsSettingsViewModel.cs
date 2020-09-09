@@ -25,11 +25,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private HealthStatus healthStatus;
 
+        private bool isAllDisabled;
+
         private bool isCheckingEndpoint;
 
         private bool isWmsEnabled;
 
         private DelegateCommand saveCommand;
+
+        private bool socketLinkIsEnabled;
+
+        private int socketLinkPolling;
+
+        private int socketLinkPort;
+
+        private int socketLinkTimeout;
 
         private string wmsHttpUrl;
 
@@ -88,6 +98,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsAllDisabled
+        {
+            get => this.isAllDisabled;
+            set
+            {
+                if (this.SetProperty(ref this.isAllDisabled, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool IsCheckingEndpoint
         {
             get => this.isCheckingEndpoint;
@@ -130,6 +153,58 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
 
+        public bool SocketLinkIsEnabled
+        {
+            get => this.socketLinkIsEnabled;
+            set
+            {
+                if (this.SetProperty(ref this.socketLinkIsEnabled, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public int SocketLinkPolling
+        {
+            get => this.socketLinkPolling;
+            set
+            {
+                if (this.SetProperty(ref this.socketLinkPolling, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public int SocketLinkPort
+        {
+            get => this.socketLinkPort;
+            set
+            {
+                if (this.SetProperty(ref this.socketLinkPort, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public int SocketLinkTimeout
+        {
+            get => this.socketLinkTimeout;
+            set
+            {
+                if (this.SetProperty(ref this.socketLinkTimeout, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public string WmsHttpUrl
         {
             get => this.wmsHttpUrl;
@@ -163,9 +238,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                //this.IsAllDisabled = false;
+
                 this.IsWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
                 this.WmsHttpUrl = await this.wmsStatusWebService.GetIpEndpointAsync();
-                this.RaisePropertyChanged(nameof(this.IsWmsEnabled));
+
+                this.SocketLinkIsEnabled = await this.wmsStatusWebService.SocketLinkIsEnabledAsync();
+                this.SocketLinkPort = await this.wmsStatusWebService.GetSocketLinkPortAsync();
+                this.SocketLinkTimeout = await this.wmsStatusWebService.GetSocketLinkTimeoutAsync();
+                this.SocketLinkPolling = await this.wmsStatusWebService.GetSocketLinkPollingAsync();
+
+                //if (!this.IsWmsEnabled && !this.SocketLinkIsEnabled)
+                //{
+                //    this.IsAllDisabled = true;
+                //}
+
+                if (this.SocketLinkIsEnabled)
+                {
+                    this.RaisePropertyChanged(nameof(this.SocketLinkIsEnabled));
+                }
+                else if (this.IsWmsEnabled)
+                {
+                    this.RaisePropertyChanged(nameof(this.IsWmsEnabled));
+                }
+                else
+                {
+                    this.RaisePropertyChanged(nameof(this.IsAllDisabled));
+                }
+
                 this.AreSettingsChanged = false;
 
                 await this.CheckEndpointAsync();
@@ -248,7 +348,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl);
+
+                await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl, this.SocketLinkIsEnabled, this.SocketLinkPort, this.SocketLinkTimeout, this.SocketLinkPolling);
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"));
                 this.AreSettingsChanged = false;
 

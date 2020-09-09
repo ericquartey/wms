@@ -162,6 +162,9 @@
   <data name="MissionInError" xml:space="preserve">
     <value>Missioni in errore...</value>
   </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Missioni da Wms presenti ma Wms non attivo</value>
+  </data>
   <data name="MovementBayChainInProgress" xml:space="preserve">
     <value>Movimento catena baia in corso...</value>
   </data>

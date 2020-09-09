@@ -155,10 +155,6 @@
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
           "Id": 2,
-          "Inverter": {
-            "Index": "Slave1",
-            "Type": "Acu"
-          },
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
           "LowerBound": -4000.0,
@@ -3839,7 +3835,7 @@
     "IsEnabled": false,
     "IsTimeSyncEnabled": false,
     "LastWmsTimeSync": "2020-03-06T14:29:04.1028916+01:00",
-    "ServiceUrl": "http://192.168.10.85:10000/",
+    "ServiceUrl": "http://192.168.137.1:10000/",
     "TimeSyncIntervalMilliseconds": 10000
   }
 }

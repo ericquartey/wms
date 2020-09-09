@@ -2184,4 +2184,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="PutArticle" xml:space="preserve">
     <value>Put article </value>
   </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>Loading articles...</value>
+  </data>
 </root>

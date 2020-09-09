@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IWmsDataProvider wmsDataProvider;
 
+        private bool appear;
+
         private int? areaId;
 
         private double? availableQuantity;
@@ -136,6 +138,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public string ActiveContextName => this.isBusyLoadingNextPage ? null : OperationalContext.ItemsSearch.ToString();
+
+        public bool Appear
+        {
+            get => this.appear;
+            private set => this.SetProperty(ref this.appear, value, this.RaiseCanExecuteChanged);
+        }
 
         public double? AvailableQuantity
         {
@@ -527,12 +535,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.Appear = false;
             this.InputQuantity = 0;
             this.Reasons = null;
-            this.tokenSource?.Cancel(false);
-
-            this.tokenSource = new CancellationTokenSource();
-            await this.ReloadAllItems(this.tokenSource.Token);
 
             this.productsChangedToken =
               this.productsChangedToken
@@ -542,6 +547,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
 
             await base.OnAppearedAsync();
+
+            await this.OnAppearItem();
         }
 
         public async Task RequestItemPickAsync(int itemId, string itemCode)
@@ -689,7 +696,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex)
             {
-                this.ShowNotification(ex);
+                if (this.appear)
+                {
+                    this.ShowNotification(ex);
+                }
+
                 this.items.Clear();
                 this.SelectedItem = null;
                 this.currentItemIndex = 0;
@@ -846,6 +857,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SelectedItem != null;
         }
 
+        private async Task OnAppearItem()
+        {
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+            await this.ReloadAllItems(this.tokenSource.Token);
+            await this.RefreshItemsAsync();
+
+            this.RaisePropertyChanged(nameof(this.Items));
+            this.Appear = true;
+        }
+
         private async Task OnProductsChangedAsync(ProductsChangedEventArgs e)
         {
             this.tokenSource?.Cancel(false);
@@ -942,16 +965,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     foreach (var item in totalProducts.ToList())
                     {
-                        for (int i = 0; i < item.Machines.Count(); i++)
-                        {
-                            if (item.Machines.ElementAt(i).Id == model.Id)
+                            for (int i = 0; i < item.Machines.Count(); i++)
                             {
-                                this.productsInCurrentMachine.Add(item);
+                                if (item.Machines.ElementAt(i).Id == model.Id)
+                                {
+                                    this.productsInCurrentMachine.Add(item);
+                                }
                             }
                         }
                     }
                 }
-            }
             catch (TaskCanceledException)
             {
                 // normal situation
