@@ -14,7 +14,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private bool confirmOperation;
+
         private DelegateCommand confirmOperationCommand;
+
+        private bool confirmPartialOperation;
+
+        private DelegateCommand confirmPartialOperationCommand;
 
         private DelegateCommand fullOperationCommand;
 
@@ -53,12 +59,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override string ActiveContextName => OperationalContext.ItemPut.ToString();
 
+        public bool ConfirmOperation
+        {
+            get => this.confirmOperation;
+            set => this.SetProperty(ref this.confirmOperation, value);
+        }
+
         public ICommand ConfirmOperationCommand =>
             this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmOperationAsync(),
-                this.CanConfirmOperation));
+                this.CanConfirmOperationPut));
+
+        public bool ConfirmPartialOperation
+        {
+            get => this.confirmPartialOperation;
+            set => this.SetProperty(ref this.confirmPartialOperation, value);
+        }
+
+        public ICommand ConfirmPartialOperationCommand =>
+            this.confirmPartialOperationCommand
+            ??
+            (this.confirmPartialOperationCommand = new DelegateCommand(
+                async () => await this.ConfirmOperationAsync(),
+                this.CanConfirmPartialOperationPut));
 
         public ICommand FullOperationCommand =>
                     this.fullOperationCommand
@@ -71,20 +96,48 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public virtual bool CanConfirmOperation()
+        public bool CanConfirmPartialOperationPut()
         {
             return
-                !this.IsWaitingForResponse
-                &&
-                this.MissionOperation != null
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsOperationConfirmed
-                &&
-                this.InputQuantity.HasValue
-                &&
-                this.InputQuantity.Value >= this.MissionRequestedQuantity;
+               !this.IsWaitingForResponse
+               &&
+               this.MissionOperation != null
+               &&
+               !this.IsBusyAbortingOperation
+               &&
+               !this.IsOperationConfirmed
+               &&
+               this.InputQuantity.HasValue
+               &&
+               this.InputQuantity.Value > this.MissionRequestedQuantity;
+        }
+
+        public bool CanConfirmOperationPut()
+        {
+            this.confirmOperation = this.MissionOperation != null &&
+                this.InputQuantity.Value == this.MissionRequestedQuantity &&
+                !this.IsOperationCanceled;
+
+            this.confirmPartialOperation = this.MissionOperation != null &&
+                this.InputQuantity.Value != this.MissionRequestedQuantity &&
+                !this.IsOperationCanceled;
+
+            this.RaisePropertyChanged(nameof(this.ConfirmOperation));
+
+            this.RaisePropertyChanged(nameof(this.ConfirmPartialOperation));
+
+            return
+               !this.IsWaitingForResponse
+               &&
+               this.MissionOperation != null
+               &&
+               !this.IsBusyAbortingOperation
+               &&
+               !this.IsOperationConfirmed
+               &&
+               this.InputQuantity.HasValue
+               &&
+               this.InputQuantity.Value >= this.MissionRequestedQuantity;
         }
 
         public Task CommandUserActionAsync(UserActionEventArgs userAction)
@@ -160,6 +213,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.RaiseCanExecuteChanged();
             this.fullOperationCommand.RaiseCanExecuteChanged();
             this.confirmOperationCommand.RaiseCanExecuteChanged();
+            this.confirmPartialOperationCommand.RaiseCanExecuteChanged();
         }
 
         protected override void ShowOperationDetails()

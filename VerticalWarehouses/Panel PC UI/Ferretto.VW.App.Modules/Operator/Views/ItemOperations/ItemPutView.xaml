@@ -274,7 +274,17 @@
                           Content="{resources:Loc OperatorApp.Confirm}"
                           IsBusy="{Binding IsBusyConfirmingOperation}"
                           Style="{StaticResource ConfirmButton}"
-                          Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+                          Visibility="{Binding ConfirmOperation, Converter={StaticResource BTVC}}" />
+
+      <controls:PpcButton Grid.Row="5"
+                          Margin="15,15,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ConfirmPartialOperationCommand}"
+                          Content="{resources:Loc OperatorApp.ConfirmPartial}"
+                          IsBusy="{Binding IsBusyConfirmingOperation}"
+                          Style="{StaticResource ConfirmButton}"
+                          Visibility="{Binding ConfirmPartialOperation, Converter={StaticResource BTVC}}" />
 
       <controls:PpcButton Grid.Row="5"
                           Margin="15,15,15,0"
