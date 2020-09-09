@@ -285,7 +285,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         {
                             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-                            //var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                            bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                             if (this.Mission.NeedHomingAxis == Axis.BayChain
                                 && bay != null
                                 && bay.Positions != null

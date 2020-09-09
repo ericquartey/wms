@@ -1060,16 +1060,16 @@ namespace Ferretto.VW.MAS.MissionManager
                     missionsDataProvider.Complete(mission.Id);
                     this.NotifyAssignedMissionChanged(mission.TargetBay, null);
                 }
-                //else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                //    &&
-                //    mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                //    &&
-                //    mission.Status != MissionStatus.Waiting)
-                //// loading unit to bay mission
-                //{
-                //    baysDataProvider.AssignMission(mission.TargetBay, mission);
-                //    this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
-                //}
+                else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                    &&
+                    mission.LoadUnitDestination != LoadingUnitLocation.Elevator
+                    &&
+                    mission.Status != MissionStatus.Waiting)
+                // loading unit to bay mission
+                {
+                    baysDataProvider.AssignMission(mission.TargetBay, mission);
+                    this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
+                }
                 else if (mission.Status != MissionStatus.Waiting)
                 // any other mission type
                 {
