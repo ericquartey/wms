@@ -1060,16 +1060,16 @@ namespace Ferretto.VW.MAS.MissionManager
                     missionsDataProvider.Complete(mission.Id);
                     this.NotifyAssignedMissionChanged(mission.TargetBay, null);
                 }
-                else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                    &&
-                    mission.LoadUnitDestination != LoadingUnitLocation.Elevator
-                    &&
-                    mission.Status != MissionStatus.Waiting)
-                // loading unit to bay mission
-                {
-                    baysDataProvider.AssignMission(mission.TargetBay, mission);
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
-                }
+                //else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                //    &&
+                //    mission.LoadUnitDestination != LoadingUnitLocation.Elevator
+                //    &&
+                //    mission.Status != MissionStatus.Waiting)
+                //// loading unit to bay mission
+                //{
+                //    baysDataProvider.AssignMission(mission.TargetBay, mission);
+                //    this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
+                //}
                 else if (mission.Status != MissionStatus.Waiting)
                 // any other mission type
                 {
@@ -1244,7 +1244,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                 .ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
-                    else if (mission.Status is MissionStatus.Waiting)
+                    else if (mission.Status is MissionStatus.Waiting && mission.Step != MissionStep.BayChain)
                     {
                         var newOperation = newOperations.OrderBy(o => o.Priority).First();
                         this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
