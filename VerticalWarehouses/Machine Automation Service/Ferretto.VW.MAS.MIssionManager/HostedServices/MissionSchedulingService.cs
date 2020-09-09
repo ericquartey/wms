@@ -17,6 +17,7 @@ using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.MachineManager;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -66,7 +67,6 @@ namespace Ferretto.VW.MAS.MissionManager
             // no more compacting is possible. Exit from compact mode
             return false;
         }
-
 
         // return false when test is finished
         public bool ScheduleFirstTestMissions(IServiceProvider serviceProvider)
@@ -1137,7 +1137,7 @@ namespace Ferretto.VW.MAS.MissionManager
             // at midnight it is time to do some housework
             if (DateTime.UtcNow.Hour == 0)
             {
-                this.Logger.LogInformation($"OnTimePeriodElapsed");
+                this.Logger.LogInformation($"OnTimePeriodElapsed: clean up missions and schedule homing");
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
                 // clean missions
@@ -1150,6 +1150,15 @@ namespace Ferretto.VW.MAS.MissionManager
                 foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null))
                 {
                     this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                }
+
+                // try to fix missions not starting in the morning because of "Bay chain not calibrated"
+                if (this.machineVolatileDataProvider.Mode == MachineMode.Automatic
+                    && !missionsDataProvider.GetAllActiveMissions().Any()
+                    )
+                {
+                    var machineModeProvider = serviceProvider.GetRequiredService<IMachineModeProvider>();
+                    machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
                 }
             }
 
