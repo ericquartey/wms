@@ -186,21 +186,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 return;
             }
 
-            if (lst.Where(i => i.Id == this.LoadingUnitId).Any())
+            if (this.LoadingUnitId.HasValue && lst.Any(i => i.Id == this.LoadingUnitId))
             {
                 this.isEnabledEditing = false;
-                this.selectedLU = lst.Where(i => i.Id == this.LoadingUnitId).FirstOrDefault();
+                this.selectedLU = lst.FirstOrDefault(i => i.Id == this.LoadingUnitId);
             }
             else
             {
                 this.isEnabledEditing = true;
                 var maxLU = lst.OrderByDescending(S => S.Id).FirstOrDefault();
                 this.selectedLU = new LoadingUnit();
-                this.selectedLU.Tare = maxLU.Tare;
-                this.selectedLU.Height = maxLU.Height;
-                this.selectedLU.MaxNetWeight = maxLU.MaxNetWeight;
-                this.selectedLU.NetWeight = maxLU.NetWeight;
-                this.selectedLU.GrossWeight = maxLU.GrossWeight;
+                if (maxLU != null)
+                {
+                    this.selectedLU.Tare = maxLU.Tare;
+                    this.selectedLU.Height = maxLU.Height;
+                    this.selectedLU.MaxNetWeight = maxLU.MaxNetWeight;
+                    this.selectedLU.NetWeight = maxLU.NetWeight;
+                    this.selectedLU.GrossWeight = maxLU.GrossWeight;
+                }
             }
 
             this.RaisePropertyChanged(nameof(this.SelectedLU));
