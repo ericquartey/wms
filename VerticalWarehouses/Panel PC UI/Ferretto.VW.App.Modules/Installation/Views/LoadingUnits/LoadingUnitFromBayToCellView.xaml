@@ -204,7 +204,7 @@
             BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="2"
-            Visibility="Hidden">
+            Visibility="Visible">
       <Grid Margin="15">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto" />
@@ -296,14 +296,16 @@
                              IsEnabled="False"
                              LabelText="{res:Loc InstallationApp.Status}" />
 
-        <controls:PpcTextBox Grid.Row="1"
+        <!--<controls:PpcTextBox Grid.Row="1"
                              Grid.Column="1"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding SelectedBayPositionId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding IsEditStatus}"
                              LabelText="{res:Loc InstallationApp.BayPosition}">
-          <!--  LabelText="BayPositionId">  -->
+        -->
+        <!--  LabelText="BayPositionId">  -->
+        <!--
           <controls:PpcTextBox.Style>
             <Style TargetType="{x:Type controls:PpcTextBox}">
               <Setter Property="Visibility" Value="Collapsed" />
@@ -315,7 +317,7 @@
               </Style.Triggers>
             </Style>
           </controls:PpcTextBox.Style>
-        </controls:PpcTextBox>
+        </controls:PpcTextBox>-->
 
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="1"
