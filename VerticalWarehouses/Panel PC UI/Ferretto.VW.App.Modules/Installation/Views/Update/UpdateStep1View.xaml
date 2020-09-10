@@ -15,151 +15,157 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <ctrls:View.Resources>
-        <conv:BoolToOpacityConverter x:Key="BTOC" />
-    </ctrls:View.Resources>
+  <ctrls:View.Resources>
+    <conv:BoolToOpacityConverter x:Key="BTOC" />
+  </ctrls:View.Resources>
 
-    <Grid Margin="15,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+  <Grid Margin="15,0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
 
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <TextBlock Margin="15"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc InstallationApp.SoftwareUpdate}" />
+
+
+    <Border Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Width="900"
+            Padding="15,20,15,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="{DynamicResource PpcButtonBackground}"
+            BorderBrush="{DynamicResource PpcButtonBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource PpcCornerRadius}"
+            Opacity="{Binding IsBusy, Converter={StaticResource BTOC}, ConverterParameter='0,4'}">
+      <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Margin="15"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.SoftwareUpdate}" />
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+
+        </Grid.ColumnDefinitions>
+
+        <controls:PpcLabeledText Grid.Row="0"
+                                 Grid.Column="1"
+                                 Margin="0,0,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding ApplicationVersion}"
+                                 LabelText="{res:Loc InstallationApp.PanelPcCurrentVersion}" />
 
 
-        <Border Grid.Row="1"
-                Grid.ColumnSpan="2"
-                Width="900"
-                Padding="15,20,15,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Background="{DynamicResource PpcButtonBackground}"
-                BorderBrush="{DynamicResource PpcButtonBorderBrush}"
-                BorderThickness="1"
-                CornerRadius="{DynamicResource PpcCornerRadius}"
-                Opacity="{Binding IsBusy, Converter={StaticResource BTOC}, ConverterParameter='0,4'}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+        <icon:PackIconMaterial Grid.Row="1"
+                               Width="24"
+                               Height="24"
+                               Margin="15"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Kind="Cloud" />
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="1"
+                                 Margin="0,15,25,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding RepositoryPath}"
+                                 LabelText="{res:Loc InstallationApp.RepositoryPath}" />
 
-                </Grid.ColumnDefinitions>
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="2"
+                                 Margin="0,15,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding RepositoryPackagesCount}"
+                                 LabelText="{res:Loc InstallationApp.AvailablePackages}" />
 
-                <controls:PpcLabeledText Grid.Row="0"
-                                         Grid.Column="1"
-                                         Margin="0,0,0,0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding ApplicationVersion}"
-                                         LabelText="{res:Loc InstallationApp.PanelPcCurrentVersion}" />
+        <icon:PackIconMaterial Grid.Row="2"
+                               Width="24"
+                               Height="24"
+                               Margin="15"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Kind="Usb" />
 
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 Margin="0,15,25,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding RemovableDevicesCount}"
+                                 LabelText="{res:Loc InstallationApp.RemovableDevicesCount}" />
 
-                <icon:PackIconMaterial Grid.Row="1"
-                                       Width="24"
-                                       Height="24"
-                                       Margin="15"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="White"
-                                       Kind="Cloud" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="2"
+                                 Margin="0,15,0,15"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding RemovableDevicesPackagesCount}"
+                                 LabelText="{res:Loc InstallationApp.AvailablePackages}" />
 
-                <controls:PpcLabeledText Grid.Row="1"
-                                         Grid.Column="1"
-                                         Margin="0,15,25,0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding RepositoryPath}"
-                                         LabelText="{res:Loc InstallationApp.RepositoryPath}" />
+      </Grid>
+    </Border>
 
-                <controls:PpcLabeledText Grid.Row="1"
-                                         Grid.Column="2"
-                                         Margin="0,15,0,0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding RepositoryPackagesCount}"
-                                         LabelText="{res:Loc InstallationApp.AvailablePackages}" />
+    <Grid Grid.Row="1"
+          Grid.ColumnSpan="2"
+          HorizontalAlignment="Center"
+          VerticalAlignment="Center"
+          Visibility="{Binding IsBusy, Converter={StaticResource BTVC}}">
+      <StackPanel VerticalAlignment="Center">
+        <Image Width="60"
+               Margin="30"
+               gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
+               gif:ImageBehavior.AutoStart="true" />
+        <TextBlock HorizontalAlignment="Center"
+                   Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.Wait}" />
 
-                <icon:PackIconMaterial Grid.Row="2"
-                                       Width="24"
-                                       Height="24"
-                                       Margin="15"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Foreground="White"
-                                       Kind="Usb" />
-
-                <controls:PpcLabeledText Grid.Row="2"
-                                         Grid.Column="1"
-                                         Margin="0,15,25,0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding RemovableDevicesCount}"
-                                         LabelText="{res:Loc InstallationApp.RemovableDevicesCount}" />
-
-                <controls:PpcLabeledText Grid.Row="2"
-                                         Grid.Column="2"
-                                         Margin="0,15,0,15"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding RemovableDevicesPackagesCount}"
-                                         LabelText="{res:Loc InstallationApp.AvailablePackages}" />
-
-            </Grid>
-        </Border>
-
-        <Grid Grid.Row="1"
-              Grid.ColumnSpan="2"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              Visibility="{Binding IsBusy, Converter={StaticResource BTVC}}">
-            <StackPanel VerticalAlignment="Center">
-                <Image Width="60"
-                       Margin="30"
-                       gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
-                       gif:ImageBehavior.AutoStart="true" />
-                <TextBlock HorizontalAlignment="Center"
-                           Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                           Text="{res:Loc InstallationApp.Wait}" />
-
-            </StackPanel>
-        </Grid>
-
-        <StackPanel Grid.Row="2"
-                    Grid.Column="1"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-
-            <controls:PpcButton HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding RestoreCommand}"
-                                Content="{res:Loc InstallationApp.Restoration}" />
-
-            <controls:PpcButton Grid.Row="2"
-                                Grid.Column="1"
-                                Margin="15,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding NextCommand}"
-                                Content="{res:Loc InstallationApp.Next}" />
-        </StackPanel>
+      </StackPanel>
     </Grid>
+
+    <StackPanel Grid.Row="2"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+
+      <controls:PpcButton HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding SupportCommand}"
+                          Content="{res:Loc InstallationApp.Support}" />
+
+      <controls:PpcButton Margin="15,0,0,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding RestoreCommand}"
+                          Content="{res:Loc InstallationApp.Restoration}" />
+
+      <controls:PpcButton Grid.Row="2"
+                          Grid.Column="1"
+                          Margin="15,0,0,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding NextCommand}"
+                          Content="{res:Loc InstallationApp.Next}" />
+    </StackPanel>
+  </Grid>
 </ctrls:View>
