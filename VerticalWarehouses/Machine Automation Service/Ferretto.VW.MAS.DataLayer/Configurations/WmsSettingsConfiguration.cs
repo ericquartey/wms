@@ -35,7 +35,11 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                     IsEnabled = false,
                     IsTimeSyncEnabled = false,
                     TimeSyncIntervalMilliseconds = DefaultTimeSyncInterval,
-                    ServiceUrl = new Uri("http://127.0.0.1:10000")
+                    ServiceUrl = new Uri("http://127.0.0.1:10000"),
+                    SocketLinkIsEnabled = false,
+                    SocketLinkPort = 7075,
+                    SocketLinkTimeout = 600,
+                    SocketLinkPolling = 120
                 });
         }
 

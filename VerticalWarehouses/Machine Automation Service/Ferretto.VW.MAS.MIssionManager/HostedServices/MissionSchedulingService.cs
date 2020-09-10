@@ -17,6 +17,7 @@ using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.MachineManager;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -65,45 +66,6 @@ namespace Ferretto.VW.MAS.MissionManager
             }
             // no more compacting is possible. Exit from compact mode
             return false;
-        }
-
-        public void CompleteCurrentMissionInBay(BayNumber bayNumber, Mission mission, IServiceProvider serviceProvider)
-        {
-            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
-            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-
-            baysDataProvider.ClearMission(bayNumber);
-            this.NotifyAssignedMissionChanged(bayNumber, null);
-
-            // check if there are other missions for this LU in this bay
-            var nextMission = missionsDataProvider
-                .GetAllActiveMissionsByBay(bayNumber)
-                .FirstOrDefault(m =>
-                    m.LoadUnitId == mission.LoadUnitId
-                    &&
-                    m.WmsId.HasValue
-                    &&
-                    m.WmsId != mission.WmsId);
-
-            if (nextMission is null)
-            {
-                var missionSchedulingProvider = serviceProvider.GetRequiredService<IMissionSchedulingProvider>();
-
-                // send back the loading unit to the cell
-                this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} WmsId {wmsId} back to cell.", mission.TargetBay, mission.Id, mission.WmsId);
-                missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, bayNumber, MissionType.IN);
-            }
-            else
-            {
-                // close current mission
-                this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Stop.", mission.TargetBay, mission.Id);
-                moveLoadingUnitProvider.StopMove(mission.Id, bayNumber, bayNumber, MessageActor.MissionManager);
-
-                // activate new mission
-                this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Activate.", mission.TargetBay, nextMission.Id);
-                moveLoadingUnitProvider.ActivateMove(nextMission.Id, nextMission.MissionType, nextMission.LoadUnitId, bayNumber, MessageActor.MissionManager);
-            }
         }
 
         // return false when test is finished
@@ -346,8 +308,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     try
                     {
-                        missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, machineProvider.BayTestNumber, MissionType.FullTestIN);
                         this.Logger.LogInformation($"Move load unit {mission.LoadUnitId} back from bay {machineProvider.BayTestNumber}");
+                        missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, machineProvider.BayTestNumber, MissionType.FullTestIN);
                     }
                     catch (InvalidOperationException ex)
                     {
@@ -842,7 +804,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                 {
                                     await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
                                 }
-                                else
+                                else if (bay.Number < BayNumber.ElevatorBay)
                                 {
                                     this.Logger.LogWarning("Scheduling missions on bay {number} is not allowed: bay is not active.", bay.Number);
                                 }
@@ -1175,7 +1137,7 @@ namespace Ferretto.VW.MAS.MissionManager
             // at midnight it is time to do some housework
             if (DateTime.UtcNow.Hour == 0)
             {
-                this.Logger.LogInformation($"OnTimePeriodElapsed");
+                this.Logger.LogInformation($"OnTimePeriodElapsed: clean up missions and schedule homing");
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
                 // clean missions
@@ -1188,6 +1150,15 @@ namespace Ferretto.VW.MAS.MissionManager
                 foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null))
                 {
                     this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                }
+
+                // try to fix missions not starting in the morning because of "Bay chain not calibrated"
+                if (this.machineVolatileDataProvider.Mode == MachineMode.Automatic
+                    && !missionsDataProvider.GetAllActiveMissions().Any()
+                    )
+                {
+                    var machineModeProvider = serviceProvider.GetRequiredService<IMachineModeProvider>();
+                    machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
                 }
             }
 
@@ -1238,7 +1209,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (!serviceProvider.GetRequiredService<IWmsSettingsProvider>().IsEnabled)
             {
-                this.Logger.LogTrace("Skipping scheduling of WMS mission {wmsId}, because WMS is not enabled.", mission.WmsId);
+                this.Logger.LogError("WMS mission {wmsId} can not start because WMS is not enabled.", mission.WmsId);
                 return;
             }
 
@@ -1273,7 +1244,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                 .ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
-                    else if (mission.Status is MissionStatus.Waiting)
+                    else if (mission.Status is MissionStatus.Waiting && mission.Step != MissionStep.BayChain)
                     {
                         var newOperation = newOperations.OrderBy(o => o.Priority).First();
                         this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);

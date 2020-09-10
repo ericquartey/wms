@@ -12,9 +12,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     [Warning(WarningsArea.Installation)]
     internal sealed class LoadingUnitFromBayToCellViewModel : BaseCellMovementsViewModel
     {
-        private LoadingUnit selectedLU;
+        #region Fields
 
         private bool isEnabledEditing;
+
+        private LoadingUnit selectedLU;
+
+        #endregion
 
         #region Constructors
 
@@ -35,7 +39,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #endregion
 
-        #region Methods
+        #region Properties
 
         public bool IsEnabledEditing
         {
@@ -48,6 +52,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.selectedLU;
             set => this.SetProperty(ref this.selectedLU, value);
         }
+
+        #endregion
+
+        #region Methods
 
         public override bool CanStart()
         {
@@ -100,6 +108,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 if (!this.IsLoadingUnitIdValid)
                 {
                     await this.MachineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.LoadingUnitId.Value);
+                    this.SelectedLU.Id = this.LoadingUnitId.Value;
+                }
+                if (this.isEnabledEditing)
+                {
+                    await this.MachineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
                 }
 
                 var source = this.GetLoadingUnitSource(this.IsPositionDownSelected);
@@ -160,12 +173,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.LoadingUnitId = this.MachineStatus.LoadingUnitPositionUpInBay.Id;
             }
-        }
-
-        protected override async void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
             await this.UpdateDrawerInfo();
         }
 
@@ -173,26 +180,35 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
 
-            if (lst.Where(i => i.Id == this.LoadingUnitId).Any())
+            if (!lst.Any())
+            {
+                return;
+            }
+
+            if (this.LoadingUnitId.HasValue && lst.Any(i => i.Id == this.LoadingUnitId))
             {
                 this.isEnabledEditing = false;
-                this.selectedLU = lst.Where(i => i.Id == this.LoadingUnitId).FirstOrDefault();
+                this.selectedLU = lst.FirstOrDefault(i => i.Id == this.LoadingUnitId);
             }
             else
             {
                 this.isEnabledEditing = true;
                 var maxLU = lst.OrderByDescending(S => S.Id).FirstOrDefault();
                 this.selectedLU = new LoadingUnit();
-                this.selectedLU.Tare = maxLU.Tare;
-                this.selectedLU.Height = maxLU.Height;
-                this.selectedLU.MaxNetWeight = maxLU.MaxNetWeight;
-                this.selectedLU.NetWeight = maxLU.NetWeight;
-                this.selectedLU.GrossWeight = maxLU.GrossWeight;
+                if (maxLU != null)
+                {
+                    this.selectedLU.Tare = maxLU.Tare;
+                    this.selectedLU.Height = maxLU.Height;
+                    this.selectedLU.MaxNetWeight = maxLU.MaxNetWeight;
+                    this.selectedLU.NetWeight = maxLU.NetWeight;
+                    this.selectedLU.GrossWeight = maxLU.GrossWeight;
+                }
             }
 
             this.RaisePropertyChanged(nameof(this.SelectedLU));
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
         }
+
         #endregion
     }
 }

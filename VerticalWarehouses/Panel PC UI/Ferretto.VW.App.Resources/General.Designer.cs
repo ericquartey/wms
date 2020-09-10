@@ -808,6 +808,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Socket Link.
+        /// </summary>
+        public static string SocketLinkEnabled {
+            get {
+                return ResourceManager.GetString("SocketLinkEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Polling interval.
+        /// </summary>
+        public static string SocketLinkPolling {
+            get {
+                return ResourceManager.GetString("SocketLinkPolling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port.
+        /// </summary>
+        public static string SocketLinkPort {
+            get {
+                return ResourceManager.GetString("SocketLinkPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout.
+        /// </summary>
+        public static string SocketLinkTimeout {
+            get {
+                return ResourceManager.GetString("SocketLinkTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string Start {
@@ -979,7 +1015,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enabled.
+        ///   Looks up a localized string similar to Enabled WMS.
         /// </summary>
         public static string WmsEnabled {
             get {

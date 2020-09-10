@@ -136,10 +136,15 @@ namespace Ferretto.VW.Simulator.Services
                     this.MinTorqueCurrent = 74;
                     this.MaxTorqueCurrent = 138;
                 }
-                else
+                else if (this.machine.LoadUnitMaxNetWeight > 300)
                 {
                     this.MinTorqueCurrent = 70;
                     this.MaxTorqueCurrent = 112;
+                }
+                else
+                {
+                    this.MinTorqueCurrent = 90;
+                    this.MaxTorqueCurrent = 128;
                 }
                 // simulate weight errors
                 //this.MaxTorqueCurrent = (int)(this.MaxTorqueCurrent * 1.1);

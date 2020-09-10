@@ -10,17 +10,24 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var defaultOpacity = 0.5d;
-
-            if (parameter is string opacityParam)
+            try
             {
-                if (double.TryParse(opacityParam, out var newOpacity))
-                {
-                    defaultOpacity = newOpacity;
-                }
-            }
+                var defaultOpacity = 0.5d;
 
-            return (bool)value ? defaultOpacity : 1d;
+                if (parameter is string opacityParam)
+                {
+                    if (double.TryParse(opacityParam, out var newOpacity))
+                    {
+                        defaultOpacity = newOpacity;
+                    }
+                }
+
+                return (bool)value ? defaultOpacity : 1d;
+            }
+            catch(Exception)
+            {
+                return 0.5d;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

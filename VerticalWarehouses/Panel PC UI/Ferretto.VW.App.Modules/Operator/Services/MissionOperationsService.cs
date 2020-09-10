@@ -356,7 +356,9 @@ namespace Ferretto.VW.App.Modules.Operator
                 var activeMissions = machineMissions.Where(m =>
                     m.Step is MissionStep.WaitPick
                     &&
-                    m.TargetBay == this.bayNumber)
+                    m.TargetBay == this.bayNumber
+                    &&
+                    m.Status == MissionStatus.Waiting)
                     .OrderBy(o => o.LoadUnitDestination);
 
                 this.logger.Debug(!activeMissions.Any()

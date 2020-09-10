@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachinePowerWebService machinePowerWebService;
 
+        private readonly IMachineWmsStatusWebService machineWmsStatusWebService;
+
         private bool isDisposed;
 
         #endregion
@@ -39,11 +41,13 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             IMachinePowerWebService machinePowerWebService,
             IMachineModeWebService machineModeWebService,
+            IMachineWmsStatusWebService machineWmsStatusWebService,
             IBayManager bayManager)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machinePowerWebService = machinePowerWebService ?? throw new ArgumentNullException(nameof(machinePowerWebService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
+            this.machineWmsStatusWebService = machineWmsStatusWebService ?? throw new ArgumentNullException(nameof(machineWmsStatusWebService));
             this.bayManager = bayManager;
 
             this.machinePowerChangedToken = this.eventAggregator
@@ -74,6 +78,8 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
+        public bool IsWmsEnabled { get; private set; }
+
         public MachineMode MachineMode { get; private set; }
 
         public MachinePowerState MachinePower { get; private set; }
@@ -94,6 +100,8 @@ namespace Ferretto.VW.App.Services
             {
                 var machinePower = await this.machinePowerWebService.GetAsync();
                 var machineMode = await this.machineModeWebService.GetAsync();
+
+                this.IsWmsEnabled = await this.machineWmsStatusWebService.IsEnabledAsync();
 
                 if (this.MachinePower != machinePower)
                 {

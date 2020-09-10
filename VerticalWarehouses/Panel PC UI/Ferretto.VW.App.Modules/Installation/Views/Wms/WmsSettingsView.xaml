@@ -32,10 +32,12 @@
     </ctrls:View.Resources>
 
     <Grid x:Name="Root"
+          Height="530"
           Margin="40,0,15,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -48,17 +50,19 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock x:Name="Title"
+                   Grid.Row="0"
                    Grid.ColumnSpan="3"
+                   Margin="0,0,0,0"
                    VerticalAlignment="Top"
                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{res:Loc InstallationApp.WmsSetting}" />
 
-        <RadioButton Grid.Row="2"
-                     Margin="10,20,10,0"
+        <RadioButton Grid.Row="1"
+                     Margin="10,0,10,0"
                      HorizontalAlignment="Stretch"
                      HorizontalContentAlignment="Stretch"
                      GroupName="test"
-                     IsChecked="{Binding IsWmsEnabled, Mode=TwoWay, Converter={StaticResource BNC}}">
+                     IsChecked="{Binding IsAllDisabled, Mode=TwoWay, Converter={StaticResource BNC}}">
             <RadioButton.Content>
                 <TextBlock Grid.Row="2"
                            Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
@@ -66,7 +70,7 @@
             </RadioButton.Content>
         </RadioButton>
 
-        <RadioButton Grid.Row="3"
+        <RadioButton Grid.Row="2"
                      Margin="10,0,10,0"
                      GroupName="test"
                      IsChecked="{Binding IsWmsEnabled, Mode=TwoWay}">
@@ -74,10 +78,9 @@
                 <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
                            Text="{res:Loc General.WmsEnabled}" />
             </RadioButton.Content>
-
         </RadioButton>
 
-        <Grid Grid.Row="4"
+        <Grid Grid.Row="3"
               Grid.ColumnSpan="2"
               Margin="55,0,0,0"
               IsEnabled="{Binding IsWmsEnabled}">
@@ -88,22 +91,22 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Margin="0"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       FontSize="{DynamicResource FontSize_High}"
+                       FontSize="{DynamicResource FontSize_Small}"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{res:Loc InstallationApp.WmsHostAddress}" />
             <TextBox Grid.Row="1"
-                     Width="500"
-                     Height="60"
+                     Width="430"
+                     Height="30"
                      VerticalAlignment="Top"
                      VerticalContentAlignment="Center"
-                     Style="{StaticResource VWAPP_PpcTextBox_WmsStyle}"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                      Text="{Binding Path=WmsHttpUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <behaviors:TextBoxAutoSelectBehavior />
@@ -162,7 +165,61 @@
 
         </Grid>
 
-        <controls:PpcButton Grid.Row="5"
+        <RadioButton Grid.Row="4"
+                     Margin="10,0,10,0"
+                     GroupName="test"
+                     IsChecked="{Binding SocketLinkIsEnabled, Mode=TwoWay}">
+            <RadioButton.Content>
+                <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                           Text="{res:Loc General.SocketLinkEnabled}" />
+            </RadioButton.Content>
+
+        </RadioButton>
+
+        <Grid Grid.Row="5"
+              Grid.ColumnSpan="2"
+              Margin="55,0,0,0"
+              IsEnabled="{Binding SocketLinkIsEnabled}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <controls:PpcTextBox Grid.Row="0"
+                                 Grid.Column="0"
+                                 Width="140"
+                                 Margin="5,5,5,5"
+                                 VerticalAlignment="Stretch"
+                                 InputText="{Binding SocketLinkPort, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                 IsEnabled="{Binding IsEnabledEditing}"
+                                 LabelText="{x:Static res:General.SocketLinkPort}" />
+
+            <controls:PpcTextBox Grid.Row="0"
+                                 Grid.Column="1"
+                                 Width="140"
+                                 Margin="0,5,5,5"
+                                 VerticalAlignment="Stretch"
+                                 InputText="{Binding SocketLinkTimeout, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                 IsEnabled="{Binding IsEnabledEditing}"
+                                 LabelText="{x:Static res:General.SocketLinkTimeout}" />
+
+            <controls:PpcTextBox Grid.Row="0"
+                                 Grid.Column="2"
+                                 Width="140"
+                                 Margin="0,5,5,5"
+                                 VerticalAlignment="Stretch"
+                                 InputText="{Binding SocketLinkPolling, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                                 IsEnabled="{Binding IsEnabledEditing}"
+                                 LabelText="{x:Static res:General.SocketLinkPolling}" />
+        </Grid>
+
+        <controls:PpcButton Grid.Row="7"
                             Grid.Column="1"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"

@@ -11,19 +11,26 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            try
             {
-                case ItemListType.Inventory:
-                    return Resources.Localized.Get("OperatorApp.ItemListType_Inventory");
+                switch (value)
+                {
+                    case ItemListType.Inventory:
+                        return Resources.Localized.Get("OperatorApp.ItemListType_Inventory");
 
-                case ItemListType.Pick:
-                    return Resources.Localized.Get("OperatorApp.ItemListType_Pick");
+                    case ItemListType.Pick:
+                        return Resources.Localized.Get("OperatorApp.ItemListType_Pick");
 
-                case ItemListType.Put:
-                    return Resources.Localized.Get("OperatorApp.ItemListType_Put");
+                    case ItemListType.Put:
+                        return Resources.Localized.Get("OperatorApp.ItemListType_Put");
 
-                default:
-                    return Resources.Localized.Get("OperatorApp.ItemListType_NotSpecified");
+                    default:
+                        return Resources.Localized.Get("OperatorApp.ItemListType_NotSpecified");
+                }
+            }
+            catch(Exception)
+            {
+                return value;
             }
         }
 

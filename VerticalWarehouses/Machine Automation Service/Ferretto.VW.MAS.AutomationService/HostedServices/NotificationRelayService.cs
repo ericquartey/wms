@@ -149,8 +149,8 @@ namespace Ferretto.VW.MAS.AutomationService
                                 var missionDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
                                 if (int.TryParse(e.Id, out var operationId))
                                 {
-                                    var oepration = await missionWebService.GetByIdAsync(operationId);
-                                    var mission = missionDataProvider.GetByWmsId(oepration.MissionId);
+                                    var operation = await missionWebService.GetByIdAsync(operationId);
+                                    var mission = missionDataProvider.GetByWmsId(operation.MissionId);
                                     await this.operatorHub.Clients.All.AssignedMissionOperationChanged(mission.TargetBay);
                                 }
                             }

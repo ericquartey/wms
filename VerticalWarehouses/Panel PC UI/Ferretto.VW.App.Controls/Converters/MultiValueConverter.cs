@@ -22,24 +22,38 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (this.Converter is null)
+            try
             {
-                return null;
-            }
+                if (this.Converter is null)
+                {
+                    return null;
+                }
 
-            if (values.Length > 1)
+                if (values.Length > 1)
+                {
+                    this.lastParameter = values[1];
+                }
+
+                return this.Converter.Convert(values[0], targetType, this.lastParameter, culture);
+            }
+            catch(Exception)
             {
-                this.lastParameter = values[1];
+                return values;
             }
-
-            return this.Converter.Convert(values[0], targetType, this.lastParameter, culture);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return this.Converter == null
+            try
+            {
+                return this.Converter == null
                 ? (new object[] { value })
                 : (new object[] { this.Converter.ConvertBack(value, targetTypes[0], this.lastParameter, culture) });
+            }
+            catch(Exception)
+            {
+                return (object[])value;
+            }
         }
 
         #endregion

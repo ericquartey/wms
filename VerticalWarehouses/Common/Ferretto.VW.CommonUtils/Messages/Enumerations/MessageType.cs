@@ -116,6 +116,8 @@
 
         WmsEnableChanged,
 
+        SocketLinkEnableChanged,
+
         /// <summary>
         /// Repetitive horizontal movements on a specified bay.
         /// </summary>
@@ -130,7 +132,7 @@
         /// Combined movements to load/unload a loading unit in elevator for 1 Ton machine.
         /// </summary>
         CombinedMovements,
-        
+
         /// <summary>
         /// use light curtain to check intrusion
         /// </summary>

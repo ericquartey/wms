@@ -138,6 +138,10 @@ namespace Ferretto.VW.MAS.AutomationService
                     await this.OnWmsEnableChanged(serviceProvider);
                     break;
 
+                //case MessageType.SocketLinkEnableChanged:
+                //    await this.OnSocketLinkEnableChanged(serviceProvider);
+                //    break;
+
                 case MessageType.RepetitiveHorizontalMovements:
                     await this.OnRepetitiveHorizontalMovementsChanged(message);
                     break;

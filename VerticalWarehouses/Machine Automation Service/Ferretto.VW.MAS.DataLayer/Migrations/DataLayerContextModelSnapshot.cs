@@ -1751,6 +1751,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("ServiceUrl")
                         .HasColumnType("text");
 
+                    b.Property<bool>("SocketLinkIsEnabled");
+
+                    b.Property<int>("SocketLinkPolling");
+
+                    b.Property<int>("SocketLinkPort");
+
+                    b.Property<int>("SocketLinkTimeout");
+
                     b.Property<int>("TimeSyncIntervalMilliseconds");
 
                     b.HasKey("Id");
@@ -1766,6 +1774,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             IsTimeSyncEnabled = false,
                             LastWmsTimeSync = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceUrl = "http://127.0.0.1:10000/",
+                            SocketLinkIsEnabled = false,
+                            SocketLinkPolling = 120,
+                            SocketLinkPort = 7075,
+                            SocketLinkTimeout = 600,
                             TimeSyncIntervalMilliseconds = 60000
                         });
                 });

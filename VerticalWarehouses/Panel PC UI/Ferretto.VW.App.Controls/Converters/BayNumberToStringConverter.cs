@@ -15,52 +15,66 @@ namespace Ferretto.VW.App.Controls.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value)
+            try
             {
-                case BayNumber.BayOne:
-                    return Resources.Localized.Get("InstallationApp.Bay1");
+                switch (value)
+                {
+                    case BayNumber.BayOne:
+                        return Resources.Localized.Get("InstallationApp.Bay1");
 
-                case BayNumber.BayTwo:
-                    return Resources.Localized.Get("InstallationApp.Bay2");
+                    case BayNumber.BayTwo:
+                        return Resources.Localized.Get("InstallationApp.Bay2");
 
-                case BayNumber.BayThree:
-                    return Resources.Localized.Get("InstallationApp.Bay1");
+                    case BayNumber.BayThree:
+                        return Resources.Localized.Get("InstallationApp.Bay1");
 
-                case BayNumber.ElevatorBay:
-                    return Resources.Localized.Get("InstallationApp.ElevatorBay");
+                    case BayNumber.ElevatorBay:
+                        return Resources.Localized.Get("InstallationApp.ElevatorBay");
 
-                case BayNumber.All:
-                    return Resources.Localized.Get("InstallationApp.ElevatorBay");
+                    case BayNumber.All:
+                        return Resources.Localized.Get("InstallationApp.ElevatorBay");
 
-                default: //None
-                    return Resources.Localized.Get("InstallationApp.None");
+                    default: //None
+                        return Resources.Localized.Get("InstallationApp.None");
+                }
+            }
+            catch(Exception)
+            {
+                return "";
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var retValue = false;
-            if (!string.IsNullOrEmpty(value.ToString()))
+            try
             {
-                switch (value.ToString().ToLower(culture))
+                var retValue = false;
+                if (!string.IsNullOrEmpty(value.ToString()))
                 {
-                    case "true":
-                    case "vero":
-                        retValue = true;
-                        break;
+                    switch (value.ToString().ToLower(culture))
+                    {
+                        case "true":
+                        case "vero":
+                            retValue = true;
+                            break;
 
-                    case "false":
-                    case "falso":
-                        retValue = false;
-                        break;
+                        case "false":
+                        case "falso":
+                            retValue = false;
+                            break;
 
-                    default:
-                        retValue = false;
-                        break;
+                        default:
+                            retValue = false;
+                            break;
+                    }
                 }
-            }
 
-            return retValue;
+                return retValue;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
         #endregion
