@@ -204,7 +204,7 @@
             BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="2"
-            Visibility="Hidden">
+            Visibility="Visible">
       <Grid Margin="15">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto" />
