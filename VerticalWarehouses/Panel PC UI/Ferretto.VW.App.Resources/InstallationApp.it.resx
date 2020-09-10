@@ -2802,4 +2802,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="NoDriveSelected" xml:space="preserve">
     <value>Selezionare il drive di destinazione.</value>
   </data>
+  <data name="Support" xml:space="preserve">
+    <value>Assistenza remota</value>
+  </data>
 </root>

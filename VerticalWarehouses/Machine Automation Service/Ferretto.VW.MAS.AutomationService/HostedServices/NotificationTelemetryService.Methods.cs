@@ -88,6 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 if (messageData.MissionId.HasValue)
                 {
                     var mission = missionProvider.GetById(messageData.MissionId.Value);
+                    missionLog.WmsId = mission.WmsId;
                 }
             }
 
