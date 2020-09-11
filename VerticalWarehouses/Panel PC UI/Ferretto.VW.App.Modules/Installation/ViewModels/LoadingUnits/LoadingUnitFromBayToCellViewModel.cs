@@ -108,6 +108,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 if (!this.IsLoadingUnitIdValid)
                 {
                     await this.MachineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.LoadingUnitId.Value);
+                    this.SelectedLU.Id = this.LoadingUnitId.Value;
+                }
+                if (this.isEnabledEditing)
+                {
+                    await this.MachineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
                 }
 
                 var source = this.GetLoadingUnitSource(this.IsPositionDownSelected);
@@ -146,13 +151,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await this.InitializingData();
         }
 
-        protected override async void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
-            await this.UpdateDrawerInfo();
-        }
-
         private async Task InitializingData()
         {
             await this.GetLoadingUnits();
@@ -175,6 +173,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.LoadingUnitId = this.MachineStatus.LoadingUnitPositionUpInBay.Id;
             }
+            await this.UpdateDrawerInfo();
         }
 
         private async Task UpdateDrawerInfo()

@@ -297,7 +297,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         if (bay.Carousel != null
-                            && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number])
+                            && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number]
+                            && bay.Positions.Any(p => p.LoadingUnit != null)
+                            )
                         {
                             if (showErrors)
                             {

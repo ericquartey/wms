@@ -2898,4 +2898,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ZeroChainCarousel" xml:space="preserve">
     <value>Zero chain carousel</value>
   </data>
+  <data name="Support" xml:space="preserve">
+    <value>Remote support</value>
+  </data>
 </root>

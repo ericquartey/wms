@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -12,6 +13,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     public class ItemPutViewModel : BaseItemOperationMainViewModel
     {
         #region Fields
+
+        private bool confirmOperation;
+
+        private DelegateCommand confirmOperationCommand;
+
+        private bool confirmPartialOperation;
+
+        private DelegateCommand confirmPartialOperationCommand;
 
         private DelegateCommand fullOperationCommand;
 
@@ -50,8 +59,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override string ActiveContextName => OperationalContext.ItemPut.ToString();
 
+        public bool ConfirmOperation
+        {
+            get => this.confirmOperation;
+            set => this.SetProperty(ref this.confirmOperation, value);
+        }
+
+        public ICommand ConfirmOperationCommand =>
+            this.confirmOperationCommand
+            ??
+            (this.confirmOperationCommand = new DelegateCommand(
+                async () => await this.ConfirmOperationAsync(),
+                this.CanConfirmOperationPut));
+
+        public bool ConfirmPartialOperation
+        {
+            get => this.confirmPartialOperation;
+            set => this.SetProperty(ref this.confirmPartialOperation, value);
+        }
+
+        public ICommand ConfirmPartialOperationCommand =>
+            this.confirmPartialOperationCommand
+            ??
+            (this.confirmPartialOperationCommand = new DelegateCommand(
+                async () => await this.ConfirmOperationAsync(),
+                this.CanConfirmPartialOperationPut));
+
         public ICommand FullOperationCommand =>
-            this.fullOperationCommand
+                    this.fullOperationCommand
             ??
             (this.fullOperationCommand = new DelegateCommand(
                 async () => await this.PartiallyCompleteOnFullCompartmentAsync(),
@@ -61,10 +96,98 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
+        public bool CanConfirmPartialOperationPut()
+        {
+            return
+               !this.IsWaitingForResponse
+               &&
+               this.MissionOperation != null
+               &&
+               !this.IsBusyAbortingOperation
+               &&
+               !this.IsOperationConfirmed
+               &&
+               this.InputQuantity.HasValue
+               &&
+               this.InputQuantity.Value > this.MissionRequestedQuantity;
+        }
+
+        public bool CanConfirmOperationPut()
+        {
+            this.confirmOperation = this.MissionOperation != null &&
+                this.InputQuantity.Value == this.MissionRequestedQuantity &&
+                !this.IsOperationCanceled;
+
+            this.confirmPartialOperation = this.MissionOperation != null &&
+                this.InputQuantity.Value != this.MissionRequestedQuantity &&
+                !this.IsOperationCanceled;
+
+            this.RaisePropertyChanged(nameof(this.ConfirmOperation));
+
+            this.RaisePropertyChanged(nameof(this.ConfirmPartialOperation));
+
+            return
+               !this.IsWaitingForResponse
+               &&
+               this.MissionOperation != null
+               &&
+               !this.IsBusyAbortingOperation
+               &&
+               !this.IsOperationConfirmed
+               &&
+               this.InputQuantity.HasValue
+               &&
+               this.InputQuantity.Value >= this.MissionRequestedQuantity;
+        }
+
         public Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
             // do nothing
             return Task.CompletedTask;
+        }
+
+        public async Task ConfirmOperationAsync()
+        {
+            System.Diagnostics.Debug.Assert(
+                this.InputQuantity.HasValue,
+                "The input quantity should have a value");
+
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                this.IsOperationConfirmed = true;
+
+                var canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                if (canComplete)
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                }
+                else
+                {
+                    this.ShowOperationCanceledMessage();
+                }
+
+                //this.navigationService.GoBackTo(
+                //    nameof(Utils.Modules.Operator),
+                //    Utils.Modules.Operator.ItemOperations.WAIT);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+                this.IsOperationConfirmed = false;
+            }
+            finally
+            {
+                // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
+
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
@@ -89,6 +212,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
             this.fullOperationCommand.RaiseCanExecuteChanged();
+            this.confirmOperationCommand.RaiseCanExecuteChanged();
+            this.confirmPartialOperationCommand.RaiseCanExecuteChanged();
         }
 
         protected override void ShowOperationDetails()

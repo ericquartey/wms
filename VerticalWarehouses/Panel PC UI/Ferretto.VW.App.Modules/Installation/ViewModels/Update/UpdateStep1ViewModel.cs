@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,6 +26,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly DelegateCommand restoreCommand;
 
+        private DelegateCommand supportCommand;
+
         #endregion
 
         #region Constructors
@@ -44,6 +48,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public ICommand NextCommand => this.nextCommand;
 
         public ICommand RestoreCommand => this.restoreCommand;
+
+        public ICommand SupportCommand =>
+            this.supportCommand
+            ??
+            (this.supportCommand = new DelegateCommand(() => this.OpenSupport(),
+                this.CanOpen));
 
         #endregion
 
@@ -70,6 +80,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.Installations.Any()
             &&
             !this.IsBusy;
+
+        private bool CanOpen()
+        {
+            return true;
+        }
 
         private bool CanRestore()
         {
@@ -102,6 +117,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             finally
             {
                 this.IsBusy = false;
+            }
+        }
+
+        private void OpenSupport()
+        {
+            try
+            {
+                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var settings = configFile.AppSettings.Settings;
+                var path = settings["SupportProgram"].Value;
+
+                Process.Start(path);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

@@ -106,6 +106,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.CanInputAvailableQuantity = true;
             this.CanInputQuantity = true;
+            this.CloseLine = true;
             this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
             this.RaisePropertyChanged(nameof(this.CanInputQuantity));
 

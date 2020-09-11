@@ -1244,7 +1244,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                 .ActivateMove(mission.Id, mission.MissionType, mission.LoadUnitId, bayNumber, MessageActor.MissionManager);
                         }
                     }
-                    else if (mission.Status is MissionStatus.Waiting)
+                    else if (mission.Status is MissionStatus.Waiting && mission.Step != MissionStep.BayChain)
                     {
                         var newOperation = newOperations.OrderBy(o => o.Priority).First();
                         this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
