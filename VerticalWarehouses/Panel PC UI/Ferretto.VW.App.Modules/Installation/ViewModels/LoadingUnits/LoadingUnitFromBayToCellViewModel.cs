@@ -113,7 +113,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         this.SelectedLU.Id = this.LoadingUnitId.Value;
                     }
                 }
-                if (this.isEnabledEditing)
+                if (this.isEnabledEditing && this.SelectedLU != null)
                 {
                     await this.MachineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
                 }
