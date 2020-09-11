@@ -306,6 +306,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
+                //var missions = this.dataContext.Missions
+                //.AsNoTracking()
+                //.Where(x => x.Status != MissionStatus.Completed
+                //        && x.Status != MissionStatus.Aborted
+                //        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
+                //.OrderBy(o => o.Priority)
+                //.ThenBy(o => o.CreationDate)
+                //.ToList();
+
                 var missions = this.dataContext.Missions
                 .AsNoTracking()
                 .Where(x => x.Status != MissionStatus.Completed
@@ -330,10 +339,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
+                //var missions = this.dataContext.Missions
+                //.AsNoTracking()
+                //.Where(x => x.Status != MissionStatus.Completed
+                //        && x.Status != MissionStatus.Aborted)
+                //.OrderBy(o => o.Priority)
+                //.ThenBy(o => o.CreationDate)
+                //.ToList();
+
                 var missions = this.dataContext.Missions
                 .AsNoTracking()
                 .Where(x => x.Status != MissionStatus.Completed
-                        && x.Status != MissionStatus.Aborted)
+                        && x.Status != MissionStatus.Aborted
+                        && (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS))
                 .OrderBy(o => o.Priority)
                 .ThenBy(o => o.CreationDate)
                 .ToList();
