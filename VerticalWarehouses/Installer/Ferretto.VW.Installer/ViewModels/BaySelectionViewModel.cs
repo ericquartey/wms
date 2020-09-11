@@ -134,7 +134,7 @@ namespace Ferretto.VW.Installer.ViewModels
                 await this.navigationService.NavigateToAsync(viewModel);
                 this.isSuccessful = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.notificationService.SetErrorMessage($"Cannot start installation.{Environment.NewLine}{ex.Message}");
             }
@@ -185,6 +185,11 @@ namespace Ferretto.VW.Installer.ViewModels
 
             var bayIpaddress = GetBayIpAddress(this.SelectedBay.Number);
             this.PersistConfigurationKey("Install:Parameter:PpcIpAddress", bayIpaddress);
+
+            if (this.SelectedBay.Number != BayNumber.BayOne)
+            {
+                this.PersistConfigurationKey("Install:Parameter:StartupType", "Disabled");
+            }
         }
 
         private void SavePanelPcAppConfig()
