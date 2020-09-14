@@ -128,6 +128,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
+                await this.missionOperationsService.RefreshAsync();
+
                 this.count = 0;
 
                 this.loadingUnits.Clear();
@@ -138,12 +140,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     foreach (var unit in this.moveUnitId)
                     {
                         this.loadingUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == unit));
-                        if (this.machineService.Loadunits.Any(i => i.Id == unit && i.Status == LoadingUnitStatus.InBay)
-                            && !this.machineService.Loadunits.Any(i => i.Status == LoadingUnitStatus.OnMovementToLocation)
-                            )
-                        {
-                            await this.missionOperationsService.RefreshAsync();
-                        }
 
                         this.count++;
                     }
@@ -160,7 +156,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         foreach (var units in userdifference)
                         {
-                            this.moveUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == units));
+                            if (!this.moveUnits.Where(s => s.Id == units).Any())
+                            {
+                                this.moveUnits.AddRange(this.machineService.Loadunits.Where(i => i.Id == units));
+                            }
                         }
                     }
                 }
@@ -204,24 +203,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-                this.operatorNavigationService.NavigateToDrawerViewUnit();
+            this.operatorNavigationService.NavigateToDrawerViewUnit();
 
-                this.RaisePropertyChanged(nameof(this.MoveVisible));
+            this.RaisePropertyChanged(nameof(this.MoveVisible));
 
-                this.RaisePropertyChanged(nameof(this.IsGridVisible));
+            this.RaisePropertyChanged(nameof(this.IsGridVisible));
 
-                this.IsBackNavigationAllowed = true;
+            this.IsBackNavigationAllowed = true;
 
-                Task.Run(async () =>
+            Task.Run(async () =>
+            {
+                do
                 {
-                    do
-                    {
-                        await Task.Delay(800);
-                        await this.CheckForNewOperationCount();
-                        await this.GetLoadingUnitsAsync();
-                    }
-                    while (this.IsVisible);
-                });
+                    await Task.Delay(800);
+                    await this.CheckForNewOperationCount();
+                    await this.GetLoadingUnitsAsync();
+                }
+                while (this.IsVisible);
+            });
         }
 
         protected override async Task OnDataRefreshAsync()

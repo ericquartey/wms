@@ -216,7 +216,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public string RecallLoadingUnitInfo
         {
             get => this.recallLoadingUnitInfo;
-            set => this.SetProperty(ref this.recallLoadingUnitInfo, value);
+            set => this.SetProperty(ref this.recallLoadingUnitInfo, value, this.RaiseCanExecuteChanged);
         }
 
         public TrayControlCompartment SelectedCompartment
@@ -519,20 +519,38 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void OnMissionChanged(MissionChangedEventArgs e)
         {
             this.IsBusyConfirmingOperation = false;
-            this.IsNewOperationAvailable =
-                this.WmsDataProvider.IsEnabled
-                &&
-                this.MissionOperationsService.ActiveWmsMission != null
-                &&
-                this.MissionOperationsService.ActiveWmsOperation != null
-                &&
-                (
-                    this.MissionOperationsService.ActiveWmsOperation.Type != MissionOperationType.LoadingUnitCheck
-                    ||
-                    this.MissionOperationsService.ActiveWmsMission.Operations.Any(o =>
+            //this.IsNewOperationAvailable =
+            //    this.WmsDataProvider.IsEnabled
+            //    &&
+            //    this.MissionOperationsService.ActiveWmsMission != null
+            //    &&
+            //    this.MissionOperationsService.ActiveWmsOperation != null
+            //    &&
+            //    (
+            //        this.MissionOperationsService.ActiveWmsOperation.Type != MissionOperationType.LoadingUnitCheck
+            //        ||
+            //        this.MissionOperationsService.ActiveWmsMission.Operations.Any(o =>
+            //            o.Status != MissionOperationStatus.Completed
+            //            &&
+            //            o.Id != this.MissionOperationsService.ActiveWmsOperation.Id));
+
+            if (!this.WmsDataProvider.IsEnabled
+                ||
+                this.MissionOperationsService.ActiveWmsMission is null
+                ||
+                this.MissionOperationsService.ActiveWmsOperation is null)
+            {
+                this.IsNewOperationAvailable = false;
+            }
+            else
+            {
+                this.IsNewOperationAvailable =
+                   this.MissionOperationsService.ActiveWmsMission.Operations.Any(o =>
                         o.Status != MissionOperationStatus.Completed
                         &&
-                        o.Id != this.MissionOperationsService.ActiveWmsOperation.Id));
+                        o.Id != this.MissionOperationsService.ActiveWmsOperation.Id);
+            }
+
             //if (this.MissionOperationsService.ActiveMachineMission is null)
             //{
             //    this.NavigationService.GoBackTo(

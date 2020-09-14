@@ -10,217 +10,217 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="15,0">
+  <Grid Margin="15,0">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="350" />
-        </Grid.ColumnDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="350" />
+    </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <StackPanel Grid.ColumnSpan="2"
-                    Orientation="Horizontal">
-            <TextBlock Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="1.1" />
-            <TextBlock Grid.ColumnSpan="2"
-                       Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Resources:Loc OperatorApp.NavigationMainMenuDrawerOperation}" />
-        </StackPanel>
+    <StackPanel Grid.ColumnSpan="2"
+                Orientation="Horizontal">
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="1.1" />
+      <TextBlock Grid.ColumnSpan="2"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{Resources:Loc OperatorApp.NavigationMainMenuDrawerOperation}" />
+    </StackPanel>
 
-        <StackPanel Grid.Row="1"
-                    Grid.ColumnSpan="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Orientation="Vertical">
+    <StackPanel Grid.Row="1"
+                Grid.ColumnSpan="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
 
-            <StackPanel Margin="0,0,0,20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Orientation="Vertical">
-                <TextBlock Height="Auto"
-                           Margin="0,0,0,20"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{Binding LoadingUnitsInfo}"
-                           TextWrapping="Wrap" />
+      <StackPanel Margin="0,0,0,20"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Orientation="Vertical">
+        <TextBlock Height="Auto"
+                   Margin="0,0,0,20"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{Binding LoadingUnitsInfo}"
+                   TextWrapping="Wrap" />
 
-                <Border Grid.Row="2"
-                        Margin="0,10,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Background="{DynamicResource PpcBackground}"
-                        BorderBrush="{DynamicResource PpcBorderBrush}"
-                        BorderThickness="{DynamicResource PpcBorderThickness}"
-                        Visibility="{Binding IsGridVisible, Converter={StaticResource BTVC}}">
-                    <DataGrid Name="DataGrid"
-                              Width="auto"
-                              Height="auto"
-                              MaxHeight="200"
-                              ItemsSource="{Binding LoadingUnits}"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn x:Name="Column10"
-                                                Width="1*"
-                                                Binding="{Binding Path=Code}"
-                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}">
-                                <DataGridTextColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="BorderThickness" Value="1,0,0,0" />
-                                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn x:Name="Column20"
-                                                Width="1*"
-                                                Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
-                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn x:Name="Column30"
-                                                Width="1*"
-                                                Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
-                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn x:Name="Column40"
-                                                Width="1*"
-                                                Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
-                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Border>
+        <Border Grid.Row="2"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                Visibility="{Binding IsGridVisible, Converter={StaticResource BTVC}}">
+          <DataGrid Name="DataGrid"
+                    Width="630"
+                    Height="auto"
+                    MaxHeight="200"
+                    ItemsSource="{Binding LoadingUnits}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+              <DataGridTextColumn x:Name="Column10"
+                                  Width="1*"
+                                  Binding="{Binding Path=Code}"
+                                  Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}">
+                <DataGridTextColumn.CellStyle>
+                  <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="1,0,0,0" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                  </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTextColumn x:Name="Column20"
+                                  Width="1*"
+                                  Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
+                                  Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTextColumn x:Name="Column30"
+                                  Width="1*"
+                                  Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
+                                  Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTextColumn x:Name="Column40"
+                                  Width="1*"
+                                  Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
+                                  Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+        </Border>
 
 
-            </StackPanel>
+      </StackPanel>
 
-            <StackPanel Margin="0,0,0,20"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Orientation="Vertical"
-                        Visibility="{Binding MoveVisible, Converter={StaticResource BTVC}}">
+      <StackPanel Margin="0,0,0,20"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Orientation="Vertical"
+                  Visibility="{Binding MoveVisible, Converter={StaticResource BTVC}}">
 
-                <TextBlock Height="Auto"
-                           Margin="0,10,0,20"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{Resources:Loc OperatorApp.DrawerActivityLocalCallGoBack}"
-                           TextWrapping="Wrap" />
+        <TextBlock Height="Auto"
+                   Margin="0,10,0,20"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{Resources:Loc OperatorApp.DrawerActivityLocalCallGoBack}"
+                   TextWrapping="Wrap" />
 
-                <Border Grid.Row="2"
-                        Margin="0,10,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Background="{DynamicResource PpcBackground}"
-                        BorderBrush="{DynamicResource PpcBorderBrush}"
-                        BorderThickness="{DynamicResource PpcBorderThickness}">
-                    <DataGrid Name="DataGrid2"
-                              Width="auto"
-                              Height="auto"
-                              MaxHeight="200"
-                              ItemsSource="{Binding MoveUnits}"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn x:Name="Column1"
-                                                Width="1*"
-                                                Binding="{Binding Path=Code}"
-                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}">
-                                <DataGridTextColumn.CellStyle>
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="BorderThickness" Value="1,0,0,0" />
-                                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn x:Name="Column2"
-                                                Width="1*"
-                                                Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
-                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn x:Name="Column3"
-                                                Width="1*"
-                                                Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
-                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn x:Name="Column4"
-                                                Width="1*"
-                                                Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
-                                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="VerticalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </Border>
-            </StackPanel>
+        <Border Grid.Row="2"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
+          <DataGrid Name="DataGrid2"
+                    Width="630"
+                    Height="auto"
+                    MaxHeight="200"
+                    ItemsSource="{Binding MoveUnits}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
+            <DataGrid.Columns>
+              <DataGridTextColumn x:Name="Column1"
+                                  Width="1*"
+                                  Binding="{Binding Path=Code}"
+                                  Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}">
+                <DataGridTextColumn.CellStyle>
+                  <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="1,0,0,0" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                  </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTextColumn x:Name="Column2"
+                                  Width="1*"
+                                  Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
+                                  Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTextColumn x:Name="Column3"
+                                  Width="1*"
+                                  Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
+                                  Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+              <DataGridTextColumn x:Name="Column4"
+                                  Width="1*"
+                                  Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
+                                  Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
+                <DataGridTextColumn.ElementStyle>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                  </Style>
+                </DataGridTextColumn.ElementStyle>
+              </DataGridTextColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+        </Border>
+      </StackPanel>
 
-        </StackPanel>
+    </StackPanel>
 
-        <Image Grid.Row="1"
-               Grid.RowSpan="2"
-               Grid.Column="0"
-               Grid.ColumnSpan="2"
-               Margin="0,0,-90,0"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Top"
-               RenderOptions.BitmapScalingMode="HighQuality"
-               Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/Vertimag_Baia_Ergo_Scontorno.png" />
+    <Image Grid.Row="1"
+           Grid.RowSpan="2"
+           Grid.Column="0"
+           Grid.ColumnSpan="2"
+           Margin="0,0,-90,0"
+           HorizontalAlignment="Right"
+           VerticalAlignment="Top"
+           RenderOptions.BitmapScalingMode="HighQuality"
+           Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/Vertimag_Baia_Ergo_Scontorno.png" />
 
-    </Grid>
+  </Grid>
 </ctrls:View>
