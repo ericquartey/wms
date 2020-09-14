@@ -89,6 +89,8 @@
 
             public const string NAVIGATION = "OthersNavigationViewModel";
 
+            public const string OPERATIONONBAY = "OperationOnBayViewModel";
+
             #endregion
 
             #region Classes
