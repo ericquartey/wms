@@ -35,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int GetAllCount();
 
+        //void GetAllOpertionBay(ref bool pick, ref bool put, ref bool view, ref bool inventory, int bayid);
+
         CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber);
 
         ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber);
@@ -119,6 +121,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void RemoveLoadingUnit(int loadingUnitId);
 
         void ResetMachine();
+
+        void SetAllOpertionBay(bool pick, bool put, bool view, bool inventory, int bayid);
 
         Bay SetBayActive(BayNumber bayNumber, bool active);
 

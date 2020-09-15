@@ -21,7 +21,11 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
             builder
                 .Ignore(b => b.Status)
-                .Ignore(b => b.IsDouble);
+                .Ignore(b => b.IsDouble)
+                .Ignore(b => b.Pick)
+                .Ignore(b => b.Put)
+                .Ignore(b => b.View)
+                .Ignore(b => b.Inventory);
         }
 
         #endregion

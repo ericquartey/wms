@@ -23,11 +23,15 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MovementParameters FullLoadMovement { get; set; }
 
+        public bool Inventory { get; set; }
+
         public Inverter Inverter { get; set; }
 
         public IoDevice IoDevice { get; set; }
 
         public bool IsActive { get; set; }
+
+        public bool IsAdjustByWeight { get; set; }
 
         public bool IsCheckIntrusion { get; set; }
 
@@ -37,13 +41,15 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsFastDepositToBay { get; set; }
 
-        public bool IsAdjustByWeight { get; set; }
-
         public BayNumber Number { get; set; }
 
         public BayOperation Operation { get; set; }
 
+        public bool Pick { get; set; }
+
         public IEnumerable<BayPosition> Positions { get; set; }
+
+        public bool Put { get; set; }
 
         public double Resolution { get; set; }
 
@@ -63,6 +69,8 @@ namespace Ferretto.VW.MAS.DataModels
                 return BayStatus.Disconnected;
             }
         }
+
+        public bool View { get; set; }
 
         #endregion
 

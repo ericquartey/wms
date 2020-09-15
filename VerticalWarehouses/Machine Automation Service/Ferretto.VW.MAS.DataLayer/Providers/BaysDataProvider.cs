@@ -399,6 +399,18 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        //public void GetAllOpertionBay(ref bool pick, ref bool put, ref bool view, ref bool inventory, int bayid)
+        //{
+        //    lock (this.dataContext)
+        //    {
+        //        var bay = this.dataContext.Bays.AsNoTracking().SingleOrDefault(b => b.Id == bayid);
+        //        pick = bay.Pick;
+        //        put = bay.Put;
+        //        view = bay.View;
+        //        inventory = bay.Inventory;
+        //    }
+        //}
+
         public CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.AssistedMovements;
 
         public ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.AssistedMovements;
@@ -954,6 +966,21 @@ namespace Ferretto.VW.MAS.DataLayer
                     bay.CurrentMission = null;
                     this.Update(bay);
                 }
+            }
+        }
+
+        public void SetAllOpertionBay(bool pick, bool put, bool view, bool inventory, int bayid)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.AsNoTracking().SingleOrDefault(b => b.Id == bayid);
+                bay.Pick = pick;
+                bay.Put = put;
+                bay.View = view;
+                bay.Inventory = inventory;
+
+                this.dataContext.Bays.Update(bay);
+                this.dataContext.SaveChanges();
             }
         }
 
