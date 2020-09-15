@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -209,7 +210,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
                 if (!canComplete)
                 {
-                    this.ShowOperationCanceledMessage();
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                    this.NavigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -222,6 +226,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingForResponse = false;
             }
         }
+
+        #endregion
 
         //private void SetLastQuantity()
         //{
@@ -281,7 +287,5 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //        //
         //    }
         //}
-
-        #endregion
     }
 }

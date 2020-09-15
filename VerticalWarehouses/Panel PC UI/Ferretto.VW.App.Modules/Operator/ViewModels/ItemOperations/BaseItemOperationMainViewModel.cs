@@ -635,7 +635,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    this.ShowOperationCanceledMessage();
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                    this.navigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
                 }
 
                 //this.navigationService.GoBackTo(
@@ -718,7 +721,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    this.ShowOperationCanceledMessage();
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                 }
 
                 this.navigationService.GoBackTo(
@@ -731,7 +734,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsBusyConfirmingPartialOperation = false;
                 this.IsOperationConfirmed = false;
             }
-            catch(Exception ex2)
+            catch (Exception ex2)
             {
                 this.ShowNotification(ex2);
             }
@@ -817,7 +820,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var msg = this.GetNoLongerOperationMessageByType();
             this.DialogService.ShowMessage(msg, Localized.Get("OperatorApp.OperationCancelled"), DialogType.Error, DialogButtons.OK);
             this.ShowNotification(msg, Services.Models.NotificationSeverity.Warning);
-            this.HideNavigationBack();
+            //this.HideNavigationBack();
         }
 
         protected abstract void ShowOperationDetails();
