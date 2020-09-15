@@ -1284,4 +1284,7 @@
   <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
     <value>La funzione di calibrazione della baia esterna permette di tarare il corretto valore tramite l'esecuzione di una serie di movimenti automatici consecutivi, aggiornando poi il valore di default proposto dal sistema. La procedura opera per passi successivi fino al corretto completamento.</value>
   </data>
+  <data name="BayOperationsDescription" xml:space="preserve">
+    <value>Visualizza la tipologia di operazioni possibili sulla baia corrente </value>
+  </data>
 </root>
