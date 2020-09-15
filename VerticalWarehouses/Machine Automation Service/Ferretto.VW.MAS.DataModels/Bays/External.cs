@@ -2,9 +2,14 @@
 {
     public sealed class External : DataModel
     {
-        #region Properties 
+        #region Properties
 
         public ExternalBayManualParameters AssistedMovements { get; set; }
+
+        /// <summary>
+        /// Gets or sets the extra race, in millimeters, used in the insertion/extraction drawer movements.
+        /// </summary>
+        public double ExtraRace { get; set; }
 
         public double HomingCreepSpeed { get; set; }
 

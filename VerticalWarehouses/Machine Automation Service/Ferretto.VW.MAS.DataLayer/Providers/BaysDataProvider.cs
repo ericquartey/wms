@@ -1141,6 +1141,20 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateExtraRace(BayNumber bayNumber, double extraRace)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.GetByNumber(bayNumber);
+                if (bay.External != null)
+                {
+                    bay.External.ExtraRace = extraRace;
+                    this.dataContext.AddOrUpdate(bay.External, f => f.Id);
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public void UpdateLastIdealPosition(double position, BayNumber bayNumber)
         {
             lock (this.dataContext)

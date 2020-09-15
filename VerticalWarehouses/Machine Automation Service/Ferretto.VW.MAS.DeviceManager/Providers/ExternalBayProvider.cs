@@ -398,16 +398,146 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MovementForExtraction(double distance, int? loadUnitId, BayNumber bayNumber, MessageActor sender)
+        public void MovementForExtraction(int? loadUnitId, BayNumber bayNumber, MessageActor sender)
         {
-            // TODO: Add your implementation code here
-            return;
+            // Manual movement
+
+            var policy = this.CanMove(ExternalBayMovementDirection.TowardOperator, bayNumber, MovementCategory.Manual);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var race = bay.External.Race;
+            var extraRace = bay.External.ExtraRace;
+
+            // Target position is positive with TowardOperator movement direction
+            var targetPosition = extraRace;
+
+            // Check the module of distance to be moved
+            const double MAX_RACE_FOR_EXTRACTION = 35.0d;
+            if (Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) + extraRace > race + MAX_RACE_FOR_EXTRACTION)
+            {
+                targetPosition = (race + MAX_RACE_FOR_EXTRACTION) - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber));
+            }
+
+            // Use this for .Absolute
+            //const double MAX_RACE_FOR_EXTRACTION = 35.0d;
+            //var targetPosition = Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) + extraRace;
+
+            var procedureParameters = this.baysDataProvider.GetManualMovementsExternalBay(bayNumber);
+
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Relative,    //.Absolute,
+                MovementMode.ExtBayChainManual,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                HorizontalMovementDirection.Backwards);
+
+            this.logger.LogDebug(
+                $"Move External Bay For Extraction " +
+                $"bayNumber: {bayNumber}; " +
+                $"LoadUnitId: {loadUnitId}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"Direction: {HorizontalMovementDirection.Backwards}; " +
+                $"feedrate: {procedureParameters.FeedRate}; " +
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
+
+            this.PublishCommand(
+                messageData,
+                $"Execute External {Axis.BayChain} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.None);
         }
 
         public void MovementForInsertion(BayNumber bayNumber, MessageActor sender)
         {
-            // TODO: Add your implementation code here
-            return;
+            // Manual movement
+
+            if (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            {
+                throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual));
+            }
+
+            var policy = this.CanMove(ExternalBayMovementDirection.TowardMachine, bayNumber, MovementCategory.Manual);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var race = bay.External.Race;
+            var extraRace = bay.External.ExtraRace;
+
+            var targetPosition = extraRace;
+
+            // Check the module of distance to be moved (to be checked: is it really necessary?)
+            const double MAX_RACE_FOR_INSERTION = 35.0d;
+            if (Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) - extraRace < MAX_RACE_FOR_INSERTION)
+            {
+                targetPosition = (MAX_RACE_FOR_INSERTION + extraRace) - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber));
+            }
+
+            // Target position is negative with TowardMachine movement direction
+            targetPosition *= -1;
+
+            // Use this for .Absolute
+            //const double MAX_RACE_FOR_EXTRACTION = 35.0d;
+            //var targetPosition = Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) - extraRace;
+
+            var procedureParameters = this.baysDataProvider.GetManualMovementsExternalBay(bayNumber);
+
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Relative,    //.Absolute,
+                MovementMode.ExtBayChainManual,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
+
+            this.logger.LogDebug(
+                $"Move External Bay For Insertion " +
+                $"bayNumber: {bayNumber}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"Direction: {HorizontalMovementDirection.Backwards}; " +
+                $"feedrate: {procedureParameters.FeedRate}; " +
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
+
+            this.PublishCommand(
+                messageData,
+                $"Execute External {Axis.BayChain} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.None);
         }
 
         public void StartTest(BayNumber bayNumber, MessageActor sender)
