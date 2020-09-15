@@ -77,6 +77,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(bay);
         }
 
+        //[HttpGet("get-all-OpertionBay")]
+        //[ProducesResponseType(StatusCodes.Status202Accepted)]
+        //[ProducesDefaultResponseType]
+        //public IActionResult GetAllOpertionBay(ref bool pick, ref bool put, ref bool view, ref bool inventory, int bayid)
+        //{
+        //    this.baysDataProvider.GetAllOpertionBay(ref pick, ref put, ref view, ref inventory, bayid);
+
+        //    return this.Accepted();
+        //}
+
         [HttpGet("{bayNumber}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -113,6 +123,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult RemoveLoadUnit(int loadingUnitId)
         {
             this.baysDataProvider.RemoveLoadingUnit(loadingUnitId);
+            return this.Accepted();
+        }
+
+        [HttpPost("set-all-OpertionBay")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetAllOpertionBay(bool pick, bool put, bool view, bool inventory, int bayid)
+        {
+            this.baysDataProvider.SetAllOpertionBay(pick, put, view, inventory, bayid);
             return this.Accepted();
         }
 

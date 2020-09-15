@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20200914151324_OperationsBay")]
+    partial class OperationsBay
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -932,8 +934,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("AssistedMovementsId");
-
-                    b.Property<double>("ExtraRace");
 
                     b.Property<double>("HomingCreepSpeed");
 

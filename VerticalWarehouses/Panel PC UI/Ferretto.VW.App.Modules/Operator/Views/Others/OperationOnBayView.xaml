@@ -35,6 +35,7 @@
                 Orientation="Vertical">
       <TextBlock Margin="0,30,0,0"
                  VerticalAlignment="Top"
+                 FontSize="25"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
         <Run Text="{res:Loc OperatorApp.Bay}" /> <Run Text="{Binding Bay.Id}" />
       </TextBlock>
@@ -66,7 +67,6 @@
                         VerticalAlignment="Bottom"
                         Command="{Binding SaveSettingsCommand}"
                         Content="{res:Loc General.Save}"
-                        IsBusy="{Binding IsWaitingForResponse}"
                         Style="{StaticResource ConfirmButton}" />
   </Grid>
 </ctrls:View>

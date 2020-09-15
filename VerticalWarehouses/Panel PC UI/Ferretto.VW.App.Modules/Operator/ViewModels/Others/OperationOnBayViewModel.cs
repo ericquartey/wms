@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private Bay bay;
 
         private bool inventory;
@@ -30,9 +32,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public OperationOnBayViewModel()
+        public OperationOnBayViewModel(IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Operator)
         {
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
 
         #endregion
@@ -82,9 +85,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            this.LoadData();
 
-            this.Bay = this.MachineService.Bay;
+            await base.OnAppearedAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -96,8 +99,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanSave()
         {
-            return !this.MachineStatus.IsMoving &&
-                !this.isWaitingForResponse;
+            return !this.MachineStatus.IsMoving;
+        }
+
+        private void LoadData()
+        {
+            try
+            {
+                this.Bay = this.MachineService.Bay;
+                var bays = this.MachineService.Bays;
+                this.Pick = this.Bay.Pick;
+                this.Put = this.Bay.Put;
+                this.View = this.Bay.View;
+                this.Inventory = this.Bay.Inventory;
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private async Task SaveSettingsAsync()
@@ -105,6 +123,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.isWaitingForResponse = true;
+
+                await this.machineBaysWebService.SetAllOpertionBayAsync(this.pick, this.put, this.view, this.inventory, this.bay.Id);
             }
             catch (Exception ex)
             {

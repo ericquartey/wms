@@ -170,6 +170,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task RemoveLoadUnitAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetAllOpertionBayAsync(bool pick, bool put, bool view, bool inventory, int bayid);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetAllOpertionBayAsync(bool pick, bool put, bool view, bool inventory, int bayid, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetLightAsync(bool enable);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2646,6 +2653,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("FullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters FullLoadMovement { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Inventory", Required = Newtonsoft.Json.Required.Always)]
+        public bool Inventory { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
     
@@ -2654,6 +2664,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsAdjustByWeight", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAdjustByWeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsCheckIntrusion", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCheckIntrusion { get; set; }
@@ -2667,17 +2680,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsFastDepositToBay", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFastDepositToBay { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("IsAdjustByWeight", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsAdjustByWeight { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("Number", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber Number { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Operation", Required = Newtonsoft.Json.Required.Always)]
         public BayOperation Operation { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Pick", Required = Newtonsoft.Json.Required.Always)]
+        public bool Pick { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Put", Required = Newtonsoft.Json.Required.Always)]
+        public bool Put { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Resolution", Required = Newtonsoft.Json.Required.Always)]
         public double Resolution { get; set; }
@@ -2692,6 +2708,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
         public BayStatus Status { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("View", Required = Newtonsoft.Json.Required.Always)]
+        public bool View { get; set; }
     
         public string ToJson() 
         {
