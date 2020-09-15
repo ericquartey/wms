@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View the type of operations possible on the current bay.
+        /// </summary>
+        public static string BayOperationsDescription {
+            get {
+                return ResourceManager.GetString("BayOperationsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BeltBurnishingActualPosition.
         /// </summary>
         public static string BeltBurnishingActualPosition {

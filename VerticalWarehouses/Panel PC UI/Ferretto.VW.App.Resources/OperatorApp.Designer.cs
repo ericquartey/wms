@@ -376,6 +376,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bay operations.
+        /// </summary>
+        public static string BayOperations {
+            get {
+                return ResourceManager.GetString("BayOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string BayTarget {
@@ -4936,6 +4945,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VerticalAxis {
             get {
                 return ResourceManager.GetString("VerticalAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
             }
         }
         

@@ -1791,4 +1791,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="ChargeItem" xml:space="preserve">
     <value>Caricamento articoli in corso...</value>
   </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>Operazioni su baia</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Visione</value>
+  </data>
 </root>

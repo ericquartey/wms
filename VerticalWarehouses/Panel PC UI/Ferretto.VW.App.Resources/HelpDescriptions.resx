@@ -1670,4 +1670,7 @@
   <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
     <value>The external bay calibration function allows you to calibrate the correct value by performing a series of consecutive automatic movements, then updating the default value proposed by the system. The procedure works in successive steps until correct completion.</value>
   </data>
+  <data name="BayOperationsDescription" xml:space="preserve">
+    <value>View the type of operations possible on the current bay</value>
+  </data>
 </root>
