@@ -306,7 +306,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
                                 this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
-                            else if (notification.Type == MessageType.CheckIntrusion)
+                            else if (notification.Type == MessageType.CheckIntrusion && this.Mission.NeedHomingAxis == Axis.None)
                             {
                                 var sourceHeight = this.LoadingUnitMovementProvider.GetSourceHeight(this.Mission, out var sourceBayPositionId, out var sourceCellId);
 

@@ -60,6 +60,40 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.SendErrorLogAsync(errorLog);
         }
 
+        private async Task OnMachineModeChangedAsync(MachineModeMessageData messageData)
+        {
+            var errorLog = new ErrorLog
+            {
+                ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
+                AdditionalText = "MachineMode " + messageData.MachineMode.ToString(),
+                BayNumber = 0,
+                Code = 0,
+                DetailCode = (int)messageData.MachineMode,
+                InverterIndex = 0,
+                OccurrenceDate = DateTimeOffset.Now,
+                ResolutionDate = null,
+            };
+
+            await this.SendErrorLogAsync(errorLog);
+        }
+
+        private async Task OnMachineStatePowerUpStartAsync(MachineStateActiveMessageData messageData)
+        {
+            var errorLog = new ErrorLog
+            {
+                ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
+                BayNumber = 0,
+                AdditionalText = "MachineState " + messageData.ToString(),
+                Code = 0,
+                DetailCode = (int)messageData.MessageActor,
+                OccurrenceDate = DateTimeOffset.Now,
+                ResolutionDate = null,
+                InverterIndex = 0,
+            };
+
+            await this.SendErrorLogAsync(errorLog);
+        }
+
         private async Task OnMoveLoadingUnitAsync(/*MoveLoadingUnitMessageData message,*/ NotificationMessage message)
         {
             var messageData = (MoveLoadingUnitMessageData)message.Data;
