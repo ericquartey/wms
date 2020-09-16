@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -18,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     internal sealed class LoadingUnitsViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
+
+        private readonly Services.IDialogService dialogService;
 
         private readonly IHealthProbeService healthProbeService;
 
@@ -62,6 +65,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitsViewModel(
+            Services.IDialogService dialogService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineBaysWebService machineBaysWebService,
@@ -69,6 +73,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ISessionService sessionService)
             : base(PresentationMode.Installer)
         {
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
@@ -316,9 +321,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineLoadingUnitsWebService.RemoveLoadUnitAsync(this.SelectedLU.Id);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.DeleteUnit"), DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    await this.machineLoadingUnitsWebService.RemoveLoadUnitAsync(this.SelectedLU.Id);
 
-                await this.MachineService.GetLoadUnits();
+                    await this.MachineService.GetLoadUnits();
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

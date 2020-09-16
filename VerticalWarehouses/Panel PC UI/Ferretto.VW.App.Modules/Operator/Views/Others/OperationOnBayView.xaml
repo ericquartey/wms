@@ -29,6 +29,12 @@
                  Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
                  Text="{res:Loc HelpDescriptions.BayOperationsDescription}"
                  TextWrapping="Wrap" />
+
+      <TextBlock VerticalAlignment="Top"
+                 FontSize="{DynamicResource FontSize_Small}"
+                 Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                 Text="{res:Loc HelpDescriptions.BayOperationsDescriptionWarning}"
+                 TextWrapping="Wrap" />
     </StackPanel>
 
     <StackPanel Grid.Row="1"

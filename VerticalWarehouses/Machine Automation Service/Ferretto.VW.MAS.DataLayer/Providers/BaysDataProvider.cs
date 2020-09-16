@@ -399,18 +399,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        //public void GetAllOpertionBay(ref bool pick, ref bool put, ref bool view, ref bool inventory, int bayid)
-        //{
-        //    lock (this.dataContext)
-        //    {
-        //        var bay = this.dataContext.Bays.AsNoTracking().SingleOrDefault(b => b.Id == bayid);
-        //        pick = bay.Pick;
-        //        put = bay.Put;
-        //        view = bay.View;
-        //        inventory = bay.Inventory;
-        //    }
-        //}
-
         public CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.AssistedMovements;
 
         public ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.AssistedMovements;

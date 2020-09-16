@@ -5,76 +5,77 @@
              xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls">
 
-    <UserControl.Resources>
-        <conv:MachinesToStringConverter x:Key="MTSC" />
-        <conv:MachinesMatchConverter x:Key="MMC" />
-    </UserControl.Resources>
+  <UserControl.Resources>
+    <conv:MachinesToStringConverter x:Key="MTSC" />
+    <conv:MachinesMatchConverter x:Key="MMC" />
+  </UserControl.Resources>
 
-    <DataGrid Name="DataGrid"
-              ItemsSource="{Binding ListRows}"
-              SelectedItem="{Binding SelectedListRow}">
-        <DataGrid.Columns>
-            <DataGridTextColumn x:Name="Column1"
-                                Width="0.5*"
-                                Binding="{Binding Path=ItemListId}"
-                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderRow}">
-                <DataGridTextColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="1,0,0,0" />
-                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                    </Style>
-                </DataGridTextColumn.CellStyle>
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column2"
-                                Width="1*"
-                                Binding="{Binding Path=Code}"
-                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderItem}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column3"
-                                Width="3*"
-                                Binding="{Binding Path=ItemDescription}"
-                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderDescription}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Left" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column4"
-                                Width="0.8*"
-                                Binding="{Binding Path=RequestedQuantity}"
-                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderQuantity}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column5"
-                                Width="1*"
-                                Binding="{Binding Machines, Converter={StaticResource MTSC}}"
-                                Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderMachine}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-        </DataGrid.Columns>
-    </DataGrid>
+  <DataGrid Name="DataGrid"
+            ItemsSource="{Binding ListRows}"
+            RowHeight="50"
+            SelectedItem="{Binding SelectedListRow}">
+    <DataGrid.Columns>
+      <DataGridTextColumn x:Name="Column1"
+                          Width="0.5*"
+                          Binding="{Binding Path=ItemListId}"
+                          Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderRow}">
+        <DataGridTextColumn.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="1,0,0,0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+          </Style>
+        </DataGridTextColumn.CellStyle>
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column2"
+                          Width="1*"
+                          Binding="{Binding Path=Code}"
+                          Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderItem}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column3"
+                          Width="3*"
+                          Binding="{Binding Path=ItemDescription}"
+                          Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderDescription}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column4"
+                          Width="0.8*"
+                          Binding="{Binding Path=RequestedQuantity}"
+                          Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderQuantity}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column5"
+                          Width="1*"
+                          Binding="{Binding Machines, Converter={StaticResource MTSC}}"
+                          Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderMachine}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+    </DataGrid.Columns>
+  </DataGrid>
 </UserControl>
