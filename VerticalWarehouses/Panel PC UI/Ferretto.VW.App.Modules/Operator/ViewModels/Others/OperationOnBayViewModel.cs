@@ -113,8 +113,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.View = this.Bay.View;
                 this.Inventory = this.Bay.Inventory;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                this.ShowNotification(ex);
             }
         }
 
@@ -122,7 +123,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                this.isWaitingForResponse = true;
+                this.IsWaitingForResponse = true;
 
                 await this.machineBaysWebService.SetAllOpertionBayAsync(this.pick, this.put, this.view, this.inventory, this.bay.Id);
             }
@@ -132,7 +133,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                this.isWaitingForResponse = false;
+                this.LoadData();
+
+                this.IsWaitingForResponse = false;
             }
         }
 

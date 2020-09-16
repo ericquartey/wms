@@ -1906,6 +1906,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This will remove the drawer from the warehouse map.
+        /// </summary>
+        public static string DeleteUnitDialog {
+            get {
+                return ResourceManager.GetString("DeleteUnitDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The unit loading / unloading function allows you to test the correct operation of the unit movements through a series of cycles. The procedure for next steps until correct completion..
         /// </summary>
         public static string DeposiAndPickUpDescription {
