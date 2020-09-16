@@ -2805,4 +2805,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Support" xml:space="preserve">
     <value>Assistenza remota</value>
   </data>
+  <data name="DeleteUnitDialog" xml:space="preserve">
+    <value>Questa operazione eliminerà il cassetto dalla mappa del magazzino</value>
+  </data>
 </root>
