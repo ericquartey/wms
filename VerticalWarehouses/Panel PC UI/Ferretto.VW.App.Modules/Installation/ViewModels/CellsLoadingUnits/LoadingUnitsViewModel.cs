@@ -316,6 +316,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                this.ShowNotification(App.Resources.Localized.Get("InstallationApp.DeleteUnit") + $" {this.SelectedLU.Id}");
                 await this.machineLoadingUnitsWebService.RemoveLoadUnitAsync(this.SelectedLU.Id);
 
                 await this.MachineService.GetLoadUnits();
