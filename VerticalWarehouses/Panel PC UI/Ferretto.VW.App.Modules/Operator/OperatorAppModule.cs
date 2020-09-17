@@ -92,6 +92,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<StatisticsWeightSaturationView>();
             containerRegistry.RegisterForNavigation<MaintenanceView>();
             containerRegistry.RegisterForNavigation<MaintenanceDetailView>();
+            containerRegistry.RegisterForNavigation<OperationOnBayView>();
 
             containerRegistry.RegisterForNavigation<AlarmView>();
             containerRegistry.RegisterForNavigation<AlarmsExportView>();

@@ -240,7 +240,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         catch (Exception ex)
                         {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay, ex.Message);
+                            if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                                || this.Mission.LoadUnitSource == LoadingUnitLocation.Elevator
+                                )
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay, ex.Message);
+                            }
+                            else
+                            {
+                                returnValue = true;
+                                mission.LoadUnitDestination = LoadingUnitLocation.Cell;
+                            }
                         }
                     }
 

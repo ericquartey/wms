@@ -5,6 +5,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -16,12 +17,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IBaysDataProvider baysDataProvider;
 
+        private readonly ILogger<BaysController> logger;
+
         #endregion
 
         #region Constructors
 
-        public BaysController(IBaysDataProvider baysDataProvider)
+        public BaysController(IBaysDataProvider baysDataProvider,
+            ILogger<BaysController> logger)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
         }
 
@@ -112,7 +117,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult RemoveLoadUnit(int loadingUnitId)
         {
+            this.logger.LogInformation($"Remove load unit {loadingUnitId} by UI");
             this.baysDataProvider.RemoveLoadingUnit(loadingUnitId);
+            return this.Accepted();
+        }
+
+        [HttpPost("set-all-OpertionBay")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetAllOpertionBay(bool pick, bool put, bool view, bool inventory, int bayid)
+        {
+            this.baysDataProvider.SetAllOpertionBay(pick, put, view, inventory, bayid);
             return this.Accepted();
         }
 

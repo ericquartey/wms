@@ -2187,4 +2187,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="ChargeItem" xml:space="preserve">
     <value>Loading articles...</value>
   </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>Bay operations</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
 </root>

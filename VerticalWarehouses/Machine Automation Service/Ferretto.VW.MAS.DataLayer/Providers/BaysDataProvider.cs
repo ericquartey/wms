@@ -957,6 +957,21 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetAllOpertionBay(bool pick, bool put, bool view, bool inventory, int bayid)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.AsNoTracking().SingleOrDefault(b => b.Id == bayid);
+                bay.Pick = pick;
+                bay.Put = put;
+                bay.View = view;
+                bay.Inventory = inventory;
+
+                this.dataContext.Bays.Update(bay);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port)
         {
             lock (this.dataContext)

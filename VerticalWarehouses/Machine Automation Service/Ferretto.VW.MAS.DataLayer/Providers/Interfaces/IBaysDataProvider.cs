@@ -120,6 +120,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ResetMachine();
 
+        void SetAllOpertionBay(bool pick, bool put, bool view, bool inventory, int bayid);
+
         Bay SetBayActive(BayNumber bayNumber, bool active);
 
         void SetChainPosition(BayNumber bayNumber, double value);

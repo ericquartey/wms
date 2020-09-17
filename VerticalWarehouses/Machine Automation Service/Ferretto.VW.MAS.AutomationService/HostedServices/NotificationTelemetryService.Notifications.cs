@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -35,6 +36,17 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 case MessageType.ErrorStatusChanged when message.Data is ErrorStatusMessageData messsageData:
                     await this.OnErrorStatusChangedAsync(messsageData, serviceProvider);
+                    break;
+
+                case MessageType.MachineMode when message.Data is MachineModeMessageData messsageData:
+                    await this.OnMachineModeChangedAsync(messsageData);
+                    break;
+
+                case MessageType.MachineStateActive when message.Data is MachineStateActiveMessageData messsageData:
+                    if (messsageData.CurrentState == "PowerUpStartState")
+                    {
+                        await this.OnMachineStatePowerUpStartAsync(messsageData);
+                    }
                     break;
 
                 case MessageType.MoveLoadingUnit when message.Data is MoveLoadingUnitMessageData:
