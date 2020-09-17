@@ -332,6 +332,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult RemoveLoadUnit(int loadingUnitId)
         {
+            this.logger.LogInformation($"Remove load unit {loadingUnitId} by UI");
             this.loadingUnitsDataProvider.Remove(loadingUnitId);
             return this.Accepted();
         }

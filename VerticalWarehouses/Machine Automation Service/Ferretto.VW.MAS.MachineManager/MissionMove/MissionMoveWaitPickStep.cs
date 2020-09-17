@@ -121,6 +121,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         var lu = bayPosition.LoadingUnit?.Id ?? throw new EntityNotFoundException($"LoadingUnit by BayPosition ID={bayPosition.Id}");
 
+                        this.Logger.LogInformation($"Remove load unit {lu} Mission:Id={this.Mission.Id}");
                         this.BaysDataProvider.RemoveLoadingUnit(lu);
 
                         var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
