@@ -158,7 +158,11 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
             {
 #if CHECK_BAY_SENSOR // ATTENZIONE: questo codice non compila se CHECK_BAY_SENSOR non è definito!
-                var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
+                //var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
+                //    ExternalBayMovementDirection.TowardOperator :
+                //    ExternalBayMovementDirection.TowardMachine;
+
+                var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards) ?
                     ExternalBayMovementDirection.TowardOperator :
                     ExternalBayMovementDirection.TowardMachine;
 

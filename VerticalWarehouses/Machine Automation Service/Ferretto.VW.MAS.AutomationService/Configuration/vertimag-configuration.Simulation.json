@@ -199,6 +199,7 @@
                         "FeedRate": 1.0
                     },
                     "Race": 448.216880625668,
+                    "ExtraRace": 25.0,
                     "HomingCreepSpeed": 5.0,
                     "HomingFastSpeed": 22.0,
                     "Id": 1,

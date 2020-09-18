@@ -139,6 +139,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateELevatorDistance(BayNumber bayNumber, double distance);
 
+        void UpdateExtraRace(BayNumber bayNumber, double extraRace);
+
         void UpdateLastIdealPosition(double position, BayNumber bayNumber);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);

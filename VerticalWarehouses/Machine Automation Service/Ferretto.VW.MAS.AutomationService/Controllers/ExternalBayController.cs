@@ -115,8 +115,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MovementForExtraction()
         {
-            var distance = 10; // Retrieve this value from a specific bay data provider, value is loaded in the vertimag configuration parameters
-            this.externalBayProvider.MovementForExtraction(distance, null, this.BayNumber, MessageActor.AutomationService);
+            this.externalBayProvider.MovementForExtraction(null, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -175,6 +174,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.externalBayProvider.StopTest(this.BayNumber, MessageActor.AutomationService);
 
+            return this.Accepted();
+        }
+
+        [HttpPost("update-extra-race-distance")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult UpdateExtraRaceDistance(double value)
+        {
+            this.baysDataProvider.UpdateExtraRace(this.BayNumber, value);
             return this.Accepted();
         }
 

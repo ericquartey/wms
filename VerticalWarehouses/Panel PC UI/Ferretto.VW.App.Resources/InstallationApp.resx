@@ -2895,6 +2895,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="NoDriveSelected" xml:space="preserve">
     <value>No drive is selected.</value>
   </data>
+  <data name="ZeroChainCarousel" xml:space="preserve">
+    <value>Zero chain carousel</value>
+  </data>
   <data name="Support" xml:space="preserve">
     <value>Remote support</value>
   </data>

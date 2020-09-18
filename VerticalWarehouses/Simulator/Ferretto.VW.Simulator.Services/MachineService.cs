@@ -126,6 +126,27 @@ namespace Ferretto.VW.Simulator.Services
                 this.machine = value;
                 this.remoteIOs.ForEach(x => x.Machine = value);
                 this.Inverters.ForEach(x => x.Machine = value);
+
+                foreach (var inverter in this.Inverters)
+                {
+                    switch (inverter.InverterType)
+                    {
+                        case Models.InverterType.Ang:
+                            //x inverter.DigitalIO[(int)InverterSensors.ANG_ZeroElevatorSensor].Value = false;
+                            break;
+
+                        case Models.InverterType.Acu:
+                            inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!inverter.IsExternal) ? true : false;
+                            break;
+
+                        case Models.InverterType.Agl:
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
                 if (this.machine.LoadUnitMaxNetWeight > 800)
                 {
                     this.MinTorqueCurrent = 69;

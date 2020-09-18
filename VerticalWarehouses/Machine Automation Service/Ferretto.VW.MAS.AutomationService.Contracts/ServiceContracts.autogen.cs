@@ -934,6 +934,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StopCalibrationAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateExtraRaceDistanceAsync(double value);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateExtraRaceDistanceAsync(double value, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateRaceDistanceAsync(double value);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3384,6 +3391,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("AssistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ExternalBayManualParameters AssistedMovements { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ExtraRace", Required = Newtonsoft.Json.Required.Always)]
+        public double ExtraRace { get; set; }
     
         [Newtonsoft.Json.JsonProperty("HomingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingCreepSpeed { get; set; }

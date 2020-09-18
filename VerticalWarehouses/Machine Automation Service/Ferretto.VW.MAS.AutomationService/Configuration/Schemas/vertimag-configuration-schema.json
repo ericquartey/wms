@@ -462,6 +462,7 @@
                             "title": "The ExternalBay Schema",
                             "required": [
                                 "Race",
+                                "ExtraRace",
                                 "HomingFastSpeed",
                                 "HomingCreepSpeed",
                                 "ManualMovements",
@@ -472,6 +473,12 @@
                                     "$id": "#/properties/Machine/properties/Bays/items/properties/External/properties/Race",
                                     "type": "number",
                                     "title": "The Race Schema",
+                                    "default": 0
+                                },
+                                "ExtraRace": {
+                                    "$id": "#/properties/Machine/properties/Bays/items/properties/External/properties/ExtraRace",
+                                    "type": "number",
+                                    "title": "The ExtraRace Schema",
                                     "default": 0
                                 },
                                 "HomingFastSpeed": {

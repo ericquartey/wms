@@ -303,17 +303,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             }
             else
             {
-                if (this.machineData.CalibrationType == Calibration.FindSensor
-                    && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay))
-                {
-                    ok = false;
-                    errorText = "Find Zero not possible: Invalid Zero sensor";
-                }
-#if CHECK_BAY_SENSOR
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
+                    // Retrieve the bay
                     var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                     var bay = baysDataProvider.GetByNumber(this.machineData.TargetBay);
+
+                    // Check if zero sensor is ON
+                    if (this.machineData.CalibrationType == Calibration.FindSensor
+                        && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay)
+                        && !bay.IsExternal)
+                    {
+                        ok = false;
+                        errorText = "Find Zero not possible: Invalid Zero sensor";
+                    }
+
+#if CHECK_BAY_SENSOR
 
                     // Handle carousel
                     if (bay.Carousel != null && !bay.IsExternal)
@@ -327,6 +332,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         //    ok = false;
                         //    errorText = "Find Zero not possible: Top position occupied";
                         //}
+
                         // Check presence in bottom position
                         if (ok
                             && this.machineData.CalibrationType == Calibration.FindSensor
@@ -342,14 +348,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     if (bay.IsExternal)
                     {
                         // Check presence in external position
-                        if (ok
-                            && this.machineData.CalibrationType == Calibration.FindSensor
-                            && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
-                            )
-                        {
-                            ok = false;
-                            errorText = "Find Zero not possible: External position occupied";
-                        }
+                        //if (ok
+                        //    && this.machineData.CalibrationType == Calibration.FindSensor
+                        //    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                        //    )
+                        //{
+                        //    ok = false;
+                        //    errorText = "Find Zero not possible: External position occupied";
+                        //}
+
                         // Check presence in internal position
                         //if (ok
                         //    && this.machineData.CalibrationType == Calibration.FindSensor

@@ -385,7 +385,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.SelectedCompartment = this.Compartments.FirstOrDefault(ic => ic.Id == lastCompartmentId);
                 }
-                else if (this.Compartments.Count() == 1)
+                else if (this.Compartments?.Count() == 1)
                 {
                     this.SelectedCompartment = this.Compartments.First();
                 }
