@@ -288,6 +288,9 @@
   <data name="ExternalBay_Description" xml:space="preserve">
     <value>External Bay Parameters</value>
   </data>
+  <data name="ExtraRace" xml:space="preserve">
+    <value>Extra race for insertion/extraction</value>
+  </data>
   <data name="FeedRate" xml:space="preserve">
     <value>Feed Rate</value>
   </data>

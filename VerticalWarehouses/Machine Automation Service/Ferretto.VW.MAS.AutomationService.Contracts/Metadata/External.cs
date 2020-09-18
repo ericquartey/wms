@@ -17,10 +17,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(4)]
             public ExternalBayManualParameters AssistedMovements { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Race))]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ExtraRace))]
             [Unit("mm")]
-            [Id(1)]
-            public double Race { get; set; }
+            [Id(7)]
+            public double ExtraRace { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Carousel_HomingCreepSpeed))]
             [Unit("mm/s")]
@@ -38,6 +38,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ManualMovements))]
             [Id(6)]
             public ExternalBayManualParameters ManualMovements { get; set; }
+
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Race))]
+            [Unit("mm")]
+            [Id(1)]
+            public double Race { get; set; }
 
             #endregion
         }
