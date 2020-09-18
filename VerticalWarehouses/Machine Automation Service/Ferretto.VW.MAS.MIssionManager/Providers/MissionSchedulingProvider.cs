@@ -219,9 +219,12 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 try
                 {
-                    cellId = this.cellsProvider.FindDownCell(loadUnit);
-                    loadUnitOut = loadUnit;
-                    return true;
+                    if (loadUnit.IsIntoMachine)
+                    {
+                        cellId = this.cellsProvider.FindDownCell(loadUnit);
+                        loadUnitOut = loadUnit;
+                        return true;
+                    }
                 }
                 catch (InvalidOperationException)
                 {
@@ -244,9 +247,12 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 try
                 {
-                    cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
-                    loadUnitOut = loadUnit;
-                    return true;
+                    if (loadUnit.IsIntoMachine)
+                    {
+                        cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
+                        loadUnitOut = loadUnit;
+                        return true;
+                    }
                 }
                 catch (InvalidOperationException)
                 {

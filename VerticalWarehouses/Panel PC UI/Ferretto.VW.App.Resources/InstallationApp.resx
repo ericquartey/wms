@@ -2901,4 +2901,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Support" xml:space="preserve">
     <value>Remote support</value>
   </data>
+  <data name="DeleteUnitDialog" xml:space="preserve">
+    <value>This will remove the drawer from the warehouse map</value>
+  </data>
 </root>
