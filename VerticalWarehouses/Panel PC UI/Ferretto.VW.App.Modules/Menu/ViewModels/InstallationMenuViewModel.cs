@@ -693,6 +693,29 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 this.ProceduresCompletedPercent = (int)((double)this.ProceduresCompleted / (double)this.ProceduresCount * 100.0);
 
+                //to fix bypass horizontalChainCalibration
+                try
+                {
+                    var horizontalChainCalibration = this.source.Where(s => s.Text == Localized.Get("InstallationApp.HorizontalChainCalibration")).FirstOrDefault();
+
+                    if (horizontalChainCalibration.Status == InstallationStatus.Incomplete)
+                    {
+                        this.IsExecutingProcedure = true;
+
+                        await this.machineSetupStatusWebService.HorizontalChainCalibrationBypassAsync();
+
+                        await this.UpdateSetupStatusAsync();
+                    }
+                }
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsExecutingProcedure = false;
+                }
+
                 this.RaiseCanExecuteChanged();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
