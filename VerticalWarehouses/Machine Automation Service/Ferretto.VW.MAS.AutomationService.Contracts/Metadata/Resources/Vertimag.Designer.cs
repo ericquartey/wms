@@ -574,6 +574,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra race for insertion/extraction.
+        /// </summary>
+        public static string ExtraRace {
+            get {
+                return ResourceManager.GetString("ExtraRace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feed Rate.
         /// </summary>
         public static string FeedRate {

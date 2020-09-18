@@ -288,6 +288,9 @@
   <data name="ExternalBay_Description" xml:space="preserve">
     <value>Parametri Baia Esterna</value>
   </data>
+  <data name="ExtraRace" xml:space="preserve">
+    <value>Extra corsa per inserimento/estrazione</value>
+  </data>
   <data name="FeedRate" xml:space="preserve">
     <value>Feed Rate</value>
   </data>
