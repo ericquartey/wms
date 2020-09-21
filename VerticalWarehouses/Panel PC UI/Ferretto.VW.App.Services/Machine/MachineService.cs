@@ -620,25 +620,25 @@ namespace Ferretto.VW.App.Services
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
                 this.Bay = await this.bayManagerService.GetBayAsync();
+
+                this.BayNumber = this.Bay.Number;
+
+                this.HasBayExternal = this.Bay.IsExternal;
+
+                this.HasShutter = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type != ShutterType.NotSpecified : false;
+
+                this.HasCarousel = this.Bay.Carousel != null;
+
+                this.HasBayWithInverter = this.Bay.Inverter != null;
+
+                this.IsShutterThreeSensors = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors : false;
+
+                await this.UpdateBay();
             }
             catch (Exception exc)
             {
                 this.logger.Debug($"Exception description: {exc.Message}");
             }
-
-            this.BayNumber = this.Bay.Number;
-
-            this.HasBayExternal = this.Bay.IsExternal;
-
-            this.HasShutter = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type != ShutterType.NotSpecified : false;
-
-            this.HasCarousel = this.Bay.Carousel != null;
-
-            this.HasBayWithInverter = this.Bay.Inverter != null;
-
-            this.IsShutterThreeSensors = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors : false;
-
-            await this.UpdateBay();
         }
 
         private async Task InitializationHoming()

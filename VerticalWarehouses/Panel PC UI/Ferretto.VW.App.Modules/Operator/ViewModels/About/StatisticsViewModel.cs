@@ -170,9 +170,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var cellsStatistic = await this.machineCellsWebService.GetAllAsync();
                 this.TotalCells = cellsStatistic.Count();
                 this.BusyCells = cellsStatistic.Count(n => !n.IsFree);
-                this.FreeCells = cellsStatistic.Count(n => n.IsFree);
+                this.FreeCells = cellsStatistic.Count(n => n.IsFree && n.BlockLevel != BlockLevel.Blocked);
                 this.FreeCellsForSupport = cellsStatistic.Count(n => n.IsFree && n.BlockLevel == BlockLevel.None);
                 this.FreeCellsOnlySpace = cellsStatistic.Count(n => n.IsFree && n.BlockLevel == BlockLevel.SpaceOnly);
+                this.LockedCells = cellsStatistic.Count(n => n.BlockLevel == BlockLevel.Blocked);
 
                 await base.OnDataRefreshAsync();
             }
