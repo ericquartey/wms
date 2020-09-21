@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveManual(ExternalBayMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
 
-        void MovementForExtraction(double distance, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
+        void MovementForExtraction(int? loadUnitId, BayNumber bayNumber, MessageActor sender);
 
         void MovementForInsertion(BayNumber bayNumber, MessageActor sender);
 

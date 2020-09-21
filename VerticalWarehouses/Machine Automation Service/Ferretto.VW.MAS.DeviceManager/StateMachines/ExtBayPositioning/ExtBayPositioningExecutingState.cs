@@ -264,7 +264,11 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
         /// </returns>
         private bool IsInvalidSensorsCondition()
         {
-            var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
+            //var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
+            //    ExternalBayMovementDirection.TowardOperator :
+            //    ExternalBayMovementDirection.TowardMachine;
+
+            var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards) ?
                 ExternalBayMovementDirection.TowardOperator :
                 ExternalBayMovementDirection.TowardMachine;
 
@@ -558,7 +562,12 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                                 this.Logger.LogInformation($"Start another External Bay Calibration Test after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
 
                                 // Retrieve the current external bay movement direction
-                                var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
+                                //var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
+                                //    ExternalBayMovementDirection.TowardOperator :
+                                //    ExternalBayMovementDirection.TowardMachine;
+
+                                // Retrieve the current external bay movement direction
+                                var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards) ?
                                     ExternalBayMovementDirection.TowardOperator :
                                     ExternalBayMovementDirection.TowardMachine;
 
@@ -575,12 +584,29 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                                 // Carry out the target position
                                 var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
                                 var race = bay.External.Race;
-                                var targetPosition = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ? race : -race; /*: 0; // .Absolute */
+
+                                var distanceMovement = race;
+                                switch (externalBayMovementDirection)
+                                {
+                                    case ExternalBayMovementDirection.TowardOperator:
+                                        distanceMovement = race - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.RequestingBay)) + bay.ChainOffset;
+                                        break;
+
+                                    case ExternalBayMovementDirection.TowardMachine:
+                                        distanceMovement = 0 - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.RequestingBay)) + bay.ChainOffset;
+                                        break;
+                                }
+
+                                //var targetPosition = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ? race + bay.ChainOffset : bay.ChainOffset; // for .Absolute
+                                var targetPosition = distanceMovement;
 
                                 // Set target parameter and direction parameter
+                                //this.machineData.MessageData.Direction = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ?
+                                //    HorizontalMovementDirection.Forwards :
+                                //    HorizontalMovementDirection.Backwards;
                                 this.machineData.MessageData.Direction = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ?
-                                    HorizontalMovementDirection.Forwards :
-                                    HorizontalMovementDirection.Backwards;
+                                    HorizontalMovementDirection.Backwards :
+                                    HorizontalMovementDirection.Forwards;
                                 this.machineData.MessageData.TargetPosition = targetPosition;
 
                                 var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);

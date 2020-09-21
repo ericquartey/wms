@@ -14,6 +14,8 @@ namespace Ferretto.VW.TelemetryService.Models
 
         public string SerialNumber { get; set; } = string.Empty!;
 
+        public string Version { get; set; } = string.Empty!;
+
         #endregion
     }
 }

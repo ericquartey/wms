@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
@@ -74,6 +75,15 @@ namespace Ferretto.VW.MAS.AutomationService
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
+        private static string GetVersion()
+        {
+            return Assembly
+            .GetEntryAssembly()
+            .GetName()
+            .Version
+            .ToString();
+        }
+
         private void OnHubConnectionStatusChanged1(object sender, Common.Hubs.ConnectionStatusChangedEventArgs e)
         {
             this.Logger.LogTrace("Connection to Telemetry hub changed (connected={isConnected})", e.IsConnected);
@@ -90,6 +100,7 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 ModelName = machine.ModelName,
                 SerialNumber = machine.SerialNumber,
+                Version = NotificationTelemetryService.GetVersion()
             };
 
             await this.telemetryHub.SendMachineAsync(machineDto);

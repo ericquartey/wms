@@ -1052,12 +1052,22 @@ namespace Ferretto.VW.Simulator.Services.Models
 
                 if (this.InverterRole > InverterRole.ElevatorChain)
                 {
-                    this.AxisPosition = this.Machine.Bays.FirstOrDefault(b => b.Carousel != null).ChainOffset;
+                    if (this.IsExternal)
+                    {
+                        this.AxisPosition = this.Machine.Bays.FirstOrDefault(b => b.External != null).ChainOffset;
+                    }
+                    else
+                    {
+                        this.AxisPosition = this.Machine.Bays.FirstOrDefault(b => b.Carousel != null).ChainOffset;
+                    }
+
+                    this.HorizontalZeroSensor(true);
                 }
                 else
                 {
                     this.AxisPosition = 0;
                 }
+
                 this.homingTimerActive = false;
                 this.homingTimer.Change(-1, Timeout.Infinite);
             }
@@ -1087,7 +1097,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     }
                     else
                     {
-                        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
                     }
                 }
                 //else
@@ -1098,7 +1108,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 //    }
                 //    else
                 //    {
-                //        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                //        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
                 //    }
                 //}
             }
@@ -1231,7 +1241,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             }
                             else
                             {
-                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
                             }
                         }
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][3])
@@ -1243,7 +1253,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             }
                             else
                             {
-                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
                             }
                         }
                     }
@@ -1259,7 +1269,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             }
                             else
                             {
-                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.isExternal) ? false : true;
                             }
                         }
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][3])
@@ -1271,7 +1281,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             }
                             else
                             {
-                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
                             }
                         }
                     }
@@ -1301,13 +1311,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                         {
                             // turn on the internal presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
                         }
                         else
                         {
                             // turn off the internal presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
                         }
                         if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) < 20)
                         {
@@ -1345,7 +1355,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             }
                             else
                             {
-                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
                             }
                         }
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][3])
@@ -1357,7 +1367,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             }
                             else
                             {
-                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
                             }
                         }
                     }
@@ -1373,7 +1383,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             }
                             else
                             {
-                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
                             }
                         }
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][3])
@@ -1385,7 +1395,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             }
                             else
                             {
-                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
                             }
                         }
                     }
@@ -1401,13 +1411,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                         {
                             // turn on the internal presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
                         }
                         else
                         {
                             // turn off the internal presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
                         }
 
                         if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) < 20)
@@ -1445,7 +1455,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 else if (this.InverterRole > InverterRole.ElevatorChain)
                 {
                     // simulate bay chain error: comment next line
-                    //this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                    //this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
                 }
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x1000;      // Set Point Ack

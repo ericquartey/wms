@@ -1173,7 +1173,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Inserimento cassetto da baia in cella</value>
   </data>
   <data name="ZeroChain" xml:space="preserve">
-    <value>Zero catena giostra</value>
+    <value>Zero catena</value>
   </data>
   <data name="LoadingUnitFromCellToCell" xml:space="preserve">
     <value>Spostamento cassetto da cella a cella</value>
@@ -2801,6 +2801,9 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="NoDriveSelected" xml:space="preserve">
     <value>Selezionare il drive di destinazione.</value>
+  </data>
+  <data name="ZeroChainCarousel" xml:space="preserve">
+    <value>Zero catena giostra</value>
   </data>
   <data name="Support" xml:space="preserve">
     <value>Assistenza remota</value>

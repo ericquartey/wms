@@ -114,12 +114,29 @@ namespace Ferretto.VW.MAS.MissionManager
                         this.Logger.LogDebug("A total of {newMissionsCount} new WMS mission(s) are available.", newWmsMissions.Count());
                     }
 
-                    foreach (var wmsMission in newWmsMissions.Where(m => m.Operations.Any(o => o.Status == MissionOperationStatus.Executing)))
+                    foreach (var wmsMission in newWmsMissions.Where(m => m.Operations.Any(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.Executing)))
                     {
                         var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
                         try
                         {
                             var bay = baysDataProvider.GetByNumber(bayNumber);
+
+                            //if (!bay.Inventory && (wmsMission.Operations.Count() == wmsMission.Operations.Where(s => s.Type == MissionOperationType.Inventory).Count()))
+                            //{
+                            //    throw new InvalidOperationException($"Mission not allowed in this bay");
+                            //}
+                            //else if (!bay.Pick && (wmsMission.Operations.Count() == wmsMission.Operations.Where(s => s.Type == MissionOperationType.Pick).Count()))
+                            //{
+                            //    throw new InvalidOperationException($"Mission not allowed in this bay");
+                            //}
+                            //else if (!bay.Put && (wmsMission.Operations.Count() == wmsMission.Operations.Where(s => s.Type == MissionOperationType.Put).Count()))
+                            //{
+                            //    throw new InvalidOperationException($"Mission not allowed in this bay");
+                            //}
+                            //else if (!bay.View && (wmsMission.Operations.Count() == wmsMission.Operations.Where(s => s.Type == (MissionOperationType)Enum.Parse(typeof(MissionOperationType), "4")).Count()))
+                            //{
+                            //    throw new InvalidOperationException($"Mission not allowed in this bay");
+                            //}
 
                             missionSchedulingProvider.QueueBayMission(
                                 wmsMission.LoadingUnitId,
