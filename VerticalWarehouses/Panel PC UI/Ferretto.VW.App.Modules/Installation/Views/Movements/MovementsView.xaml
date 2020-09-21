@@ -452,6 +452,9 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <icon:PackIconMaterial Grid.Column="0"
@@ -475,6 +478,23 @@
                                             HorizontalAlignment="Left"
                                             Command="{Binding ExtBayTowardMachineCommand}"
                                             Content="{x:Static res:InstallationApp.ExtBayTowardMachine}" />
+
+                        <Separator Grid.Column="3"
+                                   Margin="26"
+                                   Background="Transparent" />
+
+                        <controls:PpcButton Grid.Column="4"
+                                            Margin="5"
+                                            HorizontalAlignment="Left"
+                                            Command="{Binding ExtBayMovementForInsertionCommand}"
+                                            Content="{x:Static res:InstallationApp.ExtBayMovementForInsertion}" />
+
+                        <controls:PpcButton Grid.Column="5"
+                                            Margin="5"
+                                            HorizontalAlignment="Left"
+                                            Command="{Binding ExtBayMovementForExtractionCommand}"
+                                            Content="{x:Static res:InstallationApp.ExtBayMovementForExtraction}" />
+
                     </Grid>
 
                 </Grid>

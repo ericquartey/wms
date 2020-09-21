@@ -634,7 +634,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         break;
 
                     default:
-                            break;
+                        break;
                 }
             }
         }
@@ -724,6 +724,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     this.moveExtBayTowardMachinePolicy = await this.machineExternalBayWebService.CanMoveAsync(ExternalBayMovementDirection.TowardMachine, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
                     this.moveExtBayTowardMachineCommand?.RaiseCanExecuteChanged();
+
+                    this.moveExtBayMovementForInsertionCommand?.RaiseCanExecuteChanged();
+
+                    this.moveExtBayMovementForExtractionCommand?.RaiseCanExecuteChanged();
                 }
             }
             catch (Exception ex)

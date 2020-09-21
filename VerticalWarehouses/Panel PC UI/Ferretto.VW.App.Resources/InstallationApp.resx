@@ -2904,4 +2904,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="DeleteUnitDialog" xml:space="preserve">
     <value>This will remove the drawer from the warehouse map</value>
   </data>
+  <data name="ExtBayMovementForExtraction" xml:space="preserve">
+    <value>Extra movement toward operator</value>
+  </data>
+  <data name="ExtBayMovementForInsertion" xml:space="preserve">
+    <value>Extra movement for drawer insertion</value>
+  </data>
 </root>
