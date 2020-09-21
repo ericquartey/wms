@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 if (returnValue
                     && mission.MissionType == MissionType.FirstTest
-                    && unitToMove.Height > machine.LoadUnitMinHeight + tolerance)
+                    && unitToMove.Height > machine.LoadUnitMinHeight + (2 * tolerance))
                 {
                     returnValue = false;
                     this.Logger.LogWarning($"First test Load unit Height {unitToMove.Height:0.00} higher than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");

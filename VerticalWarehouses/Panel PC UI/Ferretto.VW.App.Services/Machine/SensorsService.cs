@@ -323,7 +323,10 @@ namespace Ferretto.VW.App.Services
             var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
             this.sensors.Update(sensorsStates.ToArray());
-            this.shutterSensors.Update(sensorsStates.ToArray(), (int)this.Bay.Number);
+            if (this.Bay != null)
+            {
+                this.shutterSensors.Update(sensorsStates.ToArray(), (int)this.Bay.Number);
+            }
 
             this.RaisePropertyChanged();
         }
