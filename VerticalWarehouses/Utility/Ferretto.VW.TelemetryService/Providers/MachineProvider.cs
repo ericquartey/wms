@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
 using Microsoft.Extensions.Caching.Memory;
@@ -49,7 +50,8 @@ namespace Ferretto.VW.TelemetryService.Providers
                 var newMachine = new Machine
                 {
                     ModelName = loadedMachine.ModelName,
-                    SerialNumber = loadedMachine.SerialNumber
+                    SerialNumber = loadedMachine.SerialNumber,
+                    Version = loadedMachine.Version,
                 };
 
                 return this.cache.Set(
@@ -67,7 +69,8 @@ namespace Ferretto.VW.TelemetryService.Providers
             var machineRecord = new Models.Machine
             {
                 ModelName = machine.ModelName,
-                SerialNumber = machine.SerialNumber
+                SerialNumber = machine.SerialNumber,
+                Version = machine.Version
             };
 
             await this.realm.WriteAsync((r) => r.Add(machineRecord));
