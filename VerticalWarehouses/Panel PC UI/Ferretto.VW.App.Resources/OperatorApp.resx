@@ -2193,4 +2193,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="View" xml:space="preserve">
     <value>View</value>
   </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>Maximum consecutive free space back side</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>Maximum consecutive free space front side</value>
+  </data>
 </root>
