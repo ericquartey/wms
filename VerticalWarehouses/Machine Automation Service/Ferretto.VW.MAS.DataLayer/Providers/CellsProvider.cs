@@ -486,7 +486,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     TotalCells = totalCells,
                     TotalFrontCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
                     TotalBackCells = cellsWithSide.Count(c => c.Side == WarehouseSide.Front),
-                    CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells
+                    CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells,
+                    MaxSolidSpace = this.FindMaxSolidSpace(cellsWithSide)
                 };
                 var machine = this.machineProvider.Get();
                 var minSpace = machine.LoadUnitMinHeight / 25;
@@ -838,6 +839,32 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(c => c.Panel)
                     .SingleOrDefault(c => c.Id == cellId);
             }
+        }
+
+        private Dictionary<WarehouseSide, double> FindMaxSolidSpace(Cell[] cellsWithSide)
+        {
+            var maxSolidSpace = new Dictionary<WarehouseSide, double>() { { WarehouseSide.Back, 0 }, { WarehouseSide.Front, 0 } };
+            var startCell = new Dictionary<WarehouseSide, double>() { { WarehouseSide.Back, 0 }, { WarehouseSide.Front, 0 } };
+            var prevCell = new Cell();
+            foreach (var cell in cellsWithSide.OrderBy(c => c.Side).ThenBy(d => d.Position))
+            {
+                if (cell.IsFree && cell.BlockLevel == BlockLevel.None
+                    && startCell[cell.Side] == 0
+                    )
+                {
+                    startCell[cell.Side] = cell.Position;
+                }
+                else if (prevCell.Side != WarehouseSide.NotSpecified && startCell[prevCell.Side] != 0)
+                {
+                    maxSolidSpace[prevCell.Side] = Math.Max(maxSolidSpace[prevCell.Side], (prevCell.Position - startCell[prevCell.Side] + 25));
+                    if (cell.IsNotAvailable || !cell.IsFree)
+                    {
+                        startCell[cell.Side] = 0;
+                    }
+                }
+                prevCell = cell;
+            }
+            return maxSolidSpace;
         }
 
         private int FreeBlocks(Cell[] cellsWithSide, WarehouseSide side, out double freeCells)

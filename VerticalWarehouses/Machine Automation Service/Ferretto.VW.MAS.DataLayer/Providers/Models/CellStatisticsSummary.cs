@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public double FragmentFrontPercent { get; set; }
 
         public double FragmentTotalPercent { get; set; }
+
+        public Dictionary<WarehouseSide, double> MaxSolidSpace { get; set; }
 
         public int TotalBackCells { get; set; }
 
