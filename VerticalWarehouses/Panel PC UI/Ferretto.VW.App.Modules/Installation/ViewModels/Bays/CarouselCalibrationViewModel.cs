@@ -542,13 +542,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     if (this.IsNewErrorValueVisible)
                     {
                         var measuredCorrection = this.IsErrorNegative ? this.NewErrorValue : -this.NewErrorValue;
-                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
+                        var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
                         newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
                     }
                     else
                     {
                         var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
-                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
+                        var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
                         newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
                     }
 
