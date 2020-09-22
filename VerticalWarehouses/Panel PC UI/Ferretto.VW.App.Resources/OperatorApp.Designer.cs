@@ -3356,6 +3356,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mark as resolved and go to compaction.
+        /// </summary>
+        public static string MarkAsResolvedAndGo {
+            get {
+                return ResourceManager.GetString("MarkAsResolvedAndGo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Material status.
         /// </summary>
         public static string MaterialStatus {

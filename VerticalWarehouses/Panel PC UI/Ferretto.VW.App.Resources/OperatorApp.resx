@@ -2199,4 +2199,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="MaxSolidSpaceFront" xml:space="preserve">
     <value>Maximum consecutive free space front side</value>
   </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>Mark as resolved and go to compaction</value>
+  </data>
 </root>

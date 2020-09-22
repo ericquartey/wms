@@ -1803,4 +1803,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="MaxSolidSpaceFront" xml:space="preserve">
     <value>Massimo spazio libero consecutivo lato anteriore</value>
   </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>Marca come risolto e vai a compattazione</value>
+  </data>
 </root>
