@@ -8,7 +8,7 @@
         "Accessories": {
           "AlphaNumericBar": {
             "IsEnabledNew": false,
-            "IpAddress": "192.168.101.11",
+            "IpAddress": "192.168.0.11",
             "TcpPort": 2020,
             "Size": "ExtraLarge"
           },
@@ -17,9 +17,9 @@
             "Name": "Microsoft Print to PDF"
           },
           "LaserPointer": {
+            "IpAddress": "192.168.0.13",
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
-            "IpAddress": "192.168.101.13",
             "TcpPort": 2020,
             "XOffset": 0.0,
             "YOffset": 0.0,
@@ -59,7 +59,7 @@
             "LocationUpDown": "Up",
             "MaxDoubleHeight": 0.0,
             "MaxSingleHeight": 695.0,
-            "ProfileOffset": -25.0
+            "ProfileOffset": 25.0
           }
         ],
         "Resolution": 296.2282068,
