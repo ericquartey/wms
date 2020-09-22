@@ -1797,4 +1797,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="View" xml:space="preserve">
     <value>Visione</value>
   </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>Massimo spazio libero consecutivo lato posteriore</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>Massimo spazio libero consecutivo lato anteriore</value>
+  </data>
 </root>

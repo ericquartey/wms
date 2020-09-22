@@ -15,238 +15,319 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="15,0,0,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+  <Grid Margin="15,0,0,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.ColumnSpan="4"
-                    Orientation="Horizontal">
-            <TextBlock Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="2.3" />
-            <TextBlock Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc OperatorApp.DrawerCompactingHeader}" />
-        </StackPanel>
+    <StackPanel Grid.ColumnSpan="4"
+                Orientation="Horizontal">
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="2.3" />
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc OperatorApp.DrawerCompactingHeader}" />
+    </StackPanel>
 
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="4"
-                   Height="Auto"
-                   Margin="0,0,15,0"
-                   VerticalAlignment="Top"
-                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailDescription}" />
+    <TextBlock Grid.Row="1"
+               Grid.ColumnSpan="4"
+               Height="Auto"
+               Margin="0,0,15,0"
+               VerticalAlignment="Top"
+               Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+               Text="{res:Loc HelpDescriptions.HelpDrawerCompactingDetailDescription}" />
 
-        <controls:CardSensorAxisVertical Grid.Row="2"
-                                         Grid.Column="0"
-                                         Height="90"
-                                         Margin="0,30,15,0" />
-        <controls:CardSensorAxisHorizontal Grid.Row="2"
-                                           Grid.Column="1"
-                                           Height="90"
-                                           Margin="0,30,15,0" />
-        <controls:CardSensorPosition Grid.Row="2"
-                                     Grid.Column="2"
+    <controls:CardSensorAxisVertical Grid.Row="2"
+                                     Grid.Column="0"
                                      Height="90"
                                      Margin="0,30,15,0" />
-        <controls:CardSensorDrawer Grid.Row="2"
-                                   Grid.Column="3"
-                                   Height="90"
-                                   Margin="0,30,15,0" />
+    <controls:CardSensorAxisHorizontal Grid.Row="2"
+                                       Grid.Column="1"
+                                       Height="90"
+                                       Margin="0,30,15,0" />
+    <controls:CardSensorPosition Grid.Row="2"
+                                 Grid.Column="2"
+                                 Height="90"
+                                 Margin="0,30,15,0" />
+    <controls:CardSensorDrawer Grid.Row="2"
+                               Grid.Column="3"
+                               Height="90"
+                               Margin="0,30,15,0" />
 
-        <Border Grid.Row="3"
-                Grid.ColumnSpan="4"
-                Margin="0,15,15,0"
-                Background="{DynamicResource PpcBackground}">
-            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+    <Border Grid.Row="3"
+            Grid.ColumnSpan="4"
+            Margin="0,15,15,0"
+            Background="{DynamicResource PpcBackground}">
+      <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+              BorderThickness="{DynamicResource PpcBorderThickness}">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
 
-                    <Grid Grid.ColumnSpan="3">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+          <Grid Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-                        <TextBlock Margin="0,20,0,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{res:Loc OperatorApp.DrawerSpaceSaturazionTotalDrawers}"
-                                   TextAlignment="Left" />
+            <TextBlock Margin="0,20,0,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_CardSensor}"
+                       Text="{res:Loc OperatorApp.DrawerSpaceSaturazionTotalDrawers}"
+                       TextAlignment="Left" />
 
-                        <TextBlock Grid.Row="1"
-                                   Margin="0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Top"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="{Binding TotalDrawers}" />
-                        <!--  Text="{Binding LowerBound}"  -->
-                        <Border Grid.RowSpan="2"
-                                Grid.Column="1"
-                                Margin="0,25"
-                                VerticalAlignment="Stretch"
-                                BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                BorderThickness="1" />
+            <TextBlock Grid.Row="1"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource VWAPP_CardSensor_Data}"
+                       Text="{Binding TotalDrawers}" />
+            <!--  Text="{Binding LowerBound}"  -->
+            <Border Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="0,25"
+                    VerticalAlignment="Stretch"
+                    BorderBrush="{DynamicResource FerrettoMediumGray}"
+                    BorderThickness="1" />
 
-                    </Grid>
+          </Grid>
 
-                    <Grid Grid.Column="3"
-                          Grid.ColumnSpan="3">
+          <Grid Grid.Column="3"
+                Grid.ColumnSpan="3">
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-
-                        <TextBlock Margin="0,20,0,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{res:Loc OperatorApp.FragmentFront}"
-                                   TextAlignment="Left" />
-
-                        <TextBlock Grid.Row="1"
-                                   Margin="0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Top"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
-                            <Run Text="{Binding FragmentFrontPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
-                        </TextBlock>
-                        <!--  Text="{Binding UpperBound}"  -->
-                        <Border Grid.RowSpan="2"
-                                Grid.Column="1"
-                                Margin="0,25"
-                                VerticalAlignment="Stretch"
-                                BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                BorderThickness="1" />
-
-                    </Grid>
-
-                    <Grid Grid.Column="6"
-                          Grid.ColumnSpan="3">
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
 
-                        <TextBlock Margin="0,20,0,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{res:Loc OperatorApp.FragmentBack}" />
+            <TextBlock Margin="0,20,0,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_CardSensor}"
+                       Text="{res:Loc OperatorApp.FragmentFront}"
+                       TextAlignment="Left" />
 
-                        <TextBlock Grid.Row="1"
-                                   Margin="0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Top"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
-                            <Run Text="{Binding FragmentBackPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
-                        </TextBlock>
+            <TextBlock Grid.Row="1"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource VWAPP_CardSensor_Data}">
+              <Run Text="{Binding FragmentFrontPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
+            </TextBlock>
+            <!--  Text="{Binding UpperBound}"  -->
+            <Border Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="0,25"
+                    VerticalAlignment="Stretch"
+                    BorderBrush="{DynamicResource FerrettoMediumGray}"
+                    BorderThickness="1" />
 
-                        <!--  Text="{Binding Offset, StringFormat={}{0:F2}}"  -->
-                        <Border Grid.RowSpan="2"
-                                Grid.Column="1"
-                                Margin="0,25"
-                                VerticalAlignment="Stretch"
-                                BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                BorderThickness="1" />
+          </Grid>
 
-                    </Grid>
+          <Grid Grid.Column="6"
+                Grid.ColumnSpan="3">
 
-                    <Grid Grid.Column="9"
-                          Grid.ColumnSpan="3"
-                          Margin="0,0,15,0">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
 
-                        <TextBlock Margin="0,20,0,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource VWAPP_CardSensor}"
-                                   Text="{res:Loc OperatorApp.FragmentTotal}"
-                                   TextAlignment="Left" />
+            <TextBlock Margin="0,20,0,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_CardSensor}"
+                       Text="{res:Loc OperatorApp.FragmentBack}" />
 
-                        <TextBlock Grid.Row="1"
-                                   Margin="0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Top"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}">
-                            <Run Text="{Binding FragmentTotalPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
-                        </TextBlock>
-                        <!--  Text="{Binding Resolution, StringFormat={}{0:F6}}"  -->
-                    </Grid>
+            <TextBlock Grid.Row="1"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource VWAPP_CardSensor_Data}">
+              <Run Text="{Binding FragmentBackPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
+            </TextBlock>
 
-                </Grid>
-            </Border>
-        </Border>
+            <!--  Text="{Binding Offset, StringFormat={}{0:F2}}"  -->
+            <Border Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="0,25"
+                    VerticalAlignment="Stretch"
+                    BorderBrush="{DynamicResource FerrettoMediumGray}"
+                    BorderThickness="1" />
 
-        <StackPanel Grid.Row="4"
-                    Grid.Column="2"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
+          </Grid>
 
-            <controls:PpcButton Margin="0,0,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding CompactingStartCommand}"
-                                Content="{x:Static Resources:OperatorApp.DrawerCompacting}" />
+          <Grid Grid.Column="9"
+                Grid.ColumnSpan="3"
+                Margin="0,0,15,0">
 
-            <controls:PpcButton Margin="0,0,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding CompactingStopCommand}"
-                                Content="{Resources:Loc General.Stop}"
-                                IsBusy="{Binding IsStopPressed}" />
-        </StackPanel>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition />
+            </Grid.RowDefinitions>
 
-    </Grid>
+            <TextBlock Margin="0,20,0,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_CardSensor}"
+                       Text="{res:Loc OperatorApp.FragmentTotal}"
+                       TextAlignment="Left" />
+
+            <TextBlock Grid.Row="1"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource VWAPP_CardSensor_Data}">
+              <Run Text="{Binding FragmentTotalPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
+            </TextBlock>
+            <!--  Text="{Binding Resolution, StringFormat={}{0:F6}}"  -->
+          </Grid>
+
+        </Grid>
+      </Border>
+    </Border>
+    <Border Grid.Row="4"
+            Grid.ColumnSpan="4"
+            Margin="0,15,15,0"
+            Background="{DynamicResource PpcBackground}">
+      <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+              BorderThickness="{DynamicResource PpcBorderThickness}">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+
+          <Grid Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Margin="0,20,0,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_CardSensor}"
+                       Text="{res:Loc OperatorApp.MaxSolidSpaceFront}"
+                       TextAlignment="Left" />
+
+            <TextBlock Grid.Row="1"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource VWAPP_CardSensor_Data}"
+                       Text="{Binding MaxSolidSpaceFront}" />
+            <!--  Text="{Binding LowerBound}"  -->
+            <Border Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="0,25"
+                    VerticalAlignment="Stretch"
+                    BorderBrush="{DynamicResource FerrettoMediumGray}"
+                    BorderThickness="1" />
+
+          </Grid>
+
+          <Grid Grid.Column="3"
+                Grid.ColumnSpan="3">
+
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+
+            <TextBlock Margin="0,20,0,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_CardSensor}"
+                       Text="{res:Loc OperatorApp.MaxSolidSpaceBack}"
+                       TextAlignment="Left" />
+
+            <TextBlock Grid.Row="1"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource VWAPP_CardSensor_Data}"
+                       Text="{Binding MaxSolidSpaceBack}" />
+          </Grid>
+
+        </Grid>
+      </Border>
+    </Border>
+
+    <StackPanel Grid.Row="5"
+                Grid.Column="2"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Orientation="Horizontal">
+
+      <controls:PpcButton Margin="0,0,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding CompactingStartCommand}"
+                          Content="{x:Static Resources:OperatorApp.DrawerCompacting}" />
+
+      <controls:PpcButton Margin="0,0,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding CompactingStopCommand}"
+                          Content="{Resources:Loc General.Stop}"
+                          IsBusy="{Binding IsStopPressed}" />
+    </StackPanel>
+
+  </Grid>
 </ctrls:View>

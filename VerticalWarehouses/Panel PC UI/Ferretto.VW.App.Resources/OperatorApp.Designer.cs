@@ -3383,6 +3383,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum consecutive free space back side.
+        /// </summary>
+        public static string MaxSolidSpaceBack {
+            get {
+                return ResourceManager.GetString("MaxSolidSpaceBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum consecutive free space front side.
+        /// </summary>
+        public static string MaxSolidSpaceFront {
+            get {
+                return ResourceManager.GetString("MaxSolidSpaceFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MaxTotalCount.
         /// </summary>
         public static string MaxTotalCount {

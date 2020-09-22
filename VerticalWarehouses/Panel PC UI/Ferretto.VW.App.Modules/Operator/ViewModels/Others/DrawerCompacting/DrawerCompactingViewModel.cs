@@ -39,6 +39,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isStopPressed;
 
+        private double maxSolidSpaceBack;
+
+        private double maxSolidSpaceFront;
+
         private SubscriptionToken positioningOperationChangedToken;
 
         private int totalDrawers;
@@ -110,6 +114,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isStopPressed;
             protected set => this.SetProperty(ref this.isStopPressed, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double MaxSolidSpaceBack
+        {
+            get => this.maxSolidSpaceBack;
+            set => this.SetProperty(ref this.maxSolidSpaceBack, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double MaxSolidSpaceFront
+        {
+            get => this.maxSolidSpaceFront;
+            set => this.SetProperty(ref this.maxSolidSpaceFront, value, this.RaiseCanExecuteChanged);
         }
 
         public int TotalDrawers
@@ -251,10 +267,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task RefreshAllValue()
         {
-            var cells = await this.machineCellsWebService.GetStatisticsAsync();
-            this.FragmentBackPercent = cells.FragmentBackPercent;
-            this.FragmentFrontPercent = cells.FragmentFrontPercent;
-            this.FragmentTotalPercent = cells.FragmentTotalPercent;
+            try
+            {
+                var cells = await this.machineCellsWebService.GetStatisticsAsync();
+                this.FragmentBackPercent = cells.FragmentBackPercent;
+                this.FragmentFrontPercent = cells.FragmentFrontPercent;
+                this.FragmentTotalPercent = cells.FragmentTotalPercent;
+
+                foreach (var spaceSide in cells.MaxSolidSpace)
+                {
+                    if (spaceSide.Key == WarehouseSide.Front)
+                    {
+                        this.MaxSolidSpaceFront = spaceSide.Value;
+                    }
+                    else if (spaceSide.Key == WarehouseSide.Back)
+                    {
+                        this.MaxSolidSpaceBack = spaceSide.Value;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
 
         //private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<MissionOperationCompletedMessageData> message)
