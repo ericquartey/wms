@@ -158,7 +158,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanPartiallyCompleteOnEmptyCompartment()
         {
-            this.CanConfirm =
+            try
+            {
+                this.CanConfirm =
                 this.MissionOperation != null
                 &&
                 !this.IsWaitingForResponse
@@ -173,29 +175,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value == this.MissionRequestedQuantity;
 
-            this.RaisePropertyChanged(nameof(this.CanConfirm));
+                this.RaisePropertyChanged(nameof(this.CanConfirm));
 
-            this.CanConfirmPartialOperation =
-                this.MissionOperation != null
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.InputQuantity.HasValue
-                &&
-                this.CanInputQuantity
-                &&
-                this.InputQuantity.Value >= 0
-                &&
-                this.InputQuantity.Value != this.MissionRequestedQuantity
-                &&
-                this.InputQuantity.Value <= this.AvailableQuantity;
+                this.CanConfirmPartialOperation =
+                    this.MissionOperation != null
+                    &&
+                    !this.IsWaitingForResponse
+                    &&
+                    !this.IsBusyAbortingOperation
+                    &&
+                    !this.IsBusyConfirmingOperation
+                    &&
+                    this.InputQuantity.HasValue
+                    &&
+                    this.CanInputQuantity
+                    &&
+                    this.InputQuantity.Value >= 0
+                    &&
+                    this.InputQuantity.Value != this.MissionRequestedQuantity
+                    &&
+                    this.InputQuantity.Value <= this.AvailableQuantity;
 
-            this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
-
+                this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
+            }
+            catch (Exception)
+            {
+            }
             //return this.CanConfirm;
             return false;
         }

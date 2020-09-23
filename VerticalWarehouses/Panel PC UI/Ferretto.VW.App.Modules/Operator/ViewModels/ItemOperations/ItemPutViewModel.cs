@@ -98,17 +98,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool CanConfirmOperationPut()
         {
-            this.confirmOperation = this.MissionOperation != null &&
+            try
+            {
+                this.confirmOperation = this.MissionOperation != null &&
                 this.InputQuantity.Value == this.MissionRequestedQuantity &&
                 !this.IsOperationCanceled;
 
-            this.confirmPartialOperation = this.MissionOperation != null &&
-                this.InputQuantity.Value != this.MissionRequestedQuantity &&
-                !this.IsOperationCanceled;
+                this.confirmPartialOperation = this.MissionOperation != null &&
+                    this.InputQuantity.Value != this.MissionRequestedQuantity &&
+                    !this.IsOperationCanceled;
 
-            this.RaisePropertyChanged(nameof(this.ConfirmOperation));
+                this.RaisePropertyChanged(nameof(this.ConfirmOperation));
 
-            this.RaisePropertyChanged(nameof(this.ConfirmPartialOperation));
+                this.RaisePropertyChanged(nameof(this.ConfirmPartialOperation));
+            }
+            catch(Exception)
+            {
+            }
 
             return
                !this.IsWaitingForResponse
