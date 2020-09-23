@@ -161,8 +161,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     new[] { movementParameters.Speed * this.data.FeedRate },
                     new[] { movementParameters.Acceleration },
                     new[] { movementParameters.Deceleration },
-                    0,
-                    false,
+                    numberCycles: 0,
+                    waitContinue: false,
+                    computeElongation: true,
                     BayNumber.ElevatorBay);
 
                 var currentPosition = 0;

@@ -18,6 +18,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             double[] deceleration,
             int numberCycles,
             bool waitContinue,
+            bool computeElongation,
             BayNumber requestingBay,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
@@ -31,6 +32,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.NumberCycles = numberCycles;
             this.RequestingBay = requestingBay;
             this.WaitContinue = waitContinue;
+            this.ComputeElongation = computeElongation;
         }
 
         public PositioningFieldMessageData(
