@@ -22,6 +22,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private string errorTime;
 
+        private bool isVisibleGoTo;
+
+        private ICommand markAsResolvedAndGoCommand;
+
         private ICommand markAsResolvedCommand;
 
         #endregion
@@ -54,8 +58,23 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.errorTime, value);
         }
 
+        public bool IsVisibleGoTo
+        {
+            get => this.isVisibleGoTo;
+            set => this.SetProperty(ref this.isVisibleGoTo, value, this.RaiseCanExecuteChanged);
+        }
+
+        public ICommand MarkAsResolvedAndGoCommand =>
+           this.markAsResolvedAndGoCommand
+           ??
+           (this.markAsResolvedAndGoCommand = new DelegateCommand(
+               async () => await this.MarkAsResolvedAndGoAsync(),
+               this.CanMarkAsResolved)
+           .ObservesProperty(() => this.Error)
+           .ObservesProperty(() => this.IsWaitingForResponse));
+
         public ICommand MarkAsResolvedCommand =>
-            this.markAsResolvedCommand
+                    this.markAsResolvedCommand
             ??
             (this.markAsResolvedCommand = new DelegateCommand(
                 async () => await this.MarkAsResolvedAsync(),
@@ -93,6 +112,39 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 !this.IsWaitingForResponse;
         }
 
+        private async Task MarkAsResolvedAndGoAsync()
+        {
+            if (this.Error is null)
+            {
+                return;
+            }
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
+
+                // await this.machineErrorsWebService.ResolveAllAsync();
+
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.Others.DrawerCompacting.MAIN,
+                    null,
+                    trackCurrentView: true);
+
+                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private async Task MarkAsResolvedAsync()
         {
             if (this.Error is null)
@@ -124,7 +176,17 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             if (this.error is null)
             {
                 this.ErrorTime = null;
+                this.IsVisibleGoTo = false;
                 return;
+            }
+
+            if (this.error.Code == 39)
+            {
+                this.IsVisibleGoTo = true;
+            }
+            else
+            {
+                this.IsVisibleGoTo = false;
             }
 
             var elapsedTime = DateTime.UtcNow - this.error.OccurrenceDate;

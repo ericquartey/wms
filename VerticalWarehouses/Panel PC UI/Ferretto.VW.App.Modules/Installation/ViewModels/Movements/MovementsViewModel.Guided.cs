@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.CodeParser;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
@@ -79,6 +80,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ActionPolicy moveExtBayTowardMachinePolicy;
 
+        private DelegateCommand moveExtBayMovementForInsertionCommand;
+
+        private DelegateCommand moveExtBayMovementForExtractionCommand;
+
         private DelegateCommand moveToBayPositionCommand;
 
         private ActionPolicy moveToBayPositionPolicy;
@@ -144,6 +149,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveExtBayTowardMachineCommand = new DelegateCommand(
                 async () => await this.MoveExtBayTowardMachineAsync(),
                 this.CanMoveExtBayTowardMachine));
+
+        public ICommand ExtBayMovementForInsertionCommand =>
+            this.moveExtBayMovementForInsertionCommand
+            ??
+            (this.moveExtBayMovementForInsertionCommand = new DelegateCommand(
+                async () => await this.MoveExtBayForInsertionAsync(),
+                this.CanMoveExtBayForInsertion));
+
+        public ICommand ExtBayMovementForExtractionCommand =>
+            this.moveExtBayMovementForExtractionCommand
+            ??
+            (this.moveExtBayMovementForExtractionCommand = new DelegateCommand(
+                async () => await this.MoveExtBayForExtractionAsync(),
+                this.CanMoveExtBayForExtraction));
 
         public ICommand ClosedShutterCommand =>
             this.closedShutterCommand
@@ -450,6 +469,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.moveExtBayTowardOperatorCommand?.RaiseCanExecuteChanged();
                 this.moveExtBayTowardMachineCommand?.RaiseCanExecuteChanged();
 
+                this.moveExtBayMovementForInsertionCommand?.RaiseCanExecuteChanged();
+                this.moveExtBayMovementForExtractionCommand?.RaiseCanExecuteChanged();
+
                 this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
                 this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
 
@@ -537,6 +559,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanBaseExecute()
                 &&
                 this.moveExtBayTowardMachinePolicy?.IsAllowed == true;
+        }
+
+        private bool CanMoveExtBayForInsertion()
+        {
+            var zeroSensorOnBay = true;
+            switch (this.Bay.Number)
+            {
+                case BayNumber.BayOne: zeroSensorOnBay = this.SensorsService.Sensors.ACUBay1S3IND; break;
+                case BayNumber.BayTwo: zeroSensorOnBay = this.SensorsService.Sensors.ACUBay2S3IND; break;
+                case BayNumber.BayThree: zeroSensorOnBay = this.SensorsService.Sensors.ACUBay3S3IND; break;
+                case BayNumber.None: break;
+            }
+
+            return
+                this.CanBaseExecute()
+                &&
+                !zeroSensorOnBay;
+        }
+
+        private bool CanMoveExtBayForExtraction()
+        {
+            return this.CanBaseExecute();
         }
 
         private bool CanMoveExtBayTowardOperator()
@@ -804,6 +848,46 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.machineCarouselWebService.MoveAssistedAsync(VerticalMovementDirection.Down);
                 this.IsCarouselMoving = true;
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveExtBayForInsertionAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineExternalBayWebService.MovementForInsertionAsync();
+                this.IsExternalBayMoving = true;
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveExtBayForExtractionAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineExternalBayWebService.MovementForExtractionAsync();
+                this.IsExternalBayMoving = true;
                 this.IsExecutingProcedure = true;
             }
             catch (Exception ex)

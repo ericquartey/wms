@@ -44,6 +44,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int freeCellsOnlySpace;
 
+        private double maxSolidSpaceBack;
+
+        private double maxSolidSpaceFront;
+
         #endregion
 
         #region Constructors
@@ -61,6 +65,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Properties
+
+        public double MaxSolidSpaceBack
+        {
+            get => this.maxSolidSpaceBack;
+            set => this.SetProperty(ref this.maxSolidSpaceBack, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double MaxSolidSpaceFront
+        {
+            get => this.maxSolidSpaceFront;
+            set => this.SetProperty(ref this.maxSolidSpaceFront, value, this.RaiseCanExecuteChanged);
+        }
 
         public double FragmentBackPercent
         {
@@ -159,6 +175,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.FragmentBackPercent = cells.FragmentBackPercent;
                 this.FragmentFrontPercent = cells.FragmentFrontPercent;
                 this.FragmentTotalPercent = cells.FragmentTotalPercent;
+
+                foreach (var spaceSide in cells.MaxSolidSpace)
+                {
+                    if (spaceSide.Key == WarehouseSide.Front)
+                    {
+                        this.MaxSolidSpaceFront = spaceSide.Value;
+                    }
+                    else if (spaceSide.Key == WarehouseSide.Back)
+                    {
+                        this.MaxSolidSpaceBack = spaceSide.Value;
+                    }
+                }
 
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
                 //this.TotalDrawers = unit.Count(n => n.IsIntoMachine);

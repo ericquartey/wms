@@ -2563,6 +2563,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extra movement toward operator.
+        /// </summary>
+        public static string ExtBayMovementForExtraction {
+            get {
+                return ResourceManager.GetString("ExtBayMovementForExtraction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra movement for drawer insertion.
+        /// </summary>
+        public static string ExtBayMovementForInsertion {
+            get {
+                return ResourceManager.GetString("ExtBayMovementForInsertion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toward machine.
         /// </summary>
         public static string ExtBayTowardMachine {

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Models;
@@ -37,6 +38,7 @@ namespace Ferretto.VW.App
 
         public App()
         {
+            Current.DispatcherUnhandledException += this.App_OnDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
 
             this.logger.Info("*** Starting application ***");
@@ -174,6 +176,13 @@ namespace Ferretto.VW.App
 
             NLog.LogManager.Flush();
             NLog.LogManager.Shutdown();
+        }
+
+        private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            this.logger.Error(e.Exception, "An unhandled dispatcher exception was thrown.");
+
+            e.Handled = true;
         }
 
         private void DeactivateAccessories()

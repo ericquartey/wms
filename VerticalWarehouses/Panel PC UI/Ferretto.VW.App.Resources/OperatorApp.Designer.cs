@@ -3356,6 +3356,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mark as resolved and go to compaction.
+        /// </summary>
+        public static string MarkAsResolvedAndGo {
+            get {
+                return ResourceManager.GetString("MarkAsResolvedAndGo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Material status.
         /// </summary>
         public static string MaterialStatus {
@@ -3379,6 +3388,24 @@ namespace Ferretto.VW.App.Resources {
         public static string MaxRelativeCount {
             get {
                 return ResourceManager.GetString("MaxRelativeCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum consecutive free space back side.
+        /// </summary>
+        public static string MaxSolidSpaceBack {
+            get {
+                return ResourceManager.GetString("MaxSolidSpaceBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum consecutive free space front side.
+        /// </summary>
+        public static string MaxSolidSpaceFront {
+            get {
+                return ResourceManager.GetString("MaxSolidSpaceFront", resourceCulture);
             }
         }
         

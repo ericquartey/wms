@@ -13,185 +13,201 @@
             d:DesignWidth="774"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="250" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250" />
+      <ColumnDefinition />
+      <ColumnDefinition Width="250" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="50" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1"
-              Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="300" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+    <Grid Grid.Row="1"
+          Grid.Column="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="300" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.ColumnSpan="2"
-                       MinHeight="80"
+      <TextBlock Grid.ColumnSpan="2"
+                 MinHeight="80"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc ErrorsApp.ErrorRecoveryProcedure}" />
+
+      <StackPanel Grid.Row="1"
+                  MinHeight="100"
+                  HorizontalAlignment="Left"
+                  Orientation="Vertical">
+        <TextBlock Margin="0,1,5,1"
+                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                   Text="{res:Loc ErrorsApp.ErrorCode}" />
+        <TextBlock Margin="0,1,5,1"
+                   Padding="10,5,10,5"
+                   Background="{DynamicResource FerrettoRed}"
+                   Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                   Text="{Binding Error.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap" />
+      </StackPanel>
+
+      <StackPanel Name="bayStackPanel"
+                  Grid.Row="1"
+                  Grid.Column="2"
+                  MinHeight="100"
+                  HorizontalAlignment="Right"
+                  Orientation="Vertical">
+        <StackPanel.Style>
+          <Style>
+            <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding Error.BayNumber}"
+                           Value="{x:Static contracts:BayNumber.BayOne}">
+                <Setter Property="StackPanel.Visibility" Value="Visible" />
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Error.BayNumber}"
+                           Value="{x:Static contracts:BayNumber.BayTwo}">
+                <Setter Property="StackPanel.Visibility" Value="Visible" />
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Error.BayNumber}"
+                           Value="{x:Static contracts:BayNumber.BayThree}">
+                <Setter Property="StackPanel.Visibility" Value="Visible" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </StackPanel.Style>
+
+        <TextBlock Margin="0,1,5,1"
+                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                   Text="{res:Loc General.Bay}" />
+        <TextBlock Margin="0,1,5,1"
+                   Padding="10,5,10,5"
+                   Background="{DynamicResource FerrettoBlue}"
+                   Text="{res:Loc General.BayOneName}"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap">
+          <TextBlock.Style>
+            <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                   TargetType="{x:Type TextBlock}">
+              <Setter Property="Visibility" Value="Collapsed" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding Error.BayNumber}"
+                             Value="{x:Static contracts:BayNumber.BayOne}">
+                  <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <TextBlock Margin="0,1,5,1"
+                   Padding="10,5,10,5"
+                   Background="{DynamicResource FerrettoBlue}"
+                   Text="{res:Loc General.BayTwoName}"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap">
+          <TextBlock.Style>
+            <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                   TargetType="{x:Type TextBlock}">
+              <Setter Property="Visibility" Value="Collapsed" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding Error.BayNumber}"
+                             Value="{x:Static contracts:BayNumber.BayTwo}">
+                  <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <TextBlock Margin="0,1,5,1"
+                   Padding="10,5,10,5"
+                   Background="{DynamicResource FerrettoBlue}"
+                   Text="{res:Loc General.BayThreeName}"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap">
+          <TextBlock.Style>
+            <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                   TargetType="{x:Type TextBlock}">
+              <Setter Property="Visibility" Value="Collapsed" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding Error.BayNumber}"
+                             Value="{x:Static contracts:BayNumber.BayThree}">
+                  <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+      </StackPanel>
+
+      <local:PpcLabeledText Grid.Row="1"
+                            Grid.Column="1"
+                            MinHeight="80"
+                            HorizontalAlignment="Left"
+                            ContentText="{Binding Error.Description}"
+                            LabelText="{x:Static res:ErrorsApp.ErrorDescription}" />
+
+      <local:PpcLabeledText Grid.Row="2"
+                            Grid.ColumnSpan="3"
+                            MinHeight="80"
+                            HorizontalAlignment="Left"
+                            ContentText="{Binding Error.Reason}"
+                            LabelText="{res:Loc ErrorsApp.ErrorReason}" />
+
+      <local:PpcLabeledText Grid.Row="3"
+                            Grid.ColumnSpan="3"
+                            MinHeight="80"
+                            HorizontalAlignment="Left"
+                            ContentText="{Binding Error.AdditionalText}"
+                            LabelText="{res:Loc OperatorApp.AdditionalText}" />
+
+      <local:PpcLabeledText Grid.Row="4"
+                            MinHeight="80"
+                            HorizontalAlignment="Left"
+                            ContentText="{Binding ErrorTime}"
+                            LabelText="{res:Loc ErrorsApp.FirstSeen}" />
+
+
+      <local:PpcLabeledText Grid.Row="4"
+                            Grid.Column="1"
+                            MinHeight="80"
+                            HorizontalAlignment="Left"
+                            ContentText="{Binding Error.Id}"
+                            LabelText="{res:Loc ErrorsApp.Id}" />
+
+      <!--<local:PpcButton Grid.Row="5"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc ErrorsApp.ErrorRecoveryProcedure}" />
+                       Command="{Binding MarkAsResolvedCommand}"
+                       Content="{res:Loc ErrorsApp.MarkAsResolved}" />-->
 
-            <StackPanel Grid.Row="1"
-                        MinHeight="100"
-                        HorizontalAlignment="Left"
-                        Orientation="Vertical">
-                <TextBlock Margin="0,1,5,1"
-                           Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{res:Loc ErrorsApp.ErrorCode}" />
-                <TextBlock Margin="0,1,5,1"
-                           Padding="10,5,10,5"
-                           Background="{DynamicResource FerrettoRed}"
-                           Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                           Text="{Binding Error.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
-                           TextAlignment="Center"
-                           TextWrapping="Wrap" />
-            </StackPanel>
-
-            <StackPanel Name="bayStackPanel"
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        MinHeight="100"
-                        HorizontalAlignment="Right"
-                        Orientation="Vertical">
-                <StackPanel.Style>
-                    <Style>
-                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Error.BayNumber}"
-                                         Value="{x:Static contracts:BayNumber.BayOne}">
-                                <Setter Property="StackPanel.Visibility" Value="Visible" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Error.BayNumber}"
-                                         Value="{x:Static contracts:BayNumber.BayTwo}">
-                                <Setter Property="StackPanel.Visibility" Value="Visible" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Error.BayNumber}"
-                                         Value="{x:Static contracts:BayNumber.BayThree}">
-                                <Setter Property="StackPanel.Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-
-                <TextBlock Margin="0,1,5,1"
-                           Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                           Text="{res:Loc General.Bay}" />
-                <TextBlock Margin="0,1,5,1"
-                           Padding="10,5,10,5"
-                           Background="{DynamicResource FerrettoBlue}"
-                           Text="{res:Loc General.BayOneName}"
-                           TextAlignment="Center"
-                           TextWrapping="Wrap">
-                    <TextBlock.Style>
-                        <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                               TargetType="{x:Type TextBlock}">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Error.BayNumber}"
-                                             Value="{x:Static contracts:BayNumber.BayOne}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <TextBlock Margin="0,1,5,1"
-                           Padding="10,5,10,5"
-                           Background="{DynamicResource FerrettoBlue}"
-                           Text="{res:Loc General.BayTwoName}"
-                           TextAlignment="Center"
-                           TextWrapping="Wrap">
-                    <TextBlock.Style>
-                        <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                               TargetType="{x:Type TextBlock}">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Error.BayNumber}"
-                                             Value="{x:Static contracts:BayNumber.BayTwo}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <TextBlock Margin="0,1,5,1"
-                           Padding="10,5,10,5"
-                           Background="{DynamicResource FerrettoBlue}"
-                           Text="{res:Loc General.BayThreeName}"
-                           TextAlignment="Center"
-                           TextWrapping="Wrap">
-                    <TextBlock.Style>
-                        <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                               TargetType="{x:Type TextBlock}">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Error.BayNumber}"
-                                             Value="{x:Static contracts:BayNumber.BayThree}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </StackPanel>
-
-            <local:PpcLabeledText Grid.Row="1"
-                                  Grid.Column="1"
-                                  MinHeight="80"
-                                  HorizontalAlignment="Left"
-                                  ContentText="{Binding Error.Description}"
-                                  LabelText="{x:Static res:ErrorsApp.ErrorDescription}" />
-
-            <local:PpcLabeledText Grid.Row="2"
-                                  Grid.ColumnSpan="3"
-                                  MinHeight="80"
-                                  HorizontalAlignment="Left"
-                                  ContentText="{Binding Error.Reason}"
-                                  LabelText="{res:Loc ErrorsApp.ErrorReason}" />
-
-            <local:PpcLabeledText Grid.Row="3"
-                                  Grid.ColumnSpan="3"
-                                  MinHeight="80"
-                                  HorizontalAlignment="Left"
-                                  ContentText="{Binding Error.AdditionalText}"
-                                  LabelText="{res:Loc OperatorApp.AdditionalText}" />
-
-            <local:PpcLabeledText Grid.Row="4"
-                                  MinHeight="80"
-                                  HorizontalAlignment="Left"
-                                  ContentText="{Binding ErrorTime}"
-                                  LabelText="{res:Loc ErrorsApp.FirstSeen}" />
+      <StackPanel Grid.Row="5"
+                  Grid.ColumnSpan="3"
+                  Orientation="Horizontal">
+        <local:PpcButton HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Command="{Binding MarkAsResolvedCommand}"
+                         Content="{res:Loc ErrorsApp.MarkAsResolved}" />
+        <local:PpcButton Margin="10,0,0,0"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Command="{Binding MarkAsResolvedAndGoCommand}"
+                         Content="{res:Loc OperatorApp.MarkAsResolvedAndGo}"
+                         Visibility="{Binding IsVisibleGoTo, Converter={StaticResource BTVC}}" />
+      </StackPanel>
 
 
-            <local:PpcLabeledText Grid.Row="4"
-                                  Grid.Column="1"
-                                  MinHeight="80"
-                                  HorizontalAlignment="Left"
-                                  ContentText="{Binding Error.Id}"
-                                  LabelText="{res:Loc ErrorsApp.Id}" />
-
-            <local:PpcButton Grid.Row="5"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             Command="{Binding MarkAsResolvedCommand}"
-                             Content="{res:Loc ErrorsApp.MarkAsResolved}" />
-
-        </Grid>
     </Grid>
+  </Grid>
 </ctrls:View>
