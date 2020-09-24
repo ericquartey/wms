@@ -352,6 +352,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (this.lastPanel != 0)
             {
+                this.CurrentPanel = this.Panels?.ElementAtOrDefault(this.lastPanel - 1);
                 this.CurrentPanelNumber = this.lastPanel;
             }
 
