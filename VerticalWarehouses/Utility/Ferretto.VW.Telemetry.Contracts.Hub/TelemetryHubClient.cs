@@ -49,6 +49,23 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
             }
         }
 
+        public async Task SendIOLogAsync(IIOLog ioLog)
+        {
+            if (!this.IsConnected)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.SendAsync("SendIOLog", ioLog);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error($"Error sending IO log to telemetry service {ex.Message}");
+            }
+        }
+
         public async Task SendMachineAsync(IMachine machine)
         {
             if (!this.IsConnected)

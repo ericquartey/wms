@@ -11,6 +11,8 @@ namespace Ferretto.ServiceDesk.Telemetry.Hubs
 
         Task SendErrorLog(ErrorLog errorLog);
 
+        Task SendIOLog(IOLog ioLog);
+
         Task SendMachine(Machine machine);
 
         Task SendMissionLog(MissionLog missionLog);
