@@ -139,6 +139,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 else if (this.machineData.AxisToCalibrate == Axis.Horizontal)
                 {
                     var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                    elevatorDataProvider.UpdateLastIdealPosition(0);
                     elevatorDataProvider.UpdateLastCalibrationCycles();
                 }
 
