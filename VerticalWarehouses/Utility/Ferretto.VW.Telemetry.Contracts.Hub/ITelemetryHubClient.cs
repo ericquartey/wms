@@ -17,6 +17,8 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
         Task SendErrorLogAsync(IErrorLog errorLog);
 
+        Task SendIOLogAsync(IIOLog ioLog);
+
         Task SendMachineAsync(IMachine machine);
 
         Task SendMissionLogAsync(IMissionLog missionLog);

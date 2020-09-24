@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,6 +15,18 @@ namespace Ferretto.VW.MAS.AutomationService
     public partial class NotificationTelemetryService
     {
         #region Methods
+
+        private static string ConvertBoolArrayToStringOfBit(bool[] arrayOfBool)
+        {
+            var result = "";
+
+            foreach (var b in arrayOfBool)
+            {
+                result += b ? "1" : "0";
+            }
+
+            return result.ToString();
+        }
 
         private async Task OnDataLayerReadyAsync()
         {
@@ -129,6 +144,20 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.SendMissionLogAsync(missionLog);
         }
 
+        private async Task OnSensorsChanged(NotificationMessage receivedMessage, SensorsChangedMessageData messageData)
+        {
+            var ioLog = new IOLog
+            {
+                BayNumber = (int)receivedMessage.RequestingBay,
+                Description = receivedMessage.Description,
+                Input = NotificationTelemetryService.ConvertBoolArrayToStringOfBit(messageData.SensorsStates),
+                Output = null,
+                TimeStamp = DateTimeOffset.Now
+            };
+
+            await this.SendIOLogAsync(ioLog);
+        }
+
         private async Task SendErrorLogAsync(ErrorLog errorLog)
         {
             if (!this.telemetryHub.IsConnected)
@@ -145,6 +174,25 @@ namespace Ferretto.VW.MAS.AutomationService
             catch (Exception ex)
             {
                 this.Logger.LogWarning(ex, "Unable to send error log to telemetry service.");
+            }
+        }
+
+        private async Task SendIOLogAsync(IOLog ioLog)
+        {
+            if (!this.telemetryHub.IsConnected)
+            {
+                this.Logger.LogWarning("Unable to send mission log to telemetry service because the hub is not connected.");
+
+                return;
+            }
+
+            try
+            {
+                await this.telemetryHub.SendIOLogAsync(ioLog);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogWarning(ex, "Unable to send IO log to telemetry service.");
             }
         }
 
