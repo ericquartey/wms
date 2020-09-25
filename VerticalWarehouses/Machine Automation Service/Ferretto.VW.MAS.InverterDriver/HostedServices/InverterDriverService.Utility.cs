@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private IInverterPositioningFieldMessageData dataOld;
 
-        private Timer heartBeatTimer;
+        //private Timer heartBeatTimer;
 
         private IPAddress inverterAddress;
 
@@ -444,11 +444,29 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
+        private async Task GenerateHeartBeatAsync()
+        {
+            try
+            {
+                do
+                {
+                    this.RequestHeartBeat(InverterIndex.MainInverter);
+                    await Task.Delay(HEARTBEAT_TIMEOUT, this.CancellationToken);
+                }
+                while (!this.CancellationToken.IsCancellationRequested);
+            }
+            catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
+            {
+                this.Logger.LogTrace("Stopping heartBeat generation.");
+            }
+        }
+
         private void InitializeTimers()
         {
             try
             {
-                this.heartBeatTimer = new Timer(this.RequestHeartBeat, InverterIndex.MainInverter, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+                //this.heartBeatTimer = new Timer(this.RequestHeartBeat, InverterIndex.MainInverter, TimeSpan.Zero, TimeSpan.FromMilliseconds(HEARTBEAT_TIMEOUT));
+                Task.Run(this.GenerateHeartBeatAsync);
                 this.sensorStatusUpdateTimer?.Change(SENSOR_STATUS_UPDATE_INTERVAL, SENSOR_STATUS_UPDATE_INTERVAL);
                 //this.statusWordUpdateTimer?.Change(STATUS_WORD_UPDATE_INTERVAL, STATUS_WORD_UPDATE_INTERVAL);
             }
