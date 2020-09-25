@@ -106,6 +106,7 @@ namespace Ferretto.VW.TelemetryService
                 }
             }
 
+            //IO NOTE: must be removed because IO Send only on error events
             foreach (var ioLog in realm.All<Models.IOLog>().ToArray())
             {
                 var success = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, persistOnSendFailure: false);
