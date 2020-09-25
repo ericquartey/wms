@@ -51,6 +51,10 @@
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterRightSide}"
                                            Text="{res:Loc InstallationApp.MicroCarterRightSide}" />
+                
+                <controls:PpcSensorControl SensorState="{Binding Sensors.InverterInFault1}"
+                                           Text="{res:Loc InstallationApp.InverterInFault}" />
+                                           
             </StackPanel>
 
             <StackPanel Grid.Row="2"

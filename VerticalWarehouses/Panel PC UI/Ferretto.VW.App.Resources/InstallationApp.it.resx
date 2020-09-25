@@ -2817,4 +2817,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ExtBayMovementForInsertion" xml:space="preserve">
     <value>Extra movimento per inserimento cassetto</value>
   </data>
+  <data name="InverterInFault" xml:space="preserve">
+    <value>Inverters in errore</value>
+    <comment>Sensors</comment>
+  </data>
 </root>

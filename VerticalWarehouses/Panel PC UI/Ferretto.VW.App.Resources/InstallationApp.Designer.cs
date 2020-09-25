@@ -3877,6 +3877,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverters fault.
+        /// </summary>
+        public static string InverterInFault {
+            get {
+                return ResourceManager.GetString("InverterInFault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading the inverter parameterization with standard parameters.
         /// </summary>
         public static string InverterParameterizationMenuDescription {
