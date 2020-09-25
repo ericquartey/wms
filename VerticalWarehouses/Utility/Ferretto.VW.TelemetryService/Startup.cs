@@ -75,6 +75,7 @@ namespace Ferretto.VW.TelemetryService
 
             services.AddTransient<Providers.IMachineProvider, Providers.MachineProvider>();
             services.AddTransient<Providers.IErrorLogProvider, Providers.ErrorLogProvider>();
+            services.AddTransient<Providers.IIOLogProvider, Providers.IOLogProvider>();
             services.AddTransient<Providers.IMissionLogProvider, Providers.MissionLogProvider>();
             services.AddTransient<Providers.IScreenShotProvider, Providers.ScreenShotProvider>();
 

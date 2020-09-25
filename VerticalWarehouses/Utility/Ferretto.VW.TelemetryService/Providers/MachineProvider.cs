@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Caching.Memory;
 using Realms;
 
@@ -66,14 +67,28 @@ namespace Ferretto.VW.TelemetryService.Providers
         public async Task SaveAsync(IMachine machine)
         {
             // TODO: add check to avoid inserting duplicate records
-            var machineRecord = new Models.Machine
-            {
-                ModelName = machine.ModelName,
-                SerialNumber = machine.SerialNumber,
-                Version = machine.Version
-            };
 
-            await this.realm.WriteAsync((r) => r.Add(machineRecord));
+            var machineInDatabase = this.realm.All<Models.Machine>().SingleOrDefault();
+
+            if (machineInDatabase is null)
+            {
+                var machineRecord = new Models.Machine
+                {
+                    ModelName = machine.ModelName,
+                    SerialNumber = machine.SerialNumber,
+                    Version = machine.Version
+                };
+
+                await this.realm.WriteAsync((r) => r.Add(machineRecord));
+            }
+            else
+            {
+                machineInDatabase.ModelName = machine.ModelName;
+                machineInDatabase.SerialNumber = machine.SerialNumber;
+                machineInDatabase.Version = machine.Version;
+
+                await this.realm.WriteAsync((r) => r.Add(machineInDatabase, true));
+            }
         }
 
         #endregion

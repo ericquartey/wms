@@ -83,6 +83,10 @@ namespace Ferretto.VW.TelemetryService
                         .DeleteOldLogs(this.maximumLogTimespan);
 
                     scope.ServiceProvider
+                        .GetRequiredService<IIOLogProvider>()
+                        .DeleteOldLogs(this.maximumLogTimespan);       //NOTE keep IO logs shorter (just 1 day)
+
+                    scope.ServiceProvider
                         .GetRequiredService<IMissionLogProvider>()
                         .DeleteOldLogs(this.maximumLogTimespan);
 
