@@ -510,7 +510,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     currentStateMachine.Start();
                 }
 
-                if(inverter.SystemIndex == InverterIndex.MainInverter || inverter.SystemIndex == InverterIndex.Slave1)
+                if (inverter.SystemIndex == InverterIndex.MainInverter || inverter.SystemIndex == InverterIndex.Slave1)
                 {
                     this.dataOld = null;
                 }
@@ -1132,6 +1132,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.isHeartBeatOn = !this.isHeartBeatOn;
 
                     this.CheckTimePeriodElapsed();
+                }
+                else
+                {
+                    this.Logger.LogDebug($"2.RequestHeartBeat missed");
                 }
             }
         }
