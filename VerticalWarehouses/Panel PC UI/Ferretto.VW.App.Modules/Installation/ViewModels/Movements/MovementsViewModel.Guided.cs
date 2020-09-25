@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO.Packaging;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -509,6 +510,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanLoadFromBay()
         {
+            // Check a condition for external bay
+            var conditionOnExternalBay = true;
+            if (this.HasBayExternal && this.SensorsService.IsLoadingUnitInMiddleBottomBay)
+            {
+                conditionOnExternalBay = false;
+            }
+
             var selectedBayPosition = this.SelectedBayPosition();
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
@@ -517,7 +525,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
                    selectedBayPosition != null &&
                    selectedBayPosition.LoadingUnit != null &&
-                   this.MachineStatus.EmbarkedLoadingUnit is null;
+                   this.MachineStatus.EmbarkedLoadingUnit is null &&
+                   conditionOnExternalBay;
         }
 
         private bool CanLoadFromCell()
