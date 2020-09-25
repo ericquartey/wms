@@ -89,13 +89,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveShutterClosed))
                             {
-                                // after closing the shutter i can move back to the previous step
-                                this.Mission.ErrorMovements = MissionErrorMovements.None;
-                                this.Mission.RestoreConditions = true;
-                                this.Mission.NeedMovingBackward = false;
-                                this.Mission.RestoreStep = MissionStep.NotDefined;
-                                var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                newStep.OnEnter(null);
+                                if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                                {
+                                    this.Mission.ErrorMovements = MissionErrorMovements.None;
+                                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                                    this.LoadUnitEnd(restore: true);
+                                }
+                                else
+                                {
+                                    // after closing the shutter i can move back to the previous step
+                                    this.Mission.ErrorMovements = MissionErrorMovements.None;
+                                    this.Mission.RestoreConditions = true;
+                                    this.Mission.NeedMovingBackward = false;
+                                    this.Mission.RestoreStep = MissionStep.NotDefined;
+                                    var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                    newStep.OnEnter(null);
+                                }
                             }
                             else
                             {
