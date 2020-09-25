@@ -14,6 +14,8 @@ namespace Ferretto.VW.TelemetryService.Controllers
 
         private readonly IErrorLogProvider errorLogProvider;
 
+        private readonly IIOLogProvider ioLogProvider;
+
         private readonly IMissionLogProvider missionLogProvider;
 
         private readonly IScreenShotProvider screenShotProvider;
@@ -24,10 +26,12 @@ namespace Ferretto.VW.TelemetryService.Controllers
 
         public LogsController(
             IErrorLogProvider errorLogProvider,
+            IIOLogProvider ioLogProvider,
             IMissionLogProvider missionLogProvider,
             IScreenShotProvider screenShotProvider)
         {
             this.errorLogProvider = errorLogProvider ?? throw new ArgumentNullException(nameof(errorLogProvider));
+            this.ioLogProvider = ioLogProvider ?? throw new ArgumentNullException(nameof(ioLogProvider));
             this.missionLogProvider = missionLogProvider ?? throw new ArgumentNullException(nameof(missionLogProvider));
             this.screenShotProvider = screenShotProvider ?? throw new ArgumentNullException(nameof(screenShotProvider));
         }
@@ -40,6 +44,12 @@ namespace Ferretto.VW.TelemetryService.Controllers
         public ActionResult<IEnumerable<IErrorLog>> GetErrorLogs()
         {
             return this.Ok(this.errorLogProvider.GetAll());
+        }
+
+        [HttpGet("io")]
+        public ActionResult<IEnumerable<IIOLog>> GetIOLogs()
+        {
+            return this.Ok(this.ioLogProvider.GetAll());
         }
 
         [HttpGet("missions")]

@@ -34,6 +34,11 @@ namespace Ferretto.VW.TelemetryService
             await this.TrySendErrorLogAsync(serialNumber, errorLog, persistOnSendFailure: true);
         }
 
+        public async Task SendIOLogAsync(string serialNumber, IOLog ioLog)
+        {
+            await this.TrySendIOLogAsync(serialNumber, ioLog, persistOnSendFailure: true);
+        }
+
         public async Task SendMachineAsync(Machine machine)
         {
             if (this.IsConnected)
@@ -101,6 +106,19 @@ namespace Ferretto.VW.TelemetryService
                 }
             }
 
+            //IO NOTE: must be removed because IO Send only on error events
+            foreach (var ioLog in realm.All<Models.IOLog>().ToArray())
+            {
+                var success = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, persistOnSendFailure: false);
+                if (success)
+                {
+                    await realm.WriteAsync(r =>
+                    {
+                        r.Remove(ioLog);
+                    });
+                }
+            }
+
             foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
             {
                 if (screenShot.Image != null)
@@ -129,6 +147,14 @@ namespace Ferretto.VW.TelemetryService
 
             var errorLogProvider = scope.ServiceProvider.GetRequiredService<Providers.IErrorLogProvider>();
             await errorLogProvider.SaveAsync(serialNumber, errorLog);
+        }
+
+        private async Task SaveEntryAsync(string serialNumber, IIOLog ioLog)
+        {
+            var scope = this.serviceScopeFactory.CreateScope();
+
+            var ioLogProvider = scope.ServiceProvider.GetRequiredService<Providers.IIOLogProvider>();
+            await ioLogProvider.SaveAsync(serialNumber, ioLog);
         }
 
         private async Task SaveEntryAsync(string serialNumber, IMissionLog missionLog)
@@ -166,6 +192,30 @@ namespace Ferretto.VW.TelemetryService
             if (!messageSent && persistOnSendFailure)
             {
                 await this.SaveEntryAsync(serialNumber, errorLog);
+            }
+
+            return messageSent;
+        }
+
+        private async Task<bool> TrySendIOLogAsync(string serialNumber, IIOLog ioLog, bool persistOnSendFailure)
+        {
+            var messageSent = false;
+            if (this.IsConnected)
+            {
+                try
+                {
+                    await this.SendAsync(nameof(ITelemetryHub.SendIOLog), serialNumber, ioLog);
+
+                    messageSent = true;
+                }
+                catch
+                {
+                }
+            }
+
+            if (!messageSent && persistOnSendFailure)
+            {
+                await this.SaveEntryAsync(serialNumber, ioLog);
             }
 
             return messageSent;

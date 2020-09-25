@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 
 namespace Ferretto.VW.MAS.AutomationService
@@ -51,6 +52,10 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 case MessageType.MoveLoadingUnit when message.Data is MoveLoadingUnitMessageData:
                     await this.OnMoveLoadingUnitAsync(message);
+                    break;
+
+                case MessageType.SensorsChanged when message.Data is SensorsChangedMessageData messageData:
+                    await this.OnSensorsChanged(message, messageData);
                     break;
             }
         }
