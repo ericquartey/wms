@@ -112,6 +112,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.loadingUnitsDataProvider.GetAllNotTestUnits());
         }
 
+        [HttpGet("get-load-unit-max-height")]
+        public ActionResult<double> GetLoadUnitMaxHeight()
+        {
+            return this.Ok(this.loadingUnitsDataProvider.GetLoadUnitMaxHeight());
+        }
+
         [HttpGet("get-all-test-units")]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAllTestUnits()
         {

@@ -263,6 +263,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public double GetLoadUnitMaxHeight()
+        {
+            lock (this.dataContext)
+            {
+                var loadUnitMaxHeight = this.dataContext.Machines.Select(s => s.LoadUnitMaxHeight).Single();
+
+                return loadUnitMaxHeight;
+            }
+        }
+
         public void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context)
         {
             _ = loadingUnits ?? throw new ArgumentNullException(nameof(loadingUnits));

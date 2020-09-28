@@ -121,6 +121,8 @@ namespace Ferretto.VW.App.Services
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
+        private double loadUnitMaxHeight;
+
         private SubscriptionToken machineModeChangedToken;
 
         private SubscriptionToken machinePowerChangedToken;
@@ -323,6 +325,8 @@ namespace Ferretto.VW.App.Services
         public MachinePowerState MachinePower => this.machineModeService.MachinePower;
 
         public Models.MachineStatus MachineStatus { get; }
+
+        public double MaxSolidSpace { get; private set; }
 
         internal string Notification
         {
@@ -988,6 +992,10 @@ namespace Ferretto.VW.App.Services
                             {
                                 var cellStat = await this.machineCellsWebService.GetStatisticsAsync();
                                 this.FragmentTotalPercent = cellStat.FragmentTotalPercent;
+
+                                this.loadUnitMaxHeight = await this.machineLoadingUnitsWebService.GetLoadUnitMaxHeightAsync();
+
+                                this.MaxSolidSpace = cellStat.MaxSolidSpace.Select(s => s.Value).Max();
                             }
                             if (this.MachineStatus.IsMovingLoadingUnit)
                             {
@@ -1633,10 +1641,14 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
                         }
-                        else if (this.FragmentTotalPercent > MaximumFragmentation)
+                        else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
+                        //else if (this.FragmentTotalPercent > MaximumFragmentation)
+                        //{
+                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        //}
                         else if (this.IsAnyExpired)
                         {
                             this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
@@ -1664,10 +1676,14 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionsWmsNotActive"), NotificationSeverity.Warning);
                         }
-                        else if (this.FragmentTotalPercent > MaximumFragmentation)
+                        else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
+                        //else if (this.FragmentTotalPercent > MaximumFragmentation)
+                        //{
+                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        //}
                         else if (this.IsAnyExpired)
                         {
                             this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
@@ -1700,10 +1716,14 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
                         }
-                        else if (this.FragmentTotalPercent > MaximumFragmentation)
+                        else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
                         }
+                        //else if (this.FragmentTotalPercent > MaximumFragmentation)
+                        //{
+                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        //}
                         else if (this.IsAnyExpired)
                         {
                             this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
