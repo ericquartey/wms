@@ -367,22 +367,32 @@ namespace Ferretto.VW.MAS.SocketLink
                 {
                     var exitBayNumber = cmdReceived.GetExitBayNumber();
                     var trayNumber = cmdReceived.GetTrayNumber();
-                    var trayStatus = this.loadingUnitsDataProvider.GetById(trayNumber).Status;
 
-                    if (trayStatus == DataModels.Enumerations.LoadingUnitStatus.InLocation)
+                    if (this.missionsDataProvider.GetAllActiveMissionsByBay(exitBayNumber).Where(m => m.LoadUnitId == trayNumber).Any())
                     {
-                        var exitBay = this.baysDataProvider.GetByNumber(exitBayNumber);
-                        this.missionSchedulingProvider.QueueBayMission(trayNumber, exitBay.Number, MissionType.OUT);
-
-                        cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.requestAccepted);
-                        cmdResponse.AddPayload(trayNumber);
-                        cmdResponse.AddPayload("");
+                        cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayAlreadyRequested);
+                        cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                        cmdResponse.AddPayload("tray already requested");
                     }
                     else
                     {
-                        cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayContainedInABlockedShelfPosition);
-                        cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
-                        cmdResponse.AddPayload($"incorrect tray status ({trayStatus})");
+                        var trayStatus = this.loadingUnitsDataProvider.GetById(trayNumber).Status;
+
+                        if (trayStatus == DataModels.Enumerations.LoadingUnitStatus.InLocation)
+                        {
+                            var exitBay = this.baysDataProvider.GetByNumber(exitBayNumber);
+                            this.missionSchedulingProvider.QueueBayMission(trayNumber, exitBay.Number, MissionType.OUT);
+
+                            cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.requestAccepted);
+                            cmdResponse.AddPayload(trayNumber);
+                            cmdResponse.AddPayload("");
+                        }
+                        else
+                        {
+                            cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayContainedInABlockedShelfPosition);
+                            cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                            cmdResponse.AddPayload($"incorrect tray status ({trayStatus})");
+                        }
                     }
                 }
                 else
