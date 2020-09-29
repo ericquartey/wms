@@ -43,6 +43,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         double TargetPosition { get; set; }
 
+        double TargetPositionOriginal { get; set; }
+
         double[] TargetSpeed { get; set; }
 
         DataSample TorqueCurrentSample { get; set; }

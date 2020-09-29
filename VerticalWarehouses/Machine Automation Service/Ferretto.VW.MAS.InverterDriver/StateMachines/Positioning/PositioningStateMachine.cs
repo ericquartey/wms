@@ -30,7 +30,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
             this.data = data;
-            this.data.TargetPositionOriginal = data.TargetPosition;
             this.inverterStatus = inverterStatus;
         }
 
