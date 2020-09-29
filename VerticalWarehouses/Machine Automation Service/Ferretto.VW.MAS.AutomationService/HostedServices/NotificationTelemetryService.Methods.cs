@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 TimeStamp = DateTimeOffset.Now
             };
 
-            await this.SendIOLogAsync(ioLog);
+            //await this.SendIOLogAsync(ioLog); TODO
         }
 
         private async Task SendErrorLogAsync(ErrorLog errorLog)
