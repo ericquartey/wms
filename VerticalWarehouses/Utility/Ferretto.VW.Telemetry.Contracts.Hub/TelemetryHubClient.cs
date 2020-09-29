@@ -58,7 +58,8 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
             try
             {
-                await this.SendAsync("SendIOLog", ioLog);
+                //await this.SendAsync("SendIOLog", ioLog);
+                await this.SendAsync("PersistIOLog", ioLog);
             }
             catch (Exception ex)
             {

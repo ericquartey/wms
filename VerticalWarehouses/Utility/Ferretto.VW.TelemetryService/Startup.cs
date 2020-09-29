@@ -1,4 +1,5 @@
 using System;
+using Ferretto.VW.TelemetryService.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -73,11 +74,17 @@ namespace Ferretto.VW.TelemetryService
 
             services.AddMemoryCache();
 
-            services.AddTransient<Providers.IMachineProvider, Providers.MachineProvider>();
-            services.AddTransient<Providers.IErrorLogProvider, Providers.ErrorLogProvider>();
-            services.AddTransient<Providers.IIOLogProvider, Providers.IOLogProvider>();
-            services.AddTransient<Providers.IMissionLogProvider, Providers.MissionLogProvider>();
-            services.AddTransient<Providers.IScreenShotProvider, Providers.ScreenShotProvider>();
+            services.AddScoped<IMachineProvider, MachineProvider>();
+            services.AddScoped<IErrorLogProvider, ErrorLogProvider>();
+            services.AddScoped<IIOLogProvider, IOLogProvider>();
+            services.AddScoped<IMissionLogProvider, MissionLogProvider>();
+            services.AddScoped<IScreenShotProvider, ScreenShotProvider>();
+
+            //services.AddTransient<Providers.IMachineProvider, Providers.MachineProvider>();
+            //services.AddTransient<Providers.IErrorLogProvider, Providers.ErrorLogProvider>();
+            //services.AddTransient<Providers.IIOLogProvider, Providers.IOLogProvider>();
+            //services.AddTransient<Providers.IMissionLogProvider, Providers.MissionLogProvider>();
+            //services.AddTransient<Providers.IScreenShotProvider, Providers.ScreenShotProvider>();
 
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
             var schemaVersion = Convert.ToUInt64(this.Configuration.GetConnectionString(SchemaVersionName));

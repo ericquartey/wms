@@ -6,12 +6,17 @@ using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.Common.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.TelemetryService
 {
     public class TelemetryWebHubClient : AutoReconnectHubClient, ITelemetryWebHubClient
     {
         #region Fields
+
+        public const int IO_ERROR_INTERVAL_SECONDS = -30;
+
+        private readonly NLog.ILogger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
@@ -28,6 +33,11 @@ namespace Ferretto.VW.TelemetryService
         #endregion
 
         #region Methods
+
+        public async Task PersistIOLogAsync(string serialNumber, IOLog ioLog)
+        {
+            await this.TryPersistIOLogAsync(serialNumber, ioLog);
+        }
 
         public async Task SendErrorLogAsync(string serialNumber, ErrorLog errorLog)
         {
@@ -82,6 +92,7 @@ namespace Ferretto.VW.TelemetryService
             await this.SendAsync(nameof(ITelemetryHub.SendMachine), machine);
 
             var realm = scope.ServiceProvider.GetRequiredService<Realms.Realm>();
+
             foreach (var missionLog in realm.All<Models.MissionLog>().ToArray())
             {
                 var success = await this.TrySendMissionLogAsync(machine.SerialNumber, missionLog, persistOnSendFailure: false);
@@ -103,21 +114,24 @@ namespace Ferretto.VW.TelemetryService
                     {
                         r.Remove(errorLog);
                     });
+
+                    var ioLogsToBeRemoved = realm.All<Models.IOLog>().Where(io => io.TimeStamp >= errorLog.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS) && io.TimeStamp <= errorLog.OccurrenceDate);
+                    realm.RemoveRange(ioLogsToBeRemoved);
                 }
             }
 
             //IO NOTE: must be removed because IO Send only on error events
-            foreach (var ioLog in realm.All<Models.IOLog>().ToArray())
-            {
-                var success = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, persistOnSendFailure: false);
-                if (success)
-                {
-                    await realm.WriteAsync(r =>
-                    {
-                        r.Remove(ioLog);
-                    });
-                }
-            }
+            //foreach (var ioLog in realm.All<Models.IOLog>().ToArray())
+            //{
+            //    var success = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, persistOnSendFailure: false);
+            //    if (success)
+            //    {
+            //        await realm.WriteAsync(r =>
+            //        {
+            //            r.Remove(ioLog);
+            //        });
+            //    }
+            //}
 
             foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
             {
@@ -139,6 +153,14 @@ namespace Ferretto.VW.TelemetryService
         {
             // do nothing
             // no incoming notifications from the hub
+        }
+
+        private IEnumerable<IIOLog> GetEntryAsync(string serialNumber, DateTimeOffset start, DateTimeOffset end)
+        {
+            var scope = this.serviceScopeFactory.CreateScope();
+
+            var ioLogProvider = scope.ServiceProvider.GetRequiredService<Providers.IIOLogProvider>();
+            return ioLogProvider.GetByTimeStamp(serialNumber, start, end);
         }
 
         private async Task SaveEntryAsync(string serialNumber, IErrorLog errorLog)
@@ -173,6 +195,22 @@ namespace Ferretto.VW.TelemetryService
             await screenShotProvider.SaveAsync(serialNumber, screenShot);
         }
 
+        private async Task<bool> TryPersistIOLogAsync(string serialNumber, IIOLog ioLog)
+        {
+            var messagePersited = false;
+
+            try
+            {
+                await this.SaveEntryAsync(serialNumber, ioLog);
+                messagePersited = true;
+            }
+            catch
+            {
+            }
+
+            return messagePersited;
+        }
+
         private async Task<bool> TrySendErrorLogAsync(string serialNumber, IErrorLog errorLog, bool persistOnSendFailure)
         {
             var messageSent = false;
@@ -181,6 +219,20 @@ namespace Ferretto.VW.TelemetryService
                 try
                 {
                     await this.SendAsync(nameof(ITelemetryHub.SendErrorLog), serialNumber, errorLog);
+
+                    foreach (var ioLog in this.GetEntryAsync(serialNumber, errorLog.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS), errorLog.OccurrenceDate))
+                    {
+                        var ioLogCorrect = new IOLog
+                        {
+                            BayNumber = ioLog.BayNumber,
+                            Description = ioLog.Description,
+                            Input = ioLog.Input,
+                            Output = ioLog.Output,
+                            TimeStamp = ioLog.TimeStamp.ToOffset(DateTimeOffset.Now.Offset)
+                        };
+
+                        await this.SendAsync(nameof(ITelemetryHub.SendIOLog), serialNumber, ioLogCorrect);
+                    }
 
                     messageSent = true;
                 }
@@ -208,8 +260,9 @@ namespace Ferretto.VW.TelemetryService
 
                     messageSent = true;
                 }
-                catch
+                catch (Exception e)
                 {
+                    this.logger.Error(e);
                 }
             }
 
