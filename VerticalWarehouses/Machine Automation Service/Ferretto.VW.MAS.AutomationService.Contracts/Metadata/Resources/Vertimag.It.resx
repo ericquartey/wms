@@ -303,6 +303,9 @@
   <data name="HalfShaftLength" xml:space="preserve">
     <value>Lunghezza semi albero</value>
   </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
   </data>
@@ -435,11 +438,17 @@
   <data name="Orientation.Vertical" xml:space="preserve">
     <value>verticale</value>
   </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
   <data name="Position" xml:space="preserve">
     <value>Posizione {0}</value>
   </data>
   <data name="PulleyDiameter" xml:space="preserve">
     <value>Diametro primitivo puleggia</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Deposito</value>
   </data>
   <data name="Race" xml:space="preserve">
     <value>Corsa</value>
@@ -515,5 +524,8 @@
   </data>
   <data name="TotalDistance" xml:space="preserve">
     <value>Totale distanza</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Visione</value>
   </data>
 </root>
