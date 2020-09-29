@@ -2910,4 +2910,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ExtBayMovementForInsertion" xml:space="preserve">
     <value>Extra movement for drawer insertion</value>
   </data>
+  <data name="InverterInFault" xml:space="preserve">
+    <value>Inverters fault</value>
+    <comment>Sensor</comment>
+  </data>
 </root>
