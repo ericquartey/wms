@@ -104,6 +104,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public int TargetPosition { get; set; }
 
+        public int TargetPositionOriginal { get; set; }
+
         public int[] TargetSpeed { get; set; }
 
         public bool WaitContinue { get; set; }
