@@ -26,6 +26,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.AxisMovement = axisMovement;
             this.MovementType = movementType;
             this.TargetPosition = target;
+            this.TargetPositionOriginal = target;
             this.TargetSpeed = speed;
             this.TargetAcceleration = acceleration;
             this.TargetDeceleration = deceleration;
@@ -49,6 +50,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.AxisMovement = messageData.AxisMovement;
             this.MovementType = messageData.MovementType;
             this.TargetPosition = messageData.TargetPosition;
+            this.TargetPositionOriginal = messageData.TargetPosition;
             this.TargetSpeed = messageData.TargetSpeed;
             this.TargetAcceleration = messageData.TargetAcceleration;
             this.TargetDeceleration = messageData.TargetDeceleration;
@@ -109,6 +111,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public double[] TargetDeceleration { get; set; }
 
         public double TargetPosition { get; set; }
+
+        public double TargetPositionOriginal { get; set; }
 
         public double[] TargetSpeed { get; set; }
 
