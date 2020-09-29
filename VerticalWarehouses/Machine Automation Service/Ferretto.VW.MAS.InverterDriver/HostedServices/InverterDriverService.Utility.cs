@@ -813,7 +813,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.Logger.LogDebug($"Inverter: {inverter.SystemIndex}; " +
                             $"Current axis: {this.currentAxis}; " +
                             $"current position: {currentPosition}; " +
-                            $"target: {positioningData.TargetPosition} mm [{targetPosition} impulses]; " +
+                            $"target: [{targetPosition} impulses]; " +
                             $"speed: {positioningFieldData.TargetSpeed[0]}; " +
                             $"acceleration: {positioningFieldData.TargetAcceleration[0]}; " +
                             $"movement type: {positioningFieldData.MovementType}");

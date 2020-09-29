@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             out InverterPositioningFieldMessageData positioningFieldData)
         {
             int targetPosition;
-            var position = positioningData.TargetPosition;
+            var position = positioningData.TargetPositionOriginal;
             if (positioningData.MovementType == MovementType.Absolute)
             {
                 if (positioningData.AxisMovement != Axis.BayChain)  // REMOVE
@@ -146,8 +146,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (positioningData.ComputeElongation)
                         {
-                            var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition, out var weight);
-                            this.logger.LogInformation($"Vertical positioning with Belt elongation for height={positioningData.TargetPosition:0.00} and weight={weight:0.00} is {beltDisplacement:0.00} [mm]. VerticalDepositOffset is {axis.VerticalDepositOffset:0.00} [mm].");
+                            var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPositionOriginal, out var weight);
+                            this.logger.LogInformation($"Vertical positioning with Belt elongation for height={positioningData.TargetPositionOriginal:0.00} and weight={weight:0.00} is {beltDisplacement:0.00} [mm]. VerticalDepositOffset is {axis.VerticalDepositOffset:0.00} [mm].");
                             position += beltDisplacement;
                             if (axis.VerticalDepositOffset.HasValue)
                             {
@@ -252,6 +252,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 targetDeceleration,
                 currentPosition,
                 targetPosition,
+                positioningData.TargetPosition,
                 targetSpeed,
                 switchPosition,
                 direction,

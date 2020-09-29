@@ -13,6 +13,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             int[] targetDeceleration,
             int startPosition,
             int targetPosition,
+            double targetPositionOriginal,
             int[] targetSpeed,
             int[] switchPosition,
             int direction,
@@ -32,6 +33,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.TargetDeceleration = targetDeceleration;
             this.StartPosition = startPosition;
             this.TargetPosition = targetPosition;
+            this.TargetPositionOriginal = targetPositionOriginal;
             this.TargetSpeed = targetSpeed;
             this.SwitchPosition = switchPosition;
             this.RefreshAll = refreshAll;
@@ -104,7 +106,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public int TargetPosition { get; set; }
 
-        public int TargetPositionOriginal { get; set; }
+        public double TargetPositionOriginal { get; set; }
 
         public int[] TargetSpeed { get; set; }
 

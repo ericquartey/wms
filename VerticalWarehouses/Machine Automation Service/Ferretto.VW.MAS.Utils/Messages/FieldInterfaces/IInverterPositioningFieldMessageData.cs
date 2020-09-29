@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int TargetPosition { get; set; }
 
-        int TargetPositionOriginal { get; set; }
+        double TargetPositionOriginal { get; set; }
 
         int[] TargetSpeed { get; set; }
 
