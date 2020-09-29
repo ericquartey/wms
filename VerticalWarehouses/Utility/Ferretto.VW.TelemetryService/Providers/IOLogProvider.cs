@@ -62,6 +62,11 @@ namespace Ferretto.VW.TelemetryService.Providers
             return this.realm.All<Models.IOLog>().ToArray();
         }
 
+        public IEnumerable<IIOLog> GetByTimeStamp(string serialNumber, DateTimeOffset start, DateTimeOffset end)
+        {
+            return this.realm.All<Models.IOLog>().Where(io => io.TimeStamp >= start && io.TimeStamp <= end).ToArray();
+        }
+
         public async Task SaveAsync(string serialNumber, IIOLog ioLog)
         {
             if (string.IsNullOrWhiteSpace(serialNumber))

@@ -9,6 +9,8 @@ namespace Ferretto.VW.TelemetryService
     {
         #region Methods
 
+        Task PersistIOLogAsync(string serialNumber, IOLog ioLog);
+
         Task SendErrorLogAsync(string serialNumber, ErrorLog errorLog);
 
         Task SendIOLogAsync(string serialNumber, IOLog ioLog);

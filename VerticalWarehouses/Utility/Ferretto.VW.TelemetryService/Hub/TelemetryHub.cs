@@ -50,6 +50,26 @@ namespace Ferretto.VW.TelemetryService
             }
         }
 
+        public async Task PersistIOLog(IOLog ioLog)
+        {
+            if (ioLog is null)
+            {
+                return;
+            }
+
+            this.logger.LogDebug($"Received IO log from client.");
+
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+            if (machine is null)
+            {
+                this.logger.LogWarning("Trying to persist a IO log with no machine defined in the local database.");
+                return;
+            }
+
+            await this.telemetryWebHubClient.PersistIOLogAsync(machine.SerialNumber, ioLog);
+        }
+
         public async Task SendErrorLog(ErrorLog errorLog)
         {
             if (errorLog is null)

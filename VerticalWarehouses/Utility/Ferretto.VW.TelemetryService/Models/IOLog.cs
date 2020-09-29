@@ -14,7 +14,7 @@ namespace Ferretto.VW.TelemetryService.Models
 
         public string? Input { get; set; }
 
-        public Machine Machine { get; set; }
+        public Machine? Machine { get; set; }
 
         public string? Output { get; set; }
 
