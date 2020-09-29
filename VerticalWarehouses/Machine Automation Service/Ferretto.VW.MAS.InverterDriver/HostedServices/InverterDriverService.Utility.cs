@@ -1132,7 +1132,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 if (this.socketTransport.IsConnected
                     && state is InverterIndex.MainInverter
-                    && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.HeartBeatTimer1) < 1
+                    && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.HeartBeatTimer1) < 2
                     )
                 {
                     var value = (short)(this.isHeartBeatOn ? 1 : 0);
@@ -1153,7 +1153,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 else
                 {
-                    this.Logger.LogDebug($"2.RequestHeartBeat missed");
+                    this.Logger.LogDebug($"2.RequestHeartBeat missed: count {this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.HeartBeatTimer1)}");
                 }
             }
         }

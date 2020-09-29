@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <exception cref="EntityNotFoundException">An exception is thrown if no loading unit with the specified id exists in the database.</exception>
         LoadingUnit GetById(int id);
 
+        double GetLoadUnitMaxHeight();
+
         IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics();
 
         IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics();

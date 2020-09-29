@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 var movementParameters = this.elevatorProvider.ScaleMovementsByWeight(Orientation.Vertical, true);
 
-                var targetPosition = invertersProvider.ConvertPulsesToMillimeters(this.data.TargetPosition, Orientation.Vertical);
+                var targetPosition = invertersProvider.ConvertPulsesToMillimeters(this.data.TargetPositionOriginal, Orientation.Vertical);
                 targetPosition += axis.Offset;
 
                 var positioningData = new PositioningFieldMessageData(
