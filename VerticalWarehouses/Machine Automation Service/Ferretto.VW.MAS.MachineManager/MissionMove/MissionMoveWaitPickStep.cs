@@ -103,7 +103,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
+            this.Mission.Status = MissionStatus.Executing;
+            this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
+
             var ejectBayLocation = this.Mission.LoadUnitDestination;
             var bayPosition = this.BaysDataProvider.GetPositionByLocation(ejectBayLocation);
 #if CHECK_BAY_SENSOR
@@ -130,7 +133,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         var activeMission = this.MissionsDataProvider.GetAllActiveMissions()
-                            .FirstOrDefault(x => x.Status == MissionStatus.Executing);
+                            .FirstOrDefault(x => x.Status == MissionStatus.Executing
+                                && x.Id != this.Mission.Id
+                                );
 
                         if (activeMission != null)
                         {

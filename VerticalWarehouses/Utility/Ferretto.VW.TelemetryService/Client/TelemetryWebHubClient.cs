@@ -91,59 +91,83 @@ namespace Ferretto.VW.TelemetryService
 
             await this.SendAsync(nameof(ITelemetryHub.SendMachine), machine);
 
-            var realm = scope.ServiceProvider.GetRequiredService<Realms.Realm>();
+            //var realm = scope.ServiceProvider.GetRequiredService<Realms.Realm>();
 
-            foreach (var missionLog in realm.All<Models.MissionLog>().ToArray())
+            using (var realm = scope.ServiceProvider.GetRequiredService<Realms.Realm>())
             {
-                var success = await this.TrySendMissionLogAsync(machine.SerialNumber, missionLog, persistOnSendFailure: false);
-                if (success)
+                foreach (var missionLog in realm.All<Models.MissionLog>().ToArray())
                 {
-                    await realm.WriteAsync(r =>
-                    {
-                        r.Remove(missionLog);
-                    });
-                }
-            }
-
-            foreach (var errorLog in realm.All<Models.ErrorLog>().ToArray())
-            {
-                var success = await this.TrySendErrorLogAsync(machine.SerialNumber, errorLog, persistOnSendFailure: false);
-                if (success)
-                {
-                    await realm.WriteAsync(r =>
-                    {
-                        r.Remove(errorLog);
-                    });
-
-                    var ioLogsToBeRemoved = realm.All<Models.IOLog>().Where(io => io.TimeStamp >= errorLog.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS) && io.TimeStamp <= errorLog.OccurrenceDate);
-                    realm.RemoveRange(ioLogsToBeRemoved);
-                }
-            }
-
-            //IO NOTE: must be removed because IO Send only on error events
-            //foreach (var ioLog in realm.All<Models.IOLog>().ToArray())
-            //{
-            //    var success = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, persistOnSendFailure: false);
-            //    if (success)
-            //    {
-            //        await realm.WriteAsync(r =>
-            //        {
-            //            r.Remove(ioLog);
-            //        });
-            //    }
-            //}
-
-            foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
-            {
-                if (screenShot.Image != null)
-                {
-                    var success = await this.TrySendScreenShotAsync(machine.SerialNumber, screenShot.BayNumber, screenShot.TimeStamp, screenShot.Image, persistOnSendFailure: false);
+                    var success = await this.TrySendMissionLogAsync(machine.SerialNumber, missionLog, persistOnSendFailure: false);
                     if (success)
                     {
                         await realm.WriteAsync(r =>
                         {
-                            r.Remove(screenShot);
+                            r.Remove(missionLog);
                         });
+                    }
+                }
+
+                foreach (var errorLogRealm in realm.All<Models.ErrorLog>().ToArray())
+                {
+                    var errorLog = new Models.ErrorLog()
+                    {
+                        AdditionalText = errorLogRealm.AdditionalText,
+                        BayNumber = errorLogRealm.BayNumber,
+                        Code = errorLogRealm.Code,
+                        DetailCode = errorLogRealm.DetailCode,
+                        InverterIndex = errorLogRealm.InverterIndex,
+                        MachineId = errorLogRealm.MachineId,
+                        Machine = errorLogRealm.Machine,
+                        OccurrenceDate = errorLogRealm.OccurrenceDate,
+                        ResolutionDate = errorLogRealm.ResolutionDate,
+                        Id = errorLogRealm.Id,
+                    };
+
+                    var success = await this.TrySendErrorLogAsync(machine.SerialNumber, errorLog, persistOnSendFailure: false);
+                    if (success)
+                    {
+                        await realm.WriteAsync(r =>
+                        {
+                            r.Remove(errorLogRealm);
+                        });
+
+                        var ioLogsToBeRemoved = realm.All<Models.IOLog>().Where(io => io.TimeStamp >= errorLogRealm.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS) && io.TimeStamp <= errorLogRealm.OccurrenceDate);
+
+                        foreach (var ioLog in ioLogsToBeRemoved)
+                        {
+                            await realm.WriteAsync(r =>
+                            {
+                                r.Remove(ioLog);
+                            });
+                        }
+                    }
+                }
+
+                //IO NOTE: must be removed because IO Send only on error events
+                //foreach (var ioLog in realm.All<Models.IOLog>().ToArray())
+                //{
+                //    var success = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, persistOnSendFailure: false);
+                //    if (success)
+                //    {
+                //        await realm.WriteAsync(r =>
+                //        {
+                //            r.Remove(ioLog);
+                //        });
+                //    }
+                //}
+
+                foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
+                {
+                    if (screenShot.Image != null)
+                    {
+                        var success = await this.TrySendScreenShotAsync(machine.SerialNumber, screenShot.BayNumber, screenShot.TimeStamp, screenShot.Image, persistOnSendFailure: false);
+                        if (success)
+                        {
+                            await realm.WriteAsync(r =>
+                            {
+                                r.Remove(screenShot);
+                            });
+                        }
                     }
                 }
             }
