@@ -7,6 +7,8 @@ namespace Ferretto.ServiceDesk.Telemetry.Hubs
     {
         #region Methods
 
+        Task PersistIOLog(IOLog ioLog);
+
         Task RequestMachine();
 
         Task SendErrorLog(ErrorLog errorLog);

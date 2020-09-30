@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -155,7 +152,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 TimeStamp = DateTimeOffset.Now
             };
 
-            //await this.SendIOLogAsync(ioLog); TODO
+            await this.SendIOLogAsync(ioLog);
         }
 
         private async Task SendErrorLogAsync(ErrorLog errorLog)
@@ -181,7 +178,7 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             if (!this.telemetryHub.IsConnected)
             {
-                this.Logger.LogWarning("Unable to send mission log to telemetry service because the hub is not connected.");
+                this.Logger.LogWarning("Unable to send IO log to telemetry service because the hub is not connected.");
 
                 return;
             }
