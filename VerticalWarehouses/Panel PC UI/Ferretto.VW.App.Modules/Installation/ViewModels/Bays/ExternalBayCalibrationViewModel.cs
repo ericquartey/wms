@@ -915,7 +915,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.StartProcedureMessage"), Localized.Get("InstallationApp.CarouselCalibration"), DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.StartProcedureMessage"), Localized.Get("InstallationApp.ExtBayCalibration"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineExternalBayWebMachine.ResetCalibrationAsync();
@@ -937,7 +937,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
 
-                    await this.machineExternalBayWebMachine.StartCalibrationAsync(); // machineCarouselWebService.StartCalibrationAsync();
+                    await this.machineExternalBayWebMachine.StartCalibrationAsync();
 
                     this.CurrentStep = ExternalBayCalibrationStep.RunningCalibration;
                 }
