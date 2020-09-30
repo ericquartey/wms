@@ -559,7 +559,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             switch (direction)
             {
                 case ExternalBayMovementDirection.TowardOperator:
-                    distance = bay.External.Race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) + bay.ChainOffset;
+                    distance = bay.External.Race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) - bay.ChainOffset;
                     break;
 
                 case ExternalBayMovementDirection.TowardMachine:

@@ -589,7 +589,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                                 switch (externalBayMovementDirection)
                                 {
                                     case ExternalBayMovementDirection.TowardOperator:
-                                        distanceMovement = race - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.RequestingBay)) + bay.ChainOffset;
+                                        distanceMovement = race - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.RequestingBay)) - bay.ChainOffset;
                                         break;
 
                                     case ExternalBayMovementDirection.TowardMachine:
