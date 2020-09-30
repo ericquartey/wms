@@ -51,11 +51,13 @@ namespace Ferretto.VW.TelemetryService.Providers
 
             var logsToDelete = errorLogs.Where(e => e.OccurrenceDate < minTimestamp);
 
+            var countLogsToDelete = logsToDelete.Count();
+
             this.realm.RemoveRange(logsToDelete);
 
             trans.Commit();
 
-            this.logger.LogDebug("A total of {count} error logs were deleted.", logsToDelete.Count());
+            this.logger.LogDebug($"A total of {countLogsToDelete} error logs were deleted.");
         }
 
         public IEnumerable<IErrorLog> GetAll()
