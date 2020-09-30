@@ -316,8 +316,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 default:
-                    targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(moveData.LoadUnitDestination);
-                    targetBayPositionId = this.baysDataProvider.GetPositionByLocation(moveData.LoadUnitDestination).Id;
+                    if (moveData.LoadUnitDestination != LoadingUnitLocation.NoLocation)
+                    {
+                        targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(moveData.LoadUnitDestination);
+                        if (targetPosition.HasValue)
+                        {
+                            targetBayPositionId = this.baysDataProvider.GetPositionByLocation(moveData.LoadUnitDestination).Id;
+                        }
+                    }
                     break;
             }
             return targetPosition;
