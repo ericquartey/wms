@@ -50,11 +50,13 @@ namespace Ferretto.VW.TelemetryService.Providers
 
             var logsToDelete = screenShotLogs.Where(e => e.TimeStamp < minTimestamp);
 
+            var countLogsToDelete = logsToDelete.Count();
+
             this.realm.RemoveRange<Models.ScreenShot>(logsToDelete);
 
             trans.Commit();
 
-            this.logger.LogDebug("A total of {count} screenShot were deleted.", logsToDelete.Count());
+            this.logger.LogDebug($"A total of {countLogsToDelete} screenShot were deleted.");
         }
 
         public IEnumerable<IScreenShot> GetAll()
