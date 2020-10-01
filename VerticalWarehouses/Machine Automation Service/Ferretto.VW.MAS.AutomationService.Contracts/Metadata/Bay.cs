@@ -30,6 +30,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public int? CurrentWmsMissionOperationId { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.CyclesToCalibrate))]
+            [Id(140)]
+            public int CyclesToCalibrate { get; set; }
+
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.EmptyLoadMovement))]
             [Id(90)]
             public MovementParameters EmptyLoadMovement { get; set; }
@@ -83,6 +87,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
             [Id(30)]
             public Laser Laser { get; set; }
+
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.LastCalibrationCycles))]
+            [Id(150)]
+            public int LastCalibrationCycles { get; set; }
 
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BayNumber))]

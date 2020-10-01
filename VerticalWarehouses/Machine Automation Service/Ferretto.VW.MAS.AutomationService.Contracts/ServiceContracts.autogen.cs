@@ -2720,6 +2720,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("CyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
+        public int CyclesToCalibrate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LastCalibrationCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int LastCalibrationCycles { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
         public BayStatus Status { get; set; }
     
