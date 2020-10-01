@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         void ConfigurationUpdate(VertimagConfiguration vertimagConfiguration, IServiceScopeFactory serviceScopeFactory);
 
+        void UpdateMachine(Machine machine);
+
         #endregion
     }
 }
