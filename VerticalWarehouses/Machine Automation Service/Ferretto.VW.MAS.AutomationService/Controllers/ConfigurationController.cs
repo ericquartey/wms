@@ -59,6 +59,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("update-parameter")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Update(Machine machineNew)
+        {
+            _ = machineNew ?? throw new ArgumentNullException(nameof(machineNew));
+
+            this.configurationProvider.UpdateMachine(machineNew);
+            return this.Ok();
+        }
+
         #endregion
     }
 }

@@ -49,6 +49,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateServiceStatistics();
 
+        void UpdateSolo(Machine machine, DataLayerContext dataContext);
+
         void UpdateVerticalAxisStatistics(double distance);
 
         void UpdateWeightStatistics(DataLayerContext dataContext);

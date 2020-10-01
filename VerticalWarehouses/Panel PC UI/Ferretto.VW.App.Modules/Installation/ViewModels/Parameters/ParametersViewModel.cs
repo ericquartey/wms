@@ -169,7 +169,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.ClearNotifications();
                 this.IsBusy = true;
 
-                await this.machineConfigurationWebService.SetAsync(this.configuration);
+                //await this.machineConfigurationWebService.SetAsync(this.configuration);
+                await this.machineConfigurationWebService.UpdateAsync(this.configuration.Machine);
 
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
 
