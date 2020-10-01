@@ -150,8 +150,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual) };
             }
 
-            // Not admitted the assisted and/or automatic movement if bay contains a loading unit
-            if ((movementCategory == MovementCategory.Assisted || movementCategory == MovementCategory.Automatic) &&
+            // Not admitted the automatic movement if bay does not contain a loading unit
+            if ((movementCategory == MovementCategory.Automatic) &&
                 bay.Positions.FirstOrDefault().LoadingUnit != null &&
                 !isLoadingUnitInExternalPosition &&
                 !isLoadingUnitInInternalPosition)

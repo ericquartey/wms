@@ -14,7 +14,7 @@ namespace Ferretto.VW.TelemetryService
     {
         #region Fields
 
-        public const int IO_ERROR_INTERVAL_SECONDS = -30;
+        public const int IO_ERROR_INTERVAL_SECONDS = -10;
 
         private readonly NLog.ILogger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -244,7 +244,7 @@ namespace Ferretto.VW.TelemetryService
                 {
                     await this.SendAsync(nameof(ITelemetryHub.SendErrorLog), serialNumber, errorLog);
 
-                    foreach (var ioLog in this.GetEntryAsync(serialNumber, errorLog.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS), errorLog.OccurrenceDate))
+                    foreach (var ioLog in this.GetEntryAsync(serialNumber, errorLog.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS), errorLog.OccurrenceDate.AddSeconds(1)))
                     {
                         var ioLogCorrect = new IOLog
                         {
