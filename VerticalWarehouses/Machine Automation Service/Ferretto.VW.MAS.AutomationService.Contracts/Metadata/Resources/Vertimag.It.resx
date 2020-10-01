@@ -222,6 +222,9 @@
   <data name="Carousel_HomingFastSpeed" xml:space="preserve">
     <value>Velocità homing fast</value>
   </data>
+  <data name="CyclesToCalibrate" xml:space="preserve">
+    <value>Cicli per calibrare</value>
+  </data>
   <data name="Deceleration" xml:space="preserve">
     <value>Decelerazione</value>
   </data>
@@ -341,6 +344,9 @@
   </data>
   <data name="Laser_TcpPort" xml:space="preserve">
     <value>Porta Laser</value>
+  </data>
+  <data name="LastCalibrationCycles" xml:space="preserve">
+    <value>Ultimi cicli di calibrazione</value>
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Macchina</value>

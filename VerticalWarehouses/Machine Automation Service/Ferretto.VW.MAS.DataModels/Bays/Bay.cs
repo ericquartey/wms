@@ -57,6 +57,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public WarehouseSide Side { get; set; }
 
+        public int CyclesToCalibrate { get; set; }
+
+        public int LastCalibrationCycles { get; set; }
+
         public BayStatus Status
         {
             get
