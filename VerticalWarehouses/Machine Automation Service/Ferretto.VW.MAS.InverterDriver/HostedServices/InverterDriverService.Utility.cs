@@ -79,6 +79,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     MessageStatus.OperationStart);
 
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.Logger.LogTrace($"Time period elapsed");
             }
         }
 
@@ -427,16 +428,18 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.Logger.LogTrace($"1:currentMessage={message}");
 
-            if (message.ParameterId == InverterParameterId.ControlWord
-                &&
-                message.SystemIndex == InverterIndex.MainInverter)
-            {
-                this.Logger.LogTrace("2:Evaluate Control word");
+            //if (message.ParameterId == InverterParameterId.ControlWord
+            //    &&
+            //    message.SystemIndex == InverterIndex.MainInverter)
+            //{
+            //    this.Logger.LogTrace("2:Evaluate Control word");
 
-                var mainInverter = serviceProvider.GetRequiredService<IInvertersProvider>().GetMainInverter();
-            }
+            //    var mainInverter = serviceProvider.GetRequiredService<IInvertersProvider>().GetMainInverter();
+            //}
 
-            if (currentStateMachine?.ValidateCommandMessage(message) ?? false)
+            if ((currentStateMachine?.ValidateCommandMessage(message) ?? false)
+                && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWord && x.SystemIndex == message.SystemIndex) < 1
+                )
             {
                 this.Logger.LogTrace("6:Request Status word");
                 var readStatusWordMessage = new InverterMessage(message.SystemIndex, InverterParameterId.StatusWord);
@@ -451,13 +454,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                 do
                 {
                     this.RequestHeartBeat(InverterIndex.MainInverter);
-                    await Task.Delay(HEARTBEAT_TIMEOUT, this.CancellationToken);
+                    Thread.Sleep(HEARTBEAT_TIMEOUT);
                 }
                 while (!this.CancellationToken.IsCancellationRequested);
             }
             catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
             {
                 this.Logger.LogTrace("Stopping heartBeat generation.");
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogCritical($"Exception: {ex.Message}");
             }
         }
 
@@ -1145,7 +1152,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.Logger.LogTrace($"1.RequestHeartBeat={heartBeatMessage}");
                     this.inverterCommandQueue.Enqueue(heartBeatMessage);
-                    //this.Logger.LogTrace($"2.RequestHeartBeat={heartBeatMessage}");
+                    this.Logger.LogTrace($"2.RequestHeartBeat={heartBeatMessage}");
 
                     this.isHeartBeatOn = !this.isHeartBeatOn;
 
