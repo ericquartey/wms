@@ -121,6 +121,31 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
+        public void UpdateMachine(Machine machine)
+        {
+            _ = machine ?? throw new ArgumentNullException(nameof(machine));
+
+            lock (this.dataContext)
+            {
+                using (var transaction = this.dataContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        //this.machineProvider.Update(machine, this.dataContext);
+                        this.machineProvider.UpdateSolo(machine, this.dataContext);
+
+                        transaction.Commit();
+                        this.logger.LogInformation($"Configuration Provider update");
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        this.logger.LogError(e, $"Configuration Provider update exception");
+                    }
+                }
+            }
+        }
+
         #endregion
     }
 }

@@ -233,7 +233,8 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
-                                Content="{res:Loc InstallationApp.Stop}" />
+                                Content="{res:Loc InstallationApp.Stop}"
+                                Visibility="Collapsed"/>
         </StackPanel>
 
     </Grid>

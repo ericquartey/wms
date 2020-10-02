@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Mission CurrentMission { get; set; }
 
+        public int CyclesToCalibrate { get; set; }
+
         public MovementParameters EmptyLoadMovement { get; set; }
 
         public External External { get; set; }
@@ -40,6 +42,8 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsExternal { get; set; }
 
         public bool IsFastDepositToBay { get; set; }
+
+        public int LastCalibrationCycles { get; set; }
 
         public BayNumber Number { get; set; }
 
@@ -69,6 +73,8 @@ namespace Ferretto.VW.MAS.DataModels
                 return BayStatus.Disconnected;
             }
         }
+
+        public int TotalCycles { get; set; }
 
         public bool View { get; set; }
 

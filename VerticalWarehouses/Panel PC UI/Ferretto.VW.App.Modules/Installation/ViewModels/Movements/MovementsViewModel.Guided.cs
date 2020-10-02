@@ -565,26 +565,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveExtBayTowardMachine()
         {
             return
-                this.CanBaseExecute()
-                &&
-                this.moveExtBayTowardMachinePolicy?.IsAllowed == true;
+                this.CanBaseExecute() &&
+                !this.SensorsService.BayZeroChain;
         }
 
         private bool CanMoveExtBayForInsertion()
         {
-            var zeroSensorOnBay = true;
-            switch (this.Bay.Number)
-            {
-                case BayNumber.BayOne: zeroSensorOnBay = this.SensorsService.Sensors.ACUBay1S3IND; break;
-                case BayNumber.BayTwo: zeroSensorOnBay = this.SensorsService.Sensors.ACUBay2S3IND; break;
-                case BayNumber.BayThree: zeroSensorOnBay = this.SensorsService.Sensors.ACUBay3S3IND; break;
-                case BayNumber.None: break;
-            }
-
             return
-                this.CanBaseExecute()
-                &&
-                !zeroSensorOnBay;
+                this.CanBaseExecute() &&
+                !this.SensorsService.BayZeroChain;
         }
 
         private bool CanMoveExtBayForExtraction()
@@ -595,9 +584,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveExtBayTowardOperator()
         {
             return
-                this.CanBaseExecute()
-                &&
-                this.moveExtBayTowardOperatorPolicy?.IsAllowed == true;
+                this.CanBaseExecute() &&
+                this.SensorsService.BayZeroChain;
         }
 
         private bool CanMoveToBayPosition()
@@ -674,9 +662,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanTuneExtBay()
         {
             return this.CanBaseExecute() &&
-                   !this.IsTuningExtBay &&
-                   this.MachineStatus.LoadingUnitPositionDownInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null;
+                   !this.IsTuningExtBay;
         }
 
         private bool CanTuneBay()

@@ -376,6 +376,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cycles to calibrate.
+        /// </summary>
+        public static string CyclesToCalibrate {
+            get {
+                return ResourceManager.GetString("CyclesToCalibrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deceleration.
         /// </summary>
         public static string Deceleration {
@@ -732,6 +741,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Laser_TcpPort {
             get {
                 return ResourceManager.GetString("Laser_TcpPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last calibration cycles.
+        /// </summary>
+        public static string LastCalibrationCycles {
+            get {
+                return ResourceManager.GetString("LastCalibrationCycles", resourceCulture);
             }
         }
         

@@ -79,6 +79,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     MessageStatus.OperationStart);
 
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.Logger.LogTrace($"Time period elapsed");
             }
         }
 
@@ -182,7 +183,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.Logger.LogTrace($"1:currentMessage={message}");
 
             var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
-            this.Logger.LogTrace($"1a:currentMessage={message}");
+            //this.Logger.LogTrace($"1a:currentMessage={message}");
 
             if (message.ParameterId == InverterParameterId.StatusWord)
             {
@@ -231,11 +232,13 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 foreach (var inverter in invertersProvider.GetAll())
                 {
+                    //this.Logger.LogTrace($"4.1");
                     var ioStatuses = this.RetrieveInverterIOStatus(message.StringPayload, (int)inverter.SystemIndex);
 
                     switch (inverter)
                     {
                         case AngInverterStatus angInverter:
+                            //this.Logger.LogTrace($"4.2");
 
                             // INFO The Overrun elevator must be inverted (WORKAROUND)
                             ioStatuses[5] = !ioStatuses[5];
@@ -246,7 +249,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
                             if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)inverter.SystemIndex])
                             {
-                                this.Logger.LogTrace("Sensor Update");
+                                this.Logger.LogTrace("Ang Sensor Update");
 
                                 var msgNotification = new FieldNotificationMessage(
                                     new InverterStatusUpdateFieldMessageData(angInverter.Inputs),
@@ -263,6 +266,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             break;
 
                         case AcuInverterStatus acuInverter:
+                            //this.Logger.LogTrace($"4.3");
 
                             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
                             var bayNumber = baysDataProvider.GetByInverterIndex(inverter.SystemIndex);
@@ -274,6 +278,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                             if (acuInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)inverter.SystemIndex])
                             {
+                                this.Logger.LogTrace("Acu Sensor Update");
+
                                 var msgNotification = new FieldNotificationMessage(
                                     new InverterStatusUpdateFieldMessageData(acuInverter.Inputs),
                                     "Inverter Inputs update",
@@ -290,9 +296,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                             break;
 
                         case AglInverterStatus aglInverter:
+                            //this.Logger.LogTrace($"4.4");
 
                             if (aglInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)inverter.SystemIndex])
                             {
+                                this.Logger.LogTrace("Agl Sensor Update");
                                 var msgNotification = new FieldNotificationMessage(
                                     new InverterStatusUpdateFieldMessageData(aglInverter.Inputs),
                                     "Inverter Inputs update",
@@ -307,9 +315,12 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                             break;
                     }
+                    //this.Logger.LogTrace($"4.5");
                     this.forceStatusPublish[(int)inverter.SystemIndex] = false;
                 }
+                //this.Logger.LogTrace($"4.6");
                 currentStateMachine?.ValidateCommandResponse(message);
+                //this.Logger.LogTrace($"4.7");
             }
             else if (message.ParameterId == InverterParameterId.ActualPositionShaft)
             {
@@ -427,16 +438,18 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.Logger.LogTrace($"1:currentMessage={message}");
 
-            if (message.ParameterId == InverterParameterId.ControlWord
-                &&
-                message.SystemIndex == InverterIndex.MainInverter)
-            {
-                this.Logger.LogTrace("2:Evaluate Control word");
+            //if (message.ParameterId == InverterParameterId.ControlWord
+            //    &&
+            //    message.SystemIndex == InverterIndex.MainInverter)
+            //{
+            //    this.Logger.LogTrace("2:Evaluate Control word");
 
-                var mainInverter = serviceProvider.GetRequiredService<IInvertersProvider>().GetMainInverter();
-            }
+            //    var mainInverter = serviceProvider.GetRequiredService<IInvertersProvider>().GetMainInverter();
+            //}
 
-            if (currentStateMachine?.ValidateCommandMessage(message) ?? false)
+            if ((currentStateMachine?.ValidateCommandMessage(message) ?? false)
+                && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWord && x.SystemIndex == message.SystemIndex) < 1
+                )
             {
                 this.Logger.LogTrace("6:Request Status word");
                 var readStatusWordMessage = new InverterMessage(message.SystemIndex, InverterParameterId.StatusWord);
@@ -451,13 +464,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                 do
                 {
                     this.RequestHeartBeat(InverterIndex.MainInverter);
-                    await Task.Delay(HEARTBEAT_TIMEOUT, this.CancellationToken);
+                    Thread.Sleep(HEARTBEAT_TIMEOUT);
                 }
                 while (!this.CancellationToken.IsCancellationRequested);
             }
             catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
             {
                 this.Logger.LogTrace("Stopping heartBeat generation.");
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogCritical($"Exception: {ex.Message}");
             }
         }
 
@@ -1130,6 +1147,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             //lock (this.syncHeartBeatTimer)
             {
+                //this.Logger.LogTrace($"0");
                 if (this.socketTransport.IsConnected
                     && state is InverterIndex.MainInverter
                     && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.HeartBeatTimer1) < 2

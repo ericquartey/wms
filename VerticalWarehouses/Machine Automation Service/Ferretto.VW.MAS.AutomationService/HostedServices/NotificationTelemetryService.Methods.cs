@@ -143,16 +143,19 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task OnSensorsChanged(NotificationMessage receivedMessage, SensorsChangedMessageData messageData)
         {
-            var ioLog = new IOLog
+            if (receivedMessage.RequestingBay == CommonUtils.Messages.Enumerations.BayNumber.BayOne) // only bay one, beacause the other bay have the same massage input
             {
-                BayNumber = (int)receivedMessage.RequestingBay,
-                Description = receivedMessage.Description,
-                Input = NotificationTelemetryService.ConvertBoolArrayToStringOfBit(messageData.SensorsStates),
-                Output = null,
-                TimeStamp = DateTimeOffset.Now
-            };
+                var ioLog = new IOLog
+                {
+                    BayNumber = (int)receivedMessage.RequestingBay,
+                    Description = receivedMessage.Description,
+                    Input = NotificationTelemetryService.ConvertBoolArrayToStringOfBit(messageData.SensorsStates),
+                    Output = null,
+                    TimeStamp = DateTimeOffset.Now
+                };
 
-            await this.SendIOLogAsync(ioLog);
+                await this.SendIOLogAsync(ioLog);
+            }
         }
 
         private async Task SendErrorLogAsync(ErrorLog errorLog)

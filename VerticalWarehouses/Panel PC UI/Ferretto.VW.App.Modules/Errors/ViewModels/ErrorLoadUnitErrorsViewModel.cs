@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -108,6 +109,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         private int? luIdOnElevator;
 
         private MachineError machineError;
+
+        private DelegateCommand manualCommad;
+
+        private bool manualMode;
 
         private DelegateCommand markAsResolvedCommand;
 
@@ -351,6 +356,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             get => this.machineError;
             set => this.SetProperty(ref this.machineError, value, () => this.OnErrorChanged());
+        }
+
+        public ICommand ManualCommand =>
+                                                                                                                                                                                                                                                                                                                                                                    this.manualCommad
+            ??
+            (this.manualCommad = new DelegateCommand(
+                async () => await this.ManualCommandAsync(),
+                this.CanManualCommand));
+
+        public bool ManualMode
+        {
+            get => this.manualMode;
+            set => this.SetProperty(ref this.manualMode, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand MarkAsResolvedCommand =>
@@ -649,6 +667,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsBay2PositionDownVisible = false;
                 this.IsBay3PositionUpVisible = false;
                 this.IsBay3PositionDownVisible = false;
+
+                this.ManualMode = ((this.MachineError.Code == 27 || this.MachineError.Code == 26 || this.MachineError.Code == 29) && ScaffolderUserAccesLevel.User != UserAccessLevel.Operator);
 
                 // Elevator
                 //this.LuIdOnElevator = null;
@@ -952,6 +972,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.moveLoadunitCommand?.RaiseCanExecuteChanged();
 
             this.automaticCommand?.RaiseCanExecuteChanged();
+            this.manualCommad?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
             this.moveToNextCommand?.RaiseCanExecuteChanged();
         }
@@ -1049,6 +1070,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 !this.IsMoving;
         }
 
+        private bool CanManualCommand()
+        {
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving &&
+                   this.MachineService.MachineMode != MachineMode.Automatic;
+        }
+
         private bool CanMarkAsResolved()
         {
             return
@@ -1070,6 +1098,84 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
+        }
+
+        private async Task ManualCommandAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                // Elevator
+                //if (this.SensorsService.IsLoadingUnitOnElevator &&
+                //    this.LuIdOnElevator.HasValue)
+                //{
+                //    await this.machineElevatorWebService.SetLoadUnitOnElevatorAsync(this.LuIdOnElevator.Value);
+                //}
+
+                // Bay 1
+                if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                    this.HasBay1PositionUpVisible &&
+                    this.LuIdOnBay1Up.HasValue)
+                {
+                    var id = this.Bay1Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay1Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 &&
+                    this.HasBay1PositionDownVisible &&
+                    this.LuIdOnBay1Down.HasValue)
+                {
+                    var id = this.Bay1Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay1Down.Value);
+                }
+
+                // Bay 2
+                if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                    this.HasBay2PositionUpVisible &&
+                    this.LuIdOnBay2Up.HasValue)
+                {
+                    var id = this.Bay2Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay2Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay2 &&
+                    this.HasBay2PositionDownVisible &&
+                    this.LuIdOnBay2Down.HasValue)
+                {
+                    var id = this.Bay2Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay2Down.Value);
+                }
+
+                // Bay 3
+                if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                    this.HasBay3PositionUpVisible &&
+                    this.LuIdOnBay3Up.HasValue)
+                {
+                    var id = this.Bay3Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Up).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay3Up.Value);
+                }
+
+                if (this.SensorsService.Sensors.LUPresentMiddleBottomBay3 &&
+                    this.HasBay3PositionDownVisible &&
+                    this.LuIdOnBay3Down.HasValue)
+                {
+                    var id = this.Bay3Positions.Single(s => s.LocationUpDown == LoadingUnitLocation.Down).Id;
+                    await this.machineBaysWebService.SetLoadUnitOnBayAsync(id, this.LuIdOnBay3Down.Value);
+                }
+
+                await this.machineErrorsWebService.ResolveAllAsync();
+
+                await this.machineModeWebService.SetManualAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private async Task MarkAsResolvedAsync()

@@ -16,618 +16,633 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <ctrls:View.Resources>
-        <!--#region Converters-->
-        <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
-                                        FalseBrushResourceName="PpcBackground"
-                                        TrueBrush="{StaticResource FerrettoBlue}" />
-        <!--#endregion-->
+  <ctrls:View.Resources>
+    <!--#region Converters-->
+    <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
+                                    FalseBrushResourceName="PpcBackground"
+                                    TrueBrush="{StaticResource FerrettoBlue}" />
+    <!--#endregion-->
 
-        <!--#region DataTemplate Body-->
-        <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepStart}">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.CheckUnit}"
-                               TextWrapping="Wrap" />
-
-                    <StackPanel Grid.Column="1"
-                                Margin="0,0,0,15"
-                                HorizontalAlignment="Right"
-                                Orientation="Vertical">
-                        <TextBlock Margin="0"
-                                   Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="{res:Loc ErrorsApp.ErrorCode}" />
-                        <TextBlock Margin="0"
-                                   Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                                   Text="Viao" />
-                        <TextBlock Height="26"
-                                   Background="{DynamicResource FerrettoRed}"
-                                   Style="{DynamicResource VWAPP_CustomLabel_ContentTextBlockStyle}"
-                                   Text="{Binding MachineError.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
-                                   TextAlignment="Center"
-                                   TextWrapping="Wrap" />
-                    </StackPanel>
-
-                </Grid>
-
-                <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <controls:PpcLabeledText Grid.Column="0"
-                                             Margin="0,0,15,0"
-                                             HorizontalAlignment="Left"
-                                             ContentText="{Binding MachineError.Id}"
-                                             LabelText="{res:Loc ErrorsApp.Id}" />
-
-                    <controls:PpcLabeledText Grid.Column="1"
-                                             Margin="0,0,15,0"
-                                             ContentText="{Binding MachineError.Description}"
-                                             LabelText="{res:Loc ErrorsApp.ErrorDescription}" />
-
-                    <controls:PpcLabeledText Grid.Column="2"
-                                             HorizontalAlignment="Right"
-                                             ContentText="{Binding ErrorTime}"
-                                             LabelText="{res:Loc ErrorsApp.FirstSeen}" />
-
-                    <controls:PpcLabeledText Grid.Row="1"
-                                             Grid.ColumnSpan="3"
-                                             Margin="0,15,0,0"
-                                             HorizontalAlignment="Left"
-                                             ContentText="{Binding MachineError.Reason}"
-                                             LabelText="{res:Loc ErrorsApp.ErrorReason}" />
-                </Grid>
-
-                <Image Grid.Row="2"
-                       Margin="0,15,0,15"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       RenderOptions.BitmapScalingMode="HighQuality"
-                       Source="{DynamicResource Drawer2}"
-                       Stretch="UniformToFill" />
-
-                <controls:PpcButton Grid.Row="3"
-                                    Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc General.Next}"
-                                    Style="{StaticResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepLoadunitOnElevator}">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
-                        <Run Text="{res:Loc ErrorsApp.DrawerSelection}" /><Run Text=":" />
-                    </TextBlock>
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.SelectUnitOnElevator}"
-                               TextWrapping="Wrap" />
-                </StackPanel>
-
-                <ctrls:PpcSpinEdit Grid.Row="2"
-                                   Grid.Column="1"
-                                   Width="200"
-                                   Margin="0,0,15,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   EditValue="{Binding LuIdOnElevator, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                   IsEnabled="{Binding CanLuIdOnElevator}"
-                                   KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
-                                   KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                   LabelText="{res:Loc ErrorsApp.UnitOnElevator}"
-                                   Mask="#0"
-                                   MaxValue="999"
-                                   MinValue="1" />
-
-                <controls:PpcButton Grid.Row="3"
-                                    Margin="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Bottom"
-                                    Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc ErrorsApp.Forwards}"
-                                    Style="{StaticResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepLoadunitOnBay1}">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectBay1}"
-                               TextWrapping="Wrap" />
-
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectIdBay}"
-                               TextWrapping="Wrap" />
-                </StackPanel>
-
-                <Grid Grid.Row="2"
-                      Margin="0,15,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <ctrls:PpcSpinEdit Grid.Row="2"
-                                       Grid.Column="0"
-                                       Width="200"
-                                       Margin="0,0,15,0"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"
-                                       EditValue="{Binding LuIdOnBay1Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
-                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.HighPosition}"
-                                       Mask="#0"
-                                       MaxValue="999"
-                                       MinValue="1"
-                                       Visibility="{Binding IsBay1PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
-
-                    <ctrls:PpcSpinEdit Grid.Row="2"
-                                       Grid.Column="2"
-                                       Width="200"
-                                       Margin="15,0,0,0"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       EditValue="{Binding LuIdOnBay1Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
-                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.LowPosition}"
-                                       Mask="#0"
-                                       MaxValue="999"
-                                       MinValue="1"
-                                       Visibility="{Binding IsBay1PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
-                </Grid>
-
-                <controls:PpcButton Grid.Row="3"
-                                    Margin="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Bottom"
-                                    Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc ErrorsApp.Forwards}"
-                                    Style="{StaticResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepLoadunitOnBay2}">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectBay2}"
-                               TextWrapping="Wrap" />
-
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectIdBay}"
-                               TextWrapping="Wrap" />
-                </StackPanel>
-
-                <Grid Grid.Row="2"
-                      Margin="0,15,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <ctrls:PpcSpinEdit Grid.Row="2"
-                                       Grid.Column="0"
-                                       Width="200"
-                                       Margin="0,0,15,0"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"
-                                       EditValue="{Binding LuIdOnBay2Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
-                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.HighPosition}"
-                                       Mask="#0"
-                                       MaxValue="999"
-                                       MinValue="1"
-                                       Visibility="{Binding IsBay2PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
-
-                    <ctrls:PpcSpinEdit Grid.Row="2"
-                                       Grid.Column="2"
-                                       Width="200"
-                                       Margin="15,0,0,0"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       EditValue="{Binding LuIdOnBay2Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
-                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.LowPosition}"
-                                       Mask="#0"
-                                       MaxValue="999"
-                                       MinValue="1"
-                                       Visibility="{Binding IsBay2PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
-                </Grid>
-
-                <controls:PpcButton Grid.Row="3"
-                                    Margin="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Bottom"
-                                    Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc ErrorsApp.Forwards}"
-                                    Style="{StaticResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepLoadunitOnBay3}">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectBay3}"
-                               TextWrapping="Wrap" />
-
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.UnitSelectIdBay}"
-                               TextWrapping="Wrap" />
-                </StackPanel>
-
-                <Grid Grid.Row="2"
-                      Margin="0,15,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <ctrls:PpcSpinEdit Grid.Row="2"
-                                       Grid.Column="0"
-                                       Width="200"
-                                       Margin="0,0,15,0"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Center"
-                                       EditValue="{Binding LuIdOnBay3Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
-                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.HighPosition}"
-                                       Mask="#0"
-                                       MaxValue="999"
-                                       MinValue="1"
-                                       Visibility="{Binding IsBay3PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
-
-                    <ctrls:PpcSpinEdit Grid.Row="2"
-                                       Grid.Column="2"
-                                       Width="200"
-                                       Margin="15,0,0,0"
-                                       HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       EditValue="{Binding LuIdOnBay3Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                       KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
-                                       KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                                       LabelText="{res:Loc ErrorsApp.LowPosition}"
-                                       Mask="#0"
-                                       MaxValue="999"
-                                       MinValue="1"
-                                       Visibility="{Binding IsBay3PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
-                </Grid>
-
-                <controls:PpcButton Grid.Row="3"
-                                    Margin="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Bottom"
-                                    Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc General.Next}"
-                                    Style="{StaticResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepAutomaticMode}">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               TextWrapping="Wrap">
-                        <Run Text="{res:Loc General.SwitchToAutomatic}" /><Run Text=":" />
-                    </TextBlock>
-
-                    <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                               Text="{res:Loc ErrorsApp.DrawerIdentificationCompleted}"
-                               TextWrapping="Wrap" />
-                </StackPanel>
-
-                <!--<controls:PpcButton Grid.Row="1"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Bottom"
-                                    Command="{Binding MarkAsResolvedCommand}"
-                                    Content="{res:Loc ErrorsApp.MarkAsResolved}" />-->
-
-                <controls:PpcButton Grid.Row="3"
-                                    Command="{Binding AutomaticCommand}"
-                                    Content="{res:Loc General.Automatic}"
-                                    Style="{StaticResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <!--#endregion-->
-    </ctrls:View.Resources>
-
-    <Grid Margin="15,0,0,0">
+    <!--#region DataTemplate Body-->
+    <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepStart}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.CheckUnit}"
+                     TextWrapping="Wrap" />
+
+          <StackPanel Grid.Column="1"
+                      Margin="0,0,0,15"
+                      HorizontalAlignment="Right"
+                      Orientation="Vertical">
+            <TextBlock Margin="0"
+                       Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                       Text="{res:Loc ErrorsApp.ErrorCode}" />
+            <TextBlock Margin="0"
+                       Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                       Text="Viao" />
+            <TextBlock Height="26"
+                       Background="{DynamicResource FerrettoRed}"
+                       Style="{DynamicResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                       Text="{Binding MachineError.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" />
+          </StackPanel>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+          <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60" />
-            <ColumnDefinition />
-            <ColumnDefinition />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <!--#region Title-->
-        <StackPanel Grid.ColumnSpan="4"
-                    Orientation="Horizontal">
-            <TextBlock Grid.ColumnSpan="2"
-                       Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding MachineError.Description}" />
-        </StackPanel>
-        <!--#endregion-->
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
 
-        <!--#region Description-->
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="4"
-                   Height="Auto"
-                   Margin="0,0,15,0"
-                   VerticalAlignment="Top"
-                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{Binding MachineError.Reason}"
-                   TextWrapping="Wrap" />
-        <!--#endregion-->
+          <controls:PpcLabeledText Grid.Column="0"
+                                   Margin="0,0,15,0"
+                                   HorizontalAlignment="Left"
+                                   ContentText="{Binding MachineError.Id}"
+                                   LabelText="{res:Loc ErrorsApp.Id}" />
 
-        <!--#region Tails-->
-        <controls:CardSensorAxisVertical Grid.Row="2"
-                                         Grid.Column="3"
-                                         Width="230"
-                                         Height="90"
-                                         MinHeight="90"
-                                         Margin="0,15,15,0" />
-        <controls:CardSensorAxisHorizontal Grid.Row="3"
-                                           Grid.Column="3"
-                                           Width="230"
-                                           Height="90"
-                                           MinHeight="90"
-                                           Margin="0,15,15,0" />
-        <controls:CardSensorShutter Grid.Row="4"
-                                    Grid.Column="3"
-                                    Width="230"
-                                    Height="90"
-                                    MinHeight="90"
-                                    Margin="0,15,15,0" />
-        <controls:CardSensorDrawer Grid.Row="5"
-                                   Grid.Column="3"
-                                   Width="230"
-                                   Height="90"
-                                   MinHeight="90"
-                                   Margin="0,15,15,0" />
+          <controls:PpcLabeledText Grid.Column="1"
+                                   Margin="0,0,15,0"
+                                   ContentText="{Binding MachineError.Description}"
+                                   LabelText="{res:Loc ErrorsApp.ErrorDescription}" />
 
-        <controls:PpcButton Grid.Row="6"
-                            Grid.Column="3"
-                            Margin="0,0,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding StopCommand}"
-                            Content="{res:Loc General.Stop}" />
-        <!--#endregion-->
+          <controls:PpcLabeledText Grid.Column="2"
+                                   HorizontalAlignment="Right"
+                                   ContentText="{Binding ErrorTime}"
+                                   LabelText="{res:Loc ErrorsApp.FirstSeen}" />
 
-        <!--#region Wizard-->
-        <Grid Grid.Row="2"
-              Grid.RowSpan="5"
-              Grid.ColumnSpan="3"
-              Margin="5,15,15,0">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="42" />
-                <ColumnDefinition Width="17" />
-                <ColumnDefinition Width="10" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1" />
-                <RowDefinition Height="4*" />
-                <controls:CollapsibleRow Height="4*"
-                                         IsVisible="{Binding ElevatorStepVisible}" />
-                <controls:CollapsibleRow Height="4*"
-                                         IsVisible="{Binding Bay1StepVisible}" />
-                <controls:CollapsibleRow Height="4*"
-                                         IsVisible="{Binding Bay2StepVisible}" />
-                <controls:CollapsibleRow Height="4*"
-                                         IsVisible="{Binding Bay3StepVisible}" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="1" />
-            </Grid.RowDefinitions>
-            <!--#region Body-->
-            <Border Grid.Row="0"
-                    Grid.RowSpan="7"
-                    Grid.Column="2"
-                    Grid.ColumnSpan="2"
-                    Margin="8,0,0,0"
-                    Background="{DynamicResource PpcBackground}"
-                    BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}"
-                    CornerRadius="2,0,0,2">
-                <ContentControl Content="{Binding CurrentStep, Mode=OneWay}" />
-            </Border>
-            <!--#endregion-->
-            <!--#region TimeLine-->
-            <Border Grid.Row="0"
-                    Grid.RowSpan="7"
-                    Style="{DynamicResource BorderTimeLine}" />
-
-            <Grid Grid.Row="1">
-                <Border Background="{Binding HasStepStart, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="1" />
-            </Grid>
-            <Grid Grid.Row="1"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepStart, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
-
-            <Grid Grid.Row="2"
-                  Visibility="{Binding ElevatorStepVisible, Converter={StaticResource BTVC}}">
-                <Border Background="{Binding HasStepLoadunitOnElevator, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="{Binding ElevatorStepText}" />
-            </Grid>
-            <Grid Grid.Row="2"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepLoadunitOnElevator, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
-
-            <Grid Grid.Row="3"
-                  Visibility="{Binding Bay1StepVisible, Converter={StaticResource BTVC}}">
-                <Border Background="{Binding HasStepLoadunitOnBay1, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="{Binding Bay1StepText}" />
-            </Grid>
-            <Grid Grid.Row="3"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepLoadunitOnBay1, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
-
-            <Grid Grid.Row="4"
-                  Visibility="{Binding Bay2StepVisible, Converter={StaticResource BTVC}}">
-                <Border Background="{Binding HasStepLoadunitOnBay2, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="{Binding Bay2StepText}" />
-            </Grid>
-            <Grid Grid.Row="4"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepLoadunitOnBay2, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
-
-            <Grid Grid.Row="5"
-                  Visibility="{Binding Bay3StepVisible, Converter={StaticResource BTVC}}">
-                <Border Background="{Binding HasStepLoadunitOnBay3, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="{Binding Bay3StepText}" />
-            </Grid>
-            <Grid Grid.Row="5"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepLoadunitOnBay3, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
-
-            <Grid Grid.Row="6">
-                <Border Background="{Binding HasStepAutomaticMode, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="{Binding AutomaticStepText}" />
-            </Grid>
-            <Grid Grid.Row="6"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepAutomaticMode, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
-            <!--#endregion-->
+          <controls:PpcLabeledText Grid.Row="1"
+                                   Grid.ColumnSpan="3"
+                                   Margin="0,15,0,0"
+                                   HorizontalAlignment="Left"
+                                   ContentText="{Binding MachineError.Reason}"
+                                   LabelText="{res:Loc ErrorsApp.ErrorReason}" />
         </Grid>
-        <!--#endregion-->
+
+        <Image Grid.Row="2"
+               Margin="0,15,0,15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="{DynamicResource Drawer2}"
+               Stretch="UniformToFill" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc General.Next}"
+                            Style="{StaticResource WizardConfirmButton}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepLoadunitOnElevator}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     TextWrapping="Wrap">
+            <Run Text="{res:Loc ErrorsApp.DrawerSelection}" /><Run Text=":" />
+          </TextBlock>
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.SelectUnitOnElevator}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <ctrls:PpcSpinEdit Grid.Row="2"
+                           Grid.Column="1"
+                           Width="200"
+                           Margin="0,0,15,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           EditValue="{Binding LuIdOnElevator, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding CanLuIdOnElevator}"
+                           KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                           KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                           LabelText="{res:Loc ErrorsApp.UnitOnElevator}"
+                           Mask="#0"
+                           MaxValue="999"
+                           MinValue="1" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc ErrorsApp.Forwards}"
+                            Style="{StaticResource WizardConfirmButton}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepLoadunitOnBay1}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.UnitSelectBay1}"
+                     TextWrapping="Wrap" />
+
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.UnitSelectIdBay}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <Grid Grid.Row="2"
+              Margin="0,15,0,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <ctrls:PpcSpinEdit Grid.Row="2"
+                             Grid.Column="0"
+                             Width="200"
+                             Margin="0,0,15,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
+                             EditValue="{Binding LuIdOnBay1Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                             KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                             LabelText="{res:Loc ErrorsApp.HighPosition}"
+                             Mask="#0"
+                             MaxValue="999"
+                             MinValue="1"
+                             Visibility="{Binding IsBay1PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+
+          <ctrls:PpcSpinEdit Grid.Row="2"
+                             Grid.Column="2"
+                             Width="200"
+                             Margin="15,0,0,0"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Center"
+                             EditValue="{Binding LuIdOnBay1Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                             KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                             LabelText="{res:Loc ErrorsApp.LowPosition}"
+                             Mask="#0"
+                             MaxValue="999"
+                             MinValue="1"
+                             Visibility="{Binding IsBay1PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+        </Grid>
+
+        <controls:PpcButton Grid.Row="3"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc ErrorsApp.Forwards}"
+                            Style="{StaticResource WizardConfirmButton}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepLoadunitOnBay2}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.UnitSelectBay2}"
+                     TextWrapping="Wrap" />
+
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.UnitSelectIdBay}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <Grid Grid.Row="2"
+              Margin="0,15,0,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <ctrls:PpcSpinEdit Grid.Row="2"
+                             Grid.Column="0"
+                             Width="200"
+                             Margin="0,0,15,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
+                             EditValue="{Binding LuIdOnBay2Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                             KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                             LabelText="{res:Loc ErrorsApp.HighPosition}"
+                             Mask="#0"
+                             MaxValue="999"
+                             MinValue="1"
+                             Visibility="{Binding IsBay2PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+
+          <ctrls:PpcSpinEdit Grid.Row="2"
+                             Grid.Column="2"
+                             Width="200"
+                             Margin="15,0,0,0"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Center"
+                             EditValue="{Binding LuIdOnBay2Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                             KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                             LabelText="{res:Loc ErrorsApp.LowPosition}"
+                             Mask="#0"
+                             MaxValue="999"
+                             MinValue="1"
+                             Visibility="{Binding IsBay2PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+        </Grid>
+
+        <controls:PpcButton Grid.Row="3"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc ErrorsApp.Forwards}"
+                            Style="{StaticResource WizardConfirmButton}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepLoadunitOnBay3}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.UnitSelectBay3}"
+                     TextWrapping="Wrap" />
+
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.UnitSelectIdBay}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <Grid Grid.Row="2"
+              Margin="0,15,0,0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <ctrls:PpcSpinEdit Grid.Row="2"
+                             Grid.Column="0"
+                             Width="200"
+                             Margin="0,0,15,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
+                             EditValue="{Binding LuIdOnBay3Up, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                             KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                             LabelText="{res:Loc ErrorsApp.HighPosition}"
+                             Mask="#0"
+                             MaxValue="999"
+                             MinValue="1"
+                             Visibility="{Binding IsBay3PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+
+          <ctrls:PpcSpinEdit Grid.Row="2"
+                             Grid.Column="2"
+                             Width="200"
+                             Margin="15,0,0,0"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Center"
+                             EditValue="{Binding LuIdOnBay3Down, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                             KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                             LabelText="{res:Loc ErrorsApp.LowPosition}"
+                             Mask="#0"
+                             MaxValue="999"
+                             MinValue="1"
+                             Visibility="{Binding IsBay3PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
+        </Grid>
+
+        <controls:PpcButton Grid.Row="3"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc General.Next}"
+                            Style="{StaticResource WizardConfirmButton}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ErrorsLoadunitMissingStepAutomaticMode}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2"
+                    Visibility="{Binding ManualMode, Converter={StaticResource BTVIC}}">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     TextWrapping="Wrap">
+            <Run Text="{res:Loc General.SwitchToAutomatic}" /><Run Text=":" />
+          </TextBlock>
+
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.DrawerIdentificationCompleted}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+
+        <StackPanel Grid.ColumnSpan="2"
+                    Visibility="{Binding ManualMode, Converter={StaticResource BTVC}}">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     TextWrapping="Wrap">
+            <Run Text="{res:Loc General.SwitchToManual}" /><Run Text=":" />
+          </TextBlock>
+
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.DrawerIdentificationCompletedManual}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <controls:PpcButton Grid.Row="3"
+                            Command="{Binding AutomaticCommand}"
+                            Content="{res:Loc General.Automatic}"
+                            Style="{StaticResource WizardConfirmButton}"
+                            Visibility="{Binding ManualMode, Converter={StaticResource BTVIC}}" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Command="{Binding ManualCommand}"
+                            Content="{res:Loc General.ManualMode}"
+                            Style="{StaticResource WizardConfirmButton}"
+                            Visibility="{Binding ManualMode, Converter={StaticResource BTVC}}" />
+      </Grid>
+    </DataTemplate>
+
+    <!--#endregion-->
+  </ctrls:View.Resources>
+
+  <Grid Margin="15,0,0,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="60" />
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <!--#region Title-->
+    <StackPanel Grid.ColumnSpan="4"
+                Orientation="Horizontal">
+      <TextBlock Grid.ColumnSpan="2"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{Binding MachineError.Description}" />
+    </StackPanel>
+    <!--#endregion-->
+
+    <!--#region Description-->
+    <TextBlock Grid.Row="1"
+               Grid.ColumnSpan="4"
+               Height="Auto"
+               Margin="0,0,15,0"
+               VerticalAlignment="Top"
+               Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+               Text="{Binding MachineError.Reason}"
+               TextWrapping="Wrap" />
+    <!--#endregion-->
+
+    <!--#region Tails-->
+    <controls:CardSensorAxisVertical Grid.Row="2"
+                                     Grid.Column="3"
+                                     Width="230"
+                                     Height="90"
+                                     MinHeight="90"
+                                     Margin="0,15,15,0" />
+    <controls:CardSensorAxisHorizontal Grid.Row="3"
+                                       Grid.Column="3"
+                                       Width="230"
+                                       Height="90"
+                                       MinHeight="90"
+                                       Margin="0,15,15,0" />
+    <controls:CardSensorShutter Grid.Row="4"
+                                Grid.Column="3"
+                                Width="230"
+                                Height="90"
+                                MinHeight="90"
+                                Margin="0,15,15,0" />
+    <controls:CardSensorDrawer Grid.Row="5"
+                               Grid.Column="3"
+                               Width="230"
+                               Height="90"
+                               MinHeight="90"
+                               Margin="0,15,15,0" />
+
+    <controls:PpcButton Grid.Row="6"
+                        Grid.Column="3"
+                        Margin="0,0,15,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding StopCommand}"
+                        Content="{res:Loc General.Stop}" />
+    <!--#endregion-->
+
+    <!--#region Wizard-->
+    <Grid Grid.Row="2"
+          Grid.RowSpan="5"
+          Grid.ColumnSpan="3"
+          Margin="5,15,15,0">
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="42" />
+        <ColumnDefinition Width="17" />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1" />
+        <RowDefinition Height="4*" />
+        <controls:CollapsibleRow Height="4*"
+                                 IsVisible="{Binding ElevatorStepVisible}" />
+        <controls:CollapsibleRow Height="4*"
+                                 IsVisible="{Binding Bay1StepVisible}" />
+        <controls:CollapsibleRow Height="4*"
+                                 IsVisible="{Binding Bay2StepVisible}" />
+        <controls:CollapsibleRow Height="4*"
+                                 IsVisible="{Binding Bay3StepVisible}" />
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="1" />
+      </Grid.RowDefinitions>
+      <!--#region Body-->
+      <Border Grid.Row="0"
+              Grid.RowSpan="7"
+              Grid.Column="2"
+              Grid.ColumnSpan="2"
+              Margin="8,0,0,0"
+              Background="{DynamicResource PpcBackground}"
+              BorderBrush="{DynamicResource PpcBorderBrush}"
+              BorderThickness="{DynamicResource PpcBorderThickness}"
+              CornerRadius="2,0,0,2">
+        <ContentControl Content="{Binding CurrentStep, Mode=OneWay}" />
+      </Border>
+      <!--#endregion-->
+      <!--#region TimeLine-->
+      <Border Grid.Row="0"
+              Grid.RowSpan="7"
+              Style="{DynamicResource BorderTimeLine}" />
+
+      <Grid Grid.Row="1">
+        <Border Background="{Binding HasStepStart, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="1" />
+      </Grid>
+      <Grid Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding HasStepStart, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <Grid Grid.Row="2"
+            Visibility="{Binding ElevatorStepVisible, Converter={StaticResource BTVC}}">
+        <Border Background="{Binding HasStepLoadunitOnElevator, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="{Binding ElevatorStepText}" />
+      </Grid>
+      <Grid Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding HasStepLoadunitOnElevator, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <Grid Grid.Row="3"
+            Visibility="{Binding Bay1StepVisible, Converter={StaticResource BTVC}}">
+        <Border Background="{Binding HasStepLoadunitOnBay1, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="{Binding Bay1StepText}" />
+      </Grid>
+      <Grid Grid.Row="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding HasStepLoadunitOnBay1, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <Grid Grid.Row="4"
+            Visibility="{Binding Bay2StepVisible, Converter={StaticResource BTVC}}">
+        <Border Background="{Binding HasStepLoadunitOnBay2, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="{Binding Bay2StepText}" />
+      </Grid>
+      <Grid Grid.Row="4"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding HasStepLoadunitOnBay2, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <Grid Grid.Row="5"
+            Visibility="{Binding Bay3StepVisible, Converter={StaticResource BTVC}}">
+        <Border Background="{Binding HasStepLoadunitOnBay3, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="{Binding Bay3StepText}" />
+      </Grid>
+      <Grid Grid.Row="5"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding HasStepLoadunitOnBay3, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <Grid Grid.Row="6">
+        <Border Background="{Binding HasStepAutomaticMode, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="{Binding AutomaticStepText}" />
+      </Grid>
+      <Grid Grid.Row="6"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding HasStepAutomaticMode, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+      <!--#endregion-->
     </Grid>
+    <!--#endregion-->
+  </Grid>
 </ctrls:View>

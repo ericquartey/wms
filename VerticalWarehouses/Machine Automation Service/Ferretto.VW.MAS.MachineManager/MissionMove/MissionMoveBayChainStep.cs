@@ -64,6 +64,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
+            if (this.Mission.NeedHomingAxis == Axis.None)
+            {
+                if (bay.TotalCycles - bay.LastCalibrationCycles >= bay.CyclesToCalibrate)
+                {
+                    this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                }
+                this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. CyclesToCalibrate {bay.CyclesToCalibrate}. LastCalibrationCycles {bay.LastCalibrationCycles}. Total cycles {bay.TotalCycles}. Mission:Id={this.Mission.Id}");
+            }
+
             if (this.Mission.RestoreConditions
                 && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
                 && Math.Abs(this.BaysDataProvider.GetChainPosition(bay.Number) - bay.Carousel.LastIdealPosition) > Math.Abs(bay.ChainOffset) + 1
@@ -166,6 +175,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 {
                                     this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
                                     this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
+                                    this.BaysDataProvider.IncrementCycles(bay.Number);
                                     transaction.Commit();
                                 }
 
@@ -325,6 +335,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.CloseShutterPosition = ShutterPosition.NotSpecified;
                     this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                     this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
+
                     if (this.Mission.ErrorCode != MachineErrorCode.MoveBayChainNotAllowed)
                     {
                         this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
