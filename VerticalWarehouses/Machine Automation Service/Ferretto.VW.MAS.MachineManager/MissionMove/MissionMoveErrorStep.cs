@@ -452,6 +452,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
                 this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
+
+                if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell)
+                {
+                    this.Mission.CloseShutterPosition = ShutterPosition.Closed;
+                    this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
+                }
                 this.MissionsDataProvider.Update(this.Mission);
             }
             else
