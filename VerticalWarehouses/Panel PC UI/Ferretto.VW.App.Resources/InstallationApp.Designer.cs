@@ -6471,6 +6471,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Video mirroring expired.
+        /// </summary>
+        public static string ScreenCastDurationExpire {
+            get {
+                return ResourceManager.GetString("ScreenCastDurationExpire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Security.
         /// </summary>
         public static string Security {

@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -26,6 +25,14 @@ namespace Ferretto.VW.App.Modules.Layout
 {
     public class PresentationService : BasePresentationViewModel
     {
+        #region Constants
+
+        private const int SCREENSHOTDELAY = 200;
+
+        private const int SCREENCASTDURATION = 20;
+
+        #endregion
+
         #region Fields
 
         private const string TelemetryServiceUrlKey = "TelemetryService:Url";
@@ -33,8 +40,6 @@ namespace Ferretto.VW.App.Modules.Layout
         private static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
 
         private readonly IEventAggregator eventAggregator;
-
-        private const int SCREENSHOTDELAY = 200;
 
         private readonly IBayManager bayManagerService;
 
@@ -170,6 +175,8 @@ namespace Ferretto.VW.App.Modules.Layout
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             Task.Run(async () =>
             {
+                var screenCastStart = DateTimeOffset.Now;
+
                 do
                 {
                     byte[] screenshot = null;
@@ -192,10 +199,16 @@ namespace Ferretto.VW.App.Modules.Layout
                     finally
                     {
                         await Task.Delay(SCREENSHOTDELAY);
+                        if (screenCastStart.AddMinutes(SCREENCASTDURATION) < DateTimeOffset.Now)
+                        {
+                            this.IsScreenCast = false;
+                            this.ShowNotification(InstallationApp.ScreenCastDurationExpire);
+                        }
                     }
                 }
-                while (this.isScreenCast);
+                while (this.IsScreenCast);
             });
+
 #pragma warning restore CS4014
         }
 
