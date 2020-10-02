@@ -88,9 +88,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(30)]
             public Laser Laser { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.LastCalibrationCycles))]
-            [Id(150)]
-            public int LastCalibrationCycles { get; set; }
+            //[Editable(false)]
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.LastCalibrationCycles))]
+            //[Id(150)]
+            //public int LastCalibrationCycles { get; set; }
 
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BayNumber))]

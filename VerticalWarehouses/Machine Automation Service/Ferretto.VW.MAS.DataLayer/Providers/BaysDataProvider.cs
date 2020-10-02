@@ -877,6 +877,22 @@ namespace Ferretto.VW.MAS.DataLayer
             return shutter.Inverter.Index;
         }
 
+        public void IncrementCycles(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.FirstOrDefault(b => b.Number == bayNumber);
+
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.TotalCycles++;
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public bool IsMissionInBay(Mission mission)
         {
             lock (this.dataContext)
@@ -961,13 +977,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.AsNoTracking().SingleOrDefault(b => b.Id == bayid);
+                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Id == bayid);
                 bay.Pick = pick;
                 bay.Put = put;
                 bay.View = view;
                 bay.Inventory = inventory;
 
-                this.dataContext.Bays.Update(bay);
                 this.dataContext.SaveChanges();
             }
         }
@@ -1167,6 +1182,22 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.AddOrUpdate(bay.External, f => f.Id);
                     this.dataContext.SaveChanges();
                 }
+            }
+        }
+
+        public void UpdateLastCalibrationCycles(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.FirstOrDefault(b => b.Number == bayNumber);
+
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.LastCalibrationCycles = bay.TotalCycles;
+                this.dataContext.SaveChanges();
             }
         }
 

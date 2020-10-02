@@ -110,6 +110,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         InverterIndex GetShutterInverterIndex(BayNumber bayNumber);
 
+        void IncrementCycles(BayNumber bayNumber);
+
         bool IsMissionInBay(Mission mission);
 
         void Light(BayNumber bayNumber, bool enable);
@@ -140,6 +142,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void UpdateELevatorDistance(BayNumber bayNumber, double distance);
 
         void UpdateExtraRace(BayNumber bayNumber, double extraRace);
+
+        void UpdateLastCalibrationCycles(BayNumber bayNumber);
 
         void UpdateLastIdealPosition(double position, BayNumber bayNumber);
 
