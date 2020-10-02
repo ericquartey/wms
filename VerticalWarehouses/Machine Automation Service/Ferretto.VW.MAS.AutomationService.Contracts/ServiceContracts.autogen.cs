@@ -2658,6 +2658,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("CurrentMission", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Mission CurrentMission { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("CyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
+        public int CyclesToCalibrate { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("EmptyLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters EmptyLoadMovement { get; set; }
     
@@ -2694,6 +2697,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsFastDepositToBay", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFastDepositToBay { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("LastCalibrationCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int LastCalibrationCycles { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Number", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber Number { get; set; }
     
@@ -2720,14 +2726,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("CyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
-        public int CyclesToCalibrate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("LastCalibrationCycles", Required = Newtonsoft.Json.Required.Always)]
-        public int LastCalibrationCycles { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
         public BayStatus Status { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalCycles", Required = Newtonsoft.Json.Required.Always)]
+        public int TotalCycles { get; set; }
     
         [Newtonsoft.Json.JsonProperty("View", Required = Newtonsoft.Json.Required.Always)]
         public bool View { get; set; }
