@@ -162,6 +162,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 }
                                 this.Mission.CloseShutterBayNumber = bayNumber;
                                 this.Mission.CloseShutterPosition = ShutterPosition.Closed;
+                                this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                             }
                         }
                     }
@@ -192,6 +193,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.CloseShutterBayNumber = bay.Number;
                         this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, bayPosition.Location);
+                        this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                     }
 
                     this.LoadingUnitsDataProvider.SetStatus(this.Mission.LoadUnitId, DataModels.Enumerations.LoadingUnitStatus.OnMovementToLocation);
