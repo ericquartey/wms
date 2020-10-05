@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private const int SCREENSHOTDELAY = 200;
 
-        private const int SCREENCASTDURATION = 20;
+        private const int SCREENCASTDURATION = 30;
 
         #endregion
 

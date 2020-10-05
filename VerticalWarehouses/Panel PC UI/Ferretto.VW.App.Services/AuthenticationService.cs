@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DevExpress.XtraRichEdit.Model;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Microsoft.AppCenter.Analytics;
 
@@ -37,6 +38,8 @@ namespace Ferretto.VW.App.Services
 
         public UserAccessLevel AccessLevel { get; private set; }
 
+        public bool IsAutoLogoutServiceUser { get; set; }
+
         public string UserName { get; private set; }
 
         #endregion
@@ -73,24 +76,24 @@ namespace Ferretto.VW.App.Services
               .AuthenticateWithBearerTokenAsync(bearerToken);
 
             this.UserName = userClaims.Name;
-            switch ((int)userClaims.AccessLevel)
+            switch (userClaims.AccessLevel)
             {
-                case 0:
+                case UserAccessLevel.NoAccess:
                     //this.AccessLevel = UserAccessLevel.Support;
                     this.AccessLevel = UserAccessLevel.Operator;
                     break;
 
-                case 1:
+                case UserAccessLevel.Operator:
                     //this.AccessLevel = UserAccessLevel.Admin;
                     this.AccessLevel = UserAccessLevel.Operator;
                     break;
 
-                case 2:
+                case UserAccessLevel.Installer:
                     //this.AccessLevel = UserAccessLevel.Installer;
                     this.AccessLevel = UserAccessLevel.Operator;
                     break;
 
-                case 3:
+                case UserAccessLevel.Support:
                     this.AccessLevel = UserAccessLevel.Operator;
                     break;
 

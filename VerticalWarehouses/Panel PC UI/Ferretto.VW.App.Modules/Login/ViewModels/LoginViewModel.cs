@@ -306,6 +306,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             await this.barcodeReaderService.StartAsync();
             await this.cardReaderService.StartAsync();
             await this.tokenReaderService.StartAsync();
+
+            if (this.authenticationService.IsAutoLogoutServiceUser)
+            {
+                this.authenticationService.IsAutoLogoutServiceUser = false;
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.AutoLogoutServiceUser"));
+            }
         }
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -406,7 +412,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(Ferretto.VW.App.Resources.Localized.Get("LoadLogin.InvalidCredentials"), Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.InvalidCredentials"), Services.Models.NotificationSeverity.Error);
             }
             catch (Exception ex)
             {

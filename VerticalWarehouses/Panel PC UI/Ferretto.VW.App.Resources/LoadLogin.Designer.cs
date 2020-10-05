@@ -70,6 +70,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User session &apos;service&apos; expired.
+        /// </summary>
+        public static string AutoLogoutServiceUser {
+            get {
+                return ResourceManager.GetString("AutoLogoutServiceUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Services Connection Established.
         /// </summary>
         public static string ConnectionEstablished {

@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Services
 {
     internal sealed class SessionService : ISessionService
     {
-        private readonly IAuthenticationService autenticationService;
+        private readonly IAuthenticationService authenticationService;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -33,13 +33,13 @@ namespace Ferretto.VW.App.Services
         public MachineIdentity MachineIdentity { get; set; }
 
         public SessionService(
-            IAuthenticationService autenticationService,
+            IAuthenticationService authenticationService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IHealthProbeService healthProbeService,
             INavigationService navigationService)
         {
-            this.autenticationService = autenticationService ?? throw new ArgumentNullException(nameof(autenticationService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
             this.bayManager = bayManager;
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Services
             {
                 this.logger.Debug($"OnHealthStatusChanged.LogOutAsync();");
 
-                await this.autenticationService.LogOutAsync();
+                await this.authenticationService.LogOutAsync();
 
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Login),
