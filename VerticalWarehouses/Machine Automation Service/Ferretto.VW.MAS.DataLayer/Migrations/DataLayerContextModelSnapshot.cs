@@ -94,6 +94,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("TotalCycles");
 
+                    b.Property<bool>("Pick");
+
+                    b.Property<bool>("Put");
+
+                    b.Property<bool>("View");
+
+                    b.Property<bool>("Inventory");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccessoriesId");
@@ -113,6 +121,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("IoDeviceId");
 
                     b.HasIndex("MachineId");
+
+                    b.HasIndex("Pick");
+
+                    b.HasIndex("Put");
+
+                    b.HasIndex("View");
+
+                    b.HasIndex("Inventory");
 
                     b.HasIndex("Number")
                         .IsUnique();

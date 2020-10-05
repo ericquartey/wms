@@ -2914,4 +2914,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Inverters fault</value>
     <comment>Sensor</comment>
   </data>
+  <data name="ScreenCastDurationExpire" xml:space="preserve">
+    <value>Video mirroring expired</value>
+  </data>
 </root>
