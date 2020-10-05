@@ -13,6 +13,8 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
+        bool IsAutoLogoutServiceUser { get; set; }
+
         /// <summary>
         /// Gets the name of the currently logged user, or <c>null</c> if no user is logged in.
         /// </summary>

@@ -183,4 +183,7 @@
   <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
     <value>Unable to authentincate user with the token. because the WMS is not reachable.</value>
   </data>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>User session 'service' expired</value>
+  </data>
 </root>
