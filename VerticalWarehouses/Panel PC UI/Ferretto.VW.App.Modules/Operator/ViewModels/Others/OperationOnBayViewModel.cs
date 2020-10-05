@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool inventory;
 
+        private bool isBusy;
+
         private bool pick;
 
         private bool put;
@@ -99,14 +101,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanSave()
         {
-            return !this.MachineStatus.IsMoving;
+            return !this.MachineStatus.IsMoving &&
+                !this.isBusy &&
+                this.Bay != null &&
+                (this.Bay.Inventory != this.inventory ||
+                this.Bay.Pick != this.pick ||
+                this.Bay.Put != this.put ||
+                this.Bay.View != this.view);
         }
 
-        private void LoadData()
+        private async void LoadData()
         {
             try
             {
-                this.Bay = this.MachineService.Bay;
+                this.isBusy = true;
+                this.Bay = await this.machineBaysWebService.GetByNumberAsync(this.MachineService.BayNumber);
+                //this.Bay = this.MachineService.Bay;
                 var bays = this.MachineService.Bays;
                 this.Pick = this.Bay.Pick;
                 this.Put = this.Bay.Put;
@@ -117,12 +127,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ShowNotification(ex);
             }
+            finally
+            {
+                this.isBusy = false;
+            }
         }
 
         private async Task SaveSettingsAsync()
         {
             try
             {
+                this.isBusy = true;
                 this.IsWaitingForResponse = true;
 
                 await this.machineBaysWebService.SetAllOpertionBayAsync(this.pick, this.put, this.view, this.inventory, this.bay.Id);
@@ -136,6 +151,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.LoadData();
 
                 this.IsWaitingForResponse = false;
+
+                this.isBusy = false;
             }
         }
 
