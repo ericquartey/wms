@@ -1109,8 +1109,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogDebug("OnOperationComplete");
                 await this.InvokeSchedulerAsync(serviceProvider);
             }
+            else
+            {
+                this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
+            }
 
-            this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
         }
 
         private async Task OnShutterPositioning(NotificationMessage message, IServiceProvider serviceProvider)
