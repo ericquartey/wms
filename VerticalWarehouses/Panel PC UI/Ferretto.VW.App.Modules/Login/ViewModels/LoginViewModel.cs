@@ -54,6 +54,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly EventHandler<TokenStatusChangedEventArgs> tokenReaderTokenStatusChangedEventHandler;
 
+        private System.Collections.Generic.IEnumerable<string> users;
+
         #endregion
 
         #region Constructors
@@ -166,6 +168,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #endregion
 
+        public readonly System.Collections.Generic.List<string> BaseUser = new System.Collections.Generic.List<string>() { "operator", "installer", "service", "admin" };
+
         public string ActiveContextName => "Login";
 
         #region Properties
@@ -189,6 +193,18 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             set
             {
                 if (this.SetProperty(ref this.machineIdentity, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public System.Collections.Generic.IEnumerable<string> Users
+        {
+            get => this.users;
+            set
+            {
+                if (this.SetProperty(ref this.users, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }
@@ -266,6 +282,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.Users = this.BaseUser;
+
             this.ClearNotifications();
 
             this.subscriptionToken = this.healthProbeService.HealthStatusChanged
@@ -306,6 +324,17 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             await this.barcodeReaderService.StartAsync();
             await this.cardReaderService.StartAsync();
             await this.tokenReaderService.StartAsync();
+
+            if (this.MachineModeService.IsWmsEnabled)
+            {
+                //add user
+            }
+
+            if (this.authenticationService.IsAutoLogoutServiceUser)
+            {
+                this.authenticationService.IsAutoLogoutServiceUser = false;
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.AutoLogoutServiceUser"));
+            }
         }
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
@@ -406,7 +435,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(Ferretto.VW.App.Resources.Localized.Get("LoadLogin.InvalidCredentials"), Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(Resources.Localized.Get("LoadLogin.InvalidCredentials"), Services.Models.NotificationSeverity.Error);
             }
             catch (Exception ex)
             {

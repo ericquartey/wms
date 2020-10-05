@@ -17,254 +17,246 @@
            prism:ViewModelLocator.AutoWireViewModel="True"
            mc:Ignorable="d">
 
-    <view:View.InputBindings>
-        <KeyBinding Key="Return"
-                    Command="{Binding LoginCommand}" />
-    </view:View.InputBindings>
+  <view:View.InputBindings>
+    <KeyBinding Key="Return"
+                Command="{Binding LoginCommand}" />
+  </view:View.InputBindings>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <StackPanel Margin="0,10,50,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal">
-            <TextBlock x:Name="txtTime"
-                       Style="{StaticResource VWAPP_ViewDateTextBlockStyle}"
-                       Text="10:10" />
-        </StackPanel>
-        <Grid Grid.Row="1">
-            <Border Margin="100,30,100,50"
-                    Background="{DynamicResource FerrettoDarkGray}"
-                    BorderBrush="{x:Null}"
-                    CornerRadius="4">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="30"
-                                      Direction="270"
-                                      Opacity="0.3"
-                                      ShadowDepth="15" />
-                </Border.Effect>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <StackPanel Margin="0,10,50,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
+      <TextBlock x:Name="txtTime"
+                 Style="{StaticResource VWAPP_ViewDateTextBlockStyle}"
+                 Text="10:10" />
+    </StackPanel>
+    <Grid Grid.Row="1">
+      <Border Margin="100,30,100,50"
+              Background="{DynamicResource FerrettoDarkGray}"
+              BorderBrush="{x:Null}"
+              CornerRadius="4">
+        <Border.Effect>
+          <DropShadowEffect BlurRadius="30"
+                            Direction="270"
+                            Opacity="0.3"
+                            ShadowDepth="15" />
+        </Border.Effect>
 
-                <Grid>
+        <Grid>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="2*" />
-                    </Grid.ColumnDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+          </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0"
-                            BorderBrush="{DynamicResource FerrettoDarkGray}"
-                            BorderThickness="0"
-                            CornerRadius="4,0,0,4">
-                        <Border.Background>
-                            <ImageBrush AlignmentX="Left"
-                                        AlignmentY="Bottom"
-                                        ImageSource="{DynamicResource LoginBackground}"
-                                        Opacity="0.7"
-                                        Stretch="UniformToFill" />
-                        </Border.Background>
+          <Border Grid.Column="0"
+                  BorderBrush="{DynamicResource FerrettoDarkGray}"
+                  BorderThickness="0"
+                  CornerRadius="4,0,0,4">
+            <Border.Background>
+              <ImageBrush AlignmentX="Left"
+                          AlignmentY="Bottom"
+                          ImageSource="{DynamicResource LoginBackground}"
+                          Opacity="0.7"
+                          Stretch="UniformToFill" />
+            </Border.Background>
 
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+              </Grid.RowDefinitions>
 
 
-                            <Border Background="{DynamicResource LogInBanner}"
-                                    BorderBrush="{DynamicResource FerrettoDarkGray}"
-                                    BorderThickness="0"
-                                    CornerRadius="4,0,0,0">
-                                <StackPanel Margin="4">
-                                    <TextBlock Margin="25,25,25,8"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Top"
-                                               FontSize="22"
-                                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                               Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}"
-                                               TextWrapping="Wrap" />
+              <Border Background="{DynamicResource LogInBanner}"
+                      BorderBrush="{DynamicResource FerrettoDarkGray}"
+                      BorderThickness="0"
+                      CornerRadius="4,0,0,0">
+                <StackPanel Margin="4">
+                  <TextBlock Margin="25,25,25,8"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             FontSize="22"
+                             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                             Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}"
+                             TextWrapping="Wrap" />
 
-                                    <TextBlock Margin="25,0,25,25"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Top"
-                                               FontSize="{DynamicResource FontSize_High}"
-                                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
-                                        <Run Text="{res:Loc General.SerialNumber}" /> <Run Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber}" />
-                                    </TextBlock>
+                  <TextBlock Margin="25,0,25,25"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             FontSize="{DynamicResource FontSize_High}"
+                             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                    <Run Text="{res:Loc General.SerialNumber}" /> <Run Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber}" />
+                  </TextBlock>
 
-                                </StackPanel>
+                </StackPanel>
+              </Border>
+            </Grid>
+          </Border>
+
+          <Border Grid.Column="1"
+                  Background="{DynamicResource LogIn_Background}"
+                  BorderBrush="{x:Null}"
+                  BorderThickness="0"
+                  CornerRadius="0,4,4,0">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="120" />
+              </Grid.RowDefinitions>
+
+              <Image x:Name="imgLogo"
+                     Grid.Column="0"
+                     Width="45"
+                     Height="45"
+                     Margin="0,15,15,0"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Center"
+                     RenderOptions.BitmapScalingMode="HighQuality"
+                     RenderTransformOrigin="0.5, 0.5"
+                     Source="{DynamicResource Ferretto_Small_Logo_Inverse}">
+                <Image.RenderTransform>
+                  <ScaleTransform x:Name="AnimatedScaleTransform" ScaleX="1" />
+                </Image.RenderTransform>
+                <Image.Triggers>
+                  <EventTrigger RoutedEvent="Mouse.MouseDown">
+                    <BeginStoryboard>
+                      <Storyboard>
+                        <DoubleAnimationUsingKeyFrames AccelerationRatio="0.4"
+                                                       DecelerationRatio="0.6"
+                                                       Storyboard.TargetName="AnimatedScaleTransform"
+                                                       Storyboard.TargetProperty="(ScaleTransform.ScaleX)">
+                          <LinearDoubleKeyFrame KeyTime="00:00:00.0"
+                                                Value="1" />
+                          <LinearDoubleKeyFrame KeyTime="00:00:00.5"
+                                                Value="0" />
+                          <LinearDoubleKeyFrame KeyTime="00:00:01.0"
+                                                Value="-1" />
+                          <LinearDoubleKeyFrame KeyTime="00:00:01.5"
+                                                Value="0" />
+                          <LinearDoubleKeyFrame KeyTime="00:00:02.0"
+                                                Value="1" />
+                        </DoubleAnimationUsingKeyFrames>
+                      </Storyboard>
+                    </BeginStoryboard>
+                  </EventTrigger>
+                </Image.Triggers>
+              </Image>
+
+              <StackPanel Grid.Row="1"
+                          Margin="20"
+                          VerticalAlignment="Center">
+
+                <TextBlock Foreground="{DynamicResource FerrettoBlue}"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="LOGIN" />
+
+                <ComboBox Name="comboBox"
+                          Margin="0,5"
+                          FontFamily="{DynamicResource VWAPP_TitleFont}"
+                          FontSize="22"
+                          FontWeight="Light"
+                          IsEditable="False"
+                          ItemsSource="{Binding Users}"
+                          SelectedValue="{Binding UserLogin.UserName}"
+                          Style="{DynamicResource FlatComboBoxStyle}"
+                          Text="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label Content="{Binding UserLogin.SupportToken}"
+                       ContentStringFormat="{res:Loc LoadLogin.TempKey}"
+                       FontFamily="{DynamicResource VWAPP_TitleFont}"
+                       FontSize="22"
+                       FontWeight="Light"
+                       Foreground="{DynamicResource Service_Foreground}">
+                  <Label.Style>
+                    <Style TargetType="Label">
+                      <Setter Property="Visibility" Value="Collapsed" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=SelectedItem, ElementName=comboBox}"
+                                     Value="service">
+                          <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Label.Style>
+                </Label>
+                <dxe:PasswordBoxEdit x:Name="txtPassword"
+                                     Margin="0,5"
+                                     FontFamily="{DynamicResource VWAPP_TitleFont}"
+                                     FontSize="22"
+                                     FontWeight="Light"
+                                     MouseDoubleClick="OnKeyboardOpenHandler"
+                                     NullText="{res:Loc LoadLogin.PasswordEnter}"
+                                     Password="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                     TouchUp="OnKeyboardOpenHandler" />
+
+                <Button Margin="0,25"
+                        Padding="5"
+                        HorizontalContentAlignment="Center"
+                        BorderThickness="0"
+                        Command="{Binding LoginCommand}"
+                        Content="{res:Loc General.Login}"
+                        FontFamily="{DynamicResource VWAPP_TitleFont}"
+                        FontSize="20"
+                        FontWeight="Light">
+                  <Button.Style>
+                    <Style BasedOn="{StaticResource {x:Type Button}}"
+                           TargetType="{x:Type Button}">
+                      <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
+                      <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="4">
+                              <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
                             </Border>
-                        </Grid>
-                    </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                      <Style.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                          <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                          <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                          <Setter Property="Cursor" Value="Hand" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                          <!--<Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />-->
+                          <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                          <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+                        </Trigger>
 
-                    <Border Grid.Column="1"
-                            Background="{DynamicResource LogIn_Background}"
-                            BorderBrush="{x:Null}"
-                            BorderThickness="0"
-                            CornerRadius="0,4,4,0">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="120" />
-                            </Grid.RowDefinitions>
+                      </Style.Triggers>
+                    </Style>
+                  </Button.Style>
+                </Button>
 
-                            <Image x:Name="imgLogo"
-                                   Grid.Column="0"
-                                   Width="45"
-                                   Height="45"
-                                   Margin="0,15,15,0"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Center"
-                                   RenderOptions.BitmapScalingMode="HighQuality"
-                                   RenderTransformOrigin="0.5, 0.5"
-                                   Source="{DynamicResource Ferretto_Small_Logo_Inverse}">
-                                <Image.RenderTransform>
-                                    <ScaleTransform x:Name="AnimatedScaleTransform" ScaleX="1" />
-                                </Image.RenderTransform>
-                                <Image.Triggers>
-                                    <EventTrigger RoutedEvent="Mouse.MouseDown">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimationUsingKeyFrames AccelerationRatio="0.4"
-                                                                               DecelerationRatio="0.6"
-                                                                               Storyboard.TargetName="AnimatedScaleTransform"
-                                                                               Storyboard.TargetProperty="(ScaleTransform.ScaleX)">
-                                                    <LinearDoubleKeyFrame KeyTime="00:00:00.0"
-                                                                          Value="1" />
-                                                    <LinearDoubleKeyFrame KeyTime="00:00:00.5"
-                                                                          Value="0" />
-                                                    <LinearDoubleKeyFrame KeyTime="00:00:01.0"
-                                                                          Value="-1" />
-                                                    <LinearDoubleKeyFrame KeyTime="00:00:01.5"
-                                                                          Value="0" />
-                                                    <LinearDoubleKeyFrame KeyTime="00:00:02.0"
-                                                                          Value="1" />
-                                                </DoubleAnimationUsingKeyFrames>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </Image.Triggers>
-                            </Image>
+              </StackPanel>
 
-                            <StackPanel Grid.Row="1"
-                                        Margin="20"
-                                        VerticalAlignment="Center">
+              <ctrls:PpcBayBadge Grid.RowSpan="3"
+                                 Grid.ColumnSpan="2"
+                                 Margin="0,0,20,20"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Bottom"
+                                 BayNumber="{Binding BayNumber, Mode=OneWay}" />
 
-                                <TextBlock Foreground="{DynamicResource FerrettoBlue}"
-                                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                           Text="LOGIN" />
-
-                                <ComboBox Name="comboBox"
-                                          Margin="0,5"
-                                          FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                          FontSize="22"
-                                          FontWeight="Light"
-                                          IsEditable="False"
-                                          SelectedValue="{Binding UserLogin.UserName}"
-                                          Style="{DynamicResource FlatComboBoxStyle}"
-                                          Text="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBox.ItemsSource>
-                                        <x:Array Type="{x:Type clr:String}">
-                                            <clr:String>operator</clr:String>
-                                            <clr:String>installer</clr:String>
-                                            <clr:String>service</clr:String>
-                                            <clr:String>admin</clr:String>
-                                        </x:Array>
-                                    </ComboBox.ItemsSource>
-                                </ComboBox>
-
-                                <Label Content="{Binding UserLogin.SupportToken}"
-                                       ContentStringFormat="{res:Loc LoadLogin.TempKey}"
-                                       FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                       FontSize="22"
-                                       FontWeight="Light"
-                                       Foreground="{DynamicResource Service_Foreground}">
-                                    <Label.Style>
-                                        <Style TargetType="Label">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=SelectedItem, ElementName=comboBox}"
-                                                             Value="service">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Label.Style>
-                                </Label>
-                                <dxe:PasswordBoxEdit x:Name="txtPassword"
-                                                     Margin="0,5"
-                                                     FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                                     FontSize="22"
-                                                     FontWeight="Light"
-                                                     MouseDoubleClick="OnKeyboardOpenHandler"
-                                                     NullText="{res:Loc LoadLogin.PasswordEnter}"
-                                                     Password="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                     TouchUp="OnKeyboardOpenHandler" />
-
-                                <Button Margin="0,25"
-                                        Padding="5"
-                                        HorizontalContentAlignment="Center"
-                                        BorderThickness="0"
-                                        Command="{Binding LoginCommand}"
-                                        Content="{res:Loc General.Login}"
-                                        FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                        FontSize="20"
-                                        FontWeight="Light">
-                                    <Button.Style>
-                                        <Style BasedOn="{StaticResource {x:Type Button}}"
-                                               TargetType="{x:Type Button}">
-                                            <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
-                                            <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type Button}">
-                                                        <Border Background="{TemplateBinding Background}"
-                                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                                CornerRadius="4">
-                                                            <ContentPresenter Margin="{TemplateBinding Padding}"
-                                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
-                                                        </Border>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsPressed" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
-                                                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
-                                                    <Setter Property="Cursor" Value="Hand" />
-                                                </Trigger>
-                                                <Trigger Property="IsEnabled" Value="False">
-                                                    <!--<Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />-->
-                                                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
-                                                    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-                                                </Trigger>
-
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-
-                            </StackPanel>
-
-                            <ctrls:PpcBayBadge Grid.RowSpan="3"
-                                               Grid.ColumnSpan="2"
-                                               Margin="0,0,20,20"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Bottom"
-                                               BayNumber="{Binding BayNumber, Mode=OneWay}" />
-
-                        </Grid>
-                    </Border>
-                </Grid>
-            </Border>
-
+            </Grid>
+          </Border>
         </Grid>
+      </Border>
 
     </Grid>
+
+  </Grid>
 
 
 </view:View>

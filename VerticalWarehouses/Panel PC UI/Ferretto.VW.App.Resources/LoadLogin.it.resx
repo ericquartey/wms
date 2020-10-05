@@ -183,4 +183,7 @@
   <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
     <value>Impossibile effettuare l'autenticazione con il gettone perché il WMS non è raggiungibile.</value>
   </data>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>Sessione utente 'service' scaduta</value>
+  </data>
 </root>
