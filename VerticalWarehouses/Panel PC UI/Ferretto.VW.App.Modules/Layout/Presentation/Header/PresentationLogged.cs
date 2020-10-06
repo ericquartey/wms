@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Modules.Layout
     {
         #region Fields
 
-        public const int AUTOLOGOUTSERVICEUSER = 30;
+        public const int AUTOLOGOUTSERVICEUSER = 30;    // timeout in minutes
 
         private readonly IAuthenticationService authenticationService;
 
@@ -75,7 +75,7 @@ namespace Ferretto.VW.App.Modules.Layout
             this.authenticationService.UserAuthenticated += this.AuthenticationService_UserAuthenticated;
 
             this.autologoutServiceTimer = new DispatcherTimer();
-            this.autologoutServiceTimer.Interval = new TimeSpan(0, 0, AUTOLOGOUTSERVICEUSER);
+            this.autologoutServiceTimer.Interval = new TimeSpan(0, AUTOLOGOUTSERVICEUSER, 0);
             this.autologoutServiceTimer.Tick += this.autoLogoutServiceUserAsync;
         }
 
