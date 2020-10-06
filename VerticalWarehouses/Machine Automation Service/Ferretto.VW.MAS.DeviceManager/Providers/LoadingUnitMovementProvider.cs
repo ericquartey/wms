@@ -156,8 +156,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         /// <summary>
-        ///     First we try high speed movement.
-        ///     If the starting position do not allow this, we can try slow movement (only during restore operation)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
@@ -172,19 +170,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             try
             {
-                this.shutterProvider.MoveTo(shutterPosition, requestingBay, sender);
-            }
-            catch (InvalidOperationException ex)
-            {
                 if (restore)
                 {
                     this.shutterProvider.Move(ShutterMovementDirection.Down, bypassConditions: false, requestingBay, sender);
                 }
                 else
                 {
-                    this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay, ex.Message);
-                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                    this.shutterProvider.MoveTo(shutterPosition, requestingBay, sender);
                 }
+            }
+            catch (InvalidOperationException ex)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay, ex.Message);
+                throw new StateMachineException(ex.Message, requestingBay, sender);
             }
         }
 

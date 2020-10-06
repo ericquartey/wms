@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Services;
@@ -14,7 +15,11 @@ namespace Ferretto.VW.App.Modules.Layout
     {
         #region Fields
 
+        public const int AUTOLOGOUTSERVICEUSER = 30;    // timeout in minutes
+
         private readonly IAuthenticationService authenticationService;
+
+        private readonly DispatcherTimer autologoutServiceTimer;
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
@@ -68,6 +73,10 @@ namespace Ferretto.VW.App.Modules.Layout
             this.Type = PresentationTypes.Logged;
 
             this.authenticationService.UserAuthenticated += this.AuthenticationService_UserAuthenticated;
+
+            this.autologoutServiceTimer = new DispatcherTimer();
+            this.autologoutServiceTimer.Interval = new TimeSpan(0, AUTOLOGOUTSERVICEUSER, 0);
+            this.autologoutServiceTimer.Tick += this.autoLogoutServiceUserAsync;
         }
 
         #endregion
@@ -113,9 +122,31 @@ namespace Ferretto.VW.App.Modules.Layout
             return Task.CompletedTask;
         }
 
+        public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
+        {
+            this.EventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, severity));
+        }
+
         private void AuthenticationService_UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
         {
             this.UserName = this.authenticationService.UserName;
+
+            if (this.userName == "service")
+            {
+                this.autologoutServiceTimer.Start();
+            }
+            else
+            {
+                this.autologoutServiceTimer.Stop();
+            }
+        }
+
+        private async void autoLogoutServiceUserAsync(object sender, EventArgs e)
+        {
+            _ = this.ExecuteLogOutCommand();
+            this.authenticationService.IsAutoLogoutServiceUser = true;
         }
 
         private async Task ExecuteLogOutCommand()
@@ -125,6 +156,7 @@ namespace Ferretto.VW.App.Modules.Layout
             await this.authenticationService.LogOutAsync();
             await this.machineBaysWebService.DeactivateAsync();
             this.navigationService.GoBackTo(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN);
+            this.autologoutServiceTimer.Stop();
         }
 
         private void ExecuteToggleThemeCommand()
