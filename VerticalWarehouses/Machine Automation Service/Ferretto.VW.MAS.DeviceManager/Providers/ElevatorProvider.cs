@@ -778,6 +778,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// </summary>
         public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, double verticalDisplacement, bool measure, int? loadingUnitId, int? positionId, bool bypassConditions, BayNumber requestingBay, MessageActor sender)
         {
+            this.machineVolatileDataProvider.IsHomingExecuted = false;
             if (!this.machineVolatileDataProvider.IsOneTonMachine.Value || sender == MessageActor.AutomationService)
             {
                 // Perform the horizontal movement for regular machine (no combined movements)
