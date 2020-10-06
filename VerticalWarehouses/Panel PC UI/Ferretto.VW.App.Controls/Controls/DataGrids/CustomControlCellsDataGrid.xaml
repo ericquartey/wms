@@ -206,7 +206,7 @@
       </DataGrid.RowStyle>
 
       <DataGrid.Columns>
-        <DataGridTextColumn x:Name="Column2"
+        <DataGridTextColumn x:Name="Column1"
                             Width="0.7*"
                             Binding="{Binding Path=Id}"
                             Header="Id"
@@ -234,12 +234,12 @@
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column1"
+        <DataGridTextColumn x:Name="Column2"
                             Width="1*"
                             Binding="{Binding Path=BlockLevel, Converter={StaticResource EBLC}}"
                             Header="{resources:Loc InstallationApp.Status}"
                             SortDirection="Ascending"
-                            SortMemberPath="Status">
+                            SortMemberPath="BlockLevel">
           <!--  Header="Status">  -->
           <!--<DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
