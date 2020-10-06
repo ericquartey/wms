@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -50,6 +51,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     break;
 
                 case MessageType.MoveLoadingUnit when message.Status is MessageStatus.OperationEnd || message.Status is MessageStatus.OperationWaitResume:
+                    this.Logger.LogDebug($"||>> Message type={message.Type}, source={message.Source}, destination={message.Destination}, message status={message.Status}, description={message.Description}, ToString={message.ToString()}");
                     await this.OnLoadingUnitMovedAsync(message, serviceProvider);
                     break;
 
