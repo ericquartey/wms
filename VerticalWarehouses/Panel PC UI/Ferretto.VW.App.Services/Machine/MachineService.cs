@@ -1517,7 +1517,7 @@ namespace Ferretto.VW.App.Services
                     case WarningsArea.Installation:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
-                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.NoGear"), NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
                         else if (this.machineModeService.MachineMode < MachineMode.SwitchingToAutomatic && this.machineModeService.MachineMode != MachineMode.Manual && this.machineModeService.MachineMode != MachineMode.Test)
                         {
@@ -1609,7 +1609,7 @@ namespace Ferretto.VW.App.Services
                     case WarningsArea.Picking:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
-                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.NoGear"), NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
                         else if (this.machineModeService.MachineMode != MachineMode.Automatic
                             && this.machineModeService.MachineMode != MachineMode.SwitchingToAutomatic
@@ -1666,7 +1666,7 @@ namespace Ferretto.VW.App.Services
                     case WarningsArea.Maintenance:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
-                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.NoGear"), NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
                         else if (this.IsMissionInError)
                         {
