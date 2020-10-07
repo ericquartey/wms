@@ -17,9 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.2.1" />
-    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.2.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -33,7 +31,7 @@
     <!-- begin: these references are included to ensure dynamic module dependencies can be resolved -->
     <PackageReference Include="MahApps.Metro.IconPacks" Version="3.2.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />
-    <PackageReference Include="WpfAnimatedGif" Version="1.4.18" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.0" />
     <!-- end -->
   </ItemGroup>
 

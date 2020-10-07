@@ -5,7 +5,6 @@ using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Microsoft.AppCenter.Crashes;
 using NLog;
 using Prism.Events;
 
@@ -15,7 +14,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
     {
         #region Fields
 
-        private ILogger logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private string notificationMessage;
 
@@ -180,7 +179,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                 }
 
                 this.logger.Error(message.Exception);
-                Crashes.TrackError(message.Exception);
             }
             else
             {

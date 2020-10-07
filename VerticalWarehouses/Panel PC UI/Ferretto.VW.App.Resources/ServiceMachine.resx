@@ -159,6 +159,9 @@
   <data name="MachineNotManual" xml:space="preserve">
     <value>The machine is not in manual...</value>
   </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Machine off</value>
+  </data>
   <data name="MissionInError" xml:space="preserve">
     <value>Missions in error...</value>
   </data>
@@ -188,9 +191,6 @@
   </data>
   <data name="MovementVerticalInProgress" xml:space="preserve">
     <value>Vertical movement in progress...</value>
-  </data>
-  <data name="NoGear" xml:space="preserve">
-    <value>No gear</value>
   </data>
   <data name="NoLoadingUnitInBay" xml:space="preserve">
     <value>No loading unit present in the bay.</value>

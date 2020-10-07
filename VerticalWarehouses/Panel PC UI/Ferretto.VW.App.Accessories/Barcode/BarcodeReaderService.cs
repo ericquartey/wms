@@ -11,7 +11,6 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.Devices;
 using Ferretto.VW.Devices.BarcodeReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Microsoft.AppCenter.Analytics;
 using NLog;
 using Prism.Events;
 
@@ -391,13 +390,6 @@ namespace Ferretto.VW.App.Accessories
                     eventArgs = new UserActionEventArgs(code, this.activeRule);
                 }
             }
-
-            Analytics.TrackEvent("Read Barcode", new Dictionary<string, string>
-            {
-                { "Active Page", activeViewModel?.GetType()?.Name?.Replace("ViewModel", "View") ?? "<none>" },
-                { "Matched Rule", this.activeRule?.Action?.ToString() ?? "<none>" },
-                { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
-            });
 
             await this.ExecuteActionOnActiveContext(eventArgs, activeContext);
         }
