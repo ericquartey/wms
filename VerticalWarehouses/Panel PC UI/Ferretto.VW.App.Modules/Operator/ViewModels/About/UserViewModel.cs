@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string installerLanguage;
 
-        private ObservableCollection<string> languageList = new ObservableCollection<string> { "ITA", "EN"/*, "DE", "ES", "FR", "PL", "RU", "SK", "SI"*/ };
+        private ObservableCollection<string> languageList = new ObservableCollection<string> { "ITA", "EN"/*, "DE", "ES", "FR", "PL", "RU", "SK", "SI"*/, "HR" };
 
         private string operatorLanguage;
 
@@ -138,6 +138,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //case "SI":
                 //    return "si-SI";
 
+                case "HR":
+                    return "hr-HR";
+
                 default:
                     return "en-EN";
             }
@@ -173,6 +176,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 //case "si-SI":
                 //    return "SI";
+
+                case "hr-HR":
+                    return "SI";
 
                 default:
                     return "EN";
