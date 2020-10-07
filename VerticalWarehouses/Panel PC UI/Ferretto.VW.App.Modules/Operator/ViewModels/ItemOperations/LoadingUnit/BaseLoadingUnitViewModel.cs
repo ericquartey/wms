@@ -437,6 +437,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.itemUpCommand?.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.RecallLoadingUnitInfo));
         }
 
         protected void Reset()
@@ -519,6 +521,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void OnMissionChanged(MissionChangedEventArgs e)
         {
             this.IsBusyConfirmingOperation = false;
+
             //this.IsNewOperationAvailable =
             //    this.WmsDataProvider.IsEnabled
             //    &&
@@ -533,9 +536,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //            o.Status != MissionOperationStatus.Completed
             //            &&
             //            o.Id != this.MissionOperationsService.ActiveWmsOperation.Id));
-
             if (!this.WmsDataProvider.IsEnabled
                 ||
+                !this.MachineModeService.IsWmsEnabled)
+            {
+                this.IsNewOperationAvailable = false;
+            }
+            else if (
                 this.MissionOperationsService.ActiveWmsMission is null
                 ||
                 this.MissionOperationsService.ActiveWmsOperation is null)
@@ -548,7 +555,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                    this.MissionOperationsService.ActiveWmsMission.Operations.Any(o =>
                         o.Status != MissionOperationStatus.Completed
                         &&
-                        o.Id != this.MissionOperationsService.ActiveWmsOperation.Id);
+                        o.Id != this.MissionOperationsService.ActiveWmsOperation.Id
+                        &&
+                        this.MissionOperationsService.ActiveWmsOperation.Id != 0);
             }
 
             //if (this.MissionOperationsService.ActiveMachineMission is null)

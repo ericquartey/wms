@@ -187,6 +187,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Machine off.
+        /// </summary>
+        public static string MachineOff {
+            get {
+                return ResourceManager.GetString("MachineOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missions in error....
         /// </summary>
         public static string MissionInError {
@@ -273,15 +282,6 @@ namespace Ferretto.VW.App.Resources {
         public static string MovementVerticalInProgress {
             get {
                 return ResourceManager.GetString("MovementVerticalInProgress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No gear.
-        /// </summary>
-        public static string NoGear {
-            get {
-                return ResourceManager.GetString("NoGear", resourceCulture);
             }
         }
         
