@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         bool UpdateWaitingMission(IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission);
 
+        bool UpdateWaitingMissionToDoubleBay(IServiceProvider serviceProvider, IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission);
+
         #endregion
     }
 }

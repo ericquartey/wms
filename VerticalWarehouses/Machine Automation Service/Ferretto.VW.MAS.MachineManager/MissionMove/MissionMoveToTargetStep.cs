@@ -274,7 +274,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
                 {
-                    newStep = new MissionMoveWaitDepositStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep = new MissionMoveWaitDepositCellStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
                 else
                 {

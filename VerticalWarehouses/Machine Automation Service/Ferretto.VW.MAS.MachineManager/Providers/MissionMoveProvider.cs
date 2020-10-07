@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             else
             {
                 var bay = baysDataProvider.GetByNumber(mission.TargetBay);
-                if(bay != null
+                if (bay != null
                     && bay.CurrentMission != null
                     && bay.CurrentMission.LoadUnitId == mission.LoadUnitId
                     )
@@ -268,6 +268,48 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 }
             }
             return true;
+        }
+
+        public bool UpdateWaitingMissionToDoubleBay(IServiceProvider serviceProvider, IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission)
+        {
+            // Check the type of bay and apply the waiting routine only with double bay
+            var bay = baysDataProvider.GetByNumber(mission.TargetBay);
+            if (!bay.IsDouble)
+            {
+                // No mission to check
+                this.Logger.LogDebug($"Bay is NOT double... No check waiting missions");
+                return false;
+            }
+
+            // Retrieve the mission on the bay with Step = MissionStep.WaitDepositInBay
+            var waitMissionOnCurrentBay = missionsDataProvider.GetAllActiveMissions()
+                .FirstOrDefault(
+                    m => m.LoadUnitId != mission.LoadUnitId &&
+                    m.Id != mission.Id &&
+                    m.Step == MissionStep.WaitDepositInBay
+                );
+            if (waitMissionOnCurrentBay != null)
+            {
+                this.Logger.LogDebug($"Resume mission: MissionId:{waitMissionOnCurrentBay.Id} for loading unit {waitMissionOnCurrentBay.LoadUnitId} on location:{waitMissionOnCurrentBay.LoadUnitDestination}");
+
+                var moveLoadUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+                // Resume the mission on waiting
+                moveLoadUnitProvider.ResumeMoveLoadUnit(
+                    waitMissionOnCurrentBay.Id,
+                    waitMissionOnCurrentBay.LoadUnitSource,
+                    waitMissionOnCurrentBay.LoadUnitDestination,
+                    waitMissionOnCurrentBay.TargetBay,
+                    waitMissionOnCurrentBay.WmsId,
+                    waitMissionOnCurrentBay.MissionType,
+                    MessageActor.MachineManager);
+
+                // Wait the completion of waitMissionOnCurrentBay, not go ahead
+                return true;
+            }
+
+            // No mission to deposit into bay, go ahead
+            this.Logger.LogDebug($"No missions are waiting. Go ahead....!!!");
+            return false;
         }
 
         private static IMissionMoveBase GetStateByClassName(IServiceProvider serviceProvider, Mission mission, IEventAggregator eventAggregator)

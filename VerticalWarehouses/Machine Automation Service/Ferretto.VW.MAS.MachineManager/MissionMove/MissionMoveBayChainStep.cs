@@ -282,7 +282,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 var waitingMission = this.MissionsDataProvider.GetAllActiveMissions()
                     .FirstOrDefault(m => m.LoadUnitSource == this.Mission.LoadUnitDestination
-                        && (m.Step == MissionStep.WaitDeposit || m.Step == MissionStep.WaitChain));
+                        && (m.Step == MissionStep.WaitDepositInCell || m.Step == MissionStep.WaitChain));
 
                 if (waitingMission != null)
                 {
