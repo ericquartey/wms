@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using DevExpress.XtraRichEdit.Model;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Microsoft.AppCenter.Analytics;
 
 namespace Ferretto.VW.App.Services
 {
@@ -61,12 +60,6 @@ namespace Ferretto.VW.App.Services
             this.AccessLevel = userClaims.AccessLevel;
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, this.AccessLevel));
 
-            Analytics.TrackEvent("Login", new Dictionary<string, string>
-            {
-                 { "Authentication Mode", supportToken != null ? "Support Token" : "Password" },
-                 { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
-            });
-
             return userClaims;
         }
 
@@ -103,22 +96,11 @@ namespace Ferretto.VW.App.Services
             }
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userClaims.Name, this.AccessLevel));
 
-            Analytics.TrackEvent("Login", new Dictionary<string, string>
-            {
-                 { "Authentication Mode", "Bearer Token" },
-                 { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
-            });
-
             return userClaims;
         }
 
         public async Task LogOutAsync()
         {
-            Analytics.TrackEvent("Logout", new Dictionary<string, string>
-            {
-                 { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
-            });
-
             await Task.Run(() => this.UserName = null);
         }
 

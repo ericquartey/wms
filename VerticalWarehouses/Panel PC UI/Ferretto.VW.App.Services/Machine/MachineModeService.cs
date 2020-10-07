@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Microsoft.AppCenter.Analytics;
 using NLog;
 using Prism.Events;
 
@@ -142,13 +141,6 @@ namespace Ferretto.VW.App.Services
             {
                 this.ShowError(ex);
             }
-            finally
-            {
-                Analytics.TrackEvent("Power Off", new Dictionary<string, string>
-                {
-                     { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
-                });
-            }
         }
 
         public async Task PowerOnAsync()
@@ -160,13 +152,6 @@ namespace Ferretto.VW.App.Services
             catch (Exception ex)
             {
                 this.ShowError(ex);
-            }
-            finally
-            {
-                Analytics.TrackEvent("Power On", new Dictionary<string, string>
-                {
-                     { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
-                });
             }
         }
 
@@ -180,14 +165,6 @@ namespace Ferretto.VW.App.Services
             {
                 this.ShowError(ex);
             }
-            finally
-            {
-                Analytics.TrackEvent("Change Mode", new Dictionary<string, string>
-                {
-                    { "Mode", "Automatic" },
-                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
-                });
-            }
         }
 
         public async Task SetManualMode()
@@ -199,14 +176,6 @@ namespace Ferretto.VW.App.Services
             catch (Exception ex)
             {
                 this.ShowError(ex);
-            }
-            finally
-            {
-                Analytics.TrackEvent("Change Mode", new Dictionary<string, string>
-                {
-                    { "Mode", "Manual" },
-                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
-                });
             }
         }
 
