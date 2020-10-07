@@ -437,6 +437,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.itemUpCommand?.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.RecallLoadingUnitInfo));
         }
 
         protected void Reset()
@@ -534,9 +536,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //            o.Status != MissionOperationStatus.Completed
             //            &&
             //            o.Id != this.MissionOperationsService.ActiveWmsOperation.Id));
-
             if (!this.WmsDataProvider.IsEnabled
                 ||
+                !this.MachineModeService.IsWmsEnabled)
+            {
+                this.IsNewOperationAvailable = false;
+            }
+            else if (
                 this.MissionOperationsService.ActiveWmsMission is null
                 ||
                 this.MissionOperationsService.ActiveWmsOperation is null)
