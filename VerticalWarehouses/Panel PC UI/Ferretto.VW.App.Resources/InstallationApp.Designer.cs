@@ -5074,7 +5074,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti Guidati.
+        ///   Looks up a localized string similar to Guided Movements.
         /// </summary>
         public static string MovementsGuided {
             get {
@@ -5083,7 +5083,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti Manuali.
+        ///   Looks up a localized string similar to Manual Movements.
         /// </summary>
         public static string MovementsManual {
             get {
@@ -7722,7 +7722,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Axis.
+        ///   Looks up a localized string similar to Vertical axis.
         /// </summary>
         public static string VerticalAxis {
             get {
@@ -7731,7 +7731,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Axis Brake.
+        ///   Looks up a localized string similar to Vertical axis brake.
         /// </summary>
         public static string VerticalAxisBrake {
             get {
@@ -7740,7 +7740,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VerticalAxisButton.
+        ///   Looks up a localized string similar to Vertical axis button.
         /// </summary>
         public static string VerticalAxisButton {
             get {
@@ -7758,7 +7758,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Axis Calibration.
+        ///   Looks up a localized string similar to Vertical axis calibration.
         /// </summary>
         public static string VerticalAxisCalibration {
             get {
@@ -7767,7 +7767,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Origin Calibration.
+        ///   Looks up a localized string similar to Vertical crigin calibration.
         /// </summary>
         public static string VerticalAxisHomedDone {
             get {

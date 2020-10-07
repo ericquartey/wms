@@ -168,7 +168,7 @@
     <comment>Title</comment>
   </data>
   <data name="VerticalAxis" xml:space="preserve">
-    <value>Vertical Axis</value>
+    <value>Vertical axis</value>
   </data>
   <data name="LSMTVerticalEngineTitle" xml:space="preserve">
     <value>Vertical axis movements</value>
@@ -319,7 +319,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="VerticalAxisBrake" xml:space="preserve">
-    <value>Vertical Axis Brake</value>
+    <value>Vertical axis brake</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="ZeroPawlSensor" xml:space="preserve">
@@ -565,13 +565,13 @@
     <value>Shape gate 3</value>
   </data>
   <data name="VerticalAxisHomedDone" xml:space="preserve">
-    <value>Vertical Origin Calibration</value>
+    <value>Vertical crigin calibration</value>
   </data>
   <data name="VerticalResolutionDone" xml:space="preserve">
     <value>Vertical resolution</value>
   </data>
   <data name="VerticalAxisCalibration" xml:space="preserve">
-    <value>Vertical Axis Calibration</value>
+    <value>Vertical axis calibration</value>
   </data>
   <data name="AxisCalibratedSuccessfully" xml:space="preserve">
     <value>Axis Calibrated Successfully</value>
@@ -654,7 +654,7 @@
     <comment>Sensor</comment>
   </data>
   <data name="VerticalAxisButton" xml:space="preserve">
-    <value>VerticalAxisButton</value>
+    <value>Vertical axis button</value>
   </data>
   <data name="CellsSideControlButton" xml:space="preserve">
     <value>Modify cell block</value>
@@ -1362,10 +1362,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Test</value>
   </data>
   <data name="MovementsGuided" xml:space="preserve">
-    <value>Movimenti Guidati</value>
+    <value>Guided Movements</value>
   </data>
   <data name="MovementsManual" xml:space="preserve">
-    <value>Movimenti Manuali</value>
+    <value>Manual Movements</value>
   </data>
   <data name="Calibration" xml:space="preserve">
     <value>Calibration</value>
