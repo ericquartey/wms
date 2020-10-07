@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.userCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.User),
-                this.CanExecuteUserCommand));
+                this.CanExecuteCommand));
 
         #endregion
 

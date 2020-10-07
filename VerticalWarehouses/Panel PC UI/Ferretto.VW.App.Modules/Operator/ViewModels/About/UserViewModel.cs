@@ -16,13 +16,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly ILocalizationService localizationService;
 
+        private readonly ISessionService sessionService;
+
+        private bool adminEnabled;
+
         private string adminLanguage;
+
+        private bool installerEnabled;
 
         private string installerLanguage;
 
         private ObservableCollection<string> languageList = new ObservableCollection<string> { "ITA", "EN"/*, "DE", "ES", "FR", "PL", "RU", "SK", "SI"*/, "HR" };
 
+        private bool operatorEnabled;
+
         private string operatorLanguage;
+
+        private bool serviceEnabled;
 
         private string serviceLanguage;
 
@@ -30,9 +40,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public UserViewModel(ILocalizationService localizationService)
+        public UserViewModel(ILocalizationService localizationService,
+            ISessionService sessionService)
         {
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             this.GetLanguageFromFile();
         }
@@ -40,6 +52,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Properties
+
+        public bool AdminEnabled
+        {
+            get => this.adminEnabled;
+            set => this.SetProperty(ref this.adminEnabled, value, this.RaiseCanExecuteChanged);
+        }
 
         public string AdminLanguage
         {
@@ -53,6 +71,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public bool InstallerEnabled
+        {
+            get => this.installerEnabled;
+            set => this.SetProperty(ref this.installerEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public string InstallerLanguage
@@ -75,6 +99,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.languageList, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool OperatorEnabled
+        {
+            get => this.operatorEnabled;
+            set => this.SetProperty(ref this.operatorEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
         public string OperatorLanguage
         {
             get => this.operatorLanguage;
@@ -87,6 +117,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public bool ServiceEnabled
+        {
+            get => this.serviceEnabled;
+            set => this.SetProperty(ref this.serviceEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public string ServiceLanguage
@@ -178,7 +214,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //    return "SI";
 
                 case "hr-HR":
-                    return "SI";
+                    return "HR";
 
                 default:
                     return "EN";
@@ -190,6 +226,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             await base.OnAppearedAsync();
+
+            this.OperatorEnabled = true;
+
+            this.InstallerEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+
+            this.ServiceEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Support ||
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+
+            this.AdminEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 
         internal bool CanExecuteCommand()
