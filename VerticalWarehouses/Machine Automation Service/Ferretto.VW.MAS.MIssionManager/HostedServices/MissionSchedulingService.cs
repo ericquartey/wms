@@ -386,7 +386,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     && x.IsMissionToRestore());
             if (missionToRestore != null)
             {
-                if (restore)
+                if (restore
+                    && (missionToRestore.Step != MissionStep.WaitPick || this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay])
+                    )
                 {
                     this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Restore.", missionToRestore.TargetBay, missionToRestore.Id);
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(

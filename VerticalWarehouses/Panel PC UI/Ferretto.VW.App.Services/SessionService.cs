@@ -9,7 +9,6 @@ using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
-using Microsoft.AppCenter.Analytics;
 using System.Collections.Generic;
 
 namespace Ferretto.VW.App.Services
@@ -60,10 +59,7 @@ namespace Ferretto.VW.App.Services
 
         private void OnNavigation(NavigationCompletedEventArgs e)
         {
-            Analytics.TrackEvent("Page Visit", new Dictionary<string, string> {
-                    { "Name", e.ViewModelName?.Replace("ViewModel", "View") },
-                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber }
-                });
+            this.logger.Debug($"OnNavigation;");
         }
 
         private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)

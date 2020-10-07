@@ -106,11 +106,13 @@ namespace Ferretto.VW.MAS.AutomationService
 
                     case MessageStatus.OperationEnd:
                         machinePowerState = data.Enable ? MachinePowerState.Powered : MachinePowerState.Unpowered;
+                        this.machineVolatileDataProvider.IsHomingActive = false;
                         break;
 
                     case MessageStatus.OperationError:
                     case MessageStatus.OperationStop:
                         machinePowerState = MachinePowerState.Unpowered;
+                        this.machineVolatileDataProvider.IsHomingActive = false;
                         break;
 
                     default:

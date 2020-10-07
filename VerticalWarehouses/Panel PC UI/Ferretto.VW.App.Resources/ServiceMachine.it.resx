@@ -159,6 +159,9 @@
   <data name="MachineNotManual" xml:space="preserve">
     <value>La macchina non è in manuale...</value>
   </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Macchina spenta</value>
+  </data>
   <data name="MissionInError" xml:space="preserve">
     <value>Missioni in errore...</value>
   </data>
@@ -188,9 +191,6 @@
   </data>
   <data name="MovementVerticalInProgress" xml:space="preserve">
     <value>Movimento verticale in corso...</value>
-  </data>
-  <data name="NoGear" xml:space="preserve">
-    <value>Manca marcia</value>
   </data>
   <data name="NoLoadingUnitInBay" xml:space="preserve">
     <value>Nessun cassetto presente in baia.</value>

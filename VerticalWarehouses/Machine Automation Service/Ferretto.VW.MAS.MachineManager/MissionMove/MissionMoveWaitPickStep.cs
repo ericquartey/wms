@@ -199,7 +199,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Mission.MissionType = messageData.MissionType;
                             this.Mission.WmsId = messageData.WmsId;
                             this.Mission.LoadUnitSource = bayPosition.Location;
-                            if (messageData.Destination == LoadingUnitLocation.Cell)
+                            if (messageData.Destination == LoadingUnitLocation.Cell
+                                || this.Mission.LoadUnitDestination == LoadingUnitLocation.NoLocation
+                                )
                             {
                                 // prepare for finding a new empty cell
                                 this.Mission.DestinationCellId = null;
