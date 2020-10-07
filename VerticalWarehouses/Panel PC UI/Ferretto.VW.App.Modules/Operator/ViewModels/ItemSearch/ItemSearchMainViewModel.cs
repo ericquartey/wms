@@ -13,7 +13,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Microsoft.AppCenter.Analytics;
 using Prism.Commands;
 using Prism.Events;
 
@@ -454,12 +453,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPick = true;
 
-                Analytics.TrackEvent("Product Pick Requested", new Dictionary<string, string> {
-                    { "Item Code", this.itemToPickCode },
-                    { "Requested Quantity", this.inputQuantity?.ToString() },
-                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber },
-                });
-
                 await this.wmsDataProvider.PickAsync(
                     this.itemToPickId.Value,
                     this.InputQuantity.Value,
@@ -496,12 +489,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPut = true;
-
-                Analytics.TrackEvent("Product Put Requested", new Dictionary<string, string> {
-                    { "Item Code", this.itemToPickCode },
-                    { "Requested Quantity", this.inputQuantity?.ToString() },
-                    { "Machine Serial Number", this.bayManager.Identity?.SerialNumber },
-                });
 
                 await this.wmsDataProvider.PutAsync(
                     this.itemToPickId.Value,
@@ -965,16 +952,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     foreach (var item in totalProducts.ToList())
                     {
-                            for (int i = 0; i < item.Machines.Count(); i++)
+                        for (int i = 0; i < item.Machines.Count(); i++)
+                        {
+                            if (item.Machines.ElementAt(i).Id == model.Id)
                             {
-                                if (item.Machines.ElementAt(i).Id == model.Id)
-                                {
-                                    this.productsInCurrentMachine.Add(item);
-                                }
+                                this.productsInCurrentMachine.Add(item);
                             }
                         }
                     }
                 }
+            }
             catch (TaskCanceledException)
             {
                 // normal situation
