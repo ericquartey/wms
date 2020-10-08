@@ -226,14 +226,14 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u00e8"
+              "CommandText": "\u007B"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "\u00e9"
+              "CommandText": "\u007D"
             }
           }
         }
@@ -309,21 +309,21 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u00f2"
+              "CommandText": "\u005C"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "\u00e0"
+              "CommandText": "\u0027"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "\u00f9"
+              "CommandText": "\uFF1F"
             }
           }
         }
