@@ -148,10 +148,17 @@ namespace Ferretto.VW.MAS.SocketLink
                         commandsResponse.Add(this.ProcessCommandLoadingUnitsHeight(cmdReceived));
                         break;
 
+                    case SocketLinkCommand.HeaderType.LASER_CMD:
+                        commandsResponse.Add(this.ProcessCommandLaser(cmdReceived));
+                        break;
+
+                    case SocketLinkCommand.HeaderType.LEDBAR_CMD:
+                        commandsResponse.Add(this.ProcessCommandLedBar(cmdReceived));
+                        break;
+
                     case SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED:
                     case SocketLinkCommand.HeaderType.CONFIRM_OPERATION:
                     case SocketLinkCommand.HeaderType.LED_CMD:
-                    case SocketLinkCommand.HeaderType.LASER_CMD:
                         commandsResponse.Add(SocketLinkProvider.GetCommandNotRecognizedResponse(cmdReceived));
                         break;
                 }
@@ -478,6 +485,82 @@ namespace Ferretto.VW.MAS.SocketLink
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                 cmdResponse.AddPayload((int)SocketLinkCommand.InfoErrorCode.bayNotFoundForSpecifiedWarehouse);
                 cmdResponse.AddPayload($"bay not found for specified warehouse {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandLaser(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.LASER_RES);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
+                    var bayNumberInt = cmdReceived.GetBayNumberInt();
+                    cmdResponse.AddPayload(bayNumberInt);
+
+                    cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.messageReceived);
+                    cmdResponse.AddPayload("message correctly received");
+                }
+                else
+                {
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                    cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.warehouseNotFound);
+                    cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                }
+            }
+            catch (BayNumberException ex)
+            {
+                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.bayNotFound);
+                cmdResponse.AddPayload($"invalid bay number {ex.BayNumber}");
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandLedBar(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.LEDBAR_RES);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
+                    var bayNumberInt = cmdReceived.GetBayNumberInt();
+                    cmdResponse.AddPayload(bayNumberInt);
+
+                    cmdResponse.AddPayload((int)SocketLinkCommand.LedBarCommandResponseResult.messageReceived);
+                    cmdResponse.AddPayload("message correctly received");
+                }
+                else
+                {
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                    cmdResponse.AddPayload((int)SocketLinkCommand.LedBarCommandResponseResult.warehouseNotFound);
+                    cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                }
+            }
+            catch (BayNumberException ex)
+            {
+                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                cmdResponse.AddPayload((int)SocketLinkCommand.LedBarCommandResponseResult.bayNotFound);
+                cmdResponse.AddPayload($"invalid bay number {ex.BayNumber}");
             }
             catch (Exception ex)
             {
