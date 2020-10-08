@@ -112,7 +112,11 @@ namespace Ferretto.VW.MAS.SocketLink
 
             LASER_CMD,
 
-            LASER_RES
+            LASER_RES,
+
+            LEDBAR_CMD,
+
+            LEDBAR_RES
         }
 
         public enum InfoErrorCode
@@ -122,6 +126,37 @@ namespace Ferretto.VW.MAS.SocketLink
             warehouseNotFound = 1,
 
             bayNotFoundForSpecifiedWarehouse = 2
+        }
+
+        public enum LaserCommandField
+        {
+            switchOff = 0,
+
+            switchOnHeightPosition = 1,
+
+            switchOnLowPosition = 2,
+        }
+
+        public enum LaserCommandResponseResult
+        {
+            messageReceived = 0,
+
+            warehouseNotFound = 1,
+
+            bayNotFound = 2,
+
+            errorInParameters = 3
+        }
+
+        public enum LedBarCommandResponseResult
+        {
+            messageReceived = 0,
+
+            warehouseNotFound = 1,
+
+            bayNotFound = 2,
+
+            errorInParameters = 3
         }
 
         public enum MachineAlarmStatus
