@@ -3331,9 +3331,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         WaitChain = 10,
     
-        WaitDepositInCell = 11,
+        WaitDepositCell = 11,
     
-        WaitDepositInBay = 12,
+        WaitDepositBay = 12,
     
         ExtBay = 13,
     

@@ -78,6 +78,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 // WORKAROUND
                 // ---------------------
 
+                // It seems this code is not used!!!
+
                 // Check for another mission
                 // Retrieve the mission on the bay with Step = MissionStep.WaitDepositInBay
                 var waitMissionOnCurrentBay = this.MissionsDataProvider.GetAllActiveMissions()

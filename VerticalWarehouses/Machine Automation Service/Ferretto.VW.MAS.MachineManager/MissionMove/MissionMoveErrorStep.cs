@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MissionStep.ToTarget:
                 case MissionStep.BackToBay:
-                case MissionStep.WaitDepositInCell:
+                case MissionStep.WaitDepositCell:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
                         this.Mission.StepTime = DateTime.UtcNow;
@@ -429,11 +429,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     break;
 
-                case MissionStep.WaitDepositInCell:
+                case MissionStep.WaitDepositCell:
                     newStep = new MissionMoveWaitDepositCellStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     break;
 
-                case MissionStep.WaitDepositInBay:
+                case MissionStep.WaitDepositBay:
                     newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     break;
 

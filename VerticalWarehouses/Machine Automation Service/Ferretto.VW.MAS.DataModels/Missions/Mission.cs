@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsMissionWaiting()
         {
             return (this.Status is MissionStatus.Waiting && this.Step is MissionStep.BayChain)
-            || (this.Status is MissionStatus.Executing && this.Step is MissionStep.WaitDepositInCell)
+            || (this.Status is MissionStatus.Executing && this.Step is MissionStep.WaitDepositCell)
             || (this.Status is MissionStatus.Executing && this.Step is MissionStep.BackToBay);
         }
 

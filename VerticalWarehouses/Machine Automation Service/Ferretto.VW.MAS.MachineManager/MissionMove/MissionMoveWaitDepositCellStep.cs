@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
 
             this.Mission.RestoreStep = MissionStep.NotDefined;
-            this.Mission.Step = MissionStep.WaitDepositInCell;
+            this.Mission.Step = MissionStep.WaitDepositCell;
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.Mission.Status = MissionStatus.Executing;

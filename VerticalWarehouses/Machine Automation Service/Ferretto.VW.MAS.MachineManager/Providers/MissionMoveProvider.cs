@@ -216,6 +216,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public bool UpdateWaitingMission(IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission)
         {
+            this.Logger.LogDebug($"Check the waiting missions...");
+
             // if there is a new or waiting mission we have to take her place
             var waitMission = missionsDataProvider.GetAllMissions()
                 .FirstOrDefault(m => m.LoadUnitId == mission.LoadUnitId
@@ -286,7 +288,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 .FirstOrDefault(
                     m => m.LoadUnitId != mission.LoadUnitId &&
                     m.Id != mission.Id &&
-                    m.Step == MissionStep.WaitDepositInBay
+                    m.Step == MissionStep.WaitDepositBay
                 );
             if (waitMissionOnCurrentBay != null)
             {

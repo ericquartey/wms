@@ -178,7 +178,7 @@ namespace Ferretto.VW.MAS.MachineManager
                             // and if exists, complete it and exit from the OnMoveLoadingUnit() method
                             if (missionMoveProvider.UpdateWaitingMissionToDoubleBay(serviceProvider, missionsDataProvider, baysDataProvider, mission))
                             {
-                                this.Logger.LogInformation($"Resume mission on bay {command.TargetBay}... Wait");
+                                this.Logger.LogInformation($"Resuming missions on bay {mission.TargetBay}. Please wait ...");
                                 break;
                             }
 
