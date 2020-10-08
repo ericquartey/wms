@@ -56,10 +56,11 @@
         <ComboBox Margin="25,0"
                   FontFamily="{DynamicResource VWAPP_TitleFont}"
                   FontSize="22"
-                  FontWeight="Light"
-                  IsEditable="True"
+                  FontWeight="Bold"
+                  IsEditable="False"
                   IsEnabled="{Binding OperatorEnabled}"
                   ItemsSource="{Binding LanguageList}"
+                  MaxDropDownHeight="100"
                   SelectedItem="{Binding OperatorLanguage}"
                   Style="{DynamicResource PpcComboBoxStyle}" />
       </StackPanel>
@@ -75,10 +76,11 @@
         <ComboBox Margin="25,0"
                   FontFamily="{DynamicResource VWAPP_TitleFont}"
                   FontSize="22"
-                  FontWeight="Light"
-                  IsEditable="True"
+                  FontWeight="Bold"
+                  IsEditable="False"
                   IsEnabled="{Binding InstallerEnabled}"
                   ItemsSource="{Binding LanguageList}"
+                  MaxDropDownHeight="100"
                   SelectedItem="{Binding InstallerLanguage}"
                   Style="{DynamicResource PpcComboBoxStyle}" />
       </StackPanel>
@@ -94,10 +96,11 @@
         <ComboBox Margin="25,0"
                   FontFamily="{DynamicResource VWAPP_TitleFont}"
                   FontSize="22"
-                  FontWeight="Light"
-                  IsEditable="True"
+                  FontWeight="Bold"
+                  IsEditable="False"
                   IsEnabled="{Binding ServiceEnabled}"
                   ItemsSource="{Binding LanguageList}"
+                  MaxDropDownHeight="100"
                   SelectedItem="{Binding ServiceLanguage}"
                   Style="{DynamicResource PpcComboBoxStyle}" />
       </StackPanel>
@@ -113,16 +116,14 @@
         <ComboBox Margin="25,0"
                   FontFamily="{DynamicResource VWAPP_TitleFont}"
                   FontSize="22"
-                  FontWeight="Light"
-                  IsEditable="True"
+                  FontWeight="Bold"
+                  IsEditable="False"
                   IsEnabled="{Binding AdminEnabled}"
                   ItemsSource="{Binding LanguageList}"
+                  MaxDropDownHeight="100"
                   SelectedItem="{Binding AdminLanguage}"
                   Style="{DynamicResource PpcComboBoxStyle}" />
       </StackPanel>
     </Grid>
-
-
-
   </Grid>
 </ctrls:View>
