@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\en-lowercase.json" />
+    <None Remove="Resources\en-numeric.json" />
+    <None Remove="Resources\en-numpad.json" />
+    <None Remove="Resources\en-uppercase.json" />
+    <None Remove="Resources\hr-lowercase.json" />
+    <None Remove="Resources\hr-numeric.json" />
+    <None Remove="Resources\hr-numpad.json" />
+    <None Remove="Resources\hr-uppercase.json" />
     <None Remove="Resources\it-lowercase.json" />
     <None Remove="Resources\it-numeric.json" />
     <None Remove="Resources\it-numpad.json" />
@@ -14,8 +22,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\en-lowercase.json" />
+    <Resource Include="Resources\en-numeric.json" />
+    <Resource Include="Resources\en-numpad.json" />
+    <Resource Include="Resources\hr-lowercase.json" />
+    <Resource Include="Resources\hr-numeric.json" />
+    <Resource Include="Resources\hr-numpad.json" />
+    <Resource Include="Resources\hr-uppercase.json" />
     <Resource Include="Resources\it-numpad.json" />
     <Resource Include="Resources\it-numeric.json" />
+    <Resource Include="Resources\en-uppercase.json" />
     <Resource Include="Resources\it-uppercase.json" />
     <Resource Include="Resources\it-lowercase.json" />
   </ItemGroup>
