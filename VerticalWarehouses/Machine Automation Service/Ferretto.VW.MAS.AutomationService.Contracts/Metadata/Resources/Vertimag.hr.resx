@@ -534,4 +534,10 @@
   <data name="LastCalibrationCycles" xml:space="preserve">
     <value>Posljed.ciklusi kalibracije</value>
   </data>
+  <data name="Machine_LoadDepth" xml:space="preserve">
+    <value>Dubina</value>
+  </data>
+  <data name="Machine_LoadUnitWidth" xml:space="preserve">
+    <value>Širina</value>
+  </data>
 </root>
