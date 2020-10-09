@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -168,6 +170,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     Name = userName,
                     AccessLevel = (UserAccessLevel)accessLevel.Value,
                 });
+        }
+
+        [HttpPost("all-user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers([FromServices] IWmsSettingsProvider wmsSettingsProvider)
+        {
+            if (wmsSettingsProvider.IsEnabled
+                && wmsSettingsProvider.IsConnected)
+            {
+                var users = await this.usersWmsWebService.GetAllAsync();
+
+                return this.Ok(users);
+            }
+
+            return this.BadRequest("The Wms is not enabled.");
         }
 
         [HttpPost("token")]
