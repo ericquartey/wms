@@ -207,4 +207,7 @@
   <data name="TestInProgress" xml:space="preserve">
     <value>Test in progress...</value>
   </data>
+  <data name="NoGear" xml:space="preserve">
+    <value>No gear</value>
+  </data>
 </root>

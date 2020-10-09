@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -54,13 +55,18 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly EventHandler<TokenStatusChangedEventArgs> tokenReaderTokenStatusChangedEventHandler;
 
-        private System.Collections.Generic.IEnumerable<string> users;
+        private System.Collections.Generic.List<string> users;
+
+        private System.Collections.Generic.IEnumerable<User> wmsUsers;
+
+        private readonly IMachineUsersWebService usersService;
 
         #endregion
 
         #region Constructors
 
         public LoginViewModel(
+            IMachineUsersWebService usersService,
             IAuthenticationService authenticationService,
             IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
@@ -74,6 +80,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             ILocalizationService localizationService)
             : base(PresentationMode.Login)
         {
+            this.usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
@@ -199,12 +206,24 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        public System.Collections.Generic.IEnumerable<string> Users
+        public System.Collections.Generic.List<string> Users
         {
             get => this.users;
             set
             {
                 if (this.SetProperty(ref this.users, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public System.Collections.Generic.IEnumerable<User> WmsUsers
+        {
+            get => this.wmsUsers;
+            set
+            {
+                if (this.SetProperty(ref this.wmsUsers, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }
@@ -325,15 +344,35 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             await this.cardReaderService.StartAsync();
             await this.tokenReaderService.StartAsync();
 
-            if (this.MachineModeService.IsWmsEnabled)
-            {
-                //add user
-            }
-
             if (this.authenticationService.IsAutoLogoutServiceUser)
             {
                 this.authenticationService.IsAutoLogoutServiceUser = false;
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.AutoLogoutServiceUser"));
+            }
+
+            await this.SetUsers();
+        }
+
+        private async Task SetUsers()
+        {
+            try
+            {
+                this.WmsUsers = await this.usersService.GetAllUsersAsync();
+
+                var wmsUsersName = this.WmsUsers.Select(s => s.Login);
+
+                this.Users = this.BaseUser.Except(wmsUsersName).ToList();
+            }
+            catch(Exception)
+            {
+                //this.ShowNotification("WMS NO USERS", Services.Models.NotificationSeverity.Error);
+
+
+                this.Users = this.BaseUser;
+            }
+            finally
+            {
+                this.RaisePropertyChanged(nameof(this.Users));
             }
         }
 
@@ -403,11 +442,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             try
             {
-                var claims = await this.authenticationService.LogInAsync(
-                   this.UserLogin.UserName,
-                   this.UserLogin.Password,
-                   this.UserLogin.SupportToken);
-
                 switch (this.UserLogin.UserName)
                 {
                     case "admin":
@@ -427,11 +461,29 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                         break;
 
                     default:
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.NoAccess;
+                        ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
                         break;
                 }
 
-                await this.NavigateToMainMenuAsync(claims);
+                if (this.BaseUser.Contains(this.UserLogin.UserName))
+                {
+                    var claims = await this.authenticationService.LogInAsync(
+                       this.UserLogin.UserName,
+                       this.UserLogin.Password,
+                       this.UserLogin.SupportToken);
+
+                    await this.NavigateToMainMenuAsync(claims);
+                }
+                else
+                {
+                    var claimWms = await this.usersService.AuthenticateWithResourceOwnerPasswordAsync(
+                        this.UserLogin.UserName,
+                        this.UserLogin.Password);
+
+                    await this.NavigateToMainMenuAsync(claimWms);
+                }
+
+                
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

@@ -164,6 +164,7 @@
                           FontWeight="Light"
                           IsEditable="False"
                           ItemsSource="{Binding Users}"
+                          MaxDropDownHeight="300"
                           SelectedValue="{Binding UserLogin.UserName}"
                           Style="{DynamicResource FlatComboBoxStyle}"
                           Text="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

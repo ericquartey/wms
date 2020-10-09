@@ -233,7 +233,6 @@ namespace Ferretto.VW.MAS.AutomationService
         private async Task OnRepetitiveHorizontalMovementsChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-
             await this.installationHub.Clients.All.RepetitiveHorizontalMovementsNotify(message);
         }
 
@@ -241,6 +240,18 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             await this.installationHub.Clients.All.SensorsChanged(message);
+        }
+
+        private async Task OnSocketLinkAlphaNumericBarChange(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+            await this.installationHub.Clients.All.SocketLinkAlphaNumericBarChange(message);
+        }
+
+        private async Task OnSocketLinkLaserPointerChange(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+            await this.installationHub.Clients.All.SocketLinkLaserPointerChange(message);
         }
 
         //private async Task OnSocketLinkEnableChanged(IServiceProvider serviceProvider)

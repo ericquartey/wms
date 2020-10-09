@@ -2824,4 +2824,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ScreenCastDurationExpire" xml:space="preserve">
     <value>Video mirroring scaduto</value>
   </data>
+  <data name="EmbarkedTray" xml:space="preserve">
+    <value>Cassetto imbarcato</value>
+  </data>
+  <data name="F" xml:space="preserve">
+    <value>Annullato</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completato</value>
+  </data>
 </root>
