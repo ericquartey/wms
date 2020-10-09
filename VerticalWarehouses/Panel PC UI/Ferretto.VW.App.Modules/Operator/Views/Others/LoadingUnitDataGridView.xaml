@@ -3,84 +3,85 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls">
-    <DataGrid Name="DataGrid"
-              Width="auto"
-              Height="auto"
-              ItemsSource="{Binding LoadingUnits}"
-              SelectedItem="{Binding SelectedLoadingUnit}">
-        <DataGrid.Columns>
-            <DataGridTextColumn x:Name="Column1"
-                                Width="1*"
-                                Binding="{Binding Path=Code}"
-                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}">
-                <DataGridTextColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="1,0,0,0" />
-                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                    </Style>
-                </DataGridTextColumn.CellStyle>
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column2"
-                                Width="1*"
-                                Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
-                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column3"
-                                Width="1*"
-                                Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
-                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column4"
-                                Width="1*"
-                                Binding="{Binding Path=CellId}"
-                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderCell}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column5"
-                                Width="1*"
-                                Binding="{Binding Path=Cell.Side, Converter={StaticResource EWSC}}"
-                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderSide}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column6"
-                                Width="1*"
-                                Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
-                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-        </DataGrid.Columns>
-    </DataGrid>
+  <DataGrid Name="DataGrid"
+            Width="auto"
+            Height="auto"
+            ItemsSource="{Binding LoadingUnits}"
+            RowHeight="45"
+            SelectedItem="{Binding SelectedLoadingUnit}">
+    <DataGrid.Columns>
+      <DataGridTextColumn x:Name="Column1"
+                          Width="1*"
+                          Binding="{Binding Path=Code}"
+                          Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}">
+        <DataGridTextColumn.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="1,0,0,0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+          </Style>
+        </DataGridTextColumn.CellStyle>
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column2"
+                          Width="1*"
+                          Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
+                          Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column3"
+                          Width="1*"
+                          Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
+                          Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column4"
+                          Width="1*"
+                          Binding="{Binding Path=CellId}"
+                          Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderCell}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column5"
+                          Width="1*"
+                          Binding="{Binding Path=Cell.Side, Converter={StaticResource EWSC}}"
+                          Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderSide}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column6"
+                          Width="1*"
+                          Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
+                          Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+    </DataGrid.Columns>
+  </DataGrid>
 </UserControl>
