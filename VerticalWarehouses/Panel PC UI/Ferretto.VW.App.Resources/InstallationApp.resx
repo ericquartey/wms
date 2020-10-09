@@ -168,7 +168,7 @@
     <comment>Title</comment>
   </data>
   <data name="VerticalAxis" xml:space="preserve">
-    <value>Vertical axis</value>
+    <value>Vertical Axis</value>
   </data>
   <data name="LSMTVerticalEngineTitle" xml:space="preserve">
     <value>Vertical axis movements</value>
@@ -319,7 +319,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="VerticalAxisBrake" xml:space="preserve">
-    <value>Vertical axis brake</value>
+    <value>Vertical Axis Brake</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="ZeroPawlSensor" xml:space="preserve">
@@ -565,13 +565,13 @@
     <value>Shape gate 3</value>
   </data>
   <data name="VerticalAxisHomedDone" xml:space="preserve">
-    <value>Vertical crigin calibration</value>
+    <value>Vertical Origin Calibration</value>
   </data>
   <data name="VerticalResolutionDone" xml:space="preserve">
     <value>Vertical resolution</value>
   </data>
   <data name="VerticalAxisCalibration" xml:space="preserve">
-    <value>Vertical axis calibration</value>
+    <value>Vertical Axis Calibration</value>
   </data>
   <data name="AxisCalibratedSuccessfully" xml:space="preserve">
     <value>Axis Calibrated Successfully</value>
@@ -654,7 +654,7 @@
     <comment>Sensor</comment>
   </data>
   <data name="VerticalAxisButton" xml:space="preserve">
-    <value>Vertical axis button</value>
+    <value>VerticalAxisButton</value>
   </data>
   <data name="CellsSideControlButton" xml:space="preserve">
     <value>Modify cell block</value>
@@ -1362,10 +1362,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Test</value>
   </data>
   <data name="MovementsGuided" xml:space="preserve">
-    <value>Guided Movements</value>
+    <value>Movimenti Guidati</value>
   </data>
   <data name="MovementsManual" xml:space="preserve">
-    <value>Manual Movements</value>
+    <value>Movimenti Manuali</value>
   </data>
   <data name="Calibration" xml:space="preserve">
     <value>Calibration</value>
@@ -2916,5 +2916,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="ScreenCastDurationExpire" xml:space="preserve">
     <value>Video mirroring expired</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completed</value>
   </data>
 </root>

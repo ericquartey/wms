@@ -63,6 +63,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
                 nameof(IInstallationHub.ShutterPositioningNotify), this.OnShutterPositioningNotify);
 
+            connection.On<NotificationMessageUI<SocketLinkAlphaNumericBarData>>(
+                nameof(IInstallationHub.SocketLinkAlphaNumericBarChange), this.OnSocketLinkAlphaNumericBarNotify);
+
+            connection.On<NotificationMessageUI<SocketLinkLaserPointerChangeMessageData>>(
+                nameof(IInstallationHub.SocketLinkLaserPointerChange), this.OnSocketLinkLaserPointerNotify);
+
             connection.On<NotificationMessageUI<PositioningMessageData>>(
                 nameof(IInstallationHub.PositioningNotify), this.OnPositioningNotify);
 
@@ -222,12 +228,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnSensorsChanged(NotificationMessageUI<CommonUtils.Messages.Data.SensorsChangedMessageData> message)
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnShutterPositioningNotify(NotificationMessageUI<CommonUtils.Messages.Data.ShutterPositioningMessageData> message)
+        private void OnShutterPositioningNotify(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnSocketLinkAlphaNumericBarNotify(NotificationMessageUI<SocketLinkAlphaNumericBarData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnSocketLinkLaserPointerNotify(NotificationMessageUI<SocketLinkLaserPointerChangeMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

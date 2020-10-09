@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccessoriesAccessoryNotAvailable" xml:space="preserve">
+    <value>Dodatak nije raspoloživ</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Konfiguracija i provjera alfanumeričke trake</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Parametri za konfiguraciju</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Alfanumer. Traka</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Strel.</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Led</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>Poruka</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Ferretto Group - probna poruka -</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>Položaj</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Tekst</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracija i provjera čitača bar kodova</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Čitač Bar Kodova</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracija i provjera čitača znaka</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Čitač Znaka</value>
+  </data>
+  <data name="AccessoriesEnable" xml:space="preserve">
+    <value>Omogućavanje</value>
+  </data>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>IP Adresa</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>Konfiguracija i provjera pisača naljepnica</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Pisač Naljepnica</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuDescription" xml:space="preserve">
+    <value>Upravljanje konfiguracijom i test rada Lasera</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
+    <value>Las.Pokazivač</value>
+  </data>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>Pomak osi X</value>
+  </data>
+  <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
+    <value>Pomak osi Y</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetLowerPosition" xml:space="preserve">
+    <value>Pomak osi Z (niska uvala)</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetUpperPosition" xml:space="preserve">
+    <value>Pomak osi Z (vis. uvala)</value>
+  </data>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Izb.Dod. Opr.</value>
+  </data>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Isklj</value>
+  </data>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Uklj</value>
+  </data>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Vrata</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Dimenzija</value>
+  </data>
+  <data name="AccessoriesTest" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracija i provjera čitača tokena</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Čitač Tokena</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>Konfiguracija i provjera vage za brojanje komada</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Vaga Za Broj. Kom.</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Uv.</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Izbor.Uv.</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Izb. Ćel.</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Potvrdi Test</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Izborn. Dizal.</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Ugradba</value>
+  </data>
+  <data name="InstallationStatus" xml:space="preserve">
+    <value>Stanje Ugradbe</value>
+  </data>
+  <data name="MenuAccessories" xml:space="preserve">
+    <value>Dod.opr.</value>
+  </data>
+  <data name="MenuBays" xml:space="preserve">
+    <value>Uv.</value>
+  </data>
+  <data name="MenuCells" xml:space="preserve">
+    <value>Ćel.</value>
+  </data>
+  <data name="MenuElevator" xml:space="preserve">
+    <value>Dizalica</value>
+  </data>
+  <data name="MenuLoadingUnits" xml:space="preserve">
+    <value>Pretinci</value>
+  </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Pokreti</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Postavljanja</value>
+  </data>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Izbornik Postavki</value>
+  </data>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Izbor.Pretin.</value>
+  </data>
+  <data name="NoAccessoriesInstalled" xml:space="preserve">
+    <value>Nijedan ugrađen dodatni dio.</value>
+  </data>
+</root>

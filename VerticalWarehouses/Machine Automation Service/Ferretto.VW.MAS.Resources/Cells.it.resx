@@ -159,4 +159,13 @@
   <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
     <value>L'altezza specificata non è situata entro i limiti verticali dell'elevatore.</value>
   </data>
+  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
+    <value>Ciljna ćelija je samo prostor, ne može podržati jedinicu opterećenja.</value>
+  </data>
+  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
+    <value>Il cassetto non può occupare una cella bloccata.</value>
+  </data>
+  <data name="TheTargetCellIsBlocked" xml:space="preserve">
+    <value>La cella di destinazione è bloccata.</value>
+  </data>
 </root>

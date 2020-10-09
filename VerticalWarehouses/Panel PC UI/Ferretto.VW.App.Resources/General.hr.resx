@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Dodaj</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Natrag</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Donji</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Poništi</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Kod</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Datum Izrade</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Ukloni</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Dol</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Promjeni</value>
+  </data>
+  <data name="Execute" xml:space="preserve">
+    <value>Izvrši</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Prednji</value>
+  </data>
+  <data name="LastModificationDate" xml:space="preserve">
+    <value>Datum Poslj Izmjene</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="MillionsSymbol" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Sljedeći</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Otv</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Ažuriraj</value>
+  </data>
+  <data name="Revert" xml:space="preserve">
+    <value>Odbaci</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Spre</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Traži</value>
+  </data>
+  <data name="ShowDetails" xml:space="preserve">
+    <value>Pokaži Detalje</value>
+  </data>
+  <data name="SwitchOff" xml:space="preserve">
+    <value>Isklj</value>
+  </data>
+  <data name="ThousandsSymbol" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Gornji</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Vrs</value>
+  </data>
+  <data name="MeasureUnit" xml:space="preserve">
+    <value>Jedinica Mjere</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Go</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Utovar</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Stanj</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Količina</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Prior.</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Detalji</value>
+  </data>
+  <data name="AdditionalInfo" xml:space="preserve">
+    <value>[{0}]</value>
+  </data>
+  <data name="CheckBoxDark" xml:space="preserve">
+    <value>Tamna tema</value>
+  </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Isklj.</value>
+  </data>
+  <data name="MachineOn" xml:space="preserve">
+    <value>Uklj.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Greška</value>
+  </data>
+  <data name="Debug" xml:space="preserve">
+    <value>Is gr</value>
+  </data>
+  <data name="NumberOnTotal" xml:space="preserve">
+    <value>{0} od {1}</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>Put. datot.</value>
+  </data>
+  <data name="ConfirmMachineRun" xml:space="preserve">
+    <value>Jeste li sigurni da želite staviti stroj u pokret?</value>
+  </data>
+  <data name="MachineRun" xml:space="preserve">
+    <value>Pokret</value>
+  </data>
+  <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
+    <value>Jeste li sigurni da želite stroj staviti u automatski način i oporaviti pokrete u tijeku?</value>
+  </data>
+  <data name="Automatic" xml:space="preserve">
+    <value>Automatsko</value>
+  </data>
+  <data name="ShuttingDown" xml:space="preserve">
+    <value>Isključ. ...</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Ne</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Da</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Zatv.</value>
+  </data>
+  <data name="ChangeTheme" xml:space="preserve">
+    <value>Prom. temu</value>
+  </data>
+  <data name="AutomaticMode" xml:space="preserve">
+    <value>Automatsko</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Uv.</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>pr. {0:0} dana</value>
+  </data>
+  <data name="EmergencyIsOn" xml:space="preserve">
+    <value>Akt. st.nužde</value>
+  </data>
+  <data name="EnsureEmergencyIsOff" xml:space="preserve">
+    <value>Uvjerite se da tipkalo za stanje nužde nije pritisn.</value>
+  </data>
+  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
+    <value>Greška komunikacije s uslugama.</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>pr. {0:0} sa</value>
+  </data>
+  <data name="ManualMode" xml:space="preserve">
+    <value>Ručno</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>prije {0:0} min</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Sada</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="PasswordLogin" xml:space="preserve">
+    <value>Zaporka</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serijski Broj:</value>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Korisn. Ime</value>
+  </data>
+  <data name="UserLogin_Password" xml:space="preserve">
+    <value>Zaporka</value>
+  </data>
+  <data name="UserLogin_UserName" xml:space="preserve">
+    <value>Korisn. Ime</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Verzija {0}</value>
+  </data>
+  <data name="WarehouseSide_Back" xml:space="preserve">
+    <value>Stražnji</value>
+  </data>
+  <data name="WarehouseSide_Front" xml:space="preserve">
+    <value>Prednji</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Uv.</value>
+  </data>
+  <data name="BayOneName" xml:space="preserve">
+    <value>Jed</value>
+  </data>
+  <data name="BayOneNumber" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayThreeName" xml:space="preserve">
+    <value>Tri</value>
+  </data>
+  <data name="BayThreeNumber" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayTwoName" xml:space="preserve">
+    <value>Dva</value>
+  </data>
+  <data name="BayTwoNumber" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="SwitchToAutomatic" xml:space="preserve">
+    <value>Prijeđi na autom.</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Počni</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Zau.</value>
+  </data>
+  <data name="TargetNullValue" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="LoadUnitOperations" xml:space="preserve">
+    <value>Operacija pretinca</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Uređaji</value>
+  </data>
+  <data name="DiagnosticDetailTitle" xml:space="preserve">
+    <value>IS GR</value>
+  </data>
+  <data name="FiniteMachineState" xml:space="preserve">
+    <value>Konačno st. stroja</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inverter</value>
+  </data>
+  <data name="IODrive" xml:space="preserve">
+    <value>IO Pog.</value>
+  </data>
+  <data name="StatusDebug" xml:space="preserve">
+    <value>Stanje:</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Nijedan red nije prisut. u popisu</value>
+  </data>
+  <data name="WmsDisabled" xml:space="preserve">
+    <value>Onemogućeno</value>
+  </data>
+  <data name="WmsEnabled" xml:space="preserve">
+    <value>Omogućeno WMS</value>
+  </data>
+  <data name="DateFormatComplete" xml:space="preserve">
+    <value>{0:dd.MM.gggg SS:mm}</value>
+  </data>
+  <data name="AreaMachineUnknow" xml:space="preserve">
+    <value>Područje stroja je nepoznato</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
+    <value>Ovaj pretvarač može pretvoriti samo vrijedn. tipa Vidljivost.</value>
+  </data>
+  <data name="IdLoadingUnitNotExists" xml:space="preserve">
+    <value>Identifikator pretinca ne postoji.</value>
+  </data>
+  <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
+    <value>Svojstvo '{0}' model pogleda '{1}' mora sadržavati važeći identifikator pretinca.</value>
+  </data>
+  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Param. ne može biti ništavan ili prazan.</value>
+  </data>
+  <data name="DateFormatDayNumber" xml:space="preserve">
+    <value>{0: dd.MM.gggg}</value>
+  </data>
+  <data name="DateFormatHourMinutes" xml:space="preserve">
+    <value>{0: HH:mm}</value>
+  </data>
+  <data name="DateFormatHourMinuteSecond" xml:space="preserve">
+    <value>{0: HH:mm:ss}</value>
+  </data>
+  <data name="SwitchToManual" xml:space="preserve">
+    <value>Prijeđi u ručni</value>
+  </data>
+  <data name="ErrorLogin" xml:space="preserve">
+    <value>Greška: prijavlj. nije uspjelo. Provj. ispr. koris.imena i lozinke</value>
+  </data>
+  <data name="BackShutterTest" xml:space="preserve">
+    <value>Test je u tijeku... Nemoguće izaći sa stranice</value>
+  </data>
+  <data name="SocketLinkEnabled" xml:space="preserve">
+    <value>Omoguć. Veza Utičnice</value>
+  </data>
+  <data name="SocketLinkPolling" xml:space="preserve">
+    <value>Interval istraživanja</value>
+  </data>
+  <data name="SocketLinkPort" xml:space="preserve">
+    <value>Vrata</value>
+  </data>
+  <data name="SocketLinkTimeout" xml:space="preserve">
+    <value>IstVrij</value>
+  </data>
+</root>

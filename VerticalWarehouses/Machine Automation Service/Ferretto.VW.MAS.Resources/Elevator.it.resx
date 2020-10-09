@@ -165,4 +165,7 @@
   <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
     <value>La calibrazione dell'asse verticale va eseguita prima di tentare un movimento assoluto dell'elevatore.</value>
   </data>
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Nessun cassetto è in attesa di essere estratto nella posizione della baia specificata.</value>
+  </data>
 </root>

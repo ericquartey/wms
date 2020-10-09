@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
+using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.SocketLink
@@ -149,7 +152,7 @@ namespace Ferretto.VW.MAS.SocketLink
                         break;
 
                     case SocketLinkCommand.HeaderType.LASER_CMD:
-                        commandsResponse.Add(this.ProcessCommandLaser(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandLaserPointer(cmdReceived));
                         break;
 
                     case SocketLinkCommand.HeaderType.LEDBAR_CMD:
@@ -494,7 +497,7 @@ namespace Ferretto.VW.MAS.SocketLink
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandLaser(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandLaserPointer(SocketLinkCommand cmdReceived)
         {
             var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.LASER_RES);
 
@@ -503,8 +506,27 @@ namespace Ferretto.VW.MAS.SocketLink
                 if (this.WarehouseNumberIsValid(cmdReceived))
                 {
                     cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
-                    var bayNumberInt = cmdReceived.GetBayNumberInt();
-                    cmdResponse.AddPayload(bayNumberInt);
+                    var bayNumber = cmdReceived.GetBayNumber();
+                    cmdResponse.AddPayload((int)bayNumber);
+
+                    var data = new SocketLinkLaserPointerChangeMessageData(
+                        Convert.ToInt32(cmdReceived.GetPayloadByPosition(2), CultureInfo.InvariantCulture),
+                        Convert.ToInt32(cmdReceived.GetPayloadByPosition(3), CultureInfo.InvariantCulture),
+                        Convert.ToInt32(cmdReceived.GetPayloadByPosition(4), CultureInfo.InvariantCulture),
+                        Convert.ToInt32(cmdReceived.GetPayloadByPosition(5), CultureInfo.InvariantCulture));
+
+                    this.eventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(
+                            new NotificationMessage(
+                                data,
+                                $"LaserPointer, Bay={bayNumber}, CommandCode={cmdReceived.GetPayloadByPosition(2)}, X={cmdReceived.GetPayloadByPosition(3)}, Y={cmdReceived.GetPayloadByPosition(4)}, Z={cmdReceived.GetPayloadByPosition(5)}",
+                                MessageActor.Any,
+                                MessageActor.DeviceManager,
+                                MessageType.SocketLinkLaserPointerChange,
+                                bayNumber,
+                                bayNumber,
+                                MessageStatus.OperationEnd));
 
                     cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.messageReceived);
                     cmdResponse.AddPayload("message correctly received");

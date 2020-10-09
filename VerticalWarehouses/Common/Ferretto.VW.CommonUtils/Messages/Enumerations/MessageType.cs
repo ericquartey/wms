@@ -118,6 +118,10 @@
 
         SocketLinkEnableChanged,
 
+        SocketLinkAlphaNumericBarChange,
+
+        SocketLinkLaserPointerChange,
+
         /// <summary>
         /// Repetitive horizontal movements on a specified bay.
         /// </summary>

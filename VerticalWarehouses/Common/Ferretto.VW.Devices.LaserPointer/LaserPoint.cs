@@ -15,6 +15,14 @@
             this.Speed = SPEED_DEFAULT;
         }
 
+        public LaserPoint(int x, int y, int z, int speed = SPEED_DEFAULT)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+            this.Speed = speed;
+        }
+
         #endregion
 
         #region Properties

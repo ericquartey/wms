@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Provjerite je li zapinjač na nuli ili je pretinac u potpunosti utovaren na dizalicu.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Uvjerite se da su sva tipk za isklop u stanju nužde deaktivirana kao i da su svi sig. senzori deaktivirani.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Pretinac se možda zaglavio.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Pretinac izgleda nije potpuno na dizalici nakon faze utovara.</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Pretinac izgleda nije potpuno izvan dizalice nakon faze istovara.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Senzor zapinjače na nuli nije aktivan nakon operacije odlaganja.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Senzori prisutnosti na dizalicu nisu aktivni nakon operacije istovara.</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Provj. da su sva tipkala za isklop u st. nužde deaktiv. kao i da su svi sigurnosni senzori deaktivirani.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Provjerite je li odredišna ćelija pretinca unutar baze podataka ispravno konfigurirana</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Provjerite da je kolijevka dizalice prazna. Provjerite ispravan rad senzora prisutnosti pretinca na kolijevci.</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Provjerite je li izvorni položaj pretinca unutar baze podataka ispravno konfiguriran</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Uvjerite se da je pretinac prisutan u uvali i da senzori prisutnosti ispravno rade</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Ako je pretinac uklonjen, provjerite senzori prisutnosti pretinca u uvali, u suprotnom uklonite pretinac iz uvale.</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Provjerite je li odredišna uvala pretinca stvarno prazna. Provjerite rade li senzori prisutnosti pretinca u uvali ispravno.</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Odabrani pretinac nije prisutan u bazi podataka. Provjerite uneseni broj pretinca i ispravnu konfiguraciju baze podataka.</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Odabrani pretinac je prisutan u bazi podataka ali nije utovaren u skladište. Provjerite konfiguraciju baze podataka.</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Provjerite je li pretinac zaista stvarno prisutan u izvornoj uvali. Provjerite rade li senzori prisutnosti pretinca u uvali ispravno.</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Provjerite je li izvorna ćelija pretinca unutar baze podataka ispravno konfigurirana</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Niska raz. uvale je zauzeta.</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Senzori prisutn. nisu valjani</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Prisutnost na dizalici s dizalicom logično istovarenom.</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Nedosljednost stanja senzora. Senzor zapinjače na nuli nije aktivan.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Nedosljednost stanja senzora. Senzor nule uvale nije aktivan.</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Visoka raz. uvale zauzeta</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Senzor zapinjača na nuli je aktivan zajedno sa senzorima prisutnosti na dizalu.</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Istovarite pretinac u uvali i uklonite višak težine.  U nastavku, stavite u automatski.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Zaklopka nije u otvorenom položaju. Provjerite stanje senzora.</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Zaklopka nije u zatvorenom položaju. Provjerite stanje senzora.</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Greška odredišta os ispod minimalne razine. Provjerite parametre stroja.</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>U uvali se već izvršava komanda i ne može prihvatiti drugu.</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Greška odredišta os iznad maksimalne razine. Provjerite parametre stroja.</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Greška upravljanja uređajem I/O ili izvršenja komande.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Pretinac već prisutan u ćeliji.</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Stroj ne može prihvatiti traženu misiju zbog neispravnog načina rada stroja.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Sigurnosna barijera je prekinuta. Oslobodite područje i ponovno pokušajte.</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Gumb (tipkalo) za stanje nužde je pritisnut/o. Provjerite stanje i pon. pokušajte.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Pretinac već prisutan u drugoj uvali.</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Nije moguće utvrditi pretinac u dizalici.</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Niska razina uvale prazno.</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Vis. raz. uvale prazno.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Za ovu uvalu već postoji misija.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Za ovu uvalu već postoji misija u izvršenju.</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Za ovu vrstu misije već postoji misija.</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Nij. greška nije otkr.</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Tež. Pret. je niža od očekivane težine.  U nastavku, stavite u automatski.</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Premašena je ukupna težina stroja. Provjerite stanje utovarenosti stroja i njegovih pretinaca.</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Skladište je puno i nije moguće odrediti slobodnu ćeliju za odabrani pretinac.</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Provjerite id pretinca u uvali. Provjerite rade li senzori prisutnosti pretinca u uvali ispravno. Stavite stroj u Automatski.</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Provjerite id pretinca na dizalici. Provjerite rade li senzori prisutnosti pretinca na dizalici ispravno. Stavite stroj u Automatski.</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Problem spajanja na inverter(e). Provjerite status ethernet veza.</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Pogreška pri povezivanju s I/O uređajem. Provjerite status ethernet veza.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Greška spajanja na laser. Provjerite status ethernet veza.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>Pokret {0} Ubrzanja osovine {1} nije valjan: Ubrzanje tereta na prazno niže od ubrz. pod punim opterećenjem</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>Brzina {0}Kretanja Osi {1}nije valj.: Brz. prazn. tereta manja od brz.pod punim opter.</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Provjerite senzore prisutnosti dizalice i uvale</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Vrsta odredišta nije valjana</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Donji položaj uvale nije definiran</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Gornji položaj uvale nije definiran</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Vrsta misije nije valjana</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Istovarite pretinac u uvali i uklonite višak težine. Na kraju, slijedite upute alarma.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Komanda povratka s biranja nije valjana</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Greška ažuriranja arhiva ćelija. Jedna ili više odredišnih ćelija rezultiraju logično zauzete</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Provjerite je li zapinjač na nuli ili je pretinac u potpunosti utovaren na dizalicu. Provjerite da je zaklopka zatvorena.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Smanjite visinu materijala u pretincu. U nastavku, stavite u automatski.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Zaklopka nije ni u zatv. ni u otvor. položaju. Provjerite stanje senzora.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Uvala odredišta bez kalibracije.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Test Prvog Pretinca nije uspio: sve ćelije nisu testirane.</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Skladište nije prazno. Test utovara prvog pretinca nije dopušten.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Senzor nule uvale nije aktivan na kraju postavljanja</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Bočna, lijeva ploča je otvorena. Provjerite jesu li ploče stroja pravilno postavljene i zatvorene.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Bočna, desna ploča je otvorena. Provjerite jesu li ploče stroja pravilno postavljene i zatvorene.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Okomiti položaj dizalice je promijenjen nakon pokretanja stroja.</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Kompletan test nije uspio: svi predviđeni ciklusi nisu izvršeni.</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Odabrana uvala nije valjana</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Odabrani položaj uvale nije valjan</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Dizalica je dostigla senzor kraja pokreta gore</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Vanjska uvala je zauzeta</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Vanjska uvala je prazna</value>
+  </data>
+  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
+    <value>Ubrzanje {0}kretanja{1} osi niže je od ubrzanja punog opterećenja ili veće od ubrzanja praznog opterećenja</value>
+  </data>
+  <data name="InvalidAxisSpeedRange" xml:space="preserve">
+    <value>Brzina {0}kretanja osi{1} niža od brzine punog opterećenja ili veća od brz. praznog optereć.</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>WMS je odgovorio kodom greške</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Pretinac je previsok za ovu uvalu. Preuzmite ga drugom uvalom ili ga ručno pomičite</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Dizalica je dostigla senzor kraja pokreta dolje</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>Položaj uvale je onemogućen</value>
+  </data>
+</root>
