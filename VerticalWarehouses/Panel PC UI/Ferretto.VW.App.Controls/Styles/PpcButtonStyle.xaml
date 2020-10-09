@@ -856,7 +856,7 @@
                                                FontFamily="{DynamicResource VWAPP_TitleFont}"
                                                FontSize="14"
                                                FontWeight="Light"
-                                               Text="Completato">
+                                               Text="{res:Loc InstallationApp.Completed}">
                                         <TextBlock.LayoutTransform>
                                             <TransformGroup>
                                                 <RotateTransform Angle="296" CenterX="0.5" CenterY="0.5" />

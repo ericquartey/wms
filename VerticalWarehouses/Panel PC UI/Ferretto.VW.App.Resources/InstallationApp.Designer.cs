@@ -1429,6 +1429,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        public static string Completed {
+            get {
+                return ResourceManager.GetString("Completed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed cycles.
         /// </summary>
         public static string CompletedCycles {
@@ -5074,7 +5083,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guided Movements.
+        ///   Looks up a localized string similar to Movimenti Guidati.
         /// </summary>
         public static string MovementsGuided {
             get {
@@ -5083,7 +5092,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Manual Movements.
+        ///   Looks up a localized string similar to Movimenti Manuali.
         /// </summary>
         public static string MovementsManual {
             get {
@@ -7722,7 +7731,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical axis.
+        ///   Looks up a localized string similar to Vertical Axis.
         /// </summary>
         public static string VerticalAxis {
             get {
@@ -7731,7 +7740,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical axis brake.
+        ///   Looks up a localized string similar to Vertical Axis Brake.
         /// </summary>
         public static string VerticalAxisBrake {
             get {
@@ -7740,7 +7749,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical axis button.
+        ///   Looks up a localized string similar to VerticalAxisButton.
         /// </summary>
         public static string VerticalAxisButton {
             get {
@@ -7758,7 +7767,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical axis calibration.
+        ///   Looks up a localized string similar to Vertical Axis Calibration.
         /// </summary>
         public static string VerticalAxisCalibration {
             get {
@@ -7767,7 +7776,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical crigin calibration.
+        ///   Looks up a localized string similar to Vertical Origin Calibration.
         /// </summary>
         public static string VerticalAxisHomedDone {
             get {

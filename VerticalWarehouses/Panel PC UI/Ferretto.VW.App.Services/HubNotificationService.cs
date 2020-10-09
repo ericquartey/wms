@@ -210,6 +210,18 @@ namespace Ferretto.VW.App.Services
                         .Publish(cm);
                     break;
 
+                case NotificationMessageUI<SocketLinkAlphaNumericBarData> sla:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<SocketLinkAlphaNumericBarData>>()
+                        .Publish(sla);
+                    break;
+
+                case NotificationMessageUI<SocketLinkLaserPointerChangeMessageData> sll:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<SocketLinkLaserPointerChangeMessageData>>()
+                        .Publish(sll);
+                    break;
+
                 default:
                     this.logger.Debug($"Signal-R hub message {e.NotificationMessage.GetType().Name} was ignored.");
                     break;

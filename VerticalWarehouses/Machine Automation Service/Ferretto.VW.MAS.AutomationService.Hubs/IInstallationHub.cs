@@ -55,6 +55,10 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task ShutterPositioningNotify(IBaseNotificationMessageUI message);
 
+        Task SocketLinkAlphaNumericBarChange(IBaseNotificationMessageUI message);
+
+        Task SocketLinkLaserPointerChange(IBaseNotificationMessageUI message);
+
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
 
         Task SystemTimeChanged();

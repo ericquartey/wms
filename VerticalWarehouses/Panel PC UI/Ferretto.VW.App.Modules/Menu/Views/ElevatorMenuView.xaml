@@ -107,8 +107,8 @@
                                         Content="{res:Loc InstallationApp.HorizontalChainCalibrationDescription}"
                                         IsBypassed="{Binding IsHorizontalChainBypassed}"
                                         IsCompleted="{Binding IsHorizChainCompleted}"
-                                        Kind="Account"
                                         IsEnabled="False"
+                                        Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                     <controls:PpcButton Title="{res:Loc InstallationApp.BeltBreakInMenuTitle}"
