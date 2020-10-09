@@ -120,4 +120,46 @@
   <data name="AboutAbbreviation" xml:space="preserve">
     <value>INFO</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>Informacije</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>Statistika, alarmi, dijagnostika</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Ugradba</value>
+  </data>
+  <data name="InstallationAbbreviation" xml:space="preserve">
+    <value>UGR</value>
+  </data>
+  <data name="InstallationDescription" xml:space="preserve">
+    <value>Postupak ugradbe, ručni pokreti, ostalo</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Održavanje</value>
+  </data>
+  <data name="MaintenanceAbbreviation" xml:space="preserve">
+    <value>ODRŽ.</value>
+  </data>
+  <data name="MaintenanceDescription" xml:space="preserve">
+    <value>Održavanje, sabijanje pretinaca, ažuriranje</value>
+  </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Pokreti</value>
+  </data>
+  <data name="MovementsAbbreviation" xml:space="preserve">
+    <value>PREM</value>
+  </data>
+  <data name="MovementsDescription" xml:space="preserve">
+    <value>Stanje senzora, reset stroja, ostalo</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Uzim.</value>
+  </data>
+  <data name="OperationAbbreviation" xml:space="preserve">
+    <value>UZIM</value>
+  </data>
+  <data name="OperationDescription" xml:space="preserve">
+    <value>Preuzim., polag., inventura</value>
+  </data>
 </root>

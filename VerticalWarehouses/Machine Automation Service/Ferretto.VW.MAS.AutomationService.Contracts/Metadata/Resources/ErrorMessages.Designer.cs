@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il valore del campo {0} dev&apos;essere compreso tra {1} e {2}.
+        ///   Looks up a localized string similar to The value of the {0} field must be between {1} and {2}.
         /// </summary>
         public static string Range {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il valore del campo {0} non può essere superiore a {2}.
+        ///   Looks up a localized string similar to The value of the {0} field cannot be greater than {2}.
         /// </summary>
         public static string RangeMax {
             get {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il valore del campo {0} non può essere inferiore a  {1}.
+        ///   Looks up a localized string similar to The value of the {0} field cannot be less than {1}.
         /// </summary>
         public static string RangeMin {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il valore del campo {0} non è valido..
+        ///   Looks up a localized string similar to The value of the {0} field is not valid.
         /// </summary>
         public static string Regex {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il campo {0} è obbligatorio.
+        ///   Looks up a localized string similar to The {0} field is mandatory.
         /// </summary>
         public static string Required {
             get {

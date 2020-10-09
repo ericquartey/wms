@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Scaffolding.POC.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il valore di {0} dev&apos;essere compreso tra {1} e {2}.
+        ///   Looks up a localized string similar to The value of {0} must be between {1} and {2}.
         /// </summary>
         internal static string Range {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Scaffolding.POC.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il valore di {0} non può essere inferiore a {1}.
+        ///   Looks up a localized string similar to The value of {0} cannot be less than {1}.
         /// </summary>
         internal static string RangeMin {
             get {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Scaffolding.POC.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Il campo {0} è obbligatorio.
+        ///   Looks up a localized string similar to The {0} field is mandatory.
         /// </summary>
         internal static string Required {
             get {

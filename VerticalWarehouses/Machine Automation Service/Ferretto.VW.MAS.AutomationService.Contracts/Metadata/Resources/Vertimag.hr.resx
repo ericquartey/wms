@@ -1,0 +1,537 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Ubrzanje</value>
+  </data>
+  <data name="AssistedMovements" xml:space="preserve">
+    <value>Vođeni pokreti</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Uvala{0}</value>
+  </data>
+  <data name="BayCarousel" xml:space="preserve">
+    <value>Vrtulj. uva. {0}</value>
+  </data>
+  <data name="BayCarousel_Description" xml:space="preserve">
+    <value>Param. Vrtuljka</value>
+  </data>
+  <data name="BayInverter" xml:space="preserve">
+    <value>Invert. uvale {0}</value>
+  </data>
+  <data name="BayIoDevice" xml:space="preserve">
+    <value>IdUređ. uvale {0}</value>
+  </data>
+  <data name="BayLaser" xml:space="preserve">
+    <value>Las. uvale {0}</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Broj uvale</value>
+  </data>
+  <data name="BayNumber.BayOne" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayNumber.BayThree" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayNumber.BayTwo" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BayNumber.ElevatorBay" xml:space="preserve">
+    <value>kol.</value>
+  </data>
+  <data name="BayPosition_Height" xml:space="preserve">
+    <value>Vis.</value>
+  </data>
+  <data name="BayPosition_IsBlocked" xml:space="preserve">
+    <value>Blokir.</value>
+  </data>
+  <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
+    <value>Dvostruka maks visina</value>
+  </data>
+  <data name="BayPosition_MaxSingleHeight" xml:space="preserve">
+    <value>Standardna maks visina</value>
+  </data>
+  <data name="BayPosition_ProfileOffset" xml:space="preserve">
+    <value>Pomak provjere oblika</value>
+  </data>
+  <data name="BayShutter" xml:space="preserve">
+    <value>Zatv. uvale {0}</value>
+  </data>
+  <data name="Bay_CategoryDescription" xml:space="preserve">
+    <value>Omogućuje izmjenu postavki uređaja uvale.</value>
+  </data>
+  <data name="Bay_ChainOffset" xml:space="preserve">
+    <value>Nulti pomak lanca</value>
+  </data>
+  <data name="Bay_IsActive" xml:space="preserve">
+    <value>Aktiv.</value>
+  </data>
+  <data name="Bay_IsAdjustByWeight" xml:space="preserve">
+    <value>Smanji visinu preuzimanja s teškim pretincima u uvali</value>
+  </data>
+  <data name="Bay_IsCheckIntrusion" xml:space="preserve">
+    <value>Provjera upada s barijerom za kontrolu visine</value>
+  </data>
+  <data name="Bay_IsDouble" xml:space="preserve">
+    <value>Dvost.</value>
+  </data>
+  <data name="Bay_IsExternal" xml:space="preserve">
+    <value>Vanjska</value>
+  </data>
+  <data name="Bay_IsFastDepositToBay" xml:space="preserve">
+    <value>Brzo odlaganje u uvalu</value>
+  </data>
+  <data name="Bay_Resolution" xml:space="preserve">
+    <value>Rezolucija</value>
+  </data>
+  <data name="Bay_Side" xml:space="preserve">
+    <value>Str.</value>
+  </data>
+  <data name="BeltRigidity" xml:space="preserve">
+    <value>Krutost remena</value>
+  </data>
+  <data name="BeltSpacing" xml:space="preserve">
+    <value>Udaljenost blokova za zatezanje remena</value>
+  </data>
+  <data name="Carousel" xml:space="preserve">
+    <value>Vrt.   </value>
+  </data>
+  <data name="Carousel_ElevatorDistance" xml:space="preserve">
+    <value>Međurazmak polica</value>
+  </data>
+  <data name="Carousel_HomingCreepSpeed" xml:space="preserve">
+    <value>Brz. navođ. osi</value>
+  </data>
+  <data name="Carousel_HomingFastSpeed" xml:space="preserve">
+    <value>Brz. navođ. osi vis.</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Usporenje</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Dizalica</value>
+  </data>
+  <data name="ElevatorAxis" xml:space="preserve">
+    <value>Os dizalice {0}</value>
+  </data>
+  <data name="ElevatorAxis_BrakeActivatePercent" xml:space="preserve">
+    <value>Postotak kočenja</value>
+  </data>
+  <data name="ElevatorAxis_BrakeReleaseTime" xml:space="preserve">
+    <value>Vrijeme otpuštanja u kočenju</value>
+  </data>
+  <data name="ElevatorAxis_ChainOffset" xml:space="preserve">
+    <value>Nulti pomak lanca</value>
+  </data>
+  <data name="ElevatorAxis_HomingCreepSpeed" xml:space="preserve">
+    <value>Brz. navođ. osi</value>
+  </data>
+  <data name="ElevatorAxis_HomingFastSpeed" xml:space="preserve">
+    <value>Brz. navođ. osi vis.</value>
+  </data>
+  <data name="ElevatorAxis_LowerBound" xml:space="preserve">
+    <value>Granica donje osi</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateLength" xml:space="preserve">
+    <value>Maks udaljenost kalibr.oblika</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibratePosition" xml:space="preserve">
+    <value>Udaljenost oblika očit. 6. ftć</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
+    <value>Brzina kalibracije oblika</value>
+  </data>
+  <data name="ElevatorAxis_Profiles" xml:space="preserve">
+    <value>Profili</value>
+  </data>
+  <data name="ElevatorAxis_Resolution" xml:space="preserve">
+    <value>Rezolucija</value>
+  </data>
+  <data name="ElevatorAxis_UpperBound" xml:space="preserve">
+    <value>Granica gornje osi</value>
+  </data>
+  <data name="ElevatorAxis_VerticalDepositOffset" xml:space="preserve">
+    <value>Pomak postavljanja u odlaganju</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupOffset" xml:space="preserve">
+    <value>Pomak postavljanja u preuzimanju</value>
+  </data>
+  <data name="ElevatorWeight" xml:space="preserve">
+    <value>Tež. dizalice</value>
+  </data>
+  <data name="Elevator_CategoryDescription" xml:space="preserve">
+    <value>Omogućuje vam izmjenu parametara dizalice i dvaju osi povezanih s njom.</value>
+  </data>
+  <data name="EmptyLoadMovement" xml:space="preserve">
+    <value>Pokreti na prazno</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Vanj. uvala {0}</value>
+  </data>
+  <data name="ExternalBay_Description" xml:space="preserve">
+    <value>Param.Vanjske Uvale</value>
+  </data>
+  <data name="ExtraRace" xml:space="preserve">
+    <value>Ekstra hod za umetanje/vađenje</value>
+  </data>
+  <data name="FeedRate" xml:space="preserve">
+    <value>St. Unoš.</value>
+  </data>
+  <data name="FeedRateAfterZero" xml:space="preserve">
+    <value>St. Unoš. nakon nule osi</value>
+  </data>
+  <data name="FullLoadMovement" xml:space="preserve">
+    <value>Pokr. pod pun. optereć.</value>
+  </data>
+  <data name="HalfShaftLength" xml:space="preserve">
+    <value>Duljina poluosovine</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventura</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inverter</value>
+  </data>
+  <data name="Inverter_Index" xml:space="preserve">
+    <value>Kazalo</value>
+  </data>
+  <data name="Inverter_IpAddress" xml:space="preserve">
+    <value>IP Invert.</value>
+  </data>
+  <data name="Inverter_TcpPort" xml:space="preserve">
+    <value>Vrata Invert.</value>
+  </data>
+  <data name="Inverter_Type" xml:space="preserve">
+    <value>Vrsta Invert.</value>
+  </data>
+  <data name="IoDevice" xml:space="preserve">
+    <value>IoUređ.</value>
+  </data>
+  <data name="IoDevice_Index" xml:space="preserve">
+    <value>Indeks IoUređ.</value>
+  </data>
+  <data name="IoDevice_IpAddress" xml:space="preserve">
+    <value>IP IoUređ.</value>
+  </data>
+  <data name="IoDevice_TcpPort" xml:space="preserve">
+    <value>Vrata IoUređ.</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
+  <data name="Laser_IpAddress" xml:space="preserve">
+    <value>IP Las.</value>
+  </data>
+  <data name="Laser_TcpPort" xml:space="preserve">
+    <value>Vrata las.</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Stroj</value>
+  </data>
+  <data name="Machine_CategoryDescription" xml:space="preserve">
+    <value>Omogućuje izmjenu strukturnih parametara stroja.</value>
+  </data>
+  <data name="Machine_ExpireCountPrecent" xml:space="preserve">
+    <value>Ranije vrijeme % isteka brojača održavanja</value>
+  </data>
+  <data name="Machine_ExpireDays" xml:space="preserve">
+    <value>Ranije vrijeme isteka u danima brojača održavanja</value>
+  </data>
+  <data name="Machine_Height" xml:space="preserve">
+    <value>Visina</value>
+  </data>
+  <data name="Machine_HorizontalCyclesToCalibrate" xml:space="preserve">
+    <value>Ciklusi vodoravne osi za kalibraciju</value>
+  </data>
+  <data name="Machine_HorizontalPositionToCalibrate" xml:space="preserve">
+    <value>Položaj vodoravne osi za kalibraciju</value>
+  </data>
+  <data name="Machine_Id" xml:space="preserve">
+    <value>Broj Stroja</value>
+  </data>
+  <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
+    <value>Maks visina pretinca</value>
+  </data>
+  <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
+    <value>Maks neto težina pretinca</value>
+  </data>
+  <data name="Machine_LoadUnitMinHeight" xml:space="preserve">
+    <value>Min visina pretinca</value>
+  </data>
+  <data name="Machine_LoadUnitTare" xml:space="preserve">
+    <value>Tara pretinca</value>
+  </data>
+  <data name="Machine_LoadUnitVeryHeavyPercent" xml:space="preserve">
+    <value>% neto težine za vrlo teški pretinac (0 onemogući)</value>
+  </data>
+  <data name="Machine_MaxGrossWeight" xml:space="preserve">
+    <value>Bruto maks težina stroja</value>
+  </data>
+  <data name="Machine_ModelName" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="Machine_SerialNumber" xml:space="preserve">
+    <value>Serij.br.</value>
+  </data>
+  <data name="Machine_Simulation" xml:space="preserve">
+    <value>Simulacija</value>
+  </data>
+  <data name="ManualMovements" xml:space="preserve">
+    <value>Ručni pokreti</value>
+  </data>
+  <data name="MeasureConst0" xml:space="preserve">
+    <value>Konstanta K0 vaganja</value>
+  </data>
+  <data name="MeasureConst1" xml:space="preserve">
+    <value>Konstanta K1 vaganja</value>
+  </data>
+  <data name="MeasureConst2" xml:space="preserve">
+    <value>Konstanta K2 vaganja</value>
+  </data>
+  <data name="MeasureSpeed" xml:space="preserve">
+    <value>Brzina vaganja</value>
+  </data>
+  <data name="MeasureTime" xml:space="preserve">
+    <value>Vrsta vaganja</value>
+  </data>
+  <data name="MovementParameters" xml:space="preserve">
+    <value>ParametriKretanja</value>
+  </data>
+  <data name="MovementProfileType.LongDeposit" xml:space="preserve">
+    <value>Dugo odlaganje</value>
+  </data>
+  <data name="MovementProfileType.LongPickup" xml:space="preserve">
+    <value>Dugo preuzim.</value>
+  </data>
+  <data name="MovementProfileType.ShortDeposit" xml:space="preserve">
+    <value>Kratko odlag.</value>
+  </data>
+  <data name="MovementProfileType.ShortPickup" xml:space="preserve">
+    <value>Kratko preuz.</value>
+  </data>
+  <data name="MovementProfileType.Undefined" xml:space="preserve">
+    <value>Nije defin.</value>
+  </data>
+  <data name="NetworkConfiguration" xml:space="preserve">
+    <value>Konfiguracija mreže</value>
+  </data>
+  <data name="Orientation.Horizontal" xml:space="preserve">
+    <value>vodoravna</value>
+  </data>
+  <data name="Orientation.Vertical" xml:space="preserve">
+    <value>okomita</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Preuzim.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Pozicija {0}</value>
+  </data>
+  <data name="PulleyDiameter" xml:space="preserve">
+    <value>Izvorni promjer remenice</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Odlag.</value>
+  </data>
+  <data name="Race" xml:space="preserve">
+    <value>Hod</value>
+  </data>
+  <data name="SecondTermMultiplier" xml:space="preserve">
+    <value>Drugi faktor množenja za produljenje pojasa</value>
+  </data>
+  <data name="ShaftDiameter" xml:space="preserve">
+    <value>Promjer osovine</value>
+  </data>
+  <data name="ShaftElasticity" xml:space="preserve">
+    <value>Modul elastičnosti</value>
+  </data>
+  <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
+    <value>St. unoš. zaklopka</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
+    <value>Trajanje zatv. zaklopke</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
+    <value>Trajanje otvar. zaklopke</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationClose" xml:space="preserve">
+    <value>Trajanje zatv. do pola zaklopke</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationOpen" xml:space="preserve">
+    <value>Trajanje otvar.do pola zaklopke</value>
+  </data>
+  <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
+    <value>Maks brzina zaklopke</value>
+  </data>
+  <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
+    <value>Min brzina zaklopke</value>
+  </data>
+  <data name="ShutterType.NotSpecified" xml:space="preserve">
+    <value>Nije navedeno</value>
+  </data>
+  <data name="ShutterType.ThreeSensors" xml:space="preserve">
+    <value>Tri senzora</value>
+  </data>
+  <data name="ShutterType.TwoSensors" xml:space="preserve">
+    <value>Dva senzora</value>
+  </data>
+  <data name="Shutter_AssistedMovements" xml:space="preserve">
+    <value>Vođeni pokr. zaklopke</value>
+  </data>
+  <data name="Shutter_ManualMovements" xml:space="preserve">
+    <value>Ručni pokr.zaklopke</value>
+  </data>
+  <data name="Shutter_Type" xml:space="preserve">
+    <value>Vrsta zaklop.</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Brzina</value>
+  </data>
+  <data name="StepMovementParameters_AdjustAccelerationByWeight" xml:space="preserve">
+    <value>Ispravi ubrzanje s težinom</value>
+  </data>
+  <data name="StepMovementParameters_AdjustSpeedByWeight" xml:space="preserve">
+    <value>Ispravi brzinu s težinom</value>
+  </data>
+  <data name="StepMovementParameters_Number" xml:space="preserve">
+    <value>Broj</value>
+  </data>
+  <data name="StepMovementParameters_Position" xml:space="preserve">
+    <value>Položaj</value>
+  </data>
+  <data name="TargetDistance" xml:space="preserve">
+    <value>Maks prostor za vožnju s ručnim upravlj.</value>
+  </data>
+  <data name="TargetDistanceAfterZero" xml:space="preserve">
+    <value>Maks prostor za vožnju s ručnim upravlj. nakon nula osi</value>
+  </data>
+  <data name="TotalDistance" xml:space="preserve">
+    <value>Ukupna udalj.</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Prikaz</value>
+  </data>
+  <data name="CyclesToCalibrate" xml:space="preserve">
+    <value>Ciklusi za kalibr.</value>
+  </data>
+  <data name="LastCalibrationCycles" xml:space="preserve">
+    <value>Posljed.ciklusi kalibracije</value>
+  </data>
+</root>
