@@ -347,62 +347,194 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             return false;
                         }
-                        // always check upper position first
-                        returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
-                        if (returnValue)
+
+                        // Previous code ....
+                        //// always check upper position first
+                        //returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
+                        //if (returnValue)
+                        //{
+                        //    // upper position is empty. we can use it only if bottom is also free
+                        //    returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                        //    if (returnValue
+                        //        || bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked
+                        //        )
+                        //    {
+                        //        returnValue = true;
+                        //        // both positions are free: choose upper if not fixed by message
+                        //        if (messageData.Destination == bottom && !bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked)
+                        //        {
+                        //            mission.LoadUnitDestination = bottom;
+                        //        }
+                        //        else
+                        //        {
+                        //            mission.LoadUnitDestination = upper;
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        if (showErrors
+                        //            || !bay.Positions.Any(p => p.LoadingUnit is null && !p.IsBlocked)
+                        //            )
+                        //        {
+                        //            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                        //        }
+                        //        else
+                        //        {
+                        //            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                        //        }
+                        //        return false;
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    if (messageData.Destination == upper)
+                        //    {
+                        //        if (showErrors)
+                        //        {
+                        //            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                        //        }
+                        //        else
+                        //        {
+                        //            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                        //        }
+                        //        return false;
+                        //    }
+                        //    // if upper position is not empty we can try lower position
+                        //    returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                        //    if (returnValue)
+                        //    {
+                        //        // upper is occupied and bottom is free: choose bottom
+                        //        mission.LoadUnitDestination = bottom;
+                        //    }
+                        //}
+
+                        if (!bay.IsDouble)
                         {
-                            // upper position is empty. we can use it only if bottom is also free
-                            returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
-                            if (returnValue
-                                || bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked
-                                )
+                            // always check upper position first
+                            returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
+                            if (returnValue)
                             {
-                                returnValue = true;
-                                // both positions are free: choose upper if not fixed by message
-                                if (messageData.Destination == bottom && !bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked)
+                                // upper position is empty. we can use it only if bottom is also free
+                                returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                                if (returnValue
+                                    || bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked
+                                    )
                                 {
-                                    mission.LoadUnitDestination = bottom;
+                                    returnValue = true;
+                                    // both positions are free: choose upper if not fixed by message
+                                    if (messageData.Destination == bottom && !bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked)
+                                    {
+                                        mission.LoadUnitDestination = bottom;
+                                    }
+                                    else
+                                    {
+                                        mission.LoadUnitDestination = upper;
+                                    }
                                 }
                                 else
                                 {
-                                    mission.LoadUnitDestination = upper;
+                                    if (showErrors
+                                        || !bay.Positions.Any(p => p.LoadingUnit is null && !p.IsBlocked)
+                                        )
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                    }
+                                    return false;
                                 }
                             }
                             else
                             {
-                                if (showErrors
-                                    || !bay.Positions.Any(p => p.LoadingUnit is null && !p.IsBlocked)
-                                    )
+                                if (messageData.Destination == upper)
                                 {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                    if (showErrors)
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                    }
+                                    return false;
                                 }
-                                else
+                                // if upper position is not empty we can try lower position
+                                returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                                if (returnValue)
                                 {
-                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                    // upper is occupied and bottom is free: choose bottom
+                                    mission.LoadUnitDestination = bottom;
                                 }
-                                return false;
                             }
                         }
-                        else
+
+                        if (bay.IsDouble)
                         {
-                            if (messageData.Destination == upper)
+                            returnValue = true;
+                            // always check upper position first
+                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, /*false || messageData.Destination == upper*/showErrors);
+                            if (bValue)
                             {
-                                if (showErrors)
+                                // upper position is empty. we can use it only if bottom is also free
+                                bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                                if (bValue)
                                 {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                    // we choose the upper position
+                                    // both positions are free: choose upper if not fixed by message
+                                    mission.LoadUnitDestination = upper;
+
+                                    if (messageData.Destination == bottom)
+                                    {
+                                        mission.LoadUnitDestination = bottom;
+                                    }
                                 }
                                 else
                                 {
-                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                    if (messageData.Destination == upper)
+                                    {
+                                        if (showErrors)
+                                        {
+                                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                        }
+                                        else
+                                        {
+                                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                        }
+                                        returnValue = false;
+                                    }
+                                    else
+                                    {
+                                        // we choose definitely the upper position
+                                        mission.LoadUnitDestination = upper;
+                                    }
                                 }
-                                return false;
                             }
-                            // if upper position is not empty we can try lower position
-                            returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
-                            if (returnValue)
+                            else
                             {
-                                // upper is occupied and bottom is free: choose bottom
-                                mission.LoadUnitDestination = bottom;
+                                if (messageData.Destination == upper)
+                                {
+                                    if (showErrors)
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                    }
+                                    returnValue = false;
+                                }
+                                else
+                                {
+                                    // we can use it only if bottom is also free
+                                    bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                                    if (bValue)
+                                    {
+                                        // we choose definitely the lower position
+                                        mission.LoadUnitDestination = bottom;
+                                    }
+                                }
                             }
                         }
                     }
@@ -561,6 +693,46 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 return false;
             }
+
+            //if (activeMission != null)
+            //{
+            //    this.Logger.LogTrace($"IsMachineOk: waiting for active Mission:Id={activeMission.Id}, Load Unit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
+
+            //    var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+            //    if (!bay.IsDouble)
+            //    {
+            //        if (showErrors)
+            //        {
+            //            this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);
+            //        }
+            //        else
+            //        {
+            //            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay}. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+            //        }
+            //        return false;
+            //    }
+
+            //    if (bay.IsDouble)
+            //    {
+            //        if (activeMission.LoadUnitDestination != this.Mission.LoadUnitDestination)
+            //        {
+            //            this.Logger.LogDebug($"A waiting mission is already here :>: {activeMission}");
+            //            return true;
+            //        }
+            //        else
+            //        {
+            //            if (showErrors)
+            //            {
+            //                this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);
+            //            }
+            //            else
+            //            {
+            //                this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay}. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+            //            }
+            //            return false;
+            //        }
+            //    }
+            //}
 
 #if !CHECK_BAY_SENSOR
             return true;
