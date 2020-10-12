@@ -448,6 +448,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Box code.
+        /// </summary>
+        public static string BoxCode {
+            get {
+                return ResourceManager.GetString("BoxCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Busy cells.
         /// </summary>
         public static string BusyCells {
