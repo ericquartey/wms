@@ -1809,4 +1809,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
     <value>Peso unitario aggiornato</value>
   </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Codice contenitore</value>
+  </data>
 </root>

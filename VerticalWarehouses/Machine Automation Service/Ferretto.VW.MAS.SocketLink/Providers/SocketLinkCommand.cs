@@ -43,6 +43,28 @@ namespace Ferretto.VW.MAS.SocketLink
             errorInParameters = 1
         }
 
+        public enum AlphaNumericBarCommandCode
+        {
+            switchOff = 0,
+
+            switchOnWidthoutArrow = 1,
+
+            switchOnLowWidthArrow = 2,
+        }
+
+        public enum AlphaNumericBarCommandResponseResult
+        {
+            messageReceived = 0,
+
+            warehouseNotFound = 1,
+
+            bayNotFound = 2,
+
+            deviceNotEnable = 3,
+
+            errorInParameters = 4
+        }
+
         public enum ExtractCommandResponseResult
         {
             requestAccepted = 0,
@@ -114,9 +136,9 @@ namespace Ferretto.VW.MAS.SocketLink
 
             LASER_RES,
 
-            LEDBAR_CMD,
+            ALPHANUMBAR_CMD,
 
-            LEDBAR_RES
+            ALPHANUMBAR_RES
         }
 
         public enum InfoErrorCode
@@ -128,7 +150,7 @@ namespace Ferretto.VW.MAS.SocketLink
             bayNotFoundForSpecifiedWarehouse = 2
         }
 
-        public enum LaserCommandField
+        public enum LaserCommandCode
         {
             switchOff = 0,
 
@@ -145,18 +167,9 @@ namespace Ferretto.VW.MAS.SocketLink
 
             bayNotFound = 2,
 
-            errorInParameters = 3
-        }
+            deviceNotEnable = 3,
 
-        public enum LedBarCommandResponseResult
-        {
-            messageReceived = 0,
-
-            warehouseNotFound = 1,
-
-            bayNotFound = 2,
-
-            errorInParameters = 3
+            errorInParameters = 4
         }
 
         public enum MachineAlarmStatus

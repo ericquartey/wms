@@ -4,7 +4,7 @@
     {
         #region Fields
 
-        public const int SPEED_DEFAULT = 100;
+        public const int SPEEDDEFAULT = 100;
 
         #endregion
 
@@ -12,15 +12,7 @@
 
         public LaserPoint()
         {
-            this.Speed = SPEED_DEFAULT;
-        }
-
-        public LaserPoint(int x, int y, int z, int speed = SPEED_DEFAULT)
-        {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
-            this.Speed = speed;
+            this.Speed = SPEEDDEFAULT;
         }
 
         #endregion

@@ -86,6 +86,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 NextServiceDate = servicingInfo?.NextServiceDate,
                 LastServiceDate = servicingInfo?.LastServiceDate,
                 IsOneTonMachine = this.machineVolatileDataProvider.IsOneTonMachine.Value,
+                LoadingUnitDepth = machine.LoadUnitDepth,
+                LoadingUnitWidth = machine.LoadUnitWidth,
             };
 
             return this.Ok(machineInfo);

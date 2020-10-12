@@ -94,14 +94,20 @@ namespace Ferretto.VW.Devices.LaserPointer
             result.Z = isBayUpperPosition ? (int)this.zOffsetUpperPosition : (int)this.zOffsetLowerPosition;
             result.Z -= (int)Math.Round(missionOperationItemHeight);
 
-            result.Speed = LaserPoint.SPEED_DEFAULT;
+            result.Speed = LaserPoint.SPEEDDEFAULT;
             return result;
         }
 
-        public LaserPoint CalculateLaserPointForSocketLink(int x, int y, int z, bool isBayUpperPosition, WarehouseSide baySide)
+        public LaserPoint CalculateLaserPointForSocketLink(int x, int y, int z, MachineIdentity machineIdentity, bool isBayUpperPosition, WarehouseSide baySide)
         {
-            var result = new LaserPoint(x, y, this.GetZ(z, isBayUpperPosition));
+            var result = new LaserPoint();
+
+            result.X = (int)Math.Round((machineIdentity.LoadingUnitWidth / 2) - x + this.xOffset);
+            result.Y = -1 * (int)Math.Round((machineIdentity.LoadingUnitDepth / 2) - y + this.yOffset);
+            result.Z = this.GetZ(z, isBayUpperPosition);
             result = this.GetXYBack(result, baySide);
+            result.Speed = LaserPoint.SPEEDDEFAULT;
+
             return result;
         }
 

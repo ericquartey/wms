@@ -4177,6 +4177,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HorizontalPositionToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int HorizontalPositionToCalibrate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("LoadUnitDepth", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadUnitDepth { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LoadUnitMaxHeight", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitMaxHeight { get; set; }
     
@@ -4191,6 +4194,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("LoadUnitVeryHeavyPercent", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitVeryHeavyPercent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LoadUnitWidth", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadUnitWidth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MaxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }
@@ -5374,6 +5380,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("LastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? LastServiceDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LoadingUnitDepth", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadingUnitDepth { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LoadingUnitWidth", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadingUnitWidth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MaxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }

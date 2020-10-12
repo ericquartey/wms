@@ -32,6 +32,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         private SubscriptionToken missionToken;
 
+        private SubscriptionToken socketLinkToken;
+
         #endregion
 
         #region Constructors
@@ -81,6 +83,15 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                 .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
                 .Subscribe(
                     async e => await this.OnMissionChangeAsync(e),
+                    ThreadOption.BackgroundThread,
+                    false);
+
+            this.socketLinkToken = this.socketLinkToken
+            ??
+            this.eventAggregator
+                .GetEvent<NotificationEventUI<SocketLinkAlphaNumericBarData>>()
+                .Subscribe(
+                    async e => await this.OnSocketLinkAlphaNumericBarChangeAsync(e),
                     ThreadOption.BackgroundThread,
                     false);
 
@@ -211,6 +222,57 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                             await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
                         }
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private async Task OnSocketLinkAlphaNumericBarChangeAsync(NotificationMessageUI<SocketLinkAlphaNumericBarData> socketLinkMessage)
+        {
+            try
+            {
+                await this.AlphaNumericBarConfigureAsync();
+
+                if (this.alphaNumericBarDriver is null)
+                {
+                    return;
+                }
+
+                switch (socketLinkMessage.Data.CommandCode)
+                {
+                    case 0: // switch off
+                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                        break;
+
+                    case 1: //  switch on and show text without arrow down
+                    case 2: // switch on and show arrow down at the start of the text
+
+                        var arrowWidth = socketLinkMessage.Data.CommandCode == 1 ? 0 : 6;
+
+                        var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(this.bayManager.Identity.LoadingUnitWidth, socketLinkMessage.Data.X);
+                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                        await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);
+
+                        var message = socketLinkMessage.Data.TextMessage.Trim();
+                        var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + arrowWidth, message);
+                        if (offset > 0)
+                        {
+                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
+                        }
+                        else if (offset == -1)
+                        {
+                            await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
+                        }
+                        else
+                        {
+                            var start = arrowPosition + arrowWidth;
+                            await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
+                        }
+
+                        break;
                 }
             }
             catch (Exception ex)

@@ -32,6 +32,11 @@ namespace Ferretto.VW.MAS.DataModels
         public int HorizontalPositionToCalibrate { get; set; } = 3000;
 
         /// <summary>
+        /// Load Unit depth, in millimeters
+        /// </summary>
+        public double LoadUnitDepth { get; set; }
+
+        /// <summary>
         /// Load Unit maximum height, in millimeters
         /// </summary>
         public double LoadUnitMaxHeight { get; set; }
@@ -52,6 +57,11 @@ namespace Ferretto.VW.MAS.DataModels
         /// Gets or sets the percent of net weight to be considered very heavy in FindEmptyCell. To disable heavy bin management use 0. suggested value is 85.
         /// </summary>
         public double LoadUnitVeryHeavyPercent { get; set; }
+
+        /// <summary>
+        /// Load Unit width, in millimeters
+        /// </summary>
+        public double LoadUnitWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum gross weight that the machine can have.
