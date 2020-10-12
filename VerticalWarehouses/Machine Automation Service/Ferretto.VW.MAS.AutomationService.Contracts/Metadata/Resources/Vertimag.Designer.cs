@@ -826,6 +826,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Machine Load Depth.
+        /// </summary>
+        public static string Machine_LoadDepth {
+            get {
+                return ResourceManager.GetString("Machine_LoadDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max Drawer Height.
         /// </summary>
         public static string Machine_LoadUnitMaxHeight {
@@ -867,6 +876,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Machine_LoadUnitVeryHeavyPercent {
             get {
                 return ResourceManager.GetString("Machine_LoadUnitVeryHeavyPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LoadUnit Width.
+        /// </summary>
+        public static string Machine_LoadUnitWidth {
+            get {
+                return ResourceManager.GetString("Machine_LoadUnitWidth", resourceCulture);
             }
         }
         

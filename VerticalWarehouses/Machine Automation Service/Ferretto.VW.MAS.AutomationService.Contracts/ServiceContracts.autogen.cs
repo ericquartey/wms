@@ -1869,6 +1869,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<UserClaims> AuthenticateWithSupportTokenAsync(string userName, string password, string supportToken, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<User>> GetAllUsersAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<User>> GetAllUsersAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> GetSupportTokenAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4168,6 +4175,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HorizontalPositionToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int HorizontalPositionToCalibrate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("LoadUnitDepth", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadUnitDepth { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LoadUnitMaxHeight", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitMaxHeight { get; set; }
     
@@ -4182,6 +4192,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("LoadUnitVeryHeavyPercent", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitVeryHeavyPercent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LoadUnitWidth", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadUnitWidth { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MaxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }
@@ -6379,6 +6392,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Support = 3,
     
         Admin = 99,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class User : BaseModelOfInt32
+    {
+        [Newtonsoft.Json.JsonProperty("login", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Login { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Password { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static User FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<User>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
     
     }
     

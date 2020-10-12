@@ -534,4 +534,10 @@
   <data name="View" xml:space="preserve">
     <value>Visione</value>
   </data>
+  <data name="Machine_LoadDepth" xml:space="preserve">
+    <value>Profondità</value>
+  </data>
+  <data name="Machine_LoadUnitWidth" xml:space="preserve">
+    <value>Larghezza</value>
+  </data>
 </root>

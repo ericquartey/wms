@@ -59,8 +59,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Editable(true)]
             [Unit("mm")]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitMaxHeight))]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadDepth))]
             [Id(4)]
+            public double LoadUnitDepth { get; set; }
+
+            [Editable(true)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitMaxHeight))]
+            [Id(16)]
             public double LoadUnitMaxHeight { get; set; }
 
             [Editable(true)]
@@ -84,6 +90,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitVeryHeavyPercent))]
             [Id(15)]
             public double LoadUnitVeryHeavyPercent { get; set; }
+
+            [Editable(true)]
+            [Unit("mm")]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitWidth))]
+            [Id(17)]
+            public double LoadUnitWidth { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_MaxGrossWeight))]
             [Unit("kg")]
