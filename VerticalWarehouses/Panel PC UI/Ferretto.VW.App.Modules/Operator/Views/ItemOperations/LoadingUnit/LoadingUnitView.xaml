@@ -121,6 +121,43 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom">
 
+          <Border Width="160"
+                  Height="90"
+                  Margin="15,15,15,0"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Bottom"
+                  Background="{DynamicResource PpcBackground}"
+                  Visibility="{Binding IsBoxEnabled, Converter={StaticResource BTVC}}">
+            <Border BorderBrush="{DynamicResource FerrettoBlue}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+              <Grid>
+
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="ItemCodeLabel"
+                           Margin="8,4"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="{StaticResource FontSize_Normal}"
+                           FontWeight="Normal"
+                           Foreground="{DynamicResource Text_Foreground}"
+                           Text="{res:Loc OperatorApp.BoxCode}" />
+
+                <TextBlock x:Name="ItemCodeValue"
+                           Grid.Row="1"
+                           Margin="4,0,4,4"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="{StaticResource FontSize_Very_High}"
+                           Foreground="{DynamicResource PpcForeground}"
+                           Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                           TextWrapping="Wrap" />
+              </Grid>
+            </Border>
+          </Border>
 
           <Border x:Name="border"
                   Width="160"

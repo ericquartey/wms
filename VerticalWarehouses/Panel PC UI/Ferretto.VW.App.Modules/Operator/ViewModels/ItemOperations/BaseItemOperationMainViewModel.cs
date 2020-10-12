@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private bool isBoxEnabled;
+
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IEventAggregator eventAggregator;
@@ -137,6 +139,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Properties
+
+        public bool IsBoxEnabled
+        {
+            get => this.isBoxEnabled;
+            set => this.SetProperty(ref this.isBoxEnabled, value, this.RaiseCanExecuteChanged);
+        }
 
         public abstract string ActiveContextName { get; }
 
@@ -758,6 +766,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+
+            string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
+
+            this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
+
             this.IsWaitingForResponse = false;
             this.IsBusyAbortingOperation = false;
             this.IsBusyConfirmingOperation = false;
