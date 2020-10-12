@@ -2202,4 +2202,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="MarkAsResolvedAndGo" xml:space="preserve">
     <value>Mark as resolved and go to compaction</value>
   </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Box code</value>
+  </data>
 </root>

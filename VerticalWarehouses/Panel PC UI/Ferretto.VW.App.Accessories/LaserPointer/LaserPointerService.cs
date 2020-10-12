@@ -26,8 +26,6 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly Machine machine;
-
         private readonly IMachineMissionsWebService missionWebService;
 
         private ILaserPointerDriver laserPointerDriver;
@@ -52,7 +50,6 @@ namespace Ferretto.VW.App.Accessories
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
-            this.machine = new Machine();
         }
 
         #endregion
@@ -216,7 +213,6 @@ namespace Ferretto.VW.App.Accessories
             try
             {
                 LaserPoint point;
-
                 var bay = await this.bayManager.GetBayAsync();
 
                 switch (message.Data.CommandCode)
@@ -226,12 +222,12 @@ namespace Ferretto.VW.App.Accessories
                         break;
 
                     case 1: // switch on in upper bay position
-                        point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.machine, true, bay.Side);
+                        point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, true, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
                         break;
 
                     case 2: // switch on in lower bay position
-                        point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.machine, false, bay.Side);
+                        point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, false, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
                         break;
                 }

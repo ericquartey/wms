@@ -6,10 +6,12 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
+using static Ferretto.VW.MAS.SocketLink.SocketLinkCommand;
 
 namespace Ferretto.VW.MAS.SocketLink
 {
@@ -252,6 +254,58 @@ namespace Ferretto.VW.MAS.SocketLink
             return result.ToArray();
         }
 
+        private bool GetAlphaNumericBarCommandCode(string strValue, ref AlphaNumericBarCommandCode commandCode)
+        {
+            var result = false;
+
+            try
+            {
+                if (Enum.TryParse(strValue, true, out commandCode) && Enum.IsDefined(typeof(AlphaNumericBarCommandCode), commandCode))
+                {
+                    result = true;
+                }
+            }
+            catch
+            { }
+
+            return result;
+        }
+
+        private bool GetAxisValue(string strValue, ref int axisValue)
+        {
+            var result = false;
+
+            try
+            {
+                axisValue = Convert.ToInt32(strValue, CultureInfo.InvariantCulture);
+                if (axisValue >= 0)
+                {
+                    result = true;
+                }
+            }
+            catch
+            { }
+
+            return result;
+        }
+
+        private bool GetLaserCommandCode(string strValue, ref LaserCommandCode commandCode)
+        {
+            var result = false;
+
+            try
+            {
+                if (Enum.TryParse(strValue, true, out commandCode) && Enum.IsDefined(typeof(LaserCommandCode), commandCode))
+                {
+                    result = true;
+                }
+            }
+            catch
+            { }
+
+            return result;
+        }
+
         /// <summary>
         /// Function return an array of 7 integers with the allarm status and for each bay yhe id tray and the number mission enquesd.
         ///
@@ -369,18 +423,25 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 if (this.WarehouseNumberIsValid(cmdReceived))
                 {
-                    cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
+
                     var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
                     cmdResponse.AddPayload((int)bay.Number);
 
                     if (bay.Accessories.AlphaNumericBar.IsEnabledNew)
                     {
-                        var data = new SocketLinkAlphaNumericBarData(
-                            Convert.ToInt32(cmdReceived.GetPayloadByPosition(2), CultureInfo.InvariantCulture),
-                            Convert.ToInt32(cmdReceived.GetPayloadByPosition(3), CultureInfo.InvariantCulture),
-                            cmdReceived.GetPayloadByPosition(4));
+                        var commandCode = AlphaNumericBarCommandCode.switchOff;
+                        var x = 0;
 
-                        this.eventAggregator
+                        if (
+                            this.GetAlphaNumericBarCommandCode(cmdReceived.GetPayloadByPosition(2), ref commandCode) &&
+                            this.GetAxisValue(cmdReceived.GetPayloadByPosition(3), ref x))
+                        {
+                            var data = new SocketLinkAlphaNumericBarData((int)commandCode, x, cmdReceived.GetPayloadByPosition(4));
+
+                            this.eventAggregator
                             .GetEvent<NotificationEvent>()
                             .Publish(
                                 new NotificationMessage(
@@ -393,29 +454,29 @@ namespace Ferretto.VW.MAS.SocketLink
                                     bay.Number,
                                     MessageStatus.OperationEnd));
 
-                        cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.messageReceived);
-                        cmdResponse.AddPayload("message correctly received");
+                            cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.messageReceived);
+                            cmdResponse.AddPayload("message correctly received");
+                        }
+                        else
+                        {
+                            cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.errorInParameters);
+                            cmdResponse.AddPayload($"errors in parameters");
+                        }
                     }
                     else
                     {
-                        cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
-                        cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                         cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.deviceNotEnable);
                         cmdResponse.AddPayload($"device not enabled ({cmdReceived.GetPayloadByPosition(0)})");
                     }
                 }
                 else
                 {
-                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
-                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                     cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.warehouseNotFound);
                     cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (BayNumberException ex)
             {
-                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
-                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                 cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.bayNotFound);
                 cmdResponse.AddPayload($"invalid bay number {ex.BayNumber}");
             }
@@ -571,54 +632,64 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 if (this.WarehouseNumberIsValid(cmdReceived))
                 {
-                    cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
+
                     var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
                     cmdResponse.AddPayload((int)bay.Number);
 
-                    var data = new SocketLinkLaserPointerChangeMessageData(
-                        Convert.ToInt32(cmdReceived.GetPayloadByPosition(2), CultureInfo.InvariantCulture),
-                        Convert.ToInt32(cmdReceived.GetPayloadByPosition(3), CultureInfo.InvariantCulture),
-                        Convert.ToInt32(cmdReceived.GetPayloadByPosition(4), CultureInfo.InvariantCulture),
-                        Convert.ToInt32(cmdReceived.GetPayloadByPosition(5), CultureInfo.InvariantCulture));
-
                     if (bay.Accessories.LaserPointer.IsEnabledNew)
                     {
-                        this.eventAggregator
-                            .GetEvent<NotificationEvent>()
-                            .Publish(
-                                new NotificationMessage(
-                                    data,
-                                    $"LaserPointer, Bay={bay.Number}, CommandCode={cmdReceived.GetPayloadByPosition(2)}, X={cmdReceived.GetPayloadByPosition(3)}, Y={cmdReceived.GetPayloadByPosition(4)}, Z={cmdReceived.GetPayloadByPosition(5)}",
-                                    MessageActor.Any,
-                                    MessageActor.DeviceManager,
-                                    MessageType.SocketLinkLaserPointerChange,
-                                    bay.Number,
-                                    bay.Number,
-                                    MessageStatus.OperationEnd));
+                        var commandCode = LaserCommandCode.switchOff;
+                        var x = 0;
+                        var y = 0;
+                        var z = 0;
 
-                        cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.messageReceived);
-                        cmdResponse.AddPayload("message correctly received");
+                        if (
+                            this.GetLaserCommandCode(cmdReceived.GetPayloadByPosition(2), ref commandCode) &&
+                            this.GetAxisValue(cmdReceived.GetPayloadByPosition(3), ref x) &&
+                            this.GetAxisValue(cmdReceived.GetPayloadByPosition(4), ref y) &&
+                            this.GetAxisValue(cmdReceived.GetPayloadByPosition(5), ref z))
+                        {
+                            var data = new SocketLinkLaserPointerChangeMessageData((int)commandCode, x, y, z);
+
+                            this.eventAggregator
+                                .GetEvent<NotificationEvent>()
+                                .Publish(
+                                    new NotificationMessage(
+                                        data,
+                                        $"LaserPointer, Bay={bay.Number}, CommandCode={cmdReceived.GetPayloadByPosition(2)}, X={cmdReceived.GetPayloadByPosition(3)}, Y={cmdReceived.GetPayloadByPosition(4)}, Z={cmdReceived.GetPayloadByPosition(5)}",
+                                        MessageActor.Any,
+                                        MessageActor.DeviceManager,
+                                        MessageType.SocketLinkLaserPointerChange,
+                                        bay.Number,
+                                        bay.Number,
+                                        MessageStatus.OperationEnd));
+
+                            cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.messageReceived);
+                            cmdResponse.AddPayload("message correctly received");
+                        }
+                        else
+                        {
+                            cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.errorInParameters);
+                            cmdResponse.AddPayload($"errors in parameters");
+                        }
                     }
                     else
                     {
-                        cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
-                        cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                         cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.deviceNotEnable);
                         cmdResponse.AddPayload($"device not enabled ({cmdReceived.GetPayloadByPosition(0)})");
                     }
                 }
                 else
                 {
-                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
-                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                     cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.warehouseNotFound);
                     cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
             }
             catch (BayNumberException ex)
             {
-                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
-                cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                 cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.bayNotFound);
                 cmdResponse.AddPayload($"invalid bay number {ex.BayNumber}");
             }

@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isNewOperationAvailable;
 
+        private bool isBoxEnabled;
+
         private DelegateCommand itemCompartmentDownCommand;
 
         private DelegateCommand itemCompartmentUpCommand;
@@ -118,6 +120,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isBusyConfirmingOperation;
             set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBoxEnabled
+        {
+            get => this.isBoxEnabled;
+            set => this.SetProperty(ref this.isBoxEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsBusyConfirmingRecallOperation
@@ -333,6 +341,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async override Task OnAppearedAsync()
         {
+            string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
+
+            this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
+
             if (this.Data is int loadingUnitId)
             {
                 this.LoadingUnit = this.MachineService.Loadunits.Single(l => l.Id == loadingUnitId);
