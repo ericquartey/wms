@@ -252,7 +252,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                         var arrowWidth = socketLinkMessage.Data.CommandCode == 1 ? 0 : 6;
 
-                        var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(0, socketLinkMessage.Data.X);
+                        var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(this.bayManager.Identity.LoadingUnitWidth, socketLinkMessage.Data.X);
                         await this.alphaNumericBarDriver.EnabledAsync(false);
                         await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);
 

@@ -43,6 +43,15 @@ namespace Ferretto.VW.MAS.SocketLink
             errorInParameters = 1
         }
 
+        public enum AlphaNumericBarCommandCode
+        {
+            switchOff = 0,
+
+            switchOnWidthoutArrow = 1,
+
+            switchOnLowWidthArrow = 2,
+        }
+
         public enum AlphaNumericBarCommandResponseResult
         {
             messageReceived = 0,
@@ -141,7 +150,7 @@ namespace Ferretto.VW.MAS.SocketLink
             bayNotFoundForSpecifiedWarehouse = 2
         }
 
-        public enum LaserCommandField
+        public enum LaserCommandCode
         {
             switchOff = 0,
 
