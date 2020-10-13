@@ -210,9 +210,9 @@ namespace Ferretto.VW.App.Services
                         .Publish(cm);
                     break;
 
-                case NotificationMessageUI<SocketLinkAlphaNumericBarData> sla:
+                case NotificationMessageUI<SocketLinkAlphaNumericBarChangeMessageData> sla:
                     this.eventAggregator
-                        .GetEvent<NotificationEventUI<SocketLinkAlphaNumericBarData>>()
+                        .GetEvent<NotificationEventUI<SocketLinkAlphaNumericBarChangeMessageData>>()
                         .Publish(sla);
                     break;
 

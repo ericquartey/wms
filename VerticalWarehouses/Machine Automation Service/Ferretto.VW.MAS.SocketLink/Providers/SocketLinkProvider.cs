@@ -439,20 +439,20 @@ namespace Ferretto.VW.MAS.SocketLink
                             this.GetAlphaNumericBarCommandCode(cmdReceived.GetPayloadByPosition(2), ref commandCode) &&
                             this.GetAxisValue(cmdReceived.GetPayloadByPosition(3), ref x))
                         {
-                            var data = new SocketLinkAlphaNumericBarData((int)commandCode, x, cmdReceived.GetPayloadByPosition(4));
+                            var data = new SocketLinkAlphaNumericBarChangeMessageData((int)commandCode, x, cmdReceived.GetPayloadByPosition(4));
 
                             this.eventAggregator
-                            .GetEvent<NotificationEvent>()
-                            .Publish(
-                                new NotificationMessage(
-                                    data,
-                                    $"AlphaNumericBar, Bay={bay.Number}, CommandCode={cmdReceived.GetPayloadByPosition(2)}, X={cmdReceived.GetPayloadByPosition(3)}, MESSAGE='{cmdReceived.GetPayloadByPosition(4)}'",
-                                    MessageActor.Any,
-                                    MessageActor.DeviceManager,
-                                    MessageType.SocketLinkAlphaNumericBarChange,
-                                    bay.Number,
-                                    bay.Number,
-                                    MessageStatus.OperationEnd));
+                                .GetEvent<NotificationEvent>()
+                                .Publish(
+                                    new NotificationMessage(
+                                        data,
+                                        $"AlphaNumericBar, Bay={bay.Number}, CommandCode={commandCode}, X={x}, MESSAGE='{cmdReceived.GetPayloadByPosition(4)}'",
+                                        MessageActor.Any,
+                                        MessageActor.DeviceManager,
+                                        MessageType.SocketLinkAlphaNumericBarChange,
+                                        bay.Number,
+                                        bay.Number,
+                                        MessageStatus.OperationEnd));
 
                             cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.messageReceived);
                             cmdResponse.AddPayload("message correctly received");
