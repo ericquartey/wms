@@ -92,7 +92,8 @@ namespace Ferretto.VW.App.Modules.Operator
                 await this.missionOperationsWebService.CompleteAsync(
                     operationId,
                     quantity,
-                    labelPrinterName);
+                    labelPrinterName,
+                    null);
 
                 await this.RefreshActiveMissionAsync();
 

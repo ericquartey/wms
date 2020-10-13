@@ -68,9 +68,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName)
+        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName, string barcode)
         {
-            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName);
+            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName, barcode);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 
@@ -99,18 +99,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(missionOperationsCount);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MissionOperation>> GetByIdAsync(int id)
+        {
+            return this.Ok(await this.missionOperationsWmsWebService.GetByIdAsync(id));
+        }
+
         [HttpGet("get-unit-id")]
         public ActionResult<int> GetUnitId(int missionId)
         {
             var missionOperationsCount = this.missionOperationsProvider.GetUnitId(missionId, this.BayNumber);
 
             return this.Ok(missionOperationsCount);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<MissionOperation>> GetByIdAsync(int id)
-        {
-            return this.Ok(await this.missionOperationsWmsWebService.GetByIdAsync(id));
         }
 
         [HttpPost("{id}/partially-complete")]
