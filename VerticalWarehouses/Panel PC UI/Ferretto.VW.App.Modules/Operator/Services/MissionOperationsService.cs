@@ -350,7 +350,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private async Task<Mission> RetrieveActiveMissionAsync()
         {
-            this.logger.Debug("Retrieving active mission ...");
+            this.logger.Trace("Retrieving active mission ...");
 
             try
             {
@@ -364,9 +364,14 @@ namespace Ferretto.VW.App.Modules.Operator
                     m.Status == MissionStatus.Waiting)
                     .OrderBy(o => o.LoadUnitDestination);
 
-                this.logger.Debug(!activeMissions.Any()
-                    ? "No active mission on bay."
-                    : $"Active mission has id {activeMissions.FirstOrDefault().Id}.");
+                if (activeMissions.Any())
+                {
+                    this.logger.Debug($"Active mission has id {activeMissions.FirstOrDefault().Id}");
+                }
+                else
+                {
+                    this.logger.Trace("No active mission on bay");
+                }
 
                 return activeMissions.FirstOrDefault();
             }

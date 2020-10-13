@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
                 nameof(IInstallationHub.ShutterPositioningNotify), this.OnShutterPositioningNotify);
 
-            connection.On<NotificationMessageUI<SocketLinkAlphaNumericBarData>>(
+            connection.On<NotificationMessageUI<SocketLinkAlphaNumericBarChangeMessageData>>(
                 nameof(IInstallationHub.SocketLinkAlphaNumericBarChange), this.OnSocketLinkAlphaNumericBarNotify);
 
             connection.On<NotificationMessageUI<SocketLinkLaserPointerChangeMessageData>>(
@@ -238,7 +238,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnSocketLinkAlphaNumericBarNotify(NotificationMessageUI<SocketLinkAlphaNumericBarData> message)
+        private void OnSocketLinkAlphaNumericBarNotify(NotificationMessageUI<SocketLinkAlphaNumericBarChangeMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

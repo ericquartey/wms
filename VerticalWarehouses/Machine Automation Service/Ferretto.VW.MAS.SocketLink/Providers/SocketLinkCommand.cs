@@ -277,21 +277,12 @@ namespace Ferretto.VW.MAS.SocketLink
             BayNumber bayNumberEnum;
             switch (this.header)
             {
-                case HeaderType.STORE_CMD:
-                case HeaderType.REQUEST_RESET_CMD:
-                case HeaderType.LED_CMD:
-                case HeaderType.LED_RES:
-                case HeaderType.CONFIRM_OPERATION:
-                case HeaderType.CONFIRM_OPERATION_RES:
-                case HeaderType.REQUEST_INFO:
-                case HeaderType.REQUEST_INFO_RES:
-                case HeaderType.LASER_CMD:
-                case HeaderType.LASER_RES:
-                    position = 1;
-                    break;
-
                 case HeaderType.REQUEST_RESET_RES:
                     position = 2;
+                    break;
+
+                default:
+                    position = 1;
                     break;
             }
 
@@ -435,36 +426,18 @@ namespace Ferretto.VW.MAS.SocketLink
         public int GetWarehouseNumber()
         {
             var result = -1;
-            var position = -1;
+            var position = 0;
 
             int warehouseNumberInt;
             var warehouseNumber = "";
             switch (this.header)
             {
-                case HeaderType.STORE_CMD:
-                case HeaderType.STATUS_REQUEST_CMD:
-                case HeaderType.STATUS:
-                case HeaderType.REQUEST_RESET_CMD:
-                case HeaderType.REQUEST_RESET_RES:
-                case HeaderType.ALARM_RESET_CMD:
-                case HeaderType.ALARM_RESET_RES:
-                case HeaderType.LED_CMD:
-                case HeaderType.LED_RES:
-                case HeaderType.REQUEST_ALARMS:
-                case HeaderType.CONFIRM_OPERATION:
-                case HeaderType.CONFIRM_OPERATION_RES:
-                case HeaderType.REQUEST_INFO:
-                case HeaderType.REQUEST_INFO_RES:
-                case HeaderType.STATUS_EXT_REQUEST_CMD:
-                case HeaderType.STATUS_EXT:
-                case HeaderType.REQUEST_UDCS_HEIGHT:
-                case HeaderType.LASER_CMD:
-                case HeaderType.LASER_RES:
-                    position = 0;
-                    break;
-
                 case HeaderType.EXTRACT_CMD:
                     position = 1;
+                    break;
+
+                default:
+                    position = 0;
                     break;
             }
 
