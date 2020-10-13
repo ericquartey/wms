@@ -868,6 +868,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         Width = c.Width.Value,
                         XPosition = c.XPosition.Value,
                         YPosition = c.YPosition.Value,
+                        Barcode = c.Barcode,
                     });
             }
             catch (Exception)
