@@ -2205,4 +2205,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="BoxCode" xml:space="preserve">
     <value>Box code</value>
   </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Pick box</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Put box</value>
+  </data>
 </root>
