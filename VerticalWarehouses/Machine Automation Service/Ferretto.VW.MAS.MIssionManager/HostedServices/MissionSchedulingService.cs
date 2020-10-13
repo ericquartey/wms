@@ -1148,7 +1148,7 @@ namespace Ferretto.VW.MAS.MissionManager
         private void OnTimePeriodElapsed(IServiceProvider serviceProvider)
         {
             // at midnight it is time to do some housework
-            if (DateTime.UtcNow.Hour == 0)
+            if (DateTime.Now.Hour == 0)
             {
                 this.Logger.LogInformation($"OnTimePeriodElapsed: clean up missions and schedule homing");
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
@@ -1289,6 +1289,6 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        #endregion
+#endregion
     }
 }
