@@ -131,7 +131,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     nameof(Utils.Modules.Operator),
                     Utils.Modules.Operator.Others.DrawerCompacting.MAIN,
                     null,
-                    trackCurrentView: true);
+                    trackCurrentView: false);
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
