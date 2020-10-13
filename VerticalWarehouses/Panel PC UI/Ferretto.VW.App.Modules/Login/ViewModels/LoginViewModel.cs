@@ -115,6 +115,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.tokenReaderTokenStatusChangedEventHandler = new EventHandler<TokenStatusChangedEventArgs>(
                 async (sender, e) => await this.OnTokenReaderTokenAcquired(sender, e));
+
+            this.Users = new List<string>(this.BaseUser);
         }
 
         private async Task OnCardReaderTokenAcquired(object sender, RegexMatchEventArgs e)
@@ -304,7 +306,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.Users = this.BaseUser;
+            this.Users.Clear();
+
+            this.Users.AddRange(this.BaseUser);
 
             this.ClearNotifications();
 
@@ -372,7 +376,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 //this.ShowNotification("WMS NO USERS", Services.Models.NotificationSeverity.Error);
 
-                this.Users = this.BaseUser;
+                this.Users.Clear();
+
+                this.Users.AddRange(this.BaseUser);
             }
             finally
             {
@@ -486,11 +492,18 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 }
                 else
                 {
-                    var claimWms = await this.usersService.AuthenticateWithResourceOwnerPasswordAsync(
-                        this.UserLogin.UserName,
-                        this.UserLogin.Password);
+                    //var claimWms = await this.usersService.AuthenticateWithResourceOwnerPasswordAsync(
+                    //    this.UserLogin.UserName,
+                    //    this.UserLogin.Password);
 
-                    await this.NavigateToMainMenuAsync(claimWms);
+                    var claims = await this.authenticationService.LogInAsync(
+                       this.UserLogin.UserName,
+                       this.UserLogin.Password,
+                       this.UserLogin.SupportToken);
+
+                    //await this.NavigateToMainMenuAsync(claimWms);
+
+                    await this.NavigateToMainMenuAsync(claims);
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
