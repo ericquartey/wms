@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         #region Methods
 
-        public async Task<bool> CompleteAsync(int operationId, double quantity)
+        public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null)
         {
             this.logger.Debug($"User requested to complete operation '{operationId}'.");
 
@@ -92,7 +92,8 @@ namespace Ferretto.VW.App.Modules.Operator
                 await this.missionOperationsWebService.CompleteAsync(
                     operationId,
                     quantity,
-                    labelPrinterName);
+                    labelPrinterName,
+                    barcode);
 
                 await this.RefreshActiveMissionAsync();
 
@@ -350,7 +351,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private async Task<Mission> RetrieveActiveMissionAsync()
         {
-            this.logger.Debug("Retrieving active mission ...");
+            this.logger.Trace("Retrieving active mission ...");
 
             try
             {
@@ -364,9 +365,14 @@ namespace Ferretto.VW.App.Modules.Operator
                     m.Status == MissionStatus.Waiting)
                     .OrderBy(o => o.LoadUnitDestination);
 
-                this.logger.Debug(!activeMissions.Any()
-                    ? "No active mission on bay."
-                    : $"Active mission has id {activeMissions.FirstOrDefault().Id}.");
+                if (activeMissions.Any())
+                {
+                    this.logger.Debug($"Active mission has id {activeMissions.FirstOrDefault().Id}");
+                }
+                else
+                {
+                    this.logger.Trace("No active mission on bay");
+                }
 
                 return activeMissions.FirstOrDefault();
             }

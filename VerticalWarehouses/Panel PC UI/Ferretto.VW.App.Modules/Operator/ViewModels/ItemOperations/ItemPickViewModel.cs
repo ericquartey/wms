@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -10,7 +11,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ItemPickViewModel : BaseItemOperationMainViewModel
+    public class ItemPickViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -18,9 +19,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool canConfirmOnEmpty;
 
+        private bool canPickBox;
+
         private DelegateCommand emptyOperationCommand;
 
         private string measureUnitTxt;
+
+        private DelegateCommand pickBoxCommand;
 
         #endregion
 
@@ -69,8 +74,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.canConfirmOnEmpty, value);
         }
 
+        public bool CanPickBox
+        {
+            get => this.canPickBox;
+            set => this.SetProperty(ref this.canPickBox, value && this.IsBoxEnabled, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand EmptyOperationCommand =>
-            this.emptyOperationCommand
+                    this.emptyOperationCommand
             ??
             (this.emptyOperationCommand = new DelegateCommand(
                 async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
@@ -84,9 +95,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.measureUnitTxt, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand PickBoxCommand =>
+            this.pickBoxCommand
+            ??
+            (this.pickBoxCommand = new DelegateCommand(
+                async () => await this.PickBoxAsync("0"),
+                this.CanPickBoxes));
+
         #endregion
 
         #region Methods
+
+        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        {
+            if (userAction is null)
+            {
+                return;
+            }
+
+            if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await this.ConfirmOperationAsync(userAction.Code);
+                return;
+            }
+
+            if (this.CanPickBoxes() && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await this.PickBoxAsync(userAction.Code);
+                return;
+            }
+        }
 
         public override void Disappear()
         {
@@ -127,7 +165,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.MissionOperation != null)
                 {
+                    if (this.MissionOperation.ItemCode.Contains("CONTENITORE"))
+                    {
+                        this.CanPickBox = true;
+                    }
+                    else
+                    {
+                        this.CanPickBox = false;
+                    }
                     this.MissionRequestedQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+                }
+                else
+                {
+                    this.CanPickBox = false;
                 }
 
                 this.InputQuantity = this.MissionRequestedQuantity;
@@ -141,6 +191,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+
+            this.pickBoxCommand?.RaiseCanExecuteChanged();
+
+            this.emptyOperationCommand?.RaiseCanExecuteChanged();
 
             this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
@@ -173,7 +227,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.CanInputQuantity
                 &&
-                this.InputQuantity.Value == this.MissionRequestedQuantity;
+                this.InputQuantity.Value == this.MissionRequestedQuantity
+                &&
+                !this.CanPickBox;
 
                 this.RaisePropertyChanged(nameof(this.CanConfirm));
 
@@ -194,7 +250,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     &&
                     this.InputQuantity.Value != this.MissionRequestedQuantity
                     &&
-                    this.InputQuantity.Value <= this.AvailableQuantity;
+                    this.InputQuantity.Value <= this.AvailableQuantity
+                    &&
+                    !this.CanPickBox;
 
                 this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
             }
@@ -203,6 +261,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             //return this.CanConfirm;
             return false;
+        }
+
+        private bool CanPickBoxes()
+        {
+            try
+            {
+                return this.MissionOperation != null
+                        &&
+                        !this.IsWaitingForResponse
+                        &&
+                        !this.IsBusyAbortingOperation
+                        &&
+                        !this.IsBusyConfirmingOperation
+                        &&
+                        this.InputQuantity.HasValue
+                        &&
+                        this.CanInputQuantity
+                        &&
+                        this.InputQuantity.Value == this.MissionRequestedQuantity
+                        &&
+                        this.CanPickBox;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private async Task PartiallyCompleteOnEmptyCompartmentAsync()
@@ -229,6 +313,64 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task PickBoxAsync(string barcode)
+        {
+            System.Diagnostics.Debug.Assert(
+                this.InputQuantity.HasValue,
+                "The input quantity should have a value");
+
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                this.IsOperationConfirmed = true;
+
+                bool canComplete = false;
+
+                if (barcode != null && barcode.Length == 16)//16 => lunghezza matrice
+                {
+                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
+                if (canComplete)
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                }
+                else
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                    this.NavigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+
+                //this.navigationService.GoBackTo(
+                //    nameof(Utils.Modules.Operator),
+                //    Utils.Modules.Operator.ItemOperations.WAIT);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+                this.IsOperationConfirmed = false;
+            }
+            finally
+            {
+                // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
+
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
             }
         }
 

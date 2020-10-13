@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using DevExpress.Data;
+using DevExpress.Xpf.Core.DragDrop.Native;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
@@ -112,6 +115,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.tokenReaderTokenStatusChangedEventHandler = new EventHandler<TokenStatusChangedEventArgs>(
                 async (sender, e) => await this.OnTokenReaderTokenAcquired(sender, e));
+
+            this.Users = new List<string>(this.BaseUser);
         }
 
         private async Task OnCardReaderTokenAcquired(object sender, RegexMatchEventArgs e)
@@ -175,7 +180,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #endregion
 
-        public readonly System.Collections.Generic.List<string> BaseUser = new System.Collections.Generic.List<string>() { "operator", "installer", "service", "admin" };
+        private readonly List<string> BaseUser = new List<string>() { "operator", "installer", "service", "admin" };
 
         public string ActiveContextName => "Login";
 
@@ -301,7 +306,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.Users = this.BaseUser;
+            this.Users.Clear();
+
+            this.Users.AddRange(this.BaseUser);
 
             this.ClearNotifications();
 
@@ -359,16 +366,19 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.WmsUsers = await this.usersService.GetAllUsersAsync();
 
-                var wmsUsersName = this.WmsUsers.Select(s => s.Login);
+                var wmsUsersName = this.WmsUsers.Select(s => s.Login).ToList();
 
-                this.Users = this.BaseUser.Except(wmsUsersName).ToList();
+                var userToAdd = wmsUsersName.Except(this.BaseUser);
+
+                this.Users.AddRange(userToAdd);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //this.ShowNotification("WMS NO USERS", Services.Models.NotificationSeverity.Error);
 
+                this.Users.Clear();
 
-                this.Users = this.BaseUser;
+                this.Users.AddRange(this.BaseUser);
             }
             finally
             {
@@ -432,11 +442,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.ClearNotifications();
 
             this.UserLogin.IsValidationEnabled = true;
-            if (!string.IsNullOrEmpty(this.UserLogin.Error))
-            {
-                this.ShowNotification(this.UserLogin.Error, Services.Models.NotificationSeverity.Error);
-                return;
-            }
+            //if (!string.IsNullOrEmpty(this.UserLogin.Error))
+            //{
+            //    this.ShowNotification(this.UserLogin.Error, Services.Models.NotificationSeverity.Error);
+            //    return;
+            //}
 
             this.IsWaitingForResponse = true;
 
@@ -467,6 +477,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 if (this.BaseUser.Contains(this.UserLogin.UserName))
                 {
+                    if (!string.IsNullOrEmpty(this.UserLogin.Error))
+                    {
+                        this.ShowNotification(this.UserLogin.Error, Services.Models.NotificationSeverity.Error);
+                        return;
+                    }
+
                     var claims = await this.authenticationService.LogInAsync(
                        this.UserLogin.UserName,
                        this.UserLogin.Password,
@@ -476,14 +492,19 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 }
                 else
                 {
-                    var claimWms = await this.usersService.AuthenticateWithResourceOwnerPasswordAsync(
-                        this.UserLogin.UserName,
-                        this.UserLogin.Password);
+                    //var claimWms = await this.usersService.AuthenticateWithResourceOwnerPasswordAsync(
+                    //    this.UserLogin.UserName,
+                    //    this.UserLogin.Password);
 
-                    await this.NavigateToMainMenuAsync(claimWms);
+                    var claims = await this.authenticationService.LogInAsync(
+                       this.UserLogin.UserName,
+                       this.UserLogin.Password,
+                       this.UserLogin.SupportToken);
+
+                    //await this.NavigateToMainMenuAsync(claimWms);
+
+                    await this.NavigateToMainMenuAsync(claims);
                 }
-
-                
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

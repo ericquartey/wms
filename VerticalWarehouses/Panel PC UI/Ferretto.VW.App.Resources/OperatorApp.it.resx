@@ -1756,7 +1756,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Peso unitario [g]</value>
   </data>
   <data name="BarcodeOperationConfirmed" xml:space="preserve">
-    <value>Operazione confermata tramite codice a barre.</value>
+    <value>Operazione confermata tramite codice a barre: </value>
   </data>
   <data name="BarcodeMismatch" xml:space="preserve">
     <value>Alcuni campi del codice a barre '{0}' non coincidono con quelli dell'articolo.</value>
@@ -1811,5 +1811,11 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   </data>
   <data name="BoxCode" xml:space="preserve">
     <value>Codice contenitore</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Preleva contenitore</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Versa contenitore</value>
   </data>
 </root>

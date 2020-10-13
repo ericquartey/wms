@@ -296,6 +296,16 @@
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
 
+      <controls:PpcButton Grid.Row="5"
+                          Margin="15,15,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding PutBoxCommand}"
+                          Content="{resources:Loc OperatorApp.PutBox}"
+                          IsBusy="{Binding IsBusyConfirmingOperation}"
+                          Style="{StaticResource ConfirmButton}"
+                          Visibility="{Binding CanPutBox, Converter={StaticResource BTVC}}" />
+
     </Grid>
   </Grid>
 
