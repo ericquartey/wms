@@ -473,26 +473,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (bay.IsDouble)
                         {
                             returnValue = true;
-                            // always check upper position first
-                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, /*false || messageData.Destination == upper*/showErrors);
+                            // Always check upper position first
+                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, showErrors);
                             if (bValue)
                             {
-                                // upper position is empty. we can use it only if bottom is also free
+                                // Upper position is empty.
+                                // We check the lower position of bay
                                 bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
                                 if (bValue)
                                 {
-                                    // we choose the upper position
-                                    // both positions are free: choose upper if not fixed by message
-                                    mission.LoadUnitDestination = upper;
+                                    // Lower position is empty
+                                    // Both positions are free: choose bottom if it is not fixed by message
+                                    mission.LoadUnitDestination = bottom;
 
-                                    if (messageData.Destination == bottom)
+                                    if (messageData.Destination == upper)
                                     {
-                                        mission.LoadUnitDestination = bottom;
+                                        mission.LoadUnitDestination = upper;
                                     }
                                 }
                                 else
                                 {
-                                    if (messageData.Destination == upper)
+                                    // Lower position is occupied
+                                    if (messageData.Destination == bottom)
                                     {
                                         if (showErrors)
                                         {
@@ -506,13 +508,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     else
                                     {
-                                        // we choose definitely the upper position
+                                        // We choose definitely the upper position
                                         mission.LoadUnitDestination = upper;
                                     }
                                 }
                             }
                             else
                             {
+                                // Upper position is occupied
                                 if (messageData.Destination == upper)
                                 {
                                     if (showErrors)
@@ -527,12 +530,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 }
                                 else
                                 {
-                                    // we can use it only if bottom is also free
+                                    // We can use it only if bottom is also free
                                     bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
                                     if (bValue)
                                     {
-                                        // we choose definitely the lower position
+                                        // Lower position is empty
+                                        // We choose definitely the lower position
                                         mission.LoadUnitDestination = bottom;
+                                    }
+                                    else
+                                    {
+                                        // Lower position is occupied
+                                        // Error is raised
+                                        if (showErrors)
+                                        {
+                                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                        }
+                                        else
+                                        {
+                                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                        }
+                                        returnValue = false;
                                     }
                                 }
                             }
@@ -693,46 +711,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 return false;
             }
-
-            //if (activeMission != null)
-            //{
-            //    this.Logger.LogTrace($"IsMachineOk: waiting for active Mission:Id={activeMission.Id}, Load Unit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
-
-            //    var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
-            //    if (!bay.IsDouble)
-            //    {
-            //        if (showErrors)
-            //        {
-            //            this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);
-            //        }
-            //        else
-            //        {
-            //            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay}. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
-            //        }
-            //        return false;
-            //    }
-
-            //    if (bay.IsDouble)
-            //    {
-            //        if (activeMission.LoadUnitDestination != this.Mission.LoadUnitDestination)
-            //        {
-            //            this.Logger.LogDebug($"A waiting mission is already here :>: {activeMission}");
-            //            return true;
-            //        }
-            //        else
-            //        {
-            //            if (showErrors)
-            //            {
-            //                this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);
-            //            }
-            //            else
-            //            {
-            //                this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay}. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
-            //            }
-            //            return false;
-            //        }
-            //    }
-            //}
 
 #if !CHECK_BAY_SENSOR
             return true;

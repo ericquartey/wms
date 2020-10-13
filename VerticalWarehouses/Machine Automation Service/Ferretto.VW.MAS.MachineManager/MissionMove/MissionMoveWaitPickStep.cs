@@ -72,53 +72,53 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
 
             // Only applied for double bay, when there is already another mission on bay in WaitPick step
-            if (bay.IsDouble)
-            {
-                // ---------------------
-                // WORKAROUND
-                // ---------------------
+            //if (bay.IsDouble)
+            //{
+            //    // ---------------------
+            //    // WORKAROUND
+            //    // ---------------------
 
-                // It seems this code is not used!!!
+            //    // It seems this code is not used!!!
 
-                // Check for another mission
-                // Retrieve the mission on the bay with Step = MissionStep.WaitDepositInBay
-                var waitMissionOnCurrentBay = this.MissionsDataProvider.GetAllActiveMissions()
-                    .FirstOrDefault(
-                        m => m.LoadUnitId != this.Mission.LoadUnitId &&
-                        m.Id != this.Mission.Id &&
-                        m.Step == MissionStep.WaitPick
-                    );
+            //    // Check for another mission
+            //    // Retrieve the mission on the bay with Step = MissionStep.WaitDepositInBay
+            //    var waitMissionOnCurrentBay = this.MissionsDataProvider.GetAllActiveMissions()
+            //        .FirstOrDefault(
+            //            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+            //            m.Id != this.Mission.Id &&
+            //            m.Step == MissionStep.WaitPick
+            //        );
 
-                if (waitMissionOnCurrentBay != null)
-                {
-                    this.Logger.LogDebug($"MissionId:{waitMissionOnCurrentBay.Id} => Send a Notification message Type:{MessageType.MoveLoadingUnit}, CommandAction:{CommandAction.Activate}");
+            //    if (waitMissionOnCurrentBay != null)
+            //    {
+            //        this.Logger.LogDebug($"MissionId:{waitMissionOnCurrentBay.Id} => Send a Notification message Type:{MessageType.MoveLoadingUnit}, CommandAction:{CommandAction.Activate}");
 
-                    // Send a MoveLoadingUnit message to the MachineManager component for the selected mission
-                    var moveLoadingUnitMessageData = new MoveLoadingUnitMessageData(
-                        waitMissionOnCurrentBay.MissionType,
-                        LoadingUnitLocation.LoadUnit,
-                        LoadingUnitLocation.Cell,
-                        sourceCellId: null,
-                        destinationCellId: null,
-                        waitMissionOnCurrentBay.LoadUnitId,
-                        insertLoadUnit: true,
-                        waitMissionOnCurrentBay.Id,
-                        CommandAction.Activate);
+            //        // Send a MoveLoadingUnit message to the MachineManager component for the selected mission
+            //        var moveLoadingUnitMessageData = new MoveLoadingUnitMessageData(
+            //            waitMissionOnCurrentBay.MissionType,
+            //            LoadingUnitLocation.LoadUnit,
+            //            LoadingUnitLocation.Cell,
+            //            sourceCellId: null,
+            //            destinationCellId: null,
+            //            waitMissionOnCurrentBay.LoadUnitId,
+            //            insertLoadUnit: true,
+            //            waitMissionOnCurrentBay.Id,
+            //            CommandAction.Activate);
 
-                    this.EventAggregator
-                        .GetEvent<CommandEvent>()
-                        .Publish(
-                            new CommandMessage(
-                                moveLoadingUnitMessageData,
-                                $"Bay {bay.Number} requested to activate move Loading unit {waitMissionOnCurrentBay.LoadUnitId} to Bay {bay.Number}",
-                                MessageActor.MachineManager,
-                                MessageActor.MachineManager,
-                                MessageType.MoveLoadingUnit,
-                                bay.Number,
-                                BayNumber.None)
-                            );
-                }
-            }
+            //        this.EventAggregator
+            //            .GetEvent<CommandEvent>()
+            //            .Publish(
+            //                new CommandMessage(
+            //                    moveLoadingUnitMessageData,
+            //                    $"Bay {bay.Number} requested to activate move Loading unit {waitMissionOnCurrentBay.LoadUnitId} to Bay {bay.Number}",
+            //                    MessageActor.MachineManager,
+            //                    MessageActor.MachineManager,
+            //                    MessageType.MoveLoadingUnit,
+            //                    bay.Number,
+            //                    BayNumber.None)
+            //                );
+            //    }
+            //}
 
             return true;
         }
