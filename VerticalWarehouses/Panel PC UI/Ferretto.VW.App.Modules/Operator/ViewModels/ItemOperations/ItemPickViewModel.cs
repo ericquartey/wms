@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -10,7 +11,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ItemPickViewModel : BaseItemOperationMainViewModel
+    public class ItemPickViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -87,6 +88,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Methods
+
+        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        {
+            if (userAction is null)
+            {
+                return;
+            }
+           
+            if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await this.ConfirmOperationAsync(userAction.Code);
+            }
+        }
 
         public override void Disappear()
         {
