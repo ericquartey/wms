@@ -25,7 +25,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NLog" Version="4.7.2" />
+    <PackageReference Include="NLog" Version="4.7.5" />
     <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
 
     <!-- begin: these references are included to ensure dynamic module dependencies can be resolved -->

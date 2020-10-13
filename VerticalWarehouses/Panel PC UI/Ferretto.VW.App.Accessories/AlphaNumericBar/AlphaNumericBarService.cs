@@ -89,7 +89,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             this.socketLinkToken = this.socketLinkToken
             ??
             this.eventAggregator
-                .GetEvent<NotificationEventUI<SocketLinkAlphaNumericBarData>>()
+                .GetEvent<NotificationEventUI<SocketLinkAlphaNumericBarChangeMessageData>>()
                 .Subscribe(
                     async e => await this.OnSocketLinkAlphaNumericBarChangeAsync(e),
                     ThreadOption.BackgroundThread,
@@ -230,7 +230,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             }
         }
 
-        private async Task OnSocketLinkAlphaNumericBarChangeAsync(NotificationMessageUI<SocketLinkAlphaNumericBarData> socketLinkMessage)
+        private async Task OnSocketLinkAlphaNumericBarChangeAsync(NotificationMessageUI<SocketLinkAlphaNumericBarChangeMessageData> socketLinkMessage)
         {
             try
             {
@@ -245,6 +245,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                 {
                     case 0: // switch off
                         await this.alphaNumericBarDriver.EnabledAsync(false);
+                        this.logger.Info($"OnSocketLinkAlphaNumericBarChangeAsync, switch off {socketLinkMessage.Data.CommandCode}");
                         break;
 
                     case 1: //  switch on and show text without arrow down
@@ -272,6 +273,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                             await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
                         }
 
+                        this.logger.Info($"OnSocketLinkAlphaNumericBarChangeAsync, switch on {socketLinkMessage.Data.CommandCode} {arrowPosition} {offset} '{message}'");
                         break;
                 }
             }
