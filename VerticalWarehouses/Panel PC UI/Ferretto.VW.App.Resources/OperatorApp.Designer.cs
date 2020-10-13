@@ -250,7 +250,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation confirmed by Barcode Reader.
+        ///   Looks up a localized string similar to Operation confirmed by Barcode Reader: .
         /// </summary>
         public static string BarcodeOperationConfirmed {
             get {

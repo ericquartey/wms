@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ItemPutViewModel : BaseItemOperationMainViewModel
+    public class ItemPutViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync(),
+                async () => await this.ConfirmOperationAsync("0"),
                 this.CanConfirmOperationPut));
 
         public bool ConfirmPartialOperation
@@ -82,7 +82,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmPartialOperationCommand
             ??
             (this.confirmPartialOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync(),
+                async () => await this.ConfirmOperationAsync("0"),
                 this.CanConfirmPartialOperationPut));
 
         public ICommand FullOperationCommand =>
@@ -112,7 +112,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.ConfirmPartialOperation));
             }
-            catch(Exception)
+            catch (Exception)
             {
             }
 
@@ -146,13 +146,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                this.InputQuantity.Value > this.MissionRequestedQuantity;
         }
 
-        public Task CommandUserActionAsync(UserActionEventArgs userAction)
+        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
-            // do nothing
-            return Task.CompletedTask;
+            if (userAction is null)
+            {
+                return;
+            }
+
+            if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await this.ConfirmOperationAsync(userAction.Code);
+            }
         }
 
-        public async Task ConfirmOperationAsync()
+        public async Task ConfirmOperationAsync(string barcode)
         {
             System.Diagnostics.Debug.Assert(
                 this.InputQuantity.HasValue,
@@ -166,7 +173,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
 
-                var canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                bool canComplete = false;
+
+                if (barcode != null && barcode.Length == 16)//16 => lunghezza matrice
+                {
+                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
                 if (canComplete)
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
@@ -228,20 +246,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void ShowOperationDetails()
         {
             this.NavigationService.Appear(
-               nameof(Utils.Modules.Operator),
-               Utils.Modules.Operator.ItemOperations.PUT_DETAILS,
-               new DrawerActivityItemDetail
-               {
-                   ItemCode = this.MissionOperation.ItemCode,
-                   ItemDescription = this.MissionOperation.ItemDescription,
-                   ListCode = this.MissionOperation.ItemListCode,
-                   ListDescription = this.MissionOperation.ItemListDescription,
-                   ListRow = this.MissionOperation.ItemListRowCode,
-                   Batch = this.MissionOperation.ItemListShipmentUnitCode,
-                   ProductionDate = this.MissionOperation.ItemProductionDate.ToString(),
-                   RequestedQuantity = this.MissionOperation.RequestedQuantity.ToString(),
-               },
-               trackCurrentView: true);
+            nameof(Utils.Modules.Operator),
+            Utils.Modules.Operator.ItemOperations.PUT_DETAILS,
+            new DrawerActivityItemDetail
+            {
+                ItemCode = this.MissionOperation.ItemCode,
+                ItemDescription = this.MissionOperation.ItemDescription,
+                ListCode = this.MissionOperation.ItemListCode,
+                ListDescription = this.MissionOperation.ItemListDescription,
+                ListRow = this.MissionOperation.ItemListRowCode,
+                Batch = this.MissionOperation.ItemListShipmentUnitCode,
+                ProductionDate = this.MissionOperation.ItemProductionDate.ToString(),
+                RequestedQuantity = this.MissionOperation.RequestedQuantity.ToString(),
+            },
+            trackCurrentView: true);
         }
 
         private bool CanPartiallyCompleteOnFullCompartmen()

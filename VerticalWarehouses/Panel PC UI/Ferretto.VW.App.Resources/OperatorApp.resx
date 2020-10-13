@@ -2148,7 +2148,7 @@ Please put back any moved pieces in their original position.</value>
     <value>Unit weight [g]</value>
   </data>
   <data name="BarcodeOperationConfirmed" xml:space="preserve">
-    <value>Operation confirmed by Barcode Reader</value>
+    <value>Operation confirmed by Barcode Reader: </value>
     <comment>Information</comment>
   </data>
   <data name="BarcodeMismatch" xml:space="preserve">

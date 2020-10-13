@@ -1756,7 +1756,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Peso unitario [g]</value>
   </data>
   <data name="BarcodeOperationConfirmed" xml:space="preserve">
-    <value>Operazione confermata tramite codice a barre.</value>
+    <value>Operazione confermata tramite codice a barre: </value>
   </data>
   <data name="BarcodeMismatch" xml:space="preserve">
     <value>Alcuni campi del codice a barre '{0}' non coincidono con quelli dell'articolo.</value>

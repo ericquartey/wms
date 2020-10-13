@@ -23,8 +23,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private bool isBoxEnabled;
-
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IEventAggregator eventAggregator;
@@ -66,6 +64,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private double? inputQuantity;
 
         private string inputSerialNumber;
+
+        private bool isBoxEnabled;
 
         private bool isBusyAbortingOperation;
 
@@ -140,12 +140,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public bool IsBoxEnabled
-        {
-            get => this.isBoxEnabled;
-            set => this.SetProperty(ref this.isBoxEnabled, value, this.RaiseCanExecuteChanged);
-        }
-
         public abstract string ActiveContextName { get; }
 
         public double? AvailableQuantity
@@ -203,7 +197,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync(),
+                async () => await this.ConfirmOperationAsync("0"),
                 this.CanConfirmOperation));
 
         public ICommand ConfirmPartialOperationCommand =>
@@ -273,6 +267,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public bool IsBaySideBack => this.bay?.Side == WarehouseSide.Back;
+
+        public bool IsBoxEnabled
+        {
+            get => this.isBoxEnabled;
+            set => this.SetProperty(ref this.isBoxEnabled, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsBusyAbortingOperation
         {
@@ -570,9 +570,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         else
                         {
                             //this.ShowNotification(Localized.Get("OperatorApp.BarcodeOperationValidated"), Services.Models.NotificationSeverity.Success);
-                            this.ShowNotification(Localized.Get("OperatorApp.BarcodeOperationConfirmed"), Services.Models.NotificationSeverity.Success);
+                            this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
 
-                            await this.ConfirmOperationAsync();
+                            await this.ConfirmOperationAsync(e.Code);
                         }
                     }
 
@@ -607,9 +607,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         {
                             if (this.InputQuantity.HasValue)
                             {
-                                this.ShowNotification(Localized.Get("OperatorApp.BarcodeOperationConfirmed"), Services.Models.NotificationSeverity.Success);
+                                this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
 
-                                await this.ConfirmOperationAsync();
+                                await this.ConfirmOperationAsync(e.Code);
                             }
                             else
                             {
@@ -622,7 +622,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public async Task ConfirmOperationAsync()
+        public async Task ConfirmOperationAsync(string barcode)
         {
             System.Diagnostics.Debug.Assert(
                 this.InputQuantity.HasValue,
@@ -636,7 +636,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
 
-                var canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                bool canComplete = false;
+
+                if (barcode != null && barcode.Length == 16)
+                {
+                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
                 if (canComplete)
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
@@ -766,7 +777,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-
             string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
 
             this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
