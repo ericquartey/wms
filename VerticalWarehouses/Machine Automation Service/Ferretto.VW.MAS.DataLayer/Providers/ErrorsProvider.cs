@@ -128,6 +128,28 @@ namespace Ferretto.VW.MAS.DataLayer
                 || error.Code == (int)MachineErrorCode.ElevatorUnderrunDetected);
         }
 
+        // removes resolved errors older than 30 days
+        public int PurgeErrors()
+        {
+            lock (this.dataContext)
+            {
+                var count = 0;
+                var errors = this.dataContext.Errors
+                    .Where(x => x.ResolutionDate.HasValue
+                        && DateTime.UtcNow.Subtract(x.ResolutionDate.Value).Days > 31
+                        )
+                    .ToList();
+                if (errors.Any())
+                {
+                    count = errors.Count;
+                    this.dataContext.Errors.RemoveRange(errors);
+                    this.dataContext.SaveChanges();
+                    this.logger.LogInformation($"Deleted {count} Errors.");
+                }
+                return count;
+            }
+        }
+
         /// <summary>
         /// Add a machine error to the db and notify the Automation Service about the error.
         /// </summary>
