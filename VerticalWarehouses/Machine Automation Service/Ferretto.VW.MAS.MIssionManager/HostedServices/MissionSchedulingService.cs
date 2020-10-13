@@ -1141,11 +1141,15 @@ namespace Ferretto.VW.MAS.MissionManager
             // at midnight it is time to do some housework
             if (DateTime.Now.Hour == 0)
             {
-                this.Logger.LogInformation($"OnTimePeriodElapsed: clean up missions and schedule homing");
+                this.Logger.LogInformation($"OnTimePeriodElapsed: clean up missions and errors and schedule homing");
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
                 // clean missions
                 missionsDataProvider.PurgeWmsMissions();
+
+                // clean errors
+                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                errorsProvider.PurgeErrors();
 
                 // elevator and bay chain homing every new day
                 this.machineVolatileDataProvider.IsHomingExecuted = false;
@@ -1279,6 +1283,6 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-#endregion
+        #endregion
     }
 }
