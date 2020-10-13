@@ -1812,4 +1812,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="BoxCode" xml:space="preserve">
     <value>Codice contenitore</value>
   </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Preleva contenitore</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Versa contenitore</value>
+  </data>
 </root>
