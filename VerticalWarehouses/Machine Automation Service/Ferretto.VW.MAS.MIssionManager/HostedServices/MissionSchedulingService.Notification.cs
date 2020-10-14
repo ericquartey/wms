@@ -51,7 +51,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     break;
 
                 case MessageType.MoveLoadingUnit when message.Status is MessageStatus.OperationEnd || message.Status is MessageStatus.OperationWaitResume:
-                    this.Logger.LogDebug($"||>> Message type={message.Type}, source={message.Source}, destination={message.Destination}, message status={message.Status}, description={message.Description}, ToString={message.ToString()}");
                     await this.OnLoadingUnitMovedAsync(message, serviceProvider);
                     break;
 

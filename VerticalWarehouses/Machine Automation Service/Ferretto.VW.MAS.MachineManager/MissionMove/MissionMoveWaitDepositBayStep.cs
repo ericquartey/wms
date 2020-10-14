@@ -61,13 +61,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var upperBayLocation = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
             if (upperBayLocation is LoadingUnitLocation.NoLocation)
             {
-                // Add code?
+                // TODO Add warning log
             }
             // lower location
             var lowerBayLocation = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
             if (lowerBayLocation is LoadingUnitLocation.NoLocation)
             {
-                // Add code?
+                // TODO Add warning log
             }
 
             // get the loading unit on the upper bay position

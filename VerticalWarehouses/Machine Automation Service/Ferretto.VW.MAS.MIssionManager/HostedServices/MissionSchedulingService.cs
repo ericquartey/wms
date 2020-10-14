@@ -1009,7 +1009,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         this.machineVolatileDataProvider.IsHomingExecuted = true;
                     }
-                    this.Logger.LogDebug("OnHoming");
+
                     await this.InvokeSchedulerAsync(serviceProvider);
                 }
                 else if (message.Status == MessageStatus.OperationError
@@ -1088,19 +1088,16 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogError($"Failed to process mission: {ex.Message}");
             }
 
-            this.Logger.LogDebug("OnLoadingUnitMovedAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
         private async Task OnMachineModeChangedAsync(IServiceProvider serviceProvider)
         {
-            this.Logger.LogDebug("OnMachineModeChangedAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
         private async Task OnNewMachineMissionAvailableAsync(IServiceProvider serviceProvider)
         {
-            this.Logger.LogDebug("OnNewMachineMissionAvailableAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
@@ -1108,7 +1105,6 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             if (this.dataLayerIsReady)
             {
-                this.Logger.LogDebug("OnOperationComplete");
                 await this.InvokeSchedulerAsync(serviceProvider);
             }
             else
@@ -1127,7 +1123,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     )
                 {
                     this.machineVolatileDataProvider.IsShutterHomingActive[message.TargetBay] = false;
-                    this.Logger.LogDebug("OnShutterPositioning");
                     await this.InvokeSchedulerAsync(serviceProvider);
                 }
                 else if (message.Status == MessageStatus.OperationError
