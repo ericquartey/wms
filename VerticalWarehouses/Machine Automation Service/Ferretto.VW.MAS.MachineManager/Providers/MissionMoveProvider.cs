@@ -30,14 +30,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         #endregion
 
         #region Constructors
 
         public MissionMoveProvider(
-                    IEventAggregator eventAggregator,
+            IEventAggregator eventAggregator,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
-            ILogger<MachineManagerService> logger
+            ILogger<MachineManagerService> logger,
+            IMachineVolatileDataProvider machineVolatileDataProvider
             )
         {
             if (eventAggregator is null)
@@ -47,6 +50,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             this.eventAggregator = eventAggregator;
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
         }
 
         #endregion
@@ -233,6 +237,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     {
                         baysDataProvider.ClearMission(mission.TargetBay);
                     }
+
                     if (waitMission.NeedHomingAxis != Axis.None
                         && (waitMission.Status == MissionStatus.Waiting
                             || waitMission.Status == MissionStatus.New
@@ -240,6 +245,13 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         )
                     {
                         mission.NeedHomingAxis = waitMission.NeedHomingAxis;
+
+                        // Update need homing axis parameter only if vertical & horizontal homing has been executed
+                        if (waitMission.NeedHomingAxis == Axis.HorizontalAndVertical &&
+                            this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay])
+                        {
+                            mission.NeedHomingAxis = Axis.None;
+                        }
                     }
 
                     if (waitMission.WmsId.HasValue)
@@ -274,12 +286,14 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public bool UpdateWaitingMissionToDoubleBay(IServiceProvider serviceProvider, IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission)
         {
+            this.Logger.LogDebug($"Check the waiting missions on double bay...");
+
             // Check the type of bay and apply the waiting routine only with double bay
             var bay = baysDataProvider.GetByNumber(mission.TargetBay);
             if (!bay.IsDouble)
             {
                 // No mission to check
-                this.Logger.LogDebug($"Bay is NOT double... No check waiting missions");
+                this.Logger.LogTrace($"Bay is NOT double... No check waiting missions");
                 return false;
             }
 
@@ -310,7 +324,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
 
             // No mission to deposit into bay, go ahead
-            this.Logger.LogDebug($"No missions are waiting. Go ahead....!!!");
+            this.Logger.LogDebug($"No missions are waiting in double bay. Go ahead...");
             return false;
         }
 

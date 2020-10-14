@@ -148,6 +148,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             // get the (target) bay
             var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
 
+            this.Mission.Status = MissionStatus.Executing;
+
             // No need to wait, go ahead with no worries
             var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             newStep.OnEnter(null);
