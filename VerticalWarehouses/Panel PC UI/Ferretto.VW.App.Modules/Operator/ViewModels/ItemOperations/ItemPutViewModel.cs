@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ItemPutViewModel : BaseItemOperationMainViewModel
+    public class ItemPutViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -23,6 +23,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand confirmPartialOperationCommand;
 
         private DelegateCommand fullOperationCommand;
+
+        private bool canPutBox;
+
+        private DelegateCommand putBoxCommand;
 
         #endregion
 
@@ -69,7 +73,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync(),
+                async () => await this.ConfirmOperationAsync("0"),
                 this.CanConfirmOperationPut));
 
         public bool ConfirmPartialOperation
@@ -82,7 +86,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmPartialOperationCommand
             ??
             (this.confirmPartialOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync(),
+                async () => await this.ConfirmOperationAsync("0"),
                 this.CanConfirmPartialOperationPut));
 
         public ICommand FullOperationCommand =>
@@ -92,9 +96,99 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.PartiallyCompleteOnFullCompartmentAsync(),
                 this.CanPartiallyCompleteOnFullCompartmen));
 
+        public bool CanPutBox
+        {
+            get => this.canPutBox;
+            set => this.SetProperty(ref this.canPutBox, value && this.IsBoxEnabled, this.RaiseCanExecuteChanged);
+        }
+
+        public ICommand PutBoxCommand =>
+            this.putBoxCommand
+            ??
+            (this.putBoxCommand = new DelegateCommand(
+                async () => await this.PutBoxAsync("0"),
+                this.CanPutBoxes));
+
         #endregion
 
         #region Methods
+
+        private bool CanPutBoxes()
+        {
+            try
+            {
+                return this.MissionOperation != null
+                        &&
+                        !this.IsWaitingForResponse
+                        &&
+                        !this.IsBusyAbortingOperation
+                        &&
+                        !this.IsBusyConfirmingOperation
+                        &&
+                        this.InputQuantity.HasValue
+                        &&
+                        this.CanInputQuantity
+                        &&
+                        this.InputQuantity.Value == this.MissionRequestedQuantity
+                        &&
+                        this.CanPutBox;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private async Task PutBoxAsync(string barcode)
+        {
+            System.Diagnostics.Debug.Assert(
+                this.InputQuantity.HasValue,
+                "The input quantity should have a value");
+
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                this.IsOperationConfirmed = true;
+
+                bool canComplete = false;
+
+                if (barcode != null && barcode.Length == 16)//16 => lunghezza matrice
+                {
+                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
+                if (canComplete)
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                }
+                else
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                    this.NavigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+                this.IsOperationConfirmed = false;
+            }
+            finally
+            {
+                // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
+            }
+        }
 
         public bool CanConfirmOperationPut()
         {
@@ -102,17 +196,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.confirmOperation = this.MissionOperation != null &&
                 this.InputQuantity.Value == this.MissionRequestedQuantity &&
-                !this.IsOperationCanceled;
+                !this.IsOperationCanceled
+                &&
+                !this.canPutBox;
 
                 this.confirmPartialOperation = this.MissionOperation != null &&
                     this.InputQuantity.Value != this.MissionRequestedQuantity &&
-                    !this.IsOperationCanceled;
+                    !this.IsOperationCanceled
+                    &&
+                !this.canPutBox;
 
                 this.RaisePropertyChanged(nameof(this.ConfirmOperation));
 
                 this.RaisePropertyChanged(nameof(this.ConfirmPartialOperation));
             }
-            catch(Exception)
+            catch (Exception)
             {
             }
 
@@ -143,16 +241,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                &&
                this.InputQuantity.HasValue
                &&
-               this.InputQuantity.Value > this.MissionRequestedQuantity;
+               this.InputQuantity.Value > this.MissionRequestedQuantity
+               &&
+               !this.canPutBox;
         }
 
-        public Task CommandUserActionAsync(UserActionEventArgs userAction)
+        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
-            // do nothing
-            return Task.CompletedTask;
+            if (userAction is null)
+            {
+                return;
+            }
+
+            if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await this.ConfirmOperationAsync(userAction.Code);
+                return;
+            }
+
+            if (this.CanPutBoxes() && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await this.PutBoxAsync(userAction.Code);
+                return;
+            }
         }
 
-        public async Task ConfirmOperationAsync()
+        public async Task ConfirmOperationAsync(string barcode)
         {
             System.Diagnostics.Debug.Assert(
                 this.InputQuantity.HasValue,
@@ -166,7 +280,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
 
-                var canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                bool canComplete = false;
+
+                if (barcode != null && barcode.Length == 16)//16 => lunghezza matrice
+                {
+                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
                 if (canComplete)
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
@@ -212,7 +337,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.MissionOperation != null)
             {
+                if (this.MissionOperation.ItemCode.Contains("CONTENITORE"))
+                {
+                    this.CanPutBox = true;
+                }
+                else
+                {
+                    this.CanPutBox = false;
+                }
+
                 this.MissionRequestedQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
+            }
+            else
+            {
+                this.CanPutBox = false;
             }
             this.InputQuantity = this.MissionRequestedQuantity;
         }
@@ -223,25 +361,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.fullOperationCommand.RaiseCanExecuteChanged();
             this.confirmOperationCommand.RaiseCanExecuteChanged();
             this.confirmPartialOperationCommand.RaiseCanExecuteChanged();
+            this.putBoxCommand.RaiseCanExecuteChanged();
         }
 
         protected override void ShowOperationDetails()
         {
             this.NavigationService.Appear(
-               nameof(Utils.Modules.Operator),
-               Utils.Modules.Operator.ItemOperations.PUT_DETAILS,
-               new DrawerActivityItemDetail
-               {
-                   ItemCode = this.MissionOperation.ItemCode,
-                   ItemDescription = this.MissionOperation.ItemDescription,
-                   ListCode = this.MissionOperation.ItemListCode,
-                   ListDescription = this.MissionOperation.ItemListDescription,
-                   ListRow = this.MissionOperation.ItemListRowCode,
-                   Batch = this.MissionOperation.ItemListShipmentUnitCode,
-                   ProductionDate = this.MissionOperation.ItemProductionDate.ToString(),
-                   RequestedQuantity = this.MissionOperation.RequestedQuantity.ToString(),
-               },
-               trackCurrentView: true);
+            nameof(Utils.Modules.Operator),
+            Utils.Modules.Operator.ItemOperations.PUT_DETAILS,
+            new DrawerActivityItemDetail
+            {
+                ItemCode = this.MissionOperation.ItemCode,
+                ItemDescription = this.MissionOperation.ItemDescription,
+                ListCode = this.MissionOperation.ItemListCode,
+                ListDescription = this.MissionOperation.ItemListDescription,
+                ListRow = this.MissionOperation.ItemListRowCode,
+                Batch = this.MissionOperation.ItemListShipmentUnitCode,
+                ProductionDate = this.MissionOperation.ItemProductionDate.ToString(),
+                RequestedQuantity = this.MissionOperation.RequestedQuantity.ToString(),
+            },
+            trackCurrentView: true);
         }
 
         private bool CanPartiallyCompleteOnFullCompartmen()
@@ -259,7 +398,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value >= 0
                 &&
-                this.InputQuantity.Value < this.MissionRequestedQuantity;
+                this.InputQuantity.Value < this.MissionRequestedQuantity
+                &&
+                !this.canPutBox;
         }
 
         private async Task PartiallyCompleteOnFullCompartmentAsync()

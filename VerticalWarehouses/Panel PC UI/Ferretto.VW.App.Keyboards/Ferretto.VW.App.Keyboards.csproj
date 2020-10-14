@@ -7,10 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\cz-lowercase.json" />
+    <None Remove="Resources\cz-numeric.json" />
+    <None Remove="Resources\cz-numpad.json" />
+    <None Remove="Resources\cz-uppercase.json" />
+    <None Remove="Resources\de-lowercase.json" />
+    <None Remove="Resources\de-numeric.json" />
+    <None Remove="Resources\de-numpad.json" />
+    <None Remove="Resources\de-uppercase.json" />
     <None Remove="Resources\en-lowercase.json" />
     <None Remove="Resources\en-numeric.json" />
     <None Remove="Resources\en-numpad.json" />
     <None Remove="Resources\en-uppercase.json" />
+    <None Remove="Resources\es-lowercase.json" />
+    <None Remove="Resources\es-numeric.json" />
+    <None Remove="Resources\es-numpad.json" />
+    <None Remove="Resources\es-uppercase.json" />
     <None Remove="Resources\hr-lowercase.json" />
     <None Remove="Resources\hr-numeric.json" />
     <None Remove="Resources\hr-numpad.json" />
@@ -22,12 +34,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\de-lowercase.json" />
+    <Resource Include="Resources\de-numeric.json" />
+    <Resource Include="Resources\de-numpad.json" />
+    <Resource Include="Resources\de-uppercase.json" />
+    <Resource Include="Resources\es-lowercase.json" />
     <Resource Include="Resources\en-lowercase.json" />
+    <Resource Include="Resources\es-numeric.json" />
     <Resource Include="Resources\en-numeric.json" />
+    <Resource Include="Resources\es-numpad.json" />
     <Resource Include="Resources\en-numpad.json" />
+    <Resource Include="Resources\cz-lowercase.json" />
+    <Resource Include="Resources\es-uppercase.json" />
     <Resource Include="Resources\hr-lowercase.json" />
+    <Resource Include="Resources\cz-numeric.json" />
     <Resource Include="Resources\hr-numeric.json" />
+    <Resource Include="Resources\cz-numpad.json" />
     <Resource Include="Resources\hr-numpad.json" />
+    <Resource Include="Resources\cz-uppercase.json" />
     <Resource Include="Resources\hr-uppercase.json" />
     <Resource Include="Resources\it-numpad.json" />
     <Resource Include="Resources\it-numeric.json" />

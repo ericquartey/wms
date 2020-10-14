@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
-    public interface ISocketLinkAlphaNumericBarData : IMessageData
+    public interface ISocketLinkAlphaNumericBarChangeMessageData : IMessageData
     {
         #region Properties
 
