@@ -1818,4 +1818,16 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="PutBox" xml:space="preserve">
     <value>Versa contenitore</value>
   </data>
+  <data name="Box" xml:space="preserve">
+    <value>Contenitore</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Inserisci contenitore</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Rimuovi contenitore</value>
+  </data>
+  <data name="Command" xml:space="preserve">
+    <value>Comando</value>
+  </data>
 </root>

@@ -188,7 +188,7 @@
                      VerticalAlignment="Center"
                      FontSize="{StaticResource FontSize_Very_High}"
                      Foreground="{DynamicResource PpcForeground}"
-                     Text="{Binding SelectedItem.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
+                     Text="{Binding SelectedCompartment.Barcode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
                      TextWrapping="Wrap" />
         </Grid>
       </Border>
