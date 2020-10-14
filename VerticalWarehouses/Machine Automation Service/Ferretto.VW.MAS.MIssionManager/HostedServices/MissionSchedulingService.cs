@@ -644,6 +644,36 @@ namespace Ferretto.VW.MAS.MissionManager
                     this.Logger.LogDebug($"GenerateHoming: bay {bayNumber}");
                     generated = true;
                 }
+
+                //var bayNumber = bays.FirstOrDefault(x =>
+                //    this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
+                //        && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
+                //        && x.Carousel != null
+                //        && x.CurrentMission == null
+                //        && x.Positions.All(p => p.LoadingUnit == null)
+                //        && !x.IsDouble)?.Number ?? BayNumber.None;
+
+                //if (bayNumber != BayNumber.None
+                //    && !sensorsProvider.IsDrawerInBayBottom(bayNumber))
+                //{
+                //    IHomingMessageData homingData = new HomingMessageData(Axis.BayChain,
+                //        Calibration.FindSensor,
+                //        loadingUnitId: null,
+                //        showErrors: true);
+
+                //    this.EventAggregator
+                //        .GetEvent<CommandEvent>()
+                //        .Publish(
+                //            new CommandMessage(
+                //                homingData,
+                //                "Execute Homing Command",
+                //                MessageActor.DeviceManager,
+                //                MessageActor.MissionManager,
+                //                MessageType.Homing,
+                //                bayNumber));
+                //    this.Logger.LogDebug($"GenerateHoming: bay {bayNumber}");
+                //    generated = true;
+                //}
             }
 
             if (!generated && !this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay])
@@ -1289,6 +1319,6 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-#endregion
+        #endregion
     }
 }
