@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -11,7 +12,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class LoadingUnitViewModel : BaseLoadingUnitViewModel, IOperationReasonsSelector
+    public class LoadingUnitViewModel : BaseLoadingUnitViewModel, IOperationReasonsSelector, IOperationalContextViewModel
     {
         #region Fields
 
@@ -37,11 +38,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand confirmReasonCommand;
 
+        private string inputBoxCode;
+
         private double? inputQuantity;
 
         private string inputQuantityInfo;
 
+        private DelegateCommand insertOperationCommand;
+
         private bool isAdjustmentVisible;
+
+        private bool isBoxOperationVisible;
 
         private bool isOperationVisible;
 
@@ -64,6 +71,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private IEnumerable<OperationReason> reasons;
 
         private DelegateCommand recallLoadingUnitCommand;
+
+        private DelegateCommand removeOperationCommand;
 
         private double? unitHeight;
 
@@ -102,6 +111,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
+        public string ActiveContextName => OperationalContext.ItemInventory.ToString();
+
         public ICommand CancelReasonCommand =>
       this.cancelReasonCommand
       ??
@@ -127,6 +138,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
               async () => await this.ExecuteOperationAsync(),
               this.CanExecuteItemPick));
 
+        public string InputBoxCode
+        {
+            get => this.inputBoxCode;
+            set => this.SetProperty(ref this.inputBoxCode, value);
+        }
+
         public double? InputQuantity
         {
             get => this.inputQuantity;
@@ -139,6 +156,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.inputQuantityInfo, value);
         }
 
+        public ICommand InsertOperationCommand =>
+            this.insertOperationCommand
+            ??
+            (this.insertOperationCommand = new DelegateCommand(
+                async () => await this.BoxOperationAsync(), this.CanInsertOperation));
+
         public bool IsAdjustmentVisible
         {
             get => this.isAdjustmentVisible;
@@ -148,6 +171,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.IsPickVisible = false;
                     this.IsPutVisible = false;
+                    this.IsBoxOperationVisible = false;
+                }
+            }
+        }
+
+        public bool IsBoxOperationVisible
+        {
+            get => this.isBoxOperationVisible;
+            set
+            {
+                if (this.SetProperty(ref this.isBoxOperationVisible, value && this.IsBoxEnabled) && value)
+                {
+                    this.IsPickVisible = false;
+                    this.IsPutVisible = false;
+                    this.IsAdjustmentVisible = false;
                 }
             }
         }
@@ -169,6 +207,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.IsPutVisible = false;
                     this.IsAdjustmentVisible = false;
+                    this.IsBoxOperationVisible = false;
                 }
             }
         }
@@ -182,6 +221,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.IsPickVisible = false;
                     this.IsAdjustmentVisible = false;
+                    this.IsBoxOperationVisible = false;
                 }
             }
         }
@@ -240,6 +280,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.recallLoadingUnitCommand = new DelegateCommand(
                 async () => await this.RecallLoadingUnitAsync(),
                 this.CanRecallLoadingUnit));
+
+        public ICommand RemoveOperationCommand =>
+            this.removeOperationCommand
+            ??
+            (this.removeOperationCommand = new DelegateCommand(
+                async () => await this.BoxOperationAsync(), this.CanRemoveOperation));
 
         public double? UnitHeight
         {
@@ -310,6 +356,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             return this.Reasons?.Any() == true;
+        }
+
+        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        {
+            if (userAction is null)
+            {
+                return;
+            }
+
+            if (this.IsBoxOperationVisible && userAction.UserAction == UserAction.VerifyItem)
+            {
+                this.InputBoxCode = userAction.Code;
+                return;
+            }
         }
 
         public async Task GetLoadingUnitsAsync()
@@ -384,9 +444,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 do
                 {
-                        await Task.Delay(500);
-                        await this.GetLoadingUnitsAsync();
-                    }
+                    await Task.Delay(500);
+                    await this.GetLoadingUnitsAsync();
+                }
                 while (this.IsVisible);
             });
         }
@@ -453,6 +513,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void OnSelectedCompartmentChanged()
         {
             this.HideOperation();
+            this.InputBoxCode = "";
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -463,6 +524,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
             this.confirmReasonCommand?.RaiseCanExecuteChanged();
+            this.insertOperationCommand?.RaiseCanExecuteChanged();
+            this.removeOperationCommand?.RaiseCanExecuteChanged();
+        }
+
+        private async Task BoxOperationAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+                if (this.CanInsertOperation())
+                {
+                    if (this.InputBoxCode.Contains("VM"))
+                    {
+                        await this.ExecuteOperationAsync(this.InputBoxCode, 1);
+                    }
+                    else
+                    {
+                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeNotRecognized"), this.InputBoxCode), Services.Models.NotificationSeverity.Warning);
+                    }
+                }
+                else if (this.CanRemoveOperation())
+                {
+                    await this.ExecuteOperationAsync(this.SelectedCompartment.Barcode, 2);
+                }
         }
 
         private void CancelReason()
@@ -503,6 +587,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return !(this.reasonId is null);
         }
 
+        private bool CanInsertOperation()
+        {
+            return
+                this.SelectedCompartment != null
+                &&
+                this.IsWmsEnabledAndHealthy
+                &&
+                string.IsNullOrEmpty(this.SelectedCompartment.Barcode)
+                &&
+                !this.IsBusyConfirmingRecallOperation
+                &&
+                !this.IsBusyConfirmingOperation;
+        }
+
         private bool CanRecallLoadingUnit()
         {
             return
@@ -511,6 +609,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsBusyConfirmingRecallOperation
                 &&
                 !(this.LoadingUnit is null);
+        }
+
+        private bool CanRemoveOperation()
+        {
+            return
+                this.SelectedCompartment != null
+                &&
+                this.IsWmsEnabledAndHealthy
+                &&
+                !string.IsNullOrEmpty(this.SelectedCompartment.Barcode)
+                &&
+                !this.IsBusyConfirmingRecallOperation
+                &&
+                !this.IsBusyConfirmingOperation;
         }
 
         private bool CheckUDC()
@@ -552,7 +664,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task ExecuteOperationAsync()
+        private async Task ExecuteOperationAsync(string barcode = null, int operation = 0)
         {
             try
             {
@@ -586,6 +698,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputQuantity.Value,
                         this.reasonId,
                         this.reasonNotes);
+
+                    await this.OnDataRefreshAsync();
+                    this.IsBusyConfirmingOperation = false;
+                }
+                else if (this.IsBoxOperationVisible)
+                {
+                    await this.compartmentsWebService.BoxToCompartmentAsync(
+                        this.SelectedCompartment.Id,
+                        barcode,
+                        operation);
 
                     await this.OnDataRefreshAsync();
                     this.IsBusyConfirmingOperation = false;
@@ -641,6 +763,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsAdjustmentVisible = false;
             this.IsPickVisible = false;
             this.IsPutVisible = false;
+            this.IsBoxOperationVisible = false;
 
             this.IsOperationVisible = false;
         }
@@ -677,6 +800,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsAdjustmentVisible = !this.IsAdjustmentVisible;
                     this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.AdjustmentQuantity"), this.MeasureUnit);
                 }
+                else if (operationType == OperatorApp.Box)
+                {
+                    this.InputQuantity = this.SelectedItemCompartment.Stock;
+                    this.IsBoxOperationVisible = !this.IsBoxOperationVisible;
+                    this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.Box"), this.MeasureUnit);
+                }
                 else
                 {
                     this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), operationType));
@@ -688,7 +817,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     ||
                     this.IsPutVisible
                     ||
-                    this.IsAdjustmentVisible;
+                    this.IsAdjustmentVisible
+                    ||
+                    this.IsBoxOperationVisible;
 
                 this.CanInputQuantity = this.IsOperationVisible;
 

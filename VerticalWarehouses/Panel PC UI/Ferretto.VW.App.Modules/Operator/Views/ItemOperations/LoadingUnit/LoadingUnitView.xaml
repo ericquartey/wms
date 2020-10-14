@@ -151,9 +151,9 @@
                            Margin="4,0,4,4"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           FontSize="{StaticResource FontSize_Very_High}"
+                           FontSize="{StaticResource FontSize_High}"
                            Foreground="{DynamicResource PpcForeground}"
-                           Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                           Text="{Binding SelectedCompartment.Barcode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                            TextWrapping="Wrap" />
               </Grid>
             </Border>
@@ -237,6 +237,17 @@
 
             </Grid>
           </Border>
+
+          <controls:PpcButton Margin="15,0,15,15"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Top"
+                              BorderBrush="{StaticResource FerrettoBlue}"
+                              Command="{Binding OperationCommand}"
+                              CommandParameter="{res:Loc OperatorApp.Box}"
+                              Content="{x:Static res:OperatorApp.Box}"
+                              IsActive="{Binding IsBoxOperationVisible}"
+                              Style="{DynamicResource PpcButtonMarkStyle}"
+                              Visibility="{Binding IsBoxEnabled, Converter={StaticResource BTVC}}" />
 
           <controls:PpcButton Margin="15,0,15,0"
                               HorizontalAlignment="Right"

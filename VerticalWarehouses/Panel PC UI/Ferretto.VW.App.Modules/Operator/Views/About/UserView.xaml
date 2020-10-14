@@ -50,17 +50,20 @@
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Orientation="Horizontal">
-        <TextBlock Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+        <TextBlock FontSize="{StaticResource FontSize_High}"
+                   Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                    Text="Operator" />
 
-        <ComboBox Margin="25,0"
+        <ComboBox Width="125"
+                  Height="50"
+                  Margin="25,0"
                   FontFamily="{DynamicResource VWAPP_TitleFont}"
-                  FontSize="22"
+                  FontSize="{StaticResource FontSize_Very_High}"
                   FontWeight="Bold"
                   IsEditable="False"
                   IsEnabled="{Binding OperatorEnabled}"
                   ItemsSource="{Binding LanguageList}"
-                  MaxDropDownHeight="100"
+                  MaxDropDownHeight="80"
                   SelectedItem="{Binding OperatorLanguage}"
                   Style="{DynamicResource PpcComboBoxStyle}" />
       </StackPanel>
@@ -70,17 +73,20 @@
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Orientation="Horizontal">
-        <TextBlock Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+        <TextBlock FontSize="{StaticResource FontSize_High}"
+                   Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                    Text="Installer" />
 
-        <ComboBox Margin="25,0"
+        <ComboBox Width="125"
+                  Height="50"
+                  Margin="25,0"
                   FontFamily="{DynamicResource VWAPP_TitleFont}"
-                  FontSize="22"
+                  FontSize="{StaticResource FontSize_Very_High}"
                   FontWeight="Bold"
                   IsEditable="False"
                   IsEnabled="{Binding InstallerEnabled}"
                   ItemsSource="{Binding LanguageList}"
-                  MaxDropDownHeight="100"
+                  MaxDropDownHeight="80"
                   SelectedItem="{Binding InstallerLanguage}"
                   Style="{DynamicResource PpcComboBoxStyle}" />
       </StackPanel>
@@ -90,17 +96,20 @@
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Orientation="Horizontal">
-        <TextBlock Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+        <TextBlock FontSize="{StaticResource FontSize_High}"
+                   Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                    Text="Service" />
 
-        <ComboBox Margin="25,0"
+        <ComboBox Width="125"
+                  Height="50"
+                  Margin="25,0"
                   FontFamily="{DynamicResource VWAPP_TitleFont}"
-                  FontSize="22"
+                  FontSize="{StaticResource FontSize_Very_High}"
                   FontWeight="Bold"
                   IsEditable="False"
                   IsEnabled="{Binding ServiceEnabled}"
                   ItemsSource="{Binding LanguageList}"
-                  MaxDropDownHeight="100"
+                  MaxDropDownHeight="80"
                   SelectedItem="{Binding ServiceLanguage}"
                   Style="{DynamicResource PpcComboBoxStyle}" />
       </StackPanel>
@@ -110,17 +119,20 @@
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Orientation="Horizontal">
-        <TextBlock Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+        <TextBlock FontSize="{StaticResource FontSize_High}"
+                   Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                    Text="Admin" />
 
-        <ComboBox Margin="25,0"
+        <ComboBox Width="125"
+                  Height="50"
+                  Margin="25,0"
                   FontFamily="{DynamicResource VWAPP_TitleFont}"
-                  FontSize="22"
+                  FontSize="{StaticResource FontSize_Very_High}"
                   FontWeight="Bold"
                   IsEditable="False"
                   IsEnabled="{Binding AdminEnabled}"
                   ItemsSource="{Binding LanguageList}"
-                  MaxDropDownHeight="100"
+                  MaxDropDownHeight="80"
                   SelectedItem="{Binding AdminLanguage}"
                   Style="{DynamicResource PpcComboBoxStyle}" />
       </StackPanel>

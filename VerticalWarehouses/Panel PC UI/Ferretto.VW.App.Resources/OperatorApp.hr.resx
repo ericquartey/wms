@@ -1801,4 +1801,16 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
     <value>Ažurirana težina jedinice</value>
   </data>
+  <data name="Box" xml:space="preserve">
+    <value>Kontejner</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Umetnite posudu</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Izvadite posudu</value>
+  </data>
+  <data name="Command" xml:space="preserve">
+    <value>Naredba</value>
+  </data>
 </root>

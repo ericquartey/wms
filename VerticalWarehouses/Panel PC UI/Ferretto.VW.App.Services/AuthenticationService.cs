@@ -50,13 +50,17 @@ namespace Ferretto.VW.App.Services
             return await this.usersService.GetSupportTokenAsync();
         }
 
-        public async Task<UserClaims> LogInAsync(string userName, string password, string supportToken)
+        public async Task<UserClaims> LogInAsync(string userName, string password, string supportToken, UserAccessLevel accessLevel)
         {
             var userClaims = string.IsNullOrEmpty(supportToken)
                 ? await this.usersService.AuthenticateWithResourceOwnerPasswordAsync(userName, password)
                 : await this.usersService.AuthenticateWithSupportTokenAsync(userName, password, supportToken);
 
             this.UserName = userClaims.Name;
+            if (accessLevel != UserAccessLevel.NoAccess)
+            {
+                userClaims.AccessLevel = accessLevel;
+            }
             this.AccessLevel = userClaims.AccessLevel;
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, this.AccessLevel));
 

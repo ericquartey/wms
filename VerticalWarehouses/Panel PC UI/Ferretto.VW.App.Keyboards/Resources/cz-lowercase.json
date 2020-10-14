@@ -226,14 +226,14 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u0161"
+              "CommandText": "\u00FA"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "\u0111"
+              "CommandText": "\u00D7"
             }
           }
         }
@@ -309,21 +309,21 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u010D"
+              "CommandText": "\u016F"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "\u0107"
+              "CommandText": "\u00A7"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "\u017E"
+              "CommandText": "\u00DF"
             }
           }
         }
@@ -417,22 +417,6 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "-"
-            }
-          },
-          "Width": "Auto"
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "_"
-            }
-          },
-          "Width": "Auto"
-        },
-        {
-          "Key": {
-            "Command": {
               "CommandText": "<"
             }
           },
@@ -442,6 +426,22 @@
           "Key": {
             "Command": {
               "CommandText": ">"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "*"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "?"
             }
           },
           "Width": "Auto"
