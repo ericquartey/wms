@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int? currentLoadingUnitId;
 
+        private bool isBoxEnabled;
+
         private bool isBusyConfirmingOperation;
 
         private bool isBusyConfirmingRecallOperation;
@@ -41,8 +43,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isListModeEnabled;
 
         private bool isNewOperationAvailable;
-
-        private bool isBoxEnabled;
 
         private DelegateCommand itemCompartmentDownCommand;
 
@@ -116,16 +116,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool IsBaySideBack => this.MachineService.Bay.Side is WarehouseSide.Back;
 
-        public bool IsBusyConfirmingOperation
-        {
-            get => this.isBusyConfirmingOperation;
-            set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
-        }
-
         public bool IsBoxEnabled
         {
             get => this.isBoxEnabled;
             set => this.SetProperty(ref this.isBoxEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBusyConfirmingOperation
+        {
+            get => this.isBusyConfirmingOperation;
+            set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsBusyConfirmingRecallOperation
