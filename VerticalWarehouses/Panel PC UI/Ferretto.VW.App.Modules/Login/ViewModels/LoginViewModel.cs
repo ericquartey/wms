@@ -499,9 +499,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     var claims = await this.authenticationService.LogInAsync(
                        this.UserLogin.UserName,
                        this.UserLogin.Password,
-                       this.UserLogin.SupportToken);
+                       this.UserLogin.SupportToken,
+                       UserAccessLevel.Operator);
 
                     //await this.NavigateToMainMenuAsync(claimWms);
+
+                    ScaffolderUserAccesLevel.User = claims.AccessLevel;
 
                     await this.NavigateToMainMenuAsync(claims);
                 }
