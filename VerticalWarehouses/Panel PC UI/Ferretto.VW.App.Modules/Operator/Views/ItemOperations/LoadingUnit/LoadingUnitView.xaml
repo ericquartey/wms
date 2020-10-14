@@ -151,7 +151,7 @@
                            Margin="4,0,4,4"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           FontSize="{StaticResource FontSize_Very_High}"
+                           FontSize="{StaticResource FontSize_High}"
                            Foreground="{DynamicResource PpcForeground}"
                            Text="{Binding SelectedCompartment.Barcode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                            TextWrapping="Wrap" />
