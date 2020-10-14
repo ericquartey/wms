@@ -43,6 +43,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPut("{id}/compartment/{barcode}/box")]
+        public async Task<IActionResult> BoxToCompartmentAsync(int id, string barcode, int command)
+        {
+            await this.compartmentsWmsWebService.BoxToCompartmentAsync(id, barcode, command);
+
+            await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
+
+            return this.Ok();
+        }
+
         #endregion
     }
 }

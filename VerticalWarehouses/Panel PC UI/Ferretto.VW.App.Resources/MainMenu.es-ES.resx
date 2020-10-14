@@ -120,4 +120,7 @@
   <data name="InstallationAbbreviation" xml:space="preserve">
     <value>INST</value>
   </data>
+  <data name="AboutAbbreviation" xml:space="preserve">
+    <value>INFO</value>
+  </data>
 </root>

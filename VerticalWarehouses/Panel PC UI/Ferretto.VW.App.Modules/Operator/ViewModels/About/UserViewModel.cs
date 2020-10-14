@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string installerLanguage;
 
-        private ObservableCollection<string> languageList = new ObservableCollection<string> { "ITA", "EN"/*, "DE", "ES", "FR", "PL", "RU", "SK", "SI"*/, "HR" };
+        private List<string> languageList = new List<string> { "ITA", "EN", "CZ", "DE", "ES" /*, "FR", "PL", "RU", "SK", "SI"*/, "HR" };
 
         private bool operatorEnabled;
 
@@ -45,6 +46,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+
+            this.languageList.Sort();
 
             this.GetLanguageFromFile();
         }
@@ -93,7 +96,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public ObservableCollection<string> LanguageList
+        public List<string> LanguageList
         {
             get => this.languageList;
             set => this.SetProperty(ref this.languageList, value, this.RaiseCanExecuteChanged);
@@ -153,11 +156,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case "EN":
                     return "en-EN";
 
-                //case "DE":
-                //    return "de-DE";
+                case "DE":
+                    return "de-DE";
 
-                //case "ES":
-                //    return "es-ES";
+                case "ES":
+                    return "es-ES";
 
                 //case "FR":
                 //    return "fr-FR";
@@ -177,6 +180,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case "HR":
                     return "hr-HR";
 
+                case "CZ":
+                    return "cz-CZ";
+
                 default:
                     return "en-EN";
             }
@@ -192,11 +198,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case "en-EN":
                     return "EN";
 
-                //case "de-DE":
-                //    return "DE";
+                case "de-DE":
+                    return "DE";
 
-                //case "es-ES":
-                //    return "ES";
+                case "es-ES":
+                    return "ES";
 
                 //case "fr-FR":
                 //    return "FR";
@@ -215,6 +221,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 case "hr-HR":
                     return "HR";
+
+                case "cs-CZ":
+                    return "CZ";
 
                 default:
                     return "EN";

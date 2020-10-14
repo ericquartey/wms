@@ -6,6 +6,8 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
+        public string Barcode { get; set; }
+
         public double? Depth { get; set; }
 
         public int Id { get; set; }

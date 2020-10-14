@@ -2148,7 +2148,7 @@ Please put back any moved pieces in their original position.</value>
     <value>Unit weight [g]</value>
   </data>
   <data name="BarcodeOperationConfirmed" xml:space="preserve">
-    <value>Operation confirmed by Barcode Reader</value>
+    <value>Operation confirmed by Barcode Reader: </value>
     <comment>Information</comment>
   </data>
   <data name="BarcodeMismatch" xml:space="preserve">
@@ -2204,5 +2204,23 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="BoxCode" xml:space="preserve">
     <value>Box code</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Pick box</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Put box</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Box</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Insert box</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Remove box</value>
+  </data>
+  <data name="Command" xml:space="preserve">
+    <value>Command</value>
   </data>
 </root>

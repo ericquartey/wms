@@ -311,6 +311,16 @@
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding CanConfirm, Converter={StaticResource BTVC}}" />
 
+      <controls:PpcButton Grid.Row="5"
+                          Margin="15,8,15,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding PickBoxCommand}"
+                          Content="{resources:Loc OperatorApp.PickBox}"
+                          IsBusy="{Binding IsBusyConfirmingOperation}"
+                          Style="{StaticResource ConfirmButton}"
+                          Visibility="{Binding CanPickBox, Converter={StaticResource BTVC}}" />
+
       <StackPanel Grid.Row="5"
                   Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
         <TextBlock Grid.Row="5"

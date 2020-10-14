@@ -250,7 +250,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation confirmed by Barcode Reader.
+        ///   Looks up a localized string similar to Operation confirmed by Barcode Reader: .
         /// </summary>
         public static string BarcodeOperationConfirmed {
             get {
@@ -444,6 +444,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BlockLevelUnderWeight {
             get {
                 return ResourceManager.GetString("BlockLevelUnderWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Box.
+        /// </summary>
+        public static string Box {
+            get {
+                return ResourceManager.GetString("Box", resourceCulture);
             }
         }
         
@@ -678,6 +687,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Code {
             get {
                 return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command.
+        /// </summary>
+        public static string Command {
+            get {
+                return ResourceManager.GetString("Command", resourceCulture);
             }
         }
         
@@ -2254,6 +2272,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ImmediateDrawerCallRequiredDrawer {
             get {
                 return ResourceManager.GetString("ImmediateDrawerCallRequiredDrawer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert box.
+        /// </summary>
+        public static string InsertBox {
+            get {
+                return ResourceManager.GetString("InsertBox", resourceCulture);
             }
         }
         
@@ -4112,6 +4139,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick box.
+        /// </summary>
+        public static string PickBox {
+            get {
+                return ResourceManager.GetString("PickBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Picked quantity [{0}].
         /// </summary>
         public static string PickedQuantity {
@@ -4202,6 +4238,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Put box.
+        /// </summary>
+        public static string PutBox {
+            get {
+                return ResourceManager.GetString("PutBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Put quantity [{0}].
         /// </summary>
         public static string PutQuantity {
@@ -4261,6 +4306,15 @@ namespace Ferretto.VW.App.Resources {
         public static string RemoveAnySpilledItemsFromCompartment {
             get {
                 return ResourceManager.GetString("RemoveAnySpilledItemsFromCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove box.
+        /// </summary>
+        public static string RemoveBox {
+            get {
+                return ResourceManager.GetString("RemoveBox", resourceCulture);
             }
         }
         

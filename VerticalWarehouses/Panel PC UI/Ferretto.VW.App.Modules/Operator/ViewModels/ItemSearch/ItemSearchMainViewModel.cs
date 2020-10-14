@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineIdentityWebService identityService;
 
+        private readonly IMachineItemsWebService itemsWebService;
+
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly IWmsDataProvider wmsDataProvider;
@@ -118,6 +120,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineIdentityWebService identityService,
             IBayManager bayManager,
             IMachineAreasWebService areasWebService,
+            IMachineItemsWebService itemsWebService,
             IMachineMissionOperationsWebService missionOperationsWebService,
             IBarcodeReaderService barcodeReaderService)
             : base(PresentationMode.Operator)
@@ -125,6 +128,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
@@ -1068,7 +1072,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
+                    try
+                    {
+                        var item = await this.itemsWebService.GetByBarcodeAsync(itemCode);
+                        if (item is null)
+                        {
+                            this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
+                        }
+                        else
+                        {
+                            this.SearchItem = item.Code;
+                            this.items.Add(new ItemInfo(item, this.bayManager.Identity.Id));
+
+                            this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
+                    }
                 }
             }
             catch (Exception ex)
