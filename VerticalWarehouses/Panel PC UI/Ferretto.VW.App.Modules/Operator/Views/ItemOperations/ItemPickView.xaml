@@ -318,6 +318,7 @@
                           Command="{Binding PickBoxCommand}"
                           Content="{resources:Loc OperatorApp.PickBox}"
                           IsBusy="{Binding IsBusyConfirmingOperation}"
+                          IsEnabled="False"
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding CanPickBox, Converter={StaticResource BTVC}}" />
 

@@ -177,7 +177,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             //this.barcodeReaderService.SimulateRead("\\$RIENTROUDC\r");
             //this.barcodeReaderService.SimulateRead("000prova1\r");
-            //this.barcodeReaderService.SimulateRead("VMC1000001000001\r");
+            //this.barcodeReaderService.SimulateRead("VMC1000001\r");
             this.NavigationService.Appear(
                     nameof(Utils.Modules.Menu),
                     Utils.Modules.Menu.MAIN_MENU,
