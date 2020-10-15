@@ -130,10 +130,10 @@ namespace Ferretto.VW.Devices.LaserPointer
         /// <returns></returns>
         public async Task<bool> EnabledAsync(bool enable, bool onMovement)
         {
-            if (enable == this.laserEnabled)
-            {
-                return true;
-            }
+            //if (enable == this.laserEnabled)
+            //{
+            //    return true;
+            //}
 
             if (enable)
             {
