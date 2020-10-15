@@ -303,6 +303,7 @@
                           Command="{Binding PutBoxCommand}"
                           Content="{resources:Loc OperatorApp.PutBox}"
                           IsBusy="{Binding IsBusyConfirmingOperation}"
+                          IsEnabled="False"
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding CanPutBox, Converter={StaticResource BTVC}}" />
 

@@ -10,65 +10,75 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <Grid>
-        <Grid Name="TrayControlGrid"
-              Grid.Row="0"
-              Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}">
+  <Grid>
+    <Grid Name="TrayControlGrid"
+          Grid.Row="0"
+          Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="190" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="190" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
 
-            <WmsControls:TrayControl Name="TrayControl"
-                                     Grid.Row="0"
-                                     Grid.ColumnSpan="2"
-                                     Margin="0"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     Compartments="{Binding Compartments}"
-                                     DefaultCompartmentColor="#444444"
-                                     DimensionHeight="{Binding LoadingUnitDepth}"
-                                     DimensionWidth="{Binding LoadingUnitWidth}"
-                                     GridLinesColor="#3c3c3c"
-                                     IsEnabled="{Binding IsWaitingForNewOperation, Converter={StaticResource BNC}}"
-                                     IsRotated="{Binding IsBaySideBack}"
-                                     SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
-                                     SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
-                                     ShowBackground="False"
-                                     ShowRuler="False" />
+      <WmsControls:TrayControl Name="TrayControl"
+                               Grid.Row="0"
+                               Grid.ColumnSpan="2"
+                               Margin="0"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Stretch"
+                               Compartments="{Binding Compartments}"
+                               DefaultCompartmentColor="#444444"
+                               DimensionHeight="{Binding LoadingUnitDepth}"
+                               DimensionWidth="{Binding LoadingUnitWidth}"
+                               GridLinesColor="#3c3c3c"
+                               IsEnabled="{Binding IsWaitingForNewOperation, Converter={StaticResource BNC}}"
+                               IsRotated="{Binding IsBaySideBack}"
+                               SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
+                               SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
+                               ShowBackground="False"
+                               ShowRuler="False" />
 
-            <Grid Grid.Row="1"
-                  Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVC}}">
+      <Grid Grid.Row="1"
+            Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVC}}">
 
-                <TextBlock Grid.Row="1"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{res:Loc OperatorApp.NoItemOnSelectedCompartment}"
-                           Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVIC}}" />
+        <TextBlock Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc OperatorApp.NoItemOnSelectedCompartment}"
+                   Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVIC}}" />
 
-                <Grid Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVC}}">
-                    <Grid Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVIC}}">
-                        <views:ItemsDataGridView Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}" />
-                    </Grid>
-
-                    <views:LoadingUnitOperationsView Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}" />
-                </Grid>
+        <Grid Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVC}}">
+          <Grid Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVC}}">
+            <Grid Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVIC}}">
+              <views:ItemsDataGridView Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}" />
             </Grid>
+          </Grid>
 
-            <TextBlock Grid.Row="1"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc OperatorApp.SelectCompartment}"
-                       Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVIC}}" />
-        </Grid>
+          <TextBlock Grid.Row="1"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{res:Loc OperatorApp.NoItemOnSelectedCompartment}"
+                     Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVIC}}" />
 
-        <Grid Name="ListGrid"
-              Grid.Row="0"
-              Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVC}}">
-            <views:ItemsCompartmentsDataGridView />
+          <views:LoadingUnitOperationsView Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}" />
+
         </Grid>
+      </Grid>
+
+      <TextBlock Grid.Row="1"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc OperatorApp.SelectCompartment}"
+                 Visibility="{Binding SelectedCompartment, Converter={StaticResource RTVIC}}" />
     </Grid>
+
+    <Grid Name="ListGrid"
+          Grid.Row="0"
+          Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVC}}">
+      <views:ItemsCompartmentsDataGridView />
+    </Grid>
+  </Grid>
 </UserControl>

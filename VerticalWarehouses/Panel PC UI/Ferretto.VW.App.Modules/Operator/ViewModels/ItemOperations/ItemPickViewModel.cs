@@ -113,15 +113,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
-            {
-                await this.ConfirmOperationAsync(userAction.Code);
-                return;
-            }
-
             if (this.CanPickBoxes() && userAction.UserAction == UserAction.VerifyItem)
             {
                 await this.PickBoxAsync(userAction.Code);
+                return;
+            }
+
+            if ((this.CanConfirmOperation() && this.CanPickBox) && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await this.ConfirmOperationAsync(userAction.Code);
                 return;
             }
         }
@@ -332,7 +332,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 bool canComplete = false;
 
-                if (barcode != null && barcode.Length == 16)//16 => lunghezza matrice
+                if (barcode != null)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);

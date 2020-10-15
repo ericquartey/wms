@@ -457,6 +457,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.RaisePropertyChanged(nameof(this.ConfirmOperationInfo));
             this.RaisePropertyChanged(nameof(this.IsItemStockVisible));
+            this.RaisePropertyChanged(nameof(this.IsBoxOperationVisible));
         }
 
         public async Task RecallLoadingUnitAsync()
@@ -532,21 +533,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsWaitingForResponse = true;
 
-                if (this.CanInsertOperation())
+            if (this.CanInsertOperation())
+            {
+                if (this.InputBoxCode.Contains("VM"))
                 {
-                    if (this.InputBoxCode.Contains("VM"))
-                    {
-                        await this.ExecuteOperationAsync(this.InputBoxCode, 1);
-                    }
-                    else
-                    {
-                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeNotRecognized"), this.InputBoxCode), Services.Models.NotificationSeverity.Warning);
-                    }
+                    await this.ExecuteOperationAsync(this.InputBoxCode, 1);
                 }
-                else if (this.CanRemoveOperation())
+                else
                 {
-                    await this.ExecuteOperationAsync(this.SelectedCompartment.Barcode, 2);
+                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeNotRecognized"), this.InputBoxCode), Services.Models.NotificationSeverity.Warning);
                 }
+            }
+            else if (this.CanRemoveOperation())
+            {
+                await this.ExecuteOperationAsync(this.SelectedCompartment.Barcode, 2);
+            }
         }
 
         private void CancelReason()
@@ -570,8 +571,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanDoOperation(string param)
         {
-            return
-                this.SelectedItemCompartment?.ItemId != null
+            if (param == OperatorApp.Box)
+            {
+                return
+                this.SelectedCompartment != null
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -580,6 +583,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsBusyConfirmingOperation
                 &&
                 this.IsWmsHealthy;
+            }
+
+            return
+            this.SelectedItemCompartment?.ItemId != null
+            &&
+            !this.IsWaitingForResponse
+            &&
+            !this.IsBusyConfirmingRecallOperation
+            &&
+            !this.IsBusyConfirmingOperation
+            &&
+            this.IsWmsHealthy;
         }
 
         private bool CanExecuteItemPick()
@@ -770,9 +785,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ToggleOperation(string operationType)
         {
-            if (!this.SelectedItemCompartment.ItemId.HasValue)
+            if (operationType is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(operationType));
+            }
+
+            if (operationType == OperatorApp.Adjustment)
+            {
+                if (!this.SelectedItemCompartment.ItemId.HasValue)
+                {
+                    return;
+                }
             }
 
             var previousIsListModeEnabled = this.IsListModeEnabled;
@@ -802,7 +825,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (operationType == OperatorApp.Box)
                 {
-                    this.InputQuantity = this.SelectedItemCompartment.Stock;
+                    this.InputQuantity = 1;
                     this.IsBoxOperationVisible = !this.IsBoxOperationVisible;
                     this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.Box"), this.MeasureUnit);
                 }
