@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private bool canPutBox;
+
         private bool confirmOperation;
 
         private DelegateCommand confirmOperationCommand;
@@ -23,8 +25,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand confirmPartialOperationCommand;
 
         private DelegateCommand fullOperationCommand;
-
-        private bool canPutBox;
 
         private DelegateCommand putBoxCommand;
 
@@ -63,6 +63,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override string ActiveContextName => OperationalContext.ItemPut.ToString();
 
+        public bool CanPutBox
+        {
+            get => this.canPutBox;
+            set => this.SetProperty(ref this.canPutBox, value && this.IsBoxEnabled, this.RaiseCanExecuteChanged);
+        }
+
         public bool ConfirmOperation
         {
             get => this.confirmOperation;
@@ -96,12 +102,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.PartiallyCompleteOnFullCompartmentAsync(),
                 this.CanPartiallyCompleteOnFullCompartmen));
 
-        public bool CanPutBox
-        {
-            get => this.canPutBox;
-            set => this.SetProperty(ref this.canPutBox, value && this.IsBoxEnabled, this.RaiseCanExecuteChanged);
-        }
-
         public ICommand PutBoxCommand =>
             this.putBoxCommand
             ??
@@ -112,83 +112,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Methods
-
-        private bool CanPutBoxes()
-        {
-            try
-            {
-                return this.MissionOperation != null
-                        &&
-                        !this.IsWaitingForResponse
-                        &&
-                        !this.IsBusyAbortingOperation
-                        &&
-                        !this.IsBusyConfirmingOperation
-                        &&
-                        this.InputQuantity.HasValue
-                        &&
-                        this.CanInputQuantity
-                        &&
-                        this.InputQuantity.Value == this.MissionRequestedQuantity
-                        &&
-                        this.CanPutBox;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        private async Task PutBoxAsync(string barcode)
-        {
-            System.Diagnostics.Debug.Assert(
-                this.InputQuantity.HasValue,
-                "The input quantity should have a value");
-
-            try
-            {
-                this.IsBusyConfirmingOperation = true;
-                this.IsWaitingForResponse = true;
-                this.ClearNotifications();
-
-                this.IsOperationConfirmed = true;
-
-                bool canComplete = false;
-
-                if (barcode != null && barcode.Length == 16)//16 => lunghezza matrice
-                {
-                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
-                }
-                else
-                {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
-                }
-
-                if (canComplete)
-                {
-                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
-                }
-                else
-                {
-                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
-                    this.NavigationService.GoBackTo(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
-                }
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-                this.IsBusyConfirmingOperation = false;
-                this.IsOperationConfirmed = false;
-            }
-            finally
-            {
-                // Do not enable the interface. Wait for a new notification to arrive.
-                this.IsWaitingForResponse = false;
-            }
-        }
 
         public bool CanConfirmOperationPut()
         {
@@ -225,7 +148,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                &&
                this.InputQuantity.HasValue
                &&
-               this.InputQuantity.Value >= this.MissionRequestedQuantity;
+               this.InputQuantity.Value >= this.MissionRequestedQuantity
+               &&
+               !this.CanPutBox;
         }
 
         public bool CanConfirmPartialOperationPut()
@@ -400,7 +325,33 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value < this.MissionRequestedQuantity
                 &&
-                !this.canPutBox;
+                !this.CanPutBox;
+        }
+
+        private bool CanPutBoxes()
+        {
+            try
+            {
+                return this.MissionOperation != null
+                        &&
+                        !this.IsWaitingForResponse
+                        &&
+                        !this.IsBusyAbortingOperation
+                        &&
+                        !this.IsBusyConfirmingOperation
+                        &&
+                        this.InputQuantity.HasValue
+                        &&
+                        this.CanInputQuantity
+                        &&
+                        this.InputQuantity.Value == this.MissionRequestedQuantity
+                        &&
+                        this.CanPutBox;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private async Task PartiallyCompleteOnFullCompartmentAsync()
@@ -426,6 +377,58 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task PutBoxAsync(string barcode)
+        {
+            System.Diagnostics.Debug.Assert(
+                this.InputQuantity.HasValue,
+                "The input quantity should have a value");
+
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                this.IsOperationConfirmed = true;
+
+                bool canComplete = false;
+
+                if (barcode != null)
+                {
+                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                    this.Logger.Debug("Barcode: " + barcode);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
+                if (canComplete)
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                }
+                else
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                    this.NavigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+                this.IsOperationConfirmed = false;
+            }
+            finally
+            {
+                // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
             }
         }
