@@ -408,8 +408,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         //    }
                         //}
 
-                        if (!bay.IsDouble)
+                        if (!bay.IsDouble ||
+                            bay.Carousel != null)
                         {
+                            // If bay is not double or bay is carousel
                             // always check upper position first
                             returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
                             if (returnValue)
@@ -470,8 +472,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                         }
 
-                        if (bay.IsDouble)
+                        if (bay.IsDouble &&
+                            bay.Carousel == null)
                         {
+                            // If bay is double and bay is not carousel
                             returnValue = true;
                             // Always check upper position first
                             var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, showErrors);
