@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Diagnostics
             { 0x0401, "Motor protection switch tripped, check drive." },
             { 0x0402, "V-belt monitoring reports no load on the drive." },
             { 0x0403, "Phase failure, check motor and wiring." },
-            { 0x0404, "Deviation Position Controller. Please check Application manual Positioning." },
+            { 0x0404, "Blocked movement. Check motor and gears." },
             { 0x0405, "Start monitoring. Check brake & limiting parameters at start, like in example Current limit 728, Intelligent currents, etc." },
             // Output current
             { 0x0500, "Overloaded, check load situation and ramps." },

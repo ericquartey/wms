@@ -119,15 +119,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.confirmOperation = this.MissionOperation != null &&
                 this.InputQuantity.Value == this.MissionRequestedQuantity &&
-                !this.IsOperationCanceled
-                &&
-                !this.canPutBox;
+                !this.IsOperationCanceled;
 
                 this.confirmPartialOperation = this.MissionOperation != null &&
                     this.InputQuantity.Value != this.MissionRequestedQuantity &&
-                    !this.IsOperationCanceled
-                    &&
-                !this.canPutBox;
+                    !this.IsOperationCanceled;
 
                 this.RaisePropertyChanged(nameof(this.ConfirmOperation));
 
@@ -178,15 +174,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.VerifyItem)
-            {
-                await this.ConfirmOperationAsync(userAction.Code);
-                return;
-            }
-
             if (this.CanPutBoxes() && userAction.UserAction == UserAction.VerifyItem)
             {
                 await this.PutBoxAsync(userAction.Code);
+                return;
+            }
+
+            if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await base.CommandUserActionAsync(userAction);
                 return;
             }
         }
