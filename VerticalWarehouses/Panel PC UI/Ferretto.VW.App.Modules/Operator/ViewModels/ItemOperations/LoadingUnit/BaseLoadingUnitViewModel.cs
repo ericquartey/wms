@@ -401,6 +401,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.SelectedCompartment = this.Compartments.First();
                 }
+
+                if (this.MissionOperationsService.ActiveWmsMission?.LoadingUnit?.Compartments != null
+                    && this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.Any(c => c.Id == this.SelectedCompartment.Id)
+                    )
+                {
+                    this.SelectedCompartment.Barcode = this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == this.SelectedCompartment.Id).Barcode;
+                }
             }
             catch (Exception)
             {
