@@ -182,14 +182,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.VerifyItem)
             {
-                if (this.CanPutBox)
-                {
-                    await this.ConfirmOperationAsync(userAction.Code);
-                }
-                else
-                {
-                    await base.CommandUserActionAsync(userAction);
-                }
+                await base.CommandUserActionAsync(userAction);
                 return;
             }
         }

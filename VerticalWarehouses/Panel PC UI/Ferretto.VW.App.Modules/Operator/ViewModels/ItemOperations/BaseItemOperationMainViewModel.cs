@@ -564,8 +564,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             && this.MissionOperation?.ItemCode != null
                             )
                         {
-                            var item = await this.itemsWebService.GetByBarcodeAsync(e.GetItemCode());
-                            e.HasMismatch = (item.Code != this.MissionOperation.ItemCode);
+                            if (e.GetItemCode().Length == 16)
+                            {
+                                e.HasMismatch = false;
+                            }
+                            else
+                            {
+                                var item = await this.itemsWebService.GetByBarcodeAsync(e.GetItemCode());
+                                e.HasMismatch = (item.Code != this.MissionOperation.ItemCode);
+                            }
                         }
 
                         if (e.HasMismatch)
