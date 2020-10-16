@@ -119,9 +119,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if ((this.CanConfirmOperation() && this.CanPickBox) && userAction.UserAction == UserAction.VerifyItem)
+            if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
             {
-                await this.ConfirmOperationAsync(userAction.Code);
+                if (this.CanPickBox)
+                {
+                    await this.ConfirmOperationAsync(userAction.Code);
+                }
+                else
+                {
+                    await base.CommandUserActionAsync(userAction);
+                }
                 return;
             }
         }

@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IMachineItemsWebService itemsWebService;
+
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
@@ -132,6 +134,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.loadingUnitsWebService = loadingUnitsWebService;
             this.operatorNavigationService = operatorNavigationService;
             this.navigationService = navigationService;
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
@@ -555,6 +558,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputLot = e.GetItemLot() ?? this.InputLot;
 
                         e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
+                        if (e.HasMismatch
+                            && !this.IsItemCodeValid
+                            && e.GetItemCode() != null
+                            && this.MissionOperation?.ItemCode != null
+                            )
+                        {
+                            var item = await this.itemsWebService.GetByBarcodeAsync(e.GetItemCode());
+                            e.HasMismatch = (item.Code != this.MissionOperation.ItemCode);
+                        }
+
                         if (e.HasMismatch)
                         {
                             if (e.RestartOnMismatch)
