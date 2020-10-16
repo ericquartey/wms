@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DevExpress.CodeParser;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -59,11 +60,23 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override bool CanStart()
         {
+            // Conditions to check
+            // Load from InBay only if bay is NOT double and Bay first position is upper
+            var checkP1 = this.SensorsService.IsLoadingUnitInBay && (!this.MachineService.Bay.IsDouble) && this.MachineService.BayFirstPositionIsUpper;
+            // Load from InBay only if bay is carousel
+            var checkP2 = this.SensorsService.IsLoadingUnitInBay && (this.MachineService.HasCarousel);
+            // Load from MiddleBottomBay only if bay is double and Bay selected position is lower
+            var checkP3 = this.SensorsService.IsLoadingUnitInMiddleBottomBay && this.MachineService.Bay.IsDouble && this.IsPositionDownSelected;
+            // Load from MiddleBottomBay only if bay is not carousel, bay is not double and Bay first position is NOT upper
+            var checkP4 = this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
+                !this.MachineService.HasCarousel &&
+                !this.MachineService.Bay.IsDouble &&
+                !this.MachineService.BayFirstPositionIsUpper;
+
             return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
-                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
-                    (!this.MachineService.HasCarousel && this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                   (checkP1 || checkP2 || checkP3 || checkP4) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
         }
