@@ -139,49 +139,49 @@
     <value>The elevator is empty after a pickup.</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorEepromChecksumError" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorEepromReadError" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorEepromWriteError" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorInvalidDataset" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorSyntaxError" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+    <value>Please set the machine status On. Set Automatic mode to redo last movement.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Check that the emergency buttons are deactivated and that all the safety sensors are deactivated.</value>

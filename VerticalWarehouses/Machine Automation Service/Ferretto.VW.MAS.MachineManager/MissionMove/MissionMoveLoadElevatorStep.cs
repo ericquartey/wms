@@ -270,11 +270,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 break;
                             }
                         }
-                        else if (this.Mission.NeedHomingAxis == Axis.BayChain)
-                        {
-                            this.Logger.LogInformation($"{this.GetType().Name}: Horizontal positioning end Mission:Id={this.Mission.Id}");
-                            this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, false);
-                        }
 
                         var isMovementEnded = (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning) && !(this.MachineVolatileDataProvider.IsOneTonMachine.Value)) ||
                                      (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.CombinedMovements) && (this.MachineVolatileDataProvider.IsOneTonMachine.Value));
