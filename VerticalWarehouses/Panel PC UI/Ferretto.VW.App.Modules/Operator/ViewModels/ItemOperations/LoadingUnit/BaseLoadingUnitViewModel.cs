@@ -406,6 +406,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 if (this.MissionOperationsService.ActiveWmsMission?.LoadingUnit?.Compartments != null
+                    && this.SelectedCompartment != null
                     && this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.Any(c => c.Id == this.SelectedCompartment.Id)
                     )
                 {
