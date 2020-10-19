@@ -1112,7 +1112,7 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnShutterPositioning(NotificationMessage message, IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.Waiting && m.Status != MissionStatus.New))
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New))
             {
                 if (message.Status == MessageStatus.OperationEnd
                     && message.Data is ShutterPositioningMessageData data
