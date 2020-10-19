@@ -157,6 +157,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                  });
         }
 
+        public int BarcodeLenght => 16;
+
         public bool CanConfirmPartialOperation
         {
             get => this.canConfirmPartialOperation;
@@ -564,7 +566,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             && this.MissionOperation?.ItemCode != null
                             )
                         {
-                            if (e.GetItemCode().Length == 16)
+                            if (e.GetItemCode().Length == this.BarcodeLenght)
                             {
                                 e.HasMismatch = false;
                             }
@@ -658,7 +660,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 bool canComplete = false;
 
-                if (barcode != null && barcode.Length == 16)
+                if (barcode != null && barcode.Length == this.BarcodeLenght)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);

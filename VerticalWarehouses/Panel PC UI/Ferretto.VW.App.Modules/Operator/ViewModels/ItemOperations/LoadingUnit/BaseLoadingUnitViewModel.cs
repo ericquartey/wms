@@ -376,6 +376,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             await base.OnAppearedAsync();
+
+            this.NoteEnabled = true;
+            this.RaisePropertyChanged(nameof(this.NoteEnabled));
         }
 
         public virtual void RaisePropertyChanged()
