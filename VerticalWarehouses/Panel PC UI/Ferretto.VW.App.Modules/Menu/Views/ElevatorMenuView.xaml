@@ -54,19 +54,16 @@
       <Grid Grid.Row="1">
         <WrapPanel>
 
-          <controls:PpcButton Title="{res:Loc InstallationApp.BeltBreakInMenuTitle}"
+          <controls:PpcButton Title="{res:Loc InstallationApp.VerticalAxisOriginMenuTitle}"
                               Margin="0,0,30,30"
                               Padding="-2,1,0,0"
                               Abbrevation="4.2.1"
                               BorderBrush="{DynamicResource FerrettoRed}"
-                              Command="{Binding BeltBurnishingCommand}"
-                              Content="{res:Loc InstallationApp.BeltBreakInMenuDescription}"
-                              IsBypassed="{Binding IsBeltBurnishingBypassed}"
-                              IsCompleted="{Binding IsBeltBurnishing}"
+                              Command="{Binding VerticalOriginCalibrationCommand}"
+                              Content="{res:Loc InstallationApp.VerticalAxisOriginMenuDescription}"
+                              IsCompleted="{Binding IsHoming}"
                               Kind="Account"
                               Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-
 
           <controls:PpcButton Title="{res:Loc InstallationApp.ResolutionVerticalAxisMenuTitle}"
                               Margin="0,0,30,30"
@@ -79,14 +76,15 @@
                               Kind="Account"
                               Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-          <controls:PpcButton Title="{res:Loc InstallationApp.OffsetVerticalAxisMenuTitle}"
+          <controls:PpcButton Title="{res:Loc InstallationApp.BeltBreakInMenuTitle}"
                               Margin="0,0,30,30"
                               Padding="-2,1,0,0"
                               Abbrevation="4.2.3"
                               BorderBrush="{DynamicResource FerrettoRed}"
-                              Command="{Binding VerticalOffsetCalibrationCommand}"
-                              Content="{res:Loc InstallationApp.OffsetVerticalAxisMenuDescription}"
-                              IsCompleted="{Binding IsVerticalOffsetProcedure}"
+                              Command="{Binding BeltBurnishingCommand}"
+                              Content="{res:Loc InstallationApp.BeltBreakInMenuDescription}"
+                              IsBypassed="{Binding IsBeltBurnishingBypassed}"
+                              IsCompleted="{Binding IsBeltBurnishing}"
                               Kind="Account"
                               Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -114,17 +112,16 @@
                               Kind="Account"
                               Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-          <controls:PpcButton Title="{res:Loc InstallationApp.VerticalAxisOriginMenuTitle}"
+          <controls:PpcButton Title="{res:Loc InstallationApp.OffsetVerticalAxisMenuTitle}"
                               Margin="0,0,30,30"
                               Padding="-2,1,0,0"
                               Abbrevation="4.2.5"
                               BorderBrush="{DynamicResource FerrettoRed}"
-                              Command="{Binding VerticalOriginCalibrationCommand}"
-                              Content="{res:Loc InstallationApp.VerticalAxisOriginMenuDescription}"
-                              IsCompleted="{Binding IsHoming}"
+                              Command="{Binding VerticalOffsetCalibrationCommand}"
+                              Content="{res:Loc InstallationApp.OffsetVerticalAxisMenuDescription}"
+                              IsCompleted="{Binding IsVerticalOffsetProcedure}"
                               Kind="Account"
                               Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
 
           <controls:PpcButton Title="{res:Loc InstallationApp.EmbarkDisembarkMenuTitle}"
                               Margin="0,0,30,30"
