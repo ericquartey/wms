@@ -203,7 +203,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 bool canComplete = false;
 
-                if (barcode != null && barcode.Length == this.BarcodeLenght)//16 => lunghezza matrice
+                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)//16 => lunghezza matrice
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
