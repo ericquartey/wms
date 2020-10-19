@@ -1830,4 +1830,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="Command" xml:space="preserve">
     <value>Comando</value>
   </data>
+  <data name="Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Seleziona causale</value>
+  </data>
 </root>

@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private bool noteEnabled;
+
         private DelegateCommand selectOperationOnBayCommand;
 
         #endregion
@@ -38,8 +40,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override bool KeepAlive => true;
 
+        public bool NoteEnabled
+        {
+            get => this.noteEnabled;
+            set => this.SetProperty(ref this.noteEnabled, value);
+        }
+
         public ICommand SelectOperationOnBayCommand =>
-                            this.selectOperationOnBayCommand
+                                    this.selectOperationOnBayCommand
             ??
             (this.selectOperationOnBayCommand = new DelegateCommand(
                 () => this.ShowOperationOnBay(),

@@ -572,7 +572,7 @@
     <value>Impostazione della posizione iniziale ...</value>
   </data>
   <data name="VerticalOffsetVerify" xml:space="preserve">
-    <value>Verifica offset verticale</value>
+    <value>Misura offset verticale</value>
   </data>
   <data name="CellPositionDone" xml:space="preserve">
     <value>Quote celle verificate</value>
@@ -2260,7 +2260,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Effettua la calibrazione dell'offset dell'asse verticale</value>
   </data>
   <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
-    <value>Offset asse verticale</value>
+    <value>Misura offset asse verticale</value>
   </data>
   <data name="ParametersMenuDescription" xml:space="preserve">
     <value>Modifica, importazione ed esportazione dei parametri macchina</value>

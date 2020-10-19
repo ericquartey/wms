@@ -376,6 +376,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             await base.OnAppearedAsync();
+
+            this.NoteEnabled = true;
+            this.RaisePropertyChanged(nameof(this.NoteEnabled));
         }
 
         public virtual void RaisePropertyChanged()
@@ -400,6 +403,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else if (this.Compartments?.Count() == 1)
                 {
                     this.SelectedCompartment = this.Compartments.First();
+                }
+
+                if (this.MissionOperationsService.ActiveWmsMission?.LoadingUnit?.Compartments != null
+                    && this.SelectedCompartment != null
+                    && this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.Any(c => c.Id == this.SelectedCompartment.Id)
+                    )
+                {
+                    this.SelectedCompartment.Barcode = this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == this.SelectedCompartment.Id).Barcode;
                 }
             }
             catch (Exception)

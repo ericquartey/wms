@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Xpf.Editors;
+using DevExpress.Xpf.Editors.Helpers;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
@@ -156,6 +157,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                      this.CanInputQuantity = false;
                  });
         }
+
+        public int BarcodeLenght { get; set; }
 
         public bool CanConfirmPartialOperation
         {
@@ -564,7 +567,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             && this.MissionOperation?.ItemCode != null
                             )
                         {
-                            if (e.GetItemCode().Length == 16)
+                            if (this.BarcodeLenght > 0 && e.GetItemCode().Length == this.BarcodeLenght)
                             {
                                 e.HasMismatch = false;
                             }
@@ -658,7 +661,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 bool canComplete = false;
 
-                if (barcode != null && barcode.Length == 16)
+                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
@@ -800,6 +803,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
 
             this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
+
+            value = System.Configuration.ConfigurationManager.AppSettings["ItemUniqueIdLength"];
+
+            if (int.TryParse(value, out var def))
+            {
+                this.BarcodeLenght = def;
+            }
+            else
+            {
+                this.BarcodeLenght = 0;
+            }
 
             this.IsWaitingForResponse = false;
             this.IsBusyAbortingOperation = false;

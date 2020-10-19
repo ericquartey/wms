@@ -156,7 +156,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Mission.DestinationCellId = null;
                                 this.Mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                             }
-                            else if (bayPosition.Location != messageData.Destination)
+                            else if (bayPosition.Location != messageData.Destination
+                                && messageData.Destination != LoadingUnitLocation.NoLocation
+                                )
                             {
                                 // bay to bay movement
                                 this.Mission.LoadUnitDestination = messageData.Destination;
