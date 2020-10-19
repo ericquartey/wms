@@ -3948,7 +3948,7 @@
     "IsEnabled": false,
     "IsTimeSyncEnabled": false,
     "LastWmsTimeSync": "2020-03-06T13:29:04.1028916+00:00",
-    "ServiceUrl": "http://172.22.24.197:10000/",
+    "ServiceUrl": "http://192.168.0.137:10000/",
     "TimeSyncIntervalMilliseconds": 10000
   }
 }

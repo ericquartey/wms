@@ -8,91 +8,53 @@
         "Accessories": {
           "AlphaNumericBar": {
             "IsEnabledNew": false,
-            "IpAddress": "192.168.101.11",
-            "TcpPort": 1234,
-            "Size": "Medium"
+            "IpAddress": "192.168.0.11",
+            "TcpPort": 2020,
+            "Size": "Small"
           },
           "LabelPrinter": {
             "IsEnabledNew": false,
             "Name": "Microsoft Print to PDF"
           },
           "LaserPointer": {
-            "IsEnabledNew": false,
-            "IpAddress": "192.168.101.13",
-            "TcpPort": 12020
+            "IsEnabledNew": true,
+            "IpAddress": "192.168.0.13",
+            "TcpPort": 2020,
+            "IsConfiguredNew": false,
+            "XOffset": 0.0,
+            "YOffset": 0.0,
+            "ZOffsetLowerPosition": 0.0,
+            "ZOffsetUpperPosition": 1030.0
           },
           "BarcodeReader": {
             "IsEnabledNew": false,
-            "PortName": "COM4"
+            "PortName": "COM3"
           },
           "CardReader": {
             "IsEnabledNew": false
-          }
-          /*  "WeightingScale": {
-            "IsEnabledNew": true
-          }*/
-        },
-        "Carousel": {
-          "AssistedMovements": {
-            "FeedRate": 1.0,
           },
-          "ElevatorDistance": 448.216880625668,
-          "HomingCreepSpeed": 5.0,
-          "HomingFastSpeed": 22.0,
-          "Id": 1,
-          "LastIdealPosition": 888.37927637888936,
-          "ManualMovements": {
-            "FeedRate": 0.1,
+          "WeightingScale": {
+            "IsEnabledNew": false,
+            "PortName": "COM4"
           }
         },
-        "ChainOffset": -8.0,
-        "EmptyLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Speed": 140.0
-        },
-        "FullLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Speed": 130.0
-        },
-        "Id": 1,
-        "Inverter": {
-          "Index": "Slave3",
-          "Parameters": [],
-          "TcpPort": 0,
-          "Type": "Acu"
-        },
+        "ChainOffset": 0.0,
         "IoDevice": {
+          "Id": 1,
           "Index": "IoDevice1",
           "IpAddress": "192.168.0.1",
           "TcpPort": 19550
         },
         "IsActive": true,
-        "IsDouble": true,
         "IsExternal": false,
-        "IsFastDepositToBay": false,
         "Number": "BayOne",
         "Operation": "Idle",
         "Positions": [
           {
-            "Height": 445.5,
-            "Id": 1,
-            "IsUpper": false,
-            "Location": "InternalBay1Down",
-            "LocationUpDown": "Down",
-            "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 395.0,
-            "ProfileOffset": 0.0
-          },
-          {
-            "Height": 888.0,
-            "Id": 2,
-            "IsUpper": true,
+            "Height": 785.0,
             "Location": "InternalBay1Up",
-            "LocationUpDown": "Up",
             "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 395.0,
+            "MaxSingleHeight": 695.0,
             "ProfileOffset": 25.0
           }
         ],
@@ -120,119 +82,9 @@
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
-          "Type": "ThreeSensors"
-        },
-        "Side": "Front",
-        "Status": "Idle"
-      },
-      {
-        "Accessories": {
-          "AlphaNumericBar": {
-            "IsEnabledNew": false,
-            "IpAddress": "192.168.101.21",
-            "TcpPort": 1234,
-            "Size": "Medium"
-          },
-          "LabelPrinter": {
-            "IsEnabledNew": false,
-            "Name": "Microsoft Print to PDF"
-          },
-          "LaserPointer": {
-            "IsEnabledNew": false,
-            "IpAddress": "192.168.101.23",
-            "TcpPort": 12020
-          },
-          "BarcodeReader": {
-            "IsEnabledNew": false,
-            "PortName": "COM4"
-          },
-          "CardReader": {
-            "IsEnabledNew": false
-          }
-          /*  "WeightingScale": {
-            "IsEnabledNew": true
-          }*/
-        },
-        "External": {
-          "AssistedMovements": {
-            "FeedRate": 1.0
-          },
-          "Race": 448.216880625668,
-          "ExtraRace": 25.0,
-          "HomingCreepSpeed": 5.0,
-          "HomingFastSpeed": 22.0,
-          "Id": 1,
-          "LastIdealPosition": 0.0,
-          "ManualMovements": {
-            "FeedRate": 0.1
-          }
-        },
-        "ChainOffset": -8.0,
-        "EmptyLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Speed": 140.0
-        },
-        "FullLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Speed": 130.0
-        },
-        "Id": 2,
-        "Inverter": {
-          "Index": "Slave5",
-          "Parameters": [],
-          "TcpPort": 0,
-          "Type": "Acu"
-        },
-        "IoDevice": {
-          "Index": "IoDevice2",
-          "IpAddress": "192.168.0.2",
-          "TcpPort": 19550
-        },
-        "IsActive": true,
-        "IsDouble": false,
-        "IsExternal": true,
-        "IsFastDepositToBay": false,
-        "Number": "BayTwo",
-        "Operation": "Idle",
-        "Positions": [
-          {
-            "Height": 767.5,
-            "IsUpper": true,
-            "Location": "InternalBay2Up",
-            "LocationUpDown": "Up",
-            "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 695.0,
-            "ProfileOffset": 25.0
-          }
-        ],
-        "Shutter": {
-          "AssistedMovements": {
-            "FeedRate": 0.2,
-            "HighSpeedDurationClose": 14.0,
-            "HighSpeedDurationOpen": 14.0,
-            "HighSpeedHalfDurationClose": 6.0,
-            "HighSpeedHalfDurationOpen": 7.0,
-            "MaxSpeed": 40000.0,
-            "MinSpeed": 5000.0
-          },
-          "Inverter": {
-            "Index": "Slave4",
-            "TcpPort": 0,
-            "Type": "Agl"
-          },
-          "ManualMovements": {
-            "FeedRate": 0.1,
-            "HighSpeedDurationClose": 0.0,
-            "HighSpeedDurationOpen": 0.0,
-            "MaxSpeed": 40000.0,
-            "MinSpeed": 5000.0
-          },
           "Type": "TwoSensors"
         },
-        "Resolution": 296.2282068,
-        "Side": "Back",
+        "Side": "Front",
         "Status": "Idle"
       }
     ],
@@ -242,6 +94,7 @@
           "AssistedMovements": {
             "FeedRate": 0.3,
             "FeedRateAfterZero": 0.9,
+            "Id": 2,
             "TargetDistance": 0.0,
             "TargetDistanceAfterZero": 0.0
           },
@@ -251,17 +104,20 @@
           "EmptyLoadMovement": {
             "Acceleration": 1000.0,
             "Deceleration": 1000.0,
+            "Id": 5,
             "Speed": 770.0
           },
           "FullLoadMovement": {
             "Acceleration": 400.0,
             "Deceleration": 400.0,
+            "Id": 4,
             "Speed": 550.0
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 40.0,
           "Id": 1,
           "Inverter": {
+            "Id": 3,
             "Index": "MainInverter",
             "IpAddress": "192.168.0.100",
             "Parameters": [],
@@ -269,11 +125,12 @@
             "Type": "Ang"
           },
           "LastCalibrationCycles": 0,
-          "LastIdealPosition": 895.0,
+          "LastIdealPosition": 0.0,
           "LowerBound": 442.0,
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.15,
+            "Id": 4,
             "TargetDistance": 30.0,
             "TargetDistanceAfterZero": 30.0
           },
@@ -284,12 +141,12 @@
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
           "Resolution": 77.4970626897481,
-          "UpperBound": 4900.0,
+          "UpperBound": 6500.0,
           "WeightMeasurement": {
             "Id": 1,
-            "MeasureConst0": -723.53,
-            "MeasureConst1": 159.73,
-            "MeasureConst2": -1.8163,
+            "MeasureConst0": -967.76,
+            "MeasureConst1": 227.5,
+            "MeasureConst2": -5.3248,
             "MeasureSpeed": 20.0,
             "MeasureTime": 15
           }
@@ -298,6 +155,7 @@
           "AssistedMovements": {
             "FeedRate": 0.3,
             "FeedRateAfterZero": 0.9,
+            "Id": 1,
             "TargetDistance": 0.0,
             "TargetDistanceAfterZero": 0.0
           },
@@ -307,11 +165,13 @@
           "EmptyLoadMovement": {
             "Acceleration": 2000.0,
             "Deceleration": 2000.0,
-            "Speed": 650.0
+            "Id": 2,
+            "Speed": 600.0
           },
           "FullLoadMovement": {
             "Acceleration": 600.0,
             "Deceleration": 600.0,
+            "Id": 1,
             "Speed": 400.0
           },
           "HomingCreepSpeed": 6.0,
@@ -321,8 +181,9 @@
           "LastIdealPosition": 0.0,
           "LowerBound": -4000.0,
           "ManualMovements": {
-            "FeedRate": 0.04,
+            "FeedRate": 0.1,
             "FeedRateAfterZero": 0.3,
+            "Id": 3,
             "TargetDistance": 3000.0,
             "TargetDistanceAfterZero": 3000.0
           },
@@ -334,6 +195,120 @@
           "Profiles": [
             {
               "Id": 1,
+              "Name": "LongPickup",
+              "Steps": [
+                {
+                  "Acceleration": 3000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 7,
+                  "Number": 0,
+                  "Position": 140.0,
+                  "Speed": 630.0
+                },
+                {
+                  "Acceleration": 5000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 13,
+                  "Number": 1,
+                  "Position": 300.0,
+                  "Speed": 100.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 12,
+                  "Number": 2,
+                  "Position": 321.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 11,
+                  "Number": 3,
+                  "Position": 421.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 10,
+                  "Number": 4,
+                  "Position": 721.5,
+                  "Speed": 600.0
+                }
+              ],
+              "TotalDistance": 721.5
+            },
+            {
+              "Id": 2,
+              "Name": "ShortPickup",
+              "Steps": [
+                {
+                  "Acceleration": 3000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 23,
+                  "Number": 0,
+                  "Position": 140.0,
+                  "Speed": 630.0
+                },
+                {
+                  "Acceleration": 5000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 22,
+                  "Number": 1,
+                  "Position": 300.0,
+                  "Speed": 100.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 16,
+                  "Number": 2,
+                  "Position": 321.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 21,
+                  "Number": 3,
+                  "Position": 421.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 20,
+                  "Number": 4,
+                  "Position": 721.5,
+                  "Speed": 600.0
+                }
+              ],
+              "TotalDistance": 721.5
+            },
+            {
+              "Id": 3,
               "Name": "ShortDeposit",
               "Steps": [
                 {
@@ -341,6 +316,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
+                  "Id": 19,
                   "Number": 0,
                   "Position": 210.0,
                   "Speed": 200.0
@@ -350,26 +326,29 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
+                  "Id": 18,
                   "Number": 1,
                   "Position": 350.0,
-                  "Speed": 650.0
+                  "Speed": 600.0
                 },
                 {
                   "Acceleration": 2000.0,
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
+                  "Id": 17,
                   "Number": 2,
-                  "Position": 740.0,
-                  "Speed": 650.0
+                  "Position": 500.0,
+                  "Speed": 600.0
                 },
                 {
                   "Acceleration": 1400.0,
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
+                  "Id": 25,
                   "Number": 3,
-                  "Position": 1000.0,
+                  "Position": 600.0,
                   "Speed": 100.0
                 },
                 {
@@ -377,116 +356,13 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
+                  "Id": 15,
                   "Number": 4,
-                  "Position": 1216.0,
+                  "Position": 721.5,
                   "Speed": 630.0
                 }
               ],
-              "TotalDistance": 1216.0
-            },
-            {
-              "Id": 2,
-              "Name": "LongPickup",
-              "Steps": [
-                {
-                  "Acceleration": 3000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Number": 0,
-                  "Position": 140.0,
-                  "Speed": 630.0
-                },
-                {
-                  "Acceleration": 5000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Number": 1,
-                  "Position": 300.0,
-                  "Speed": 100.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Number": 2,
-                  "Position": 800.0,
-                  "Speed": 650.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Number": 3,
-                  "Position": 900.0,
-                  "Speed": 650.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Number": 4,
-                  "Position": 1216.0,
-                  "Speed": 650.0
-                }
-              ],
-              "TotalDistance": 1216.0
-            },
-            {
-              "Id": 3,
-              "Name": "ShortPickup",
-              "Steps": [
-                {
-                  "Acceleration": 3000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Number": 0,
-                  "Position": 140.0,
-                  "Speed": 630.0
-                },
-                {
-                  "Acceleration": 5000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Number": 1,
-                  "Position": 300.0,
-                  "Speed": 100.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Number": 2,
-                  "Position": 800.0,
-                  "Speed": 650.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Number": 3,
-                  "Position": 900.0,
-                  "Speed": 650.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Number": 4,
-                  "Position": 1216.0,
-                  "Speed": 650.0
-                }
-              ],
-              "TotalDistance": 1216.0
+              "TotalDistance": 721.5
             },
             {
               "Id": 4,
@@ -497,6 +373,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
+                  "Id": 9,
                   "Number": 0,
                   "Position": 210.0,
                   "Speed": 200.0
@@ -506,26 +383,29 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
+                  "Id": 8,
                   "Number": 1,
                   "Position": 350.0,
-                  "Speed": 650.0
+                  "Speed": 600.0
                 },
                 {
                   "Acceleration": 2000.0,
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
+                  "Id": 14,
                   "Number": 2,
-                  "Position": 740.0,
-                  "Speed": 650.0
+                  "Position": 500.0,
+                  "Speed": 600.0
                 },
                 {
                   "Acceleration": 1400.0,
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
+                  "Id": 24,
                   "Number": 3,
-                  "Position": 1000.0,
+                  "Position": 600.0,
                   "Speed": 100.0
                 },
                 {
@@ -533,12 +413,13 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
+                  "Id": 26,
                   "Number": 4,
-                  "Position": 1216.0,
+                  "Position": 721.5,
                   "Speed": 630.0
                 }
               ],
-              "TotalDistance": 1216.0
+              "TotalDistance": 721.5
             }
           ],
           "Resolution": 88.3038477,
@@ -549,7 +430,7 @@
       "StructuralProperties": {
         "BeltRigidity": 7000000,
         "BeltSpacing": 300.0,
-        "ElevatorWeight": 230.0,
+        "ElevatorWeight": 198.0,
         "HalfShaftLength": 2084.0,
         "Id": 1,
         "PulleyDiameter": 160.0,
@@ -560,16 +441,16 @@
     },
     "ExpireCountPrecent": 10,
     "ExpireDays": 14,
-    "Height": 5261.0,
+    "Height": 6861.0,
     "HorizontalCyclesToCalibrate": 10,
     "HorizontalPositionToCalibrate": 3000,
     "Id": 2,
     "LoadUnitMaxHeight": 695.0,
-    "LoadUnitMaxNetWeight": 800.0,
+    "LoadUnitMaxNetWeight": 550.0,
     "LoadUnitMinHeight": 95.0,
-    "LoadUnitTare": 104.0,
+    "LoadUnitTare": 30.0,
     "MaxGrossWeight": 70000.0,
-    "ModelName": "NEW VERTIMAG 84XL800-BIG/BES H5261",
+    "ModelName": "NEW VERTIMAG 65XS550-BIS H6861",
     "Panels": [
       {
         "Side": "front",
@@ -1583,7 +1464,7 @@
             "PanelId": 12,
             "Priority": 235,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
             "Id": 237,
@@ -1591,7 +1472,7 @@
             "PanelId": 12,
             "Priority": 237,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
             "Id": 239,
@@ -1599,7 +1480,7 @@
             "PanelId": 12,
             "Priority": 239,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           }
         ]
       },
@@ -1613,7 +1494,7 @@
             "PanelId": 13,
             "Priority": 241,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
             "Id": 243,
@@ -1621,7 +1502,7 @@
             "PanelId": 13,
             "Priority": 243,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
             "Id": 245,
@@ -1629,7 +1510,7 @@
             "PanelId": 13,
             "Priority": 245,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
             "Id": 247,
@@ -1637,867 +1518,555 @@
             "PanelId": 13,
             "Priority": 247,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 249,
+            "Position": 5095,
+            "PanelId": 13,
+            "Priority": 249,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 251,
+            "Position": 5120,
+            "PanelId": 13,
+            "Priority": 251,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 253,
+            "Position": 5145,
+            "PanelId": 13,
+            "Priority": 253,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 255,
+            "Position": 5170,
+            "PanelId": 13,
+            "Priority": 255,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 257,
+            "Position": 5195,
+            "PanelId": 13,
+            "Priority": 257,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 259,
+            "Position": 5220,
+            "PanelId": 13,
+            "Priority": 259,
+            "IsFree": true,
+            "BlockLevel": "None"
           }
         ]
       },
       {
-        "Side": "back",
+        "Side": "front",
         "Id": 14,
         "Cells": [
           {
-            "Id": 2,
-            "Position": 295,
+            "Id": 261,
+            "Position": 5245,
             "PanelId": 14,
-            "Priority": 2,
-            "IsFree": true,
-            "BlockLevel": "Blocked"
-          },
-          {
-            "Id": 4,
-            "Position": 320,
-            "PanelId": 14,
-            "Priority": 4,
-            "IsFree": true,
-            "BlockLevel": "Blocked"
-          },
-          {
-            "Id": 6,
-            "Position": 345,
-            "PanelId": 14,
-            "Priority": 6,
-            "IsFree": true,
-            "BlockLevel": "Blocked"
-          },
-          {
-            "Id": 8,
-            "Position": 370,
-            "PanelId": 14,
-            "Priority": 8,
-            "IsFree": true,
-            "BlockLevel": "Blocked"
-          },
-          {
-            "Id": 10,
-            "Position": 395,
-            "PanelId": 14,
-            "Priority": 10,
-            "IsFree": true,
-            "BlockLevel": "Blocked"
-          },
-          {
-            "Id": 12,
-            "Position": 420,
-            "PanelId": 14,
-            "Priority": 12,
-            "IsFree": true,
-            "BlockLevel": "Blocked"
-          },
-          {
-            "Id": 14,
-            "Position": 445,
-            "PanelId": 14,
-            "Priority": 14,
+            "Priority": 261,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 16,
-            "Position": 470,
+            "Id": 263,
+            "Position": 5270,
             "PanelId": 14,
-            "Priority": 16,
+            "Priority": 263,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 18,
-            "Position": 495,
+            "Id": 265,
+            "Position": 5295,
             "PanelId": 14,
-            "Priority": 18,
+            "Priority": 265,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 20,
-            "Position": 520,
+            "Id": 267,
+            "Position": 5320,
             "PanelId": 14,
-            "Priority": 20,
+            "Priority": 267,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 269,
+            "Position": 5345,
+            "PanelId": 14,
+            "Priority": 269,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 271,
+            "Position": 5370,
+            "PanelId": 14,
+            "Priority": 271,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 273,
+            "Position": 5395,
+            "PanelId": 14,
+            "Priority": 273,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 275,
+            "Position": 5420,
+            "PanelId": 14,
+            "Priority": 275,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 277,
+            "Position": 5445,
+            "PanelId": 14,
+            "Priority": 277,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 279,
+            "Position": 5470,
+            "PanelId": 14,
+            "Priority": 279,
             "IsFree": true,
             "BlockLevel": "None"
           }
         ]
       },
       {
-        "Side": "back",
+        "Side": "front",
         "Id": 15,
         "Cells": [
           {
-            "Id": 22,
-            "Position": 545,
+            "Id": 281,
+            "Position": 5495,
             "PanelId": 15,
-            "Priority": 22,
+            "Priority": 281,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 24,
-            "Position": 570,
+            "Id": 283,
+            "Position": 5520,
             "PanelId": 15,
-            "Priority": 24,
+            "Priority": 283,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 26,
-            "Position": 595,
+            "Id": 285,
+            "Position": 5545,
             "PanelId": 15,
-            "Priority": 26,
+            "Priority": 285,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 28,
-            "Position": 620,
+            "Id": 287,
+            "Position": 5570,
             "PanelId": 15,
-            "Priority": 28,
+            "Priority": 287,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 30,
-            "Position": 645,
+            "Id": 289,
+            "Position": 5595,
             "PanelId": 15,
-            "Priority": 30,
+            "Priority": 289,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 32,
-            "Position": 670,
+            "Id": 291,
+            "Position": 5620,
             "PanelId": 15,
-            "Priority": 32,
+            "Priority": 291,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 34,
-            "Position": 695,
+            "Id": 293,
+            "Position": 5645,
             "PanelId": 15,
-            "Priority": 34,
+            "Priority": 293,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 36,
-            "Position": 720,
+            "Id": 295,
+            "Position": 5670,
             "PanelId": 15,
-            "Priority": 36,
+            "Priority": 295,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 38,
-            "Position": 745,
+            "Id": 297,
+            "Position": 5695,
             "PanelId": 15,
-            "Priority": 38,
+            "Priority": 297,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 40,
-            "Position": 770,
+            "Id": 299,
+            "Position": 5720,
             "PanelId": 15,
-            "Priority": 40,
+            "Priority": 299,
             "IsFree": true,
             "BlockLevel": "None"
           }
         ]
       },
       {
-        "Side": "back",
+        "Side": "front",
         "Id": 16,
         "Cells": [
           {
-            "Id": 42,
-            "Position": 795,
+            "Id": 301,
+            "Position": 5745,
             "PanelId": 16,
-            "Priority": 42,
+            "Priority": 301,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 44,
-            "Position": 820,
+            "Id": 303,
+            "Position": 5770,
             "PanelId": 16,
-            "Priority": 44,
+            "Priority": 303,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 46,
-            "Position": 845,
+            "Id": 305,
+            "Position": 5795,
             "PanelId": 16,
-            "Priority": 46,
+            "Priority": 305,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 48,
-            "Position": 870,
+            "Id": 307,
+            "Position": 5820,
             "PanelId": 16,
-            "Priority": 48,
+            "Priority": 307,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 50,
-            "Position": 895,
+            "Id": 309,
+            "Position": 5845,
             "PanelId": 16,
-            "Priority": 50,
+            "Priority": 309,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 52,
-            "Position": 920,
+            "Id": 311,
+            "Position": 5870,
             "PanelId": 16,
-            "Priority": 52,
+            "Priority": 311,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 54,
-            "Position": 945,
+            "Id": 313,
+            "Position": 5895,
             "PanelId": 16,
-            "Priority": 54,
+            "Priority": 313,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 56,
-            "Position": 970,
+            "Id": 315,
+            "Position": 5920,
             "PanelId": 16,
-            "Priority": 56,
+            "Priority": 315,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 58,
-            "Position": 995,
+            "Id": 317,
+            "Position": 5945,
             "PanelId": 16,
-            "Priority": 58,
+            "Priority": 317,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 60,
-            "Position": 1020,
+            "Id": 319,
+            "Position": 5970,
             "PanelId": 16,
-            "Priority": 60,
+            "Priority": 319,
             "IsFree": true,
             "BlockLevel": "None"
           }
         ]
       },
       {
-        "Side": "back",
+        "Side": "front",
         "Id": 17,
         "Cells": [
           {
-            "Id": 62,
-            "Position": 1045,
+            "Id": 321,
+            "Position": 5995,
             "PanelId": 17,
-            "Priority": 62,
+            "Priority": 321,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 64,
-            "Position": 1070,
+            "Id": 323,
+            "Position": 6020,
             "PanelId": 17,
-            "Priority": 64,
+            "Priority": 323,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 66,
-            "Position": 1095,
+            "Id": 325,
+            "Position": 6045,
             "PanelId": 17,
-            "Priority": 66,
+            "Priority": 325,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 68,
-            "Position": 1120,
+            "Id": 327,
+            "Position": 6070,
             "PanelId": 17,
-            "Priority": 68,
+            "Priority": 327,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 70,
-            "Position": 1145,
+            "Id": 329,
+            "Position": 6095,
             "PanelId": 17,
-            "Priority": 70,
+            "Priority": 329,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 72,
-            "Position": 1170,
+            "Id": 331,
+            "Position": 6120,
             "PanelId": 17,
-            "Priority": 72,
+            "Priority": 331,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 74,
-            "Position": 1195,
+            "Id": 333,
+            "Position": 6145,
             "PanelId": 17,
-            "Priority": 74,
+            "Priority": 333,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 76,
-            "Position": 1220,
+            "Id": 335,
+            "Position": 6170,
             "PanelId": 17,
-            "Priority": 76,
+            "Priority": 335,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 78,
-            "Position": 1245,
+            "Id": 337,
+            "Position": 6195,
             "PanelId": 17,
-            "Priority": 78,
+            "Priority": 337,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 80,
-            "Position": 1270,
+            "Id": 339,
+            "Position": 6220,
             "PanelId": 17,
-            "Priority": 80,
+            "Priority": 339,
             "IsFree": true,
             "BlockLevel": "None"
           }
         ]
       },
       {
-        "Side": "back",
+        "Side": "front",
         "Id": 18,
         "Cells": [
           {
-            "Id": 82,
-            "Position": 1295,
+            "Id": 341,
+            "Position": 6245,
             "PanelId": 18,
-            "Priority": 82,
+            "Priority": 341,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 84,
-            "Position": 1320,
+            "Id": 343,
+            "Position": 6270,
             "PanelId": 18,
-            "Priority": 84,
+            "Priority": 343,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 86,
-            "Position": 1345,
+            "Id": 345,
+            "Position": 6295,
             "PanelId": 18,
-            "Priority": 86,
+            "Priority": 345,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 88,
-            "Position": 1370,
+            "Id": 347,
+            "Position": 6320,
             "PanelId": 18,
-            "Priority": 88,
+            "Priority": 347,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 90,
-            "Position": 1395,
+            "Id": 349,
+            "Position": 6345,
             "PanelId": 18,
-            "Priority": 90,
+            "Priority": 349,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 92,
-            "Position": 1420,
+            "Id": 351,
+            "Position": 6370,
             "PanelId": 18,
-            "Priority": 92,
+            "Priority": 351,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 94,
-            "Position": 1445,
+            "Id": 353,
+            "Position": 6395,
             "PanelId": 18,
-            "Priority": 94,
+            "Priority": 353,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 96,
-            "Position": 1470,
+            "Id": 355,
+            "Position": 6420,
             "PanelId": 18,
-            "Priority": 96,
+            "Priority": 355,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 98,
-            "Position": 1495,
+            "Id": 357,
+            "Position": 6445,
             "PanelId": 18,
-            "Priority": 98,
+            "Priority": 357,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 100,
-            "Position": 1520,
+            "Id": 359,
+            "Position": 6470,
             "PanelId": 18,
-            "Priority": 100,
+            "Priority": 359,
             "IsFree": true,
             "BlockLevel": "None"
           }
         ]
       },
       {
-        "Side": "back",
+        "Side": "front",
         "Id": 19,
         "Cells": [
           {
-            "Id": 102,
-            "Position": 1545,
+            "Id": 361,
+            "Position": 6495,
             "PanelId": 19,
-            "Priority": 102,
+            "Priority": 361,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 104,
-            "Position": 1570,
+            "Id": 363,
+            "Position": 6520,
             "PanelId": 19,
-            "Priority": 104,
+            "Priority": 363,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
-            "Id": 106,
-            "Position": 1595,
+            "Id": 365,
+            "Position": 6545,
             "PanelId": 19,
-            "Priority": 106,
+            "Priority": 365,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
-            "Id": 108,
-            "Position": 1620,
+            "Id": 367,
+            "Position": 6570,
             "PanelId": 19,
-            "Priority": 108,
+            "Priority": 367,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
-            "Id": 110,
-            "Position": 1645,
+            "Id": 369,
+            "Position": 6595,
             "PanelId": 19,
-            "Priority": 110,
+            "Priority": 369,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
-            "Id": 112,
-            "Position": 1670,
+            "Id": 371,
+            "Position": 6620,
             "PanelId": 19,
-            "Priority": 112,
+            "Priority": 371,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
-            "Id": 114,
-            "Position": 1695,
+            "Id": 373,
+            "Position": 6645,
             "PanelId": 19,
-            "Priority": 114,
+            "Priority": 373,
             "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           },
           {
-            "Id": 116,
-            "Position": 1720,
+            "Id": 375,
+            "Position": 6670,
             "PanelId": 19,
-            "Priority": 116,
+            "Priority": 375,
             "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 118,
-            "Position": 1745,
-            "PanelId": 19,
-            "Priority": 118,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 120,
-            "Position": 1770,
-            "PanelId": 19,
-            "Priority": 120,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 20,
-        "Cells": [
-          {
-            "Id": 122,
-            "Position": 1795,
-            "PanelId": 20,
-            "Priority": 122,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 124,
-            "Position": 1820,
-            "PanelId": 20,
-            "Priority": 124,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 126,
-            "Position": 1845,
-            "PanelId": 20,
-            "Priority": 126,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 128,
-            "Position": 1870,
-            "PanelId": 20,
-            "Priority": 128,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 130,
-            "Position": 1895,
-            "PanelId": 20,
-            "Priority": 130,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 132,
-            "Position": 1920,
-            "PanelId": 20,
-            "Priority": 132,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 134,
-            "Position": 1945,
-            "PanelId": 20,
-            "Priority": 134,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 136,
-            "Position": 1970,
-            "PanelId": 20,
-            "Priority": 136,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 138,
-            "Position": 1995,
-            "PanelId": 20,
-            "Priority": 138,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 140,
-            "Position": 2020,
-            "PanelId": 20,
-            "Priority": 140,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 21,
-        "Cells": [
-          {
-            "Id": 142,
-            "Position": 2045,
-            "PanelId": 21,
-            "Priority": 142,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 144,
-            "Position": 2070,
-            "PanelId": 21,
-            "Priority": 144,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 146,
-            "Position": 2095,
-            "PanelId": 21,
-            "Priority": 146,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 148,
-            "Position": 2120,
-            "PanelId": 21,
-            "Priority": 148,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 150,
-            "Position": 2145,
-            "PanelId": 21,
-            "Priority": 150,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 152,
-            "Position": 2170,
-            "PanelId": 21,
-            "Priority": 152,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 154,
-            "Position": 2195,
-            "PanelId": 21,
-            "Priority": 154,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 156,
-            "Position": 2220,
-            "PanelId": 21,
-            "Priority": 156,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 158,
-            "Position": 2245,
-            "PanelId": 21,
-            "Priority": 158,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 160,
-            "Position": 2270,
-            "PanelId": 21,
-            "Priority": 160,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 22,
-        "Cells": [
-          {
-            "Id": 162,
-            "Position": 2295,
-            "PanelId": 22,
-            "Priority": 162,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 164,
-            "Position": 2320,
-            "PanelId": 22,
-            "Priority": 164,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 166,
-            "Position": 2345,
-            "PanelId": 22,
-            "Priority": 166,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 168,
-            "Position": 2370,
-            "PanelId": 22,
-            "Priority": 168,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 170,
-            "Position": 2395,
-            "PanelId": 22,
-            "Priority": 170,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 172,
-            "Position": 2420,
-            "PanelId": 22,
-            "Priority": 172,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 174,
-            "Position": 2445,
-            "PanelId": 22,
-            "Priority": 174,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 176,
-            "Position": 2470,
-            "PanelId": 22,
-            "Priority": 176,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 178,
-            "Position": 2495,
-            "PanelId": 22,
-            "Priority": 178,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 180,
-            "Position": 2520,
-            "PanelId": 22,
-            "Priority": 180,
-            "IsFree": true,
-            "BlockLevel": "None"
-          }
-        ]
-      },
-      {
-        "Side": "back",
-        "Id": 23,
-        "Cells": [
-          {
-            "Id": 182,
-            "Position": 2545,
-            "PanelId": 23,
-            "Priority": 182,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 184,
-            "Position": 2570,
-            "PanelId": 23,
-            "Priority": 184,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 186,
-            "Position": 2595,
-            "PanelId": 23,
-            "Priority": 186,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 188,
-            "Position": 2620,
-            "PanelId": 23,
-            "Priority": 188,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 190,
-            "Position": 2645,
-            "PanelId": 23,
-            "Priority": 190,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 192,
-            "Position": 2670,
-            "PanelId": 23,
-            "Priority": 192,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 194,
-            "Position": 2695,
-            "PanelId": 23,
-            "Priority": 194,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 196,
-            "Position": 2720,
-            "PanelId": 23,
-            "Priority": 196,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 198,
-            "Position": 2745,
-            "PanelId": 23,
-            "Priority": 198,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 200,
-            "Position": 2770,
-            "PanelId": 23,
-            "Priority": 200,
-            "IsFree": true,
-            "BlockLevel": "None"
+            "BlockLevel": "Spaceonly"
           }
         ]
       },
@@ -2506,82 +2075,82 @@
         "Id": 24,
         "Cells": [
           {
-            "Id": 202,
-            "Position": 2795,
+            "Id": 2,
+            "Position": 295,
             "PanelId": 24,
-            "Priority": 202,
+            "Priority": 2,
+            "IsFree": true,
+            "BlockLevel": "Blocked"
+          },
+          {
+            "Id": 4,
+            "Position": 320,
+            "PanelId": 24,
+            "Priority": 4,
+            "IsFree": true,
+            "BlockLevel": "Blocked"
+          },
+          {
+            "Id": 6,
+            "Position": 345,
+            "PanelId": 24,
+            "Priority": 6,
+            "IsFree": true,
+            "BlockLevel": "Blocked"
+          },
+          {
+            "Id": 8,
+            "Position": 370,
+            "PanelId": 24,
+            "Priority": 8,
+            "IsFree": true,
+            "BlockLevel": "Blocked"
+          },
+          {
+            "Id": 10,
+            "Position": 395,
+            "PanelId": 24,
+            "Priority": 10,
+            "IsFree": true,
+            "BlockLevel": "Blocked"
+          },
+          {
+            "Id": 12,
+            "Position": 420,
+            "PanelId": 24,
+            "Priority": 12,
+            "IsFree": true,
+            "BlockLevel": "Blocked"
+          },
+          {
+            "Id": 14,
+            "Position": 445,
+            "PanelId": 24,
+            "Priority": 14,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 204,
-            "Position": 2820,
+            "Id": 16,
+            "Position": 470,
             "PanelId": 24,
-            "Priority": 204,
+            "Priority": 16,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 206,
-            "Position": 2845,
+            "Id": 18,
+            "Position": 495,
             "PanelId": 24,
-            "Priority": 206,
+            "Priority": 18,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 208,
-            "Position": 2870,
+            "Id": 20,
+            "Position": 520,
             "PanelId": 24,
-            "Priority": 208,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 210,
-            "Position": 2895,
-            "PanelId": 24,
-            "Priority": 210,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 212,
-            "Position": 2920,
-            "PanelId": 24,
-            "Priority": 212,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 214,
-            "Position": 2945,
-            "PanelId": 24,
-            "Priority": 214,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 216,
-            "Position": 2970,
-            "PanelId": 24,
-            "Priority": 216,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 218,
-            "Position": 2995,
-            "PanelId": 24,
-            "Priority": 218,
-            "IsFree": true,
-            "BlockLevel": "None"
-          },
-          {
-            "Id": 220,
-            "Position": 3020,
-            "PanelId": 24,
-            "Priority": 220,
+            "Priority": 20,
             "IsFree": true,
             "BlockLevel": "None"
           }
@@ -2592,82 +2161,82 @@
         "Id": 25,
         "Cells": [
           {
-            "Id": 222,
-            "Position": 3045,
+            "Id": 22,
+            "Position": 545,
             "PanelId": 25,
-            "Priority": 222,
+            "Priority": 22,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 224,
-            "Position": 3070,
+            "Id": 24,
+            "Position": 570,
             "PanelId": 25,
-            "Priority": 224,
+            "Priority": 24,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 226,
-            "Position": 3095,
+            "Id": 26,
+            "Position": 595,
             "PanelId": 25,
-            "Priority": 226,
+            "Priority": 26,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 228,
-            "Position": 3120,
+            "Id": 28,
+            "Position": 620,
             "PanelId": 25,
-            "Priority": 228,
+            "Priority": 28,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 230,
-            "Position": 3145,
+            "Id": 30,
+            "Position": 645,
             "PanelId": 25,
-            "Priority": 230,
+            "Priority": 30,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 232,
-            "Position": 3170,
+            "Id": 32,
+            "Position": 670,
             "PanelId": 25,
-            "Priority": 232,
+            "Priority": 32,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 234,
-            "Position": 3195,
+            "Id": 34,
+            "Position": 695,
             "PanelId": 25,
-            "Priority": 234,
+            "Priority": 34,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 236,
-            "Position": 3220,
+            "Id": 36,
+            "Position": 720,
             "PanelId": 25,
-            "Priority": 236,
+            "Priority": 36,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 238,
-            "Position": 3245,
+            "Id": 38,
+            "Position": 745,
             "PanelId": 25,
-            "Priority": 238,
+            "Priority": 38,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 240,
-            "Position": 3270,
+            "Id": 40,
+            "Position": 770,
             "PanelId": 25,
-            "Priority": 240,
+            "Priority": 40,
             "IsFree": true,
             "BlockLevel": "None"
           }
@@ -2678,82 +2247,82 @@
         "Id": 26,
         "Cells": [
           {
-            "Id": 242,
-            "Position": 3295,
+            "Id": 42,
+            "Position": 795,
             "PanelId": 26,
-            "Priority": 242,
+            "Priority": 42,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 244,
-            "Position": 3320,
+            "Id": 44,
+            "Position": 820,
             "PanelId": 26,
-            "Priority": 244,
+            "Priority": 44,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 246,
-            "Position": 3345,
+            "Id": 46,
+            "Position": 845,
             "PanelId": 26,
-            "Priority": 246,
+            "Priority": 46,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 248,
-            "Position": 3370,
+            "Id": 48,
+            "Position": 870,
             "PanelId": 26,
-            "Priority": 248,
+            "Priority": 48,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 250,
-            "Position": 3395,
+            "Id": 50,
+            "Position": 895,
             "PanelId": 26,
-            "Priority": 250,
+            "Priority": 50,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 252,
-            "Position": 3420,
+            "Id": 52,
+            "Position": 920,
             "PanelId": 26,
-            "Priority": 252,
+            "Priority": 52,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 254,
-            "Position": 3445,
+            "Id": 54,
+            "Position": 945,
             "PanelId": 26,
-            "Priority": 254,
+            "Priority": 54,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 256,
-            "Position": 3470,
+            "Id": 56,
+            "Position": 970,
             "PanelId": 26,
-            "Priority": 256,
+            "Priority": 56,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 258,
-            "Position": 3495,
+            "Id": 58,
+            "Position": 995,
             "PanelId": 26,
-            "Priority": 258,
+            "Priority": 58,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 260,
-            "Position": 3520,
+            "Id": 60,
+            "Position": 1020,
             "PanelId": 26,
-            "Priority": 260,
+            "Priority": 60,
             "IsFree": true,
             "BlockLevel": "None"
           }
@@ -2764,82 +2333,82 @@
         "Id": 27,
         "Cells": [
           {
-            "Id": 262,
-            "Position": 3545,
+            "Id": 62,
+            "Position": 1045,
             "PanelId": 27,
-            "Priority": 262,
+            "Priority": 62,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 264,
-            "Position": 3570,
+            "Id": 64,
+            "Position": 1070,
             "PanelId": 27,
-            "Priority": 264,
+            "Priority": 64,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 266,
-            "Position": 3595,
+            "Id": 66,
+            "Position": 1095,
             "PanelId": 27,
-            "Priority": 266,
+            "Priority": 66,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 268,
-            "Position": 3620,
+            "Id": 68,
+            "Position": 1120,
             "PanelId": 27,
-            "Priority": 268,
+            "Priority": 68,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 270,
-            "Position": 3645,
+            "Id": 70,
+            "Position": 1145,
             "PanelId": 27,
-            "Priority": 270,
+            "Priority": 70,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 272,
-            "Position": 3670,
+            "Id": 72,
+            "Position": 1170,
             "PanelId": 27,
-            "Priority": 272,
+            "Priority": 72,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 274,
-            "Position": 3695,
+            "Id": 74,
+            "Position": 1195,
             "PanelId": 27,
-            "Priority": 274,
+            "Priority": 74,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 276,
-            "Position": 3720,
+            "Id": 76,
+            "Position": 1220,
             "PanelId": 27,
-            "Priority": 276,
+            "Priority": 76,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 278,
-            "Position": 3745,
+            "Id": 78,
+            "Position": 1245,
             "PanelId": 27,
-            "Priority": 278,
+            "Priority": 78,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 280,
-            "Position": 3770,
+            "Id": 80,
+            "Position": 1270,
             "PanelId": 27,
-            "Priority": 280,
+            "Priority": 80,
             "IsFree": true,
             "BlockLevel": "None"
           }
@@ -2850,82 +2419,82 @@
         "Id": 28,
         "Cells": [
           {
-            "Id": 282,
-            "Position": 3795,
+            "Id": 82,
+            "Position": 1295,
             "PanelId": 28,
-            "Priority": 282,
+            "Priority": 82,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 284,
-            "Position": 3820,
+            "Id": 84,
+            "Position": 1320,
             "PanelId": 28,
-            "Priority": 284,
+            "Priority": 84,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 286,
-            "Position": 3845,
+            "Id": 86,
+            "Position": 1345,
             "PanelId": 28,
-            "Priority": 286,
+            "Priority": 86,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 288,
-            "Position": 3870,
+            "Id": 88,
+            "Position": 1370,
             "PanelId": 28,
-            "Priority": 288,
+            "Priority": 88,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 290,
-            "Position": 3895,
+            "Id": 90,
+            "Position": 1395,
             "PanelId": 28,
-            "Priority": 290,
+            "Priority": 90,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 292,
-            "Position": 3920,
+            "Id": 92,
+            "Position": 1420,
             "PanelId": 28,
-            "Priority": 292,
+            "Priority": 92,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 294,
-            "Position": 3945,
+            "Id": 94,
+            "Position": 1445,
             "PanelId": 28,
-            "Priority": 294,
+            "Priority": 94,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 296,
-            "Position": 3970,
+            "Id": 96,
+            "Position": 1470,
             "PanelId": 28,
-            "Priority": 296,
+            "Priority": 96,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 298,
-            "Position": 3995,
+            "Id": 98,
+            "Position": 1495,
             "PanelId": 28,
-            "Priority": 298,
+            "Priority": 98,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 300,
-            "Position": 4020,
+            "Id": 100,
+            "Position": 1520,
             "PanelId": 28,
-            "Priority": 300,
+            "Priority": 100,
             "IsFree": true,
             "BlockLevel": "None"
           }
@@ -2936,82 +2505,82 @@
         "Id": 29,
         "Cells": [
           {
-            "Id": 302,
-            "Position": 4045,
+            "Id": 102,
+            "Position": 1545,
             "PanelId": 29,
-            "Priority": 302,
+            "Priority": 102,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 304,
-            "Position": 4070,
+            "Id": 104,
+            "Position": 1570,
             "PanelId": 29,
-            "Priority": 304,
+            "Priority": 104,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 306,
-            "Position": 4095,
+            "Id": 106,
+            "Position": 1595,
             "PanelId": 29,
-            "Priority": 306,
+            "Priority": 106,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 308,
-            "Position": 4120,
+            "Id": 108,
+            "Position": 1620,
             "PanelId": 29,
-            "Priority": 308,
+            "Priority": 108,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 310,
-            "Position": 4145,
+            "Id": 110,
+            "Position": 1645,
             "PanelId": 29,
-            "Priority": 310,
+            "Priority": 110,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 312,
-            "Position": 4170,
+            "Id": 112,
+            "Position": 1670,
             "PanelId": 29,
-            "Priority": 312,
+            "Priority": 112,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 314,
-            "Position": 4195,
+            "Id": 114,
+            "Position": 1695,
             "PanelId": 29,
-            "Priority": 314,
+            "Priority": 114,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 316,
-            "Position": 4220,
+            "Id": 116,
+            "Position": 1720,
             "PanelId": 29,
-            "Priority": 316,
+            "Priority": 116,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 318,
-            "Position": 4245,
+            "Id": 118,
+            "Position": 1745,
             "PanelId": 29,
-            "Priority": 318,
+            "Priority": 118,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 320,
-            "Position": 4270,
+            "Id": 120,
+            "Position": 1770,
             "PanelId": 29,
-            "Priority": 320,
+            "Priority": 120,
             "IsFree": true,
             "BlockLevel": "None"
           }
@@ -3022,82 +2591,82 @@
         "Id": 30,
         "Cells": [
           {
-            "Id": 322,
-            "Position": 4295,
+            "Id": 122,
+            "Position": 1795,
             "PanelId": 30,
-            "Priority": 322,
+            "Priority": 122,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 324,
-            "Position": 4320,
+            "Id": 124,
+            "Position": 1820,
             "PanelId": 30,
-            "Priority": 324,
+            "Priority": 124,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 326,
-            "Position": 4345,
+            "Id": 126,
+            "Position": 1845,
             "PanelId": 30,
-            "Priority": 326,
+            "Priority": 126,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 328,
-            "Position": 4370,
+            "Id": 128,
+            "Position": 1870,
             "PanelId": 30,
-            "Priority": 328,
+            "Priority": 128,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 330,
-            "Position": 4395,
+            "Id": 130,
+            "Position": 1895,
             "PanelId": 30,
-            "Priority": 330,
+            "Priority": 130,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 332,
-            "Position": 4420,
+            "Id": 132,
+            "Position": 1920,
             "PanelId": 30,
-            "Priority": 332,
+            "Priority": 132,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 334,
-            "Position": 4445,
+            "Id": 134,
+            "Position": 1945,
             "PanelId": 30,
-            "Priority": 334,
+            "Priority": 134,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 336,
-            "Position": 4470,
+            "Id": 136,
+            "Position": 1970,
             "PanelId": 30,
-            "Priority": 336,
+            "Priority": 136,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 338,
-            "Position": 4495,
+            "Id": 138,
+            "Position": 1995,
             "PanelId": 30,
-            "Priority": 338,
+            "Priority": 138,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 340,
-            "Position": 4520,
+            "Id": 140,
+            "Position": 2020,
             "PanelId": 30,
-            "Priority": 340,
+            "Priority": 140,
             "IsFree": true,
             "BlockLevel": "None"
           }
@@ -3108,82 +2677,82 @@
         "Id": 31,
         "Cells": [
           {
-            "Id": 342,
-            "Position": 4545,
+            "Id": 142,
+            "Position": 2045,
             "PanelId": 31,
-            "Priority": 342,
+            "Priority": 142,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 344,
-            "Position": 4570,
+            "Id": 144,
+            "Position": 2070,
             "PanelId": 31,
-            "Priority": 344,
+            "Priority": 144,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 346,
-            "Position": 4595,
+            "Id": 146,
+            "Position": 2095,
             "PanelId": 31,
-            "Priority": 346,
+            "Priority": 146,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 348,
-            "Position": 4620,
+            "Id": 148,
+            "Position": 2120,
             "PanelId": 31,
-            "Priority": 348,
+            "Priority": 148,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 350,
-            "Position": 4645,
+            "Id": 150,
+            "Position": 2145,
             "PanelId": 31,
-            "Priority": 350,
+            "Priority": 150,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 352,
-            "Position": 4670,
+            "Id": 152,
+            "Position": 2170,
             "PanelId": 31,
-            "Priority": 352,
+            "Priority": 152,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 354,
-            "Position": 4695,
+            "Id": 154,
+            "Position": 2195,
             "PanelId": 31,
-            "Priority": 354,
+            "Priority": 154,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 356,
-            "Position": 4720,
+            "Id": 156,
+            "Position": 2220,
             "PanelId": 31,
-            "Priority": 356,
+            "Priority": 156,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 358,
-            "Position": 4745,
+            "Id": 158,
+            "Position": 2245,
             "PanelId": 31,
-            "Priority": 358,
+            "Priority": 158,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 360,
-            "Position": 4770,
+            "Id": 160,
+            "Position": 2270,
             "PanelId": 31,
-            "Priority": 360,
+            "Priority": 160,
             "IsFree": true,
             "BlockLevel": "None"
           }
@@ -3194,84 +2763,84 @@
         "Id": 32,
         "Cells": [
           {
-            "Id": 362,
-            "Position": 4795,
+            "Id": 162,
+            "Position": 2295,
             "PanelId": 32,
-            "Priority": 362,
+            "Priority": 162,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 364,
-            "Position": 4820,
+            "Id": 164,
+            "Position": 2320,
             "PanelId": 32,
-            "Priority": 364,
+            "Priority": 164,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 366,
-            "Position": 4845,
+            "Id": 166,
+            "Position": 2345,
             "PanelId": 32,
-            "Priority": 366,
+            "Priority": 166,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 368,
-            "Position": 4870,
+            "Id": 168,
+            "Position": 2370,
             "PanelId": 32,
-            "Priority": 368,
+            "Priority": 168,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 370,
-            "Position": 4895,
+            "Id": 170,
+            "Position": 2395,
             "PanelId": 32,
-            "Priority": 370,
+            "Priority": 170,
             "IsFree": true,
             "BlockLevel": "None"
           },
           {
-            "Id": 372,
-            "Position": 4920,
+            "Id": 172,
+            "Position": 2420,
             "PanelId": 32,
-            "Priority": 372,
+            "Priority": 172,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
-            "Id": 374,
-            "Position": 4945,
+            "Id": 174,
+            "Position": 2445,
             "PanelId": 32,
-            "Priority": 374,
+            "Priority": 174,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
-            "Id": 376,
-            "Position": 4970,
+            "Id": 176,
+            "Position": 2470,
             "PanelId": 32,
-            "Priority": 376,
+            "Priority": 176,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
-            "Id": 378,
-            "Position": 4995,
+            "Id": 178,
+            "Position": 2495,
             "PanelId": 32,
-            "Priority": 378,
+            "Priority": 178,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
-            "Id": 380,
-            "Position": 5020,
+            "Id": 180,
+            "Position": 2520,
             "PanelId": 32,
-            "Priority": 380,
+            "Priority": 180,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           }
         ]
       },
@@ -3280,25 +2849,1433 @@
         "Id": 33,
         "Cells": [
           {
+            "Id": 182,
+            "Position": 2545,
+            "PanelId": 33,
+            "Priority": 182,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 184,
+            "Position": 2570,
+            "PanelId": 33,
+            "Priority": 184,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 186,
+            "Position": 2595,
+            "PanelId": 33,
+            "Priority": 186,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 188,
+            "Position": 2620,
+            "PanelId": 33,
+            "Priority": 188,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 190,
+            "Position": 2645,
+            "PanelId": 33,
+            "Priority": 190,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 192,
+            "Position": 2670,
+            "PanelId": 33,
+            "Priority": 192,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 194,
+            "Position": 2695,
+            "PanelId": 33,
+            "Priority": 194,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 196,
+            "Position": 2720,
+            "PanelId": 33,
+            "Priority": 196,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 198,
+            "Position": 2745,
+            "PanelId": 33,
+            "Priority": 198,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 200,
+            "Position": 2770,
+            "PanelId": 33,
+            "Priority": 200,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 34,
+        "Cells": [
+          {
+            "Id": 202,
+            "Position": 2795,
+            "PanelId": 34,
+            "Priority": 202,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 204,
+            "Position": 2820,
+            "PanelId": 34,
+            "Priority": 204,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 206,
+            "Position": 2845,
+            "PanelId": 34,
+            "Priority": 206,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 208,
+            "Position": 2870,
+            "PanelId": 34,
+            "Priority": 208,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 210,
+            "Position": 2895,
+            "PanelId": 34,
+            "Priority": 210,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 212,
+            "Position": 2920,
+            "PanelId": 34,
+            "Priority": 212,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 214,
+            "Position": 2945,
+            "PanelId": 34,
+            "Priority": 214,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 216,
+            "Position": 2970,
+            "PanelId": 34,
+            "Priority": 216,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 218,
+            "Position": 2995,
+            "PanelId": 34,
+            "Priority": 218,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 220,
+            "Position": 3020,
+            "PanelId": 34,
+            "Priority": 220,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 35,
+        "Cells": [
+          {
+            "Id": 222,
+            "Position": 3045,
+            "PanelId": 35,
+            "Priority": 222,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 224,
+            "Position": 3070,
+            "PanelId": 35,
+            "Priority": 224,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 226,
+            "Position": 3095,
+            "PanelId": 35,
+            "Priority": 226,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 228,
+            "Position": 3120,
+            "PanelId": 35,
+            "Priority": 228,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 230,
+            "Position": 3145,
+            "PanelId": 35,
+            "Priority": 230,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 232,
+            "Position": 3170,
+            "PanelId": 35,
+            "Priority": 232,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 234,
+            "Position": 3195,
+            "PanelId": 35,
+            "Priority": 234,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 236,
+            "Position": 3220,
+            "PanelId": 35,
+            "Priority": 236,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 238,
+            "Position": 3245,
+            "PanelId": 35,
+            "Priority": 238,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 240,
+            "Position": 3270,
+            "PanelId": 35,
+            "Priority": 240,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 36,
+        "Cells": [
+          {
+            "Id": 242,
+            "Position": 3295,
+            "PanelId": 36,
+            "Priority": 242,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 244,
+            "Position": 3320,
+            "PanelId": 36,
+            "Priority": 244,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 246,
+            "Position": 3345,
+            "PanelId": 36,
+            "Priority": 246,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 248,
+            "Position": 3370,
+            "PanelId": 36,
+            "Priority": 248,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 250,
+            "Position": 3395,
+            "PanelId": 36,
+            "Priority": 250,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 252,
+            "Position": 3420,
+            "PanelId": 36,
+            "Priority": 252,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 254,
+            "Position": 3445,
+            "PanelId": 36,
+            "Priority": 254,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 256,
+            "Position": 3470,
+            "PanelId": 36,
+            "Priority": 256,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 258,
+            "Position": 3495,
+            "PanelId": 36,
+            "Priority": 258,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 260,
+            "Position": 3520,
+            "PanelId": 36,
+            "Priority": 260,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 37,
+        "Cells": [
+          {
+            "Id": 262,
+            "Position": 3545,
+            "PanelId": 37,
+            "Priority": 262,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 264,
+            "Position": 3570,
+            "PanelId": 37,
+            "Priority": 264,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 266,
+            "Position": 3595,
+            "PanelId": 37,
+            "Priority": 266,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 268,
+            "Position": 3620,
+            "PanelId": 37,
+            "Priority": 268,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 270,
+            "Position": 3645,
+            "PanelId": 37,
+            "Priority": 270,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 272,
+            "Position": 3670,
+            "PanelId": 37,
+            "Priority": 272,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 274,
+            "Position": 3695,
+            "PanelId": 37,
+            "Priority": 274,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 276,
+            "Position": 3720,
+            "PanelId": 37,
+            "Priority": 276,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 278,
+            "Position": 3745,
+            "PanelId": 37,
+            "Priority": 278,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 280,
+            "Position": 3770,
+            "PanelId": 37,
+            "Priority": 280,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 38,
+        "Cells": [
+          {
+            "Id": 282,
+            "Position": 3795,
+            "PanelId": 38,
+            "Priority": 282,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 284,
+            "Position": 3820,
+            "PanelId": 38,
+            "Priority": 284,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 286,
+            "Position": 3845,
+            "PanelId": 38,
+            "Priority": 286,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 288,
+            "Position": 3870,
+            "PanelId": 38,
+            "Priority": 288,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 290,
+            "Position": 3895,
+            "PanelId": 38,
+            "Priority": 290,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 292,
+            "Position": 3920,
+            "PanelId": 38,
+            "Priority": 292,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 294,
+            "Position": 3945,
+            "PanelId": 38,
+            "Priority": 294,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 296,
+            "Position": 3970,
+            "PanelId": 38,
+            "Priority": 296,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 298,
+            "Position": 3995,
+            "PanelId": 38,
+            "Priority": 298,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 300,
+            "Position": 4020,
+            "PanelId": 38,
+            "Priority": 300,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 39,
+        "Cells": [
+          {
+            "Id": 302,
+            "Position": 4045,
+            "PanelId": 39,
+            "Priority": 302,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 304,
+            "Position": 4070,
+            "PanelId": 39,
+            "Priority": 304,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 306,
+            "Position": 4095,
+            "PanelId": 39,
+            "Priority": 306,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 308,
+            "Position": 4120,
+            "PanelId": 39,
+            "Priority": 308,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 310,
+            "Position": 4145,
+            "PanelId": 39,
+            "Priority": 310,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 312,
+            "Position": 4170,
+            "PanelId": 39,
+            "Priority": 312,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 314,
+            "Position": 4195,
+            "PanelId": 39,
+            "Priority": 314,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 316,
+            "Position": 4220,
+            "PanelId": 39,
+            "Priority": 316,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 318,
+            "Position": 4245,
+            "PanelId": 39,
+            "Priority": 318,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 320,
+            "Position": 4270,
+            "PanelId": 39,
+            "Priority": 320,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 40,
+        "Cells": [
+          {
+            "Id": 322,
+            "Position": 4295,
+            "PanelId": 40,
+            "Priority": 322,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 324,
+            "Position": 4320,
+            "PanelId": 40,
+            "Priority": 324,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 326,
+            "Position": 4345,
+            "PanelId": 40,
+            "Priority": 326,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 328,
+            "Position": 4370,
+            "PanelId": 40,
+            "Priority": 328,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 330,
+            "Position": 4395,
+            "PanelId": 40,
+            "Priority": 330,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 332,
+            "Position": 4420,
+            "PanelId": 40,
+            "Priority": 332,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 334,
+            "Position": 4445,
+            "PanelId": 40,
+            "Priority": 334,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 336,
+            "Position": 4470,
+            "PanelId": 40,
+            "Priority": 336,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 338,
+            "Position": 4495,
+            "PanelId": 40,
+            "Priority": 338,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 340,
+            "Position": 4520,
+            "PanelId": 40,
+            "Priority": 340,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 41,
+        "Cells": [
+          {
+            "Id": 342,
+            "Position": 4545,
+            "PanelId": 41,
+            "Priority": 342,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 344,
+            "Position": 4570,
+            "PanelId": 41,
+            "Priority": 344,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 346,
+            "Position": 4595,
+            "PanelId": 41,
+            "Priority": 346,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 348,
+            "Position": 4620,
+            "PanelId": 41,
+            "Priority": 348,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 350,
+            "Position": 4645,
+            "PanelId": 41,
+            "Priority": 350,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 352,
+            "Position": 4670,
+            "PanelId": 41,
+            "Priority": 352,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 354,
+            "Position": 4695,
+            "PanelId": 41,
+            "Priority": 354,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 356,
+            "Position": 4720,
+            "PanelId": 41,
+            "Priority": 356,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 358,
+            "Position": 4745,
+            "PanelId": 41,
+            "Priority": 358,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 360,
+            "Position": 4770,
+            "PanelId": 41,
+            "Priority": 360,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 42,
+        "Cells": [
+          {
+            "Id": 362,
+            "Position": 4795,
+            "PanelId": 42,
+            "Priority": 362,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 364,
+            "Position": 4820,
+            "PanelId": 42,
+            "Priority": 364,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 366,
+            "Position": 4845,
+            "PanelId": 42,
+            "Priority": 366,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 368,
+            "Position": 4870,
+            "PanelId": 42,
+            "Priority": 368,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 370,
+            "Position": 4895,
+            "PanelId": 42,
+            "Priority": 370,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 372,
+            "Position": 4920,
+            "PanelId": 42,
+            "Priority": 372,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 374,
+            "Position": 4945,
+            "PanelId": 42,
+            "Priority": 374,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 376,
+            "Position": 4970,
+            "PanelId": 42,
+            "Priority": 376,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 378,
+            "Position": 4995,
+            "PanelId": 42,
+            "Priority": 378,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 380,
+            "Position": 5020,
+            "PanelId": 42,
+            "Priority": 380,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 43,
+        "Cells": [
+          {
             "Id": 382,
             "Position": 5045,
-            "PanelId": 33,
+            "PanelId": 43,
             "Priority": 382,
             "IsFree": true,
-            "BlockLevel": "Spaceonly"
+            "BlockLevel": "None"
           },
           {
             "Id": 384,
             "Position": 5070,
-            "PanelId": 33,
+            "PanelId": 43,
             "Priority": 384,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 386,
+            "Position": 5095,
+            "PanelId": 43,
+            "Priority": 386,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 388,
+            "Position": 5120,
+            "PanelId": 43,
+            "Priority": 388,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 390,
+            "Position": 5145,
+            "PanelId": 43,
+            "Priority": 390,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 392,
+            "Position": 5170,
+            "PanelId": 43,
+            "Priority": 392,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 394,
+            "Position": 5195,
+            "PanelId": 43,
+            "Priority": 394,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 396,
+            "Position": 5220,
+            "PanelId": 43,
+            "Priority": 396,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 398,
+            "Position": 5245,
+            "PanelId": 43,
+            "Priority": 398,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 400,
+            "Position": 5270,
+            "PanelId": 43,
+            "Priority": 400,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 44,
+        "Cells": [
+          {
+            "Id": 402,
+            "Position": 5295,
+            "PanelId": 44,
+            "Priority": 402,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 404,
+            "Position": 5320,
+            "PanelId": 44,
+            "Priority": 404,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 406,
+            "Position": 5345,
+            "PanelId": 44,
+            "Priority": 406,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 408,
+            "Position": 5370,
+            "PanelId": 44,
+            "Priority": 408,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 410,
+            "Position": 5395,
+            "PanelId": 44,
+            "Priority": 410,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 412,
+            "Position": 5420,
+            "PanelId": 44,
+            "Priority": 412,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 414,
+            "Position": 5445,
+            "PanelId": 44,
+            "Priority": 414,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 416,
+            "Position": 5470,
+            "PanelId": 44,
+            "Priority": 416,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 418,
+            "Position": 5495,
+            "PanelId": 44,
+            "Priority": 418,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 420,
+            "Position": 5520,
+            "PanelId": 44,
+            "Priority": 420,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 45,
+        "Cells": [
+          {
+            "Id": 422,
+            "Position": 5545,
+            "PanelId": 45,
+            "Priority": 422,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 424,
+            "Position": 5570,
+            "PanelId": 45,
+            "Priority": 424,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 426,
+            "Position": 5595,
+            "PanelId": 45,
+            "Priority": 426,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 428,
+            "Position": 5620,
+            "PanelId": 45,
+            "Priority": 428,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 430,
+            "Position": 5645,
+            "PanelId": 45,
+            "Priority": 430,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 432,
+            "Position": 5670,
+            "PanelId": 45,
+            "Priority": 432,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 434,
+            "Position": 5695,
+            "PanelId": 45,
+            "Priority": 434,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 436,
+            "Position": 5720,
+            "PanelId": 45,
+            "Priority": 436,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 438,
+            "Position": 5745,
+            "PanelId": 45,
+            "Priority": 438,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 440,
+            "Position": 5770,
+            "PanelId": 45,
+            "Priority": 440,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 46,
+        "Cells": [
+          {
+            "Id": 442,
+            "Position": 5795,
+            "PanelId": 46,
+            "Priority": 442,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 444,
+            "Position": 5820,
+            "PanelId": 46,
+            "Priority": 444,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 446,
+            "Position": 5845,
+            "PanelId": 46,
+            "Priority": 446,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 448,
+            "Position": 5870,
+            "PanelId": 46,
+            "Priority": 448,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 450,
+            "Position": 5895,
+            "PanelId": 46,
+            "Priority": 450,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 452,
+            "Position": 5920,
+            "PanelId": 46,
+            "Priority": 452,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 454,
+            "Position": 5945,
+            "PanelId": 46,
+            "Priority": 454,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 456,
+            "Position": 5970,
+            "PanelId": 46,
+            "Priority": 456,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 458,
+            "Position": 5995,
+            "PanelId": 46,
+            "Priority": 458,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 460,
+            "Position": 6020,
+            "PanelId": 46,
+            "Priority": 460,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 47,
+        "Cells": [
+          {
+            "Id": 462,
+            "Position": 6045,
+            "PanelId": 47,
+            "Priority": 462,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 464,
+            "Position": 6070,
+            "PanelId": 47,
+            "Priority": 464,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 466,
+            "Position": 6095,
+            "PanelId": 47,
+            "Priority": 466,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 468,
+            "Position": 6120,
+            "PanelId": 47,
+            "Priority": 468,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 470,
+            "Position": 6145,
+            "PanelId": 47,
+            "Priority": 470,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 472,
+            "Position": 6170,
+            "PanelId": 47,
+            "Priority": 472,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 474,
+            "Position": 6195,
+            "PanelId": 47,
+            "Priority": 474,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 476,
+            "Position": 6220,
+            "PanelId": 47,
+            "Priority": 476,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 478,
+            "Position": 6245,
+            "PanelId": 47,
+            "Priority": 478,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 480,
+            "Position": 6270,
+            "PanelId": 47,
+            "Priority": 480,
+            "IsFree": true,
+            "BlockLevel": "None"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 48,
+        "Cells": [
+          {
+            "Id": 482,
+            "Position": 6295,
+            "PanelId": 48,
+            "Priority": 482,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 484,
+            "Position": 6320,
+            "PanelId": 48,
+            "Priority": 484,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 486,
+            "Position": 6345,
+            "PanelId": 48,
+            "Priority": 486,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 488,
+            "Position": 6370,
+            "PanelId": 48,
+            "Priority": 488,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 490,
+            "Position": 6395,
+            "PanelId": 48,
+            "Priority": 490,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 492,
+            "Position": 6420,
+            "PanelId": 48,
+            "Priority": 492,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 494,
+            "Position": 6445,
+            "PanelId": 48,
+            "Priority": 494,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 496,
+            "Position": 6470,
+            "PanelId": 48,
+            "Priority": 496,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 498,
+            "Position": 6495,
+            "PanelId": 48,
+            "Priority": 498,
+            "IsFree": true,
+            "BlockLevel": "None"
+          },
+          {
+            "Id": 500,
+            "Position": 6520,
+            "PanelId": 48,
+            "Priority": 500,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          }
+        ]
+      },
+      {
+        "Side": "back",
+        "Id": 49,
+        "Cells": [
+          {
+            "Id": 502,
+            "Position": 6545,
+            "PanelId": 49,
+            "Priority": 502,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 504,
+            "Position": 6570,
+            "PanelId": 49,
+            "Priority": 504,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 506,
+            "Position": 6595,
+            "PanelId": 49,
+            "Priority": 506,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 508,
+            "Position": 6620,
+            "PanelId": 49,
+            "Priority": 508,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 510,
+            "Position": 6645,
+            "PanelId": 49,
+            "Priority": 510,
+            "IsFree": true,
+            "BlockLevel": "Spaceonly"
+          },
+          {
+            "Id": 512,
+            "Position": 6670,
+            "PanelId": 49,
+            "Priority": 512,
             "IsFree": true,
             "BlockLevel": "Spaceonly"
           }
         ]
       }
     ],
-    "SerialNumber": "MV20-0083",
+    "SerialNumber": "MV20-0111",
     "Simulation": false
   },
   "MachineStatistics": [
@@ -3315,12 +4292,7 @@
       "RequiredCycles": 600
     },
     "Bay1ExternalCalibration": {
-      "FeedRate": 1.0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 6
+      "FeedRate": 1.0
     },
     "Bay1FullTest": {
       "FeedRate": 1.0,
@@ -3328,7 +4300,7 @@
       "IsBypassed": false,
       "IsCompleted": false,
       "PerformedCycles": 0,
-      "RequiredCycles": 2
+      "RequiredCycles": 0
     },
     "Bay1HeightCheck": {
       "FeedRate": 0.1,
@@ -3342,11 +4314,11 @@
     },
     "Bay1ProfileCheck": {
       "FeedRate": 1.0,
-      "IsBypassed": true,
+      "IsBypassed": false,
       "IsCompleted": false,
-      "ProfileCorrectDistance": 124.0,
+      "ProfileCorrectDistance": 150.0,
       "ProfileDegrees": 5.0,
-      "ProfileTotalDistance": 215.0
+      "ProfileTotalDistance": 265.0
     },
     "Bay1ShutterTest": {
       "FeedRate": 1.0,
@@ -3365,12 +4337,6 @@
       "RequiredCycles": 0
     },
     "Bay2ExternalCalibration": {
-      "FeedRate": 1.0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 6
     },
     "Bay2FullTest": {
       "FeedRate": 1.0,
@@ -3394,9 +4360,9 @@
       "FeedRate": 1.0,
       "IsBypassed": false,
       "IsCompleted": false,
-      "ProfileCorrectDistance": 124.0,
+      "ProfileCorrectDistance": 150.0,
       "ProfileDegrees": 5.0,
-      "ProfileTotalDistance": 215.0
+      "ProfileTotalDistance": 265.0
     },
     "Bay2ShutterTest": {
       "FeedRate": 1.0,
@@ -3415,12 +4381,6 @@
       "RequiredCycles": 0
     },
     "Bay3ExternalCalibration": {
-      "FeedRate": 1.0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 6
     },
     "Bay3FullTest": {
       "FeedRate": 1.0,
@@ -3458,11 +4418,11 @@
     },
     "BeltBurnishingTest": {
       "FeedRate": 1.0,
-      "InProgress": true,
+      "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
-      "PerformedCycles": 12,
-      "RequiredCycles": 200
+      "PerformedCycles": 0,
+      "RequiredCycles": 180
     },
     "CellPanelsCheck": {
       "FeedRate": 0.2,
@@ -3535,8 +4495,8 @@
     "Id": -1,
     "IsEnabled": false,
     "IsTimeSyncEnabled": false,
-    "LastWmsTimeSync": "0001-01-01T00:00:00+00:00",
-    "ServiceUrl": "http://192.168.1.22:10000/",
+    "LastWmsTimeSync": "2020-03-06T13:29:04.1028916+00:00",
+    "ServiceUrl": "http://192.168.0.137:10000/",
     "TimeSyncIntervalMilliseconds": 10000
   }
 }
