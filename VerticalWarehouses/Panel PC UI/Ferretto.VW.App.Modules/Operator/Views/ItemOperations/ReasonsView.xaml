@@ -203,7 +203,7 @@
 
         <TextBlock FontSize="{DynamicResource FontSize_Normal}"
                    Foreground="{DynamicResource Text_Foreground}"
-                   Text="Seleziona causale" />
+                   Text="{res:Loc OperatorApp.SelectReasons}" />
 
         <ComboBox x:Name="reasonCB"
                   Grid.Row="1"
@@ -220,7 +220,7 @@
                      Margin="0,15,0,0"
                      FontSize="{DynamicResource FontSize_Normal}"
                      Foreground="{DynamicResource Text_Foreground}"
-                     Text="Note" />
+                     Text="{res:Loc OperatorApp.Note}" />
 
           <TextBox Grid.Row="3"
                    MinHeight="100"
