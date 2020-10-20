@@ -173,6 +173,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         this.CanPickBox = false;
                     }
+
                     this.MissionRequestedQuantity = this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity;
                 }
                 else
