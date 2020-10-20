@@ -1,84 +1,84 @@
 {
-    "iisSettings": {
-        "windowsAuthentication": false,
-        "anonymousAuthentication": true,
-        "iisExpress": {
-            "applicationUrl": "http://localhost:63299/",
-            "sslPort": 0
-        }
-    },
-    "profiles": {
-        "MAS (Simulation)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Simulation"
-            }
-        },
-        "MAS (Prototype #1)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Prototype1"
-            }
-        },
-        "MAS (Prototype #2)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Prototype2"
-            }
-        },
-        "MAS (EjLog - Server R&D)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "EjLog_ServerRnD"
-            }
-        },
-        "MAS (EjLog - Localhost)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "EjLog_Localhost"
-            }
-        },
-        "MAS (Bender)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Bender"
-            }
-        },
-        "MAS (Simulation Prototype #2)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "SimulationP2"
-            }
-        },
-        "MAS (Eurofork)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Eurofork"
-            }
-        },
-        "MAS (Todesco)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Todesco"
-            }
-        },
-        "MAS (Essetre)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Essetre"
-            }
-        },
-        "MAS (Agromilk)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Agromilk"
-            }
-        },
-        "MAS (Gasparini)": {
-            "commandName": "Project",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Gasparini"
-            }
-        }
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:63299/",
+      "sslPort": 0
     }
+  },
+  "profiles": {
+    "MAS (Simulation)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Simulation"
+      }
+    },
+    "MAS (Prototype #1)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Prototype1"
+      }
+    },
+    "MAS (Prototype #2)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Prototype2"
+      }
+    },
+    "MAS (EjLog - Server R&D)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "EjLog_ServerRnD"
+      }
+    },
+    "MAS (EjLog - Localhost)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "EjLog_Localhost"
+      }
+    },
+    "MAS (Bender)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Bender"
+      }
+    },
+    "MAS (Simulation Prototype #2)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "SimulationP2"
+      }
+    },
+    "MAS (Eurofork)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Eurofork"
+      }
+    },
+    "MAS (Todesco)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Todesco"
+      }
+    },
+    "MAS (Essetre)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Essetre"
+      }
+    },
+    "MAS (Agromilk)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Agromilk"
+      }
+    },
+    "MAS (Gasparini)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Gasparini"
+      }
+    }
+  }
 }
