@@ -202,12 +202,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     new Task(async () =>
                     {
+                        this.Appear = false;
                         this.IsSearching = true;
                         this.SelectedItem = null;
                         this.currentItemIndex = 0;
                         this.tokenSource = new CancellationTokenSource();
                         await this.ReloadAllItems(this.tokenSource.Token);
                         await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                        this.Appear = true;
                     }).Start();
                 }
             }
@@ -228,12 +230,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     new Task(async () =>
                     {
+                        this.Appear = false;
                         this.IsSearching = true;
                         this.SelectedItem = null;
                         this.currentItemIndex = 0;
                         this.tokenSource = new CancellationTokenSource();
-                        this.ReloadAllItems(this.tokenSource.Token);
+                        await this.ReloadAllItems(this.tokenSource.Token);
                         await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                        this.Appear = true;
                     }).Start();
                 }
             }
