@@ -2833,4 +2833,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="Completed" xml:space="preserve">
     <value>Completato</value>
   </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Risparmio energetico</value>
+  </data>
 </root>

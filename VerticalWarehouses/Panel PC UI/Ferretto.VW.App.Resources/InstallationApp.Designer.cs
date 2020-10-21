@@ -106,6 +106,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Energy saving.
+        /// </summary>
+        public static string AccessoriesBarcodeEnergySaving {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeEnergySaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Setup.
         /// </summary>
         public static string AccessoriesBarcodeEnterSetup {
