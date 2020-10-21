@@ -31,6 +31,8 @@ namespace Ferretto.VW.Installer.Core
 
         IEnumerable<Step> Steps { get; }
 
+        Uri? TsUrl { get; }
+
         #endregion
 
         #region Methods
