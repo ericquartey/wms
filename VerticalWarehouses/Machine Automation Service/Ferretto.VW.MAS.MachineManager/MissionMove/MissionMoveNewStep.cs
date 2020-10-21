@@ -141,7 +141,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (destinationBay.Shutter != null
                             && destinationBay.Shutter.Type != ShutterType.NotSpecified
                             && this.SensorsProvider.GetShutterPosition(destinationBay.Shutter.Inverter.Index) != ShutterPosition.Closed
-                            && this.SensorsProvider.GetShutterPosition(destinationBay.Shutter.Inverter.Index) != ShutterPosition.Opened
                             )
                         {
                             if (showErrors)
@@ -282,6 +281,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 default:
                     // destination is bay, but first we must decide which position to use
                     var bay = this.BaysDataProvider.GetByNumber(requestingBay);
+                    var destinationBay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Destination);
+                    if (destinationBay != null
+                        && destinationBay.Number != bay.Number
+                        )
+                    {
+                        // bay to bay movement
+                        bay = destinationBay;
+                    }
                     if (bay.Positions.Count() == 1)
                     {
                         if (bay.External != null &&
@@ -298,7 +305,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             return false;
                         }
                         // always check upper position
-                        returnValue = this.CheckBayDestination(messageData, requestingBay, bay.Positions.First().Location, mission, showErrors);
+                        returnValue = this.CheckBayDestination(messageData, bay.Number, bay.Positions.First().Location, mission, showErrors);
                         if (returnValue)
                         {
                             mission.LoadUnitDestination = bay.Positions.First().Location;

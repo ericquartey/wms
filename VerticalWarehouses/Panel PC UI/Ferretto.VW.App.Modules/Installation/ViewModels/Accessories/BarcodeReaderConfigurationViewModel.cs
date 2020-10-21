@@ -122,29 +122,59 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     },
                 };
             }
+            else if (deviceModel == DeviceModel.Newland1580 || deviceModel == DeviceModel.Newland3280)
+            {
+                return new List<object>()
+                {
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_enter_setup.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnterSetup,
+                        Number = 2,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_energy_saving.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnergySaving,
+                        Number = 3,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
+                        Number = 4,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_exit_setup.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeExitSetup,
+                        Number = 5,
+                    },
+                };
+            }
             else
             {
                 return new List<object>()
-            {
-                new
                 {
-                    Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_enter_setup.png",
-                    Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnterSetup,
-                    Number = 2,
-                },
-                new
-                {
-                    Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
-                    Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
-                    Number = 3,
-                },
-                new
-                {
-                    Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_exit_setup.png",
-                    Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeExitSetup,
-                    Number = 4,
-                },
-            };
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_enter_setup.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnterSetup,
+                        Number = 2,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
+                        Number = 3,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_exit_setup.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeExitSetup,
+                        Number = 4,
+                    },
+                };
             }
         }
 

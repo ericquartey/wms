@@ -45,6 +45,8 @@ namespace Ferretto.VW.Installer.Core
 
         private string? softwareVersion;
 
+        private Uri? tsUrl;
+
         #endregion
 
         #region Constructors
@@ -109,6 +111,8 @@ namespace Ferretto.VW.Installer.Core
 
         public IEnumerable<Step> Steps { get; private set; } = new List<Step>();
 
+        public Uri? TsUrl => this.tsUrl;
+
         #endregion
 
         #region Methods
@@ -167,6 +171,16 @@ namespace Ferretto.VW.Installer.Core
                     this.masUrl = null;
                 }
 
+                var tsUrlString = config.AppSettings.Settings["TS:BaseUrl"].Value;
+                if (Uri.TryCreate(tsUrlString, UriKind.Absolute, out var tsUrl))
+                {
+                    this.tsUrl = tsUrl;
+                }
+                else
+                {
+                    this.tsUrl = null;
+                }
+
                 var ppcIpAddressString = config.AppSettings.Settings["Install:Parameter:PpcIpAddress"].Value;
                 if (IPAddress.TryParse(ppcIpAddressString, out var ppcIpAddress))
                 {
@@ -182,6 +196,7 @@ namespace Ferretto.VW.Installer.Core
             catch (Exception)
             {
                 this.masUrl = null;
+                this.tsUrl = null;
                 this.ppcIpAddress = null;
             }
         }
@@ -286,6 +301,13 @@ namespace Ferretto.VW.Installer.Core
         public void SetConfiguration(Uri masUrl)
         {
             this.masUrl = masUrl;
+
+            if (this.tsUrl != null)
+            {
+                var tsUri = new UriBuilder(masUrl);
+                tsUri.Port = this.tsUrl.Port;
+                this.tsUrl = tsUri.Uri;
+            }
         }
 
         private void CheckToSkipCurrentStartingStep()

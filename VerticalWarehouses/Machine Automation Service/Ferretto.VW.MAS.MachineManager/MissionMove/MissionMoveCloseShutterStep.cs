@@ -132,9 +132,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || this.Mission.MissionType == MissionType.LoadUnitOperation
                     )
                 {
-                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
-
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                    this.BaysDataProvider.Light(bay.Number, true);
+
                     if (bay.External != null)
                     {
                         newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
