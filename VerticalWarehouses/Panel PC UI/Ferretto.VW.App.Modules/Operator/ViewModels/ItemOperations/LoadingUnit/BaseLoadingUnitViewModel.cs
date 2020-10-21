@@ -684,7 +684,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                                             &&
                                                             ic.ItemId == this.selectedItem.ItemId
                                                             &&
-                                                            ic.Stock == this.selectedItem.Stock) is CompartmentDetails newSelectedItemCompartment)
+                                                            ic.Stock == this.selectedItem.Stock
+                                                            &&
+                                                            ic.ItemSerialNumber == this.selectedItem.ItemSerialNumber) is CompartmentDetails newSelectedItemCompartment)
             {
                 this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
                 this.selectedItemCompartment = newSelectedItemCompartment;
