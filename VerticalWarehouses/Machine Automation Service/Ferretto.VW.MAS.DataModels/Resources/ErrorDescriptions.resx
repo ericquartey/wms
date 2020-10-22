@@ -124,7 +124,7 @@
     <value>Start conditions not met.</value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
-    <value>Loading unit not fully loaded.</value>
+    <value>Load Unit not completely on board</value>
   </data>
   <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
     <value>Inconsistenza sensori elevatore</value>
@@ -247,13 +247,13 @@
     <value>Errore stato serranda</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
-    <value>Destinazione non valida</value>
+    <value>The destination is not correct</value>
   </data>
   <data name="BayInvertersBusy" xml:space="preserve">
     <value>Errore esecuzione comando</value>
   </data>
   <data name="DestinationOverUpperBound" xml:space="preserve">
-    <value>Destinazione non valida</value>
+    <value>The destination is not correct</value>
   </data>
   <data name="IoDeviceError" xml:space="preserve">
     <value>Errore esecuzione comando</value>

@@ -13,221 +13,222 @@
             UseLayoutRounding="True"
             mc:Ignorable="d">
 
-    <Grid Margin="30,0,15,0">
+  <Grid Margin="30,0,15,0">
 
-        <Grid.Resources>
-            <DataTemplate x:Key="BarcodeItemTemplate">
-                <StackPanel Margin="0,0,0,30"
-                            Orientation="Horizontal">
-                    <Border Width="40"
-                            Height="40"
-                            Margin="15"
-                            Background="{StaticResource FerrettoBlue}"
-                            CornerRadius="20">
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="18"
-                                   FontWeight="DemiBold"
-                                   Foreground="White"
-                                   Text="{Binding Number}" />
-                    </Border>
-                    <Border Padding="20,20,20,5"
-                            Background="White">
-                        <StackPanel Orientation="Vertical">
-                            <Image Width="280"
-                                   Source="{Binding Barcode}" />
-                            <TextBlock HorizontalAlignment="Center"
-                                       FontSize="14"
-                                       FontWeight="DemiBold"
-                                       Text="{Binding Title}" />
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-            </DataTemplate>
-        </Grid.Resources>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="Title"
-                           Height="Auto" />
-            <RowDefinition x:Name="Instructions"
-                           Height="Auto" />
-            <RowDefinition x:Name="SystemPortsTitle"
-                           Height="Auto" />
-            <RowDefinition x:Name="SystemPorts"
-                           Height="*" />
-            <RowDefinition x:Name="Refresh" />
-
-        </Grid.RowDefinitions>
-
-
-
-        <TextBlock HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc Menu.AccessoriesBarcodeReaderMenuTitle}"
-                   TextWrapping="WrapWithOverflow" />
-
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="2"
-                   Margin="0,0,0,15"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   FontSize="16"
-                   Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                   Text="{res:Loc InstallationApp.AccessoriesBarcodeReaderConfigurationInstructions}" />
-
-
-        <StackPanel Grid.Row="2"
-                    Grid.Column="0">
-            <StackPanel Margin="0,0,0,30"
-                        Orientation="Horizontal">
-                <Border Width="40"
-                        Height="40"
-                        Margin="15,0,15,15"
-                        VerticalAlignment="Top"
-                        Background="{StaticResource FerrettoBlue}"
-                        CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="18"
-                               FontWeight="DemiBold"
-                               Foreground="White"
-                               Text="1" />
-                </Border>
-                <StackPanel VerticalAlignment="Center"
-                            Orientation="Vertical">
-                    <TextBlock Margin="0,0,0,10"
-                               VerticalAlignment="Center"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="Seleziona il modello" />
-                    <RadioButton Margin="5"
-                                 GroupName="ModelNameRadioGroup"
-                                 IsChecked="{Binding IsNewland1550, Mode=TwoWay}">
-                        <RadioButton.Content>
-                            <TextBlock Margin="0,5,0,0"
-                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                       Text="Newland 1550" />
-                        </RadioButton.Content>
-                    </RadioButton>
-
-                    <RadioButton Margin="5"
-                                 GroupName="ModelNameRadioGroup"
-                                 IsChecked="{Binding IsNewland1580, Mode=TwoWay}">
-                        <RadioButton.Content>
-                            <TextBlock Margin="0,5,0,0"
-                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                       Text="Newland 1580" />
-                        </RadioButton.Content>
-                    </RadioButton>
-
-                    <RadioButton Margin="5"
-                                 GroupName="ModelNameRadioGroup"
-                                 IsChecked="{Binding IsNewland3280, Mode=TwoWay}">
-                        <RadioButton.Content>
-                            <TextBlock Margin="0,5,0,0"
-                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                       Text="Newland 3280" />
-                        </RadioButton.Content>
-                    </RadioButton>
-
-                    <RadioButton Margin="5"
-                                 GroupName="ModelNameRadioGroup"
-                                 IsChecked="{Binding IsNewland3290, Mode=TwoWay}">
-                        <RadioButton.Content>
-                            <TextBlock Margin="0,5,0,0"
-                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                       Text="Newland 3290" />
-                        </RadioButton.Content>
-                    </RadioButton>
-
-                    <RadioButton Margin="5"
-                                 GroupName="ModelNameRadioGroup"
-                                 IsChecked="{Binding IsDatalogicPBT9501, Mode=TwoWay}">
-                        <RadioButton.Content>
-                            <TextBlock Margin="0,5,0,0"
-                                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                       Text="Datalogic PBT9501" />
-                        </RadioButton.Content>
-                    </RadioButton>
-
-                </StackPanel>
-
-
-
+    <Grid.Resources>
+      <DataTemplate x:Key="BarcodeItemTemplate">
+        <StackPanel Margin="0,0,0,30"
+                    Orientation="Horizontal">
+          <Border Width="40"
+                  Height="40"
+                  Margin="15"
+                  Background="{StaticResource FerrettoBlue}"
+                  CornerRadius="20">
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="18"
+                       FontWeight="DemiBold"
+                       Foreground="White"
+                       Text="{Binding Number}" />
+          </Border>
+          <Border Padding="20,2,20,0"
+                  Background="White">
+            <StackPanel Orientation="Vertical">
+              <Image Width="280"
+                     Height="{Binding ImageHeight}"
+                     Source="{Binding Barcode}" />
+              <TextBlock HorizontalAlignment="Center"
+                         FontSize="14"
+                         FontWeight="DemiBold"
+                         Text="{Binding Title}" />
             </StackPanel>
+          </Border>
+        </StackPanel>
+      </DataTemplate>
+    </Grid.Resources>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+
+    <Grid.RowDefinitions>
+      <RowDefinition x:Name="Title"
+                     Height="Auto" />
+      <RowDefinition x:Name="Instructions"
+                     Height="Auto" />
+      <RowDefinition x:Name="SystemPortsTitle"
+                     Height="Auto" />
+      <RowDefinition x:Name="SystemPorts"
+                     Height="*" />
+      <RowDefinition x:Name="Refresh" />
+
+    </Grid.RowDefinitions>
+
+
+
+    <TextBlock HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc Menu.AccessoriesBarcodeReaderMenuTitle}"
+               TextWrapping="WrapWithOverflow" />
+
+    <TextBlock Grid.Row="1"
+               Grid.ColumnSpan="2"
+               Margin="0,0,0,15"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               FontSize="16"
+               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+               Text="{res:Loc InstallationApp.AccessoriesBarcodeReaderConfigurationInstructions}" />
+
+
+    <StackPanel Grid.Row="2"
+                Grid.Column="0">
+      <StackPanel Margin="0,0,0,30"
+                  Orientation="Horizontal">
+        <Border Width="40"
+                Height="40"
+                Margin="15,0,15,15"
+                VerticalAlignment="Top"
+                Background="{StaticResource FerrettoBlue}"
+                CornerRadius="20">
+          <TextBlock HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     FontSize="18"
+                     FontWeight="DemiBold"
+                     Foreground="White"
+                     Text="1" />
+        </Border>
+        <StackPanel VerticalAlignment="Center"
+                    Orientation="Vertical">
+          <TextBlock Margin="0,0,0,10"
+                     VerticalAlignment="Center"
+                     FontSize="18"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                     Text="Seleziona il modello" />
+          <RadioButton Margin="5"
+                       GroupName="ModelNameRadioGroup"
+                       IsChecked="{Binding IsNewland1550, Mode=TwoWay}">
+            <RadioButton.Content>
+              <TextBlock Margin="0,5,0,0"
+                         Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                         Text="Newland 1550" />
+            </RadioButton.Content>
+          </RadioButton>
+
+          <RadioButton Margin="5"
+                       GroupName="ModelNameRadioGroup"
+                       IsChecked="{Binding IsNewland1580, Mode=TwoWay}">
+            <RadioButton.Content>
+              <TextBlock Margin="0,5,0,0"
+                         Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                         Text="Newland 1580" />
+            </RadioButton.Content>
+          </RadioButton>
+
+          <RadioButton Margin="5"
+                       GroupName="ModelNameRadioGroup"
+                       IsChecked="{Binding IsNewland3280, Mode=TwoWay}">
+            <RadioButton.Content>
+              <TextBlock Margin="0,5,0,0"
+                         Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                         Text="Newland 3280" />
+            </RadioButton.Content>
+          </RadioButton>
+
+          <RadioButton Margin="5"
+                       GroupName="ModelNameRadioGroup"
+                       IsChecked="{Binding IsNewland3290, Mode=TwoWay}">
+            <RadioButton.Content>
+              <TextBlock Margin="0,5,0,0"
+                         Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                         Text="Newland 3290" />
+            </RadioButton.Content>
+          </RadioButton>
+
+          <RadioButton Margin="5"
+                       GroupName="ModelNameRadioGroup"
+                       IsChecked="{Binding IsDatalogicPBT9501, Mode=TwoWay}">
+            <RadioButton.Content>
+              <TextBlock Margin="0,5,0,0"
+                         Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                         Text="Datalogic PBT9501 / PBT9100" />
+            </RadioButton.Content>
+          </RadioButton>
 
         </StackPanel>
 
-        <ItemsControl Grid.Row="2"
-                      Grid.Column="1"
-                      Background="Transparent"
-                      BorderThickness="0"
-                      Focusable="False"
-                      ItemTemplate="{StaticResource BarcodeItemTemplate}"
-                      ItemsSource="{Binding BarcodeSteps}" />
 
 
-        <StackPanel Grid.Row="2"
-                    Grid.Column="2">
-            <StackPanel Margin="0,0,0,30"
-                        Orientation="Horizontal">
-                <Border Width="40"
-                        Height="40"
-                        Margin="15,0,15,15"
-                        Background="{StaticResource FerrettoBlue}"
-                        CornerRadius="20">
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="18"
-                               FontWeight="DemiBold"
-                               Foreground="White"
-                               Text="5" />
+      </StackPanel>
+
+    </StackPanel>
+
+    <ItemsControl Grid.Row="2"
+                  Grid.Column="1"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  Focusable="False"
+                  ItemTemplate="{StaticResource BarcodeItemTemplate}"
+                  ItemsSource="{Binding BarcodeSteps}" />
+
+
+    <StackPanel Grid.Row="2"
+                Grid.Column="2">
+      <StackPanel Margin="0,0,0,30"
+                  Orientation="Horizontal">
+        <Border Width="40"
+                Height="40"
+                Margin="15,0,15,15"
+                Background="{StaticResource FerrettoBlue}"
+                CornerRadius="20">
+          <TextBlock HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     FontSize="18"
+                     FontWeight="DemiBold"
+                     Foreground="White"
+                     Text="5" />
+        </Border>
+        <StackPanel VerticalAlignment="Center"
+                    Orientation="Vertical">
+          <TextBlock VerticalAlignment="Center"
+                     FontSize="18"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                     Text="{res:Loc InstallationApp.CheckSerialPorts}" />
+
+          <ItemsControl Background="Transparent"
+                        BorderBrush="Transparent"
+                        Focusable="False"
+                        ItemsSource="{Binding PortNames}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border MinWidth="70"
+                        Margin="5"
+                        Padding="10"
+                        Background="{StaticResource FerrettoLightGray}">
+                  <TextBlock HorizontalAlignment="Center"
+                             FontSize="14"
+                             FontWeight="DemiBold"
+                             Text="{Binding .}" />
                 </Border>
-                <StackPanel VerticalAlignment="Center"
-                            Orientation="Vertical">
-                    <TextBlock VerticalAlignment="Center"
-                               FontSize="18"
-                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{res:Loc InstallationApp.CheckSerialPorts}" />
-
-                    <ItemsControl Background="Transparent"
-                                  BorderBrush="Transparent"
-                                  Focusable="False"
-                                  ItemsSource="{Binding PortNames}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border MinWidth="70"
-                                        Margin="5"
-                                        Padding="10"
-                                        Background="{StaticResource FerrettoLightGray}">
-                                    <TextBlock HorizontalAlignment="Center"
-                                               FontSize="14"
-                                               FontWeight="DemiBold"
-                                               Text="{Binding .}" />
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-
-
-
-            </StackPanel>
-
-
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
         </StackPanel>
 
-    </Grid>
+
+
+      </StackPanel>
+
+
+    </StackPanel>
+
+  </Grid>
 </ctrls:View>

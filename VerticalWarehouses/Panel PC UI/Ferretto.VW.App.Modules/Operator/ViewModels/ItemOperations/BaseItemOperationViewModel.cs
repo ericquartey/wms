@@ -200,7 +200,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return;
                 }
 
-                this.selectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.missionOperation.CompartmentId && s.ItemId == this.MissionOperation.ItemId).SingleOrDefault();
+                this.selectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.missionOperation.CompartmentId && s.ItemId == this.MissionOperation.ItemId).FirstOrDefault();
 
                 this.RaisePropertyChanged(nameof(this.SelectedCompartmentDetail));
                 this.RaisePropertyChanged(nameof(this.ItemId));
