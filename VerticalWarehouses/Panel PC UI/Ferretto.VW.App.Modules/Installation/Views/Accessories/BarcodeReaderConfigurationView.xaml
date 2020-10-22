@@ -31,7 +31,7 @@
                        Foreground="White"
                        Text="{Binding Number}" />
           </Border>
-          <Border Padding="20,20,20,5"
+          <Border Padding="20,2,20,0"
                   Background="White">
             <StackPanel Orientation="Vertical">
               <Image Width="280"
