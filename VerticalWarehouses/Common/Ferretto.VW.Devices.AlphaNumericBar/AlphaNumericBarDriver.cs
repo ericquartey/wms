@@ -32,7 +32,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private IPAddress ipAddress;
 
-        private AlphaNumericBarSize size = AlphaNumericBarSize.Medium;
+        private AlphaNumericBarSize size = AlphaNumericBarSize.ExtraLarge;
 
         private bool testEnabled;
 
@@ -199,6 +199,30 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
 
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        public int GetOffsetStartPosition(double loadingUnitWidth, double x, string message)
+        {
+            var offset = 0;
+
+            if (x < 0)
+            {
+                return offset;
+            }
+
+            offset = (int)Math.Round(((int)this.Size) * 8 / loadingUnitWidth * x);
+
+            if (offset + (message.Length * 6) >= this.NumberOfLeds) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
+            {
+                offset = this.NumberOfLeds - (message.Length * 6);
+            }
+
+            if (offset < 0)
+            {
+                offset = 0;
+            }
+
+            return offset;
         }
 
         /// <summary>
