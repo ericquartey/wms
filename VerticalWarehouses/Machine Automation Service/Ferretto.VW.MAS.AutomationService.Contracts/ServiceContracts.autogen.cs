@@ -2282,8 +2282,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial class AlphaNumericBar : TcpIpAccessory
     {
         [Newtonsoft.Json.JsonProperty("Size", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public AlphaNumericBarSize Size { get; set; }
     
         public string ToJson() 
@@ -2301,20 +2299,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum AlphaNumericBarSize
     {
-        [System.Runtime.Serialization.EnumMember(Value = @"ExtraSmall")]
-        ExtraSmall = 0,
+        ExtraSmall = 51,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Small")]
-        Small = 1,
+        Small = 64,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Medium")]
-        Medium = 2,
+        Medium = 80,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"Large")]
-        Large = 3,
+        Large = 96,
     
-        [System.Runtime.Serialization.EnumMember(Value = @"ExtraLarge")]
-        ExtraLarge = 4,
+        ExtraLarge = 112,
     
     }
     
