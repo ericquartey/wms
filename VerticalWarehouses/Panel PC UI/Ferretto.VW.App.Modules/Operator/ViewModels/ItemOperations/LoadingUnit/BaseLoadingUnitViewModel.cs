@@ -54,6 +54,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private IEnumerable<CompartmentDetails> itemsCompartments;
 
+        private bool itemSerialNumberVisibility;
+
         private DelegateCommand itemUpCommand;
 
         private double loadingUnitDepth;
@@ -202,8 +204,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.itemsCompartments, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool ItemSerialNumberVisibility
+        {
+            get => this.itemSerialNumberVisibility;
+            set => this.SetProperty(ref this.itemSerialNumberVisibility, value);
+        }
+
         public ICommand ItemUpCommand =>
-            this.itemUpCommand
+                    this.itemUpCommand
             ??
             (this.itemUpCommand = new DelegateCommand(() => this.ChangeSelectedItem(true), this.CanSelectPreviousItem));
 
@@ -341,6 +349,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async override Task OnAppearedAsync()
         {
+            this.ItemSerialNumberVisibility = false;
+
             string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
 
             this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
@@ -387,6 +397,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.LoadingUnit));
             this.RaisePropertyChanged(nameof(this.SelectedItem));
             this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
+            this.RaisePropertyChanged(nameof(this.ItemSerialNumberVisibility));
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -609,6 +620,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void SetItems()
         {
             this.Items = this.ItemsCompartments.Where(ic => ic.Id == this.selectedCompartment.Id && ic.ItemId.HasValue);
+
+            if (this.items.Where(s => s.ItemSerialNumber != null).Any())
+            {
+                this.ItemSerialNumberVisibility = true;
+            }
+            else
+            {
+                this.ItemSerialNumberVisibility = false;
+            }
+
+            this.RaisePropertyChanged(nameof(this.ItemSerialNumberVisibility));
         }
 
         private void SetItemsAndCompartment()
