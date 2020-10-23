@@ -2620,7 +2620,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Controlla porte seriali</value>
   </data>
   <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
-    <value>Sparare questi codici a barre per configurare il lettore in emulazione seriale.</value>
+    <value>Seleziona in sequenza i codici a barre per configurare il lettore in emulazione seriale.</value>
   </data>
   <data name="Operator" xml:space="preserve">
     <value>Operatore</value>
