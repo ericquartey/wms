@@ -54,7 +54,7 @@
             "Location": "InternalBay1Up",
             "MaxDoubleHeight": 0.0,
             "MaxSingleHeight": 695.0,
-            "ProfileOffset": 50.0
+            "ProfileOffset": 25.0
           }
         ],
         "Resolution": 296.2282068,
