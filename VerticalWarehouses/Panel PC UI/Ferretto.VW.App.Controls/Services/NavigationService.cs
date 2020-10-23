@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using DevExpress.Xpf.WindowsUI;
 using Ferretto.VW.App.Controls.Services;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;
@@ -38,7 +39,7 @@ namespace Ferretto.VW.App.Controls
         #region Constructors
 
         public NavigationService(
-                    IUnityContainer unityContainer,
+            IUnityContainer unityContainer,
             IRegionManager regionManager,
             IEventAggregator eventAggregator,
             IModuleManager moduleManager)
@@ -85,18 +86,79 @@ namespace Ferretto.VW.App.Controls
         {
             if (!MvvmNaming.IsViewModelNameValid(viewModelName))
             {
-                this.logger.Warn($"Unable to navigate to view '{moduleName}.{viewModelName}' because its name is invalid.");
+                this.logger.Warn($"Appear| Unable to navigate to view '{moduleName}.{viewModelName}' because its name is invalid.");
                 return;
             }
+
+            // Scratch variable used to force the appearance of view
+            var activeViewForceToAppear = false;
 
             var activeViewModel = this.GetActiveViewModel();
             if (activeViewModel?.GetType()?.Name == viewModelName)
             {
-                this.logger.Warn($"Requested view '{moduleName}.{viewModelName}' is already active.");
-                return;
+                //this.logger.Warn($"Requested view '{moduleName}.{viewModelName}' is already active.");
+                //return;
+
+                //
+                // This code has been introduced to handling the behavior of loading unit view for a internal double bay vs the other configuration's bay.
+                // For other configuration's bay (like BES, BIG, BIS):
+                //  - the view is not forced to be displayed
+                // For internal double bay:
+                //  - the active view disappears, and it is forced to re-appear in order to display the correct information of loading unit
+                //    the view is of Operator.ItemOperations.LOADING_UNIT type (mandatory)
+                if (activeViewModel?.GetType()?.Name == Ferretto.VW.Utils.Modules.Operator.ItemOperations.LOADING_UNIT)
+                {
+                    this.logger.Trace($"Appear| ActiveViewModel={activeViewModel?.GetType()?.Name} :: Requested viewNodelName={viewModelName}, NavigationStack count={this.navigationStack.Count}");
+                    // Retrieve the view from the navigation stack
+                    if (this.navigationStack.Count > 0)
+                    {
+                        var currentViewRecord = this.navigationStack.Peek();
+
+                        // Current view must be referred a loading unit and data argument is not null (it is referred to a loading unit)
+                        if (currentViewRecord.Id != null && data != null)
+                        {
+                            var id = currentViewRecord.Id;
+                            var loadingUnitId = ((int?)data).Value;
+
+                            // Check if current view are referred to the same loading unit
+                            if (id == loadingUnitId)
+                            {
+                                this.logger.Warn($"Appear| Requested view '{moduleName}.{viewModelName}' is already active.");
+                                return;
+                            }
+                            else
+                            {
+                                // You have a view related to a different loading unit respect the current one displayed.
+                                // The active view is disappeared and it is forced the re-appearance of this view (the view displays the
+                                // correct loading unit data)
+                                this.logger.Debug($"Appear| Id current view: {id} - loading unit Id: {loadingUnitId}");
+                                activeViewForceToAppear = true;
+                            }
+                        }
+                        else
+                        {
+                            // If the incoming view to be displayed (ref. data) and the actual active view are not of same type,
+                            // the active view is not handled
+                            this.logger.Warn($"Appear| Requested view '{moduleName}.{viewModelName}' is already active.");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        // If navigation stack is empty, it forces the displayment of loading unit view
+                        this.logger.Warn($"Appear| Requested view '{moduleName}.{viewModelName}' is already active. (navigationStack.Count == 0!)");
+                        activeViewForceToAppear = true;
+                    }
+                }
+                else
+                {
+                    // The active view requested (it is not of Operator.ItemOperations.LOADING_UNIT type) is already active.
+                    this.logger.Warn($"Requested view '{moduleName}.{viewModelName}' is already active.");
+                    return;
+                }
             }
 
-            this.logger.Trace($"Navigating to view '{moduleName}.{viewModelName}'.");
+            this.logger.Trace($"Appear| Navigating to view '{moduleName}.{viewModelName}'.");
 
             try
             {
@@ -113,7 +175,7 @@ namespace Ferretto.VW.App.Controls
                 if (this.navigationStack.Count > 0)
                 {
                     var currentViewRecord = this.navigationStack.Peek();
-                    this.logger.Trace($"Marking view '{currentViewRecord.ModuleName}.{currentViewRecord.ViewModelName}' as trackable.");
+                    this.logger.Trace($"Appear| Marking view '{currentViewRecord.ModuleName}.{currentViewRecord.ViewModelName}' as trackable.");
                     currentViewRecord.IsTrackable = trackCurrentView;
 
                     this.navigationStack.Where(s => s.ModuleName == moduleName
@@ -123,7 +185,7 @@ namespace Ferretto.VW.App.Controls
                                              s.IsTrackable).All(ns => ns.IsTrackable = false);
                 }
 
-                this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName));
+                this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName, (int?)data));
 
                 this.eventAggregator
                     .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
@@ -131,7 +193,16 @@ namespace Ferretto.VW.App.Controls
             }
             catch (Exception ex)
             {
-                this.logger.Error(ex, $"Cannot show view '{moduleName}.{viewModelName}'.");
+                this.logger.Error(ex, $"Appear| Cannot show view '{moduleName}.{viewModelName}'. Reason:{ex.Message}");
+            }
+
+            // This snippet code is added to force to re-appear the current active view.
+            // In this manner the view (of type Operator.ItemOperations.LOADING_UNIT) is updated with the correct loading unit
+            // existing in bay (used for internal double bay)
+            if (activeViewForceToAppear)
+            {
+                this.logger.Trace($"Appear| It is forced to re-appear the {viewModelName} view...");
+                activeViewModel.OnAppearedAsync();
             }
         }
 
@@ -370,6 +441,16 @@ namespace Ferretto.VW.App.Controls
 
         private void DisappearActiveView()
         {
+            var activeViewModel = this.GetActiveViewModel();
+            if (activeViewModel != null)
+            {
+                this.logger.Debug($"DisappearActiveView| activeView:{activeViewModel.GetType().Name}");
+            }
+            else
+            {
+                this.logger.Debug($"DisappearActiveView| activeView: NULL");
+            }
+
             this.GetActiveViewModel()?.Disappear();
         }
 

@@ -10,211 +10,211 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
 
-  <UserControl.Resources>
+    <UserControl.Resources>
 
-    <Style x:Key="OperationIndicatorStyle"
-           BasedOn="{StaticResource BorderTimeLinePath}"
-           TargetType="{x:Type Path}">
-      <Setter Property="Width" Value="23" />
-      <Setter Property="Height" Value="25" />
-      <Setter Property="Stretch" Value="Fill" />
-      <Setter Property="HorizontalAlignment" Value="Right" />
-      <Setter Property="VerticalAlignment" Value="Bottom" />
-      <Setter Property="StrokeThickness" Value="2" />
-      <Setter Property="StrokeThickness" Value="2" />
-      <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
-      <Setter Property="RenderTransform">
-        <Setter.Value>
-          <TransformGroup>
-            <ScaleTransform />
-            <SkewTransform />
-            <RotateTransform Angle="180" />
-            <TranslateTransform />
-          </TransformGroup>
-        </Setter.Value>
-      </Setter>
-    </Style>
+        <Style x:Key="OperationIndicatorStyle"
+               BasedOn="{StaticResource BorderTimeLinePath}"
+               TargetType="{x:Type Path}">
+            <Setter Property="Width" Value="23" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="Stretch" Value="Fill" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform Angle="180" />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-    <Style x:Key="AdjustIndicatorStyle"
-           BasedOn="{StaticResource OperationIndicatorStyle}"
-           TargetType="{x:Type Path}">
-      <Setter Property="Margin" Value="0,55,-20,-55" />
-    </Style>
+        <Style x:Key="AdjustIndicatorStyle"
+               BasedOn="{StaticResource OperationIndicatorStyle}"
+               TargetType="{x:Type Path}">
+            <Setter Property="Margin" Value="0,55,-20,-55" />
+        </Style>
 
-    <Style x:Key="PickIndicatorStyle"
-           BasedOn="{StaticResource OperationIndicatorStyle}"
-           TargetType="{x:Type Path}">
-      <Setter Property="Margin" Value="0,130,-20,-130" />
-    </Style>
+        <Style x:Key="PickIndicatorStyle"
+               BasedOn="{StaticResource OperationIndicatorStyle}"
+               TargetType="{x:Type Path}">
+            <Setter Property="Margin" Value="0,130,-20,-130" />
+        </Style>
 
-    <Style x:Key="PutIndicatorStyle"
-           BasedOn="{StaticResource OperationIndicatorStyle}"
-           TargetType="{x:Type Path}">
-      <Setter Property="Margin" Value="0,205,-20,-205" />
-    </Style>
+        <Style x:Key="PutIndicatorStyle"
+               BasedOn="{StaticResource OperationIndicatorStyle}"
+               TargetType="{x:Type Path}">
+            <Setter Property="Margin" Value="0,205,-20,-205" />
+        </Style>
 
-  </UserControl.Resources>
+    </UserControl.Resources>
 
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="25" />
-      <RowDefinition />
-    </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-    <Border Grid.Row="1"
-            Background="{StaticResource PpcBackground}"
-            BorderBrush="{StaticResource PpcBorderBrush}"
-            BorderThickness="{StaticResource PpcBorderThickness}"
-            CornerRadius="2,0,0,2"
-            Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}">
-      <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="5" />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+        <Border Grid.Row="1"
+                Background="{StaticResource PpcBackground}"
+                BorderBrush="{StaticResource PpcBorderBrush}"
+                BorderThickness="{StaticResource PpcBorderThickness}"
+                CornerRadius="2,0,0,2"
+                Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-        <ctrls:PpcImage Grid.Row="0"
-                        Grid.Column="0"
-                        Width="180"
-                        Height="180"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Path="{Binding SelectedItemCompartment.ItemId}"
-                        Stretch="UniformToFill" />
+                <ctrls:PpcImage Grid.Row="0"
+                                Grid.Column="0"
+                                Width="180"
+                                Height="180"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Path="{Binding SelectedItemCompartment.ItemId}"
+                                Stretch="UniformToFill" />
 
-        <Grid Grid.Column="2">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-          </Grid.RowDefinitions>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-          <Grid Grid.Row="0"
-                Grid.Column="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto" />
-              <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0"
+                          Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-            <controls:PpcLabeledText Margin="10,10,50,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding SelectedItemCompartment.ItemCode}"
-                                     LabelText="{res:Loc OperatorApp.ItemSearchGridItem}" />
+                        <controls:PpcLabeledText Margin="10,10,50,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 ContentText="{Binding SelectedItemCompartment.ItemCode}"
+                                                 LabelText="{res:Loc OperatorApp.ItemSearchGridItem}" />
 
-            <controls:PpcLabeledText Grid.Column="1"
-                                     Margin="0,10,0,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding SelectedItemCompartment.ItemDescription}"
-                                     LabelText="{res:Loc OperatorApp.CommonItemDescription}" />
-          </Grid>
+                        <controls:PpcLabeledText Grid.Column="1"
+                                                 Margin="0,10,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 ContentText="{Binding SelectedItemCompartment.ItemDescription}"
+                                                 LabelText="{res:Loc OperatorApp.CommonItemDescription}" />
+                    </Grid>
 
 
 
-          <Grid Grid.Row="1"
-                Grid.Column="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition />
-              <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="1"
+                          Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-            <controls:PpcLabeledText Grid.Column="1"
-                                     Margin="10,10,0,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding SelectedItemCompartment.Stock}"
-                                     LabelText="{res:Loc OperatorApp.ItemStock}"
-                                     Visibility="{Binding IsItemStockVisible, Converter={StaticResource BTVC}}" />
+                        <controls:PpcLabeledText Grid.Column="1"
+                                                 Margin="10,10,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 ContentText="{Binding SelectedItemCompartment.Stock}"
+                                                 LabelText="{res:Loc OperatorApp.ItemStock}"
+                                                 Visibility="{Binding IsItemStockVisible, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcLabeledText Margin="10,10,0,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding SelectedItemCompartment.Lot}"
-                                     LabelText="{res:Loc OperatorApp.Lot}" />
-          </Grid>
+                        <controls:PpcLabeledText Margin="10,10,0,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 ContentText="{Binding SelectedItemCompartment.Lot}"
+                                                 LabelText="{res:Loc OperatorApp.Lot}" />
+                    </Grid>
 
-          <Grid Grid.Row="2"
-                Grid.Column="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition />
-              <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="2"
+                          Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-            <ctrls:PpcSpinEdit Width="230"
-                               Height="90"
-                               Margin="0,5,0,0"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Increment="{Binding QuantityIncrement}"
-                               IsEnabled="{Binding CanInputQuantity}"
-                               LabelText="{Binding InputQuantityInfo}"
-                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                               MinValue="0" />
+                        <ctrls:PpcSpinEdit Width="230"
+                                           Height="90"
+                                           Margin="0,5,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           Increment="{Binding QuantityIncrement}"
+                                           IsEnabled="{Binding CanInputQuantity}"
+                                           LabelText="{Binding InputQuantityInfo}"
+                                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                                           MinValue="0" />
 
-            <controls:PpcButton Grid.Column="1"
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Command="{Binding ConfirmOperationCommand}"
-                                Content="{Binding ConfirmOperationInfo}"
-                                IsBusy="{Binding IsBusyConfirmingOperation}" />
-          </Grid>
-        </Grid>
-      </Grid>
-    </Border>
+                        <controls:PpcButton Grid.Column="1"
+                                            Margin="0,5,0,0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding ConfirmOperationCommand}"
+                                            Content="{Binding ConfirmOperationInfo}"
+                                            IsBusy="{Binding IsBusyConfirmingOperation}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
 
-    <Border Grid.Row="1"
-            Background="{StaticResource PpcBackground}"
-            BorderBrush="{StaticResource PpcBorderBrush}"
-            BorderThickness="{StaticResource PpcBorderThickness}"
-            CornerRadius="2,0,0,2"
-            Visibility="{Binding IsBoxOperationVisible, Converter={StaticResource BTVC}}">
-      <Grid Margin="10">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="5" />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+        <Border Grid.Row="1"
+                Background="{StaticResource PpcBackground}"
+                BorderBrush="{StaticResource PpcBorderBrush}"
+                BorderThickness="{StaticResource PpcBorderThickness}"
+                CornerRadius="2,0,0,2"
+                Visibility="{Binding IsBoxOperationVisible, Converter={StaticResource BTVC}}">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="2">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-          </Grid.RowDefinitions>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-          <Grid Grid.Row="0"
-                Grid.Column="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto" />
-              <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0"
+                          Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-            <controls:PpcLabeledText Margin="10,10,50,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding SelectedCompartment.Barcode}"
-                                     LabelText="{res:Loc OperatorApp.Box}" />
+                        <controls:PpcLabeledText Margin="10,10,50,0"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top"
+                                                 ContentText="{Binding SelectedCompartment.Barcode}"
+                                                 LabelText="{res:Loc OperatorApp.Box}" />
 
-            <!--<controls:PpcLabeledText Grid.Column="1"
+                        <!--<controls:PpcLabeledText Grid.Column="1"
                                      Margin="0,10,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding SelectedItemCompartment.ItemDescription}"
                                      LabelText="{res:Loc OperatorApp.CommonItemDescription}" />-->
-          </Grid>
+                    </Grid>
 
-          <Grid Grid.Row="1"
-                Grid.Column="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition />
-              <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="1"
+                          Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-            <!--<controls:PpcLabeledText Grid.Column="1"
+                        <!--<controls:PpcLabeledText Grid.Column="1"
                                      Margin="10,10,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
@@ -228,56 +228,56 @@
                                      ContentText="{Binding SelectedItemCompartment.Lot}"
                                      LabelText="{res:Loc OperatorApp.Lot}" />-->
 
-            <controls:PpcTextBox Width="250"
-                                 Margin="10,10,0,0"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 InputScope="Default"
-                                 InputText="{Binding InputBoxCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{res:Loc OperatorApp.Code}" />
-          </Grid>
+                        <controls:PpcTextBox Width="250"
+                                             Margin="10,10,0,0"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top"
+                                             InputScope="Default"
+                                             InputText="{Binding InputBoxCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             LabelText="{res:Loc OperatorApp.Code}" />
+                    </Grid>
 
-          <Grid Grid.Row="2"
-                Grid.Column="2">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition />
-              <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="2"
+                          Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-            <controls:PpcButton Grid.Column="0"
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Command="{Binding InsertOperationCommand}"
-                                Content="{res:Loc OperatorApp.InsertBox}"
-                                IsBusy="{Binding IsBusyConfirmingOperation}" />
+                        <controls:PpcButton Grid.Column="0"
+                                            Margin="0,5,0,0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding InsertOperationCommand}"
+                                            Content="{res:Loc OperatorApp.InsertBox}"
+                                            IsBusy="{Binding IsBusyConfirmingOperation}" />
 
-            <controls:PpcButton Grid.Column="1"
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Command="{Binding RemoveOperationCommand}"
-                                Content="{res:Loc OperatorApp.RemoveBox}"
-                                IsBusy="{Binding IsBusyConfirmingOperation}" />
-          </Grid>
-        </Grid>
-      </Grid>
-    </Border>
+                        <controls:PpcButton Grid.Column="1"
+                                            Margin="0,5,0,0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding RemoveOperationCommand}"
+                                            Content="{res:Loc OperatorApp.RemoveBox}"
+                                            IsBusy="{Binding IsBusyConfirmingOperation}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
 
-    <Grid>
-      <!--<Path Style="{StaticResource AdjustIndicatorStyle}"
+        <Grid>
+            <!--<Path Style="{StaticResource AdjustIndicatorStyle}"
             Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}" />-->
 
-      <Path Style="{StaticResource PickIndicatorStyle}"
-            Visibility="{Binding IsBoxOperationVisible, Converter={StaticResource BTVC}}" />
+            <Path Style="{StaticResource PickIndicatorStyle}"
+                  Visibility="{Binding IsBoxOperationVisible, Converter={StaticResource BTVC}}" />
 
-      <!--<Path Style="{StaticResource PutIndicatorStyle}"
+            <!--<Path Style="{StaticResource PutIndicatorStyle}"
             Visibility="{Binding IsPutVisible, Converter={StaticResource BTVC}}" />-->
 
-      <Path Style="{StaticResource PutIndicatorStyle}"
-            Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}" />
+            <Path Style="{StaticResource PutIndicatorStyle}"
+                  Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}" />
+
+        </Grid>
 
     </Grid>
-
-  </Grid>
 </UserControl>

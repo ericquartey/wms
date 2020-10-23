@@ -29,8 +29,8 @@
             <TextBlock Grid.ColumnSpan="2"
                        Margin="0,10,15,10"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
-                <Run Text="{res:Loc OperatorApp.LoadingUnitIdInfo}"/> <Run Text="{Binding LoadingUnit.Id}"/> <Run Text="{res:Loc OperatorApp.LoadingUnitOutBay}"/>
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                <Run Text="{res:Loc OperatorApp.LoadingUnitIdInfo}" /> <Run Text="{Binding LoadingUnit.Id}" /> <Run Text="{res:Loc OperatorApp.LoadingUnitOutBay}" />
             </TextBlock>
         </StackPanel>
 
@@ -56,8 +56,8 @@
                                 Orientation="Vertical">
                         <TextBlock Margin="20"
                                    HorizontalAlignment="Center"
-                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" >
-                            <Run Text="{res:Loc OperatorApp.LoadingUnitIdInfo}"/> <Run Text="{Binding LoadingUnit.Id}"/>
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                            <Run Text="{res:Loc OperatorApp.LoadingUnitIdInfo}" /> <Run Text="{Binding LoadingUnit.Id}" />
                         </TextBlock>
                         <TextBlock Margin="20,0"
                                    HorizontalAlignment="Center"
