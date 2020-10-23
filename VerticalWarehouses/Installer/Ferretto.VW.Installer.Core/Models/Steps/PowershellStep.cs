@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.Installer.Core
@@ -57,17 +58,29 @@ namespace Ferretto.VW.Installer.Core
 
             try
             {
-                using var shell = PowerShell.Create();
-                shell.AddScript(command);
-
-                using var output = new PSDataCollection<PSObject>();
-                output.DataAdded += (object snd, DataAddedEventArgs evt) => this.OnDataAdded(snd, evt, shell);
-                var result = await shell.InvokeAsync<PSObject, PSObject>(null, output);
-                if (shell.HadErrors)
+                // we use the process instance to have 64 bit shell
+                using (PowerShellProcessInstance pspi = new PowerShellProcessInstance())
                 {
-                    this.Execution.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
-                    this.Execution.LogError("Errors encountered while running the script.");
-                    return false;
+                    string psfn = pspi.Process.StartInfo.FileName;
+                    psfn = psfn.ToLowerInvariant().Replace("\\syswow64\\", "\\sysnative\\");
+                    pspi.Process.StartInfo.FileName = psfn;
+                    using (Runspace runSpace = RunspaceFactory.CreateOutOfProcessRunspace(null, pspi))
+                    {
+                        runSpace.Open();
+                        using var shell = PowerShell.Create();
+                        shell.Runspace = runSpace;
+                        shell.AddScript(command);
+
+                        using var output = new PSDataCollection<PSObject>();
+                        output.DataAdded += (object snd, DataAddedEventArgs evt) => this.OnDataAdded(snd, evt, shell);
+                        _ = await shell.InvokeAsync<PSObject, PSObject>(null, output);
+                        if (shell.HadErrors)
+                        {
+                            this.Execution.LogError(shell.Streams.Error.LastOrDefault()?.Exception?.Message);
+                            this.Execution.LogError("Errors encountered while running the script.");
+                            return false;
+                        }
+                    }
                 }
             }
             catch (Exception ex)

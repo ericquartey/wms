@@ -13,5 +13,7 @@
         Newland3290,
 
         DatalogicPBT9501,
+
+        DatalogicPBT9100,
     }
 }
