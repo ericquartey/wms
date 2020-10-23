@@ -13,26 +13,43 @@
             UseLayoutRounding="True"
             mc:Ignorable="d">
 
+  <ctrls:View.Resources>
+    <Style x:Key="RoundedButtonTemplate"
+           TargetType="ToggleButton">
+      <Setter Property="Background" Value="{StaticResource FerrettoBlue}" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ToggleButton">
+            <Border Background="{TemplateBinding Background}"
+                    BorderThickness="0"
+                    CornerRadius="20">
+              <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </ctrls:View.Resources>
+
   <Grid Margin="30,0,15,0">
 
     <Grid.Resources>
       <DataTemplate x:Key="BarcodeItemTemplate">
         <StackPanel Margin="0,0,0,30"
                     Orientation="Horizontal">
-          <Border Width="40"
-                  Height="40"
-                  Margin="15"
-                  Background="{StaticResource FerrettoBlue}"
-                  CornerRadius="20">
-            <TextBlock HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontSize="18"
-                       FontWeight="DemiBold"
-                       Foreground="White"
-                       Text="{Binding Number}" />
-          </Border>
+          <ToggleButton x:Name="sentButton"
+                        Width="40"
+                        Height="40"
+                        Margin="15,0,15,15"
+                        Content="{Binding Number}"
+                        FontSize="18"
+                        FontWeight="DemiBold"
+                        Style="{StaticResource RoundedButtonTemplate}" />
           <Border Padding="20,2,20,0"
-                  Background="White">
+                  Background="White"
+                  Visibility="{Binding ElementName=sentButton, Path=IsChecked, Converter={StaticResource BTVCH}}">
             <StackPanel Orientation="Vertical">
               <Image Width="280"
                      Height="{Binding ImageHeight}"
@@ -154,14 +171,21 @@
             <RadioButton.Content>
               <TextBlock Margin="0,5,0,0"
                          Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                         Text="Datalogic PBT9501 / PBT9100" />
+                         Text="Datalogic PBT9501" />
+            </RadioButton.Content>
+          </RadioButton>
+
+          <RadioButton Margin="5"
+                       GroupName="ModelNameRadioGroup"
+                       IsChecked="{Binding IsDatalogicPBT9100, Mode=TwoWay}">
+            <RadioButton.Content>
+              <TextBlock Margin="0,5,0,0"
+                         Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                         Text="Datalogic PBT9100" />
             </RadioButton.Content>
           </RadioButton>
 
         </StackPanel>
-
-
-
       </StackPanel>
 
     </StackPanel>
@@ -189,7 +213,7 @@
                      FontSize="18"
                      FontWeight="DemiBold"
                      Foreground="White"
-                     Text="5" />
+                     Text="{Binding PortNumberIndex, TargetNullValue=5}" />
         </Border>
         <StackPanel VerticalAlignment="Center"
                     Orientation="Vertical">
@@ -204,7 +228,7 @@
                         ItemsSource="{Binding PortNames}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
-                <WrapPanel />
+                <WrapPanel Orientation="Vertical" />
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
@@ -222,12 +246,7 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
         </StackPanel>
-
-
-
       </StackPanel>
-
-
     </StackPanel>
 
   </Grid>
