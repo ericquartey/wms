@@ -21,6 +21,10 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private const string BayNumberKey = "BayNumber";
 
+        private const string TelemetryServiceHubsKey = "TelemetryService:Hubs:Path";
+
+        private const string TelemetryServiceUrlKey = "TelemetryService:Url";
+
         private readonly Command goBackCommand;
 
         private readonly IInstallationService installationService;
@@ -216,6 +220,13 @@ namespace Ferretto.VW.Installer.ViewModels
 
             this.PersistConfigurationKey(BayNumberKey, bayNumber.ToString(), panelPcConfigFileName);
             this.PersistConfigurationKey(AutomationServiceUrlKey, masUrl.ToString(), panelPcConfigFileName);
+
+            var tsUrl = this.installationService.TsUrl;
+            if (tsUrl != null)
+            {
+                this.PersistConfigurationKey(TelemetryServiceUrlKey, tsUrl.ToString(), panelPcConfigFileName);
+                this.PersistConfigurationKey(TelemetryServiceHubsKey, tsUrl.ToString() + "/telemetry", panelPcConfigFileName);
+            }
 
             this.logger.Debug($"Application configuration updated.");
         }

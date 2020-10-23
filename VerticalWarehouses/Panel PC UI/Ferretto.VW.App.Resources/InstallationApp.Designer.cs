@@ -106,6 +106,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Energy saving.
+        /// </summary>
+        public static string AccessoriesBarcodeEnergySaving {
+            get {
+                return ResourceManager.GetString("AccessoriesBarcodeEnergySaving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter Setup.
         /// </summary>
         public static string AccessoriesBarcodeEnterSetup {
@@ -5335,7 +5344,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical axis offset.
+        ///   Looks up a localized string similar to Measure Vertical axis offset.
         /// </summary>
         public static string OffsetVerticalAxisMenuTitle {
             get {
@@ -7866,7 +7875,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Offset Verified.
+        ///   Looks up a localized string similar to Measure Vertical Offset.
         /// </summary>
         public static string VerticalOffsetVerify {
             get {

@@ -126,6 +126,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.NoteEnabled = true;
+            this.RaisePropertyChanged(nameof(this.NoteEnabled));
+
             this.IsBackNavigationAllowed = true;
 
             this.Item = this.Data as ItemInfo;

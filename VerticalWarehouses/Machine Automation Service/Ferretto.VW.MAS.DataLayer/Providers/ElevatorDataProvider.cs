@@ -456,12 +456,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(orientation.ToString());
                 }
 
+                this.cache.Remove(GetAxisCacheKey(orientation));
+
                 var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalHorizontalAxisCycles ?? 0;
                 axis.LastCalibrationCycles = cycles;
 
                 this.dataContext.SaveChanges();
 
-                this.cache.Remove(GetAxisCacheKey(orientation));
                 if (orientation == Orientation.Horizontal)
                 {
                     this.NotifyElevatorPositionChanged(useCachedValue: true);
@@ -473,17 +474,14 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
-                if (axis is null)
-                {
-                    throw new EntityNotFoundException(orientation.ToString());
-                }
+                this.cache.Remove(GetAxisCacheKey(orientation));
+                var axis = this.GetAxis(orientation);
 
                 axis.LastIdealPosition = position;
 
+                this.dataContext.ElevatorAxes.Update(axis);
                 this.dataContext.SaveChanges();
 
-                this.cache.Remove(GetAxisCacheKey(orientation));
                 if (orientation == Orientation.Horizontal)
                 {
                     this.NotifyElevatorPositionChanged(useCachedValue: true);

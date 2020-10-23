@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<object> barcodeSteps;
 
+        private bool isDatalogicPBT9100;
+
         private bool isDatalogicPBT9501;
 
         private bool isNewland1550;
@@ -32,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isNewland3280;
 
         private bool isNewland3290;
+
+        private int portNumberIndex;
 
         private bool systemPortsAvailable;
 
@@ -57,6 +61,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.barcodeSteps;
             set => this.SetProperty(ref this.barcodeSteps, value);
+        }
+
+        public bool IsDatalogicPBT9100
+        {
+            get => this.isDatalogicPBT9100;
+            set => this.SetProperty(ref this.isDatalogicPBT9100, value, this.UpdateBarcodes);
         }
 
         public bool IsDatalogicPBT9501
@@ -91,6 +101,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<string> PortNames => this.serialPortsService.PortNames;
 
+        public int PortNumberIndex
+        {
+            get => this.portNumberIndex;
+            set => this.SetProperty(ref this.portNumberIndex, value);
+        }
+
         public bool SystemPortsAvailable
         {
             get => this.systemPortsAvailable;
@@ -119,32 +135,83 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
                         Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
                         Number = 2,
+                        ImageHeight = 300,
+                    },
+                };
+            }
+            else if (deviceModel == DeviceModel.DatalogicPBT9100)
+            {
+                return new List<object>()
+                {
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
+                        Number = 2,
+                        ImageHeight = 300,
+                    },
+                };
+            }
+            else if (deviceModel == DeviceModel.Newland1580 || deviceModel == DeviceModel.Newland3280)
+            {
+                return new List<object>()
+                {
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_enter_setup.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnterSetup,
+                        Number = 2,
+                        ImageHeight = 80,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_energy_saving.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnergySaving,
+                        Number = 3,
+                        ImageHeight = 80,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
+                        Number = 4,
+                        ImageHeight = 80,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_exit_setup.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeExitSetup,
+                        Number = 5,
+                        ImageHeight = 80,
                     },
                 };
             }
             else
             {
                 return new List<object>()
-            {
-                new
                 {
-                    Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_enter_setup.png",
-                    Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnterSetup,
-                    Number = 2,
-                },
-                new
-                {
-                    Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
-                    Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
-                    Number = 3,
-                },
-                new
-                {
-                    Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_exit_setup.png",
-                    Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeExitSetup,
-                    Number = 4,
-                },
-            };
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_enter_setup.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnterSetup,
+                        Number = 2,
+                        ImageHeight = 120,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_usb_com_emulation.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeEnableComEmulation,
+                        Number = 3,
+                        ImageHeight = 120,
+                    },
+                    new
+                    {
+                        Barcode = $"pack://application:,,,/Ferretto.VW.App.Accessories;Component/Barcode/Resources/{deviceModel}_exit_setup.png",
+                        Title = VW.App.Resources.InstallationApp.AccessoriesBarcodeExitSetup,
+                        Number = 4,
+                        ImageHeight = 120,
+                    },
+                };
             }
         }
 
@@ -176,8 +243,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 deviceModel = DeviceModel.DatalogicPBT9501;
             }
+            else if (this.IsDatalogicPBT9100)
+            {
+                deviceModel = DeviceModel.DatalogicPBT9100;
+            }
 
             this.BarcodeSteps = this.GetBarcodeSteps(deviceModel);
+
+            this.PortNumberIndex = this.barcodeSteps.Count() + 2;
+
+            this.RaisePropertyChanged(nameof(this.PortNumberIndex));
         }
 
         #endregion

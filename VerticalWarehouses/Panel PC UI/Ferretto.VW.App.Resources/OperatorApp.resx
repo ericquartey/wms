@@ -2223,4 +2223,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="Command" xml:space="preserve">
     <value>Command</value>
   </data>
+  <data name="Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Select reason</value>
+  </data>
 </root>

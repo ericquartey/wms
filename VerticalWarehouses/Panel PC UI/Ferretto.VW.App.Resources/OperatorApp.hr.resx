@@ -1813,4 +1813,10 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="Command" xml:space="preserve">
     <value>Naredba</value>
   </data>
+  <data name="Note" xml:space="preserve">
+    <value>Bilješka</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Odaberite razlog</value>
+  </data>
 </root>

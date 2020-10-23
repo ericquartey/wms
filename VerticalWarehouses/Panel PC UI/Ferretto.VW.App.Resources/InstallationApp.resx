@@ -610,7 +610,7 @@
     <value>Cell Height Correction [mm]</value>
   </data>
   <data name="VerticalOffsetVerify" xml:space="preserve">
-    <value>Vertical Offset Verified</value>
+    <value>Measure Vertical Offset</value>
   </data>
   <data name="CellPositionDone" xml:space="preserve">
     <value>Cell position verified</value>
@@ -2330,7 +2330,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Calibrate the vertical axis offset</value>
   </data>
   <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
-    <value>Vertical axis offset</value>
+    <value>Measure Vertical axis offset</value>
   </data>
   <data name="ParametersMenuDescription" xml:space="preserve">
     <value>Modification, import and export of machine parameters</value>
@@ -2919,5 +2919,8 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="Completed" xml:space="preserve">
     <value>Completed</value>
+  </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Energy saving</value>
   </data>
 </root>

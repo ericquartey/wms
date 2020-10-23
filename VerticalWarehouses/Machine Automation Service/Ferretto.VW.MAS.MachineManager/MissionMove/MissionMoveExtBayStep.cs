@@ -95,9 +95,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (this.Mission.ErrorCode != MachineErrorCode.MoveBayChainNotAllowed)
                 {
-                    var isLoadUnitDestinationInBay = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up ||
-                        this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
-                        this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up;
+                    var isLoadUnitDestinationInBay = (bay.Number == BayNumber.BayOne && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up) ||
+                        (bay.Number == BayNumber.BayTwo && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up) ||
+                        (bay.Number == BayNumber.BayThree && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up);
 
                     if (this.Mission.RestoreConditions)
                     {
@@ -190,8 +190,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (this.Mission.Status == MissionStatus.Executing &&
-                        notification.RequestingBay == this.Mission.TargetBay)
+                    if (this.Mission.Status == MissionStatus.Executing
+                        //&& notification.RequestingBay == this.Mission.TargetBay
+                        )
                     {
                         if (this.UpdateResponseList(notification.Type))
                         {

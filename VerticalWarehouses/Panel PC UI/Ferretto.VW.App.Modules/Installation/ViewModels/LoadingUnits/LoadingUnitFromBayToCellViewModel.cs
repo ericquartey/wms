@@ -198,6 +198,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             if (!lst.Any())
             {
+                this.isEnabledEditing = true;
+                this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
                 return;
             }
 
