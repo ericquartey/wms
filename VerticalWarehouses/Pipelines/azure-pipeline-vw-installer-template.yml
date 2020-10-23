@@ -1,6 +1,6 @@
 parameters:
   BuildConfiguration: 'debug'
-  BuildPlatform: 'any cpu'
+  BuildPlatform: 'x64'
   RestoreBuildProjects: '**/Ferretto.VW.Installer.csproj'
   TargetFramework: 'netcoreapp3.1'
   RuntimeIdentifier: 'win10-x64'
