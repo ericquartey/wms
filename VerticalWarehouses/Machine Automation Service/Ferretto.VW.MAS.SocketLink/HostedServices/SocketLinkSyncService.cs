@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.SocketLink
         private void Enable()
         {
             //this.Disable();
-     
+
             Task.Run(this.ExecutePollingAsync);
         }
 
@@ -182,7 +182,10 @@ namespace Ferretto.VW.MAS.SocketLink
 
                         if (bytes > 0)
                         {
-                            var msgReceived = Encoding.ASCII.GetString(buffer, 0, bytes);
+                            var e = Encoding.GetEncoding("iso-8859-1");
+                            var msgReceived = e.GetString(buffer, 0, bytes);
+
+                            //var msgReceived = Encoding.ASCII.GetString(buffer, 0, bytes);
                             lastActivity = DateTime.Now;
                             this.logger.LogTrace("SocketLink Recived " + msgReceived);
 

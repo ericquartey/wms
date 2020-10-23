@@ -205,7 +205,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         }
 
                         message += (e.WmsOperation.RequestedQuantity - e.WmsOperation.DispatchedQuantity) + " " + e.WmsOperation.ItemCode + " " + e.WmsOperation.ItemDescription;
-                        message = message.Trim();
+                        message = this.alphaNumericBarDriver.NormalizeMessageCharacters(message);
 
                         var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
                         if (offset > 0)
@@ -244,6 +244,10 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                 await this.alphaNumericBarDriver.EnabledAsync(false);
 
+                var offsetArrow = 0;
+                var offsetMessage = 0;
+                var scrollEnd = 0;
+
                 switch (socketLinkMessage.Data.CommandCode)
                 {
                     case 0: // switch off
@@ -251,38 +255,20 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         break;
 
                     case 1: //  switch on and show text without arrow down
-                        message = socketLinkMessage.Data.TextMessage.Trim();
+                        message = this.alphaNumericBarDriver.NormalizeMessageCharacters(socketLinkMessage.Data.TextMessage);
                         if (message.Length > 0)
                         {
-                            var offsetStart = this.alphaNumericBarDriver.GetOffsetStartPosition(this.bayManager.Identity.LoadingUnitWidth, socketLinkMessage.Data.X, message);
-                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetStart, true);
+                            this.alphaNumericBarDriver.GetOffsetMessage(this.bayManager.Identity.LoadingUnitWidth, socketLinkMessage.Data.X, message, out offsetMessage);
+                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
                         }
                         break;
 
                     case 2: // switch on and show arrow down at the start of the text
-                        var arrowWidth = 6;
+                        message = this.alphaNumericBarDriver.NormalizeMessageCharacters(socketLinkMessage.Data.TextMessage);
+                        this.alphaNumericBarDriver.GetOffsetArrowAndMessage(this.bayManager.Identity.LoadingUnitWidth, socketLinkMessage.Data.X, message, out offsetArrow, out offsetMessage);
 
-                        var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(this.bayManager.Identity.LoadingUnitWidth, socketLinkMessage.Data.X);
-                        await this.alphaNumericBarDriver.EnabledAsync(false);
-                        await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);
-
-                        message = socketLinkMessage.Data.TextMessage.Trim();
-                        var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + arrowWidth, message);
-                        if (offset > 0)
-                        {
-                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
-                        }
-                        else if (offset == -1)
-                        {
-                            await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
-                        }
-                        else
-                        {
-                            var start = arrowPosition + arrowWidth;
-                            await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
-                        }
-
-                        this.logger.Info($"OnSocketLinkAlphaNumericBarChangeAsync, switch on {socketLinkMessage.Data.CommandCode} {arrowPosition} {offset} '{message}'");
+                        await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
+                        await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
                         break;
                 }
             }

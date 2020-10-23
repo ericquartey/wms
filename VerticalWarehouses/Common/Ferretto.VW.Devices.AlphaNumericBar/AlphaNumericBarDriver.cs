@@ -14,6 +14,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
     {
         #region Fields
 
+        public const int LED_INTO_CHAR = 6;
+
         public const int PORT_DEFAULT = 2020;
 
         private const string NEW_LINE = "\r\n";
@@ -201,28 +203,85 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
-        public int GetOffsetStartPosition(double loadingUnitWidth, double x, string message)
+        public bool GetOffsetArrowAndMessage(double loadingUnitWidth, double x, string message, out int offsetArrow, out int offsetMessage)
         {
-            var offset = 0;
+            var result = false;
 
             if (x < 0)
             {
-                return offset;
+                x = 0;
             }
-
-            offset = (int)Math.Round(((int)this.Size) * 8 / loadingUnitWidth * x);
-
-            if (offset + (message.Length * 6) >= this.NumberOfLeds) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
+            else if (x > loadingUnitWidth)
             {
-                offset = this.NumberOfLeds - (message.Length * 6);
+                x = loadingUnitWidth;
             }
 
-            if (offset < 0)
+            // set the arro offset
+            offsetArrow = (int)Math.Round(((int)this.Size) * 8 / loadingUnitWidth * x) - 2;     // note, sub 2 because the arrow is in the middle
+
+            if (offsetArrow < 0)
             {
-                offset = 0;
+                offsetArrow = 0;
             }
 
-            return offset;
+            if (offsetArrow + LED_INTO_CHAR >= this.NumberOfLeds) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
+            {
+                offsetArrow = this.NumberOfLeds - LED_INTO_CHAR;
+                if (offsetArrow < 0)
+                {
+                    offsetArrow = 0;
+                }
+            }
+
+            // set the message offset
+            offsetMessage = offsetArrow + LED_INTO_CHAR + 1;    // standard position, message on the right side of the arrow
+
+            if (offsetMessage + (message.Length * LED_INTO_CHAR) >= this.NumberOfLeds) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
+            {
+                if (offsetArrow < this.NumberOfLeds - offsetArrow + LED_INTO_CHAR) // there is more space after the arrow
+                {
+                }
+                else // there is more space before the arrow
+                {
+                    offsetMessage = offsetArrow - (message.Length * LED_INTO_CHAR);
+
+                    if (offsetMessage < 0) // scroll condition
+                    {
+                        offsetMessage = 0;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public bool GetOffsetMessage(double loadingUnitWidth, double x, string message, out int offsetMessage)
+        {
+            var result = false;
+
+            if (x < 0)
+            {
+                x = 0;
+            }
+            else if (x > loadingUnitWidth)
+            {
+                x = loadingUnitWidth;
+            }
+
+            // set the message offset
+            offsetMessage = (int)Math.Round(((int)this.Size) * 8 / loadingUnitWidth * x);
+
+            if (offsetMessage + (message.Length * 6) >= this.NumberOfLeds) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
+            {
+                offsetMessage = this.NumberOfLeds - (message.Length * 6);
+
+                if (offsetMessage < 0)
+                {
+                    offsetMessage = 0;
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -255,6 +314,82 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_LUM, AlphaNumericBarCommands.Command.SET_LUM.ToString(), luminosity);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        public string NormalizeMessageCharacters(string str)
+        {
+            var result = str.Trim();
+
+            result = result.Replace("à", "a'");
+            result = result.Replace("á", "a'");
+            result = result.Replace("À", "A'");
+            result = result.Replace("Á", "A'");
+
+            result = result.Replace("Â", "A");
+            result = result.Replace("Ã", "A");
+            result = result.Replace("Ä", "A");
+            result = result.Replace("Å", "A");
+            result = result.Replace("Æ", "AE");
+
+            result = result.Replace("â", "a");
+            result = result.Replace("ã", "a");
+            result = result.Replace("ä", "a");
+            result = result.Replace("å", "a");
+            result = result.Replace("æ", "ae");
+
+            result = result.Replace("è", "e'");
+            result = result.Replace("é", "e'");
+            result = result.Replace("È", "E'");
+            result = result.Replace("É", "E'");
+
+            result = result.Replace("Ê", "E");
+            result = result.Replace("Ë", "E");
+
+            result = result.Replace("ì", "i'");
+            result = result.Replace("í", "i'");
+            result = result.Replace("Ì", "I'");
+            result = result.Replace("Í", "I'");
+
+            result = result.Replace("î", "i");
+            result = result.Replace("ï", "i");
+
+            result = result.Replace("Î", "I");
+            result = result.Replace("Ï", "I");
+
+            result = result.Replace("Ñ", "N");
+
+            result = result.Replace("ò", "o'");
+            result = result.Replace("ó", "o'");
+            result = result.Replace("Ò", "O'");
+            result = result.Replace("Ó", "O'");
+
+            result = result.Replace("ô", "o");
+            result = result.Replace("õ", "o");
+            result = result.Replace("ö", "o");
+
+            result = result.Replace("Ô", "O");
+            result = result.Replace("Õ", "O");
+            result = result.Replace("Ö", "O");
+
+            result = result.Replace("ù", "u'");
+            result = result.Replace("ú", "u'");
+            result = result.Replace("Ù", "U'");
+            result = result.Replace("Ú", "U'");
+
+            result = result.Replace("û", "u");
+            result = result.Replace("ü", "u");
+            result = result.Replace("Û", "U");
+            result = result.Replace("Ü", "U");
+
+            result = result.Replace("ý", "y'");
+            result = result.Replace("Ý", "Y'");
+            result = result.Replace("Ÿ", "Y");
+
+            result = result.Replace("œ", "oe");
+
+            result = result.Replace("×", "x");
+
+            return result;
         }
 
         /// <summary>
