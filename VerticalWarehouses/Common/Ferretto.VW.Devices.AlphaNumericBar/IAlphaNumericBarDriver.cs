@@ -33,11 +33,15 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> EnabledAsync(bool value, bool force = true);
 
-        int GetOffsetStartPosition(double loadingUnitWidth, double x, string message);
+        bool GetOffsetArrowAndMessage(double loadingUnitWidth, double x, string message, out int offsetArrow, out int offsetMessage);
+
+        bool GetOffsetMessage(double loadingUnitWidth, double x, string message, out int offsetMessage);
 
         Task<bool> HelpAsync();
 
         Task<bool> LuminosityAsync(int luminosity);
+
+        string NormalizeMessageCharacters(string str);
 
         Task<bool> ScrollDirAsync(ScrollDirection direction);
 
