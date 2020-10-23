@@ -35,7 +35,7 @@
 
   <Grid Margin="30,0,15,0">
 
-    <Grid.Resources>
+    <!--<Grid.Resources>
       <DataTemplate x:Key="BarcodeItemTemplate">
         <StackPanel Margin="0,0,0,30"
                     Orientation="Horizontal">
@@ -47,7 +47,8 @@
                         FontSize="18"
                         FontWeight="DemiBold"
                         Style="{StaticResource RoundedButtonTemplate}" />
-          <Border Padding="20,2,20,0"
+          <Border x:Name="BarcodeBorder"
+                  Padding="20,2,20,0"
                   Background="White"
                   Visibility="{Binding ElementName=sentButton, Path=IsChecked, Converter={StaticResource BTVCH}}">
             <StackPanel Orientation="Vertical">
@@ -62,7 +63,7 @@
           </Border>
         </StackPanel>
       </DataTemplate>
-    </Grid.Resources>
+    </Grid.Resources>-->
 
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto" />
@@ -190,14 +191,132 @@
 
     </StackPanel>
 
-    <ItemsControl Grid.Row="2"
+    <Grid Grid.Row="2"
+          Grid.Column="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+      </Grid.RowDefinitions>
+
+      <StackPanel Grid.Row="0"
+                  Margin="0,0,0,30"
+                  Orientation="Horizontal"
+                  Visibility="{Binding Barcode1Visibility, Converter={StaticResource BTVC}}">
+        <ToggleButton Width="40"
+                      Height="40"
+                      Margin="15,0,15,15"
+                      Command="{Binding Barcode1Command}"
+                      Content="{Binding BarcodeSteps[0].Number}"
+                      FontSize="18"
+                      FontWeight="DemiBold"
+                      Style="{StaticResource RoundedButtonTemplate}" />
+        <Border Padding="20,2,20,0"
+                Background="White"
+                Visibility="{Binding Image1Visibility, Converter={StaticResource BTVCH}}">
+          <StackPanel Orientation="Vertical">
+            <Image Width="280"
+                   Height="{Binding BarcodeSteps[0].ImageHeight}"
+                   Source="{Binding BarcodeSteps[0].Barcode}" />
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="14"
+                       FontWeight="DemiBold"
+                       Text="{Binding BarcodeSteps[0].Title}" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <StackPanel Grid.Row="1"
+                  Margin="0,0,0,30"
+                  Orientation="Horizontal"
+                  Visibility="{Binding Barcode2Visibility, Converter={StaticResource BTVC}}">
+        <ToggleButton Width="40"
+                      Height="40"
+                      Margin="15,0,15,15"
+                      Command="{Binding Barcode2Command}"
+                      Content="{Binding BarcodeSteps[1].Number}"
+                      FontSize="18"
+                      FontWeight="DemiBold"
+                      Style="{StaticResource RoundedButtonTemplate}" />
+        <Border Padding="20,2,20,0"
+                Background="White"
+                Visibility="{Binding Image2Visibility, Converter={StaticResource BTVCH}}">
+          <StackPanel Orientation="Vertical">
+            <Image Width="280"
+                   Height="{Binding BarcodeSteps[1].ImageHeight}"
+                   Source="{Binding BarcodeSteps[1].Barcode}" />
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="14"
+                       FontWeight="DemiBold"
+                       Text="{Binding BarcodeSteps[1].Title}" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <StackPanel Grid.Row="2"
+                  Margin="0,0,0,30"
+                  Orientation="Horizontal"
+                  Visibility="{Binding Barcode3Visibility, Converter={StaticResource BTVC}}">
+        <ToggleButton Width="40"
+                      Height="40"
+                      Margin="15,0,15,15"
+                      Command="{Binding Barcode3Command}"
+                      Content="{Binding BarcodeSteps[2].Number}"
+                      FontSize="18"
+                      FontWeight="DemiBold"
+                      Style="{StaticResource RoundedButtonTemplate}" />
+        <Border Padding="20,2,20,0"
+                Background="White"
+                Visibility="{Binding Image3Visibility, Converter={StaticResource BTVCH}}">
+          <StackPanel Orientation="Vertical">
+            <Image Width="280"
+                   Height="{Binding BarcodeSteps[2].ImageHeight}"
+                   Source="{Binding BarcodeSteps[2].Barcode}" />
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="14"
+                       FontWeight="DemiBold"
+                       Text="{Binding BarcodeSteps[2].Title}" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <StackPanel Grid.Row="3"
+                  Margin="0,0,0,30"
+                  Orientation="Horizontal"
+                  Visibility="{Binding Barcode4Visibility, Converter={StaticResource BTVC}}">
+        <ToggleButton Width="40"
+                      Height="40"
+                      Margin="15,0,15,15"
+                      Command="{Binding Barcode4Command}"
+                      Content="{Binding BarcodeSteps[3].Number}"
+                      FontSize="18"
+                      FontWeight="DemiBold"
+                      Style="{StaticResource RoundedButtonTemplate}" />
+        <Border Padding="20,2,20,0"
+                Background="White"
+                Visibility="{Binding Image4Visibility, Converter={StaticResource BTVCH}}">
+          <StackPanel Orientation="Vertical">
+            <Image Width="280"
+                   Height="{Binding BarcodeSteps[3].ImageHeight}"
+                   Source="{Binding BarcodeSteps[3].Barcode}" />
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="14"
+                       FontWeight="DemiBold"
+                       Text="{Binding BarcodeSteps[3].Title}" />
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+    </Grid>
+
+    <!--<ItemsControl Grid.Row="2"
                   Grid.Column="1"
                   Background="Transparent"
                   BorderThickness="0"
                   Focusable="False"
                   ItemTemplate="{StaticResource BarcodeItemTemplate}"
-                  ItemsSource="{Binding BarcodeSteps}" />
-
+                  ItemsSource="{Binding BarcodeSteps}" />-->
 
     <StackPanel Grid.Row="2"
                 Grid.Column="2">
