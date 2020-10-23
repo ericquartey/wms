@@ -118,18 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
-  </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+    <value>Der Wert von {0} muss zwischen {1} und {2} liegen</value>
   </data>
   <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
-  </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+    <value>Wert von {0} darf nicht kleiner als {1} sein</value>
   </data>
   <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+    <value>Feld {0} ist Pflichtfeld</value>
   </data>
 </root>

@@ -117,19 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="ControlWord" xml:space="preserve">
+    <value>Control Word</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="Input" xml:space="preserve">
+    <value>Eingang</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="Inputs" xml:space="preserve">
+    <value>Eingänge</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="Output" xml:space="preserve">
+    <value>Ausg.</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="Outputs" xml:space="preserve">
+    <value>Ausg.</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Sicherh.</value>
+  </data>
+  <data name="ImportConfigurationCommand" xml:space="preserve">
+    <value>Konfiguration laden</value>
+  </data>
+  <data name="SimulatorStarted" xml:space="preserve">
+    <value>Simulator gest.</value>
+  </data>
+  <data name="StartSimulatorCommand" xml:space="preserve">
+    <value>Simulation start.</value>
+  </data>
+  <data name="StatusWord" xml:space="preserve">
+    <value>Wort-Status</value>
+  </data>
+  <data name="StopSimulatorCommand" xml:space="preserve">
+    <value>Simul. Stoppen</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>VW Simulator</value>
   </data>
 </root>

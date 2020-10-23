@@ -117,19 +117,160 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="AccessoriesAccessoryNotAvailable" xml:space="preserve">
+    <value>Zubehör nicht verfügbar</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Konfig. und Überp. des alphanumerischen Balkens</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Konfigurationsparameter</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Test</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Alphan. Balken</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Pfeil</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Led</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>Meldung</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Ferretto-Gruppe - Testnachricht -</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguration und Überprüfung des Strichcodelesers</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Strichcode-Lesegerät</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>Konfig. und Überpr. Badge-Lesers</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Badge-Leser</value>
+  </data>
+  <data name="AccessoriesEnable" xml:space="preserve">
+    <value>Aktivierung</value>
+  </data>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>IP-Adresse</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>Einrichten und Überprüfen des Etikettendruckers</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Etikettendrucker</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuDescription" xml:space="preserve">
+    <value>Konfigurationsverw. und Funktionsprüfung des Lasers</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
+    <value>Laser-Pointer</value>
+  </data>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>Offset X-Achs</value>
+  </data>
+  <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
+    <value>Offset Y-Achs</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetLowerPosition" xml:space="preserve">
+    <value>Offset Z-Achse (Bu. nied)</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetUpperPosition" xml:space="preserve">
+    <value>Offset Z-Achse (Bu. ho)</value>
+  </data>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Zubehör-Menü</value>
+  </data>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Aus</value>
+  </data>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Ein</value>
+  </data>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Tür</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Abmessung</value>
+  </data>
+  <data name="AccessoriesTest" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>Konfigurieren und Prüfen Token-Lesegerät</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Token-Leser</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>Konfiguration und Überprüfung der Waage Stückzähler</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Waage Stückzähler</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Bu.</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Menü Bu.</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Menü Zelle</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Abn. bestätigen</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Menü Hebebühne</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Installation</value>
+  </data>
+  <data name="InstallationStatus" xml:space="preserve">
+    <value>Status Installation</value>
+  </data>
+  <data name="MenuAccessories" xml:space="preserve">
+    <value>Zubehör</value>
+  </data>
+  <data name="MenuBays" xml:space="preserve">
+    <value>Bu.</value>
+  </data>
+  <data name="MenuCells" xml:space="preserve">
+    <value>Zelle</value>
+  </data>
+  <data name="MenuElevator" xml:space="preserve">
+    <value>Hebebühne</value>
+  </data>
+  <data name="MenuLoadingUnits" xml:space="preserve">
+    <value>Kästen</value>
+  </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Beweg.</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Einstell.</value>
+  </data>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Menü Einstell.</value>
+  </data>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Menü Kästen</value>
+  </data>
+  <data name="NoAccessoriesInstalled" xml:space="preserve">
+    <value>Kein Zubehör installiert.</value>
   </data>
 </root>

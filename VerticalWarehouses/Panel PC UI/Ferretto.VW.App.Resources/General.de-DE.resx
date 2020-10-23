@@ -117,191 +117,188 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Open" xml:space="preserve">
-    <value>Apri</value>
-  </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Scarta</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Salva</value>
-  </data>
-  <data name="MeasureUnit" xml:space="preserve">
-    <value>Unità di Misura</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Cerca</value>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Aggiorna</value>
-  </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Data Ultima Modifica</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Descrizione</value>
+  <data name="Add" xml:space="preserve">
+    <value>Zufüg.</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Indietro</value>
+    <value>Zurück</value>
   </data>
-  <data name="Add" xml:space="preserve">
-    <value>Aggiungi</value>
+  <data name="Bottom" xml:space="preserve">
+    <value>Unten</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annull.</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
   </data>
   <data name="CreationDate" xml:space="preserve">
-    <value>Data Creazione</value>
+    <value>Datum Erstell.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beschr.</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Unt</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeit</value>
+  </data>
+  <data name="Execute" xml:space="preserve">
+    <value>Ausfü.</value>
   </data>
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
+  <data name="Front" xml:space="preserve">
+    <value>Vorders.</value>
   </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
+  <data name="LastModificationDate" xml:space="preserve">
+    <value>Datum letzte Änd.</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="SwitchOff" xml:space="preserve">
-    <value>Spegni</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Annulla</value>
-  </data>
-  <data name="Front" xml:space="preserve">
-    <value>Anteriore</value>
+  <data name="MillionsSymbol" xml:space="preserve">
+    <value>M</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Successivo</value>
+    <value>Nächste</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Modifica</value>
+  <data name="Open" xml:space="preserve">
+    <value>Öffn</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Elimina</value>
+  <data name="Refresh" xml:space="preserve">
+    <value>Aktual.</value>
   </data>
-  <data name="Code" xml:space="preserve">
-    <value>Codice</value>
+  <data name="Revert" xml:space="preserve">
+    <value>Verwer</value>
   </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Esegui</value>
+  <data name="Save" xml:space="preserve">
+    <value>Speic</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Suche</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>Mostra Dettagli</value>
+    <value>Details anzeig.</value>
+  </data>
+  <data name="SwitchOff" xml:space="preserve">
+    <value>Aussch</value>
+  </data>
+  <data name="ThousandsSymbol" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Oben</value>
   </data>
   <data name="Type" xml:space="preserve">
-    <value>Tipo</value>
+    <value>Typ</value>
   </data>
-  <data name="Down" xml:space="preserve">
-    <value>Giù</value>
+  <data name="MeasureUnit" xml:space="preserve">
+    <value>Maßeinheit</value>
   </data>
   <data name="Up" xml:space="preserve">
     <value>Su</value>
   </data>
-  <data name="Bottom" xml:space="preserve">
-    <value>Inferiore</value>
-  </data>
-  <data name="Top" xml:space="preserve">
-    <value>Superiore</value>
-  </data>
   <data name="Loading" xml:space="preserve">
-    <value>Caricamento</value>
+    <value>Laden</value>
   </data>
   <data name="Status" xml:space="preserve">
-    <value>Stato</value>
+    <value>Stat.</value>
   </data>
   <data name="Quantity" xml:space="preserve">
-    <value>Quantità</value>
+    <value>Menge</value>
   </data>
   <data name="Priority" xml:space="preserve">
-    <value>Priorità</value>
+    <value>Priorit.</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Dettagli</value>
+    <value>Dettail</value>
   </data>
   <data name="AdditionalInfo" xml:space="preserve">
     <value>[{0}]</value>
   </data>
   <data name="CheckBoxDark" xml:space="preserve">
-    <value>Tema scuro</value>
+    <value>Dkl. Thema</value>
   </data>
   <data name="MachineOff" xml:space="preserve">
-    <value>Spenta</value>
+    <value>Aus</value>
   </data>
   <data name="MachineOn" xml:space="preserve">
-    <value>Accesa</value>
+    <value>Ein</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Errore</value>
+    <value>Error</value>
   </data>
   <data name="Debug" xml:space="preserve">
     <value>Debug</value>
   </data>
   <data name="NumberOnTotal" xml:space="preserve">
-    <value>{0} di {1}</value>
+    <value>{0}von{1}</value>
   </data>
   <data name="FilePath" xml:space="preserve">
-    <value>Percorso file</value>
+    <value>Dateipfad</value>
   </data>
   <data name="ConfirmMachineRun" xml:space="preserve">
-    <value>Sei sicuro di voler mettere la macchina in marcia?</value>
+    <value>Sicher, die Maschine in Betrieb zu nehmen?</value>
   </data>
   <data name="MachineRun" xml:space="preserve">
-    <value>Marcia</value>
+    <value>Betr.</value>
   </data>
   <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
-    <value>Sei sicuro di voler mettere la macchina in automatico e ripristinare i movimenti in corso?</value>
+    <value>Sicher, Maschine auf Autom. zu stellen u. aktuellen Bewegungen wiederzuherstellen?</value>
   </data>
   <data name="Automatic" xml:space="preserve">
-    <value>Automatico</value>
+    <value>Automatik</value>
   </data>
   <data name="ShuttingDown" xml:space="preserve">
-    <value>Spegnimento ...</value>
+    <value>Ausschalten ...</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Sì</value>
+    <value>Ja</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Chiudi</value>
+    <value>zu</value>
   </data>
   <data name="ChangeTheme" xml:space="preserve">
-    <value>Cambia tema</value>
+    <value>Thema wech</value>
   </data>
   <data name="AutomaticMode" xml:space="preserve">
-    <value>Automatico</value>
+    <value>Automatik</value>
   </data>
   <data name="BayNumber" xml:space="preserve">
-    <value>Baia</value>
+    <value>B.</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
-    <value>{0:0} giorni fa</value>
+    <value>vor {0:0} Tagen</value>
   </data>
   <data name="EmergencyIsOn" xml:space="preserve">
-    <value>Emergenza attiva</value>
+    <value>Not-Aus aktiv</value>
   </data>
   <data name="EnsureEmergencyIsOff" xml:space="preserve">
-    <value>Assicurarsi che nessun bottone di emergenza sia premuto.</value>
+    <value>Sicherstellen, dass keine Not-Aus-Taste gedrückt ist.</value>
   </data>
   <data name="ErrorCommunicatingWithServices" xml:space="preserve">
-    <value>Errore di comunicazione con i servizi.</value>
-  </data>
-  <data name="ErrorLogin" xml:space="preserve">
-    <value>Errore: login fallito. Controlla la correttezza di user e password</value>
+    <value>Falsche Kommunikation mit Betrieben.</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>{0:0} ore fa</value>
+    <value>vor{0:0} Std</value>
   </data>
   <data name="ManualMode" xml:space="preserve">
-    <value>Manuale</value>
+    <value>Manuell</value>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
-    <value>{0:0} minuti fa</value>
+    <value>vor {0:0} Min</value>
   </data>
   <data name="Now" xml:space="preserve">
-    <value>Adesso</value>
+    <value>Jetzt</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -310,58 +307,61 @@
     <value>Password</value>
   </data>
   <data name="SerialNumber" xml:space="preserve">
-    <value>Numero Seriale:</value>
+    <value>Seriennummer:</value>
   </data>
   <data name="UserLogin" xml:space="preserve">
-    <value>Nome Utente</value>
+    <value>Benutzern.</value>
   </data>
   <data name="UserLogin_Password" xml:space="preserve">
-    <value>Password</value>
+    <value>Passwort</value>
+  </data>
+  <data name="UserLogin_UserName" xml:space="preserve">
+    <value>Benutzern.</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Versione {0}</value>
+    <value>Version {0}</value>
   </data>
   <data name="WarehouseSide_Back" xml:space="preserve">
-    <value>Posteriore</value>
+    <value>Rückseite</value>
   </data>
   <data name="WarehouseSide_Front" xml:space="preserve">
-    <value>Anteriore</value>
+    <value>Vorders.</value>
   </data>
   <data name="Bay" xml:space="preserve">
-    <value>Baia</value>
+    <value>Bucht</value>
   </data>
   <data name="BayOneName" xml:space="preserve">
-    <value>Uno</value>
+    <value>1</value>
   </data>
   <data name="BayOneNumber" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="BayThreeName" xml:space="preserve">
-    <value>Tre</value>
+    <value>3</value>
   </data>
   <data name="BayThreeNumber" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="BayTwoName" xml:space="preserve">
-    <value>Due</value>
+    <value>2</value>
   </data>
   <data name="BayTwoNumber" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="SwitchToAutomatic" xml:space="preserve">
+    <value>Umschalten auf Auto</value>
+  </data>
   <data name="Start" xml:space="preserve">
-    <value>Inizia</value>
+    <value>Start</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
-  </data>
-  <data name="SwitchToAutomatic" xml:space="preserve">
-    <value>Passa in automatico</value>
   </data>
   <data name="TargetNullValue" xml:space="preserve">
     <value>-</value>
   </data>
   <data name="LoadUnitOperations" xml:space="preserve">
-    <value>Operazioni cassetto</value>
+    <value>Kastenvorgänge</value>
   </data>
   <data name="Devices" xml:space="preserve">
     <value>Devices</value>
@@ -376,37 +376,37 @@
     <value>Inverter</value>
   </data>
   <data name="IODrive" xml:space="preserve">
-    <value>IO Drive</value>
+    <value>IO-Drive</value>
   </data>
   <data name="StatusDebug" xml:space="preserve">
     <value>Status:</value>
   </data>
   <data name="NoRows" xml:space="preserve">
-    <value>Nessuna riga presente nell'elenco</value>
+    <value>Keine Zeile in der Liste</value>
   </data>
   <data name="WmsDisabled" xml:space="preserve">
-    <value>Disabilitato</value>
+    <value>Deaktiviert</value>
   </data>
   <data name="WmsEnabled" xml:space="preserve">
-    <value>Abilitato WMS</value>
+    <value>WMS aktiviert</value>
   </data>
   <data name="DateFormatComplete" xml:space="preserve">
     <value>{0:dd.MM.yyyy HH:mm}</value>
   </data>
   <data name="AreaMachineUnknow" xml:space="preserve">
-    <value>L'area della macchina è sconosciuta</value>
+    <value>Maschinenbereich unbekannt</value>
   </data>
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo Visibility.</value>
+    <value>Dieser Konverter kann nur Visibility-Werte konvertieren.</value>
   </data>
   <data name="IdLoadingUnitNotExists" xml:space="preserve">
-    <value>L'identificativo del cassetto non esiste.</value>
+    <value>Die Kasten-ID existiert nicht.</value>
   </data>
   <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
-    <value>La proprietà '{0}' del modello di vista '{1}' deve contenere un identificativo cassetto valido.</value>
+    <value>Die Eigenschaft '{0}' des Ansichtsmodells '{1}' muss eine gültige Kasten-ID enthalten.</value>
   </data>
   <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
-    <value>Il parametro non può essere nullo o vuoto.</value>
+    <value>Parameter kann nicht null oder leer sein.</value>
   </data>
   <data name="DateFormatDayNumber" xml:space="preserve">
     <value>{0: dd.MM.yyyy}</value>
@@ -418,26 +418,24 @@
     <value>{0: HH:mm:ss}</value>
   </data>
   <data name="SwitchToManual" xml:space="preserve">
-    <value>Passa in manuale</value>
+    <value>Umsch. auf Man</value>
   </data>
-  <data name="UserLogin_UserName" xml:space="preserve">
-    <value>Nome Utente</value>
+  <data name="ErrorLogin" xml:space="preserve">
+    <value>Fehler: Anm. fehlgeschl. Richtigkeit Benutzer und Passw. kontr.</value>
   </data>
   <data name="BackShutterTest" xml:space="preserve">
-    <value>Test in corso... Impossibile uscire dalla pagina</value>
+    <value>Test läuft... Seite nicht verlassen</value>
   </data>
   <data name="SocketLinkEnabled" xml:space="preserve">
-    <value>Abilitato Socket Link</value>
+    <value>Socket Link aktiviert</value>
   </data>
   <data name="SocketLinkPolling" xml:space="preserve">
-    <value>Intervallo di polling</value>
-    <comment>Intervallo di polling in secondi (0 = off)</comment>
+    <value>Polling-Intervall</value>
   </data>
   <data name="SocketLinkPort" xml:space="preserve">
-    <value>Porta</value>
+    <value>Tür</value>
   </data>
   <data name="SocketLinkTimeout" xml:space="preserve">
     <value>Timeout</value>
-    <comment>Timeout in secondi (0 = off)</comment>
   </data>
 </root>

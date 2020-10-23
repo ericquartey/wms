@@ -117,19 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Verbind. zu  Betrieben aufgebaut</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Verbindung zum Automation Service verloren, Wiederverbind. läuft...</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>Verbind. zum Automatisierungsdienst nicht möglich</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Ungültige Anmeldedaten.</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>Modul geladen.</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>Passwort eingeben</value>
+  </data>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>Das Passwort ist zu kurz.</value>
+  </data>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>Das Passwort muss angegeben werden.</value>
+  </data>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>Betriebe in der Initialisierungsphase</value>
+  </data>
+  <data name="TempKey" xml:space="preserve">
+    <value>Temp. Schlüssel: {0}</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>Strichcode entspricht nicht einem registrierten Benutzer.</value>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Benutzern.</value>
+  </data>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>Der Benutzername muss angegeben werden.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>Karte nicht mit registriertem Benutzer verbunden.</value>
+  </data>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Anmeldung über Kartenlesung ...</value>
+  </data>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Benutzerauthent. läuft ...</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Token eingefügt. Authentifizierung läuft ...</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Token entfernt.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Token-Authentifizierung fehlgeschlagen.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>Authentifizierung mit dem Token unmöglich, weil das WMS nicht erreichbar ist.</value>
+  </data>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>Benutzersitzung 'service' abgel.</value>
   </data>
 </root>

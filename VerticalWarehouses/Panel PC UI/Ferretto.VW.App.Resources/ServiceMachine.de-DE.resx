@@ -117,19 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Autom. fehlt</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>Einst. Bucht nicht ausgef.</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>Das Karussell kann nicht kalibriert werden. \r\n Die Kette der Bucht ist nicht in Nullstellung.</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Belegt</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="CellFree" xml:space="preserve">
+    <value>Frei</value>
+  </data>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>Homing nicht ausgef.</value>
+  </data>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>Inkons. Sensoren Kastenverfügbarkeit in Bucht.</value>
+  </data>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>Inkons. von Lastzustand und Sensoren.</value>
+  </data>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Kein Mitnehmer-Sensor und kein Kasten vorhanden.</value>
+  </data>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Kastenverfüg. auf Hebebühne.</value>
+  </data>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>Kasten bereit für Vorgang.</value>
+  </data>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Kastenanforderung {0} korrekt ausgeführt.</value>
+  </data>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Kasten auf der Hebebühne hat die falsche Höhe</value>
+  </data>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>Masch. nicht im man. Betrieb...</value>
+  </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Maschine aus</value>
+  </data>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Aufg. im Fehlerzu....</value>
+  </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Aufg. von Wms vorh., Wms aber nicht aktiv</value>
+  </data>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Kettenbewegung Bucht läuft...</value>
+  </data>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Bewegung Hebebühne läuft...</value>
+  </data>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>Horizontale Bewegung läuft...</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Bewegung läuft... {0}</value>
+  </data>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Bewegung läuft... (Aufgabe: {0}, Kasten: {1}, Status: {2}, Bewegung: von {3} {4}, bis {5} {6})</value>
+  </data>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Kastenbewegung läuft...</value>
+  </data>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Rolltürbewegung läuft...</value>
+  </data>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>Vertikale Bewegung läuft...</value>
+  </data>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>Kein Kasten in der Bucht.</value>
+  </data>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>Mitnehmer-Sensor bei Null od. Kastenverfüg. fehltt.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position {0}</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>Rolltür offen oder in unbekannter Position.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>Test läuft...</value>
+  </data>
+  <data name="NoGear" xml:space="preserve">
+    <value>Betr. fehlt</value>
   </data>
 </root>

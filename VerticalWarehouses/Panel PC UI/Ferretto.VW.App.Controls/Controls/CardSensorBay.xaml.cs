@@ -59,7 +59,6 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public CardSensorBay()
         {
-
             this.InitializeComponent();
 
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -158,29 +157,29 @@ namespace Ferretto.VW.App.Controls.Controls
             this.SensorsService = this.sensorsService;
             this.MachineStatus = this.machineService.MachineStatus;
 
-            this.BayNumber = $"Baia {(int)this.machineService.Bay.Number}";
+            this.BayNumber = $"{Localized.Get("OperatorApp.Bay")} {(int)this.machineService.Bay.Number}";
 
             if (this.machineService.Bay.IsDouble)
             {
-                this.CardSensorLabel2 = "Alta";
-                this.CardSensorLabel3 = "Bassa";
+                this.CardSensorLabel2 = Localized.Get("OperatorApp.Up");
+                this.CardSensorLabel3 = Localized.Get("OperatorApp.Down");
             }
             else
             {
                 if (this.machineService.BayFirstPositionIsUpper)
                 {
-                    this.CardSensorLabel2 = "Baia";
+                    this.CardSensorLabel2 = Localized.Get("OperatorApp.Bay");
                     this.CardSensorLabel3 = null;
                 }
                 else
                 {
                     this.CardSensorLabel2 = null;
-                    this.CardSensorLabel3 = "Baia";
+                    this.CardSensorLabel3 = Localized.Get("OperatorApp.Bay");
                 }
                 if (this.machineService.Bays.Any(f => f.IsExternal))
                 {
-                    this.CardSensorLabel2 = "Ext";
-                    this.CardSensorLabel3 = "Int";
+                    this.CardSensorLabel2 = Localized.Get("InstallationApp.ExternalBayShort");
+                    this.CardSensorLabel3 = Localized.Get("InstallationApp.InternalBayShort");
                 }
             }
 

@@ -1549,9 +1549,6 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="ExecuteRow" xml:space="preserve">
     <value>Esegui riga</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="ConfirmServiceMessage" xml:space="preserve">
     <value>Sei sicuro di voler confermare questo service?</value>
   </data>
@@ -1756,7 +1753,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Peso unitario [g]</value>
   </data>
   <data name="BarcodeOperationConfirmed" xml:space="preserve">
-    <value>Operazione confermata tramite codice a barre: </value>
+    <value>Operazione confermata tramite codice a barre.</value>
   </data>
   <data name="BarcodeMismatch" xml:space="preserve">
     <value>Alcuni campi del codice a barre '{0}' non coincidono con quelli dell'articolo.</value>

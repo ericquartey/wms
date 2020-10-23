@@ -117,19 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Anforderung nicht korrekt formuliert.</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="InternalServerErrorTitle" xml:space="preserve">
+    <value>Interner Serverfehler.</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="MaintenanceStateExpired" xml:space="preserve">
+    <value>Wartungsstatus abgelaufen</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="MaintenanceStateExpiring" xml:space="preserve">
+    <value>Auslaufender Wartungsstatus</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
+    <value>Keine Einheit mit dem angegebenen '{0}'-Identifikator.</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Elem. nicht gefunden.</value>
+  </data>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Der Betrieb wird gerade initialisiert.</value>
+  </data>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Betrieb hat die Initialisierungsphase abgeschlossen.</value>
+  </data>
+  <data name="UnprocessableEntityTitle" xml:space="preserve">
+    <value>Bearbeit. der Anford. aufgrund des akt. Status nicht möglich</value>
+  </data>
+  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Wert kann nicht null sein oder nur Leerzeichen enth.</value>
   </data>
 </root>

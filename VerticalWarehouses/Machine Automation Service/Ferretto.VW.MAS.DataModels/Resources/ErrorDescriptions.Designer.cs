@@ -196,7 +196,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load Unit not completely on board.
+        ///   Looks up a localized string similar to Loading unit not fully loaded..
         /// </summary>
         public static string CradleNotCompletelyLoaded {
             get {
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The destination is not correct.
+        ///   Looks up a localized string similar to Destinazione non valida.
         /// </summary>
         public static string DestinationBelowLowerBound {
             get {
@@ -241,7 +241,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The destination is not correct.
+        ///   Looks up a localized string similar to Destinazione non valida.
         /// </summary>
         public static string DestinationOverUpperBound {
             get {

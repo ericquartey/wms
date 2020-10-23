@@ -117,19 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="Compaction" xml:space="preserve">
+    <value>Komprimieren</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="CompactionAbbreviation" xml:space="preserve">
+    <value>COM</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="CompactionDescription" xml:space="preserve">
+    <value>Optimierung der Lagerfläche</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="Expired" xml:space="preserve">
+    <value>Abgelaufene Wartungsen</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="Expiring" xml:space="preserve">
+    <value>Auslaufende Wartungen</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Wartung</value>
+  </data>
+  <data name="MaintenanceAbbreviation" xml:space="preserve">
+    <value>MAINT</value>
+  </data>
+  <data name="MaintenanceDescription" xml:space="preserve">
+    <value>Zähler und Maschinenwartung</value>
+  </data>
+  <data name="Updating" xml:space="preserve">
+    <value>Aktualis.</value>
+  </data>
+  <data name="UpdatingAbbreviation" xml:space="preserve">
+    <value>UPD</value>
+  </data>
+  <data name="UpdatingDescription" xml:space="preserve">
+    <value>Vertimag-Software-Aktualis.</value>
   </data>
 </root>

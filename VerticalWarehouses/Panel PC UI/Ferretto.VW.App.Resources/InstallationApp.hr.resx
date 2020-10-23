@@ -2816,4 +2816,13 @@ Nakon toga nastavite pritiskom na tipku "Sljedeći“</value>
   <data name="Completed" xml:space="preserve">
     <value>Dovršen</value>
   </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Ušteda energije</value>
+  </data>
+  <data name="ExternalBayShort" xml:space="preserve">
+    <value>Van</value>
+  </data>
+  <data name="InternalBayShort" xml:space="preserve">
+    <value>Unu</value>
+  </data>
 </root>

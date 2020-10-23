@@ -117,19 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="TheCellAlreadyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>Zelle enthält bereits anderen Kasten.</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="TheCellIsUnexpectedlyFree" xml:space="preserve">
+    <value>Zelle ist unerwarteterweise leer.</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>Zelle enthält unerwarteterweise anderen Kasten.</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
+    <value>Der Kasten kann keine blockierte Zelle belegen.</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
+    <value>Kasten bereits in anderer Zelle geladen.</value>
+  </data>
+  <data name="TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights" xml:space="preserve">
+    <value>Die angegebene Höhe liegt nicht zwischen den Höhen benachbarter Zellen.</value>
+  </data>
+  <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
+    <value>Die angegebene Höhe würde die Paneele mit einem anderen vorhandenen Paneel überlappen.</value>
+  </data>
+  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
+    <value>Ciljna ćelija je samo prostor, ne može podržati jedinicu opterećenja.</value>
+  </data>
+  <data name="TheTargetCellIsBlocked" xml:space="preserve">
+    <value>Die Zielzelle ist blockiert.</value>
+  </data>
+  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Angegebene Zelle nicht innerhalb der vertikalen Grenzen der Hebebühne.</value>
+  </data>
+  <data name="NoEmptyCellsAvailable" xml:space="preserve">
+    <value>Es sind keine Zellen im Lager.</value>
+  </data>
+  <data name="TheCellIsNotFree" xml:space="preserve">
+    <value>Zelle nicht frei</value>
+  </data>
+  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
+    <value>Angegebene Zelle kann Kasten in der Hebebühne nicht enthalten</value>
+  </data>
+  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Angegebene Höhe liegt nicht innerhalb der vertikalen Grenzen der Hebebühne.</value>
+  </data>
+  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
+    <value>Der Kasten kann nicht vor eine deaktivierte Zelle gestellt werden.</value>
+  </data>
+  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
+    <value>Die Zielzelle ist deaktiviert.</value>
+  </data>
+  <data name="TheTargetCellIsUnusable" xml:space="preserve">
+    <value>Die Zielzelle ist nicht benutzbar.</value>
   </data>
 </root>

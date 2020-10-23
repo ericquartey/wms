@@ -117,19 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="ALoadingUnitIsAlreadyOnBoardOfTheElevator" xml:space="preserve">
+    <value>Kasten bereits auf Hebebühne.</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Bereits ein Kasten in der angegebenen Buchtposition.</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="MovementDistanceCannotBeZero" xml:space="preserve">
+    <value>Der Bewegungsabstand kann nicht Null sein.</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="NoLoadingUnitIsOnBoardOfTheElevator" xml:space="preserve">
+    <value>Kein Kasten in der Hebebühne vorhanden.</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Kein Kasten in der angegebenen Bucht vorhanden.</value>
+  </data>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
+    <value>Kein Kasten in der angegebenen Zelle vorhanden.</value>
+  </data>
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>In der angegebenen Buchtposition wartet keine Kasten darauf, ausgezogen zu werden.</value>
+  </data>
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>Offset ({0}mm) vertikale Achse nicht gültig: muss innerhalb des Bereichs [{1}mm; {2}mm] liegen.</value>
+  </data>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
+    <value>Die Zielposition ({0}mm) muss innerhalb des Bereichs [{1}mm; {2}mm] liegen.</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Hebebühne befindet sich bereits vor der angegebenen Buchtposition.</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Hebebühne befindet sich bereits vor der angegebenen Zelle</value>
+  </data>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>Hebebühne nicht leer, Mitnehmer jedoch in Nullstellung.</value>
+  </data>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>Hebebühne nicht voll, Mitnehmer jedoch nicht in Nullstellung.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Hebebühne nicht gegenüber der angegebenen Buchtposition.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Hebebühne nicht vor der angegebenen Zelle.</value>
+  </data>
+  <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
+    <value>In der angegebenen Zelle ist nicht genügend Platz für die Aufnahme des Kastens.</value>
+  </data>
+  <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
+    <value>Kalibrier.der vert. Achse muss vor dem Versuch einer absoluten Hebebühnenbew. durchgeführt werden.</value>
   </data>
 </root>

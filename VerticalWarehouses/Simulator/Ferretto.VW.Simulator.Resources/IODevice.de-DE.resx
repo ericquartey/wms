@@ -117,19 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="BayLightActivation" xml:space="preserve">
+    <value>Aktivierung Beleuchtung Bucht</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="CarterSensorLeft" xml:space="preserve">
+    <value>Sensor Schutzgehäuse Links</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="CarterSensorRight" xml:space="preserve">
+    <value>Sensor Schutzgehäuse Rechts</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="EmergencyPB" xml:space="preserve">
+    <value>Not-Aus-Pilz</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="EnableRunConsole" xml:space="preserve">
+    <value>Aktivierung zum Betrieb der Konsole</value>
+  </data>
+  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
+    <value>Auswahl Wiegenmotor (Rückmeldung)</value>
+  </data>
+  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
+    <value>Auswahl Hebebühnenmotor (Rückmeldung)</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>Frei</value>
+  </data>
+  <data name="HeightReadingActivation" xml:space="preserve">
+    <value>Aktivierung der Höhenablesung (Messbarriere)</value>
+  </data>
+  <data name="InverterFaultSignal" xml:space="preserve">
+    <value>Kumulativer Invert. In Fault</value>
+  </data>
+  <data name="IODeviceByID" xml:space="preserve">
+    <value>IO Device  {0:00}</value>
+  </data>
+  <data name="IODeviceName" xml:space="preserve">
+    <value>IO Device Name</value>
+  </data>
+  <data name="LightCurtain" xml:space="preserve">
+    <value>Lichtschranke Zugangssperre</value>
+  </data>
+  <data name="LightCurtainCalibration" xml:space="preserve">
+    <value>Eichung Schranke</value>
+  </data>
+  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
+    <value>Verfügbarkeitssensor für unteren Kasten/Zwischennuch</value>
+  </data>
+  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Kasten an Wiege Maschinenseite vorhanden</value>
+  </data>
+  <data name="MotorElevatorChainSelection" xml:space="preserve">
+    <value>Auswahl Wiegenmotor</value>
+  </data>
+  <data name="MotorElevatorSelection" xml:space="preserve">
+    <value>Auswahl Hebebühnenmotor</value>
+  </data>
+  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Kasten an Wiege Bedienerseite vorhanden</value>
+  </data>
+  <data name="ResetSafetyFunction" xml:space="preserve">
+    <value>Reset Sicherheitsfunktion (300ms-Impuls)</value>
+  </data>
+  <data name="RobotEndPicking" xml:space="preserve">
+    <value>Roboteroption - Taste Fine Picking (oder Fine Picking Robot)</value>
+  </data>
+  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
+    <value>Roboter-Option - Aufgabe beendet Lager</value>
+  </data>
+  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
+    <value>Roboter-Option - Lager bereit/defekt</value>
+  </data>
+  <data name="SafetyStatus" xml:space="preserve">
+    <value>Status Sicherheitsfunkt.</value>
+  </data>
+  <data name="TrolleyHook" xml:space="preserve">
+    <value>Trolley-Option - Trolley-Befestig.</value>
+  </data>
+  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
+    <value>Sensor Kastenverfügb. in Bucht</value>
   </data>
 </root>

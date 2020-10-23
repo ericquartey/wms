@@ -117,19 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="All" xml:space="preserve">
+    <value>Alle</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="AllDescription" xml:space="preserve">
+    <value>Ermöglicht den Zugriff auf die Liste aller Parameter, unabhängig von der Kategorie.</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annull.</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="Empty" xml:space="preserve">
+    <value>Kein Element, das dem Navigationskriterium entspricht.</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Ungültiger Wert</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Maschine</value>
+  </data>
+  <data name="MachineDescription" xml:space="preserve">
+    <value>Ermöglicht den Zugriff auf die Liste aller Parameter, unabhängig von der Kategorie.</value>
+  </data>
+  <data name="Root" xml:space="preserve">
+    <value>Root</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speic</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Suche:</value>
   </data>
 </root>

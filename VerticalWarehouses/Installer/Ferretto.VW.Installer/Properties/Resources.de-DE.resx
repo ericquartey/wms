@@ -117,19 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="Abort" xml:space="preserve">
+    <value>Annull.</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>Installation Vertimag-Software</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="UnknownVersion" xml:space="preserve">
+    <value>Unbekannt</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="VertimagSoftwareInstallation" xml:space="preserve">
+    <value>Installation Vertimag-Software</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="ServiceVersion" xml:space="preserve">
+    <value>Version des Background-Services</value>
+  </data>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>Version Benutzeroberfläche</value>
+  </data>
+  <data name="SelectVertimagConfigurationFile" xml:space="preserve">
+    <value>Vertimag-Konfigurationsdatei wählen</value>
+  </data>
+  <data name="VertimagConfigurationFiles" xml:space="preserve">
+    <value>Vertimag-Konfigurationsdateien</value>
+  </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Alle Dateien</value>
+  </data>
+  <data name="MasterBay" xml:space="preserve">
+    <value>Hauptbucht</value>
+  </data>
+  <data name="SlaveBay" xml:space="preserve">
+    <value>Sekundäre Bucht</value>
+  </data>
+  <data name="SelectedConfigurationFile" xml:space="preserve">
+    <value>Konfigurationsdatei</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>Keine Datei ausgewählt</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Datei auswähl.</value>
+  </data>
+  <data name="MasterBayAddress" xml:space="preserve">
+    <value>Adresse Hauptbucht</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Laden</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Weiter</value>
+  </data>
+  <data name="BaySelection" xml:space="preserve">
+    <value>Auswahl Bucht</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Seriennummer</value>
+  </data>
+  <data name="MaximumGrossCapacity" xml:space="preserve">
+    <value>Max. Bruttotr.</value>
+  </data>
+  <data name="KilogramsValueFormat" xml:space="preserve">
+    <value>{0} kg</value>
+  </data>
+  <data name="SelectNumberOfThisBay" xml:space="preserve">
+    <value>Nummer dieser Bucht auswählen</value>
+  </data>
+  <data name="GoBack" xml:space="preserve">
+    <value>Zurück</value>
   </data>
 </root>

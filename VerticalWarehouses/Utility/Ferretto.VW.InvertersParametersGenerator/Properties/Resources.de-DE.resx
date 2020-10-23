@@ -117,19 +117,103 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Range" xml:space="preserve">
-    <value>Der Wert des Feldes {0} muss zwischen {1} und {2} liegen</value>
+  <data name="Close" xml:space="preserve">
+    <value>Schlie</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht größer als {2} sein</value>
+  <data name="Next" xml:space="preserve">
+    <value>Nächste</value>
   </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Der Wert des Feldes {0} darf nicht kleiner als {1} sein</value>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Ordner öffnen</value>
   </data>
-  <data name="Regex" xml:space="preserve">
-    <value>Der Wert des Feldes {0} ist ungültig</value>
+  <data name="VertimagConfigurationFile" xml:space="preserve">
+    <value>Vertimag-Konfigurationsdateien</value>
   </data>
-  <data name="Required" xml:space="preserve">
-    <value>Feld {0} Pflichtfeld</value>
+  <data name="OpenFile" xml:space="preserve">
+    <value>File öff.</value>
+  </data>
+  <data name="InvertersFolder" xml:space="preserve">
+    <value>Ordner Inverter</value>
+  </data>
+  <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
+    <value>Parameter-Generierungsdatei Inverter</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import.</value>
+  </data>
+  <data name="NoParametersFilesFound" xml:space="preserve">
+    <value>Keine Parameterdatei gefunden</value>
+  </data>
+  <data name="InverterTypeParametersConfiguration" xml:space="preserve">
+    <value>Inverter [{0}] Typ '{1}' Parameterkonfiguration</value>
+  </data>
+  <data name="TotalParameters" xml:space="preserve">
+    <value>Parameter insges {0}</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Dataset</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Nur lesen</value>
+  </data>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Konfiguration exportieren</value>
+  </data>
+  <data name="ExportFile" xml:space="preserve">
+    <value>Datei export</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Keine Zeile</value>
+  </data>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>Export erfolgreich abgeschlossen.</value>
+  </data>
+  <data name="SaveFileConfiguration" xml:space="preserve">
+    <value>Konfigurationsdat. speichern</value>
+  </data>
+  <data name="ConfigurationFile" xml:space="preserve">
+    <value>Konfigurationsdatei</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Vorherige</value>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Konfiguration importieren</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Datei auswählen</value>
+  </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Ordner Inverter-Parameter</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Konfigurationsdatei auswählen</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Konfigurationsordner</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Ordner nicht vorh.</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>Ungült. od nicht eingef.Datei</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>Datei nicht gesp</value>
+  </data>
+  <data name="SearchPattern" xml:space="preserve">
+    <value>Pattern files</value>
   </data>
 </root>
