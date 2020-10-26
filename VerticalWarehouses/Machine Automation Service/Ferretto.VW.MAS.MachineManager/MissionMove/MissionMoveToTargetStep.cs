@@ -285,11 +285,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        this.Logger.LogDebug($"A waiting mission with step=MissionStep.WaitPick is detected and MissionId:{this.Mission.Id} is interrupted.");
+                        this.Logger.LogDebug($"At least a waiting mission with step=MissionStep.WaitPick is detected and the given MissionId:{this.Mission.Id} is interrupted.");
                         newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
-
-                    // newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
 
                 newStep.OnEnter(null);
@@ -309,7 +307,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var retValue = false;
 
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-            if(!(bay is null))
+            if (!(bay is null))
             {
                 if (bay.IsDouble)
                 {
