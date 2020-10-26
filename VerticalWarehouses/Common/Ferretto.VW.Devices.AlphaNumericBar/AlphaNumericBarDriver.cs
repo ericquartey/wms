@@ -320,6 +320,30 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             var result = str.Trim();
 
+            result = result.Replace("…", "...");
+            result = result.Replace("„", ",,");
+
+            result = result.Replace("‘", "'");
+            result = result.Replace("’", "'");
+            result = result.Replace("“", "\"");
+            result = result.Replace("”", "\"");
+
+            result = result.Replace("–", "-");
+            result = result.Replace("—", "-");
+            result = result.Replace("¯", "-");
+
+            result = result.Replace("¼", "1/4");
+            result = result.Replace("½", "1/2");
+            result = result.Replace("¾", "3/4");
+
+            result = result.Replace("‰", "0/00");
+
+            result = result.Replace("‹", "<");
+            result = result.Replace("›", ">");
+
+            result = result.Replace("«", "<<");
+            result = result.Replace("»", ">>");
+
             result = result.Replace("à", "a'");
             result = result.Replace("á", "a'");
             result = result.Replace("À", "A'");
@@ -337,6 +361,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             result = result.Replace("å", "a");
             result = result.Replace("æ", "ae");
 
+            result = result.Replace("¢", "c");
+
+            result = result.Replace("Ð", "D");
+
             result = result.Replace("è", "e'");
             result = result.Replace("é", "e'");
             result = result.Replace("È", "E'");
@@ -344,6 +372,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             result = result.Replace("Ê", "E");
             result = result.Replace("Ë", "E");
+
+            result = result.Replace("€", "EUR");
+
+            result = result.Replace("ƒ", "f");
 
             result = result.Replace("ì", "i'");
             result = result.Replace("í", "i'");
@@ -356,6 +388,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             result = result.Replace("Î", "I");
             result = result.Replace("Ï", "I");
 
+            result = result.Replace("ñ", "n");
             result = result.Replace("Ñ", "N");
 
             result = result.Replace("ò", "o'");
@@ -371,10 +404,18 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             result = result.Replace("Õ", "O");
             result = result.Replace("Ö", "O");
 
+            result = result.Replace("œ", "oe");
+            result = result.Replace("Œ", "OE");
+
+            result = result.Replace("š", "s");
+            result = result.Replace("Š", "S");
+
             result = result.Replace("ù", "u'");
             result = result.Replace("ú", "u'");
             result = result.Replace("Ù", "U'");
             result = result.Replace("Ú", "U'");
+
+            result = result.Replace("™", "TM");
 
             result = result.Replace("û", "u");
             result = result.Replace("ü", "u");
@@ -385,7 +426,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             result = result.Replace("Ý", "Y'");
             result = result.Replace("Ÿ", "Y");
 
-            result = result.Replace("œ", "oe");
+            result = result.Replace("¥", "YEN");
+
+            result = result.Replace("ž", "z");
+            result = result.Replace("Ž", "Z");
 
             result = result.Replace("×", "x");
 
