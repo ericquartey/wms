@@ -2826,4 +2826,10 @@ Anschließend auf "Weiter" drücken.</value>
   <data name="InternalBayShort" xml:space="preserve">
     <value>Int</value>
   </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Token-Seriennummer</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Wählen Sie das Modell aus</value>
+  </data>
 </root>

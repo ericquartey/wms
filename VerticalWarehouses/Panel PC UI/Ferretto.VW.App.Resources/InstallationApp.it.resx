@@ -2842,4 +2842,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="InternalBayShort" xml:space="preserve">
     <value>Int</value>
   </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Numero Seriale Gettone</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Seleziona il modello</value>
+  </data>
 </root>

@@ -104,7 +104,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Bay?.Positions.OrderBy(m => m.Height).Last() :
                 this.Bay?.Positions.OrderBy(m => m.Height).First();
 
-        public string CurrentBayPosition => this.currentStep is BayCheckStep.PositionUp ? "Alta" : "Bassa";
+        public string CurrentBayPosition => this.currentStep is BayCheckStep.PositionUp ? Localized.Get("InstallationApp.PositionOnTop") : Localized.Get("InstallationApp.PositionOnBotton");
 
         public BayCheckStep CurrentStep
         {
@@ -230,7 +230,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.DisplacementUp != null ||
                       this.DisplacementDown != null));
 
-        public string ShutterLabel => this.SensorsService.ShutterSensors.Open ? "Chiudi serranda" : "Apri serranda";
+        public string ShutterLabel => this.SensorsService.ShutterSensors.Open ? Localized.Get("InstallationApp.GateClose") : Localized.Get("InstallationApp.GateOpen");
 
         public double StepValueDown
         {

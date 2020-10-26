@@ -2825,4 +2825,10 @@ Nakon toga nastavite pritiskom na tipku "Sljedeći“</value>
   <data name="InternalBayShort" xml:space="preserve">
     <value>Unu</value>
   </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Serijski broj tokena</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Odaberite model</value>
+  </data>
 </root>
