@@ -232,7 +232,6 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         private async Task OnSocketLinkAlphaNumericBarChangeAsync(NotificationMessageUI<SocketLinkAlphaNumericBarChangeMessageData> socketLinkMessage)
         {
-            var message = "";
             try
             {
                 await this.AlphaNumericBarConfigureAsync();
@@ -246,8 +245,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                 var offsetArrow = 0;
                 var offsetMessage = 0;
-                var scrollEnd = 0;
 
+                string message;
                 switch (socketLinkMessage.Data.CommandCode)
                 {
                     case 0: // switch off
@@ -268,7 +267,12 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         this.alphaNumericBarDriver.GetOffsetArrowAndMessage(this.bayManager.Identity.LoadingUnitWidth, socketLinkMessage.Data.X, message, out offsetArrow, out offsetMessage);
 
                         await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
-                        await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+
+                        if (message.Length > 0)
+                        {
+                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                        }
+
                         break;
                 }
             }
