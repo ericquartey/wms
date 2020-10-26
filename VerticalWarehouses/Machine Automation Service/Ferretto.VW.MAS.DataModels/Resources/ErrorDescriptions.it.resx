@@ -124,7 +124,7 @@
     <value>Condizioni per il posizionamento non soddisfatte.</value>
   </data>
   <data name="ConditionsNotMetForRunning" xml:space="preserve">
-    <value>Condizioni per l'accensione non soddisfatte.</value>
+    <value>Condizioni per la messa in marcia non soddisfatte.</value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
     <value>Cassetto non caricato completamente.</value>

@@ -287,7 +287,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else if (
                     (mission.Status is MissionStatus.Waiting && mission.Step is MissionStep.BayChain)
-                    || (mission.Status is MissionStatus.Executing && mission.Step is MissionStep.WaitDeposit)
+                    || (mission.Status is MissionStatus.Executing && mission.Step is MissionStep.WaitDepositCell)
                     )
                 {
                     var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
@@ -804,6 +804,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 if (bay.IsActive)
                                 {
+                                    this.Logger.LogDebug("Machine mode: {this.machineVolatileDataProvider.Mode}");
                                     await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
                                 }
                                 else if (bay.Number < BayNumber.ElevatorBay)
@@ -968,6 +969,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnBayOperationalStatusChangedAsync(IServiceProvider serviceProvider)
         {
+            this.Logger.LogDebug("OnBayOperationalStatusChangedAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
@@ -984,6 +986,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.RestoreFullTest(serviceProvider);
 
             this.dataLayerIsReady = true;
+            this.Logger.LogDebug("OnDataLayerReadyAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
             this.Logger.LogTrace("OnDataLayerReady end");
         }
@@ -1006,6 +1009,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         this.machineVolatileDataProvider.IsHomingExecuted = true;
                     }
+
                     await this.InvokeSchedulerAsync(serviceProvider);
                 }
                 else if (message.Status == MessageStatus.OperationError
@@ -1198,6 +1202,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     try
                     {
+                        this.Logger.LogDebug("Schedule mission restore on bay {bay.Number}");
                         await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider, true);
                     }
                     catch (Exception ex)

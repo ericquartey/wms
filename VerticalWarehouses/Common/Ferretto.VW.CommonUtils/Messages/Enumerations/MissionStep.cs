@@ -25,7 +25,9 @@
 
         WaitChain,
 
-        WaitDeposit,
+        WaitDepositCell,   // change in WaitDepositInCell
+
+        WaitDepositBay,
 
         ExtBay,
 

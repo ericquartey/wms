@@ -274,14 +274,55 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
                 {
-                    newStep = new MissionMoveWaitDepositStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep = new MissionMoveWaitDepositCellStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
                 else
                 {
-                    newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    // Check if do not exist any waiting missions on the current bay (reserved for double bay only)
+                    if (!this.isWaitingMissionOnThisBay())
+                    {
+                        newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
+                    else
+                    {
+                        this.Logger.LogDebug($"A waiting mission with step=MissionStep.WaitPick is detected and MissionId:{this.Mission.Id} is interrupted.");
+                        newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
+
+                    // newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
+
                 newStep.OnEnter(null);
             }
+        }
+
+        /// <summary>
+        /// Check if exist at least a waiting mission (step == MissionStep.WaitPick) in the current bay.
+        /// Applied only for double bay.
+        /// </summary>
+        /// <returns>
+        ///     <c>true</c> if exists at least a waiting mission,
+        ///     <c>false</c> otherwise.
+        /// </returns>
+        private bool isWaitingMissionOnThisBay()
+        {
+            var retValue = false;
+
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            if (bay.IsDouble)
+            {
+                // List of waiting mission on the bay
+                var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                    .Where(
+                        m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                        m.Id != this.Mission.Id &&
+                        (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                    );
+
+                retValue = (waitMissions != null);
+            }
+
+            return retValue;
         }
 
         #endregion

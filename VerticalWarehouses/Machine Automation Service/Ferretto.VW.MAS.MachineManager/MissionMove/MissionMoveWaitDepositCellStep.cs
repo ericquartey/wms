@@ -14,11 +14,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
-    public class MissionMoveWaitDepositStep : MissionMoveBase
+    public class MissionMoveWaitDepositCellStep : MissionMoveBase
     {
         #region Constructors
 
-        public MissionMoveWaitDepositStep(Mission mission,
+        public MissionMoveWaitDepositCellStep(Mission mission,
             IServiceProvider serviceProvider,
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
 
             this.Mission.RestoreStep = MissionStep.NotDefined;
-            this.Mission.Step = MissionStep.WaitDeposit;
+            this.Mission.Step = MissionStep.WaitDepositCell;
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.Mission.Status = MissionStatus.Executing;

@@ -92,9 +92,9 @@ namespace Ferretto.VW.App.Controls
             set => this.SetProperty(ref this.isKeyboardOpened, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
-
         public bool IsMachineMoving => this.machineService?.MachineStatus?.IsMoving ?? true;
+
+        public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
         public virtual bool IsWaitingForResponse
         {

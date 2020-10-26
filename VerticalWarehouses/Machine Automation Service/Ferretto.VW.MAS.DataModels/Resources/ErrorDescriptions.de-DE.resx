@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,304 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Positionierungsbedingungen nicht erfüllt.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Inbetriebnahmebedingungen nicht erfüllt.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Kasten nicht voll beladen.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Unbeladene Hebebühne in Entnahme</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Nicht leere Hebebühne in Ablage</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Inkonsistenz Sensorstatus</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Inkonsistenz Sensorstatus</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Inverter-Fehler.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Schreiben des Inverterparameters während der Ausführung unmöglich.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Datensatzdaten des Inverters stimmen nicht überein.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Checksum-Fehler EEPROM Inverter.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Lesefehler EEPROM Inverter.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Schreibfehler EEPROM Inverter.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Dataset Inverter ungültig.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Inverter-Parameter ungültig.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Angegebener Knoten nicht verfügbar.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Inverterparameter schreibgeschützt.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Inverterparameter nur schreibbar.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Syntaxfehler der an den Inverter gesendeten Nachricht.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Unbekannter Param., an Inverter übergeben.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Inkonsistenz zwischen Länge der Nachricht an Inverter und Datentyp der Nachricht.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Festgestellter Fehler in einem Inverter</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value> Sicherheitsfunktion ausgelöst.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Ungültige Zielzelle</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Hebebühnenwiege belegt</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Inkonsistenz Database ursprüngliche Kastenposition</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Kein Kasten in angegebener Bucht</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Kasten in der Entnahmebucht erkannt</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Zielbucht des Kastens belegt</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Inkonsistenz Kasten-Datenbank</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Ausgewählter Kasten nicht im Lager geladen</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Ursprüngliche Kastenbucht leer</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Urspr. Zelle ungültig</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Fehler Sensor Bucht</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Verfügbarkeitssens. ungültig</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Kasten in Hebebühne erkannt</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Nullsensor bei leerer Hebebühne fehlt</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Inkonsistenz Sensorstatus Bucht</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Hohe Ebene der Bucht belegt</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Inkonsistenz Sensorstatus</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Auf Kasten geladenes max Gewicht zu hoch.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Rolltür zu</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Rolltür offen</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Ziel niedriger als die Untergrenze</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>Inverter führt einen weiteren Befehl aus</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Ziel höher als Obergrenze</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Festgestellter Fehler im IoDevice.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Kasten in Zelle erkannt</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Ungültiger Maschinenmod.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Sicherheitsschranke belegt</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Nothalt-Taste gedrückt</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Linke Seitenwand geöffnet.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Kasten in anderer Bucht</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Kasten nicht in Hebebühne vorhanden</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Fehler Sensor Bucht</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Hohe Ebene der Bucht leer</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Fehler bei Aufgabenausf.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Fehler bei Aufgabenausf.</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Fehler bei Aufgabenausf.</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Kein Fehler</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Gew. zu niedrig</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Gesamtgewicht Lager überschritten</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Lager voll</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Bucht mit unbekanntem Kasten belegt</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Hebebühne mit unbekanntem Kasten belegt</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Verbindungsfehler mit Inverter</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Verbindungsfehler mit IoDevice</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Verbindungsfehler mit Laser</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Autom. Rückstellung der Bewegung nicht erlaubt</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Zieltyp ist nicht gültig</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Untere Pos. der Bucht nicht definiert</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Obere Position der Bucht nicht definiert</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Aufgabentyp nicht gültig</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Bewegung der Buchtenkette nicht erlaubt: Kasten zu schwer.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Rückkehrbefehl vom Picking nicht gültig</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Fehler beim Aktualisieren des Zellenarchivs. Eine oder mehrere Zielzellen sind logisch belegt</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Kalibrierbedingungen nicht erfüllt.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Höhenfehler</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Statusfehler Rolltür</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Zielbucht ohne Eichung.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Test nicht abgeschl</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Lager nicht leer.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Positionierungsf. Bucht</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Rechte Seitenwand geöffnet</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Vertikale Position falsch.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>Die Beschleunigungskonfiguration der Achsenbewegung {0} ist ungültig: Beschleunigung bei Nulllast kleiner als bei Volllast</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>Geschwindigkeitskonfiguration der Achsenbewegung {0} ungültig: Gschw. bei Nulllast kleiner als bei Volllast</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Test nicht abgeschl</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Bucht ungültig</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Buchtpos. nicht gültig</value>
+  </data>
+  <data name="AxisMovementAccelerationConfigurationInvalid" xml:space="preserve">
+    <value>Beschleunigungskonf. Achsenbew. {0} nicht gültig.</value>
+  </data>
+  <data name="AxisMovementDecelerationConfigurationInvalid" xml:space="preserve">
+    <value>Abbremsungskonf. Achsenbew. {0} nicht gültig.</value>
+  </data>
+  <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
+    <value>Geschwindigkeitskonf. Achsenbew. {0} nicht gültig.</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Positionierungsfehler am oberen Ende</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Außenbucht belegt</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Außenbucht leer</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>WMS-Fehler</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Verstellung ungültig</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Positionierungsfehler am unteren Ende</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>Kasten nicht verfügbar</value>
+  </data>
 </root>

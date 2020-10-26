@@ -19,220 +19,220 @@
             ParentViewName="{x:Static modules:Operator.OPERATOR_MENU}"
             mc:Ignorable="d">
 
-  <Grid Margin="15,0,0,0">
+    <Grid Margin="15,0,0,0">
 
-    <Grid.Resources>
-      <converters:BoolToBrushConverter x:Key="BoolToGreenRedConverter"
-                                       FalseBrush="{StaticResource FerrettoRed}"
-                                       TrueBrush="{StaticResource FerrettoGreen}" />
+        <Grid.Resources>
+            <converters:BoolToBrushConverter x:Key="BoolToGreenRedConverter"
+                                             FalseBrush="{StaticResource FerrettoRed}"
+                                             TrueBrush="{StaticResource FerrettoGreen}" />
 
-      <converters:BoolToIconKindConverter x:Key="BoolToValidationIconConverter"
-                                          FalseKind="AlertCircle"
-                                          TrueKind="CheckboxMarkedCircle" />
-    </Grid.Resources>
+            <converters:BoolToIconKindConverter x:Key="BoolToValidationIconConverter"
+                                                FalseKind="AlertCircle"
+                                                TrueKind="CheckboxMarkedCircle" />
+        </Grid.Resources>
 
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="Auto" />
-    </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-
-    <StackPanel Grid.ColumnSpan="2"
-                Orientation="Horizontal">
-
-      <iconPacks:PackIconModern Width="32"
-                                Height="32"
-                                Margin="3,10,15,10"
-                                VerticalAlignment="Center"
-                                Foreground="White"
-                                Kind="InboxOut" />
-
-      <TextBlock Grid.ColumnSpan="2"
-                 Margin="10,10,15,10"
-                 VerticalAlignment="Top"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
-        <Run Text="{resources:Loc OperatorApp.IdDrawerActivityPickingPageHeader}" /> <Run Text="{Binding Mission.LoadingUnit.Id}" />
-      </TextBlock>
-    </StackPanel>
-
-    <Border Grid.Row="2"
-            Margin="0,15,0,0"
-            Background="{DynamicResource PpcBackground}"
-            BorderBrush="{DynamicResource PpcBorderBrush}"
-            BorderThickness="{DynamicResource PpcBorderThickness}"
-            CornerRadius="0">
-      <Grid Margin="20">
         <Grid.RowDefinitions>
-          <RowDefinition Height="165" />
-          <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <wpf:TrayControl Name="TrayControl"
-                         Grid.Row="0"
-                         Grid.Column="0"
-                         Margin="0,0,0,0"
-                         HorizontalAlignment="Stretch"
-                         VerticalAlignment="Stretch"
-                         Compartments="{Binding Compartments}"
-                         DefaultCompartmentColor="#444444"
-                         DimensionHeight="{Binding LoadingUnitDepth}"
-                         DimensionWidth="{Binding LoadingUnitWidth}"
-                         GridLinesColor="#3c3c3c"
-                         IsEnabled="False"
-                         IsRotated="{Binding IsBaySideBack}"
-                         SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
-                         SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
-                         ShowBackground="False"
-                         ShowRuler="False" />
+        <StackPanel Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
 
-        <localControls:ItemInfoView Grid.Row="1"
-                                    Margin="0,0,0,0"
-                                    VerticalAlignment="Top" />
+            <iconPacks:PackIconModern Width="32"
+                                      Height="32"
+                                      Margin="3,10,15,10"
+                                      VerticalAlignment="Center"
+                                      Foreground="White"
+                                      Kind="InboxOut" />
 
-      </Grid>
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="10,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                <Run Text="{resources:Loc OperatorApp.IdDrawerActivityPickingPageHeader}" /> <Run Text="{Binding Mission.LoadingUnit.Id}" />
+            </TextBlock>
+        </StackPanel>
 
-    </Border>
+        <Border Grid.Row="2"
+                Margin="0,15,0,0"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                CornerRadius="0">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="165" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-    <Grid Grid.Row="2"
-          Grid.Column="1"
-          Margin="0,15,0,0">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
+                <wpf:TrayControl Name="TrayControl"
+                                 Grid.Row="0"
+                                 Grid.Column="0"
+                                 Margin="0,0,0,0"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 Compartments="{Binding Compartments}"
+                                 DefaultCompartmentColor="#444444"
+                                 DimensionHeight="{Binding LoadingUnitDepth}"
+                                 DimensionWidth="{Binding LoadingUnitWidth}"
+                                 GridLinesColor="#3c3c3c"
+                                 IsEnabled="False"
+                                 IsRotated="{Binding IsBaySideBack}"
+                                 SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
+                                 SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
+                                 ShowBackground="False"
+                                 ShowRuler="False" />
 
-      <Border Grid.Row="0"
-              Width="230"
-              Height="90"
-              MinHeight="90"
-              Margin="15,0"
-              Background="{DynamicResource PpcBackground}">
-        <Border BorderBrush="{DynamicResource FerrettoBlue}"
-                BorderThickness="{DynamicResource PpcBorderThickness}">
-          <Grid Grid.Column="8"
-                Grid.ColumnSpan="4">
+                <localControls:ItemInfoView Grid.Row="1"
+                                            Margin="0,0,0,0"
+                                            VerticalAlignment="Top" />
 
+            </Grid>
+
+        </Border>
+
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              Margin="0,15,0,0">
             <Grid.RowDefinitions>
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
 
-            <TextBlock x:Name="ItemCodeLabel"
-                       Margin="8,4"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-                       FontSize="{StaticResource FontSize_Normal}"
-                       FontWeight="Normal"
-                       Foreground="{DynamicResource Text_Foreground}"
-                       Text="{resources:Loc OperatorApp.ItemCode}" />
+            <Border Grid.Row="0"
+                    Width="230"
+                    Height="90"
+                    MinHeight="90"
+                    Margin="15,0"
+                    Background="{DynamicResource PpcBackground}">
+                <Border BorderBrush="{DynamicResource FerrettoBlue}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
+                    <Grid Grid.Column="8"
+                          Grid.ColumnSpan="4">
 
-            <TextBlock x:Name="ItemCodeValue"
-                       Grid.Row="1"
-                       Grid.ColumnSpan="2"
-                       Margin="4,0,4,4"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontSize="{StaticResource FontSize_Very_High}"
-                       Foreground="{DynamicResource PpcForeground}"
-                       Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
-                       TextWrapping="Wrap" />
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-            <Border Grid.RowSpan="2"
-                    Grid.Column="1"
-                    Visibility="{Binding MissionOperation.ItemCode, Converter={StaticResource RTVC}}">
-              <iconPacks:PackIconMaterial Width="18"
-                                          Height="18"
-                                          Margin="5"
-                                          HorizontalAlignment="Right"
-                                          VerticalAlignment="Top"
-                                          Foreground="{Binding IsItemCodeValid, Converter={StaticResource BoolToGreenRedConverter}}"
-                                          Kind="{Binding IsItemCodeValid, Converter={StaticResource BoolToValidationIconConverter}}"
-                                          Visibility="{Binding InputItemCode, Converter={StaticResource RTVC}}" />
+                        <TextBlock x:Name="ItemCodeLabel"
+                                   Margin="8,4"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource Text_Foreground}"
+                                   Text="{resources:Loc OperatorApp.ItemCode}" />
 
+                        <TextBlock x:Name="ItemCodeValue"
+                                   Grid.Row="1"
+                                   Grid.ColumnSpan="2"
+                                   Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
+                                   TextWrapping="Wrap" />
+
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Visibility="{Binding MissionOperation.ItemCode, Converter={StaticResource RTVC}}">
+                            <iconPacks:PackIconMaterial Width="18"
+                                                        Height="18"
+                                                        Margin="5"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Foreground="{Binding IsItemCodeValid, Converter={StaticResource BoolToGreenRedConverter}}"
+                                                        Kind="{Binding IsItemCodeValid, Converter={StaticResource BoolToValidationIconConverter}}"
+                                                        Visibility="{Binding InputItemCode, Converter={StaticResource RTVC}}" />
+
+                        </Border>
+                    </Grid>
+                </Border>
             </Border>
-          </Grid>
-        </Border>
-      </Border>
 
-      <ctrls:PpcSpinEdit Grid.Row="1"
-                         Width="230"
-                         Height="90"
-                         Margin="15,8,15,0"
-                         EditValue="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static resources:General.TargetNullValue}}"
-                         Increment="{Binding QuantityIncrement}"
-                         IsEnabled="{Binding CanInputAvailableQuantity}"
-                         LabelText="{resources:Loc OperatorApp.PresentQuantity}"
-                         Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                         MinValue="0" />
+            <ctrls:PpcSpinEdit Grid.Row="1"
+                               Width="230"
+                               Height="90"
+                               Margin="15,8,15,0"
+                               EditValue="{Binding AvailableQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static resources:General.TargetNullValue}}"
+                               Increment="{Binding QuantityIncrement}"
+                               IsEnabled="{Binding CanInputAvailableQuantity}"
+                               LabelText="{resources:Loc OperatorApp.PresentQuantity}"
+                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                               MinValue="0" />
 
-      <Border Grid.Row="2"
-              Height="90"
-              MinHeight="90"
-              Margin="15,8,15,0"
-              Background="{DynamicResource PpcBackground}">
-        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="{DynamicResource PpcBorderThickness}">
+            <Border Grid.Row="2"
+                    Height="90"
+                    MinHeight="90"
+                    Margin="15,8,15,0"
+                    Background="{DynamicResource PpcBackground}">
+                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
 
-          <Grid Grid.Column="8"
-                Grid.ColumnSpan="4">
+                    <Grid Grid.Column="8"
+                          Grid.ColumnSpan="4">
 
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*" />
-              <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-            <TextBlock Margin="8,4"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-                       FontSize="{StaticResource FontSize_Normal}"
-                       FontWeight="Normal"
-                       Foreground="{DynamicResource Text_Foreground}"
-                       Text="{resources:Loc OperatorApp.QuantityToPick}" />
+                        <TextBlock Margin="8,4"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Normal}"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource Text_Foreground}"
+                                   Text="{resources:Loc OperatorApp.QuantityToPick}" />
 
-            <TextBlock Grid.Row="1"
-                       Margin="4,0,4,4"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontSize="{StaticResource FontSize_Very_High}"
-                       Foreground="{DynamicResource PpcForeground}"
-                       Text="{Binding MissionRequestedQuantity}"
-                       TextWrapping="Wrap" />
+                        <TextBlock Grid.Row="1"
+                                   Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding MissionRequestedQuantity}"
+                                   TextWrapping="Wrap" />
 
-          </Grid>
-        </Border>
-      </Border>
+                    </Grid>
+                </Border>
+            </Border>
 
 
-      <ctrls:PpcSpinEdit Grid.Row="3"
-                         Width="230"
-                         Height="90"
-                         Margin="15,8,15,0"
-                         EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Increment="{Binding QuantityIncrement}"
-                         IsEnabled="{Binding CanInputQuantity}"
-                         LabelText="{Binding MeasureUnitTxt, Mode=OneWay}"
-                         Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                         MinValue="0" />
-      <!--  IsEnabled="{Binding CanInputQuantity}"  -->
+            <ctrls:PpcSpinEdit Grid.Row="3"
+                               Width="230"
+                               Height="90"
+                               Margin="15,8,15,0"
+                               EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Increment="{Binding QuantityIncrement}"
+                               IsEnabled="{Binding CanInputQuantity}"
+                               LabelText="{Binding MeasureUnitTxt, Mode=OneWay}"
+                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                               MinValue="0" />
+            <!--  IsEnabled="{Binding CanInputQuantity}"  -->
 
-      <!--<Border Grid.Row="3"
+            <!--<Border Grid.Row="3"
                     Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}">
                 <iconPacks:PackIconMaterial Width="18"
                                             Height="18"
@@ -245,103 +245,103 @@
                                             Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}" />
             </Border>-->
 
-      <controls:PpcButton Grid.Row="4"
-                          Width="120"
-                          Margin="15,8,15,0"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding ShowDetailsCommand}"
-                          Content="{resources:Loc OperatorApp.Details}"
-                          Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+            <controls:PpcButton Grid.Row="4"
+                                Width="120"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ShowDetailsCommand}"
+                                Content="{resources:Loc OperatorApp.Details}"
+                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-      <controls:PpcButton Grid.Row="4"
-                          Width="100"
-                          Margin="0,8,15,0"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding WeightCommand}"
-                          Content="{resources:Loc OperatorApp.Weight}"
-                          Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+            <controls:PpcButton Grid.Row="4"
+                                Width="100"
+                                Margin="0,8,15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding WeightCommand}"
+                                Content="{resources:Loc OperatorApp.Weight}"
+                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-      <controls:PpcButton Grid.Row="4"
-                          Margin="15,8,15,0"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding ConfirmOperationCanceledCommand}"
-                          Content="{resources:Loc OperatorApp.CancelPick}"
-                          IsBusy="{Binding IsBusyConfirmingOperation}"
-                          Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
+            <controls:PpcButton Grid.Row="4"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ConfirmOperationCanceledCommand}"
+                                Content="{resources:Loc OperatorApp.CancelPick}"
+                                IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
 
-      <controls:PpcButton Grid.Row="5"
-                          Margin="15,8,15,0"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding EmptyOperationCommand}"
-                          Content="{resources:Loc OperatorApp.ConfirmOnEmpty}"
-                          IsBusy="{Binding IsBusyConfirmingOperation}"
-                          Style="{StaticResource ConfirmButton}"
-                          Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
+            <controls:PpcButton Grid.Row="5"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding EmptyOperationCommand}"
+                                Content="{resources:Loc OperatorApp.ConfirmOnEmpty}"
+                                IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Style="{StaticResource ConfirmButton}"
+                                Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
 
-      <controls:PpcButton Grid.Row="5"
-                          Margin="15,8,15,0"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding ConfirmPresentOperationCommand}"
-                          Content="{resources:Loc OperatorApp.ConfirmPresent}"
-                          Style="{StaticResource ConfirmButton}"
-                          Visibility="{Binding CanConfirmPresent, Converter={StaticResource BTVC}}" />
+            <controls:PpcButton Grid.Row="5"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ConfirmPresentOperationCommand}"
+                                Content="{resources:Loc OperatorApp.ConfirmPresent}"
+                                Style="{StaticResource ConfirmButton}"
+                                Visibility="{Binding CanConfirmPresent, Converter={StaticResource BTVC}}" />
 
-      <controls:PpcButton Grid.Row="5"
-                          Margin="15,8,15,0"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding ConfirmPartialOperationCommand}"
-                          Content="{resources:Loc OperatorApp.ConfirmPartial}"
-                          IsBusy="{Binding IsBusyConfirmingPartialOperation}"
-                          Style="{StaticResource ConfirmButton}"
-                          Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}" />
+            <controls:PpcButton Grid.Row="5"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ConfirmPartialOperationCommand}"
+                                Content="{resources:Loc OperatorApp.ConfirmPartial}"
+                                IsBusy="{Binding IsBusyConfirmingPartialOperation}"
+                                Style="{StaticResource ConfirmButton}"
+                                Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}" />
 
-      <controls:PpcButton Grid.Row="5"
-                          Margin="15,8,15,0"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding ConfirmOperationCommand}"
-                          Content="{resources:Loc OperatorApp.Confirm}"
-                          IsBusy="{Binding IsBusyConfirmingOperation}"
-                          Style="{StaticResource ConfirmButton}"
-                          Visibility="{Binding CanConfirm, Converter={StaticResource BTVC}}" />
+            <controls:PpcButton Grid.Row="5"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding ConfirmOperationCommand}"
+                                Content="{resources:Loc OperatorApp.Confirm}"
+                                IsBusy="{Binding IsBusyConfirmingOperation}"
+                                Style="{StaticResource ConfirmButton}"
+                                Visibility="{Binding CanConfirm, Converter={StaticResource BTVC}}" />
 
-      <controls:PpcButton Grid.Row="5"
-                          Margin="15,8,15,0"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding PickBoxCommand}"
-                          Content="{resources:Loc OperatorApp.PickBox}"
-                          IsBusy="{Binding IsBusyConfirmingOperation}"
-                          IsEnabled="False"
-                          Style="{StaticResource ConfirmButton}"
-                          Visibility="{Binding CanPickBox, Converter={StaticResource BTVC}}" />
+            <controls:PpcButton Grid.Row="5"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding PickBoxCommand}"
+                                Content="{resources:Loc OperatorApp.PickBox}"
+                                IsBusy="{Binding IsBusyConfirmingOperation}"
+                                IsEnabled="False"
+                                Style="{StaticResource ConfirmButton}"
+                                Visibility="{Binding CanPickBox, Converter={StaticResource BTVC}}" />
 
-      <StackPanel Grid.Row="5"
-                  Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
-        <TextBlock Grid.Row="5"
-                   Margin="15,5,15,0"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Top"
-                   FontSize="{StaticResource FontSize_Small}"
-                   Foreground="{DynamicResource PpcForeground}"
-                   Text="{resources:Loc OperatorApp.CloseLine}" />
+            <StackPanel Grid.Row="5"
+                        Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
+                <TextBlock Grid.Row="5"
+                           Margin="15,5,15,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           FontSize="{StaticResource FontSize_Small}"
+                           Foreground="{DynamicResource PpcForeground}"
+                           Text="{resources:Loc OperatorApp.CloseLine}" />
 
-        <controls:PpcCheckBox Grid.Row="5"
-                              Margin="15,5,20,0"
-                              HorizontalAlignment="Right"
-                              VerticalAlignment="Bottom"
-                              IsChecked="{Binding CloseLine, Mode=TwoWay}" />
-      </StackPanel>
+                <controls:PpcCheckBox Grid.Row="5"
+                                      Margin="15,5,20,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Bottom"
+                                      IsChecked="{Binding CloseLine, Mode=TwoWay}" />
+            </StackPanel>
 
 
 
+        </Grid>
     </Grid>
-  </Grid>
 
 </ctrls:View>

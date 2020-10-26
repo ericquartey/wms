@@ -250,7 +250,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation confirmed by Barcode Reader: .
+        ///   Looks up a localized string similar to Operation confirmed by Barcode Reader.
         /// </summary>
         public static string BarcodeOperationConfirmed {
             get {
@@ -3941,6 +3941,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Note.
+        /// </summary>
+        public static string Note {
+            get {
+                return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string Notes {
@@ -4378,6 +4387,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SelectCompartment {
             get {
                 return ResourceManager.GetString("SelectCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select reason.
+        /// </summary>
+        public static string SelectReasons {
+            get {
+                return ResourceManager.GetString("SelectReasons", resourceCulture);
             }
         }
         

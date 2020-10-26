@@ -1748,7 +1748,7 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
     <value>Jedin.težina [g]</value>
   </data>
   <data name="BarcodeOperationConfirmed" xml:space="preserve">
-    <value>Operacija potvrđena pomoću bar koda: </value>
+    <value>Operacija potvrđena pomoću bar koda.</value>
   </data>
   <data name="BarcodeMismatch" xml:space="preserve">
     <value>Neka polja bar koda ‚{0}‘ se ne podudaraju s onima artikla.</value>
@@ -1818,5 +1818,14 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   </data>
   <data name="SelectReasons" xml:space="preserve">
     <value>Odaberite razlog</value>
+  </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Šifra kutije</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Kutija za odabir</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Stavite kutiju</value>
   </data>
 </root>

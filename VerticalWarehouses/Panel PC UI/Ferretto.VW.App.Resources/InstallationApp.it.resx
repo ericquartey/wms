@@ -572,7 +572,7 @@
     <value>Impostazione della posizione iniziale ...</value>
   </data>
   <data name="VerticalOffsetVerify" xml:space="preserve">
-    <value>Misura offset verticale</value>
+    <value>Verifica offset verticale</value>
   </data>
   <data name="CellPositionDone" xml:space="preserve">
     <value>Quote celle verificate</value>
@@ -2260,7 +2260,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Effettua la calibrazione dell'offset dell'asse verticale</value>
   </data>
   <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
-    <value>Misura offset asse verticale</value>
+    <value>Offset asse verticale</value>
   </data>
   <data name="ParametersMenuDescription" xml:space="preserve">
     <value>Modifica, importazione ed esportazione dei parametri macchina</value>
@@ -2620,7 +2620,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Controlla porte seriali</value>
   </data>
   <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
-    <value>Seleziona in sequenza i codici a barre per configurare il lettore in emulazione seriale.</value>
+    <value>Sparare questi codici a barre per configurare il lettore in emulazione seriale.</value>
   </data>
   <data name="Operator" xml:space="preserve">
     <value>Operatore</value>
@@ -2835,5 +2835,11 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   </data>
   <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
     <value>Risparmio energetico</value>
+  </data>
+  <data name="ExternalBayShort" xml:space="preserve">
+    <value>Ext</value>
+  </data>
+  <data name="InternalBayShort" xml:space="preserve">
+    <value>Int</value>
   </data>
 </root>

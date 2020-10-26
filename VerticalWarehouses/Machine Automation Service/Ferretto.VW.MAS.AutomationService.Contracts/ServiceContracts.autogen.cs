@@ -3338,11 +3338,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         WaitChain = 10,
     
-        WaitDeposit = 11,
+        WaitDepositCell = 11,
     
-        ExtBay = 12,
+        WaitDepositBay = 12,
     
-        End = 13,
+        ExtBay = 13,
+    
+        End = 14,
     
         Error = 101,
     

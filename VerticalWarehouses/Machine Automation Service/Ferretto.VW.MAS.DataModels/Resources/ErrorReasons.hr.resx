@@ -139,43 +139,43 @@
     <value>Senzori prisutnosti na dizalicu nisu aktivni nakon operacije istovara.</value>
   </data>
   <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorEepromChecksumError" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorEepromReadError" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorEepromWriteError" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorInvalidDataset" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorSyntaxError" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Provj. da su sva tipkala za isklop u st. nužde deaktiv. kao i da su svi sigurnosni senzori deaktivirani.</value>
@@ -409,9 +409,9 @@
     <value>Položaj uvale je onemogućen</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
-    <value>Vratite uređaj u stanje Uključeno. Aktivirajte Automatski za vraćanje zadnjeg pokreta.</value>
+    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
 </root>

@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IMachineAccessoriesWebService machineAccessoriesWebService;
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly IMachineMissionsWebService missionsWebService;
@@ -50,6 +52,7 @@ namespace Ferretto.VW.App.Modules.Operator
             IMachineMissionsWebService missionsWebService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineAccessoriesWebService machineAccessoriesWebService,
+            IMachineBaysWebService machineBaysWebService,
             IEventAggregator eventAggregator,
             IOperatorHubClient operatorHubClient)
         {
@@ -58,6 +61,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
             this.machineAccessoriesWebService = machineAccessoriesWebService ?? throw new ArgumentNullException(nameof(machineAccessoriesWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.operatorHubClient.AssignedMissionChanged += async (sender, e) => await this.OnAssignedMissionChangedAsync(sender, e);
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
@@ -355,15 +359,39 @@ namespace Ferretto.VW.App.Modules.Operator
 
             try
             {
+                // Retrieve properties of bay: check if it is an internal double bay
+                var bay = await this.machineBaysWebService.GetByNumberAsync(this.bayNumber);
+                var isInternalDoubleBay = bay.IsDouble && (bay.Carousel == null);
+
+                // Retrieve the machine missions
                 var machineMissions = await this.missionsWebService.GetAllAsync();
 
-                var activeMissions = machineMissions.Where(m =>
+                // Retrieve the active missions in the given bay according to the bay's properties
+                IOrderedEnumerable<Mission> activeMissions = null;
+                if (isInternalDoubleBay == false)
+                {
+                    // Retrieve the active missions according to the enlisted condition.
+                    // The missions are ordered by the location of destination for the load unit
+                    activeMissions = machineMissions.Where(m =>
                     m.Step is MissionStep.WaitPick
                     &&
                     m.TargetBay == this.bayNumber
                     &&
                     m.Status == MissionStatus.Waiting)
                     .OrderBy(o => o.LoadUnitDestination);
+                }
+                else
+                {
+                    // Retrieve the active missions according to the enlisted condition.
+                    // The missions are ordered by creation date (descending way)
+                    activeMissions = machineMissions.Where(m =>
+                    m.Step is MissionStep.WaitPick
+                    &&
+                    m.TargetBay == this.bayNumber
+                    &&
+                    m.Status == MissionStatus.Waiting)
+                    .OrderByDescending(d => d.CreationDate);
+                }
 
                 if (activeMissions.Any())
                 {
@@ -374,6 +402,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     this.logger.Trace("No active mission on bay");
                 }
 
+                // Retrieve the first one
                 return activeMissions.FirstOrDefault();
             }
             catch (Exception ex)

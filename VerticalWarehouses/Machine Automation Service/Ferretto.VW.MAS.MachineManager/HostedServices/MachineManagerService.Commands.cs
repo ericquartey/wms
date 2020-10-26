@@ -173,6 +173,16 @@ namespace Ferretto.VW.MAS.MachineManager
                         {
                             var mission = missionsDataProvider.GetById(messageData.MissionId.Value);
                             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+
+                            // Check if there is a waiting mission to complete in the double bay,
+                            // and if exists, complete it and exit from the OnMoveLoadingUnit() method
+                            if (missionMoveProvider.UpdateWaitingMissionToDoubleBay(serviceProvider, missionsDataProvider, baysDataProvider, mission))
+                            {
+                                this.Logger.LogInformation($"Resuming missions on bay {mission.TargetBay}. Please wait ...");
+                                break;
+                            }
+
+                            // So call the UpdateWaitingMission and start the current mission
                             if (!missionMoveProvider.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission)
                                 || !missionMoveProvider.StartMission(mission, command, serviceProvider, false)
                                 )

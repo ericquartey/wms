@@ -30,14 +30,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         #endregion
 
         #region Constructors
 
         public MissionMoveProvider(
-                    IEventAggregator eventAggregator,
+            IEventAggregator eventAggregator,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
-            ILogger<MachineManagerService> logger
+            ILogger<MachineManagerService> logger,
+            IMachineVolatileDataProvider machineVolatileDataProvider
             )
         {
             if (eventAggregator is null)
@@ -47,6 +50,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             this.eventAggregator = eventAggregator;
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
         }
 
         #endregion
@@ -216,6 +220,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public bool UpdateWaitingMission(IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission)
         {
+            this.Logger.LogDebug($"Check the waiting missions...");
+
             // if there is a new or waiting mission we have to take her place
             var waitMission = missionsDataProvider.GetAllMissions()
                 .FirstOrDefault(m => m.LoadUnitId == mission.LoadUnitId
@@ -231,6 +237,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     {
                         baysDataProvider.ClearMission(mission.TargetBay);
                     }
+
                     if (waitMission.NeedHomingAxis != Axis.None
                         && (waitMission.Status == MissionStatus.Waiting
                             || waitMission.Status == MissionStatus.New
@@ -238,6 +245,13 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         )
                     {
                         mission.NeedHomingAxis = waitMission.NeedHomingAxis;
+
+                        // Update need homing axis parameter only if vertical & horizontal homing has been executed
+                        if (waitMission.NeedHomingAxis == Axis.HorizontalAndVertical &&
+                            this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay])
+                        {
+                            mission.NeedHomingAxis = Axis.None;
+                        }
                     }
 
                     if (waitMission.WmsId.HasValue)
@@ -259,7 +273,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             else
             {
                 var bay = baysDataProvider.GetByNumber(mission.TargetBay);
-                if(bay != null
+                if (bay != null
                     && bay.CurrentMission != null
                     && bay.CurrentMission.LoadUnitId == mission.LoadUnitId
                     )
@@ -268,6 +282,50 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 }
             }
             return true;
+        }
+
+        public bool UpdateWaitingMissionToDoubleBay(IServiceProvider serviceProvider, IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission)
+        {
+            this.Logger.LogDebug($"Check the waiting missions on double bay...");
+
+            // Check the type of bay and apply the waiting routine only with double bay
+            var bay = baysDataProvider.GetByNumber(mission.TargetBay);
+            if (!bay.IsDouble)
+            {
+                // No mission to check
+                this.Logger.LogTrace($"Bay is NOT double... No check waiting missions");
+                return false;
+            }
+
+            // Retrieve the mission on the bay with Step = MissionStep.WaitDepositInBay
+            var waitMissionOnCurrentBay = missionsDataProvider.GetAllActiveMissions()
+                .FirstOrDefault(
+                    m => m.LoadUnitId != mission.LoadUnitId &&
+                    m.Id != mission.Id &&
+                    m.Step == MissionStep.WaitDepositBay
+                );
+            if (waitMissionOnCurrentBay != null)
+            {
+                this.Logger.LogDebug($"Resume mission: MissionId:{waitMissionOnCurrentBay.Id} for loading unit {waitMissionOnCurrentBay.LoadUnitId} on location:{waitMissionOnCurrentBay.LoadUnitDestination}");
+
+                var moveLoadUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+                // Resume the mission on waiting
+                moveLoadUnitProvider.ResumeMoveLoadUnit(
+                    waitMissionOnCurrentBay.Id,
+                    waitMissionOnCurrentBay.LoadUnitSource,
+                    waitMissionOnCurrentBay.LoadUnitDestination,
+                    waitMissionOnCurrentBay.TargetBay,
+                    waitMissionOnCurrentBay.WmsId,
+                    waitMissionOnCurrentBay.MissionType,
+                    MessageActor.MachineManager);
+
+                // Wait the completion of waitMissionOnCurrentBay, not go ahead
+                return true;
+            }
+
+            // No mission to deposit into bay, go ahead
+            this.Logger.LogDebug($"No missions are waiting in double bay. Go ahead...");
+            return false;
         }
 
         private static IMissionMoveBase GetStateByClassName(IServiceProvider serviceProvider, Mission mission, IEventAggregator eventAggregator)

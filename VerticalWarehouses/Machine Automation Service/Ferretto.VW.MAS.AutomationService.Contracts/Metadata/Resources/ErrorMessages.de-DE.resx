@@ -130,6 +130,6 @@
     <value>Der Wert des Feldes {0} ist ungültig</value>
   </data>
   <data name="Required" xml:space="preserve">
-    <value>Das Feld {0} ist obligatorisch</value>
+    <value>Feld {0} Pflichtfeld</value>
   </data>
 </root>

@@ -244,7 +244,7 @@
     <value>Percorso file</value>
   </data>
   <data name="ConfirmMachineRun" xml:space="preserve">
-    <value>Sei sicuro di volere accendere la macchina?</value>
+    <value>Sei sicuro di voler mettere la macchina in marcia?</value>
   </data>
   <data name="MachineRun" xml:space="preserve">
     <value>Marcia</value>
