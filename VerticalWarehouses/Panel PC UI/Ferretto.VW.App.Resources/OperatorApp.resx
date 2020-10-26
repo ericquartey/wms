@@ -2229,4 +2229,10 @@ Please put back any moved pieces in their original position.</value>
   <data name="SelectReasons" xml:space="preserve">
     <value>Select reason</value>
   </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Wait deposit in cell</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Wait deposit bay</value>
+  </data>
 </root>

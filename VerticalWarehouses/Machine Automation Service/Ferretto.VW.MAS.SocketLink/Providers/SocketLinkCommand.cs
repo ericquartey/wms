@@ -271,10 +271,10 @@ namespace Ferretto.VW.MAS.SocketLink
         public BayNumber GetBayNumber()
         {
             var result = BayNumber.None;
-            var position = -1;
             var bayNumber = "";
 
             BayNumber bayNumberEnum;
+            int position;
             switch (this.header)
             {
                 case HeaderType.REQUEST_RESET_RES:
@@ -426,10 +426,9 @@ namespace Ferretto.VW.MAS.SocketLink
         public int GetWarehouseNumber()
         {
             var result = -1;
-            var position = 0;
-
             int warehouseNumberInt;
             var warehouseNumber = "";
+            int position;
             switch (this.header)
             {
                 case HeaderType.EXTRACT_CMD:

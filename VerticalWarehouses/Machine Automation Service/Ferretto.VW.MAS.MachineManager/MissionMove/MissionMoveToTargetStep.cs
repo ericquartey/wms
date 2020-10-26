@@ -285,11 +285,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        this.Logger.LogDebug($"A waiting mission with step=MissionStep.WaitPick is detected and MissionId:{this.Mission.Id} is interrupted.");
+                        this.Logger.LogDebug($"At least a waiting mission with step=MissionStep.WaitPick is detected and the given MissionId:{this.Mission.Id} is interrupted.");
                         newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
-
-                    // newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 }
 
                 newStep.OnEnter(null);
@@ -309,20 +307,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var retValue = false;
 
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-            if (bay.IsDouble)
+            if (!(bay is null))
             {
-                // List of waiting mission on the bay
-                var waitMissions = this.MissionsDataProvider.GetAllMissions()
-                    .Where(
-                        m => m.LoadUnitId != this.Mission.LoadUnitId &&
-                        m.Id != this.Mission.Id &&
-                        (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
-                    );
+                if (bay.IsDouble)
+                {
+                    // List of waiting mission on the bay
+                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                        );
 
-                retValue = (waitMissions != null);
+                    retValue = (waitMissions != null);
+                }
+
+                return retValue;
             }
-
-            return retValue;
+            else
+            {
+                return false;
+            }
         }
 
         #endregion

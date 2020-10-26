@@ -476,4 +476,16 @@
     <value>Timeout</value>
     <comment>Timeout in seconds (0 = off)</comment>
   </data>
+  <data name="Connectivity" xml:space="preserve">
+    <value>Connectivity</value>
+  </data>
+  <data name="Present" xml:space="preserve">
+    <value>Present</value>
+  </data>
+  <data name="NotPresent" xml:space="preserve">
+    <value>Not present</value>
+  </data>
+  <data name="TokenStatus" xml:space="preserve">
+    <value>Token status</value>
+  </data>
 </root>

@@ -2929,4 +2929,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="InternalBayShort" xml:space="preserve">
     <value>Int</value>
   </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Token Serial Number</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Select the model</value>
+  </data>
 </root>

@@ -64,7 +64,7 @@
         <TextBlock Grid.Row="2"
                    Margin="0,15,0,0"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                   Text="Stato Gettone" />
+                   Text="{x:Static res:General.TokenStatus}" />
         <StackPanel Grid.Row="3"
                     Margin="0,5"
                     VerticalAlignment="Top"
@@ -82,7 +82,7 @@
 
         <controls:PpcLabeledText Grid.Row="4"
                                  ContentText="{Binding ReceivedTokenCode}"
-                                 LabelText="Numero Seriale Gettone" />
+                                 LabelText="{x:Static res:InstallationApp.TokenSerialNumber}" />
         <TextBlock Grid.Row="5"
                    Margin="0,50,0,0"
                    Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
