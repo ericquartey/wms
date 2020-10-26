@@ -1828,4 +1828,10 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="PutBox" xml:space="preserve">
     <value>Stavite kutiju</value>
   </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Čekanje odlag. stanični</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Čekanje odlag. zaljev</value>
+  </data>
 </root>

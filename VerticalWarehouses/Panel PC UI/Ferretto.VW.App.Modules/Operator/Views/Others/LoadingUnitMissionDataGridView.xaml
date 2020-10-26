@@ -4,394 +4,400 @@
              xmlns:Res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:model="clr-namespace:Ferretto.VW.MAS.AutomationService.Contracts;assembly=Ferretto.VW.MAS.AutomationService.Contracts">
-    <DataGrid Name="DataGrid"
-              HorizontalScrollBarVisibility="Auto"
-              ItemsSource="{Binding Missions}"
-              SelectedItem="{Binding SelectedMission}">
-        <DataGrid.Columns>
-            <DataGridTextColumn x:Name="ColumnId"
-                                Width="60"
-                                Binding="{Binding Path=Id}"
-                                Header="{Res:Loc OperatorApp.WaitingListDetailDataGridHeaderRow}">
-                <DataGridTextColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="1,0,0,0" />
-                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                    </Style>
-                </DataGridTextColumn.CellStyle>
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
+  <DataGrid Name="DataGrid"
+            HorizontalScrollBarVisibility="Auto"
+            ItemsSource="{Binding Missions}"
+            SelectedItem="{Binding SelectedMission}">
+    <DataGrid.Columns>
+      <DataGridTextColumn x:Name="ColumnId"
+                          Width="60"
+                          Binding="{Binding Path=Id}"
+                          Header="{Res:Loc OperatorApp.WaitingListDetailDataGridHeaderRow}">
+        <DataGridTextColumn.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="1,0,0,0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+          </Style>
+        </DataGridTextColumn.CellStyle>
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
 
-            <DataGridTextColumn x:Name="ColumnLoadingUnit"
-                                Width="100"
-                                Binding="{Binding Path=LoadUnitId}"
-                                Header="{Res:Loc OperatorApp.LoadingUnitId}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
+      <DataGridTextColumn x:Name="ColumnLoadingUnit"
+                          Width="100"
+                          Binding="{Binding Path=LoadUnitId}"
+                          Header="{Res:Loc OperatorApp.LoadingUnitId}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
 
-            <DataGridTemplateColumn x:Name="Column3"
-                                    Width="120"
-                                    Header="{Res:Loc OperatorApp.MissionStep}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>NotDefined</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MisionStateNotDefined}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>New</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateNew}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>Start</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateStart}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>LoadElevator</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateLoadElevator}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>ToTarget</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateToTarget}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>DepositUnit</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateDepositUnit}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>WaitPick</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitPick}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>BayChain</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateBayChain}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>CloseShutter</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateCloseShutter}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>BackToBay</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateBackToBay}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>WaitChain</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitChain}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>WaitDeposit</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDeposit}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>ExtBay</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateExtBay}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>End</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateEnd}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>Error</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateError}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>ErrorLoad</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorLoad}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Step}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStep>ErrorDeposit</model:MissionStep>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorDeposit}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+      <DataGridTemplateColumn x:Name="Column3"
+                              Width="120"
+                              Header="{Res:Loc OperatorApp.MissionStep}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>NotDefined</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MisionStateNotDefined}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>New</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateNew}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>Start</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateStart}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>LoadElevator</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateLoadElevator}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ToTarget</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateToTarget}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>DepositUnit</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateDepositUnit}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitPick</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitPick}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>BayChain</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateBayChain}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>CloseShutter</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateCloseShutter}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>BackToBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateBackToBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitChain</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitChain}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitDepositCell</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDepositCell}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitDepositBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDepositBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ExtBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateExtBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>End</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateEnd}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>Error</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateError}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ErrorLoad</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorLoad}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ErrorDeposit</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorDeposit}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn x:Name="ColumnStatus"
-                                    Width="100"
-                                    Header="{Res:Loc OperatorApp.MissionStatus}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>New</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusNew}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Executing</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusExecuting}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Waiting</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusWaiting}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Completed</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusCompleted}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Aborted</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusAborted}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}">
-                                            <DataTrigger.Value>
-                                                <model:MissionStatus>Completing</model:MissionStatus>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusCompleting}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+      <DataGridTemplateColumn x:Name="ColumnStatus"
+                              Width="100"
+                              Header="{Res:Loc OperatorApp.MissionStatus}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Status}">
+                      <DataTrigger.Value>
+                        <model:MissionStatus>New</model:MissionStatus>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusNew}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Status}">
+                      <DataTrigger.Value>
+                        <model:MissionStatus>Executing</model:MissionStatus>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusExecuting}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Status}">
+                      <DataTrigger.Value>
+                        <model:MissionStatus>Waiting</model:MissionStatus>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusWaiting}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Status}">
+                      <DataTrigger.Value>
+                        <model:MissionStatus>Completed</model:MissionStatus>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusCompleted}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Status}">
+                      <DataTrigger.Value>
+                        <model:MissionStatus>Aborted</model:MissionStatus>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusAborted}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Status}">
+                      <DataTrigger.Value>
+                        <model:MissionStatus>Completing</model:MissionStatus>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusCompleting}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn x:Name="ColumnType"
-                                    Width="140"
-                                    Header="{Res:Loc OperatorApp.MissionType}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>NoType</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeNoType}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>Manual</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeManual}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>LoadUnitOperation</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeLoadUnitOperation}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>WMS</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeWms}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>IN</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeIn}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>OUT</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeOut}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>FirstTest</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeFirstTest}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>FullTestIN</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeFullTestIN}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>FullTestOUT</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeFullTestOUT}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding MissionType}">
-                                            <DataTrigger.Value>
-                                                <model:MissionType>Compact</model:MissionType>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeCompact}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+      <DataGridTemplateColumn x:Name="ColumnType"
+                              Width="140"
+                              Header="{Res:Loc OperatorApp.MissionType}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>NoType</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeNoType}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>Manual</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeManual}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>LoadUnitOperation</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeLoadUnitOperation}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>WMS</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeWms}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>IN</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeIn}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>OUT</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeOut}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>FirstTest</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeFirstTest}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>FullTestIN</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeFullTestIN}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>FullTestOUT</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeFullTestOUT}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding MissionType}">
+                      <DataTrigger.Value>
+                        <model:MissionType>Compact</model:MissionType>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionTypeCompact}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn x:Name="ColumnBay"
-                                    Width="80"
-                                    Header="{Res:Loc OperatorApp.BayTarget}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding TargetBay}">
-                                            <DataTrigger.Value>
-                                                <model:BayNumber>None</model:BayNumber>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayNone}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TargetBay}">
-                                            <DataTrigger.Value>
-                                                <model:BayNumber>BayOne</model:BayNumber>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayOne}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TargetBay}">
-                                            <DataTrigger.Value>
-                                                <model:BayNumber>BayTwo</model:BayNumber>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayTwo}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TargetBay}">
-                                            <DataTrigger.Value>
-                                                <model:BayNumber>BayThree</model:BayNumber>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayThree}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TargetBay}">
-                                            <DataTrigger.Value>
-                                                <model:BayNumber>ElevatorBay</model:BayNumber>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberElevatorBay}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding TargetBay}">
-                                            <DataTrigger.Value>
-                                                <model:BayNumber>All</model:BayNumber>
-                                            </DataTrigger.Value>
-                                            <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberAll}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+      <DataGridTemplateColumn x:Name="ColumnBay"
+                              Width="80"
+                              Header="{Res:Loc OperatorApp.BayTarget}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding TargetBay}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>None</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayNone}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding TargetBay}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>BayOne</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayOne}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding TargetBay}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>BayTwo</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayTwo}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding TargetBay}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>BayThree</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayThree}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding TargetBay}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>ElevatorBay</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberElevatorBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding TargetBay}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>All</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberAll}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
 
-            <DataGridTextColumn x:Name="ColumnDate"
-                                Width="150"
-                                Binding="{Binding Path=CreationDate, StringFormat={x:Static Res:General.DateFormatComplete}}"
-                                Header="{Res:Loc OperatorApp.CreationDate}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
+      <DataGridTextColumn x:Name="ColumnDate"
+                          Width="150"
+                          Binding="{Binding Path=CreationDate, StringFormat={x:Static Res:General.DateFormatComplete}}"
+                          Header="{Res:Loc OperatorApp.CreationDate}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
 
-            <DataGridTextColumn x:Name="ColumnLoadUnitDestination"
-                                Width="190"
-                                Binding="{Binding Path=LoadUnitDestination, Converter={StaticResource LULC}}"
-                                Header="{Res:Loc OperatorApp.LoadUnitDestination}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
+      <DataGridTextColumn x:Name="ColumnLoadUnitDestination"
+                          Width="190"
+                          Binding="{Binding Path=LoadUnitDestination, Converter={StaticResource LULC}}"
+                          Header="{Res:Loc OperatorApp.LoadUnitDestination}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
 
-            <DataGridTextColumn x:Name="ColumnLoadUnitSource"
-                                Width="180"
-                                Binding="{Binding Path=LoadUnitSource, Converter={StaticResource LULC}}"
-                                Header="{Res:Loc OperatorApp.LoadUnitSource}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
+      <DataGridTextColumn x:Name="ColumnLoadUnitSource"
+                          Width="180"
+                          Binding="{Binding Path=LoadUnitSource, Converter={StaticResource LULC}}"
+                          Header="{Res:Loc OperatorApp.LoadUnitSource}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
 
-            <DataGridTextColumn x:Name="ColumnWmsId"
-                                Width="80"
-                                Binding="{Binding Path=WmsId, TargetNullValue='Off'}"
-                                Header="{Res:Loc OperatorApp.WmsId}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-        </DataGrid.Columns>
-    </DataGrid>
+      <DataGridTextColumn x:Name="ColumnWmsId"
+                          Width="80"
+                          Binding="{Binding Path=WmsId, TargetNullValue='Off'}"
+                          Header="{Res:Loc OperatorApp.WmsId}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+    </DataGrid.Columns>
+  </DataGrid>
 </UserControl>
