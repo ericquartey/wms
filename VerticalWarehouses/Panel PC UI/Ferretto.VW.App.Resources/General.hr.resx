@@ -438,4 +438,16 @@
   <data name="SocketLinkTimeout" xml:space="preserve">
     <value>IstVrij</value>
   </data>
+  <data name="Connectivity" xml:space="preserve">
+    <value>Povezivost</value>
+  </data>
+  <data name="Present" xml:space="preserve">
+    <value>Predstaviti</value>
+  </data>
+  <data name="NotPresent" xml:space="preserve">
+    <value>Nije prisutan</value>
+  </data>
+  <data name="TokenStatus" xml:space="preserve">
+    <value>Status tokena</value>
+  </data>
 </root>

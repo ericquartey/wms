@@ -2653,6 +2653,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ext.
+        /// </summary>
+        public static string ExternalBayShort {
+            get {
+                return ResourceManager.GetString("ExternalBayShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extraction successfullly completed..
         /// </summary>
         public static string ExtractingFilesCompleted {
@@ -3810,6 +3819,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Interaxle {
             get {
                 return ResourceManager.GetString("Interaxle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Int.
+        /// </summary>
+        public static string InternalBayShort {
+            get {
+                return ResourceManager.GetString("InternalBayShort", resourceCulture);
             }
         }
         
@@ -6561,6 +6579,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the model.
+        /// </summary>
+        public static string SelectModel {
+            get {
+                return ResourceManager.GetString("SelectModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select upper bound [mm].
         /// </summary>
         public static string SelectUpperBound {
@@ -7313,6 +7340,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TimeDelay {
             get {
                 return ResourceManager.GetString("TimeDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token Serial Number.
+        /// </summary>
+        public static string TokenSerialNumber {
+            get {
+                return ResourceManager.GetString("TokenSerialNumber", resourceCulture);
             }
         }
         

@@ -1833,4 +1833,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="SelectReasons" xml:space="preserve">
     <value>Seleziona causale</value>
   </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Attesa deposito cella</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Attesa deposito baia</value>
+  </data>
 </root>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.TokenReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -63,7 +64,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(
                 ref this.isTokenInserted,
                 value,
-                this.IsTokenInsertedDescription = value ? "Presente" : "Non Presente");
+                this.IsTokenInsertedDescription = value ? Localized.Get("General.Present") : Localized.Get("General.NotPresent"));
         }
 
         public string IsTokenInsertedDescription

@@ -3653,6 +3653,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wait deposit bay.
+        /// </summary>
+        public static string MissionStateWaitDepositBay {
+            get {
+                return ResourceManager.GetString("MissionStateWaitDepositBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait deposit in cell.
+        /// </summary>
+        public static string MissionStateWaitDepositCell {
+            get {
+                return ResourceManager.GetString("MissionStateWaitDepositCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 6.Wait operator action.
         /// </summary>
         public static string MissionStateWaitPick {

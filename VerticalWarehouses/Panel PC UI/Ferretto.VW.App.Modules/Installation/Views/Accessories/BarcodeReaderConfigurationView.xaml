@@ -125,7 +125,7 @@
                      VerticalAlignment="Center"
                      FontSize="18"
                      Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                     Text="Seleziona il modello" />
+                     Text="{res:Loc InstallationApp.SelectModel}" />
           <RadioButton Margin="5"
                        GroupName="ModelNameRadioGroup"
                        IsChecked="{Binding IsNewland1550, Mode=TwoWay}">

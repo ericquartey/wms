@@ -1828,4 +1828,10 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   <data name="SelectReasons" xml:space="preserve">
     <value>Grund auswählen</value>
   </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Warten Ablage zelle</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Warten Ablage bucht</value>
+  </data>
 </root>

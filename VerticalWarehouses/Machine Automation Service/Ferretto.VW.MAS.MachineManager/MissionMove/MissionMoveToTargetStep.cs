@@ -309,20 +309,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var retValue = false;
 
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-            if (bay.IsDouble)
+            if(!(bay is null))
             {
-                // List of waiting mission on the bay
-                var waitMissions = this.MissionsDataProvider.GetAllMissions()
-                    .Where(
-                        m => m.LoadUnitId != this.Mission.LoadUnitId &&
-                        m.Id != this.Mission.Id &&
-                        (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
-                    );
+                if (bay.IsDouble)
+                {
+                    // List of waiting mission on the bay
+                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                        );
 
-                retValue = (waitMissions != null);
+                    retValue = (waitMissions != null);
+                }
+
+                return retValue;
             }
-
-            return retValue;
+            else
+            {
+                return false;
+            }
         }
 
         #endregion

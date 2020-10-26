@@ -268,6 +268,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connectivity.
+        /// </summary>
+        public static string Connectivity {
+            get {
+                return ResourceManager.GetString("Connectivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
         /// </summary>
         public static string ConverterCanConvertOnlyToVisibilityType {
@@ -673,6 +682,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not present.
+        /// </summary>
+        public static string NotPresent {
+            get {
+                return ResourceManager.GetString("NotPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Just now.
         /// </summary>
         public static string Now {
@@ -723,6 +741,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PasswordLogin {
             get {
                 return ResourceManager.GetString("PasswordLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Present.
+        /// </summary>
+        public static string Present {
+            get {
+                return ResourceManager.GetString("Present", resourceCulture);
             }
         }
         
@@ -921,6 +948,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ThousandsSymbol {
             get {
                 return ResourceManager.GetString("ThousandsSymbol", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token status.
+        /// </summary>
+        public static string TokenStatus {
+            get {
+                return ResourceManager.GetString("TokenStatus", resourceCulture);
             }
         }
         
