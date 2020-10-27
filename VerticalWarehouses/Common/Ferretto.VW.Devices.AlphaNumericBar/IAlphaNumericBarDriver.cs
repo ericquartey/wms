@@ -25,7 +25,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> ClearAsync();
 
-        void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size);
+        void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false);
 
         Task<bool> CustomAsync(string hexval);
 
@@ -33,9 +33,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> EnabledAsync(bool value, bool force = true);
 
-        bool GetOffsetArrowAndMessage(double loadingUnitWidth, double x, string message, out int offsetArrow, out int offsetMessage);
+        bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage);
 
-        bool GetOffsetMessage(double loadingUnitWidth, double x, string message, out int offsetMessage);
+        bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, out int offsetArrow, out int offsetMessage);
+
+        bool GetOffsetMessage(double x, string message, out int offsetMessage);
 
         Task<bool> HelpAsync();
 

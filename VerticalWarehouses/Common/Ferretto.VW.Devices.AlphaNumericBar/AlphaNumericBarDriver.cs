@@ -34,6 +34,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private IPAddress ipAddress;
 
+        private int ledHideOnLeftSide;
+
+        private int ledHideOnRightSide;
+
+        private double loadingUnitWidth;
+
         private AlphaNumericBarSize size = AlphaNumericBarSize.ExtraLarge;
 
         private bool testEnabled;
@@ -146,11 +152,40 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
-        public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size)
+        public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false)
         {
             this.ipAddress = ipAddress;
             this.Port = port;
             this.size = size;
+
+            switch (size)
+            {
+                case AlphaNumericBarSize.ExtraSmall:
+                    this.loadingUnitWidth = 1950;
+                    break;
+
+                case AlphaNumericBarSize.Small:
+                    this.loadingUnitWidth = 2450;
+                    break;
+
+                case AlphaNumericBarSize.Medium:
+                    this.loadingUnitWidth = 3050;
+                    break;
+
+                case AlphaNumericBarSize.Large:
+                    this.loadingUnitWidth = 3650;
+                    break;
+
+                default:    // ExtraLarge
+                    this.loadingUnitWidth = 4250;
+                    break;
+            }
+
+            if (!bayIsExternal)
+            {
+                this.ledHideOnLeftSide = 8;
+                this.ledHideOnRightSide = 8;
+            }
         }
 
         /// <summary>
@@ -203,7 +238,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
 
-        public bool GetOffsetArrowAndMessage(double loadingUnitWidth, double x, string message, out int offsetArrow, out int offsetMessage)
+        public bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage)
         {
             var result = false;
 
@@ -211,51 +246,56 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 x = 0;
             }
-            else if (x > loadingUnitWidth)
+            else if (x > this.loadingUnitWidth)
             {
-                x = loadingUnitWidth;
+                x = this.loadingUnitWidth;
             }
 
             // set the arro offset
-            offsetArrow = (int)Math.Round(((int)this.Size) * 8 / loadingUnitWidth * x) - 2;     // note, sub 2 because the arrow is in the middle
+            offsetArrow = (int)Math.Round(((int)this.Size) * 8 / this.loadingUnitWidth * x) - 2;     // note, sub 2 because the arrow is in the middle
 
-            if (offsetArrow < 0)
+            if (offsetArrow < this.ledHideOnLeftSide)
             {
-                offsetArrow = 0;
+                offsetArrow = this.ledHideOnLeftSide;
             }
 
-            if (offsetArrow + LED_INTO_CHAR >= this.NumberOfLeds) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
+            if (offsetArrow + LED_INTO_CHAR >= this.NumberOfLeds - this.ledHideOnRightSide) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
             {
-                offsetArrow = this.NumberOfLeds - LED_INTO_CHAR;
-                if (offsetArrow < 0)
+                offsetArrow = this.NumberOfLeds - this.ledHideOnRightSide - LED_INTO_CHAR;
+                if (offsetArrow < this.ledHideOnLeftSide)
                 {
-                    offsetArrow = 0;
+                    offsetArrow = this.ledHideOnLeftSide;
                 }
             }
 
             // set the message offset
             offsetMessage = offsetArrow + LED_INTO_CHAR + 1;    // standard position, message on the right side of the arrow
 
-            if (offsetMessage + (message.Length * LED_INTO_CHAR) >= this.NumberOfLeds) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
+            if (offsetMessage + (message.Length * LED_INTO_CHAR) >= this.NumberOfLeds - this.ledHideOnRightSide) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
             {
-                if (offsetArrow < this.NumberOfLeds - offsetArrow + LED_INTO_CHAR) // there is more space after the arrow
+                if (offsetArrow < this.NumberOfLeds - offsetArrow + LED_INTO_CHAR - this.ledHideOnRightSide) // there is more space after the arrow
                 {
                 }
                 else // there is more space before the arrow
                 {
                     offsetMessage = offsetArrow - (message.Length * LED_INTO_CHAR);
-
-                    if (offsetMessage < 0) // scroll condition
-                    {
-                        offsetMessage = 0;
-                    }
                 }
             }
 
+            if (offsetMessage < this.ledHideOnLeftSide)
+            {
+                offsetMessage = this.ledHideOnLeftSide;
+            }
             return result;
         }
 
-        public bool GetOffsetMessage(double loadingUnitWidth, double x, string message, out int offsetMessage)
+        public bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, out int offsetArrow, out int offsetMessage)
+        {
+            var arrowPosition = (compartmentWidth / 2) + itemXPosition;
+            return this.GetOffsetArrowAndMessage(arrowPosition, message, out offsetArrow, out offsetMessage);
+        }
+
+        public bool GetOffsetMessage(double x, string message, out int offsetMessage)
         {
             var result = false;
 
@@ -263,22 +303,22 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 x = 0;
             }
-            else if (x > loadingUnitWidth)
+            else if (x > this.loadingUnitWidth)
             {
-                x = loadingUnitWidth;
+                x = this.loadingUnitWidth;
             }
 
             // set the message offset
-            offsetMessage = (int)Math.Round(((int)this.Size) * 8 / loadingUnitWidth * x);
+            offsetMessage = (int)Math.Round(((int)this.Size) * 8 / this.loadingUnitWidth * x);
 
-            if (offsetMessage + (message.Length * 6) >= this.NumberOfLeds) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
+            if (offsetMessage + (message.Length * 6) >= this.NumberOfLeds - this.ledHideOnRightSide) // if the message goes out to the right side of alphanumeric bar, then move toward left the message
             {
-                offsetMessage = this.NumberOfLeds - (message.Length * 6);
+                offsetMessage = this.NumberOfLeds - (message.Length * 6) - this.ledHideOnRightSide;
+            }
 
-                if (offsetMessage < 0)
-                {
-                    offsetMessage = 0;
-                }
+            if (offsetMessage < this.ledHideOnLeftSide)
+            {
+                offsetMessage = this.ledHideOnLeftSide;
             }
 
             return result;
