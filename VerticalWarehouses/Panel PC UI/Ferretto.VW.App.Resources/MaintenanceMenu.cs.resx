@@ -117,23 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="Compaction" xml:space="preserve">
+    <value>Zhutnění</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Informace</value>
+  <data name="CompactionAbbreviation" xml:space="preserve">
+    <value>COM</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statistiky, výstrahy, diagnostika</value>
+  <data name="CompactionDescription" xml:space="preserve">
+    <value>Optimalizace prostoru zásobníku</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalace</value>
+  <data name="Expired" xml:space="preserve">
+    <value>Vypršely některé lhůty údrž</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
-  </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Postup instalace, manuální pohyby, ostatní</value>
+  <data name="Expiring" xml:space="preserve">
+    <value>Některé lhůty údržby brzy vyprší</value>
   </data>
   <data name="Maintenance" xml:space="preserve">
     <value>Údržba</value>
@@ -142,24 +139,15 @@
     <value>ÚDRŽ</value>
   </data>
   <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Údržba, zhutnění zásuvek, aktualizace</value>
+    <value>Počítadla a údržba stroje</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Pohyby</value>
+  <data name="Updating" xml:space="preserve">
+    <value>Aktualizace</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>POHY</value>
+  <data name="UpdatingAbbreviation" xml:space="preserve">
+    <value>UPD</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stav snímačů, reset stroje, ostatní</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Odběr</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ODBĚ</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Odběr, plnění, inventarizace</value>
+  <data name="UpdatingDescription" xml:space="preserve">
+    <value>Aktualizace softwaru Vertimag</value>
   </data>
 </root>

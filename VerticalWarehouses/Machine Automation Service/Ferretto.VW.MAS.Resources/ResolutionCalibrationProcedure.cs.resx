@@ -117,49 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="ExpectedDistanceMustBeStrictlyPositive" xml:space="preserve">
+    <value>Vzdálenost výšky musí být zásadně kladná.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Informace</value>
+  <data name="MeasuredDistanceMustBeStrictlyPositive" xml:space="preserve">
+    <value>Naměřená vzdálenost musí být zásadně kladná.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statistiky, výstrahy, diagnostika</value>
-  </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalace</value>
-  </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
-  </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Postup instalace, manuální pohyby, ostatní</value>
-  </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Údržba</value>
-  </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>ÚDRŽ</value>
-  </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Údržba, zhutnění zásuvek, aktualizace</value>
-  </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Pohyby</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>POHY</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stav snímačů, reset stroje, ostatní</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Odběr</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ODBĚ</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Odběr, plnění, inventarizace</value>
+  <data name="ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus" xml:space="preserve">
+    <value>Postup nelze spustit v důsledku aktuálního stavu instalace.</value>
   </data>
 </root>

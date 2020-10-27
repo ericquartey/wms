@@ -1,0 +1,2834 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActualPosition" xml:space="preserve">
+    <value>Aktuální pozice</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Backwards" xml:space="preserve">
+    <value>Zpět</value>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>Záběh řemene</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Dol</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Chyba</value>
+  </data>
+  <data name="FeedRate" xml:space="preserve">
+    <value>Rychl pln %</value>
+  </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Vpřed</value>
+  </data>
+  <data name="Installer" xml:space="preserve">
+    <value>Instalatér</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Odpojit</value>
+  </data>
+  <data name="LowSpeedMovementsTest" xml:space="preserve">
+    <value>Pohyby při nízké rychl</value>
+  </data>
+  <data name="Shutter" xml:space="preserve">
+    <value>Roleta</value>
+  </data>
+  <data name="LSMTGateEngineTitle" xml:space="preserve">
+    <value>Pohyby motoru rolety</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Horizontální osa</value>
+  </data>
+  <data name="LSMTHorizontalAxisTitle" xml:space="preserve">
+    <value>Pohyby horizontální osy</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Zvedák</value>
+  </data>
+  <data name="LSMTVerticalEngineTitle" xml:space="preserve">
+    <value>Pohyby vertikální osy</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manuál</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Vypnut</value>
+  </data>
+  <data name="OffsetCalibration" xml:space="preserve">
+    <value>Kalibrace posunutí</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Zapnut</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="VerifyCircuitIntegrity" xml:space="preserve">
+    <value>Kontrola integrity obvodu</value>
+  </data>
+  <data name="VerifyPanelPosition" xml:space="preserve">
+    <value>Kontrola pozice panelu</value>
+  </data>
+  <data name="VerifyWeightController" xml:space="preserve">
+    <value>Ověření kontroly hmot</value>
+  </data>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Počátek vertikální osy</value>
+  </data>
+  <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
+    <value>Návrat vertikální osy do výchozího bodu proběhl správně.</value>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>Návrat vertikální osy do výchozího bodu neproběhl.</value>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Dolní limit (mm)</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Posun (mm)</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Výsledek</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Rozlišení (imp/mm)</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Spust</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Horní limit (mm)</value>
+  </data>
+  <data name="ResolutionCalibration" xml:space="preserve">
+    <value>Kalibrace rozlišení</value>
+  </data>
+  <data name="SensorsState" xml:space="preserve">
+    <value>Stav snímačů</value>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Koléb</value>
+  </data>
+  <data name="Gate" xml:space="preserve">
+    <value>Bariéra</value>
+  </data>
+  <data name="OtherSensors" xml:space="preserve">
+    <value>Další snímače</value>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Bariéra proti vniknutí</value>
+  </data>
+  <data name="BrakeResistanceOvertemperature" xml:space="preserve">
+    <value>Odpor brzd nadměrné teploty</value>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Vybraný motor kolébky</value>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Vybraný motor zvedáku</value>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Nouzový koncový spínač</value>
+  </data>
+  <data name="GateSensorA" xml:space="preserve">
+    <value>Snímač A bariéry</value>
+  </data>
+  <data name="GateSensorB" xml:space="preserve">
+    <value>Snímač B bariéry</value>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>Přít UDC v kolébce na straně stroje</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>Přít UDC v kolébce na straně obsluhy</value>
+  </data>
+  <data name="LuPresentInBay" xml:space="preserve">
+    <value>Zásuvka přít ve stan</value>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Mikrosp krytu na levé str</value>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Mikrosp krytu na pra str</value>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Nouzové tlačítko</value>
+  </data>
+  <data name="PawlEncoder" xml:space="preserve">
+    <value>Kodér západky</value>
+  </data>
+  <data name="ResetSecurityFunction" xml:space="preserve">
+    <value>Reset bezpečnostních funkcí</value>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Aktivní bezpečnostní funkce</value>
+  </data>
+  <data name="ShapeControl" xml:space="preserve">
+    <value>Kontrola šablony</value>
+  </data>
+  <data name="VerticalAxisBrake" xml:space="preserve">
+    <value>Brzda vertikální osy</value>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Snímač západky na nule </value>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Snímač nuly vertikální osy</value>
+  </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Test rolety</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Posun</value>
+  </data>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Přejít na vých kótu</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Výchozí kóta (mm)</value>
+  </data>
+  <data name="MeasuredLenght" xml:space="preserve">
+    <value>Naměřený posun (mm)</value>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>Nové rozlišení (imp/mm)</value>
+  </data>
+  <data name="RepositionLenght" xml:space="preserve">
+    <value>Délka posunu (mm)</value>
+  </data>
+  <data name="ResolutionModified" xml:space="preserve">
+    <value>Rozlišení správně změněno.</value>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Aktuální rozlišení (imp/mm)</value>
+  </data>
+  <data name="DesiredMovement" xml:space="preserve">
+    <value>Požadovaný posun (mm)</value>
+  </data>
+  <data name="InsertDesiredMovement" xml:space="preserve">
+    <value>Zadejte požadovaný posun.</value>
+  </data>
+  <data name="InsertiInitialPosition" xml:space="preserve">
+    <value>Uveďte požadovanou výchozí pozici.</value>
+  </data>
+  <data name="InsertMeasuredMovement" xml:space="preserve">
+    <value>Zadejte naměřený posun.</value>
+  </data>
+  <data name="MeasuredMovement" xml:space="preserve">
+    <value>Naměřená dráha (mm)</value>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Kalibrace rozlišení vertikální osy</value>
+  </data>
+  <data name="VerticalAxisCalibrating" xml:space="preserve">
+    <value>Probíhá kalibr vertik osy...</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Zavř</value>
+  </data>
+  <data name="CompletedCycles" xml:space="preserve">
+    <value>Dokonč cykly</value>
+  </data>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Počet dokonč cykl (relace)</value>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Aktuální pozice (mm)</value>
+  </data>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Prodleva mezi cyk (s)</value>
+  </data>
+  <data name="Middle" xml:space="preserve">
+    <value>Mezilehlá</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Otevř</value>
+  </data>
+  <data name="RequiredCycles" xml:space="preserve">
+    <value>Požad cykly</value>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Test rolety stan 1</value>
+  </data>
+  <data name="Gate2Control" xml:space="preserve">
+    <value>Kontrola bariéry 2</value>
+  </data>
+  <data name="Gate3Control" xml:space="preserve">
+    <value>Kontrola bariéry 3</value>
+  </data>
+  <data name="ActiveRaysQuantity" xml:space="preserve">
+    <value>Aktiv paprsky</value>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Aktuální kóta (mm)</value>
+  </data>
+  <data name="GateCalibrated" xml:space="preserve">
+    <value>Bariéra kalibr.</value>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Korekce bariéry (mm)</value>
+  </data>
+  <data name="GateOutOfTolerance" xml:space="preserve">
+    <value>Bariéra mimo toleranci</value>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Regulace bariéry měří výšku zásuvky stanice 1</value>
+  </data>
+  <data name="PanelsControl" xml:space="preserve">
+    <value>Kontrola panelů</value>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Rychlost (mm/s)</value>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>Systémová chyba (mm)</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Požadovaná tolerance (+/-) (mm)</value>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Kalibrace posunutí vertikální osy</value>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Kontr hmoti</value>
+  </data>
+  <data name="Gate2HeightControl" xml:space="preserve">
+    <value>Regulace bariéry měří výšku zásuvky stanice 2</value>
+  </data>
+  <data name="Gate3HeightControl" xml:space="preserve">
+    <value>Regulace bariéry měří výšku zásuvky stanice 3</value>
+  </data>
+  <data name="GateHeightControl" xml:space="preserve">
+    <value>Bariéra měření výšky </value>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Požadovaná tolerance (%)</value>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Zadaná hmot (kg)</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Naměř hmot (kg)</value>
+  </data>
+  <data name="MeasuredWeightInTolerance" xml:space="preserve">
+    <value>Naměřená hmotnost spadá do tolerance.</value>
+  </data>
+  <data name="MeasuredWeightOutOfTolerance" xml:space="preserve">
+    <value>Naměřená hmotnost je mimo toleranci.</value>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Testov dráha (mm)</value>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Správné Posun (mm)</value>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Aktuální Posun (mm)</value>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Ukončit postup</value>
+  </data>
+  <data name="AcceptOffset" xml:space="preserve">
+    <value>Akcept</value>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Kóta vybrané buňky (mm)</value>
+  </data>
+  <data name="CellNumber" xml:space="preserve">
+    <value>Číslo buňky</value>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Hodn kroku (mm)</value>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Kóta buňky (mm)</value>
+  </data>
+  <data name="CellsPanelControl" xml:space="preserve">
+    <value>Kontrola panelů police</value>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Vybraná buňka</value>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Aktuální panel</value>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Korekce panelu (mm)</value>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Celkem panelů:</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Zpět</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Přední</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Upravit</value>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Stav instalace</value>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Záběh řemene</value>
+  </data>
+  <data name="Gate1Done" xml:space="preserve">
+    <value>Roleta stan 1</value>
+  </data>
+  <data name="Gate2Done" xml:space="preserve">
+    <value>Roleta stan 2</value>
+  </data>
+  <data name="Gate3Done" xml:space="preserve">
+    <value>Roleta stan 3</value>
+  </data>
+  <data name="HorizontalAxisHomedDone" xml:space="preserve">
+    <value>Počátek horizontální osy</value>
+  </data>
+  <data name="Laser1Done" xml:space="preserve">
+    <value>Laser ukazov 1</value>
+  </data>
+  <data name="Laser2Done" xml:space="preserve">
+    <value>Laser ukazov 2</value>
+  </data>
+  <data name="Laser3Done" xml:space="preserve">
+    <value>Laser ukazov 3</value>
+  </data>
+  <data name="Shape1Done" xml:space="preserve">
+    <value>Kontrola výšky stanice 1</value>
+  </data>
+  <data name="Shape2Done" xml:space="preserve">
+    <value>Kontrola výšky stanice 2</value>
+  </data>
+  <data name="Shape3Done" xml:space="preserve">
+    <value>Kontrola výšky stanice 3</value>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Počátek vertikální osy</value>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Rozlišení vertikální osy</value>
+  </data>
+  <data name="VerticalAxisCalibration" xml:space="preserve">
+    <value>Kalibrace vertikální osy</value>
+  </data>
+  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
+    <value>Kalibrace osy dokončena</value>
+  </data>
+  <data name="AxisNotCalibratedYet" xml:space="preserve">
+    <value>Kalibrace osy neprovedena</value>
+  </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Kontrola kót buňky</value>
+  </data>
+  <data name="MeasuredInitialPosition" xml:space="preserve">
+    <value>Naměřená výchozí kóta (mm)</value>
+  </data>
+  <data name="MoveToInitialPosition" xml:space="preserve">
+    <value>Posunout výchozí pozici</value>
+  </data>
+  <data name="InsertMeasuredInitialPosition" xml:space="preserve">
+    <value>Zadejte naměřenou výchozí pozici.</value>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Posunout do pozice</value>
+  </data>
+  <data name="ConfirmResolution" xml:space="preserve">
+    <value>Potvrdit nové rozlišení nebo zrušit operaci.</value>
+  </data>
+  <data name="MovingToDesiredPosition" xml:space="preserve">
+    <value>Přesun do požadované pozice...</value>
+  </data>
+  <data name="SettingInitialPosition" xml:space="preserve">
+    <value>Nastavení výchozí pozice...</value>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Korekce kóty buňky (mm)</value>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Kontr vertikho Posun</value>
+  </data>
+  <data name="CellPositionDone" xml:space="preserve">
+    <value>Ověřené kóty buněk</value>
+  </data>
+  <data name="HeightControlCheck" xml:space="preserve">
+    <value>Kontrola výšky</value>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Snímač A rolety</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Snímač B rolety</value>
+  </data>
+  <data name="FinalPosition" xml:space="preserve">
+    <value>Konečná kóta (mm)</value>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Spustit postup</value>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Ukončit postup</value>
+  </data>
+  <data name="LSMTElevator" xml:space="preserve">
+    <value>Zvedák</value>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Následující panel</value>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Kontrola pozice panelu police</value>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>Konečná odečt kóta (mm)</value>
+  </data>
+  <data name="Gate1HeightReached" xml:space="preserve">
+    <value>Dosažená výška</value>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>Zvedák</value>
+  </data>
+  <data name="CellsSideControlButton" xml:space="preserve">
+    <value>Změna bloku buněk</value>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Změnit kóty skupiny buněk</value>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>Výchozí buňka</value>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Kon buňka</value>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>Požadovaná korekce (mm)</value>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Vybraná strana</value>
+  </data>
+  <data name="LoadingDrawersButton" xml:space="preserve">
+    <value>Naklád zásuvek</value>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Naklád zásuvek.</value>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Celkem zásuvek</value>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Max kapacita (kg)</value>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Vložené zásuvky</value>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Zásuvka na vložení</value>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Následující zásuv</value>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Počátek vkládání</value>
+  </data>
+  <data name="LoadFirstDrawerButton" xml:space="preserve">
+    <value>Naložit první zásuvku</value>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>Naklád první zásuvky a test buněk</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Celkem buněk k testov</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Celkem otestov buněk</value>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>Buňka ve fázi testu</value>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Zásuvka na vložení</value>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>maxim. kapacita zásuvky (kg)</value>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Zasuňte zásuvku</value>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Vyvolat zásuvku</value>
+  </data>
+  <data name="BayHeightCheck" xml:space="preserve">
+    <value>Kontr kóty stan</value>
+  </data>
+  <data name="BayHeightCheckSelectedPosition" xml:space="preserve">
+    <value>Pozice ve stanici</value>
+  </data>
+  <data name="BayHeight" xml:space="preserve">
+    <value>Kóta stan (mm)</value>
+  </data>
+  <data name="BayHeightCheckActualHeight" xml:space="preserve">
+    <value>Aktuální pozice (mm)</value>
+  </data>
+  <data name="BayHeightCheckCorrectionValue" xml:space="preserve">
+    <value>Hodnota korekce (mm)</value>
+  </data>
+  <data name="BayHeightCheckNextPosition" xml:space="preserve">
+    <value>Následující pozice</value>
+  </data>
+  <data name="DrawerLoadingUnloadingTest" xml:space="preserve">
+    <value>Test naklád vyklád</value>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Test naklád vyklád zásuvky ve stan</value>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>Rychl pln %</value>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>Požad cykly</value>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Aktuální pozice řetězu</value>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Dokonč cykly</value>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Zastav cykl</value>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Spust cykl</value>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>Pozor:</value>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>Manuální ovladače jsou momentálně aktivovány k provedení malých přesunů nízkou rychlostí bez zablokování.</value>
+  </data>
+  <data name="Carousel" xml:space="preserve">
+    <value>Karusel</value>
+  </data>
+  <data name="CarouselMovements" xml:space="preserve">
+    <value>Pohyby karuselu</value>
+  </data>
+  <data name="SaveRestoreConfigButton" xml:space="preserve">
+    <value>Uložit a obnovit</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>Uložit konfigurační soubor.</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>Obnovit konfigurační soubor.</value>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>Vybraná složka</value>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>Uložit konfiguraci</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>Potvrdit uložení</value>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>Zrušit uložení</value>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>Nahrát konfiguraci</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>Potvrdit nahrávání</value>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>Zrušit nahrávání</value>
+  </data>
+  <data name="HomingCompleted" xml:space="preserve">
+    <value>Kalibrace úspěšně dokončena</value>
+  </data>
+  <data name="HomingStarted" xml:space="preserve">
+    <value>Spustit kalibraci</value>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Kalibrace horizontální osy dokončena</value>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Provádí se kalibrace horizontální osy ({0} z {1})</value>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Spustit kalibraci horizontální osy </value>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Změna motoru dokončena</value>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Změna motoru zahájena</value>
+  </data>
+  <data name="VerticalHomingCompleted" xml:space="preserve">
+    <value>Kalibrace vertikální osy dokončena</value>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Provádí se kalibrace vertikální osy ({0} z {1})</value>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Spuštění kalibrace vertikální osy</value>
+  </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Chyba kalibrace vertikální osy ({0} z {1})</value>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Chyba kalibrace horizontální osy ({0} z {1})</value>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Chyba výměny os</value>
+  </data>
+  <data name="HomingError" xml:space="preserve">
+    <value>Chyba kalibrace</value>
+  </data>
+  <data name="ErrorRetrievingConfigurationData" xml:space="preserve">
+    <value>Data konfigurace nejsou shromážděna správně</value>
+  </data>
+  <data name="ValueNotValid" xml:space="preserve">
+    <value>Zadána neplatná hodnota</value>
+  </data>
+  <data name="UpdateResolution" xml:space="preserve">
+    <value>Aktualiz rozlišení</value>
+  </data>
+  <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
+    <value>Nahrát/Vyvolat zásuvku</value>
+  </data>
+  <data name="LUPresentMiddleBottomBay" xml:space="preserve">
+    <value>Druhá zásuvka přítomna ve stanici</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Vyvolat z buňky do stan</value>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Nakládka ze stan do buňky</value>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Nakládka zásuvky a vyvolání zásuvky</value>
+  </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Inicializace...</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>Ostat</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Stan 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Stan 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Stan 3</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Test rolety stanice</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Zavř</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>V pol cest</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Otevř</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Krok 1</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Krok 2</value>
+  </data>
+  <data name="Step3" xml:space="preserve">
+    <value>Krok 3</value>
+  </data>
+  <data name="MeasuredFinalPosition" xml:space="preserve">
+    <value>Naměřená konečná kóta (mm)</value>
+  </data>
+  <data name="MeasuredDistance" xml:space="preserve">
+    <value>Naměřená dráha (mm)</value>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Str buňky</value>
+  </data>
+  <data name="MoveToCellHeight" xml:space="preserve">
+    <value>Nast na kótu buňky</value>
+  </data>
+  <data name="BayPositionDown" xml:space="preserve">
+    <value>Dolní poloha</value>
+  </data>
+  <data name="BayPositionUp" xml:space="preserve">
+    <value>Horní poloha</value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Posun (mm)</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Vnější stan</value>
+  </data>
+  <data name="ExternalBayManualMovements" xml:space="preserve">
+    <value>Manuální pohyby vnější stanice</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Aplikovat korekci</value>
+  </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>Zadejte ID zásuvky</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Zkontrol</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Str</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="BayPosition" xml:space="preserve">
+    <value>Pozice stanice</value>
+  </data>
+  <data name="ElevatorVerticalPosition" xml:space="preserve">
+    <value>Vertikální pozice (mm)</value>
+  </data>
+  <data name="TrayInBay" xml:space="preserve">
+    <value>Zásuvka ve stan</value>
+  </data>
+  <data name="GoToBay" xml:space="preserve">
+    <value>Jít do st</value>
+  </data>
+  <data name="Cells" xml:space="preserve">
+    <value>Buňky</value>
+  </data>
+  <data name="TrayInCell" xml:space="preserve">
+    <value>Zásuvka v buňce</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Zvedák</value>
+  </data>
+  <data name="LoadedTray" xml:space="preserve">
+    <value>Zasunutá zásuvka</value>
+  </data>
+  <data name="Disembark" xml:space="preserve">
+    <value>Vylož</value>
+  </data>
+  <data name="Embark" xml:space="preserve">
+    <value>Naložit</value>
+  </data>
+  <data name="TrayWeight" xml:space="preserve">
+    <value>Hmot zásuvky (kg)</value>
+  </data>
+  <data name="ElevatorHorizontalPosition" xml:space="preserve">
+    <value>Horizontální pozice (mm)</value>
+  </data>
+  <data name="ElevatorIsInInitialPosition" xml:space="preserve">
+    <value>Zvedák se nachází v počáteční pozici.</value>
+  </data>
+  <data name="ElevatorIsInFinalPosition" xml:space="preserve">
+    <value>Zvedák se nachází v konečné pozici.</value>
+  </data>
+  <data name="ProcedureWasStopped" xml:space="preserve">
+    <value>Postup byl přerušen.</value>
+  </data>
+  <data name="VerticalAxisResolutionUpdated" xml:space="preserve">
+    <value>Rozlišení vertikální osy aktualizováno.</value>
+  </data>
+  <data name="SelectLowerBound" xml:space="preserve">
+    <value>Vyberte dolní limit (mm)</value>
+  </data>
+  <data name="SelectUpperBound" xml:space="preserve">
+    <value>Vyberte horní limit (mm)</value>
+  </data>
+  <data name="TimeDelay" xml:space="preserve">
+    <value>Vyberte dobu čekání</value>
+  </data>
+  <data name="SaveConfig" xml:space="preserve">
+    <value>Uložit konfiguraci</value>
+  </data>
+  <data name="MachineNotManualModeWarning" xml:space="preserve">
+    <value>Pozor!!! Stroj musí být v manuálním stavu</value>
+  </data>
+  <data name="MachineNotRunWarning" xml:space="preserve">
+    <value>Pozor!!! Stroj je třeba spustit</value>
+  </data>
+  <data name="PHC4ComandNote" xml:space="preserve">
+    <value>Umístěte šablonu na krátkou stranu zásuvky a umístěte ji tak, aby její základna byla zarovnána s referenční vertikální plochou (viz obrázek); následně až budete připraveni, stiskněte tlačítko vpřed</value>
+  </data>
+  <data name="PHC4NoteHeader" xml:space="preserve">
+    <value>Pozor</value>
+  </data>
+  <data name="ElevatorIsCellPosition" xml:space="preserve">
+    <value>Zvedák je na kótě buňky.</value>
+  </data>
+  <data name="SingleBay" xml:space="preserve">
+    <value>Jednotl</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Znov nast</value>
+  </data>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Počet dokonč cykl (celk)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Násl</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Předchozí</value>
+  </data>
+  <data name="PHC2ComandNote" xml:space="preserve">
+    <value>Zkontrolujte umístění zvedáku, zda je v poloze, kdy je možné provést otočení řetězu bez způsobení škod; dle potřeby otevřete nebo zavřete roletu.
+Po kontrole pokračujte stisknutím tlačítka „Následující“</value>
+  </data>
+  <data name="PHC2NoteHeader" xml:space="preserve">
+    <value>Pozor</value>
+  </data>
+  <data name="PHC1ComandNote" xml:space="preserve">
+    <value>Naložte zásuvku do stanice.</value>
+  </data>
+  <data name="PHC1NoteHeader" xml:space="preserve">
+    <value>Pozor</value>
+  </data>
+  <data name="ShutterState" xml:space="preserve">
+    <value>Stav rolety</value>
+  </data>
+  <data name="Drawer" xml:space="preserve">
+    <value>Zásuvka</value>
+  </data>
+  <data name="PHC3ComandNote" xml:space="preserve">
+    <value>Umístěte zásuvku do stanice pro nastavení výšky.
+Po provedení pokračujte stisknutím tlačítka „Následující“</value>
+  </data>
+  <data name="PHC3NoteHeader" xml:space="preserve">
+    <value>Pozor</value>
+  </data>
+  <data name="Shape" xml:space="preserve">
+    <value>Šablon</value>
+  </data>
+  <data name="PHC6ComandNote" xml:space="preserve">
+    <value>Operace dokončena, odstraňte šablonu ze zásuvky</value>
+  </data>
+  <data name="PHC6NoteHeader" xml:space="preserve">
+    <value>Pozor</value>
+  </data>
+  <data name="Prev" xml:space="preserve">
+    <value>Před</value>
+  </data>
+  <data name="WeightAnalysis" xml:space="preserve">
+    <value>Analýza hmot</value>
+  </data>
+  <data name="TrayTare" xml:space="preserve">
+    <value>Tára zásuvky (kg)</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Čistá hmot (kg)</value>
+  </data>
+  <data name="DisembarkBackwards" xml:space="preserve">
+    <value>Vykládka zpět</value>
+  </data>
+  <data name="DisembarkForwards" xml:space="preserve">
+    <value>Vykládka vpřed</value>
+  </data>
+  <data name="EmbarkBackwards" xml:space="preserve">
+    <value>Nakládka zpět</value>
+  </data>
+  <data name="EmbarkForwards" xml:space="preserve">
+    <value>Naklád vpřed</value>
+  </data>
+  <data name="LSMTEngineTitle" xml:space="preserve">
+    <value>Pohyby os</value>
+  </data>
+  <data name="ManualMovements" xml:space="preserve">
+    <value>Manuální pohyby</value>
+  </data>
+  <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
+    <value>Na tomto terminálu je aktivován firewall.</value>
+  </data>
+  <data name="ProcedureCompleted" xml:space="preserve">
+    <value>Postup dokončen.</value>
+  </data>
+  <data name="GoToPosition" xml:space="preserve">
+    <value>Jít na kótu</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Kóta</value>
+  </data>
+  <data name="ConfirmationOperation" xml:space="preserve">
+    <value>Potvrdit operaci?</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>ID zásuvky</value>
+  </data>
+  <data name="LoadingUnitWeight" xml:space="preserve">
+    <value>Hmot zásuvky</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Kalibr stan</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>Karusel dol</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>Karusel up</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Kalibr řetězu</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Číslo zásuvky</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Zavřít roletu</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Otevř roletu</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>Jít na zásuvku</value>
+  </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>Přít UDC na straně stroje</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>Přít UDC na straně obsluhy</value>
+  </data>
+  <data name="LowerBayPosition" xml:space="preserve">
+    <value>Dolní poloha</value>
+  </data>
+  <data name="UpperBayPosition" xml:space="preserve">
+    <value>Horní poloha</value>
+  </data>
+  <data name="BayChainHorizontalPosition" xml:space="preserve">
+    <value>BayChainHorizontalPosition</value>
+  </data>
+  <data name="CurrentBayChainPosition" xml:space="preserve">
+    <value>CurrentBayChainPosition</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>Informace byla aktualizována.</value>
+  </data>
+  <data name="PreviousPanel" xml:space="preserve">
+    <value>Předchozí panel</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Ukládání úspěšně dokončeno</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>ID cílové buňky</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Zasunutí zásuvky ze stanice do buňky</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Vynul řetěz</value>
+  </data>
+  <data name="LoadingUnitFromCellToCell" xml:space="preserve">
+    <value>Přesun zásuvky z buňky do buňky</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
+    <value>Odstranění zásuvky (přesun z buňky do stanice)</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Potvrďte vyjmutí zásuvky</value>
+  </data>
+  <data name="SelectDestinationBay" xml:space="preserve">
+    <value>Volba cílové stanice</value>
+  </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Test rolety</value>
+  </data>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Kóta dolní polohy (mm)</value>
+  </data>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>Kóta horní polohy (mm)</value>
+  </data>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Přít v dol pol</value>
+  </data>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Přít v hor pol</value>
+  </data>
+  <data name="LoadingUnitCodePositionUp" xml:space="preserve">
+    <value>Zásuvka v horní poloze</value>
+  </data>
+  <data name="LoadingUnitCodePositionDown" xml:space="preserve">
+    <value>Zásuvka v dolní poloze</value>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Kód zásuvky</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Buňka</value>
+  </data>
+  <data name="RestoreSuccessful" xml:space="preserve">
+    <value>Obnovení úspěšně dokončeno</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Obnovit</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="DeviceFileFound" xml:space="preserve">
+    <value>Nalezen soubor v zařízení</value>
+  </data>
+  <data name="InsertDeviceWithFileConfiguration" xml:space="preserve">
+    <value>Zasuňte zařízení se souborem obnovení - {0} -</value>
+  </data>
+  <data name="FileReadError" xml:space="preserve">
+    <value>Chyba čtení souboru</value>
+  </data>
+  <data name="DeviceNotFound" xml:space="preserve">
+    <value>Zařízení nenalezeno</value>
+  </data>
+  <data name="DeviceFound" xml:space="preserve">
+    <value>Zařízení nalezeno</value>
+  </data>
+  <data name="ExportSuccessful" xml:space="preserve">
+    <value>Export úspěšně dokončen</value>
+  </data>
+  <data name="ConfirmFileOverwrite" xml:space="preserve">
+    <value>Potvrdit přepsání souboru?</value>
+  </data>
+  <data name="FileIsAlreadyPresent" xml:space="preserve">
+    <value>Jeden soubor už je v zařízení přítomen.</value>
+  </data>
+  <data name="ConfirmRestore" xml:space="preserve">
+    <value>Potvrdit obnovení</value>
+  </data>
+  <data name="RestoreConfiguration" xml:space="preserve">
+    <value>Obnovit konfiguraci</value>
+  </data>
+  <data name="SureToApplyConfiguration" xml:space="preserve">
+    <value>Skutečně chcete aplikovat konfiguraci?</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Neznámý</value>
+  </data>
+  <data name="CompletedTest" xml:space="preserve">
+    <value>Test úspěšně dokončen</value>
+  </data>
+  <data name="TestProgress" xml:space="preserve">
+    <value>Probíhá test...</value>
+  </data>
+  <data name="Rear" xml:space="preserve">
+    <value>Zadní</value>
+  </data>
+  <data name="UseWeightControl" xml:space="preserve">
+    <value>Provede pohyby s výpočtem hmot</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Nalož</value>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Nalož</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Vyložit</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Vyložit</value>
+  </data>
+  <data name="ElevatorLogicalPosition" xml:space="preserve">
+    <value>Pozice</value>
+  </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>Buňka {0}</value>
+  </data>
+  <data name="InBay" xml:space="preserve">
+    <value>Ve stan</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>Ve stan {0}</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="MovementsGuided" xml:space="preserve">
+    <value>Naváděné pohyby</value>
+  </data>
+  <data name="MovementsManual" xml:space="preserve">
+    <value>Manuální pohyby</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Kalibr</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Dosažená výška</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Výsled</value>
+  </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Reset stroje</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>Reset stroje proběhl úspěšně.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Roleta dolů</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Roleta nah</value>
+  </data>
+  <data name="BayPositionOnBotton" xml:space="preserve">
+    <value>V dol stan</value>
+  </data>
+  <data name="BayPositionOnTop" xml:space="preserve">
+    <value>V hor stan</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Dolní</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>hor</value>
+  </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Kalibrace bariéry</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Bezpečn</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Bezpečnostní snímače</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Čas</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Datu</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Rok</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Měs</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Den</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minuty</value>
+  </data>
+  <data name="SystemDateTime" xml:space="preserve">
+    <value>4.7.5 Datum a čas systému</value>
+  </data>
+  <data name="WMSAutoSync" xml:space="preserve">
+    <value>Automatická synchronizace WMS</value>
+  </data>
+  <data name="SetManualSystemDateTime" xml:space="preserve">
+    <value>Manuálně nastavte datum a čas</value>
+  </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>Zadaný datum a/nebo čas neplatné.</value>
+  </data>
+  <data name="ConfirmUpdateVer" xml:space="preserve">
+    <value>Potvrdit aktualizaci na {0} „{1}“?</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>Potvrdit aktualizaci</value>
+  </data>
+  <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
+    <value>Aktualizace úspěšně dokončena.</value>
+  </data>
+  <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
+    <value>Chyba ve fázi inicializace aktualiz.</value>
+  </data>
+  <data name="ConfigurationDetected" xml:space="preserve">
+    <value>„{0}“ je konfig soubor s možností importu.</value>
+  </data>
+  <data name="ExportableDeviceDetected" xml:space="preserve">
+    <value>Dostupné archivační jednotky.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="MultipleConfigurationsDetected" xml:space="preserve">
+    <value>Počet dostupných konfigurací pro import: {0}.</value>
+  </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>Archivační jednotka není k dispozici.</value>
+  </data>
+  <data name="RestoreNotPossible" xml:space="preserve">
+    <value>Import NENÍ možný.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>Import ze souboru „{0}“ NENÍ možný.</value>
+  </data>
+  <data name="RestorePossible" xml:space="preserve">
+    <value>Import je možný.</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>Import ze souboru „{0}“ je možný.</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Zdroj</value>
+  </data>
+  <data name="InstallerAppStartedSuccessfully" xml:space="preserve">
+    <value>Instalační aplikace úspěšně spuštěna.</value>
+  </data>
+  <data name="ErrorExecutingInstallerApp" xml:space="preserve">
+    <value>Chyba během spouštění instalační aplikace.</value>
+  </data>
+  <data name="BoardingNotExecutedMissingDrawer" xml:space="preserve">
+    <value>Nalož neproběhlo v důsledku chybějící zás</value>
+  </data>
+  <data name="CellNotValid" xml:space="preserve">
+    <value>Buňka neplatná</value>
+  </data>
+  <data name="InputFormCellIdMustBePositive" xml:space="preserve">
+    <value>InputFormCellId musí být kladná.</value>
+  </data>
+  <data name="InputFormCellIdRequired" xml:space="preserve">
+    <value>InputFormCellId je povinná.</value>
+  </data>
+  <data name="InputToCellIdMustBePositive" xml:space="preserve">
+    <value>InputToCellId musí být kladná.</value>
+  </data>
+  <data name="InputToCellIdRequired" xml:space="preserve">
+    <value>InputToCellId je povinná.</value>
+  </data>
+  <data name="LandingNotExecutedMissingDrawer" xml:space="preserve">
+    <value>Vylož neproběhlo v důsledku chybějící zás</value>
+  </data>
+  <data name="MoveToBayNotExecuted" xml:space="preserve">
+    <value>Přesun do stan neproveden, aktuální stav je {0}</value>
+  </data>
+  <data name="StateShouldBeInMode" xml:space="preserve">
+    <value>Stav by měl být v režimu {0} nebo {1}</value>
+  </data>
+  <data name="StepMustBePositive" xml:space="preserve">
+    <value>Krok musí být kladný.</value>
+  </data>
+  <data name="StepRequired" xml:space="preserve">
+    <value>Krok je povinný.</value>
+  </data>
+  <data name="SuccessfullChange" xml:space="preserve">
+    <value>Změna proběhla úspěšně</value>
+  </data>
+  <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
+    <value>Posun vertik osy aktualizováno</value>
+  </data>
+  <data name="BeltBreakIn" xml:space="preserve">
+    <value>Záběh řemene</value>
+  </data>
+  <data name="CellInsertedNotFree" xml:space="preserve">
+    <value>zadaná buňka není volná</value>
+  </data>
+  <data name="CellSelectedNotPresent" xml:space="preserve">
+    <value>Vybraná buňka není přítomna.</value>
+  </data>
+  <data name="CellSelectedRequired" xml:space="preserve">
+    <value>Je třeba vybrat buňku.</value>
+  </data>
+  <data name="ChecksumCompleted" xml:space="preserve">
+    <value>Kontrola kontrolního součtu souboru dokončena správně.</value>
+  </data>
+  <data name="ClearTempFolder" xml:space="preserve">
+    <value>Vymazat dočasnou složku „{0}“.</value>
+  </data>
+  <data name="DestinationPositionMustBePositive" xml:space="preserve">
+    <value>Cílová poloha musí být přísně kladná.</value>
+  </data>
+  <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Cílová poloha je mimo interval os ({0}).</value>
+  </data>
+  <data name="DestinationPositionRequired" xml:space="preserve">
+    <value>DestinationPosition je povinná.</value>
+  </data>
+  <data name="DrawerIdExtracted" xml:space="preserve">
+    <value>ID vytažené zásuvky {0}</value>
+  </data>
+  <data name="ErrorCheckFile" xml:space="preserve">
+    <value>Chyba během kontroly souboru {0}.</value>
+  </data>
+  <data name="ErrorChecksum" xml:space="preserve">
+    <value>Chyba kontroly kontrolního součtu souboru:</value>
+  </data>
+  <data name="ErrorChecksumNotFound" xml:space="preserve">
+    <value>Chyba během kontr souboru „{0}“. Nenašel se žádný kontrolní součet.</value>
+  </data>
+  <data name="ErrorClearTempFolder" xml:space="preserve">
+    <value>Chyba během ručení dočasné složky:</value>
+  </data>
+  <data name="ErrorExtractingFiles" xml:space="preserve">
+    <value>Chyba extrakce souborů:</value>
+  </data>
+  <data name="ErrorOnStarting" xml:space="preserve">
+    <value>Chyba při spušt:</value>
+  </data>
+  <data name="ExtractingFilesCompleted" xml:space="preserve">
+    <value>Extrakce úspěšně dokončena.</value>
+  </data>
+  <data name="FieldRequired" xml:space="preserve">
+    <value>Pole je povinné.</value>
+  </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Jít na volnou buňk</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Probíhá pohyb horizontální osy...</value>
+  </data>
+  <data name="InputDelayBetweenCyclesMustBePositive" xml:space="preserve">
+    <value>InputDelayBetweenCycles musí být zásadně kladný.</value>
+  </data>
+  <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
+    <value>InputDelayBetweenCycles je povinný.</value>
+  </data>
+  <data name="InputDisplacementMustBePositive" xml:space="preserve">
+    <value>InputDisplacement musí být zásadně kladný.</value>
+  </data>
+  <data name="InputDisplacementRequired" xml:space="preserve">
+    <value>InputDisplacement je povinný.</value>
+  </data>
+  <data name="InputNetWeightMustBePositive" xml:space="preserve">
+    <value>InputNetWeight musí být zásadně kladný.</value>
+  </data>
+  <data name="InputNetWeightRequired" xml:space="preserve">
+    <value>InputNetWeight je povinný.</value>
+  </data>
+  <data name="InputWeightMustBePositive" xml:space="preserve">
+    <value>InputWeightRequired musí být zásadně kladný.</value>
+  </data>
+  <data name="InputWeightMustBeSpecified" xml:space="preserve">
+    <value>InputWeightRequired musí být zadaný.</value>
+  </data>
+  <data name="InvalidCellIdEntered" xml:space="preserve">
+    <value>Zadané ID buňky neplatné</value>
+  </data>
+  <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
+    <value>Zadáno neplatné ID buňky v zásuvce</value>
+  </data>
+  <data name="InvalidDestinationChoiceType" xml:space="preserve">
+    <value>Neplatný typ volby cíle</value>
+  </data>
+  <data name="InvalidDrawerIdInBay" xml:space="preserve">
+    <value>Neplatné ID zásuvky ve stanici</value>
+  </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>Vybrané ID zásuvky je neplatné</value>
+  </data>
+  <data name="InvalidEnteredDrawerId" xml:space="preserve">
+    <value>Zadané ID zásuvky je neplatné</value>
+  </data>
+  <data name="InvalidSourceChoiceType" xml:space="preserve">
+    <value>Neplatný typ volby zdroje</value>
+  </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>Neplatná Hodn</value>
+  </data>
+  <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
+    <value>LoadingUnitId musí být zásadně kladný.</value>
+  </data>
+  <data name="LoadingUnitIdRequired" xml:space="preserve">
+    <value>LoadingUnitId je povinný.</value>
+  </data>
+  <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Naměřená pozice mimo interval os ({0}).</value>
+  </data>
+  <data name="OperationAborted" xml:space="preserve">
+    <value>Operace selhala.</value>
+  </data>
+  <data name="RequiredCyclesCompleted" xml:space="preserve">
+    <value>Dokončen potřebný počet cyklů.</value>
+  </data>
+  <data name="StartChecksum" xml:space="preserve">
+    <value>Počátek kontroly kontr součtu soub „{0}“.</value>
+  </data>
+  <data name="StartExtractingFiles" xml:space="preserve">
+    <value>Extrakce souborů z „{0}“.</value>
+  </data>
+  <data name="StartingApplication" xml:space="preserve">
+    <value>Spuštění aplikace „{0}“.</value>
+  </data>
+  <data name="StartPositionMustBePositive" xml:space="preserve">
+    <value>Pozice spuštění musí být zásadně kladná.</value>
+  </data>
+  <data name="StartPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Výchozí pozice mimo interval os ({0}).</value>
+  </data>
+  <data name="TestToRunMustBePositive" xml:space="preserve">
+    <value>TestToRun musí být zásadně kladný.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Probíhá pohyb vertikální osy...</value>
+  </data>
+  <data name="WeightToleranceMustBePositive" xml:space="preserve">
+    <value>Tolerance hmotnosti musí být zásadně kladná.</value>
+  </data>
+  <data name="ModeLoadUnitOperations" xml:space="preserve">
+    <value>Operace zásuvky</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Zhutnit</value>
+  </data>
+  <data name="TotalCycleMoreThanRequired" xml:space="preserve">
+    <value>Celkem dokonč cykl je vyšší než požad.</value>
+  </data>
+  <data name="TrayTareValueMustBePositive" xml:space="preserve">
+    <value>Tára nesmí být vyšší než 0</value>
+  </data>
+  <data name="TrayTareValueNotInserted" xml:space="preserve">
+    <value>Nezadaná tára</value>
+  </data>
+  <data name="WeightValueMustBePositive" xml:space="preserve">
+    <value>Hmotnost nesmí být vyšší než 0</value>
+  </data>
+  <data name="WeightValueNotInserted" xml:space="preserve">
+    <value>Nezadaná hmotnost</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Kalibrace karuselu</value>
+  </data>
+  <data name="InputDelayMustBePositive" xml:space="preserve">
+    <value>InputDelay nesmí být vyšší než 0</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
+    <value>InputLowerBound musí být vyšší než InputUpperBound.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputLowerBound musí být vyšší než {0}.</value>
+  </data>
+  <data name="InputLowerBoundMustBePositive" xml:space="preserve">
+    <value>InputLowerBound musí být vyšší než 0</value>
+  </data>
+  <data name="InputLowerBoundRequired" xml:space="preserve">
+    <value>InputLowerBound je povinný.</value>
+  </data>
+  <data name="InputRequiredCyclesMustBePositive" xml:space="preserve">
+    <value>InputRequiredCycles musí být vyšší než 0</value>
+  </data>
+  <data name="InputRequiredCyclesRequired" xml:space="preserve">
+    <value>InputRequiredCycles je povinný.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanLower" xml:space="preserve">
+    <value>InputUpperBound musí být vyšší než InputLowerBound.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputUpperBound musí být vyšší než {0}.</value>
+  </data>
+  <data name="InputUpperBoundMustBePositive" xml:space="preserve">
+    <value>InputUpperBound musí být vyšší než 0</value>
+  </data>
+  <data name="InputUpperBoundRequired" xml:space="preserve">
+    <value>InputUpperBound je povinný.</value>
+  </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>Kontrola horní polohy</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Umístěte zvedák nahoru ve stanici a otevřete přítomnou roletu.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Nová kóta dolní polohy (mm)</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Nová kóta horní polohy (mm)</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Zkontrolujte zarovnání stanice a zvedáku. Pokud nejsou zarovnány, upravte pozici zvedáku.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Potvrďte změny.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Kontrola dolní polohy</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Přesunout zvedák</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Nebyly provedeny změny.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Zkontrolujte nové kóty a pro uplatnění změn stiskněte tlačítko Uložit.</value>
+  </data>
+  <data name="Interaxle" xml:space="preserve">
+    <value>Rozvor (mm)</value>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Následuj</value>
+  </data>
+  <data name="FirstTest" xml:space="preserve">
+    <value>První test</value>
+  </data>
+  <data name="CellSelectedBlocked" xml:space="preserve">
+    <value>Vybraná buňka je zablokovaná</value>
+  </data>
+  <data name="BeforeStart" xml:space="preserve">
+    <value>Než začnete</value>
+  </data>
+  <data name="CalibrationInProgress" xml:space="preserve">
+    <value>Probíhá kalibrace...</value>
+  </data>
+  <data name="CalibrationProcedureRequired" xml:space="preserve">
+    <value>Proveďte postup kalibrace stanice pro umístění police do místa snímače.</value>
+  </data>
+  <data name="CheckDrawersThenStart" xml:space="preserve">
+    <value>Než budete pokračovat, zkontr, zda v první stan nejsou zásuvky. Pro spušt postupu stisk tlač INICIOVAT</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Dokončit</value>
+  </data>
+  <data name="ConfirmAdjustment" xml:space="preserve">
+    <value>Potvrdit korekci</value>
+  </data>
+  <data name="CyclesPerformed" xml:space="preserve">
+    <value>Provedené cykl</value>
+  </data>
+  <data name="ErrorInMillimiters" xml:space="preserve">
+    <value>Chyba (mm)</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Zbývající čas</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Opakov</value>
+  </data>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Pro opakované provedení postupu stisk tlač Opakovat.</value>
+  </data>
+  <data name="ResetCycles" xml:space="preserve">
+    <value>Reset cykly</value>
+  </data>
+  <data name="SelectDirectionAndApply" xml:space="preserve">
+    <value>Vyberte +, pokud jste nad snímačem, nebo -, pokud jste pod, a korekci uplatněte stisknutím tlačítka Použít.</value>
+  </data>
+  <data name="StopInProgress" xml:space="preserve">
+    <value>Probíhá zastavení ve fázi...</value>
+  </data>
+  <data name="StopProcedure" xml:space="preserve">
+    <value>Zastavit postup</value>
+  </data>
+  <data name="RaisingsPerformed" xml:space="preserve">
+    <value>Provedená zvedání</value>
+  </data>
+  <data name="ConfirmSetup" xml:space="preserve">
+    <value>Potvrd kolaudaci</value>
+  </data>
+  <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
+    <value>Postup umožňuje přesunout zásuvky z výchozí buňky do cílové. Pro spuštění postupu zadejte ID zásuvky, ID cílové buňky a poté stiskněte tlačítko Spustit</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>Postup umožňuje přesunout zásuvku ze zdrojové stanice do cílové buňky. Pro spuštění postupu zadejte ID zásuvky a poté stiskněte tlačítko Spustit</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Vyberte pozici odběru zásuvky</value>
+  </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>Přesun zásuvky ze stan do stan</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>Postup umožňuje přesunout zásuvky z výchozí stanice do cílové. Pro spuštění postupu zadejte ID zásuvky a poté stiskněte tlačítko Spustit</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value>Vyberte cílovou pozici zásuvky</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>Postup umožňuje vyjmout zásuvku. Pro spuštění postupu zadejte ID zásuvky a poté stiskněte tlačítko Spustit</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>Správa zásuvek</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Vyberte cílovou pozici zásuvky</value>
+  </data>
+  <data name="ConfirmNewOffset" xml:space="preserve">
+    <value>Potvrdit nové Posun</value>
+  </data>
+  <data name="CorrectElevatorPositionNext" xml:space="preserve">
+    <value>Upravujte pozici zvedáku až do dosažení dokonalého zarovnání a stiskněte tlač Vpřed.</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Proud [A]</value>
+  </data>
+  <data name="ExecuteCellMeasurement" xml:space="preserve">
+    <value>Proveďte měření buňky</value>
+  </data>
+  <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
+    <value>Proveďte umístění zvedáku před buňku.</value>
+  </data>
+  <data name="ExecuteOriginCalibration" xml:space="preserve">
+    <value>Proveďte kalibraci výchozího bodu</value>
+  </data>
+  <data name="MoveElevatorToPlaceMeter" xml:space="preserve">
+    <value>Umístěte zvedák do takové výšky, která umožní upevnění metru.</value>
+  </data>
+  <data name="MoveToElevatorPosition" xml:space="preserve">
+    <value>Přesunout zvedák do pozice</value>
+  </data>
+  <data name="MoveToQuote" xml:space="preserve">
+    <value>Jít na kótu</value>
+  </data>
+  <data name="NewOffset" xml:space="preserve">
+    <value>Nový posun (mm)</value>
+  </data>
+  <data name="PlaceMeter" xml:space="preserve">
+    <value>Upevněte metr</value>
+  </data>
+  <data name="RemoveCarterRestore" xml:space="preserve">
+    <value>Pokračujte odstraněním jednoho z bočních krytů a umístění metru. Dokončete vrácením rytu a obnovením stavu chodu.</value>
+  </data>
+  <data name="RepeatOriginCalibration" xml:space="preserve">
+    <value>V důsledku právě provedené změny posunutí se vyžaduje nová kalibrace počátku vertikální osy. Pro spuštění stiskněte tlačítko Spustit.</value>
+  </data>
+  <data name="SelectedCell" xml:space="preserve">
+    <value>Vybraná buňka</value>
+  </data>
+  <data name="StartQuote" xml:space="preserve">
+    <value>Výchozí kóta</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Čas [s]</value>
+  </data>
+  <data name="VerifyConfirmWarn" xml:space="preserve">
+    <value>Zkontrolujte novou hodnotu vypočteného posunutí a pro provedení změny stiskněte tlačítko Uložit. Všechna následující umístění zohlední korekci.</value>
+  </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Test dokončen</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>Postup umožňuje provést úplný test všech zásuvek přítomných ve stroji. Pro spuštění postupu zadejte počet cyklů a poté stiskněte tlačítko Spustit</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Cykly relace</value>
+  </data>
+  <data name="ApplyCorrectionMessage" xml:space="preserve">
+    <value>Chcete uplatnit korekci?</value>
+  </data>
+  <data name="AttachMeter" xml:space="preserve">
+    <value>Upevněte metr:</value>
+  </data>
+  <data name="ConfirmCalibrationProcedure" xml:space="preserve">
+    <value>Chcete potvrdit postup kalibrace?</value>
+  </data>
+  <data name="ConfirmNewResolution" xml:space="preserve">
+    <value>Potvrdit nové rozlišení:</value>
+  </data>
+  <data name="DestinationPosition" xml:space="preserve">
+    <value>Cílová kóta</value>
+  </data>
+  <data name="ElevatorHighAttachMeter" xml:space="preserve">
+    <value>Umístěte zvedák do takové výšky, která umožní upevnění metru.</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart1" xml:space="preserve">
+    <value>Proveďte první měření (1/2):</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart2" xml:space="preserve">
+    <value>Proveďte druhé měření (2/2):</value>
+  </data>
+  <data name="IndicateMisuredPosition" xml:space="preserve">
+    <value>Uveďte kótu naměřenou metrem a stiskněte tlačítko Vpřed</value>
+  </data>
+  <data name="MisuredPosition" xml:space="preserve">
+    <value>Naměřená kóta</value>
+  </data>
+  <data name="ModifyLowerBoundDialog" xml:space="preserve">
+    <value>Následující výsledek změní hodnotu LowerBound stroje, pokračovat?</value>
+  </data>
+  <data name="PositionElevatorIndicatedHeight" xml:space="preserve">
+    <value>Umístěte zvedák na uvedenou kótu</value>
+  </data>
+  <data name="ResetTotalCyclesNumber" xml:space="preserve">
+    <value>Skutečně chcete resetovat celkový počet dokončených cyklů?</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Ulož</value>
+  </data>
+  <data name="StartProcedureMessage" xml:space="preserve">
+    <value>Chcete zahájit postup</value>
+  </data>
+  <data name="TestStopped" xml:space="preserve">
+    <value>Test zastaven ve fázi</value>
+  </data>
+  <data name="VerifyNewCalcolatedValue" xml:space="preserve">
+    <value>Zkontrolujte novou hodnotu vypočteného rozlišení a pro provedení změny stiskněte tlačítko Uložit</value>
+  </data>
+  <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
+    <value>Nové rozlišení</value>
+  </data>
+  <data name="ConfirmRestoreToPreviousVersion" xml:space="preserve">
+    <value>Potvrdit obnovení předchozí verze?</value>
+  </data>
+  <data name="RestoreInProgress" xml:space="preserve">
+    <value>Probíhá obnovení...</value>
+  </data>
+  <data name="RestoreEndedWithErrors" xml:space="preserve">
+    <value>Obnovení dokončeno s chybami</value>
+  </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>Vymazávání souboru snímku instalace „{0}“.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Chyba během vymazávání souboru snímku.</value>
+  </data>
+  <data name="WmsSettings" xml:space="preserve">
+    <value>Nastavení WMS</value>
+  </data>
+  <data name="DrawerManagement" xml:space="preserve">
+    <value>Správa zásuvek</value>
+  </data>
+  <data name="AverageCurrent" xml:space="preserve">
+    <value>Průměrný proud [A]</value>
+  </data>
+  <data name="BayDown" xml:space="preserve">
+    <value>Stan dol</value>
+  </data>
+  <data name="BayUp" xml:space="preserve">
+    <value>Stan up</value>
+  </data>
+  <data name="CallUnit" xml:space="preserve">
+    <value>Vyvolání zásuvky</value>
+  </data>
+  <data name="CarouselCalibrationDescription" xml:space="preserve">
+    <value>Vyčkejte na dokončení postupu, v případě potřeby stiskněte tlačítko „STOP“ pro okamžité zastavení a „ZASTAVIT POSTUP“ pro zastavení ve fázi.</value>
+  </data>
+  <data name="CellEditing" xml:space="preserve">
+    <value>Úprava buněk</value>
+  </data>
+  <data name="CellManagement" xml:space="preserve">
+    <value>Správa buněk</value>
+  </data>
+  <data name="CellPanelsCheckDescription" xml:space="preserve">
+    <value>Nezapomeňte nastavit fotobuňky přítomnosti zásuvek, pokud nebudou nastaveny, může dojít k zablokování zvedáku v nejvyšší části stroje.</value>
+  </data>
+  <data name="CellPanelsCheckPanel" xml:space="preserve">
+    <value>Kontrola panelů:</value>
+  </data>
+  <data name="CellPanelsCheckPhotocells" xml:space="preserve">
+    <value>Kontrola fotobuněk:</value>
+  </data>
+  <data name="DeleteUnit" xml:space="preserve">
+    <value>Odstraň zásuvku</value>
+  </data>
+  <data name="ElevatorBack" xml:space="preserve">
+    <value>Zvedák zpět</value>
+  </data>
+  <data name="ElevatorDown" xml:space="preserve">
+    <value>Zvedák dolů</value>
+  </data>
+  <data name="ElevatorForwards" xml:space="preserve">
+    <value>Zvedák vpřed</value>
+  </data>
+  <data name="ElevatorUp" xml:space="preserve">
+    <value>Zvedák nahor</value>
+  </data>
+  <data name="FallsUnit" xml:space="preserve">
+    <value>Zasunutí zásuvky</value>
+  </data>
+  <data name="FreeUnit" xml:space="preserve">
+    <value>Uvoln zásuvku</value>
+  </data>
+  <data name="GoToCell" xml:space="preserve">
+    <value>Jít na buňk</value>
+  </data>
+  <data name="InsertUnit" xml:space="preserve">
+    <value>Zasuňte zásuvku</value>
+  </data>
+  <data name="ProcedureNotCompleted" xml:space="preserve">
+    <value>Postup nedokončen</value>
+  </data>
+  <data name="RepeteProcedure" xml:space="preserve">
+    <value>Opakujte postup, protože nebyl dokončen správně</value>
+  </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>Uložte zásuvku</value>
+  </data>
+  <data name="TestedPanels" xml:space="preserve">
+    <value>Testované panely</value>
+  </data>
+  <data name="TotalCyclesCompleted" xml:space="preserve">
+    <value>Celkem dokonč cykl</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Zásuvky</value>
+  </data>
+  <data name="UnitEditing" xml:space="preserve">
+    <value>Úprava zásuvek</value>
+  </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>Kalibrace bariéry</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Měření stanice</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>Kalibrace levé strany (mm)</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Výsledek kalibrace:</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>Kalibrace pravé strany (mm)</value>
+  </data>
+  <data name="DataBePositive" xml:space="preserve">
+    <value>Údaj musí být kladný.</value>
+  </data>
+  <data name="DeviceStatus" xml:space="preserve">
+    <value>Stav zařízení </value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Zvedák v pozici:</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Korekce bariéry</value>
+  </data>
+  <data name="InstallationFileFound" xml:space="preserve">
+    <value>Nalezeno {0} instalačních souborů</value>
+  </data>
+  <data name="InverterParameters" xml:space="preserve">
+    <value>Parametry měniče</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>levá</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Měření levé strany</value>
+  </data>
+  <data name="MaxValue9" xml:space="preserve">
+    <value>Maxim. přípustná hodn je 9.</value>
+  </data>
+  <data name="MissValue" xml:space="preserve">
+    <value>Chybí hodnota</value>
+  </data>
+  <data name="NoInstallationFileFound" xml:space="preserve">
+    <value>Nenalezen žádný instalační soubor</value>
+  </data>
+  <data name="OneInstallationFileFound" xml:space="preserve">
+    <value>Byl nalezen jeden instalační soubor</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>Po skončení postupu se stránka automaticky změní.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>Aktuální verze PanelPc</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Panely</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Parametry</value>
+  </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Zvedák umístěte do výšky stanice.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Umístěte šablonu a</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>Na základě výsledku kalibrace se můžete rozhodnout, zda se má operace dokončit, pokud je výsledek nižší než 1 mm.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>Pokud výsledek kalibrace přesahuje 1 mm, je třeba aplikovat navrhované změny a opakovat měření.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Naložte zásuvku do stanice nebo nějakou vyvolejte pro iniciaci naváděného postupu kalibrace stanice.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Umístěte regulační šablonu horního úhlu na pravou stranu zásuvky ve stanici; nezapomeňte umístit magnet tak, aby zůstal pevně upevněný k zásuvce. Nakonec otevřete roletu.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Umístěte regulační šablonu horního úhlu na levou stranu zásuvky ve stanici; nezapomeňte umístit magnet tak, aby zůstal pevně upevněný k zásuvce.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>Opakovat kalibraci</value>
+  </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>Obnovení</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>pravá</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Měření pravé strany</value>
+  </data>
+  <data name="RepositoryPath" xml:space="preserve">
+    <value>Cesta úložiště</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistiky</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>Systémová chyba</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>Po umístění tvaru otevřete roletu a stiskněte tlačítko MĚŘENÍ, které postup spustí.</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Údaje kolaud</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Požadovaná tolerance</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Zásuvka ve stan:</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Zásuvka v horní poloze</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Zásuvka v dolní poloze</value>
+  </data>
+  <data name="SoftwareUpdate" xml:space="preserve">
+    <value>Aktualizace softwaru</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Aktualizace</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Správa uživat</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Čekejte...</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Počkejte na dokončení automatického postupu.</value>
+  </data>
+  <data name="WmsCommunication" xml:space="preserve">
+    <value>Komunikace Wms</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Provede odběr vzorků hodnot proudu pro nasnímání hmotnosti</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Analýza profilu hmot</value>
+  </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Umožňuje nastavení bariéry zjištění výšky zásuvky</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Kalibrace bariéry</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>Umožňuje zkontrolovat a opravit kótu různých pozice ve stanici</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Kontr stan</value>
+  </data>
+  <data name="BayTestMenuDescription" xml:space="preserve">
+    <value>Umožňuje provést řadu opakujících se testů pro stanici</value>
+  </data>
+  <data name="BayTestMenuTitle" xml:space="preserve">
+    <value>Test stan</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>Provede řadu cyklů přesunu vertikální osy</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Záběh řemene</value>
+  </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Potvrdit, že chcete přemostit provedení tohoto testu?</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>Proveďte kalibraci karuselu</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Kalibrace karuselu</value>
+  </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Správa buněk</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Naklád první zásuvky a test buněk</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Test buněk</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Aplikujte korekci na skupinu buněk</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Změna bloku buněk (zastaralý)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Zkontrolujte kótu buněk, rozdělených podle panelů, a poznamenejte si umístění provedených kontrol</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Kontrola kót buňky</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Kontr kóty jedné nebo několika buněk</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Kontrola kót buňky (zastaralý)</value>
+  </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Dokončete test na dalších stanic</value>
+  </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Test dokončen</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Chcete potvrdit dokončení kolaudace?</value>
+  </data>
+  <data name="DateTimeMenuDescription" xml:space="preserve">
+    <value>Nastavení data a času systému</value>
+  </data>
+  <data name="DateTimeMenuTitle" xml:space="preserve">
+    <value>Datum/čas</value>
+  </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Naklád / Vyklád</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>Umožňuje provést řadu opakujících se testů pro roletu</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Test rolety</value>
+  </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>Postup zasouvání nové zásuvky</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>Vkládání</value>
+  </data>
+  <data name="InverterParameterizationMenuDescription" xml:space="preserve">
+    <value>Nahrávání parametrů měniče dle standardních parametrů</value>
+  </data>
+  <data name="InverterParameterizationMenuTitle" xml:space="preserve">
+    <value>Nastavení parametrů měniče</value>
+  </data>
+  <data name="manageUserMenuDescription" xml:space="preserve">
+    <value>Správa místních uživat</value>
+  </data>
+  <data name="ManageUserMenuTitle" xml:space="preserve">
+    <value>Správa uživat</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>Postup přesunu zásuvky ze stanice do stanice</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Přesun ze stan do stan</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>Postup přesunu zásuvky z buňky do buňky</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Přesun z buňky do buňky</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Provede kalibraci posunutí vertikální osy</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Posun vertik osy</value>
+  </data>
+  <data name="ParametersMenuDescription" xml:space="preserve">
+    <value>Změna, import a export parametrů stroje</value>
+  </data>
+  <data name="ParametersMenuTitle" xml:space="preserve">
+    <value>Parametry</value>
+  </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>Postup odstranění zásuvky</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>Odstran</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Provede kalibraci rozlišení vertikální osy</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Rozlišení vertikální osy</value>
+  </data>
+  <data name="TestExternalBay" xml:space="preserve">
+    <value>Test vnější stan</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Správa zásuvek</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>Provede kalibraci výchozí polohy vertikální osy</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Počátek vertikální osy</value>
+  </data>
+  <data name="WMSComunicationMenuDescription" xml:space="preserve">
+    <value>Nastavení parametrů komunikace s WMS</value>
+  </data>
+  <data name="WMSComunicationMenuTitle" xml:space="preserve">
+    <value>Komunikace WMS</value>
+  </data>
+  <data name="WmsOn" xml:space="preserve">
+    <value>Zapnut</value>
+  </data>
+  <data name="WmsOff" xml:space="preserve">
+    <value>Vypnut</value>
+  </data>
+  <data name="BeltMustBeTight" xml:space="preserve">
+    <value>Řemen znovu napněte na 56 Hz</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Kontrola stavu</value>
+  </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>Stav instalace dokončen.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>Stav instalace nedokončen. Provedeno {0}/{1} postupů.</value>
+  </data>
+  <data name="CorrectDistance" xml:space="preserve">
+    <value>Správná vzdál</value>
+  </data>
+  <data name="TemplateInclination" xml:space="preserve">
+    <value>Naklonění šablony</value>
+  </data>
+  <data name="TemplateLenght" xml:space="preserve">
+    <value>Délka šablony</value>
+  </data>
+  <data name="SaveParameters" xml:space="preserve">
+    <value>Uložit Param</value>
+  </data>
+  <data name="Check" xml:space="preserve">
+    <value>Zkontrol</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Instalace</value>
+  </data>
+  <data name="IpAutomationService" xml:space="preserve">
+    <value>Adresa IP služby automatiz</value>
+  </data>
+  <data name="WmsSetting" xml:space="preserve">
+    <value>Nastavení WMS</value>
+  </data>
+  <data name="WmsState" xml:space="preserve">
+    <value>Stav Wms/EjLog: </value>
+  </data>
+  <data name="WmsHostAddress" xml:space="preserve">
+    <value>Adresa hostitele</value>
+  </data>
+  <data name="HorizontalChainCalibration" xml:space="preserve">
+    <value>Horizontální kalibrace řetězu</value>
+  </data>
+  <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
+    <value>Proveďte horizontální kalibraci řemene </value>
+  </data>
+  <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
+    <value>Proveďte postup kalibrace řetězu. Snímač horizontální nulové pozice musí aktivní.</value>
+  </data>
+  <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
+    <value>Funkce horizontální kalibrace řetězu umožňuje kalibrovat správnou hodnotu pomocí příslušného postupu. Postup probíhá po sobě jdoucími kroky až do správného dokončení.</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Horizontální kalibrace</value>
+  </data>
+  <data name="ConfirmProcedure" xml:space="preserve">
+    <value>Potvrdit postup</value>
+  </data>
+  <data name="Measured" xml:space="preserve">
+    <value>Naměřená</value>
+  </data>
+  <data name="MisurationDone" xml:space="preserve">
+    <value>Měření provedeno</value>
+  </data>
+  <data name="MisurationDoneDescription" xml:space="preserve">
+    <value>Aplikujte následující měření na stroj</value>
+  </data>
+  <data name="ProfileCalibrateDistance" xml:space="preserve">
+    <value>ProfileCalibrateDistance</value>
+  </data>
+  <data name="ProfileStartDistance" xml:space="preserve">
+    <value>ProfileStartDistance</value>
+  </data>
+  <data name="RetryProcedure" xml:space="preserve">
+    <value>Znovu prov postup</value>
+  </data>
+  <data name="ResetSession" xml:space="preserve">
+    <value>Reset relaci</value>
+  </data>
+  <data name="ResetTotal" xml:space="preserve">
+    <value>Reset celkem</value>
+  </data>
+  <data name="HorizzontalChainCalibrationGateOpen" xml:space="preserve">
+    <value>Provést pohyb, který otevře roletu</value>
+  </data>
+  <data name="HorizzontalChainCalibrationGoToBay" xml:space="preserve">
+    <value>Proveďte pohyb, který přesune zvedák do stanice</value>
+  </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Zast test</value>
+  </data>
+  <data name="CallUnitDescription" xml:space="preserve">
+    <value>Vyberte zásuvku pro vyvolání ve stan</value>
+  </data>
+  <data name="CloseShutterCommand" xml:space="preserve">
+    <value>Provést příkaz zavření rolety</value>
+  </data>
+  <data name="OpenShutterCommand" xml:space="preserve">
+    <value>Provést příkaz otevření rolety</value>
+  </data>
+  <data name="DeposiAndPickUpDescription" xml:space="preserve">
+    <value>Funkce nakládky/vykládky zásuvek umožňuje testovat správné fungování pohybů zásuvek pomocí řady cyklů. Postup probíhá po sobě jdoucími kroky až do správného dokončení.</value>
+  </data>
+  <data name="TestDone" xml:space="preserve">
+    <value>Test proveden</value>
+  </data>
+  <data name="TestDoneDescription" xml:space="preserve">
+    <value>Zobrazení počtu provedených cyklů</value>
+  </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>Cykly</value>
+  </data>
+  <data name="CycleDescription" xml:space="preserve">
+    <value>Zadejte počet cyklů, které chcete provést</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Měnič</value>
+  </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>WMS je offline</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Probíhá kontrola</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Odpojen</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Připojen</value>
+  </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Dokončit test</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Dataset</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Hodn</value>
+  </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Doplňte všechny zásuvky do testu</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Doplňte zásuvku do testu</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Odstraň všechny zásuvky z testu</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Odstraň zásuvku z testu</value>
+  </data>
+  <data name="InverterProgrammingStarted" xml:space="preserve">
+    <value>Probíhá programování měniče</value>
+  </data>
+  <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
+    <value>Programování měniče úspěšně dokončeno</value>
+  </data>
+  <data name="InvertersProgrammingStarted" xml:space="preserve">
+    <value>Probíhá programování měničů</value>
+  </data>
+  <data name="InvertersProgrammingStopped" xml:space="preserve">
+    <value>Programování měniče zastavena</value>
+  </data>
+  <data name="InverterProgrammingEndedErrors" xml:space="preserve">
+    <value>Programování měniče dokončeno s chybami</value>
+  </data>
+  <data name="InverterProgrammingNext" xml:space="preserve">
+    <value>Úspěšný počátek programování měniče</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Pouze čtení</value>
+  </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>Přesun směrem ke zved</value>
+  </data>
+  <data name="AccessoryEnabled" xml:space="preserve">
+    <value>Aktivován</value>
+  </data>
+  <data name="ConfigureDevice" xml:space="preserve">
+    <value>Konfigurovat zařízení</value>
+  </data>
+  <data name="SerialPortName" xml:space="preserve">
+    <value>Sériový port</value>
+  </data>
+  <data name="SystemPorts" xml:space="preserve">
+    <value>Systémové porty</value>
+  </data>
+  <data name="NoSerialPortDetected" xml:space="preserve">
+    <value>Nezjištěn žádný sériový port. Ujistěte se, zda je zařízení připojeno k panelu.</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
+    <value>Nasnímejte tyto čárové kódy pro konfiguraci čtečky při emulaci sériového portu.</value>
+  </data>
+  <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
+    <value>Sériový port, který hledáte, není uveden v seznamu? Konfigurovat zařízení.</value>
+  </data>
+  <data name="AccessoriesBarcodeEnableComEmulation" xml:space="preserve">
+    <value>Aktivovat emulaci COM</value>
+  </data>
+  <data name="AccessoriesBarcodeEnterSetup" xml:space="preserve">
+    <value>Spustit konfiguraci</value>
+  </data>
+  <data name="AccessoriesBarcodeExitSetup" xml:space="preserve">
+    <value>Ukončit konfiguraci</value>
+  </data>
+  <data name="FirmwareVersion" xml:space="preserve">
+    <value>Verze firmwaru</value>
+  </data>
+  <data name="ManufactureDate" xml:space="preserve">
+    <value>Datum výroby</value>
+  </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>Číslo modelu</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Výr číslo</value>
+  </data>
+  <data name="AlphaNumericBarSizeL" xml:space="preserve">
+    <value>Dlouh</value>
+  </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>Přesun k obsluze</value>
+  </data>
+  <data name="AlphaNumericBarSizeM" xml:space="preserve">
+    <value>Střed</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>Kalibrace vnější stan</value>
+  </data>
+  <data name="AlphaNumericBarSizeS" xml:space="preserve">
+    <value>Krátk</value>
+  </data>
+  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
+    <value>Velmi dlouh</value>
+  </data>
+  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
+    <value>Velmi krátk</value>
+  </data>
+  <data name="LoadFile" xml:space="preserve">
+    <value>Nahrát soub</value>
+  </data>
+  <data name="ImportSuccessful" xml:space="preserve">
+    <value>Import proběhl úspěšně</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Importovat konfigurační soubor</value>
+  </data>
+  <data name="DefaultConfigurationLoaded" xml:space="preserve">
+    <value>Nahrána výchozí konfigurace</value>
+  </data>
+  <data name="BayHomingStarted" xml:space="preserve">
+    <value>Probíhá návr řetězu do home</value>
+  </data>
+  <data name="UnitExternalPosition" xml:space="preserve">
+    <value>Zásuvka ve vnější pozici</value>
+  </data>
+  <data name="UnitInternalPosition" xml:space="preserve">
+    <value>Zásuvka ve vnitřní pozici</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>Provede kalibraci vnější stanice</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>Kalibrace vnější stanice</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>Proveďte postup kalibrace stanice pro umístění do místa snímače</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Provedené pohyby</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Dráha (mm)</value>
+  </data>
+  <data name="StartProcedure" xml:space="preserve">
+    <value>Pro spušt postupu stisk tlač INICIOVAT</value>
+  </data>
+  <data name="NoRemovableDevicesFound" xml:space="preserve">
+    <value>Nenalez žád odstranitelné perif zaříz</value>
+  </data>
+  <data name="RemovableDevicesFound" xml:space="preserve">
+    <value>Nalezena odstranitelná zaříz</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>Trasa „{0}“ nenalezena</value>
+  </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Rozpoznané sekvence (regex)</value>
+  </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="Bay4" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Spust test</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Nasnímaná sekvence</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Kód rozpoznán.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>Před zahájením testu uložte změny.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Protáhněte papír čtečkou.</value>
+  </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Přijatý čárový kód</value>
+  </data>
+  <data name="CheckSerialPorts" xml:space="preserve">
+    <value>Zkontr sériové porty</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Obsluha</value>
+  </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Název tiskárny</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Kód</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Výška</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Stav</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Hmot</value>
+  </data>
+  <data name="CellId" xml:space="preserve">
+    <value>ID buňky</value>
+  </data>
+  <data name="LoadingUnitStatus_InBay" xml:space="preserve">
+    <value>Ve stan</value>
+  </data>
+  <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
+    <value>Ve zvedáku</value>
+  </data>
+  <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
+    <value>V místě</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
+    <value>Pohyb do stanice</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
+    <value>Přesun</value>
+  </data>
+  <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
+    <value>Nedefinov</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Popis</value>
+  </data>
+  <data name="GrossWeight" xml:space="preserve">
+    <value>Hrubá hmot (kg)</value>
+  </data>
+  <data name="IsIntoMachine" xml:space="preserve">
+    <value>Ve stroji</value>
+  </data>
+  <data name="MaxNetWeight" xml:space="preserve">
+    <value>Max čistá hmot (kg)</value>
+  </data>
+  <data name="MissionsCount" xml:space="preserve">
+    <value>Počítání misí</value>
+  </data>
+  <data name="Tare" xml:space="preserve">
+    <value>Tára (kg)</value>
+  </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Hladina bloku</value>
+  </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Snímač aktivní</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Snímač neaktivní</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>Faleš</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Vysvětl</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Volná</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>ID panelu</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorita</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Prav</value>
+  </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>Stan řetězu</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Horiz</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>Horiz a vertik</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Žádný</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Vertik</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Vše</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Zvedák ve stanici</value>
+  </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>Celkem zásuvek ve stan 1</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>Celkem zásuvek ve stan 2</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>Celkem zásuvek ve stan 3</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Celkem misí</value>
+  </data>
+  <data name="HorizontalChainDifference" xml:space="preserve">
+    <value>Rozdíl</value>
+  </data>
+  <data name="HorizontalChainOriginalDistance" xml:space="preserve">
+    <value>Originál</value>
+  </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Nainstaluj kameru</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Posuňte kameru do správné polohy</value>
+  </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Odešle snímek obrazovky</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Odešl prot</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Přenos videí</value>
+  </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Uložit buňk</value>
+  </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Hod obnov</value>
+  </data>
+  <data name="RepositoryPathAvailable" xml:space="preserve">
+    <value>Dostupná cesta úložiště.</value>
+  </data>
+  <data name="RemovableDevicesCount" xml:space="preserve">
+    <value>Připojená odstranitelná zařízení</value>
+  </data>
+  <data name="AvailablePackages" xml:space="preserve">
+    <value>Dostupné balíčky</value>
+  </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Ulož prot</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Ulož prot</value>
+  </data>
+  <data name="LogFile" xml:space="preserve">
+    <value>Protok soub</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Nahrávání protok ze služby telemetrie...</value>
+  </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>Protok nahrané ze služby telemetrie</value>
+  </data>
+  <data name="TotalCompletedCycles" xml:space="preserve">
+    <value>Celkem dokonč cykl</value>
+  </data>
+  <data name="AccessoriesBarcodeLeaveOnBase" xml:space="preserve">
+    <value>Nelze obnovit informace zařízení. Ujistěte se, zda je zařízení umístěno ve své základně.</value>
+  </data>
+  <data name="Accessories" xml:space="preserve">
+    <value>Přísluš</value>
+  </data>
+  <data name="WeightingScaleTare" xml:space="preserve">
+    <value>Tára</value>
+  </data>
+  <data name="NoDriveSelected" xml:space="preserve">
+    <value>Vyberte cílový pohon.</value>
+  </data>
+  <data name="ZeroChainCarousel" xml:space="preserve">
+    <value>Vynul řetězu karus</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Vzdálená pomoc</value>
+  </data>
+  <data name="DeleteUnitDialog" xml:space="preserve">
+    <value>Tato operace odstraní zásuvku z mapy zásobníku</value>
+  </data>
+  <data name="ExtBayMovementForExtraction" xml:space="preserve">
+    <value>Extra pohyb směrem k obsluze</value>
+  </data>
+  <data name="ExtBayMovementForInsertion" xml:space="preserve">
+    <value>Extra pohyb pro zasunutí zásuvky</value>
+  </data>
+  <data name="InverterInFault" xml:space="preserve">
+    <value>Chyba měničů</value>
+  </data>
+  <data name="EmbarkedTray" xml:space="preserve">
+    <value>Pustil zásobník!</value>
+  </data>
+  <data name="ScreenCastDurationExpire" xml:space="preserve">
+    <value>Zrcadlení videa vypršelo!</value>
+  </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Úspora energie</value>
+  </data>
+  <data name="ExternalBayShort" xml:space="preserve">
+    <value>Linka</value>
+  </data>
+  <data name="InternalBayShort" xml:space="preserve">
+    <value>int</value>
+  </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Sériové číslo tokenu!</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Vyberte model!</value>
+  </data>
+  <data name="F" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Dokončena</value>
+  </data>
+</root>

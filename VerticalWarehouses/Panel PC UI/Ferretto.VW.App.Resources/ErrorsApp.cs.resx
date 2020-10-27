@@ -117,49 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="CalibrationBarierError" xml:space="preserve">
+    <value>Chyba nesmí být větší než 1 mm</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Informace</value>
+  <data name="CellSide" xml:space="preserve">
+    <value>Str buňky</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statistiky, výstrahy, diagnostika</value>
+  <data name="CheckUnit" xml:space="preserve">
+    <value>Kontrola zásuvky:</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalace</value>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Vybraná buňka</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Detail kódu</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Postup instalace, manuální pohyby, ostatní</value>
+  <data name="Displacement" xml:space="preserve">
+    <value>Posun (mm)</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Údržba</value>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>Po skončení postupu identifikace zásuvky přejde do autom režimu.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>ÚDRŽ</value>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>Po skončení postupu identifikace zásuvky přejde do manuálního režimu.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Údržba, zhutnění zásuvek, aktualizace</value>
+  <data name="DrawerReturn" xml:space="preserve">
+    <value>Zasunutí zásuvky</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Pohyby</value>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Volba zásuvky</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>POHY</value>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Kód chyby</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stav snímačů, reset stroje, ostatní</value>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Popis chyby</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Odběr</value>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Možné příčiny</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ODBĚ</value>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Obnovení chyby</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Odběr, plnění, inventarizace</value>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Náhl</value>
+  </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Vpřed</value>
+  </data>
+  <data name="HighPosition" xml:space="preserve">
+    <value>Horní poloha</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Výchozí kóta (mm)</value>
+  </data>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>Zásuvka není platná, zadejte: </value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Měnič</value>
+  </data>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Obnovení chyby PORUCHA MĚNIČE</value>
+  </data>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Dolní poloha</value>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Označit jako vyřeš</value>
+  </data>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>Na stránce nebyla načtena žádná položka.</value>
+  </data>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Vyberte ID zásuvky přítomné ve zvedáku.</value>
+  </data>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Zásuvka na zvedáku</value>
+  </data>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Volba zásuvky (Stanice 1):</value>
+  </data>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Volba zásuvky (Stanice 2):</value>
+  </data>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Volba zásuvky (Stanice 3):</value>
+  </data>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Vyberte ID zásuvky (zásuvek) přítomné(-ých) ve stan.</value>
   </data>
 </root>

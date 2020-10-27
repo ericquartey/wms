@@ -117,49 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="ALoadingUnitIsAlreadyOnBoardOfTheElevator" xml:space="preserve">
+    <value>Ve zvedáku už je přítomna zásuvka.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Informace</value>
+  <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Ve specifikované pozici stanice je již přítomna zásuvka.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statistiky, výstrahy, diagnostika</value>
+  <data name="MovementDistanceCannotBeZero" xml:space="preserve">
+    <value>Vzdálenost pohybu nesmí být nulová.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalace</value>
+  <data name="NoLoadingUnitIsOnBoardOfTheElevator" xml:space="preserve">
+    <value>Ve zvedáku není přítomna žádná zásuvka.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>V uvedené stanici není přítomna žádná zásuvka.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Postup instalace, manuální pohyby, ostatní</value>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
+    <value>V uvedené buňce není přítomna žádná zásuvka.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Údržba</value>
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>Posunutí ({0}mm) vertikální osy není platné: musí se pohybovat v intervalu [{1}mm; {2}mm].</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>ÚDRŽ</value>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
+    <value>Cílová poloha ({0} mm) musí být v intervalu [{1}mm; {2}mm].</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Údržba, zhutnění zásuvek, aktualizace</value>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Zvedák se již nachází před stanovenou pozicí stanice.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Pohyby</value>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Zvedák se již nachází před stanovenou buňkou.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>POHY</value>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>Zvedák není prázdný, ale západka je v nulové poloze.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stav snímačů, reset stroje, ostatní</value>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>Zvedák není plný, ale západka není v nulové poloze.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Odběr</value>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Zvedák se nenachází před stanovenou pozicí stanice.</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ODBĚ</value>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Zvedák se nenachází před stanovenou buňkou.</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Odběr, plnění, inventarizace</value>
+  <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
+    <value>Pro vložení zásuvky není ve stanovené buňce k dispozici dostatek místa.</value>
+  </data>
+  <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
+    <value>Kalibrace vertikální osy je třeba provést před pokusem o absolutní pohyb zvedáku.</value>
+  </data>
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Žádná nakládací jednotka nečeká na vytažení ve stanovené poloze pole.!</value>
   </data>
 </root>

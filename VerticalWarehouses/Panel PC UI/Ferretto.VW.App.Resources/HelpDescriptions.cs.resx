@@ -1,0 +1,1293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>Uvádí hodnotu horní kóty požadovanou testem. Hodnotu nastavte, pouze pokud je pole editovatelné.</value>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>Uvádí hodnotu dolní kóty požadovanou testem. Hodnotu nastavte, pouze pokud je pole editovatelné.</value>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>Nastavte požadovaný počet cyklů.</value>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>Zobrazuje počet aktuálně dokončených cyklů.</value>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>Uvádí aktuální pozici osy.</value>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>Spustit test. Test pokračuje až do dosažení požadovaného počtu cyklů nebo až do stisknutí tlačítka zastavení.</value>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>Zastavit test. Cyklus se zastaví po skončení aktuálního pohybu. Stisknutí tlačítka spuštění cyklu bude pokračovat v provádění testu až do jeho dokončení.</value>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>Postup umožňuje provést řadu cyklů přesunů vertikální osy mezi dvěma body uvedenými v zadaných datech. Po spuštění cyklus pokračuje až do dosažení požadovaného počtu cyklů nebo do stisknutí tlačítka konce.</value>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>Funkce kalibrace rozlišení vertikální osy umožňuje správnou kalibraci hodnoty pomocí měření v terénu a následnou aktualizaci výchozí hodnoty nabízené systémem. Postup probíhá po sobě jdoucími kroky až do správného dokončení.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Je-li pole editovatelné, nastavte požad počáteční kótu.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>Tlačítko spustí postup s provedení návratu osy do výchozí polohy a jejím následným nastavením na dříve uvedenou kótu.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Je-li pole editovatelné, nastavte požad konečnou kótu.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>Tlačítko spustí posun osy na dříve nastavenou konečnou kótu.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>Uvádí dráhu naměřenou z počáteční polohy do konečné.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>Krok 1: nastaví osu na počáteční kótu</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>Krok 2: nastaví osu na konečnou kótu</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>Krok 3: aktualizuje rozlišení na novou hodnotu</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>Krok 4: přesune osu a uzavře postup</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>Zobrazí aktuální rozlišení osy</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Zobrazí novou hodnotu rozlišení vypočtenou postupem.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Nahradí předchozí hodnotu rozlišení novou vypočtenou hodnotou.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Přesune osu do počáteční pozice.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Provede návrat os do vých pol a postup ukončí.</value>
+  </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>Zobrazí aktuální stav instalace. Již dokončené části jsou zvýrazněny zeleně, zatímco části k dokončení nebo provedení jsou šedé. Některé postupy jsou možné teprve po správném dokončení předchozích postupů.</value>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>Šedý indikátor znamená postup, který se má dosud provést</value>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>Zelený indikátor označuje správně dokončený postup.</value>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>Zobrazení stavu snímačů</value>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>Různé stránky umožňuje zobrazení stavu snímačů přítomných na různých částech, které tvoří stroje. Zobrazení probíhá v reálném čase a mění se při změně stavu jednotlivých snímačů.</value>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>Zelená barva znamená aktivní stav snímače.</value>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>Šedá barva znamená neaktivní stav snímače.</value>
+  </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>Manuál ovladače s nízkou Rychlí.</value>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>Umožňuje provést pohyb jednotlivých os nízkou rychlostí. Je nastaven omezený prostor pohybu oběma směry. Test tlačítek se mění v závislosti na požadovaném pohybu. Při kolaudaci stroje bude možné ovládat nízkou rychlostí všechny jednotlivé osy bez vzájemného blokování a na omezených drahách.</value>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>Uvádí aktuální pozici nebo stav pro ty části, které mají pouze diskrétní pozice.</value>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>Tlačítko pohybu vpřed, zvedání nebo otevření v závislosti na vybrané části</value>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>Tlačítko pohybu vzad, spouštění nebo zavření v závislosti na vybrané části</value>
+  </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>Umožňuje provést řadu opakujících se testů pro uzavírací roletu vybrané stanice. Nastavit lze dobu čekání mezi dvěma po sobě jdoucími pohyby. Postup se ukončí po dosažení nastaveného počtu cyklů nebo ukončením.</value>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>Nastavte požadovaný počet cyklů.</value>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>Nastav dobu prodlevy mezi dvěma po sobě jdoucími cykly.</value>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>Uvádí počet aktuálně dokončených cyklů.</value>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>Stav snímače A bariéry.</value>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>Stav snímače B bariéry.</value>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>Spustí počátek požadovaných testů. Tlačítko je aktivní, pokud je požadovaný počet cyklů vyšší než nula.</value>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>Cyklus zastaví po dokončení aktuálního pohybu. Následující stisknutí tlačítka spuštění způsobí pokračování testu od cyklu následujícího po tom zastaveném.</value>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>Postup umožňuje procedura provést vyhledání počátku vertikální osy, po jeho ukončení se nastaví aktuální pozice uvedená hodnotou posunutí. Postup je podmínkou pro realizaci dalších funkcí, které vyžadují přesun osy na kótu.</value>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>Dolní limit pohybu.</value>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>Horní limit pohybu.</value>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>Aktuální hodnoty Posun. Po skončení návratu osy do vých pol se aktuální kóta nastaví na tuto hodnotu.</value>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>Aktuální rozlišení osy.</value>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>Uvádí konečný výsledek postupu.</value>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>Spustí postup návratu vertik osy do vých pol.</value>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>Zastaví postup návratu vertik osy do vých pol.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>Počáteční hodnota aktuální polohy odečtené metrem.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>Konečná hodnota aktuální polohy odečtené metrem.</value>
+  </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>Postup umožňuje ověřit a případně upravit kótu vybrané buňky. Korekce se aplikuje pouze na vybranou buňku.</value>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>Nastavte buňku, jejíž kótu si přejete zkontrolovat.</value>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>Uvádí kótu aktuálně vybrané buňky.</value>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>Hodnota změny kóty ve fázi seřízení.</value>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>Aktuální změna kóty osy.</value>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>Celková Hodn korekce, která se má aplikovat.</value>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>Nastaví vertikální osu tak, aby odpovídala vybrané buňce.</value>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>Zvýší aktuální kótu osy o hodnotu uvedenou krokem.</value>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>Sníží aktuální kótu osy o hodnotu uvedenou krokem.</value>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>Upraví kótu vybrané buňky o hodnotu uvedenou v políčku, které uvádí celkovou požadovanou hodnotu.</value>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>Postup umožňuje ověřit správné umístění různých nosných panelů police. Případná korekce se aplikuje na všechny buňky patřící do kontrolovaného panelu.</value>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>Uvádí celkový počet panelů přítomných na vybrané straně referenční buňky.</value>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>Uvádí aktuálně vybraný panel, na kterém se provádí kontrola.</value>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>Vybraná buňka, od níž je odvozen panel ke kontrole. Lichá nebo sudá čísla slouží k výběru přední nebo zadní strany.</value>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>Kóta vybrané buňky.</value>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>Uvádí aktuální pozici osy. Upraví se stisknutím tlačítka kroku.</value>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>Hodnota kroku, která se má použít na změnu kóty.</value>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>Celková hodnota korekce, která se aplikuje na kótu vybrané buňky.</value>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>Umožňuje přejít na následující panel ke kontrole.</value>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>Nastaví osu tak, aby odpovídala vybrané buňce.</value>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>Zvýší aktuální kótu osy o hodnotu uvedenou krokem.</value>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>Sníží aktuální kótu osy o hodnotu uvedenou krokem.</value>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>Aplikuje korekci na skupinu buněk přítomných na aktuálně vybraném panelu.</value>
+  </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>Postup umožňuje provést regulaci bariéry zjištění výšky zásuvky. Signál dosažené výšky se použije ve fázi předběžného umístění testovací šablony.</value>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>Nastavte rychlost, která se má použít během fáze kalibrace.</value>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>Uvádí chybu systému, která vyplývá z nastavené rychlosti kalibrace a doby skenování systému. Snižte rychlost a omezte tak chybu.</value>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>Nastavuje maxim. přípustnou toleranci míry. Test bude mít negativní výsledek, pokud výsledek překračuje požad hodnotu.</value>
+  </data>
+  <data name="HelpGHCHeightReached" xml:space="preserve">
+    <value>Uvádí aktivaci intervalu používaného jako kontrolní prvek výšky. </value>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>Uvádí aktuální pozici osy řetězu.</value>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>Uvádí korekci, která se má aplikovat na bariéru. Znaménko plus vyžaduje zvýšení bariéry, znaménko mínus požaduje její spuštění o uved hodnotu.</value>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>Uvádí konečný výsledek testu.</value>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>Tlačítko spustí kontrolní postup.</value>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>Tlačítko zastaví kontrolní postup.</value>
+  </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>Postup umožňuje ověřit, zda míra hmotnosti spadá do předpokládané tolerance. Pro míru se používají hmotnosti v jednotce uvedené v příslušném políčku.</value>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>Uvádí dráhu překonanou nízkou rychlostí, během které se provádí odběr vzorků spotřebovaného proudu.</value>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>Uvádí hmotnost vzorku zadanou pro test.</value>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>Uvádí požadovanou toleranci míry.</value>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>Uvádí hmotnost naměřenou systémem.</value>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>Signalizuje konečný výsledek postupu. Výsledek bude kladný, pokud naměřená hmotnost spadá do nastavené tolerance.</value>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>Spustí postup testu.</value>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>Zastaví postup testu.</value>
+  </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>Postup umožňuje upravit posunutí vertikální osy tak, aby se zarovnala kóta různých buněk s referenčním systémem vertikální osy.</value>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>Buňka vybraná pro kontrolu.</value>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>Aktuální kóta vybrané buňky</value>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>Hodnota změny kóty, která se má aplikovat při každém stisknutí tlačítka posun osy.</value>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>Aktuální poloha vertikální osy.</value>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>Aktuální hodnota posunutí vertikální osy.</value>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>Nová hodnota posunutí.</value>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>Přesune vertikální osu na kótu vybrané buňky.</value>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>Zvýší aktuální kótu vertikální osy o nastavenou hodnotu kroku.</value>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>Sníží aktuální kótu vertikální osy o nastavenou hodnotu kroku.</value>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>Aktualizuje posunutí vertikální osy na uvedenou hodnotu.</value>
+  </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>Postup umožňuje změnu bloku buněk zahrnutých mezi první a poslední vybranou. Vybraná strana se automaticky uvede podle čísla počáteční buňky, podle toho, zda je sudé nebo liché.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Nastavte číslo počáteční buňky bloku.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Nastavte číslo konečné buňky bloku.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Nastavte požadovanou hodnotu korekce, která se aplikuje na vybranou skupinu buněk.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Uvádí stranu, na které se změna provádí. Strana se stanoví automaticky podle čísla počáteční buňky, zda je sudé nebo liché.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Aplikuje korekci na vybranou skupinu buněk.</value>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>Uvádí Celkem buněk, na kterém se má provést test.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>Uvádí počet aktuálně testovaných buněk.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>Číslo aktuálně testované buňky.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>Číslo zásuvky ve fázi zadávání.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>Maximální kapacita zásuvky ve fázi nakládky.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Spustí postup zadávání zásuvky. Postup se ukončí po dokončení předpokládaného počtu cyklů.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Vyvolá ve stanici zásuvku použitou pro test.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>Postup umožňuje použít zásuvku vybranou v příslušném poli zadání pro testování nižších a vyšších buněk stroje, stejně jako buněk nad a pod bloky buněk, které jsou označeny jako deaktivované. Účelem postupu je ověřit, zda nedochází k mechanickým interferencím v těchto oblastech.</value>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>Postup umožňuje zasunout prázdné zásuvky do stroje po skončení postupu uvedení do provozu. Zásuvky jsou zasunuty do volných bloků a vybere je podle nižší priority.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>Celkový počet zásuvek k zasunutí.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>Zásuvky již zasunuté do stroje.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>Číslo zásuvky ve fázi zadávání. Může být vygenerován příslušným tlačítkem nebo zadán pomocí příslušného políčka.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>Uvádí maximální přípustnou kapacitu pro aktuálně vkládanou zásuvku.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>tlač nastavuje následující zásuvku pro zasunutí. Číslo je číslo následující po posledním zadaném čísle.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Spustí postup zasouvání vybrané zásuvky.</value>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>Postup umožňuje ověřit a případně upravit kótu různých možných pozic jednotlivých stanic. Postup se přizpůsobí typu stanice uvedenému v dokumentu, který popisuje konfiguraci stroje. V případě více pozic ve stejné stanici postup umožňuje vícečetná ověření.</value>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>Vyberte stanici, na které si přejete zkontrolovat kóty.</value>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>Uvádí pozici uvnitř vybrané stanice, u které si přejete zkontrolovat kóty. Nastaví se automaticky.</value>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>Zobrazuje kótu vybrané pozice v rozsahu kontrolované stanice.</value>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>Hodnota kroku aplikovaná na aktuální kótu osy při každém stisknutí tlačítka přesunu.</value>
+  </data>
+  <data name="HelpBCTRActualHeight" xml:space="preserve">
+    <value>Aktuální poloha vertikální osy.</value>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>Kumulativní hodnota korekce, která se aplikuje na vybranou kótu pozice stanice. </value>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>Nastaví vertikální osu tak, aby odpovídala vybrané pozici stanice.</value>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>Zvýší aktuální kótu osy o hodnotu uvedenou krokem.</value>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>Sníží aktuální kótu osy o hodnotu uvedenou krokem.</value>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>Upraví aktuální kótu stávající pozice stanice o hodnotu uvedenou v příslušném políčku.</value>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>Pokud je povoleno, tlačítko umožňuje volbu následující pozici přítomné v aktuálně vybrané stanici. Postup se opakuje pro novou pozici.</value>
+  </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>Hlavní nabídka umožňuje přístup ke všem funkcím předpokládaným pro fázi uvedení stroje do provozu.</value>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>Hlavní nabídka.</value>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>Uvádí, pokud je viditelná, výskyt chyby. Stisknutím tlačítka se otevře okno vyhrazené pro obnovení situace.</value>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>Stav vypnutí tohoto tlačítka uvádí deaktivaci pohybů stroje.</value>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>Stav zapnutí tohoto tlačítka uvádí, že stroj může provádět pohyby.</value>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>Uvádí jméno aktuálně přihlášeného uživatele. V případě stisknutí umožňuje provést odhlášení ze systému.</value>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>V případě stisknutí se otevře kontextová nabídka aktuálně vybrané funkce.</value>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>Umožňuje procházet seznam tlačítek přístupu k různým funkcím směrem nahoru.</value>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>Seznam tlačítek přístupu k instalačním funkcím.</value>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>Umožňuje procházet seznam tlačítek přístupu k různým funkcím směrem dolů.</value>
+  </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>Postup umožňuje provést řadu testů naložení a vyložení zásuvky pomocí stanice vybrané v příslušných polích zadání. Pro test lze upravit rychlost plnění zrychlení, zpomalení a rychlosti podle informací uvedených v příslušných políčkách. Test pokračuje až do dosažení požadovaného počtu cyklů nebo až do stisknutí tlačítka zastavení.</value>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>Zadejte číslo stanice, na které chcete provést test.</value>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>Zadejte pozici uvnitř stanice, na které chcete provést test.</value>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>Zadejte rychlost plnění požadovanou pro test. Snížení se vztahuje i na hodnoty zrychlení a zpomalení.</value>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>Uvádí aktuální pozici osy řetězu jako relativní hodnotu výchozí kóty.</value>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>Zadejte požadovaný počet testovacích cyklů.</value>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>Uvádí počet aktuálně provedených dokončených cyklů.</value>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>Přesune vertikální osu na úroveň vnitřní pozice vybrané stanice. Kóta zohledňuje posunutí nakládky.</value>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>Spustí postup testu. Tlačítko je aktivní teprve poté, co je vertikální osa na úrovni požadované pozice stanice.</value>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>Zastaví testovací cyklus.</value>
+  </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>Uvádí aktuálně povolený režim pro manuální ovladače. Režim s prodlouženou dráhou se nastaví automaticky po dokončení uvedení do provozu.</value>
+  </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>Ukládání a obnovení konfigurace stroje.</value>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>Postup umožňuje provést uložení nebo obnovení konfiguračních souborů externího zařízení.</value>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>Postup ukládání konfigurace.</value>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>Uvádí automaticky vytvořenou složku, do které se uloží konfigurační soubory.</value>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>Spustí postup ukládání konfiguračních souborů. Případné již přítomné soubory se přepíší.</value>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>Potvrzuje postup ukládání souborů.</value>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>Ruší postup ukládání souborů.</value>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>Postup obnovení konfigurace.</value>
+  </data>
+  <data name="HelpSRCLoadFolder" xml:space="preserve">
+    <value>Uvádí zjištěnou složku, z níž budou převzaty soubory pro obnovení.</value>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>Spustí postup nahrávání konfiguračních souborů. Případné již přítomné soubory se přepíší.</value>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>Potvrzuje postup nahrávání souborů.</value>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>Ruší postup nahrávání souborů.</value>
+  </data>
+  <data name="HelpOpMainPageHeadr" xml:space="preserve">
+    <value>Výchozí stránka.</value>
+  </data>
+  <data name="HelpOpMainPageDescription" xml:space="preserve">
+    <value>Hlavní nabídka umožňuje kontrolovat stav stroje pomocí příslušných tlačítek v horní části obrazovky. V levé části lze pomocí navigačních tlačítek vstoupit do jednotlivých funkcí.</value>
+  </data>
+  <data name="HelpOpMainManu" xml:space="preserve">
+    <value>Uvádí stav manuálního režimu. Automatický cyklus je pozastavený.</value>
+  </data>
+  <data name="HelpOpMainAuto" xml:space="preserve">
+    <value>Uvádí stav automatického režimu. Stroj spravuje příkazy přicházející z řídicího systému.</value>
+  </data>
+  <data name="HelpOpMainOff" xml:space="preserve">
+    <value>Výkon motorů je zakázán. Nejsou možné pohyby v žádném režimu.</value>
+  </data>
+  <data name="HelpOpMainOn" xml:space="preserve">
+    <value>Výkon motorů je povolen. Stroj dokáže provádět pohyby.</value>
+  </data>
+  <data name="HelpOpMainServiceAdvice" xml:space="preserve">
+    <value>Systém signalizuje, že některé díly stroje se blíží okamžiku provedení plánované údržby.</value>
+  </data>
+  <data name="HelpOpMainServiceAllert" xml:space="preserve">
+    <value>Systém signalizuje, že některé díly stroje dosáhly konce lhůty plánované mezi dvěma údržbami. Vyžaduje se údržba!</value>
+  </data>
+  <data name="HelpOpMainError" xml:space="preserve">
+    <value>Během provozu stroje se vyskytla chyba. Stisknutím tohoto tlačítka se otevře stránka řízení postupu obnovení.</value>
+  </data>
+  <data name="HelpOpMainUser" xml:space="preserve">
+    <value>Uvádí jméno aktuálně připojeného člena obsluhy. Stisknutím tohoto tlačítka lze provést odhlášení.</value>
+  </data>
+  <data name="HelpOpMainHelp" xml:space="preserve">
+    <value>Tlačítkem se otevře stránka kontextové nápovědy postupu, který používáte.</value>
+  </data>
+  <data name="HelpOpMainDrawerOp" xml:space="preserve">
+    <value>Tlačítko otevře stránku řízení naplánovaných operací na zásuvce přítomné ve stanici.</value>
+  </data>
+  <data name="HelpOpMainItem" xml:space="preserve">
+    <value>Tlačítkem se otevře stránka, která umožňuje provést vyhledávání kódu položky.</value>
+  </data>
+  <data name="HelpOpMainLists" xml:space="preserve">
+    <value>Tlačítkem se otevře stránka zobrazení seznamů čekajících na plánované provedení zařízením WMS.</value>
+  </data>
+  <data name="HelpOpMainOther" xml:space="preserve">
+    <value>Umožňuje přístup k dalším funkcím.</value>
+  </data>
+  <data name="HelpDrawerWaitDescription" xml:space="preserve">
+    <value>Stránka uvádí, že systém dokončil předpokládané operace na poslední zásuvce, která dorazila do stanice. Čeká na příchod následující zásuvky, který způsobí otevření stránky vyhrazené pro předpokládané operace.</value>
+  </data>
+  <data name="HelpDrawerWaitNote" xml:space="preserve">
+    <value>Poznámka uvádí aktuální situaci systému.</value>
+  </data>
+  <data name="HelpDrawerWaitScheduledOperations" xml:space="preserve">
+    <value>Políčko uvádí počet aktuálně naplánovaných operací pro stanici, na které obsluha pracuje.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
+    <value>Postup poskytuje veškeré podrobné informace týkající se plánované operace odběru na zásuvce přítomné ve stanici, na které uživatel pracuje. Výkres, pokud je k dispozici, zobrazuje rozdělení zásuvky a zvýrazněná oblast znamená oddělení, na kterém se pracuje. Pokud jsou k dispozici, zobrazují se také obrázky položky, která je předmětem přesunu.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
+    <value>Zobrazí se množství položky k odběru z vyznačeného oddělení.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
+    <value>Uživatel může změnit množství skutečně odebrané a v takovém případě nebude stav zásob dostatečný. Za běžných podmínek je políčko již vyplněno požadovaným množstvím.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
+    <value>Okno zobrazuje řadu doplňujících informací pro informace dostupné v okně odběru. Zobrazují se podrobné informace o položce ve fázi odběru, tak o případném propojeném balicím listu. Pokud je k dispozici, zobrazuje se i obrázek položky.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
+    <value>Uvádí řádek, ke kterému se váže probíhající operace odběru.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Je uvedeno datum výroby položky ve fázi odběru.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Pokud je k dispozici, je uvedena výrobní šarže položky ve fázi odběru.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Je-li k dispozici, je uveden stav materiálu pro odběr.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
+    <value>V příslušných případech uvádí balicí list, v němž jsou uvedeny informace týkající se různých položek ve fázi odběru.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
+    <value>Pokud je k dispozici, uvádí popis balicího listu, který spojuje odebírané materiály.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
+    <value>Poskytuje informace o typu balení položky ve fázi odběru.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Zobrazí se množství položky k odběru z vyznačeného oddělení.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
+    <value>Stránka zobrazuje podrobnosti týkající se aktuálně probíhající operace plnění. Uvedeny jsou další podrobnosti ve vztahu k základní stránce o operacích, které mají být provedeny.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Uvádí řádek seznamu související s probíhající operací.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Uvádí datum výroby položky.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Uvádí stav materiálu položky ve fázi plnění.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
+    <value>Uvádí výrobní šarži položky ve fázi plnění.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
+    <value>Uvádí typ balení položky ve fázi plnění.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
+    <value>Množství k plnění do vyznačeného oddělení.</value>
+  </data>
+  <data name="HelpCommonList" xml:space="preserve">
+    <value>Uvádí kód seznamu souvisejícího s probíhajícím postupem.</value>
+  </data>
+  <data name="HelpCommonListDescription" xml:space="preserve">
+    <value>Uvádí popis seznamu souvisejícího s probíhajícím postupem.</value>
+  </data>
+  <data name="HelpCommonItem" xml:space="preserve">
+    <value>Uvádí kód položky, která je předmětem probíhající operace.</value>
+  </data>
+  <data name="HelpCommonItemDescription" xml:space="preserve">
+    <value>Zobrazuje popis položky, která je předmětem probíhající operace.</value>
+  </data>
+  <data name="HelpCommonPosition" xml:space="preserve">
+    <value>Políčko uvádí pozici, v níž se nachází oddělení, které je předmětem probíhající operace, mapované podle uplatněných kódů.</value>
+  </data>
+  <data name="HelpCommonNote" xml:space="preserve">
+    <value>Obsluze se zobrazují případné poznámky související s operací, která se má provést. </value>
+  </data>
+  <data name="HelpCommonDetail" xml:space="preserve">
+    <value>Tlačítko umožnuje vstup na stránku, která zobrazuje další podrobnosti probíhající operace.</value>
+  </data>
+  <data name="HelpCommonConfirm" xml:space="preserve">
+    <value>Potvrzuje, že probíhající operace byla dokončena.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
+    <value>Postup umožňuje provést opakované doplnění oddělení, které obsahuje položku se stejnými charakteristikami jako je plněná položka. Postup umožňuje aktualizovat maximální kapacitu oddělení v případě, že je zaznamenaná hodnota chybná.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Množství k plnění do vybraného oddělení.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
+    <value>Otevře stránku řízení aktualizace maximální kapacity oddělení.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Umožňuje nastavit množství skutečně naplněné do vybraného oddělení.</value>
+  </data>
+  <data name="HelpCommonGridColumnHeader" xml:space="preserve">
+    <value>Popis sloupců tabulky.</value>
+  </data>
+  <data name="HelpCommonUp" xml:space="preserve">
+    <value>Přesune kurzor na předchozí prvek. Dvojitým stisknutím se přesune na počátek seznamu.</value>
+  </data>
+  <data name="HelpCommonDown" xml:space="preserve">
+    <value>Přesune kurzor na následující prvek. Dvojitým stisknutím se přesune na konec seznamu.</value>
+  </data>
+  <data name="HelpListsInWaitDescription" xml:space="preserve">
+    <value>Postup umožňuje zobrazit všechny seznamy čekající na provedení systémem WMS. Pro každý seznam jsou uvedeny zapojené stroje. Do realizace lze uvést pouze kótu dílů ze seznamů, které obsahují nějakou položku k odběru přítomnou ve stroji, z něhož se postup používá.</value>
+  </data>
+  <data name="HelpListsInWaitGridList" xml:space="preserve">
+    <value>Sloupek tabulky uvádí kódy seznamů čekajících na provedení.</value>
+  </data>
+  <data name="HelpListsInWaitGridDescription" xml:space="preserve">
+    <value>Sloupek tabulky uvádí popisy seznamů čekajících na provedení.</value>
+  </data>
+  <data name="HelpListsInWaitGridMachine" xml:space="preserve">
+    <value>Sloupek uvádí pro každý seznam také seznam strojů zapojených do jejich realizace.</value>
+  </data>
+  <data name="HelpListsInWaitListsDetail" xml:space="preserve">
+    <value>Tlačítko umožňuje vstup na stránku podrobností o seznamu, kde se zobrazuje seznam přítomných položek.</value>
+  </data>
+  <data name="HelpListsInWaitListsExecute" xml:space="preserve">
+    <value>Pokud je tlačítko aktivní, umožňuje provedení aktuálně vybraného seznamu pro kótu dílu, který je přítomen ve stroji, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
+    <value>Uvádí číslo řádku zobrazeného seznamu.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
+    <value>Uvádí kód položky.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
+    <value>Uvádí popis položky.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
+    <value>Uvádí požadované množství příslušné položky.</value>
+  </data>
+  <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
+    <value>Stránka zobrazuje podrobnosti o vybraném seznamu. V rozsahu všech zobrazených řádků lze provést pouze ty, které jsou zvýrazněny, neboť jejich položka je obsažena ve stroji, na kterém se pracuje. Tlačítko „Provést seznam“ je aktivní, pouze pokud existuje minimálně jeden řádek, který lze provést na stroji, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>Postup umožňuje vyhledat položku jak s pomocí sloupku kódu, tak sloupku popisu. Test zadaný do políčka vyhledávání se automaticky použije k vyhledání požadovaného s využitím obsahu obou sloupků. V tabulce se zobrazí výsledek.</value>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>Uvádí seznam kódů položek, které odpovídají kritériu vyhledávání.</value>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>Uvádí seznam popisů položek, které odpovídají kritériu vyhledávání.</value>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>Uvádí seznam strojů, které obsahují položku uvedenou v řádku. Položka může být přítomna v jednom či vícero strojích.</value>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>Do políčka zadejte řadu znaků, které se mají vyhledat v políčkách kódu a popisu položky.</value>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>Uvádí množství vybrané položky přítomné uvnitř stroje, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>Pole je aktivní, pouze pokud je dostupné množství pro vybranou položku větší než nula. Lze zadat hodnotu ne vyšší než je dostupné množství.</value>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>Umožňuje si vyžádat vybranou položku v požadovaném množství. Tlačítko je aktivní, pouze pokud je položka k dispozici ve stroji, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>Stránka zobrazuje hlavní údaje o vybrané položce. Podrobnější informace se mohou zobrazovat na úrovni správy WMS.</value>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>Uvádí způsob správy položky.</value>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>Uvádí lhůtu FIFO položky, vyjádřenou v uvedených měrných jednotkách.</value>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>Příslušná kategorie položky.</value>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>Třída přesunů vybrané položky.</value>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>Měrná jednotka vybraná pro položku.</value>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>Průměrná jednotková hmotnost uvedené měrné jednotky.</value>
+  </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>Umožňuje provedení zvýrazněných řádků seznamu. Tlačítko je povoleno, pouze pokud lze alespoň jeden řádek vybraného seznamu provést na stroji, na kterém se pracuje. </value>
+  </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>Sloupek uvádí stroj nebo stroje, na kterých je položka momentálně přítomna.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Postup umožňuje vyvolat vybranou zásuvku do stanice, na které obsluha pracuje. Zásuvky se stavem červené barvy nejsou přístupné pro uživatele, který pracuje, protože jsou zablokovány WMS nebo přiřazeny konkrétnímu uživateli.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
+    <value>Uvádí číslo zásuvky, jíž se týkají údaje v tabulce.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
+    <value>Aktuální výška vybrané zásuvky.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
+    <value>Uvádí aktuální hmotnost vybrané zásuvky.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
+    <value>Uvádí buňku, v níž je zásuvka uložena.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
+    <value>Uvádí stranu stroje, kde je zásuvka uložena.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
+    <value>Uvádí aktuální stav zásuvky. Červená barva znamená, že aktuálně připojený uživatel nemůže zásuvku vyvolat.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
+    <value>Uvádí číslo zásuvky, která se má vyvolat.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Tlačítko umožňuje vyvolat zásuvky aktuálně vybranou v tabulce. Tlačítko je aktivní, pokud může aktuální uživatel vyvolat zásuvku.</value>
+  </data>
+  <data name="HelpDrawerCompactingDescription" xml:space="preserve">
+    <value>Postup umožňuje zhutňovat prostor obsazený zásuvkami odstraněním ztracených prostor. Postup vypočte pro každou stranu stroje, kolik fragmentů je momentálně ztraceno a uvede, kolik prostoru lze obnovit v případě provedení úplného zhutnění. Vybrat lze menší prostor zhutnění, přičemž v tomto případě bude postup dokončen po dosažení požadované hodnoty.</value>
+  </data>
+  <data name="HelpDrawerCompactingSide" xml:space="preserve">
+    <value>Uvádí stranu stroje, které se poskytnuté údaje týkají.</value>
+  </data>
+  <data name="HelpDrawerCompactingFragment" xml:space="preserve">
+    <value>Uvádí počet ztracených fragmentů přítomných na aktuální straně.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
+    <value>Uvádí maximální prostor, který lze na aktuální straně obnovit.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Prostor pro obnovu. Dle vých nastav se nastaví na max. hodn prostoru s možností obnovy.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
+    <value>Aktivuje postup zhutnění pro přední stranu stroje. Tlačítko je aktivní, pokud lze obnovit požadovaný prostor.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
+    <value>Aktivuje postup zhutnění pro zadní stranu stroje. Tlačítko je aktivní, pokud lze obnovit požadovaný prostor.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>Postup poskytuje data o prostoru obsazeném v různých zásuvkách a celkově uvnitř stroje. Pro každou zásuvku lze poskytnout podrobnější informace, k nimž patří počet provedených misí, kolik je oddělení přítomných uvnitř, stejně jako poskytnuté procento plnění, a to jak v grafické, tak numerické podobě.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>Uvádí číslo zásuvky.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>Uvádí počet misí, které se týkaly zásuvky.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>Uvádí počet zmapovaných oddělení přítomných v zásuvce nezávisle na jejich stavu.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
+    <value>V grafické formě uvádí míru naplnění zásuvky.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
+    <value>Uvádí míru naplnění zásuvky v procentuální hodnotě.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>Uvádí celkový počet zásuvek umístěný ve stroji.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>Uvádí rozměry zásuvek uložených uvnitř stroje.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>Uvádí, v grafické i numerické podobě, celkovou míru naplnění stroje.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>Umožňuje přístup k postupu statistické analýzy ohledně hmotnosti umístěné v různých zásuvkách.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>Postup poskytuje data o hmotnosti rozdělené do různých zásuvek a celkově uvnitř stroje. Pro každou ze zásuvek jsou poskytovány podrobnější informace, jako jsou aktuální výška, maximální hmotnost naplnění každé zásuvky, tára, celková aktuální hmotnost, stejně jako aktuální procento hmotnosti s ohledem na maximální plnění, a to jak v grafické, tak numerické podobě. Je poskytována také celková indikace platná pro celý stroj.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>Uvádí číslo zásuvky.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>Aktuální výška zásuvky.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>Uvádí maximální přípustnou hmotnost zásuvky.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>Uvádí hmotnost prázdné zásuvky.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>Uvádí aktuální hmotnost zásuvky.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>Uvádí procent využité hmotnosti ve vztahu k možnému maximu.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Uvádí maximální počet zásuvek umístěných ve stroji.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>Uvádí maximální hrubou kapacitu stroje.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>Uvádí naloženou hrubou hmot.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>Přípustná maximální čistá kapacita stroje.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>Uvádí aktuálně naloženou čistou hmotnost.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>Uvádí aktuální procento naložené hmotnosti ve vztahu j přípustnému maximu.</value>
+  </data>
+  <data name="HelpMachineStatisticsDescription" xml:space="preserve">
+    <value>Postup poskytuje statistická data pro hlavní části stroje. Uvedená data se vztahují k tomu, co stroj udělal během svého životního cyklu od okamžiku instalace.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
+    <value>Uvádí celkový počet cyklů provedený vertikální osou. Cyklus se rovná přesunu mezi dvěma body.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
+    <value>Uvádí celkový počet km překonaných vertikální osou od okamžiku instalace.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
+    <value>Uvádí celkový počet cyklů provedený roletou, která je ve výbavě stanice č. 1. Cyklus představuje operaci otevření nebo zavření, ať již úplné nebo částečné.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
+    <value>Uvádí celkový počet cyklů provedený roletou, která je ve výbavě stanice č. 2. Cyklus představuje operaci otevření nebo zavření, ať již úplné nebo částečné.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
+    <value>Uvádí celkový počet cyklů provedený roletou, která je ve výbavě stanice č. 3. Cyklus představuje operaci otevření nebo zavření, ať již úplné nebo částečné.</value>
+  </data>
+  <data name="HelpMachineStatisticsHorizontalCycles" xml:space="preserve">
+    <value>Pole uvádí celkový počet cyklů provedená řetězem ve zvedáku stroje od okamžiku instalace. Cyklus představuje operaci nakládky nebo vykládky.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay1" xml:space="preserve">
+    <value>Pole uvádí celkový počet zásuvek, které se vztahují ke stanici č. 1. Počet se zvyšuje, když je zásuvka přenesena do stanice a následně umístěna do zásobníku.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay2" xml:space="preserve">
+    <value>Pole uvádí celkový počet zásuvek, které se vztahují ke stanici č. 2. Počet se zvyšuje, když je zásuvka přenesena do stanice a následně umístěna do zásobníku.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay3" xml:space="preserve">
+    <value>Pole uvádí celkový počet zásuvek, které se vztahují ke stanici č. 3. Počet se zvyšuje, když je zásuvka přenesena do stanice a následně umístěna do zásobníku.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
+    <value>Postup umožňuje zobrazit stav údržby stroje. Pro každou soupravu je uveden aktuální stav zobrazením oranžové barvy, když se blíží termín údržby komponenty. Červenou barvou jsou vyznačeny ty díly, které překročily lhůtu mezi dvěma údržbami.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
+    <value>Ve sloupku je uveden kód sady pro vybranou komponentu.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
+    <value>Sloupek uvádí popis jednotlivých sad.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
+    <value>Uvádí aktuální stav soupravy. Oranžová barva znamená, že se blíží údržba, červená uplynulou lhůtu údržby, a tedy nezbytnou údržbu.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
+    <value>Sloupek signalizuje, zda pro konkrétní sadu byl již zaslán požadavek na zásah personálu údržby.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
+    <value>Uvádí model stroje.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
+    <value>Uvádí výrobní číslo stroje.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
+    <value>Uvádí datum instalace stroje.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
+    <value>Uvádí datum, kdy byla provedena poslední údržba.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
+    <value>Uvádí odhadované datum následující údržby.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
+    <value>Uvádí aktuální stav soupravy. Oranžová barva znamená, že se blíží údržba, červená uplynulou lhůtu údržby, a tedy nezbytnou údržbu.</value>
+  </data>
+  <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
+    <value>Stránka umožňuje zobrazit data, ze kterých vychází údržby vybrané sady. Zobrazí se veškeré informace používané systémem pro stanovení plánovaných zásahů údržby.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
+    <value>Zobrazuje kód komponenty použité vybranou sadou údržby.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
+    <value>Uvádí popis komponenty použité ve vybrané sadě údržby.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
+    <value>Uvádí počet kusů prvku vyžadovaných vybranou sadou.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
+    <value>Celkový počet cyklů realizovaných od okamžiku instalace stroje.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
+    <value>Uvádí počet cyklů provedených od poslední údržby.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
+    <value>Uvádí počet cyklů, které lze provést mezi dvěma zásahy údržby.</value>
+  </data>
+  <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Uvádí stav sady s tím, že oranžová barva tradičně znamená blížící se údržbu, červená pak uplynutí lhůty pro údržbu.</value>
+  </data>
+  <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
+    <value>Uvádí nezbytný počet hodin pro provedení požadované údržby.</value>
+  </data>
+  <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Informuje, zda se pro operace údržby, kterou je třeba provést, vyžaduje použití plošiny po práce ve výšce.</value>
+  </data>
+  <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
+    <value>Umožňuje odeslat e-mail oddělení asistente s žádostí o kontaktování pro sjednání zásahu údržby.</value>
+  </data>
+  <data name="HelpGeneralInfoDescription" xml:space="preserve">
+    <value>Stránka obsahuje řadu informací obecného typu týkající se stroje, na kterém se pracuje. Kromě dalších informací se zobrazuje i datum následující údržby. V případě, že uplynula lhůta pro několik typů údržby, zobrazí se nejdříve poslední z nich.</value>
+  </data>
+  <data name="HelpGeneralInfoModel" xml:space="preserve">
+    <value>Uvádí model stroje, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpGeneralInfoSerial" xml:space="preserve">
+    <value>Uvádí výrobní číslo stroje, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
+    <value>Uvádí aktuál vydání software aktuálně nainstalované ve stroji.</value>
+  </data>
+  <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
+    <value>Celkový počet zásuvek zasunutých do stroje.</value>
+  </data>
+  <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
+    <value>Uvádí datum instalace stroje.</value>
+  </data>
+  <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Uvádí datum poslední údržby.</value>
+  </data>
+  <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Uvádí odhadované datum následující údržby.</value>
+  </data>
+  <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
+    <value>Uvádí aktuální stav údržby stroje.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
+    <value>Stránka zobrazuje některé statistické informace týkající se používání oblast zásuvek a celkové naložené hmotnosti v poměru k charakteristikám stroje. Zobrazují se rovněž některé informace o použití stroje.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
+    <value>Celkový počet zásuvek přesunutých od počátku instalace.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
+    <value>Uvádí procento prostoru obsazeného uvnitř stroje ve vztahu k celkovému dostupnému prostoru.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
+    <value>Zobrazuje celkovou naloženou hmot v poměru k maxim. přípustné hmoti stroje.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
+    <value>Uvádí celkovou dobu zapnutí od chvíle instalace stroje.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
+    <value>Uvádí poměr mezi celkovým časem stráveným v automatickém režimu a dobou zapnutí od chvíle instalace.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
+    <value>Koeficient použití znamení poměr mezi dobou strávenou v automatickém režimu přesuny zásuvek a dobou zapnutí.</value>
+  </data>
+  <data name="HelpCellsStatisticsDescription" xml:space="preserve">
+    <value>Postup uvádí statistická data týkající se buněk přítomných uvnitř stroje. Kromě dalších globálních dat se na přední a zadní straně zobrazují data týkající se počtu buněk v různých předpokládaných stavech, a to jak pro přední, tak pro zadní čelo.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
+    <value>Uvádí stav buňky, které se týkají dat řádku.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
+    <value>Uvádí celkový počet buněk, které mají stav uvedený v prvním sloupku tabulky ve vztahu k přední straně.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
+    <value>Uvádí procento buněk, které mají stav uvedený v prvním sloupku tabulky ve vztahu k přední straně.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
+    <value>Uvádí celkový počet buněk, které mají stav uvedený v prvním sloupku tabulky ve vztahu k přední straně.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
+    <value>Uvádí procento buněk, které mají stav uvedený v prvním sloupku tabulky ve vztahu k zadní straně.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
+    <value>Celkový počet buněk přítomných ve stroji.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
+    <value>Celkový počet buněk přítomný na přední straně stroje.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
+    <value>Celkový počet buněk přítomný na zadní straně stroje.</value>
+  </data>
+  <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
+    <value>Uvádí procento obsazených buněk v poměru k celkovému počtu přítomných buněk.</value>
+  </data>
+  <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
+    <value>Tlačítko umožňuje vstup do postupu zhutnění prostoru zásobníku.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonCellsStatistics" xml:space="preserve">
+    <value>Aktivuje stránku zobrazení statistik týkajících se buňky.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonDrawersStatistics" xml:space="preserve">
+    <value>Zobrazuje stránku statistických dat různých zásuvek přítomných ve stroji.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonMachineStatistics" xml:space="preserve">
+    <value>Umožňuje přístup na stránku zobrazení statistických dat stroje.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonErrorsStatistics" xml:space="preserve">
+    <value>Aktivuje stránku zobrazení statistických dat týkajících se chyb vygenerovaných strojem od okamžiku instalace.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonDrawerCall" xml:space="preserve">
+    <value>Zobrazuje stránku vyhrazenou pro okamžité vyvolání zásuvky.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonCompacting" xml:space="preserve">
+    <value>Umožňuje vstup na stránku řízení postupů zhutnění prostoru zásobníku.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonStastistics" xml:space="preserve">
+    <value>Umožňuje přístup do části vyhrazené statistickým informacím týkajícím se stroje, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonMaintenance" xml:space="preserve">
+    <value>Otevírá stránku vyhrazenou pro operace údržby předpokládané pro stroj, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpErrorsStatisticsDescription" xml:space="preserve">
+    <value>Postup umožňuje přístup na stránku zobrazení statistiky chyb týkající se stroj, na kterém se pracuje. Statistika pokrývá celé období od okamžiku instalace do chvíle prohlížení.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridError" xml:space="preserve">
+    <value>Sloupek tabulky uvádí seznam chybových kódů vygenerovaných strojem, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridTotal" xml:space="preserve">
+    <value>V tomto sloupci se zobrazuje celkový počet opakování zjištění chyby.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridPercTotal" xml:space="preserve">
+    <value>Uvádí se zde procentuální četnost každé jednotlivé chyby v poměru k celkovému počtu napočítaných chyb.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersMoved" xml:space="preserve">
+    <value>Políčko uvádí celkový počet zásuvek přesunutých od počátku instalace. Zásuvka se považuje za přesunutou, pokud se přesune z jednoho zdroje do cíle.</value>
+  </data>
+  <data name="HelpErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Zobrazuje se úplný popis chyby vybrané v tabulce.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotaleErrors" xml:space="preserve">
+    <value>Zobrazuje se celkový počet chyb, které stroj napočítal od okamžiku instalace.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersNoError" xml:space="preserve">
+    <value>Pole uvádí statistický údaj vypočtený systémem, který znamená průměr počtu zásuvek přesunutých bez chyb.</value>
+  </data>
+  <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
+    <value>Systém vypočte koeficient spolehlivosti stroje jako poměr mezi napočítaným počtem chyb a celkovým počtem přesunutých zásuvek.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
+    <value>Stránka uvádí hlavní údaje týkající se operace inventarizace, která se má provést na různých položkách umístěných v zásuvce přítomné ve stanici. Postup, pod uvedení oddělení, které obsahuje požadovanou položku, zůstane čekat, dokud obsluha nezadá počet položek aktuálně ve stavu zásob.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Políčko uvádí počet kusů aktuálně ve stavu zásob napočítaný obsluhou.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
+    <value>Stránka poskytuje obsluze další podrobnosti o aktuálně probíhající operaci inventarizace.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
+    <value>Uvádí datum výroby položky, která je momentálně předmětem inventarizace.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
+    <value>Uvádí stav materiálu položky v průběhu inventarizace.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
+    <value>Uvádí výrobní šarži položky ve fázi inventarizace.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
+    <value>Uvádí typ balení použitý pro položku ve fázi inventarizace.</value>
+  </data>
+  <data name="HelpListsInWaitGridType" xml:space="preserve">
+    <value>Uvádí typ seznamu dle následující kodifikace:   P : odběr V : plnění I : Inventarizace</value>
+  </data>
+  <data name="HelpCommonListType" xml:space="preserve">
+    <value>Uvádí vybraný typ seznamu dle následující kodifikace:  P : odběr  V : plnění I : inventarizace.</value>
+  </data>
+  <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
+    <value>Pole uvádí aktuální stav WMS, pokud je k dispozici, který ovládá stroj, na kterém se pracuje.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
+    <value>Stránka ukazuje stav pokroku postupu zhutnění. Uvádí se zásuvka ve fázi přesunu a ze které buňky se odebírá a do které buňky je určena. Dále se zobrazuje stav pokroku postupu s uvedením fragmentů a prostoru pro obnovení, jakož o již obnoveném prostoru.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Uvádí kód aktuálně přesouvané zásuvky.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Uvádí zdrojovou buňku, kde byla zásuvka, která je předmětem pohybu, uložena.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Uvádí číslo buňky, do které se přesouvá zásuvka ve fázi posunu.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
+    <value>Uvádí aktuální fázi cyklu přesunu různých zásuvek.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Uvádí aktuální pozici vertikální osy.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Uvádí aktuální pozici horizontální osy.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
+    <value>Uvádí počet fragmentů dosud ke zhutnění.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Uvádí celkový aktuálně obnovený prostor.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Uvádí prostor, který je třeba obnovit, a po dosažení kterého se postup ukončí.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter" xml:space="preserve">
+    <value>Uvádí celkový počet cyklů provedený roletou, která je ve výbavě stanice. Cyklus představuje operaci otevření nebo zavření, ať již úplné nebo částečné.</value>
+  </data>
+  <data name="CarouselCalibrationFunctionDescription" xml:space="preserve">
+    <value>Funkce kalibrace karuselu umožňuje kalibrovat správnou hodnotu pomocí provedení řady po sobě jdoucích automatických pohybů a následně aktualizovat výchozí hodnotu nabízenou systémem. Postup probíhá po sobě jdoucími kroky až do správného dokončení.</value>
+  </data>
+  <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
+    <value>Funkce kalibrace externí jednotky umožňuje kalibrovat správnou hodnotu pomocí provedení řady po sobě jdoucích automatických pohybů a následně aktualizovat výchozí hodnotu nabízenou systémem. Postup probíhá po sobě jdoucími kroky až do správného dokončení.</value>
+  </data>
+  <data name="BayOperationsDescription" xml:space="preserve">
+    <value>Postup umožňuje zobrazovat typ operací možných na aktuální stanici </value>
+  </data>
+  <data name="BayOperationsDescriptionWarning" xml:space="preserve">
+    <value>POZOR: Pokud deaktivujete typ operace, seznamy zaslané z WMS budou odmítnuty </value>
+  </data>
+</root>

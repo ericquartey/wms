@@ -117,49 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Chybí aut cyklus</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Informace</value>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>Kalibrace stan neproběhla.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statistiky, výstrahy, diagnostika</value>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>Nelze provést kalibraci karuselu. \r\n Řetěz stanice není v nulové poloze.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalace</value>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Obsazená</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="CellFree" xml:space="preserve">
+    <value>Volná</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Postup instalace, manuální pohyby, ostatní</value>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>Neproveden homing</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Údržba</value>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>Nekonzistence snímačů přítomnosti ve stanici.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>ÚDRŽ</value>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>Nesoulad stavu naplnění a snímačů.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Údržba, zhutnění zásuvek, aktualizace</value>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Nekonzistence snímače západky v nul pol a přít zásuvky.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Pohyby</value>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Přítomnost zásuvky na zvedáku.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>POHY</value>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>Zásuvka přítomna pro operaci.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stav snímačů, reset stroje, ostatní</value>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Požadavek zásuvky {0} správně dokončen.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Odběr</value>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Zásuvka ve zvedáku má chybnou výšku</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ODBĚ</value>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>Stroj není v manuální poloze...</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Odběr, plnění, inventarizace</value>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Chyba misí...</value>
+  </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Mise z Wms přítomny, ale Wms není aktivní</value>
+  </data>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Probíhá pohyb řetězu stanice...</value>
+  </data>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Probíhá pohyb zvedáku...</value>
+  </data>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>Probíhá horizontální pohyb...</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Probíhá pohyb... {0}</value>
+  </data>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Probíhá pohyb... (Mise: {0}, Zásuvka: {1}, Stav: {2}, Přesun: z {3} {4}, do {5} {6})</value>
+  </data>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Probíhající přesun zásuvky...</value>
+  </data>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Probíhá pohyb rolety...</value>
+  </data>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>Probíhá vertikální pohyb...</value>
+  </data>
+  <data name="NoGear" xml:space="preserve">
+    <value>Chybí chod</value>
+  </data>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>Ve stan není přít žádná zásuvka.</value>
+  </data>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>Absence sním západky v nulové pol a přít zásuvky.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Pozice {0}</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>Roleta otevřena nebo v neznámé poloze.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>Probíhá test...</value>
+  </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>- Machine off</value>
   </data>
 </root>

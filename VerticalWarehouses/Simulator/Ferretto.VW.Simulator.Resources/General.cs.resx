@@ -117,49 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="ControlWord" xml:space="preserve">
+    <value>Kontr slova</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Informace</value>
+  <data name="Input" xml:space="preserve">
+    <value>Vstup</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statistiky, výstrahy, diagnostika</value>
+  <data name="Inputs" xml:space="preserve">
+    <value>Vstupy</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalace</value>
+  <data name="Output" xml:space="preserve">
+    <value>Výstup</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="Outputs" xml:space="preserve">
+    <value>Výstup</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Postup instalace, manuální pohyby, ostatní</value>
+  <data name="Safety" xml:space="preserve">
+    <value>Bez prvky</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Údržba</value>
+  <data name="ImportConfigurationCommand" xml:space="preserve">
+    <value>Nahrát konfiguraci</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>ÚDRŽ</value>
+  <data name="SimulatorStarted" xml:space="preserve">
+    <value>Simulátor spuštěn</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Údržba, zhutnění zásuvek, aktualizace</value>
+  <data name="StartSimulatorCommand" xml:space="preserve">
+    <value>Spustit simulace</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Pohyby</value>
+  <data name="StatusWord" xml:space="preserve">
+    <value>Stav slova</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>POHY</value>
+  <data name="StopSimulatorCommand" xml:space="preserve">
+    <value>Zastavit simulaci</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stav snímačů, reset stroje, ostatní</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Odběr</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ODBĚ</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Odběr, plnění, inventarizace</value>
+  <data name="Title" xml:space="preserve">
+    <value>Simulátor VW</value>
   </data>
 </root>

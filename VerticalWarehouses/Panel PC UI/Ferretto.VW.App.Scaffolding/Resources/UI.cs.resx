@@ -117,49 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="All" xml:space="preserve">
+    <value>Všech</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Informace</value>
+  <data name="AllDescription" xml:space="preserve">
+    <value>Umožňuje vstup do seznamu všech parametrů nezávisle na kategorii.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statistiky, výstrahy, diagnostika</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Zrušit</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalace</value>
+  <data name="Empty" xml:space="preserve">
+    <value>Žádný prvek neodpovídá navigačnímu kritériu.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Neplatná hodnota</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Postup instalace, manuální pohyby, ostatní</value>
+  <data name="Machine" xml:space="preserve">
+    <value>Stroj</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Údržba</value>
+  <data name="MachineDescription" xml:space="preserve">
+    <value>Umožňuje vstup do seznamu všech parametrů nezávisle na kategorii.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>ÚDRŽ</value>
+  <data name="Root" xml:space="preserve">
+    <value>Koře</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Údržba, zhutnění zásuvek, aktualizace</value>
+  <data name="Save" xml:space="preserve">
+    <value>Ulož</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Pohyby</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>POHY</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stav snímačů, reset stroje, ostatní</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Odběr</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ODBĚ</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Odběr, plnění, inventarizace</value>
+  <data name="Search" xml:space="preserve">
+    <value>Vyhled:</value>
   </data>
 </root>
