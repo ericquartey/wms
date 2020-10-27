@@ -149,9 +149,9 @@
           "UpperBound": 6902.0,
           "WeightMeasurement": {
             "Id": 1,
-            "MeasureConst0": -1897.9,
-            "MeasureConst1": 442.72,
-            "MeasureConst2": -14.905,
+            "MeasureConst0": -1659.1,
+            "MeasureConst1": 369.48,
+            "MeasureConst2": -10.525,
             "MeasureSpeed": 20,
             "MeasureTime": 15
           }

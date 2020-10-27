@@ -415,14 +415,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.SelectedCompartment = this.Compartments.First();
                 }
-
-                if (this.MissionOperationsService.ActiveWmsMission?.LoadingUnit?.Compartments != null
-                    && this.SelectedCompartment != null
-                    && this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.Any(c => c.Id == this.SelectedCompartment.Id)
-                    )
-                {
-                    this.SelectedCompartment.Barcode = this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == this.SelectedCompartment.Id).Barcode;
-                }
             }
             catch (Exception)
             {
@@ -497,6 +489,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     Width = c.First().Width,
                     XPosition = c.First().XPosition,
                     YPosition = c.First().YPosition,
+                    Barcode = c.First().Barcode,
                 });
         }
 
@@ -633,7 +626,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.ItemSerialNumberVisibility));
         }
 
-        private void SetItemsAndCompartment()
+        private async void SetItemsAndCompartment()
         {
             if (this.selectedCompartment is null)
             {

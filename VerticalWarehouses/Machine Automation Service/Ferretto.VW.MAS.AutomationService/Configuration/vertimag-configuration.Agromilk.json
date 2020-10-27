@@ -1002,7 +1002,7 @@
             "LocationUpDown": "Up",
             "MaxDoubleHeight": 0.0,
             "MaxSingleHeight": 695.0,
-            "ProfileOffset": -25.0
+            "ProfileOffset": 25.0
           }
         ],
         "Resolution": 296.2282068,
