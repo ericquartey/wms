@@ -415,14 +415,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.SelectedCompartment = this.Compartments.First();
                 }
-
-                //    if (this.MissionOperationsService.ActiveWmsMission?.LoadingUnit?.Compartments != null
-                //        && this.SelectedCompartment != null
-                //        && this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.Any(c => c.Id == this.SelectedCompartment.Id)
-                //        )
-                //    {
-                //        this.SelectedCompartment.Barcode = this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == this.SelectedCompartment.Id).Barcode;
-                //    }
             }
             catch (Exception)
             {
@@ -497,7 +489,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     Width = c.First().Width,
                     XPosition = c.First().XPosition,
                     YPosition = c.First().YPosition,
-                    Barcode = c.First().Barcode,   // TODO - CHANGE SUB1 TO BARCODE
+                    Barcode = c.First().Barcode,
                 });
         }
 
@@ -642,13 +634,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.selectedItem = null;
                 return;
             }
-
-            //if (this.MissionOperationsService.ActiveWmsMission?.LoadingUnit?.Compartments != null
-            //    && this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.Any(c => c.Id == this.SelectedCompartment.Id)
-            //    )
-            //{
-            //    this.SelectedCompartment.Barcode = this.MissionOperationsService.ActiveWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == this.SelectedCompartment.Id).Barcode;
-            //}
 
             this.SetItems();
 
