@@ -497,7 +497,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     Width = c.First().Width,
                     XPosition = c.First().XPosition,
                     YPosition = c.First().YPosition,
-                    Barcode = c.First().Sub1,   // TODO - CHANGE SUB1 TO BARCODE
+                    Barcode = c.First().Barcode,   // TODO - CHANGE SUB1 TO BARCODE
                 });
         }
 
