@@ -80,7 +80,7 @@
           "Speed": 130.0
         },
         "Id": 1,
-        "Inventory": false,
+        "Inventory": true,
         "Inverter": {
           "Id": 1,
           "Index": "Slave3",
@@ -103,7 +103,7 @@
         "LastCalibrationCycles": 0,
         "Number": "BayOne",
         "Operation": "Idle",
-        "Pick": false,
+        "Pick": true,
         "Positions": [
           {
             "Height": 889.5,
@@ -113,16 +113,45 @@
             "Location": "InternalBay1Up",
             "LocationUpDown": "Up",
             "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 399.0,
+            "MaxSingleHeight": 699.0,
             "ProfileOffset": 25.0
           }
         ],
-        "Put": false,
-        "Resolution": 296.2282068,
+        "Put": true,
+        "Resolution": 82.2412,
+        "Shutter": {
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "HighSpeedDurationClose": 14.0,
+            "HighSpeedDurationOpen": 14.0,
+            "HighSpeedHalfDurationClose": 6.0,
+            "HighSpeedHalfDurationOpen": 7.0,
+            "Id": 2,
+            "MaxSpeed": 40000.0,
+            "MinSpeed": 5000.0
+          },
+          "Id": 1,
+          "Inverter": {
+            "Id": 2,
+            "Index": "Slave2",
+            "Parameters": [],
+            "TcpPort": 0,
+            "Type": "Agl"
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "HighSpeedDurationClose": 0.0,
+            "HighSpeedDurationOpen": 0.0,
+            "Id": 1,
+            "MaxSpeed": 40000.0,
+            "MinSpeed": 5000.0
+          },
+          "Type": "TwoSensors"
+        },
         "Side": "Front",
         "Status": "Idle",
         "TotalCycles": 0,
-        "View": false
+        "View": true
       }
     ],
     "Elevator": {
@@ -154,7 +183,7 @@
           "HomingFastSpeed": 25.0,
           "Id": 1,
           "Inverter": {
-            "Id": 1,
+            "Id": 3,
             "Index": "MainInverter",
             "IpAddress": "192.168.0.100",
             "Parameters": [],
@@ -239,7 +268,7 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 131,
+                  "Id": 231,
                   "Number": 0,
                   "Position": 140.0,
                   "Speed": 600.0
@@ -249,7 +278,7 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 132,
+                  "Id": 232,
                   "Number": 1,
                   "Position": 370.0,
                   "Speed": 100.0
@@ -259,7 +288,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 133,
+                  "Id": 233,
                   "Number": 2,
                   "Position": 800.0,
                   "Speed": 600.0
@@ -269,7 +298,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 134,
+                  "Id": 234,
                   "Number": 3,
                   "Position": 900.0,
                   "Speed": 600.0
@@ -279,7 +308,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 135,
+                  "Id": 235,
                   "Number": 4,
                   "Position": 1249.0,
                   "Speed": 600.0
@@ -410,7 +439,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 121,
+                  "Id": 221,
                   "Number": 0,
                   "Position": 210.0,
                   "Speed": 200.0
@@ -420,7 +449,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 122,
+                  "Id": 222,
                   "Number": 1,
                   "Position": 350.0,
                   "Speed": 600.0
@@ -430,7 +459,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 123,
+                  "Id": 223,
                   "Number": 2,
                   "Position": 740.0,
                   "Speed": 600.0
@@ -440,7 +469,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 124,
+                  "Id": 224,
                   "Number": 3,
                   "Position": 1000.0,
                   "Speed": 100.0
@@ -450,7 +479,7 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 125,
+                  "Id": 225,
                   "Number": 4,
                   "Position": 1249.0,
                   "Speed": 600.0
@@ -486,7 +515,7 @@
     "LoadUnitMaxHeight": 699.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 120.0,
-    "LoadUnitTare": 100.0,
+    "LoadUnitTare": 104.0,
     "LoadUnitVeryHeavyPercent": 0.0,
     "LoadUnitWidth": 4250.0,
     "MaxGrossWeight": 70000.0,
@@ -3568,7 +3597,7 @@
         "Side": "Back"
       }
     ],
-    "SerialNumber": "MV20-0000",
+    "SerialNumber": "MV20-0120",
     "Simulation": false
   },
   "MachineStatistics": [],
