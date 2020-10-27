@@ -1,0 +1,543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Zrychlení</value>
+  </data>
+  <data name="AssistedMovements" xml:space="preserve">
+    <value>Naváděné pohyby</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Stan {0}</value>
+  </data>
+  <data name="BayCarousel" xml:space="preserve">
+    <value>Karusel stan {0}</value>
+  </data>
+  <data name="BayCarousel_Description" xml:space="preserve">
+    <value>Param karus</value>
+  </data>
+  <data name="BayInverter" xml:space="preserve">
+    <value>Měniče stan {0}</value>
+  </data>
+  <data name="BayIoDevice" xml:space="preserve">
+    <value>IoDevice stan {0}</value>
+  </data>
+  <data name="BayLaser" xml:space="preserve">
+    <value>Laser stan {0}</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Číslo stan</value>
+  </data>
+  <data name="BayNumber.BayOne" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayNumber.BayThree" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayNumber.BayTwo" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BayNumber.ElevatorBay" xml:space="preserve">
+    <value>koléb</value>
+  </data>
+  <data name="BayPosition_Height" xml:space="preserve">
+    <value>Kóta</value>
+  </data>
+  <data name="BayPosition_IsBlocked" xml:space="preserve">
+    <value>Zablok</value>
+  </data>
+  <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
+    <value>Dvojitá maxim. výška</value>
+  </data>
+  <data name="BayPosition_MaxSingleHeight" xml:space="preserve">
+    <value>Standardní maxim. výška</value>
+  </data>
+  <data name="BayPosition_ProfileOffset" xml:space="preserve">
+    <value>Posun kontroly šablony</value>
+  </data>
+  <data name="BayShutter" xml:space="preserve">
+    <value>Závěrka stan {0}</value>
+  </data>
+  <data name="Bay_CategoryDescription" xml:space="preserve">
+    <value>Umožňuje měnit parametry a zařízení stanice.</value>
+  </data>
+  <data name="Bay_ChainOffset" xml:space="preserve">
+    <value>Posun nuly řetězu</value>
+  </data>
+  <data name="Bay_IsActive" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="Bay_IsAdjustByWeight" xml:space="preserve">
+    <value>Snižte kótu odběru se zásuvkami dostupnými ve stanici</value>
+  </data>
+  <data name="Bay_IsCheckIntrusion" xml:space="preserve">
+    <value>Kontrola proniknutí do kontrolní bariéry výšky</value>
+  </data>
+  <data name="Bay_IsDouble" xml:space="preserve">
+    <value>Dvojit</value>
+  </data>
+  <data name="Bay_IsExternal" xml:space="preserve">
+    <value>Vnější</value>
+  </data>
+  <data name="Bay_IsFastDepositToBay" xml:space="preserve">
+    <value>Rychlé uložení</value>
+  </data>
+  <data name="Bay_Resolution" xml:space="preserve">
+    <value>Rozlišení</value>
+  </data>
+  <data name="Bay_Side" xml:space="preserve">
+    <value>Str</value>
+  </data>
+  <data name="BeltRigidity" xml:space="preserve">
+    <value>Tuhost řemene</value>
+  </data>
+  <data name="BeltSpacing" xml:space="preserve">
+    <value>Vzdálenost bloků napínání řemene</value>
+  </data>
+  <data name="Carousel" xml:space="preserve">
+    <value>Karusel</value>
+  </data>
+  <data name="Carousel_ElevatorDistance" xml:space="preserve">
+    <value>Rozvor polic</value>
+  </data>
+  <data name="Carousel_HomingCreepSpeed" xml:space="preserve">
+    <value>Rychl homing</value>
+  </data>
+  <data name="Carousel_HomingFastSpeed" xml:space="preserve">
+    <value>Vysoká rychl homing</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Zpomalení</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Zvedák</value>
+  </data>
+  <data name="ElevatorAxis" xml:space="preserve">
+    <value>Osa zvedáku {0}</value>
+  </data>
+  <data name="ElevatorAxis_BrakeActivatePercent" xml:space="preserve">
+    <value>Procento brzdění</value>
+  </data>
+  <data name="ElevatorAxis_BrakeReleaseTime" xml:space="preserve">
+    <value>Doba uvolnění při brzdění</value>
+  </data>
+  <data name="ElevatorAxis_ChainOffset" xml:space="preserve">
+    <value>Posun nuly řetězu</value>
+  </data>
+  <data name="ElevatorAxis_HomingCreepSpeed" xml:space="preserve">
+    <value>Rychl homig</value>
+  </data>
+  <data name="ElevatorAxis_HomingFastSpeed" xml:space="preserve">
+    <value>Vysoká rychl homing</value>
+  </data>
+  <data name="ElevatorAxis_LowerBound" xml:space="preserve">
+    <value>Dolní limit osy</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateLength" xml:space="preserve">
+    <value>Max. vzdál kalibrace šablony</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibratePosition" xml:space="preserve">
+    <value>Vzdál šablony odečtu 6. fb</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
+    <value>Rychlost kalibrace šablony</value>
+  </data>
+  <data name="ElevatorAxis_Profiles" xml:space="preserve">
+    <value>Profily</value>
+  </data>
+  <data name="ElevatorAxis_Resolution" xml:space="preserve">
+    <value>Rozlišení</value>
+  </data>
+  <data name="ElevatorAxis_UpperBound" xml:space="preserve">
+    <value>Horní limit osy</value>
+  </data>
+  <data name="ElevatorAxis_VerticalDepositOffset" xml:space="preserve">
+    <value>Posunutí umístění při uložení</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupOffset" xml:space="preserve">
+    <value>Posunutí umístění při odběru</value>
+  </data>
+  <data name="ElevatorWeight" xml:space="preserve">
+    <value>Hmot zved</value>
+  </data>
+  <data name="Elevator_CategoryDescription" xml:space="preserve">
+    <value>Umožňuje změnit parametry zvedáku a dvou os s ní spojených.</value>
+  </data>
+  <data name="EmptyLoadMovement" xml:space="preserve">
+    <value>Pohyby na prázdno</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Vnější stan {0}</value>
+  </data>
+  <data name="ExternalBay_Description" xml:space="preserve">
+    <value>Param vnější stan</value>
+  </data>
+  <data name="ExtraRace" xml:space="preserve">
+    <value>Přeběh pro zasunutí/vytažení</value>
+  </data>
+  <data name="FeedRate" xml:space="preserve">
+    <value>Rychl pln</value>
+  </data>
+  <data name="FeedRateAfterZero" xml:space="preserve">
+    <value>Rychl plnění po vynul os</value>
+  </data>
+  <data name="FullLoadMovement" xml:space="preserve">
+    <value>Pohyby při plném zatíž</value>
+  </data>
+  <data name="HalfShaftLength" xml:space="preserve">
+    <value>Délka poloviny hříd</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventariz</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Měnič</value>
+  </data>
+  <data name="Inverter_Index" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="Inverter_IpAddress" xml:space="preserve">
+    <value>IP měniče</value>
+  </data>
+  <data name="Inverter_TcpPort" xml:space="preserve">
+    <value>Port měniče</value>
+  </data>
+  <data name="Inverter_Type" xml:space="preserve">
+    <value>Typ měniče</value>
+  </data>
+  <data name="IoDevice" xml:space="preserve">
+    <value>IoDevice</value>
+  </data>
+  <data name="IoDevice_Index" xml:space="preserve">
+    <value>Index IoDevice</value>
+  </data>
+  <data name="IoDevice_IpAddress" xml:space="preserve">
+    <value>IP IoDevice</value>
+  </data>
+  <data name="IoDevice_TcpPort" xml:space="preserve">
+    <value>Port IoDevice</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
+  <data name="Laser_IpAddress" xml:space="preserve">
+    <value>IP laser</value>
+  </data>
+  <data name="Laser_TcpPort" xml:space="preserve">
+    <value>Port laseru</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Stroj</value>
+  </data>
+  <data name="Machine_CategoryDescription" xml:space="preserve">
+    <value>Umožňuje měnit strukturální parametry stroje.</value>
+  </data>
+  <data name="Machine_ExpireCountPrecent" xml:space="preserve">
+    <value>Předsunutí % časového limitu počítadel údržby</value>
+  </data>
+  <data name="Machine_ExpireDays" xml:space="preserve">
+    <value>Předsunutí časového limitu dnů údržby</value>
+  </data>
+  <data name="Machine_Height" xml:space="preserve">
+    <value>Výška</value>
+  </data>
+  <data name="Machine_HorizontalCyclesToCalibrate" xml:space="preserve">
+    <value>Cykly horizontální osy pro kalibraci</value>
+  </data>
+  <data name="Machine_HorizontalPositionToCalibrate" xml:space="preserve">
+    <value>Poloha horizontální osy pro kalibraci</value>
+  </data>
+  <data name="Machine_Id" xml:space="preserve">
+    <value>Číslo stroje</value>
+  </data>
+  <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
+    <value>Maximální výška zásuvky</value>
+  </data>
+  <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
+    <value>Maxim. čistá hmot zásuvky</value>
+  </data>
+  <data name="Machine_LoadUnitMinHeight" xml:space="preserve">
+    <value>Minimální výška zásuvky</value>
+  </data>
+  <data name="Machine_LoadUnitTare" xml:space="preserve">
+    <value>Tára zásuvky</value>
+  </data>
+  <data name="Machine_LoadUnitVeryHeavyPercent" xml:space="preserve">
+    <value>% čisté hmoti na velmi těžkou zásuvku (0 deaktivovat)</value>
+  </data>
+  <data name="Machine_MaxGrossWeight" xml:space="preserve">
+    <value>maxim. hrubá hmot stroje</value>
+  </data>
+  <data name="Machine_ModelName" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="Machine_SerialNumber" xml:space="preserve">
+    <value>Výr číslo</value>
+  </data>
+  <data name="Machine_Simulation" xml:space="preserve">
+    <value>Simulace</value>
+  </data>
+  <data name="ManualMovements" xml:space="preserve">
+    <value>Manuální pohyby</value>
+  </data>
+  <data name="MeasureConst0" xml:space="preserve">
+    <value>Konstanta K0 vážení</value>
+  </data>
+  <data name="MeasureConst1" xml:space="preserve">
+    <value>Konstanta K1 vážení</value>
+  </data>
+  <data name="MeasureConst2" xml:space="preserve">
+    <value>Konstanta K2 vážení</value>
+  </data>
+  <data name="MeasureSpeed" xml:space="preserve">
+    <value>Rychlost vážení</value>
+  </data>
+  <data name="MeasureTime" xml:space="preserve">
+    <value>Doba vážení</value>
+  </data>
+  <data name="MovementParameters" xml:space="preserve">
+    <value>Parametry pohybů</value>
+  </data>
+  <data name="MovementProfileType.LongDeposit" xml:space="preserve">
+    <value>Dlouhé uložení</value>
+  </data>
+  <data name="MovementProfileType.LongPickup" xml:space="preserve">
+    <value>Dlouhý odběr</value>
+  </data>
+  <data name="MovementProfileType.ShortDeposit" xml:space="preserve">
+    <value>Krátké uložení</value>
+  </data>
+  <data name="MovementProfileType.ShortPickup" xml:space="preserve">
+    <value>Krátký odběr</value>
+  </data>
+  <data name="MovementProfileType.Undefined" xml:space="preserve">
+    <value>Nedefinován</value>
+  </data>
+  <data name="NetworkConfiguration" xml:space="preserve">
+    <value>Síťová konfigurace</value>
+  </data>
+  <data name="Orientation.Horizontal" xml:space="preserve">
+    <value>horizont</value>
+  </data>
+  <data name="Orientation.Vertical" xml:space="preserve">
+    <value>vertikál</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Odběr</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Pozice {0}</value>
+  </data>
+  <data name="PulleyDiameter" xml:space="preserve">
+    <value>Primitivní průměr řemenice</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Uložení</value>
+  </data>
+  <data name="Race" xml:space="preserve">
+    <value>Dráha</value>
+  </data>
+  <data name="SecondTermMultiplier" xml:space="preserve">
+    <value>Druhý násobící faktor prodloužení řemene</value>
+  </data>
+  <data name="ShaftDiameter" xml:space="preserve">
+    <value>Průměr hřídele</value>
+  </data>
+  <data name="ShaftElasticity" xml:space="preserve">
+    <value>Modul elasticity</value>
+  </data>
+  <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
+    <value>Rychl pln rolety</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
+    <value>Doba zavírání rolety</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
+    <value>Doba otevírání rolety</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationClose" xml:space="preserve">
+    <value>Doba polovičního zavír rolety</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationOpen" xml:space="preserve">
+    <value>Doba polovičního otevír rolety</value>
+  </data>
+  <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
+    <value>Maximální rychlost rolety</value>
+  </data>
+  <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
+    <value>Minimální Rychl rolety</value>
+  </data>
+  <data name="ShutterType.NotSpecified" xml:space="preserve">
+    <value>Nespecifikováno</value>
+  </data>
+  <data name="ShutterType.ThreeSensors" xml:space="preserve">
+    <value>Tři snímače</value>
+  </data>
+  <data name="ShutterType.TwoSensors" xml:space="preserve">
+    <value>Dva snímače</value>
+  </data>
+  <data name="Shutter_AssistedMovements" xml:space="preserve">
+    <value>Naváděné pohyb rolety</value>
+  </data>
+  <data name="Shutter_ManualMovements" xml:space="preserve">
+    <value>Man. pohyby rolety</value>
+  </data>
+  <data name="Shutter_Type" xml:space="preserve">
+    <value>Typ rolety</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Rychlost</value>
+  </data>
+  <data name="StepMovementParameters_AdjustAccelerationByWeight" xml:space="preserve">
+    <value>Upravit zrychlení s hmotností</value>
+  </data>
+  <data name="StepMovementParameters_AdjustSpeedByWeight" xml:space="preserve">
+    <value>Upravit Rychl s hmot</value>
+  </data>
+  <data name="StepMovementParameters_Number" xml:space="preserve">
+    <value>Číslo</value>
+  </data>
+  <data name="StepMovementParameters_Position" xml:space="preserve">
+    <value>Pozice</value>
+  </data>
+  <data name="TargetDistance" xml:space="preserve">
+    <value>Max. prostor ovladatelný pomocí manuál ovl</value>
+  </data>
+  <data name="TargetDistanceAfterZero" xml:space="preserve">
+    <value>Max. prostor ovladatelný pomocí manuál ovlad po vynul osy</value>
+  </data>
+  <data name="TotalDistance" xml:space="preserve">
+    <value>Celková vzdál</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Zobraz</value>
+  </data>
+  <data name="CyclesToCalibrate" xml:space="preserve">
+    <value>Cyklus pro kalibr</value>
+  </data>
+  <data name="LastCalibrationCycles" xml:space="preserve">
+    <value>Poslední cykly kalibrace</value>
+  </data>
+  <data name="Machine_LoadDepth" xml:space="preserve">
+    <value>Hloubka zatížení stroje!</value>
+  </data>
+  <data name="Machine_LoadUnitWidth" xml:space="preserve">
+    <value>Šířka LoadUnit!</value>
+  </data>
+</root>

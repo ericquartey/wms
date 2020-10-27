@@ -117,49 +117,103 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="Close" xml:space="preserve">
+    <value>Zavřít</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Informace</value>
+  <data name="Next" xml:space="preserve">
+    <value>Následuj</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statistiky, výstrahy, diagnostika</value>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Otevř složku</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalace</value>
+  <data name="VertimagConfigurationFile" xml:space="preserve">
+    <value>Konfigurační soubor Vertimag</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Otev file</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Postup instalace, manuální pohyby, ostatní</value>
+  <data name="InvertersFolder" xml:space="preserve">
+    <value>Složka měničů</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Údržba</value>
+  <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
+    <value>Soubor generování parametrů měničů</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>ÚDRŽ</value>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Údržba, zhutnění zásuvek, aktualizace</value>
+  <data name="NoParametersFilesFound" xml:space="preserve">
+    <value>Nenalezen žádný soubor parametrů</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Pohyby</value>
+  <data name="InverterTypeParametersConfiguration" xml:space="preserve">
+    <value>Měnič [{0}] typu „{1}“ konfigurace parametrů</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>POHY</value>
+  <data name="TotalParameters" xml:space="preserve">
+    <value>Celkové param {0}</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stav snímačů, reset stroje, ostatní</value>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Odběr</value>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ODBĚ</value>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Dataset</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Odběr, plnění, inventarizace</value>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Hodn</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Pouze čtení</value>
+  </data>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Export konfigurace</value>
+  </data>
+  <data name="ExportFile" xml:space="preserve">
+    <value>Export file</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Žádný řádek</value>
+  </data>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>Export úspěšně dokončen.</value>
+  </data>
+  <data name="SaveFileConfiguration" xml:space="preserve">
+    <value>Uložit konfigurační soubor</value>
+  </data>
+  <data name="ConfigurationFile" xml:space="preserve">
+    <value>Konfigurační soubor</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Předchozí</value>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Import konfigurace</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Vybrat soubor</value>
+  </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Složka parametrů měničů</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Vybrat konfigurační soubor</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Konfigurační složka</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Složka neexistuje</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>Soubor neplatný nebo nezadaný</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>Soubor neuložený</value>
+  </data>
+  <data name="SearchPattern" xml:space="preserve">
+    <value>Soubor šablon</value>
   </data>
 </root>

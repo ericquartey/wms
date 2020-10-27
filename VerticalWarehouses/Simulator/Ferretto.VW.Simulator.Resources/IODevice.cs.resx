@@ -117,49 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="BayLightActivation" xml:space="preserve">
+    <value>Aktivace osvětlení stanice</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Informace</value>
+  <data name="CarterSensorLeft" xml:space="preserve">
+    <value>Senzor levého ochr krytu</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statistiky, výstrahy, diagnostika</value>
+  <data name="CarterSensorRight" xml:space="preserve">
+    <value>Senzor pravého ochr krytu</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalace</value>
+  <data name="EmergencyPB" xml:space="preserve">
+    <value>Nouzové tlačítko</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="EnableRunConsole" xml:space="preserve">
+    <value>Aktivace chodu konzole</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Postup instalace, manuální pohyby, ostatní</value>
+  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
+    <value>Volba motoru kolébky (zpětná vaz)</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Údržba</value>
+  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
+    <value>Volba motoru zvedáku (zpětná vazba)</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>ÚDRŽ</value>
+  <data name="Free" xml:space="preserve">
+    <value>Volný</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Údržba, zhutnění zásuvek, aktualizace</value>
+  <data name="HeightReadingActivation" xml:space="preserve">
+    <value>Aktivace odečtu výšky (měřicí bariéra)</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Pohyby</value>
+  <data name="InverterFaultSignal" xml:space="preserve">
+    <value>Porucha kumulativního měniče</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>POHY</value>
+  <data name="IODeviceByID" xml:space="preserve">
+    <value>Zaříz IO{0:00}</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stav snímačů, reset stroje, ostatní</value>
+  <data name="IODeviceName" xml:space="preserve">
+    <value>Název zaříz IO</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Odběr</value>
+  <data name="LightCurtain" xml:space="preserve">
+    <value>Optická bariéra proti vniknutí</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ODBĚ</value>
+  <data name="LightCurtainCalibration" xml:space="preserve">
+    <value>Kalibrace bariéry</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Odběr, plnění, inventarizace</value>
+  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
+    <value>Snímač přítomnosti dolní zásuvky /mezilehlé stanice</value>
+  </data>
+  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Přít zásuvky na kolébce na straně stroje</value>
+  </data>
+  <data name="MotorElevatorChainSelection" xml:space="preserve">
+    <value>Volba motoru kolébky</value>
+  </data>
+  <data name="MotorElevatorSelection" xml:space="preserve">
+    <value>Volba motoru zvedáku</value>
+  </data>
+  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Přít zásuvky na kolébce na straně obsluhy</value>
+  </data>
+  <data name="ResetSafetyFunction" xml:space="preserve">
+    <value>Reset bezp funkce (impulz 300 ms)</value>
+  </data>
+  <data name="RobotEndPicking" xml:space="preserve">
+    <value>Možnost robota - tlač ukonč odběru (nebo konec odběru robota)</value>
+  </data>
+  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
+    <value>Volba robota - Ukončena mise zásobníku</value>
+  </data>
+  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
+    <value>Volba robota - Sklad připraven/poškozen</value>
+  </data>
+  <data name="SafetyStatus" xml:space="preserve">
+    <value>Stav bezpečnostní funkce</value>
+  </data>
+  <data name="TrolleyHook" xml:space="preserve">
+    <value>Možnost vozíku - Upevnění vozíku</value>
+  </data>
+  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
+    <value>Snímač přít zásuvky ve stan</value>
   </data>
 </root>

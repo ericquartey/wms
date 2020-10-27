@@ -181,7 +181,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return "hr-HR";
 
                 case "CZ":
-                    return "cz-CZ";
+                    return "cs-CZ";
 
                 default:
                     return "en-EN";
