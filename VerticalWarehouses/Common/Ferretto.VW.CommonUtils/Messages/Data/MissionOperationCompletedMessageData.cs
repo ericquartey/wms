@@ -5,6 +5,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class MissionOperationCompletedMessageData : IMessageData
     {
+        #region Constructors
+
+        public MissionOperationCompletedMessageData()
+        {
+        }
+
+        #endregion
+
         #region Properties
 
         public int MissionOperationId { get; set; }
