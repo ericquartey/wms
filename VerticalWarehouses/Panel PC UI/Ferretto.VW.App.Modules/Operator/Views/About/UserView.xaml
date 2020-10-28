@@ -15,6 +15,25 @@
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
+
+  <ctrls:View.Resources>
+    <DataTemplate x:Key="ImageComboBox">
+      <StackPanel Margin="0,10"
+                  Orientation="Horizontal">
+        <Image Width="40"
+               Height="40"
+               Source="{Binding Path=Image}" />
+        <TextBlock Margin="10,0,0,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   FontFamily="{DynamicResource VWAPP_TitleFont}"
+                   FontSize="{StaticResource FontSize_Very_High}"
+                   FontWeight="Bold"
+                   Text="{Binding Path=ShortCutInfo}" />
+      </StackPanel>
+    </DataTemplate>
+  </ctrls:View.Resources>
+
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="Auto" />
@@ -39,103 +58,104 @@
           Grid.Column="1">
 
       <Grid.RowDefinitions>
-        <RowDefinition />
-        <RowDefinition />
-        <RowDefinition />
-        <RowDefinition />
+        <RowDefinition Height="100" />
+        <RowDefinition Height="100" />
+        <RowDefinition Height="100" />
+        <RowDefinition Height="100" />
       </Grid.RowDefinitions>
 
-      <StackPanel Grid.Row="0"
-                  Margin="0,15"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  Orientation="Horizontal">
-        <TextBlock FontSize="{StaticResource FontSize_High}"
-                   Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                   Text="Operator" />
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="150" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
 
-        <ComboBox Width="125"
-                  Height="50"
-                  Margin="25,0"
-                  FontFamily="{DynamicResource VWAPP_TitleFont}"
-                  FontSize="{StaticResource FontSize_Very_High}"
-                  FontWeight="Bold"
-                  IsEditable="False"
-                  IsEnabled="{Binding OperatorEnabled}"
-                  ItemsSource="{Binding LanguageList}"
-                  MaxDropDownHeight="80"
-                  SelectedItem="{Binding OperatorLanguage}"
-                  Style="{DynamicResource PpcComboBoxStyle}" />
-      </StackPanel>
+      <TextBlock Grid.Row="0"
+                 Grid.Column="0"
+                 Margin="0,15"
+                 HorizontalAlignment="Left"
+                 FontSize="{StaticResource FontSize_High}"
+                 Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+                 Text="Operator" />
 
-      <StackPanel Grid.Row="1"
-                  Margin="0,15"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  Orientation="Horizontal">
-        <TextBlock FontSize="{StaticResource FontSize_High}"
-                   Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                   Text="Installer" />
+      <ComboBox Grid.Row="0"
+                Grid.Column="1"
+                Width="250"
+                Height="70"
+                Margin="25,15"
+                HorizontalAlignment="Left"
+                IsEditable="False"
+                IsEnabled="{Binding OperatorEnabled}"
+                ItemTemplate="{StaticResource ImageComboBox}"
+                ItemsSource="{Binding LanguageList}"
+                MaxDropDownHeight="160"
+                SelectedItem="{Binding OperatorLanguage}"
+                Style="{DynamicResource PpcComboBoxStyle}" />
 
-        <ComboBox Width="125"
-                  Height="50"
-                  Margin="25,0"
-                  FontFamily="{DynamicResource VWAPP_TitleFont}"
-                  FontSize="{StaticResource FontSize_Very_High}"
-                  FontWeight="Bold"
-                  IsEditable="False"
-                  IsEnabled="{Binding InstallerEnabled}"
-                  ItemsSource="{Binding LanguageList}"
-                  MaxDropDownHeight="80"
-                  SelectedItem="{Binding InstallerLanguage}"
-                  Style="{DynamicResource PpcComboBoxStyle}" />
-      </StackPanel>
+      <TextBlock Grid.Row="1"
+                 Grid.Column="0"
+                 Margin="0,15"
+                 HorizontalAlignment="Left"
+                 FontSize="{StaticResource FontSize_High}"
+                 Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+                 Text="Installer" />
 
-      <StackPanel Grid.Row="2"
-                  Margin="0,15"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  Orientation="Horizontal">
-        <TextBlock FontSize="{StaticResource FontSize_High}"
-                   Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                   Text="Service" />
+      <ComboBox Grid.Row="1"
+                Grid.Column="1"
+                Width="250"
+                Height="70"
+                Margin="25,15"
+                HorizontalAlignment="Left"
+                IsEditable="False"
+                IsEnabled="{Binding InstallerEnabled}"
+                ItemTemplate="{StaticResource ImageComboBox}"
+                ItemsSource="{Binding LanguageList}"
+                MaxDropDownHeight="160"
+                SelectedItem="{Binding InstallerLanguage}"
+                Style="{DynamicResource PpcComboBoxStyle}" />
 
-        <ComboBox Width="125"
-                  Height="50"
-                  Margin="25,0"
-                  FontFamily="{DynamicResource VWAPP_TitleFont}"
-                  FontSize="{StaticResource FontSize_Very_High}"
-                  FontWeight="Bold"
-                  IsEditable="False"
-                  IsEnabled="{Binding ServiceEnabled}"
-                  ItemsSource="{Binding LanguageList}"
-                  MaxDropDownHeight="80"
-                  SelectedItem="{Binding ServiceLanguage}"
-                  Style="{DynamicResource PpcComboBoxStyle}" />
-      </StackPanel>
+      <TextBlock Grid.Row="2"
+                 Grid.Column="0"
+                 Margin="0,15"
+                 HorizontalAlignment="Left"
+                 FontSize="{StaticResource FontSize_High}"
+                 Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+                 Text="Service" />
 
-      <StackPanel Grid.Row="3"
-                  Margin="0,15"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  Orientation="Horizontal">
-        <TextBlock FontSize="{StaticResource FontSize_High}"
-                   Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                   Text="Admin" />
+      <ComboBox Grid.Row="2"
+                Grid.Column="1"
+                Width="250"
+                Height="70"
+                Margin="25,15"
+                HorizontalAlignment="Left"
+                IsEditable="False"
+                IsEnabled="{Binding ServiceEnabled}"
+                ItemTemplate="{StaticResource ImageComboBox}"
+                ItemsSource="{Binding LanguageList}"
+                MaxDropDownHeight="160"
+                SelectedItem="{Binding ServiceLanguage}"
+                Style="{DynamicResource PpcComboBoxStyle}" />
 
-        <ComboBox Width="125"
-                  Height="50"
-                  Margin="25,0"
-                  FontFamily="{DynamicResource VWAPP_TitleFont}"
-                  FontSize="{StaticResource FontSize_Very_High}"
-                  FontWeight="Bold"
-                  IsEditable="False"
-                  IsEnabled="{Binding AdminEnabled}"
-                  ItemsSource="{Binding LanguageList}"
-                  MaxDropDownHeight="80"
-                  SelectedItem="{Binding AdminLanguage}"
-                  Style="{DynamicResource PpcComboBoxStyle}" />
-      </StackPanel>
+      <TextBlock Grid.Row="3"
+                 Grid.Column="0"
+                 Margin="0,15"
+                 HorizontalAlignment="Left"
+                 FontSize="{StaticResource FontSize_High}"
+                 Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+                 Text="Admin" />
+
+      <ComboBox Grid.Row="3"
+                Grid.Column="1"
+                Width="250"
+                Height="70"
+                Margin="25,15"
+                HorizontalAlignment="Left"
+                IsEditable="False"
+                IsEnabled="{Binding AdminEnabled}"
+                ItemTemplate="{StaticResource ImageComboBox}"
+                ItemsSource="{Binding LanguageList}"
+                MaxDropDownHeight="160"
+                SelectedItem="{Binding AdminLanguage}"
+                Style="{DynamicResource PpcComboBoxStyle}" />
     </Grid>
   </Grid>
 </ctrls:View>

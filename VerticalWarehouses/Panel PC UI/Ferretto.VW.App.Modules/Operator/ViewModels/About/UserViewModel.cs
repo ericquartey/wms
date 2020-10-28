@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Threading.Tasks;
+using DevExpress.Xpf.Core.ReflectionExtensions.Internal;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -10,6 +11,30 @@ using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
+    public struct Culture
+    {
+        #region Constructors
+
+        public Culture(string image, string shortCut, string shortCutInfo)
+        {
+            this.Image = image;
+            this.ShortCut = shortCut;
+            this.ShortCutInfo = shortCutInfo;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string Image { get; set; }
+
+        public string ShortCut { get; set; }
+
+        public string ShortCutInfo { get; set; }
+
+        #endregion
+    }
+
     [Warning(WarningsArea.Information)]
     internal sealed class UserViewModel : BaseAboutMenuViewModel
     {
@@ -21,21 +46,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool adminEnabled;
 
-        private string adminLanguage;
+        private Culture adminLanguage;
 
         private bool installerEnabled;
 
-        private string installerLanguage;
+        private Culture installerLanguage;
 
-        private List<string> languageList = new List<string> { "ITA", "EN", "CZ", "DE", "ES" /*, "FR", "PL", "RU", "SK", "SI"*/, "HR" };
+        private List<Culture> languageList;
 
         private bool operatorEnabled;
 
-        private string operatorLanguage;
+        private Culture operatorLanguage;
 
         private bool serviceEnabled;
 
-        private string serviceLanguage;
+        private Culture serviceLanguage;
 
         #endregion
 
@@ -47,9 +72,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
-            this.languageList.Sort();
-
-            this.GetLanguageFromFile();
+            //this.languageList.Sort();
         }
 
         #endregion
@@ -62,14 +85,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.adminEnabled, value, this.RaiseCanExecuteChanged);
         }
 
-        public string AdminLanguage
+        public Culture AdminLanguage
         {
             get => this.adminLanguage;
             set
             {
                 if (this.SetProperty(ref this.adminLanguage, value))
                 {
-                    this.localizationService.SetCulture(UserAccessLevel.Admin, this.GetCultureFromShortcut(value));
+                    this.localizationService.SetCulture(UserAccessLevel.Admin, value.ShortCut);
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -82,21 +105,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.installerEnabled, value, this.RaiseCanExecuteChanged);
         }
 
-        public string InstallerLanguage
+        public Culture InstallerLanguage
         {
             get => this.installerLanguage;
             set
             {
                 if (this.SetProperty(ref this.installerLanguage, value))
                 {
-                    this.localizationService.SetCulture(UserAccessLevel.Installer, this.GetCultureFromShortcut(value));
+                    this.localizationService.SetCulture(UserAccessLevel.Installer, value.ShortCut);
 
                     this.RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public List<string> LanguageList
+        public List<Culture> LanguageList
         {
             get => this.languageList;
             set => this.SetProperty(ref this.languageList, value, this.RaiseCanExecuteChanged);
@@ -108,14 +131,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.operatorEnabled, value, this.RaiseCanExecuteChanged);
         }
 
-        public string OperatorLanguage
+        public Culture OperatorLanguage
         {
             get => this.operatorLanguage;
             set
             {
                 if (this.SetProperty(ref this.operatorLanguage, value))
                 {
-                    this.localizationService.SetCulture(UserAccessLevel.Operator, this.GetCultureFromShortcut(value));
+                    this.localizationService.SetCulture(UserAccessLevel.Operator, value.ShortCut);
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -128,14 +151,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.serviceEnabled, value, this.RaiseCanExecuteChanged);
         }
 
-        public string ServiceLanguage
+        public Culture ServiceLanguage
         {
             get => this.serviceLanguage;
             set
             {
                 if (this.SetProperty(ref this.serviceLanguage, value))
                 {
-                    this.localizationService.SetCulture(UserAccessLevel.Support, this.GetCultureFromShortcut(value));
+                    this.localizationService.SetCulture(UserAccessLevel.Support, value.ShortCut);
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -146,92 +169,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public string GetCultureFromShortcut(string shortcut)
-        {
-            switch (shortcut)
-            {
-                case "ITA":
-                    return "it-IT";
-
-                case "EN":
-                    return "en-EN";
-
-                case "DE":
-                    return "de-DE";
-
-                case "ES":
-                    return "es-ES";
-
-                //case "FR":
-                //    return "fr-FR";
-
-                //case "PL":
-                //    return "pl-PL";
-
-                //case "RU":
-                //    return "ru-RU";
-
-                //case "SK":
-                //    return "sk-SK";
-
-                //case "SI":
-                //    return "si-SI";
-
-                case "HR":
-                    return "hr-HR";
-
-                case "CZ":
-                    return "cs-CZ";
-
-                default:
-                    return "en-EN";
-            }
-        }
-
-        public string GetShortcutFromCulture(string language)
-        {
-            switch (language)
-            {
-                case "it-IT":
-                    return "ITA";
-
-                case "en-EN":
-                    return "EN";
-
-                case "de-DE":
-                    return "DE";
-
-                case "es-ES":
-                    return "ES";
-
-                //case "fr-FR":
-                //    return "FR";
-
-                //case "pl-PL":
-                //    return "PL";
-
-                //case "ru-RU":
-                //    return "RU";
-
-                //case "sk-SK":
-                //    return "SK";
-
-                //case "si-SI":
-                //    return "SI";
-
-                case "hr-HR":
-                    return "HR";
-
-                case "cs-CZ":
-                    return "CZ";
-
-                default:
-                    return "EN";
-            }
-        }
-
         public override async Task OnAppearedAsync()
         {
+            this.LanguageList = this.SetLanguageList();
+
+            this.GetLanguageFromFile();
+
             this.IsBackNavigationAllowed = true;
 
             await base.OnAppearedAsync();
@@ -247,14 +190,87 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.AdminEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 
-        internal bool CanExecuteCommand()
-        {
-            return true;
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+        }
+
+        private Culture GetItemByCulture(string culture)
+        {
+            switch (culture)
+            {
+                case "it-IT":
+                    return new Culture(
+                        $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/IT.png",
+                        "it-IT",
+                        "Italiano");
+
+                case "en-EN":
+                    return new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/EN.png",
+                            "en-EN",
+                            "English");
+
+                case "de-DE":
+                    return new Culture(
+                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/DE.png",
+                             "de-DE",
+                             "Deutsche");
+
+                case "es-ES":
+                    return new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/ES.png",
+                            "es-ES",
+                            "Español");
+
+                //case "fr-FR":
+                //    return new Culture(
+                //            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/FR.png",
+                //            "fr-FR",
+                //            "Français");
+
+                //case "pl-PL":
+                //    return new Culture(
+                //            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/PL.png",
+                //            "pl-PL",
+                //            "Polskie");
+
+                //case "ru-RU":
+                //    return new Culture(
+                //            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/RU.png",
+                //            "ru-RU",
+                //            "Pусский");
+
+                //case "sk-SK":
+                //    return new Culture(
+                //            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SK.png",
+                //            "sk-SK",
+                //            "Slovcco");
+
+                //case "si-SI":
+                //    return new Culture(
+                //            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SI.png",
+                //            "si-SI",
+                //            "Slovenščina");
+
+                case "hr-HR":
+                    return new Culture(
+                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/HR.png",
+                             "hr-HR",
+                             "Hrvatski");
+
+                case "cs-CZ":
+                    return new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/CZ.png",
+                            "cs-CZ",
+                            "Čeština");
+
+                default:
+                    return new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/EN.png",
+                            "en-EN",
+                            "English");
+            }
         }
 
         private void GetLanguageFromFile()
@@ -262,10 +278,72 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var settings = configFile.AppSettings.Settings;
 
-            this.adminLanguage = this.GetShortcutFromCulture(settings[this.localizationService.AdminLanguageKey].Value);
-            this.serviceLanguage = this.GetShortcutFromCulture(settings[this.localizationService.ServiceLanguageKey].Value);
-            this.installerLanguage = this.GetShortcutFromCulture(settings[this.localizationService.InstallerLanguageKey].Value);
-            this.operatorLanguage = this.GetShortcutFromCulture(settings[this.localizationService.OperatorLanguageKey].Value);
+            this.AdminLanguage = this.GetItemByCulture(settings[this.localizationService.AdminLanguageKey].Value);
+            this.ServiceLanguage = this.GetItemByCulture(settings[this.localizationService.ServiceLanguageKey].Value);
+            this.InstallerLanguage = this.GetItemByCulture(settings[this.localizationService.InstallerLanguageKey].Value);
+            this.OperatorLanguage = this.GetItemByCulture(settings[this.localizationService.OperatorLanguageKey].Value);
+        }
+
+        private List<Culture> SetLanguageList()
+        {
+            List<Culture> res = new List<Culture>();
+
+            res.Add(new Culture(
+                        $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/IT.png",
+                        "it-IT",
+                        "Italiano"));
+
+            res.Add(new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/EN.png",
+                            "en-EN",
+                            "English"));
+
+            res.Add(new Culture(
+                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/DE.png",
+                             "de-DE",
+                             "Deutsche"));
+
+            res.Add(new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/ES.png",
+                            "es-ES",
+                            "Español"));
+
+            //res.Add(new Culture(
+            //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/FR.png",
+            //                "fr-FR",
+            //                "Français"));
+
+            //res.Add(new Culture(
+            //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/PL.png",
+            //                "pl-PL",
+            //                "Polskie"));
+
+            //res.Add(new Culture(
+            //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/RU.png",
+            //                "ru-RU",
+            //                "Pусский"));
+
+            //res.Add(new Culture(
+            //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SK.png",
+            //                "sk-SK",
+            //                "Slovcco"));
+
+            //res.Add(new Culture(
+            //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SI.png",
+            //                "si-SI",
+            //                "Slovenščina"));
+
+            res.Add(new Culture(
+                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/HR.png",
+                             "hr-HR",
+                             "Hrvatski"));
+
+            res.Add(new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/CZ.png",
+                            "cs-CZ",
+                            "Čeština"));
+
+            return res;
         }
 
         #endregion
