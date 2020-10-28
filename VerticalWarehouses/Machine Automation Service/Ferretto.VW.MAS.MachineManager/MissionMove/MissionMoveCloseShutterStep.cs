@@ -50,26 +50,84 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
-            this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
 
-            var machine = this.MachineProvider.Get();
-            if (this.Mission.NeedHomingAxis == Axis.Horizontal
-                || (this.Mission.NeedHomingAxis == Axis.None
-                    && (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
-                        || this.LoadingUnitMovementProvider.GetCyclesFromCalibration() >= machine.HorizontalCyclesToCalibrate
-                        )
-                    )
-                )
+            //
+            // 1. Check if bay is double (internal)
+            // 2. Check is there are waiting mission different from the current one for the given bay
+            // If bay is not internal double bay then CloseShutter()
+            // If bay is internal double bay and there is not one waiting mission (different from the current one) then CloseShutter()
+            // If bay is internal double bay and there is at least one waiting mission (different from the current one) then change to
+            // MissionMoveWaitPickStep()
+            //
+
+            //this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
+
+            //var machine = this.MachineProvider.Get();
+            //if (this.Mission.NeedHomingAxis == Axis.Horizontal
+            //    || (this.Mission.NeedHomingAxis == Axis.None
+            //        && (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
+            //            || this.LoadingUnitMovementProvider.GetCyclesFromCalibration() >= machine.HorizontalCyclesToCalibrate
+            //            )
+            //        )
+            //    )
+            //{
+            //    this.Mission.NeedHomingAxis = Axis.Horizontal;
+            //    this.Logger.LogInformation($"Homing horizontal elevator start Mission:Id={this.Mission.Id}");
+            //    this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+            //}
+
+            //this.Mission.RestoreConditions = false;
+            //this.MissionsDataProvider.Update(this.Mission);
+
+            //this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+            //return true;
+
+            var executeShutterClosing = true;
+            if (bay.IsDouble && (bay.Carousel == null) && !bay.IsExternal)
             {
-                this.Mission.NeedHomingAxis = Axis.Horizontal;
-                this.Logger.LogInformation($"Homing horizontal elevator start Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                var isAtLeastOneWaitingMission = this.isWaitingMissionOnThisBay(bay);
+                if (isAtLeastOneWaitingMission &&
+                   (this.Mission.MissionType == MissionType.OUT ||
+                    this.Mission.MissionType == MissionType.WMS ||
+                    this.Mission.MissionType == MissionType.FullTestOUT))
+                {
+                    // Check if bay is internal double Bay (not carousel bay or external bay), mission type is OUT, WMS, ... and
+                    // check if there is at least one waiting mission different from the current one
+                    executeShutterClosing = false;
+                }
             }
 
-            this.Mission.RestoreConditions = false;
-            this.MissionsDataProvider.Update(this.Mission);
+            if (executeShutterClosing)
+            {
+                // Close the shutter of specified bay
+                this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
 
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+                var machine = this.MachineProvider.Get();
+                if (this.Mission.NeedHomingAxis == Axis.Horizontal
+                    || (this.Mission.NeedHomingAxis == Axis.None
+                        && (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
+                            || this.LoadingUnitMovementProvider.GetCyclesFromCalibration() >= machine.HorizontalCyclesToCalibrate
+                            )
+                        )
+                    )
+                {
+                    this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    this.Logger.LogInformation($"Homing horizontal elevator start Mission:Id={this.Mission.Id}");
+                    this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+
+                this.Mission.RestoreConditions = false;
+                this.MissionsDataProvider.Update(this.Mission);
+
+                this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+            }
+            else
+            {
+                // Not close the shutter and go ahead to the WaitPick step
+                var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
+
             return true;
         }
 
@@ -185,6 +243,37 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
             newStep.OnEnter(null);
+        }
+
+        /// <summary>
+        /// Check if exist at least a waiting mission (step == MissionStep.WaitPick) in the current bay.
+        /// Applied only for double bay.
+        /// </summary>
+        /// <returns>
+        ///     <c>true</c> if exists at least a waiting mission,
+        ///     <c>false</c> otherwise.
+        /// </returns>
+        private bool isWaitingMissionOnThisBay(Bay bay)
+        {
+            var retValue = false;
+
+            if (bay != null)
+            {
+                if (bay.IsDouble)
+                {
+                    // List of waiting mission on the bay
+                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                        );
+
+                    retValue = waitMissions.Any();
+                }
+            }
+
+            return retValue;
         }
 
         #endregion
