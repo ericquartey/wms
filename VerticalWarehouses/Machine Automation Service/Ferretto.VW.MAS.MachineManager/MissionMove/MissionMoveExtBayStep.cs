@@ -191,7 +191,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 case MessageStatus.OperationEnd:
                     if (this.Mission.Status == MissionStatus.Executing
-                        //&& notification.RequestingBay == this.Mission.TargetBay
+                        && (notification.Type == MessageType.ShutterPositioning
+                            || notification.RequestingBay == this.Mission.TargetBay
+                            )
                         )
                     {
                         if (this.UpdateResponseList(notification.Type))
@@ -413,6 +415,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         // Detect an error condition
                         this.Logger.LogDebug($"2. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
 
+                        this.Mission.RestoreStep = this.Mission.Step;
                         newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                 }
@@ -429,6 +432,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         // Detect an error condition
                         this.Logger.LogDebug($"4. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
 
+                        this.Mission.RestoreStep = this.Mission.Step;
                         newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                 }
