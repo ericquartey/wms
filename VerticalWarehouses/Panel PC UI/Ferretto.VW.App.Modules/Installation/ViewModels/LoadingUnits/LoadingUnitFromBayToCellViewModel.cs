@@ -65,10 +65,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             var checkP1 = this.SensorsService.IsLoadingUnitInBay && (!this.MachineService.Bay.IsDouble) && this.MachineService.BayFirstPositionIsUpper;
             // Load from InBay only if bay is carousel
             var checkP2 = this.SensorsService.IsLoadingUnitInBay && (this.MachineService.HasCarousel);
+            // Load from InBay only if bay is double and Bay selected position is upper
+            var checkP3 = this.SensorsService.IsLoadingUnitInBay && this.MachineService.Bay.IsDouble && this.IsPositionUpSelected;
             // Load from MiddleBottomBay only if bay is double and Bay selected position is lower
-            var checkP3 = this.SensorsService.IsLoadingUnitInMiddleBottomBay && this.MachineService.Bay.IsDouble && this.IsPositionDownSelected;
+            var checkP4 = this.SensorsService.IsLoadingUnitInMiddleBottomBay && this.MachineService.Bay.IsDouble && this.IsPositionDownSelected;
             // Load from MiddleBottomBay only if bay is not carousel, bay is not double and Bay first position is NOT upper
-            var checkP4 = this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
+            var checkP5 = this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
                 !this.MachineService.HasCarousel &&
                 !this.MachineService.Bay.IsDouble &&
                 !this.MachineService.BayFirstPositionIsUpper;
@@ -76,7 +78,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
-                   (checkP1 || checkP2 || checkP3 || checkP4) &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
         }
