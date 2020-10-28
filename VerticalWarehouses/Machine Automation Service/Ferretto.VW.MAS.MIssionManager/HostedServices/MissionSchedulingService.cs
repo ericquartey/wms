@@ -619,7 +619,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var bayNumber = bays.FirstOrDefault(x =>
                     this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
                         && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
-                        && x.Carousel != null
+                        && (x.Carousel != null || x.IsExternal)
                         && x.CurrentMission == null
                         && x.Positions.All(p => p.LoadingUnit == null))?.Number ?? BayNumber.None;
 

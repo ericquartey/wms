@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.Devices;
 using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Events;
@@ -46,7 +47,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
-            this.alphaNumericBarDriver = alphaNumericBarDriver ?? throw new ArgumentNullException(nameof(missionWebService));
+            this.alphaNumericBarDriver = alphaNumericBarDriver ?? throw new ArgumentNullException(nameof(alphaNumericBarDriver));
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
@@ -125,7 +126,9 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     var port = alphaNumericBar.TcpPort;
                     var size = (MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
 
-                    this.alphaNumericBarDriver.Configure(ipAddress, port, size);
+                    var bay = await this.bayManager.GetBayAsync();
+
+                    this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal);
                 }
                 else
                 {
@@ -136,6 +139,25 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             {
                 this.NotifyError(ex);
             }
+        }
+
+        private string GetMessageFromMissionChangedEventArg(MissionChangedEventArgs e)
+        {
+            var message = "?";
+
+            switch (e.WmsOperation.Type)
+            {
+                case MissionOperationType.Pick:
+                    message = "-";
+                    break;
+
+                case MissionOperationType.Put:
+                    message = "+";
+                    break;
+            }
+
+            message += (e.WmsOperation.RequestedQuantity - e.WmsOperation.DispatchedQuantity) + " " + e.WmsOperation.ItemCode + " " + e.WmsOperation.ItemDescription;
+            return message;
         }
 
         private void NotifyError(Exception ex)
@@ -187,40 +209,55 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                         var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
 
-                        var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value);
-                        this.logger.Debug($"AlphaNumericService;OnMissionChangeAsync; width {compartmentSelected.Width.Value} X {compartmentSelected.XPosition.Value} bar position {arrowPosition}");
-                        await this.alphaNumericBarDriver.EnabledAsync(false);                               // force disable to reset bar
-                        await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
+                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                        var offsetArrow = 0;
+                        var offsetMessage = 0;
+                        var message = this.GetMessageFromMissionChangedEventArg(e);
 
-                        var message = "?";
-                        switch (e.WmsOperation.Type)
+                        this.alphaNumericBarDriver.GetOffsetArrowAndMessageFromCompartment(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value, message, out offsetArrow, out offsetMessage);
+
+                        await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
+
+                        if (message.Length > 0)
                         {
-                            case MissionOperationType.Pick:
-                                message = "-";
-                                break;
-
-                            case MissionOperationType.Put:
-                                message = "+";
-                                break;
+                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
                         }
 
-                        message += (e.WmsOperation.RequestedQuantity - e.WmsOperation.DispatchedQuantity) + " " + e.WmsOperation.ItemCode + " " + e.WmsOperation.ItemDescription;
-                        message = this.alphaNumericBarDriver.NormalizeMessageCharacters(message);
+                        //var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value);
+                        //this.logger.Debug($"AlphaNumericService;OnMissionChangeAsync; width {compartmentSelected.Width.Value} X {compartmentSelected.XPosition.Value} bar position {arrowPosition}");
+                        //await this.alphaNumericBarDriver.EnabledAsync(false);                               // force disable to reset bar
+                        //await this.alphaNumericBarDriver.SetAndWriteArrowAsync(arrowPosition, true);        // show the arrow in the rigth position
 
-                        var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
-                        if (offset > 0)
-                        {
-                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
-                        }
-                        else if (offset == -1)
-                        {
-                            await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
-                        }
-                        else
-                        {
-                            var start = arrowPosition + 6;
-                            await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
-                        }
+                        //var message = this.GetMessageFromMissionChangedEventArg(e);
+                        ////var message = "?";
+                        ////switch (e.WmsOperation.Type)
+                        ////{
+                        ////    case MissionOperationType.Pick:
+                        ////        message = "-";
+                        ////        break;
+
+                        ////    case MissionOperationType.Put:
+                        ////        message = "+";
+                        ////        break;
+                        ////}
+
+                        ////message += (e.WmsOperation.RequestedQuantity - e.WmsOperation.DispatchedQuantity) + " " + e.WmsOperation.ItemCode + " " + e.WmsOperation.ItemDescription;
+                        //message = this.alphaNumericBarDriver.NormalizeMessageCharacters(message);
+
+                        //var offset = this.alphaNumericBarDriver.CalculateOffset(arrowPosition + 6, message);
+                        //if (offset > 0)
+                        //{
+                        //    await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offset, false);
+                        //}
+                        //else if (offset == -1)
+                        //{
+                        //    await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, 0, arrowPosition, false);
+                        //}
+                        //else
+                        //{
+                        //    var start = arrowPosition + 6;
+                        //    await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, start, (this.alphaNumericBarDriver.NumberOfLeds - start) / 6, false);
+                        //}
                     }
                 }
             }
@@ -245,7 +282,6 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                 var offsetArrow = 0;
                 var offsetMessage = 0;
-
                 string message;
                 switch (socketLinkMessage.Data.CommandCode)
                 {
@@ -257,14 +293,14 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         message = this.alphaNumericBarDriver.NormalizeMessageCharacters(socketLinkMessage.Data.TextMessage);
                         if (message.Length > 0)
                         {
-                            this.alphaNumericBarDriver.GetOffsetMessage(this.bayManager.Identity.LoadingUnitWidth, socketLinkMessage.Data.X, message, out offsetMessage);
+                            this.alphaNumericBarDriver.GetOffsetMessage(socketLinkMessage.Data.X, message, out offsetMessage);
                             await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
                         }
                         break;
 
                     case 2: // switch on and show arrow down at the start of the text
                         message = this.alphaNumericBarDriver.NormalizeMessageCharacters(socketLinkMessage.Data.TextMessage);
-                        this.alphaNumericBarDriver.GetOffsetArrowAndMessage(this.bayManager.Identity.LoadingUnitWidth, socketLinkMessage.Data.X, message, out offsetArrow, out offsetMessage);
+                        this.alphaNumericBarDriver.GetOffsetArrowAndMessage(socketLinkMessage.Data.X, message, out offsetArrow, out offsetMessage);
 
                         await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
 
