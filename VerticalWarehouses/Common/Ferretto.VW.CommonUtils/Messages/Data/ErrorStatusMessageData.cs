@@ -7,6 +7,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
+        public ErrorStatusMessageData()
+        {
+        }
+
         public ErrorStatusMessageData(
             int errorId,
             MessageVerbosity verbosity = MessageVerbosity.Debug)

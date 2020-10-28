@@ -8,6 +8,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
+        public FullTestMessageData()
+        {
+        }
+
         public FullTestMessageData(
             CommandAction commandAction,
             List<int> loadUnitIds,
