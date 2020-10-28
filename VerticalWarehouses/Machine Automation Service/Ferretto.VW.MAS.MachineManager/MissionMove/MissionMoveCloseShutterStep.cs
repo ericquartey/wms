@@ -51,37 +51,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 
-            //
-            // 1. Check if bay is double (internal)
-            // 2. Check is there are waiting mission different from the current one for the given bay
-            // If bay is not internal double bay then CloseShutter()
-            // If bay is internal double bay and there is not one waiting mission (different from the current one) then CloseShutter()
-            // If bay is internal double bay and there is at least one waiting mission (different from the current one) then change to
-            // MissionMoveWaitPickStep()
-            //
-
-            //this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
-
-            //var machine = this.MachineProvider.Get();
-            //if (this.Mission.NeedHomingAxis == Axis.Horizontal
-            //    || (this.Mission.NeedHomingAxis == Axis.None
-            //        && (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
-            //            || this.LoadingUnitMovementProvider.GetCyclesFromCalibration() >= machine.HorizontalCyclesToCalibrate
-            //            )
-            //        )
-            //    )
-            //{
-            //    this.Mission.NeedHomingAxis = Axis.Horizontal;
-            //    this.Logger.LogInformation($"Homing horizontal elevator start Mission:Id={this.Mission.Id}");
-            //    this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
-            //}
-
-            //this.Mission.RestoreConditions = false;
-            //this.MissionsDataProvider.Update(this.Mission);
-
-            //this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
-            //return true;
-
             var executeShutterClosing = true;
             if (bay.IsDouble && (bay.Carousel == null) && !bay.IsExternal)
             {
