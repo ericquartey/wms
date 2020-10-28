@@ -7,6 +7,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
+        public ResolutionCalibrationMessageData()
+        {
+        }
+
         public ResolutionCalibrationMessageData(double readStartPosition, double readInitialPosition, double readFinalPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.ReadStartPosition = readStartPosition;

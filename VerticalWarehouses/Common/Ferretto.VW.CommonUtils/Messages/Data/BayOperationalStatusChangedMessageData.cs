@@ -5,6 +5,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class BayOperationalStatusChangedMessageData : IMessageData
     {
+        #region Constructors
+
+        public BayOperationalStatusChangedMessageData()
+        {
+        }
+
+        #endregion
+
         #region Properties
 
         public BayNumber BayNumber { get; set; }

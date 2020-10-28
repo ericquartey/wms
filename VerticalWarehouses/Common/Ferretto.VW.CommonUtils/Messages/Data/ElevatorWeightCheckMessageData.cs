@@ -5,6 +5,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class ElevatorWeightCheckMessageData : IElevatorWeightCheckMessageData
     {
+        #region Constructors
+
+        public ElevatorWeightCheckMessageData()
+        {
+        }
+
+        #endregion
+
         #region Properties
 
         public MessageVerbosity Verbosity { get; set; }

@@ -1,12 +1,15 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class StopMessageData : IStopMessageData
     {
         #region Constructors
+
+        public StopMessageData()
+        {
+        }
 
         public StopMessageData(StopRequestReason stopReason, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
