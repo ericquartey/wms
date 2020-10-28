@@ -1060,7 +1060,6 @@ namespace Ferretto.VW.Simulator.Services.Models
                     {
                         this.AxisPosition = this.Machine.Bays.FirstOrDefault(b => b.Carousel != null).ChainOffset;
                     }
-
                     this.HorizontalZeroSensor(true);
                 }
                 else
@@ -1311,18 +1310,18 @@ namespace Ferretto.VW.Simulator.Services.Models
                         {
                             // turn on the internal presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
                         }
                         else
                         {
                             // turn off the internal presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
                         }
                         if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) < 20)
                         {
                             // turn on the external presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
                         }
                         else
                         {

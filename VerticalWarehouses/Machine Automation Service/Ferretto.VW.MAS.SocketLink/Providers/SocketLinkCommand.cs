@@ -138,7 +138,11 @@ namespace Ferretto.VW.MAS.SocketLink
 
             ALPHANUMBAR_CMD,
 
-            ALPHANUMBAR_RES
+            ALPHANUMBAR_RES,
+
+            UTC_CMD,
+
+            UTC_RES
         }
 
         public enum InfoErrorCode
@@ -209,6 +213,13 @@ namespace Ferretto.VW.MAS.SocketLink
             trayAlreadyRequested = 2,
 
             bayNotCorrect = 3
+        }
+
+        public enum UtcCommand
+        {
+            timeRead = 0,
+
+            timeWrite = 1
         }
 
         #endregion
