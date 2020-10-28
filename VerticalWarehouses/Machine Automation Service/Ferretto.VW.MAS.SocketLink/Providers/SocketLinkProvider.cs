@@ -6,12 +6,13 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.TimeManagement;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using static Ferretto.VW.MAS.SocketLink.SocketLinkCommand;
+using Ferretto.VW.MAS.TimeManagement.Models;
 
 namespace Ferretto.VW.MAS.SocketLink
 {
@@ -19,7 +20,7 @@ namespace Ferretto.VW.MAS.SocketLink
     {
         #region Fields
 
-        private const string VERSION = "4.6";
+        private const string VERSION = "4.7";
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -36,6 +37,8 @@ namespace Ferretto.VW.MAS.SocketLink
         private readonly IMissionSchedulingProvider missionSchedulingProvider;
 
         private readonly IMissionsDataProvider missionsDataProvider;
+
+        private readonly PubSubEvent<SystemTimeChangedEventArgs> timeChangedEvent;
 
         #endregion
 
@@ -59,6 +62,7 @@ namespace Ferretto.VW.MAS.SocketLink
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
+            this.timeChangedEvent = eventAggregator.GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>();
         }
 
         #endregion
@@ -159,6 +163,10 @@ namespace Ferretto.VW.MAS.SocketLink
 
                     case SocketLinkCommand.HeaderType.ALPHANUMBAR_CMD:
                         commandsResponse.Add(this.ProcessCommandAlphaNumericBar(cmdReceived));
+                        break;
+
+                    case SocketLinkCommand.HeaderType.UTC_CMD:
+                        commandsResponse.Add(this.ProcessCommandUTC(cmdReceived));
                         break;
 
                     case SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED:
@@ -940,6 +948,32 @@ namespace Ferretto.VW.MAS.SocketLink
                 cmdResponse.AddPayload((int)SocketLinkCommand.StroreCommandResponseResult.bayNotCorrect);
                 cmdResponse.AddPayload(trayNumber);
                 cmdResponse.AddPayload(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandUTC(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.UTC_RES);
+
+            try
+            {
+                var commandCode = Convert.ToInt32(cmdReceived.GetPayloadByPosition(0), CultureInfo.InvariantCulture);
+
+                switch (commandCode)
+                {
+                    case (int)SocketLinkCommand.UtcCommand.timeWrite:
+                        var utc = DateTimeOffset.Parse(cmdReceived.GetPayloadByPosition(2), CultureInfo.InvariantCulture).UtcDateTime;
+                        this.timeChangedEvent.Publish(new SystemTimeChangedEventArgs(utc));
+                        break;
+                }
+
+                cmdResponse.AddPayload(DateTimeOffset.UtcNow.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
             }
             catch (Exception ex)
             {

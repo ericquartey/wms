@@ -181,10 +181,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                     break;
             }
 
-            if (!bayIsExternal)
+            if (!bayIsExternal)         // for BIG, BIS and BID bay (no external), the first 8 leds are hide
             {
                 this.ledHideOnLeftSide = 8;
-                this.ledHideOnRightSide = 8;
+                this.ledHideOnRightSide = 0;
             }
         }
 
