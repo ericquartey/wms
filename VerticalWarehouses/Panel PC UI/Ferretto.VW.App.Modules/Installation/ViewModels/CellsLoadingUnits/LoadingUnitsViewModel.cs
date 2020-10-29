@@ -32,6 +32,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ISessionService sessionService;
 
+        private DelegateCommand blockUnlockCommand;
+
+        private string blockUnlockText;
+
         private string currentError;
 
         private bool error = false;
@@ -84,6 +88,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public ICommand BlockUnlockCommand =>
+            this.blockUnlockCommand
+            ??
+            (this.blockUnlockCommand = new DelegateCommand(
+                async () => await this.BlockUnlockAsync(),
+                () => !this.IsMoving &&
+                this.SelectedLU != null &&
+                (this.SelectedLU.Status == LoadingUnitStatus.InLocation || this.SelectedLU.Status == LoadingUnitStatus.Blocked)));
+
+        public string BlockUnlockText
+        {
+            get => this.blockUnlockText;
+            set => this.SetProperty(ref this.blockUnlockText, value);
+        }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -170,6 +189,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.SelectedId = this.SelectedLU?.Id;
                 this.SelectedCode = this.SelectedLU?.Code;
                 this.SelectedBayPositionId = null;
+                this.BlockUnlockText = this.selectedLU.Status == LoadingUnitStatus.Blocked ? Localized.Get("InstallationApp.UnlockLU") : Localized.Get("InstallationApp.BlockLU");
             });
         }
 
@@ -272,6 +292,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.stopMovingCommand?.RaiseCanExecuteChanged();
+            this.blockUnlockCommand?.RaiseCanExecuteChanged();
             this.saveDrawerCommand?.RaiseCanExecuteChanged();
             this.freeDrawerCommand?.RaiseCanExecuteChanged();
             this.insertDrawerCommand?.RaiseCanExecuteChanged();
@@ -285,6 +306,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
             this.RaisePropertyChanged(nameof(this.Status));
             this.RaisePropertyChanged(nameof(this.IsEditStatus));
+        }
+
+        private async Task BlockUnlockAsync()
+        {
+            try
+            {
+                if (this.selectedLU.Status == LoadingUnitStatus.Blocked)
+                {
+                    this.SelectedLU.Status = LoadingUnitStatus.InLocation;
+                    await this.machineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
+                }
+                else if (this.selectedLU.Status == LoadingUnitStatus.InLocation)
+                {
+                    this.SelectedLU.Status = LoadingUnitStatus.Blocked;
+                    await this.machineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
+                }
+
+                if (this.error)
+                {
+                    this.ClearNotifications();
+                    this.error = false;
+                }
+                else
+                {
+                    await this.MachineService.GetLoadUnits();
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.error = true;
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                await this.MachineService.GetLoadUnits();
+            }
         }
 
         private async Task FreeDrawer()
@@ -324,8 +381,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.DeleteUnitDialog"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                this.ShowNotification(App.Resources.Localized.Get("InstallationApp.DeleteUnit") + $" {this.SelectedLU.Id}");
-                await this.machineLoadingUnitsWebService.RemoveLoadUnitAsync(this.SelectedLU.Id);
+                    this.ShowNotification(App.Resources.Localized.Get("InstallationApp.DeleteUnit") + $" {this.SelectedLU.Id}");
+                    await this.machineLoadingUnitsWebService.RemoveLoadUnitAsync(this.SelectedLU.Id);
 
                     await this.MachineService.GetLoadUnits();
                 }

@@ -2831,4 +2831,13 @@ Po provedení pokračujte stisknutím tlačítka „Následující“</value>
   <data name="Completed" xml:space="preserve">
     <value>Dokončena</value>
   </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Bloková zásuvka</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Odemkněte zásuvku</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Blokováno</value>
+  </data>
 </root>

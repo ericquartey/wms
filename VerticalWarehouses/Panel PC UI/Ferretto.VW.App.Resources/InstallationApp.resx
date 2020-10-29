@@ -2935,4 +2935,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="SelectModel" xml:space="preserve">
     <value>Select the model</value>
   </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Block Unit</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Unlock Unit</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Blocked</value>
+  </data>
 </root>
