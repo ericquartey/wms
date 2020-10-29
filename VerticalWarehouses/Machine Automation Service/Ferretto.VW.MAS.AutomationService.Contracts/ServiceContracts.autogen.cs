@@ -3809,6 +3809,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         InElevator = 5,
     
+        Blocked = 6,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
