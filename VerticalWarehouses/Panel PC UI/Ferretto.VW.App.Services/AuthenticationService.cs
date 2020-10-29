@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
-using DevExpress.XtraRichEdit.Model;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 
 namespace Ferretto.VW.App.Services
 {
@@ -11,6 +12,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IBayManager bayManager;
 
+        private readonly ITelemetryHubClient telemetryHubClient;
+
         private readonly IMachineUsersWebService usersService;
 
         #endregion
@@ -19,10 +22,12 @@ namespace Ferretto.VW.App.Services
 
         public AuthenticationService(
             IMachineUsersWebService usersService,
-            IBayManager bayManager)
+            IBayManager bayManager,
+            ITelemetryHubClient telemetryHubClient)
         {
             this.usersService = usersService;
             this.bayManager = bayManager;
+            this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
         }
 
         #endregion
@@ -64,6 +69,8 @@ namespace Ferretto.VW.App.Services
             this.AccessLevel = userClaims.AccessLevel;
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, this.AccessLevel));
 
+            await this.TelemetryLoginLogoutAsync("login", userName, supportToken, accessLevel);
+
             return userClaims;
         }
 
@@ -100,12 +107,34 @@ namespace Ferretto.VW.App.Services
             }
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userClaims.Name, this.AccessLevel));
 
+            await this.TelemetryLoginLogoutAsync("login", userClaims.Name, bearerToken, this.AccessLevel);
+
             return userClaims;
         }
 
         public async Task LogOutAsync()
         {
+            await this.TelemetryLoginLogoutAsync("logout", this.UserName, "", this.AccessLevel);
             await Task.Run(() => this.UserName = null);
+        }
+
+        private async Task TelemetryLoginLogoutAsync(string action, string userName, string supportToken, UserAccessLevel accessLevel)
+        {
+            var bay = await this.bayManager.GetBayAsync();
+
+            var errorLog = new ErrorLog
+            {
+                AdditionalText = $"{action} {userName} {supportToken} {accessLevel}",
+                BayNumber = (int)bay.Number,
+                Code = 0,
+                DetailCode = (int)accessLevel,
+                ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
+                InverterIndex = 0,
+                OccurrenceDate = DateTimeOffset.Now,
+                ResolutionDate = null
+            };
+
+            await this.telemetryHubClient.SendErrorLogAsync(errorLog);
         }
 
         #endregion
