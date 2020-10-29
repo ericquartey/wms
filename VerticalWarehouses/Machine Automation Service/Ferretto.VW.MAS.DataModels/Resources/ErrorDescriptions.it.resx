@@ -417,4 +417,7 @@
   <data name="BayPositionDisabled" xml:space="preserve">
     <value>Cassetto non disponibile</value>
   </data>
+  <data name="LoadUnitNumber" xml:space="preserve">
+    <value>Cassetto numero</value>
+  </data>
 </root>

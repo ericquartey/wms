@@ -6,6 +6,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
+        public InverterParametersData()
+        {
+        }
+
         public InverterParametersData(byte inverterIndex, string description)
         {
             this.InverterIndex = inverterIndex;

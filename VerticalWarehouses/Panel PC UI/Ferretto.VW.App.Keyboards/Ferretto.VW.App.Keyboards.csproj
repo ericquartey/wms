@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\cz-lowercase.json" />
-    <None Remove="Resources\cz-numeric.json" />
-    <None Remove="Resources\cz-numpad.json" />
-    <None Remove="Resources\cz-uppercase.json" />
+    <None Remove="Resources\cs-lowercase.json" />
+    <None Remove="Resources\cs-numeric.json" />
+    <None Remove="Resources\cs-numpad.json" />
+    <None Remove="Resources\cs-uppercase.json" />
     <None Remove="Resources\de-lowercase.json" />
     <None Remove="Resources\de-numeric.json" />
     <None Remove="Resources\de-numpad.json" />
@@ -44,14 +44,14 @@
     <Resource Include="Resources\en-numeric.json" />
     <Resource Include="Resources\es-numpad.json" />
     <Resource Include="Resources\en-numpad.json" />
-    <Resource Include="Resources\cz-lowercase.json" />
+    <Resource Include="Resources\cs-lowercase.json" />
     <Resource Include="Resources\es-uppercase.json" />
     <Resource Include="Resources\hr-lowercase.json" />
-    <Resource Include="Resources\cz-numeric.json" />
+    <Resource Include="Resources\cs-numeric.json" />
     <Resource Include="Resources\hr-numeric.json" />
-    <Resource Include="Resources\cz-numpad.json" />
+    <Resource Include="Resources\cs-numpad.json" />
     <Resource Include="Resources\hr-numpad.json" />
-    <Resource Include="Resources\cz-uppercase.json" />
+    <Resource Include="Resources\cs-uppercase.json" />
     <Resource Include="Resources\hr-uppercase.json" />
     <Resource Include="Resources\it-numpad.json" />
     <Resource Include="Resources\it-numeric.json" />

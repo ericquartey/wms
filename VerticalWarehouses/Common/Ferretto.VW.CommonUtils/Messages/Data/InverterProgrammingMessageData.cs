@@ -7,6 +7,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
+        public InverterProgrammingMessageData()
+        {
+        }
+
         public InverterProgrammingMessageData(IEnumerable<InverterParametersData> inverterParametersData, CommandAction commandAction = CommandAction.Start, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.InverterParametersData = inverterParametersData;

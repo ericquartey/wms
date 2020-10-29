@@ -1,12 +1,15 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class StateChangedMessageData : IStateChangedMessageData
     {
         #region Constructors
+
+        public StateChangedMessageData()
+        {
+        }
 
         public StateChangedMessageData(bool newState, MessageVerbosity verbosity = MessageVerbosity.Info)
         {

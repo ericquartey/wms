@@ -6,6 +6,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class SensorsChangedMessageData : ISensorsChangedMessageData
     {
+        #region Constructors
+
+        public SensorsChangedMessageData()
+        {
+        }
+
+        #endregion
+
         #region Properties
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

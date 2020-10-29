@@ -339,20 +339,65 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void RestoreExtBay()
         {
+            IMissionMoveBase newStep;
             this.Mission.StopReason = StopRequestReason.NoReason;
             var loadingUnitLocation = (this.Mission.LoadUnitDestination is LoadingUnitLocation.Elevator || this.Mission.LoadUnitDestination is LoadingUnitLocation.Cell) ?
                 this.Mission.LoadUnitSource :
                 this.Mission.LoadUnitDestination;
 
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(loadingUnitLocation);
-            var destination = bay.Positions.FirstOrDefault();
+            var isLoadUnitDestinationInBay = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up ||
+                this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
+                this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up;
 
-            this.Mission.RestoreConditions = true;
-            this.Mission.RestoreStep = MissionStep.NotDefined;
-            this.Mission.NeedMovingBackward = false;
+            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
+            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+            if (shutterPosition != ShutterPosition.Closed
+                && shutterPosition != ShutterPosition.Opened
+                )
+            {
+                this.Mission.RestoreConditions = true;
+                this.Mission.OpenShutterPosition = ShutterPosition.Opened;
+                this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
+                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
+                this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
+                this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
+                this.MissionsDataProvider.Update(this.Mission);
+            }
+            else if (((isLoadUnitDestinationInBay
+                    && this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)
+                    && !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(this.Mission.TargetBay))
+                || (!isLoadUnitDestinationInBay
+                    && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
+                    && !this.LoadingUnitMovementProvider.IsExternalPositionOccupied(this.Mission.TargetBay))
+                )
+                )
+            {
+                // movement is finished
 
-            var newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-            newStep.OnEnter(null);
+                this.Mission.RestoreStep = MissionStep.NotDefined;
+                this.Mission.RestoreConditions = false;
+                this.Mission.NeedMovingBackward = false;
+                if (isLoadUnitDestinationInBay)
+                {
+                    newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
+                else
+                {
+                    newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
+                newStep.OnEnter(null);
+            }
+            else
+            {
+                this.Mission.RestoreConditions = true;
+                this.Mission.RestoreStep = MissionStep.NotDefined;
+                this.Mission.NeedMovingBackward = false;
+
+                newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
         }
 
         private void RestoreMoveToTarget()
@@ -403,9 +448,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (this.Mission.RestoreStep)
             {
                 case MissionStep.ExtBay:
-                    // Check THIS!!
-                    newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    break;
+                    this.RestoreExtBay();
+                    return;
 
                 case MissionStep.BayChain:
                     this.RestoreBayChain();

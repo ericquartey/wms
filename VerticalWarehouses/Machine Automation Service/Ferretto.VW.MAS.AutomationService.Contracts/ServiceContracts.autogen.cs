@@ -1059,13 +1059,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllNotTestUnitsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<double> GetLoadUnitMaxHeightAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<double> GetLoadUnitMaxHeightAsync(System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllTestUnitsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1078,6 +1071,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<CompartmentDetails>> GetCompartmentsAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<double> GetLoadUnitMaxHeightAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<double> GetLoadUnitMaxHeightAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitSpaceStatistics>> GetSpaceStatisticsAsync();
@@ -3808,6 +3808,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         InLocation = 4,
     
         InElevator = 5,
+    
+        Blocked = 6,
     
     }
     

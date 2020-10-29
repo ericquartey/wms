@@ -417,4 +417,7 @@
   <data name="BayPositionDisabled" xml:space="preserve">
     <value>Load unit non available</value>
   </data>
+  <data name="LoadUnitNumber" xml:space="preserve">
+    <value>Load unit number</value>
+  </data>
 </root>

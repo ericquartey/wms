@@ -117,7 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="Abort" xml:space="preserve">
+    <value>Zrušit</value>
+  </data>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>Instalace softwaru Vertimag</value>
+  </data>
+  <data name="UnknownVersion" xml:space="preserve">
+    <value>Neznámý</value>
+  </data>
+  <data name="VertimagSoftwareInstallation" xml:space="preserve">
+    <value>Instalace softwaru Vertimag</value>
+  </data>
+  <data name="ServiceVersion" xml:space="preserve">
+    <value>Verze servisu na pozadí</value>
+  </data>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>Verze uživ rozhraní</value>
+  </data>
+  <data name="SelectVertimagConfigurationFile" xml:space="preserve">
+    <value>Vyberte konfigurační soubor Vertimag</value>
+  </data>
+  <data name="VertimagConfigurationFiles" xml:space="preserve">
+    <value>Konfigurační soubor Vertimag</value>
+  </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Všechny file</value>
+  </data>
+  <data name="MasterBay" xml:space="preserve">
+    <value>Hlavní stanice</value>
+  </data>
+  <data name="SlaveBay" xml:space="preserve">
+    <value>Sekundární stan</value>
+  </data>
+  <data name="SelectedConfigurationFile" xml:space="preserve">
+    <value>Konfigurační soubor</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>Žádný vybraný soubor</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Vybrat soubor</value>
+  </data>
+  <data name="MasterBayAddress" xml:space="preserve">
+    <value>Adresa hlavní stanice</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Nalož</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Pokrač</value>
+  </data>
+  <data name="BaySelection" xml:space="preserve">
+    <value>Vybrat stanici</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Výrobní číslo</value>
+  </data>
+  <data name="MaximumGrossCapacity" xml:space="preserve">
+    <value>Maxim. hrubá kapacita</value>
+  </data>
+  <data name="KilogramsValueFormat" xml:space="preserve">
+    <value>{0} kg</value>
+  </data>
+  <data name="SelectNumberOfThisBay" xml:space="preserve">
+    <value>Vybrat číslo této stanice</value>
+  </data>
+  <data name="GoBack" xml:space="preserve">
+    <value>Jít zpět</value>
   </data>
 </root>

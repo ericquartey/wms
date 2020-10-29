@@ -16,10 +16,38 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\Flags\CZ.png" />
+    <None Remove="Images\Flags\DE.png" />
+    <None Remove="Images\Flags\EN.png" />
+    <None Remove="Images\Flags\ES.png" />
+    <None Remove="Images\Flags\FR.png" />
+    <None Remove="Images\Flags\HR.png" />
+    <None Remove="Images\Flags\IT.png" />
+    <None Remove="Images\Flags\PL.png" />
+    <None Remove="Images\Flags\RU.png" />
+    <None Remove="Images\Flags\SI.png" />
+    <None Remove="Images\Flags\SK.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Flags\CZ.png" />
+    <Resource Include="Images\Flags\DE.png" />
+    <Resource Include="Images\Flags\EN.png" />
+    <Resource Include="Images\Flags\ES.png" />
+    <Resource Include="Images\Flags\FR.png" />
+    <Resource Include="Images\Flags\HR.png" />
+    <Resource Include="Images\Flags\IT.png" />
+    <Resource Include="Images\Flags\PL.png" />
+    <Resource Include="Images\Flags\RU.png" />
+    <Resource Include="Images\Flags\SI.png" />
+    <Resource Include="Images\Flags\SK.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -33,11 +33,14 @@ namespace Ferretto.VW.App.Controls.Converters
                     case LoadingUnitStatus.Undefined:
                         return Resources.Localized.Get("InstallationApp.LoadingUnitStatus_Undefined");
 
+                    case LoadingUnitStatus.Blocked:
+                        return Resources.Localized.Get("InstallationApp.LoadingUnitStatus_Blocked");
+
                     default:
                         return Resources.Localized.Get("InstallationApp.LoadingUnitStatus_Undefined");
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return value;
             }
@@ -84,7 +87,7 @@ namespace Ferretto.VW.App.Controls.Converters
 
                 return blk;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return LoadingUnitStatus.Undefined;
             }
