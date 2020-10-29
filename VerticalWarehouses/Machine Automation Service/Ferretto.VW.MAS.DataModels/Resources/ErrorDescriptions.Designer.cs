@@ -619,6 +619,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load unit number.
+        /// </summary>
+        public static string LoadUnitNumber {
+            get {
+                return ResourceManager.GetString("LoadUnitNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errore cassetto in posizione inattesa.
         /// </summary>
         public static string LoadUnitOtherBay {
