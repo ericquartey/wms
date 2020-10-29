@@ -94,7 +94,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     if (m.TargetBay == this.Mission.TargetBay)
                     {
-                        isWaitingRequested = true;
+                        if (bay.Carousel == null
+                            || this.SensorsProvider.IsLoadingUnitInLocation(m.LoadUnitDestination)
+                            )
+
+                        {
+                            isWaitingRequested = true;
+                        }
                     }
                 }
 
