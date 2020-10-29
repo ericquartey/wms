@@ -94,7 +94,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.blockUnlockCommand = new DelegateCommand(
                 async () => await this.BlockUnlockAsync(),
-                () => !this.IsMoving && this.SelectedLU != null && this.SelectedLU.Status == LoadingUnitStatus.InLocation));
+                () => !this.IsMoving &&
+                this.SelectedLU != null &&
+                (this.SelectedLU.Status == LoadingUnitStatus.InLocation || this.SelectedLU.Status == LoadingUnitStatus.Blocked)));
 
         public string BlockUnlockText
         {
@@ -312,11 +314,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.selectedLU.Status == LoadingUnitStatus.Blocked)
                 {
-                    await this.machineLoadingUnitsWebService.LockUnlockLoadUnitAsync(this.SelectedLU, 2);
+                    this.SelectedLU.Status = LoadingUnitStatus.InLocation;
+                    await this.machineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
                 }
                 else if (this.selectedLU.Status == LoadingUnitStatus.InLocation)
                 {
-                    await this.machineLoadingUnitsWebService.LockUnlockLoadUnitAsync(this.SelectedLU, 1);
+                    this.SelectedLU.Status = LoadingUnitStatus.Blocked;
+                    await this.machineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
                 }
 
                 if (this.error)

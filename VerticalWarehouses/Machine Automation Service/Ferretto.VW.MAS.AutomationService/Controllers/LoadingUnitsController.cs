@@ -266,17 +266,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("lock-unlock")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        public IActionResult LockUnlockLoadUnit(DataModels.LoadingUnit loadingUnit, int command)
-        {
-            //if command is 1 block if is 2 unlock
-            this.loadingUnitsDataProvider.LockUnlockLoadingUnit(loadingUnit, command);
-            return this.Accepted();
-        }
-
         [HttpPost("{id}/move-to-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

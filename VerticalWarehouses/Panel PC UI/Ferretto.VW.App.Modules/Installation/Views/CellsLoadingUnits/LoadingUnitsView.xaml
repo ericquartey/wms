@@ -270,7 +270,6 @@
 
       <controls:PpcButton Grid.Column="2"
                           Margin="0,0,15,0"
-                          Visibility="Collapsed"
                           Command="{Binding BlockUnlockCommand}"
                           Content="{Binding BlockUnlockText}" />
 
