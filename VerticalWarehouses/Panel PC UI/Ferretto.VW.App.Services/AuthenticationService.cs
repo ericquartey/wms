@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Services
             this.AccessLevel = userClaims.AccessLevel;
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, this.AccessLevel));
 
-            await this.TelemetryLoginLogoutAsync("login", userName, supportToken, accessLevel);
+            await this.TelemetryLoginLogoutAsync("Login", supportToken);
 
             return userClaims;
         }
@@ -107,27 +107,27 @@ namespace Ferretto.VW.App.Services
             }
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userClaims.Name, this.AccessLevel));
 
-            await this.TelemetryLoginLogoutAsync("login", userClaims.Name, bearerToken, this.AccessLevel);
+            await this.TelemetryLoginLogoutAsync("Login", bearerToken);
 
             return userClaims;
         }
 
         public async Task LogOutAsync()
         {
-            await this.TelemetryLoginLogoutAsync("logout", this.UserName, "", this.AccessLevel);
+            await this.TelemetryLoginLogoutAsync("Logout");
             await Task.Run(() => this.UserName = null);
         }
 
-        private async Task TelemetryLoginLogoutAsync(string action, string userName, string supportToken, UserAccessLevel accessLevel)
+        private async Task TelemetryLoginLogoutAsync(string action, string supportToken = "")
         {
             var bay = await this.bayManager.GetBayAsync();
 
             var errorLog = new ErrorLog
             {
-                AdditionalText = $"{action} {userName} {supportToken} {accessLevel}",
+                AdditionalText = $"{action} {this.AccessLevel} {supportToken} {this.AccessLevel}",
                 BayNumber = (int)bay.Number,
                 Code = 0,
-                DetailCode = (int)accessLevel,
+                DetailCode = (int)this.AccessLevel,
                 ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
                 InverterIndex = 0,
                 OccurrenceDate = DateTimeOffset.Now,
