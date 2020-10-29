@@ -225,6 +225,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public double GetLoadUnitMaxHeight()
+        {
+            lock (this.dataContext)
+            {
+                var loadUnitMaxHeight = this.dataContext.Machines.Select(s => s.LoadUnitMaxHeight).Single();
+
+                return loadUnitMaxHeight;
+            }
+        }
+
         public IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics()
         {
             lock (this.dataContext)
@@ -263,16 +273,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public double GetLoadUnitMaxHeight()
-        {
-            lock (this.dataContext)
-            {
-                var loadUnitMaxHeight = this.dataContext.Machines.Select(s => s.LoadUnitMaxHeight).Single();
-
-                return loadUnitMaxHeight;
-            }
-        }
-
         public void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context)
         {
             _ = loadingUnits ?? throw new ArgumentNullException(nameof(loadingUnits));
@@ -300,6 +300,92 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
+        }
+
+        public void LockUnlockLoadingUnit(LoadingUnit loadingUnit, int command)
+        {
+            //if command is 1 block if is 2 unlock
+
+            //int? cellIdOld = null;
+            //double luHeightOld = 0;
+            //var originalStatus = loadingUnit.Status;
+
+            //var luDb = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnit.Id));
+            //if (luDb is null)
+            //{
+            //    throw new EntityNotFoundException($"LoadingUnit ID={loadingUnit.Id}");
+            //}
+
+            //if (loadingUnit.CellId.HasValue &&
+            //    loadingUnit.Height == 0)
+            //{
+            //    throw new ArgumentException($"LoadingUnit with Height to 0 (Id={loadingUnit.Id})");
+            //}
+
+            //if (luDb.CellId.HasValue &&
+            //    (luDb.CellId != loadingUnit.CellId ||
+            //    luDb.Height != loadingUnit.Height ||
+            //    loadingUnit.Status == DataModels.Enumerations.LoadingUnitStatus.InElevator))
+            //{
+            //    cellIdOld = luDb.CellId.Value;
+            //    luHeightOld = luDb.Height;
+            //    this.cellsProvider.SetLoadingUnit(luDb.CellId.Value, null);
+
+            //    lock (this.dataContext)
+            //    {
+            //        luDb.Height = loadingUnit.Height;
+            //        this.dataContext.SaveChanges();
+            //    }
+            //}
+
+            //if (loadingUnit.CellId.HasValue &&
+            //    (luDb.CellId != loadingUnit.CellId ||
+            //     luDb.Height != loadingUnit.Height))
+            //{
+            //    if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
+            //    {
+            //        lock (this.dataContext)
+            //        {
+            //            luDb.Height = luHeightOld;
+            //            luDb.CellId = cellIdOld;
+            //            this.dataContext.SaveChanges();
+            //        }
+
+            //        if (cellIdOld.HasValue)
+            //        {
+            //            this.cellsProvider.SetLoadingUnit(cellIdOld.Value, luDb.Id);
+            //        }
+
+            //        throw new ArgumentException($"LoadingUnit error cell or height (CellId={loadingUnit.CellId}, Id={loadingUnit.Id})");
+            //    }
+            //}
+
+            //lock (this.dataContext)
+            //{
+            //    luDb.Description = loadingUnit.Description;
+            //    luDb.MissionsCount = loadingUnit.MissionsCount;
+            //    luDb.GrossWeight = loadingUnit.GrossWeight;
+            //    luDb.MaxNetWeight = loadingUnit.MaxNetWeight;
+            //    luDb.Tare = loadingUnit.Tare;
+            //    luDb.Height = loadingUnit.Height;
+            //    if (originalStatus != DataModels.Enumerations.LoadingUnitStatus.InElevator)
+            //    {
+            //        luDb.Status = loadingUnit.Status;
+            //    }
+            //    else
+            //    {
+            //        luDb.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
+            //    }
+
+            //    this.dataContext.SaveChanges();
+            //}
+
+            //if (loadingUnit.CellId.HasValue &&
+            //    luDb.CellId != loadingUnit.CellId &&
+            //    originalStatus != DataModels.Enumerations.LoadingUnitStatus.InElevator)
+            //{
+            //    this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
+            //}
         }
 
         public void Remove(int loadingUnitsId)

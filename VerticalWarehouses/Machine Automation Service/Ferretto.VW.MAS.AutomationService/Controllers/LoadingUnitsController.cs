@@ -112,12 +112,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.loadingUnitsDataProvider.GetAllNotTestUnits());
         }
 
-        [HttpGet("get-load-unit-max-height")]
-        public ActionResult<double> GetLoadUnitMaxHeight()
-        {
-            return this.Ok(this.loadingUnitsDataProvider.GetLoadUnitMaxHeight());
-        }
-
         [HttpGet("get-all-test-units")]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAllTestUnits()
         {
@@ -141,6 +135,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
             }
             return this.Ok();
+        }
+
+        [HttpGet("get-load-unit-max-height")]
+        public ActionResult<double> GetLoadUnitMaxHeight()
+        {
+            return this.Ok(this.loadingUnitsDataProvider.GetLoadUnitMaxHeight());
         }
 
         [HttpGet("statistics/space")]
@@ -263,6 +263,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult InsertLoadingUnitOnlyDb(int loadingUnitId)
         {
             this.loadingUnitsDataProvider.Insert(loadingUnitId);
+            return this.Accepted();
+        }
+
+        [HttpPost("lock-unlock")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult LockUnlockLoadUnit(DataModels.LoadingUnit loadingUnit, int command)
+        {
+            //if command is 1 block if is 2 unlock
+            this.loadingUnitsDataProvider.LockUnlockLoadingUnit(loadingUnit, command);
             return this.Accepted();
         }
 

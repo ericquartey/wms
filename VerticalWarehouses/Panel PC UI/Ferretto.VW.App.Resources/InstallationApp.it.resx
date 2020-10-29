@@ -2848,4 +2848,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="SelectModel" xml:space="preserve">
     <value>Seleziona il modello</value>
   </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Blocca cassetto</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Sblocca cassetto</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Bloccato</value>
+  </data>
 </root>

@@ -2831,4 +2831,13 @@ Nakon toga nastavite pritiskom na tipku "Sljedeći“</value>
   <data name="SelectModel" xml:space="preserve">
     <value>Odaberite model</value>
   </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Blok ladica</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Otključajte ladicu</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Blokiran</value>
+  </data>
 </root>

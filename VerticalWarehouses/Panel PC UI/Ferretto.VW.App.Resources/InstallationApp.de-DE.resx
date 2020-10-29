@@ -2832,4 +2832,13 @@ Anschließend auf "Weiter" drücken.</value>
   <data name="SelectModel" xml:space="preserve">
     <value>Wählen Sie das Modell aus</value>
   </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Block Schublade</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Schublade entsperren</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Verstopft</value>
+  </data>
 </root>

@@ -42,6 +42,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Insert(int loadingUnitsId);
 
+        void LockUnlockLoadingUnit(LoadingUnit loadingUnit, int command);
+
         void Remove(int loadingUnitsId);
 
         void RemoveTestUnit(LoadingUnit loadingUnit);
@@ -49,7 +51,9 @@ namespace Ferretto.VW.MAS.DataLayer
         void Save(LoadingUnit loadingUnit);
 
         void SetHeight(int loadingUnitId, double height);
+
         void SetStatus(int id, LoadingUnitStatus status);
+
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
 
         void TryAdd(int loadingUnitId);
