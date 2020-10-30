@@ -753,13 +753,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (sourceCell.BlockLevel != BlockLevel.Blocked)
                         {
                             unitToMove = sourceCell.LoadingUnit;
+                            if (unitToMove != null
+                                && unitToMove.Status != DataModels.Enumerations.LoadingUnitStatus.InLocation
+                                )
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
+                                return false;
+                            }
                             mission.LoadUnitSource = LoadingUnitLocation.Cell;
                             mission.LoadUnitCellSourceId = sourceCell.Id;
 
                             bay = this.BaysDataProvider.GetByCell(sourceCell);
                             if (bay != null
                                 && bay.Shutter != null
-                                && bay.Shutter.Type != ShutterType.NotSpecified)
+                                && bay.Shutter.Type != ShutterType.NotSpecified
+                                )
                             {
                                 var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                                 var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
@@ -811,14 +819,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 if (sourceCell.BlockLevel == BlockLevel.Blocked)
                                 {
-                                    if (showErrors)
-                                    {
-                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
-                                    }
-                                    else
-                                    {
-                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceCell);
-                                    }
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
+                                    return false;
+                                }
+                                else if (unitToMove.Status != DataModels.Enumerations.LoadingUnitStatus.InLocation)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
                                     return false;
                                 }
                                 else
@@ -857,8 +863,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (elevatorLoadUnit is null
                                     || unitToMove.Id != elevatorLoadUnit.Id)
                                 {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
                                     unitToMove = null;
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay);
                                 }
                                 else
                                 {
