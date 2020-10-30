@@ -47,7 +47,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<BlockLevel> BlockLevels => Enum.GetValues(typeof(BlockLevel)).OfType<BlockLevel>().Where(block => block != BlockLevel.NeedsTest).ToList();
 
-        public IEnumerable<Cell> Cells => this.MachineService.Cells;
+        public IEnumerable<Cell> Cells => this.MachineService.Cells.OrderBy(s => s.Side).ThenBy(s => s.Id);
 
         public override EnableMask EnableMask => EnableMask.Any;
 
