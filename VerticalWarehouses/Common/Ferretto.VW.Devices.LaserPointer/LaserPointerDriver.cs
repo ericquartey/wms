@@ -64,6 +64,8 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public int Port => this.port;
 
+        public LaserPoint SelectedPoint { get; set; }
+
         public bool TestEnabled => this.testEnabled;
 
         #endregion
@@ -95,6 +97,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             result.Z -= (int)Math.Round(missionOperationItemHeight);
 
             result.Speed = LaserPoint.SPEEDDEFAULT;
+
             return result;
         }
 
@@ -156,6 +159,8 @@ namespace Ferretto.VW.Devices.LaserPointer
                 {
                     this.EnqueueCommand(LaserPointerCommands.Command.LASER_OFF);
                 }
+
+                this.SelectedPoint = null;
             }
 
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
@@ -205,10 +210,19 @@ namespace Ferretto.VW.Devices.LaserPointer
                 return false;
             }
 
-            this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
-            this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);
+            if (this.SelectedPoint is null
+                || point.X != this.SelectedPoint.X
+                || point.Y != this.SelectedPoint.Y
+                || point.Z != this.SelectedPoint.Z)
+            {
+                this.SelectedPoint = point;
+                this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
+                this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+                return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            }
+
+            return false;
         }
 
         /// <summary>

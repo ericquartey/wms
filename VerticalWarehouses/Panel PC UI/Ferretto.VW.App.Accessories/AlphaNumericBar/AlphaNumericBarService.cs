@@ -104,6 +104,9 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             this.logger.Info("Switch off alpha numeric bar.");
 
             await this.alphaNumericBarDriver.EnabledAsync(false);
+
+            this.alphaNumericBarDriver.SelectedMessage = string.Empty;
+            this.alphaNumericBarDriver.SelectedPosition = null;
         }
 
         private async Task AlphaNumericBarConfigureAsync()
@@ -177,6 +180,9 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
                         await this.alphaNumericBarDriver.EnabledAsync(false);
+
+                        this.alphaNumericBarDriver.SelectedMessage = string.Empty;
+                        this.alphaNumericBarDriver.SelectedPosition = null;
                     }
 
                     return;
@@ -209,18 +215,28 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                         var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
 
-                        await this.alphaNumericBarDriver.EnabledAsync(false);
                         var offsetArrow = 0;
                         var offsetMessage = 0;
                         var message = this.GetMessageFromMissionChangedEventArg(e);
 
-                        this.alphaNumericBarDriver.GetOffsetArrowAndMessageFromCompartment(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value, message, out offsetArrow, out offsetMessage);
-
-                        await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
-
-                        if (message.Length > 0)
+                        if (this.alphaNumericBarDriver.SelectedMessage != message
+                            && this.alphaNumericBarDriver.SelectedPosition != compartmentSelected.XPosition
+                            )
                         {
-                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                            this.alphaNumericBarDriver.SelectedPosition = compartmentSelected.XPosition;
+                            this.alphaNumericBarDriver.SelectedMessage = message;
+                            this.logger.Debug($"OnMissionChangeAsync; SelectedPosition {this.alphaNumericBarDriver.SelectedPosition}; message {this.alphaNumericBarDriver.SelectedMessage}");
+
+                            await this.alphaNumericBarDriver.EnabledAsync(false);
+
+                            this.alphaNumericBarDriver.GetOffsetArrowAndMessageFromCompartment(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value, message, out offsetArrow, out offsetMessage);
+
+                            await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
+
+                            if (message.Length > 0)
+                            {
+                                await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                            }
                         }
 
                         //var arrowPosition = this.alphaNumericBarDriver.CalculateArrowPosition(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value);
