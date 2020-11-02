@@ -799,6 +799,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Block Unit.
+        /// </summary>
+        public static string BlockLU {
+            get {
+                return ResourceManager.GetString("BlockLU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boarding not performed due to missing drawer.
         /// </summary>
         public static string BoardingNotExecutedMissingDrawer {
@@ -4435,6 +4444,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blocked.
+        /// </summary>
+        public static string LoadingUnitStatus_Blocked {
+            get {
+                return ResourceManager.GetString("LoadingUnitStatus_Blocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In Bay.
         /// </summary>
         public static string LoadingUnitStatus_InBay {
@@ -7623,6 +7641,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unlock Unit.
+        /// </summary>
+        public static string UnlockLU {
+            get {
+                return ResourceManager.GetString("UnlockLU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Up.
         /// </summary>
         public static string Up {
@@ -7655,6 +7682,33 @@ namespace Ferretto.VW.App.Resources {
         public static string UpdateSuccessfullyCompleted {
             get {
                 return ResourceManager.GetString("UpdateSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update tare.
+        /// </summary>
+        public static string UpdateTare {
+            get {
+                return ResourceManager.GetString("UpdateTare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you confirm that the selected drawer is empty?.
+        /// </summary>
+        public static string UpdateTareProcedure {
+            get {
+                return ResourceManager.GetString("UpdateTareProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer tare update procedure.
+        /// </summary>
+        public static string UpdateTareProcedureHeader {
+            get {
+                return ResourceManager.GetString("UpdateTareProcedureHeader", resourceCulture);
             }
         }
         

@@ -804,7 +804,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 if (bay.IsActive)
                                 {
-                                    this.Logger.LogDebug("Machine mode: {this.machineVolatileDataProvider.Mode}");
+                                    this.Logger.LogDebug($"Machine mode: {this.machineVolatileDataProvider.Mode}");
                                     await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
                                 }
                                 else if (bay.Number < BayNumber.ElevatorBay)

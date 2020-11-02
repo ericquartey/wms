@@ -18,10 +18,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
     {
     }
 
-    internal struct ErrorLoadunitMissingStepManualMode
-    {
-    }
-
     internal struct ErrorLoadunitMissingStepLoadunitOnBay1
     {
     }
@@ -35,6 +31,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
     }
 
     internal struct ErrorLoadunitMissingStepLoadunitOnElevator
+    {
+    }
+
+    internal struct ErrorLoadunitMissingStepManualMode
     {
     }
 
@@ -58,11 +58,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private DelegateCommand automaticCommand;
 
-        private DelegateCommand manualCommad;
-
         private string automaticStepText;
-
-        private string manualStepText;
 
         private string bay1StepText;
 
@@ -118,6 +114,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private MachineError machineError;
 
+        private DelegateCommand manualCommad;
+
+        private string manualStepText;
+
         private DelegateCommand markAsResolvedCommand;
 
         private DelegateCommand moveLoadunitCommand;
@@ -164,23 +164,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 async () => await this.AutomaticCommandAsync(),
                 this.CanAutomaticCommand));
 
-        public ICommand ManualCommand =>
-            this.manualCommad
-            ??
-            (this.manualCommad = new DelegateCommand(
-                async () => await this.ManualCommandAsync(),
-                this.CanManualCommand));
-
         public string AutomaticStepText
         {
             get => this.automaticStepText;
             set => this.SetProperty(ref this.automaticStepText, value);
-        }
-
-        public string ManualStepText
-        {
-            get => this.manualStepText;
-            set => this.SetProperty(ref this.manualStepText, value);
         }
 
         public string Bay1StepText
@@ -274,8 +261,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public bool HasStepAutomaticMode => this.currentStep is ErrorLoadunitMissingStepAutomaticMode;
 
-        public bool HasStepManualMode => this.currentStep is ErrorLoadunitMissingStepManualMode;
-
         public bool HasStepLoadunitOnBay1 => this.currentStep is ErrorLoadunitMissingStepLoadunitOnBay1;
 
         public bool HasStepLoadunitOnBay2 => this.currentStep is ErrorLoadunitMissingStepLoadunitOnBay2;
@@ -283,6 +268,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public bool HasStepLoadunitOnBay3 => this.currentStep is ErrorLoadunitMissingStepLoadunitOnBay3;
 
         public bool HasStepLoadunitOnElevator => this.currentStep is ErrorLoadunitMissingStepLoadunitOnElevator;
+
+        public bool HasStepManualMode => this.currentStep is ErrorLoadunitMissingStepManualMode;
 
         public bool HasStepStart => this.currentStep is ErrorLoadunitMissingStepStart;
 
@@ -375,6 +362,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             get => this.machineError;
             set => this.SetProperty(ref this.machineError, value, () => this.OnErrorChanged(null));
+        }
+
+        public ICommand ManualCommand =>
+                                                                                                                                                                                                                                                                                                                                                                    this.manualCommad
+            ??
+            (this.manualCommad = new DelegateCommand(
+                async () => await this.ManualCommandAsync(),
+                this.CanManualCommand));
+
+        public string ManualStepText
+        {
+            get => this.manualStepText;
+            set => this.SetProperty(ref this.manualStepText, value);
         }
 
         public ICommand MarkAsResolvedCommand =>
@@ -744,7 +744,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     this.IsBay1PositionDownVisible = true;
                 }
 
-                if (this.LuIdOnBay1Up != null || this.LuIdOnBay1Down != null)
+                //if (this.LuIdOnBay1Up != null || this.LuIdOnBay1Down != null)
+                //{
+                //    this.Bay1StepText = stepValue.ToString();
+                //    stepValue++;
+                //    this.Bay1StepVisible = true;
+                //}
+
+                if (this.IsBay1PositionUpVisible || this.IsBay1PositionDownVisible)
                 {
                     this.Bay1StepText = stepValue.ToString();
                     stepValue++;
@@ -767,7 +774,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     this.IsBay2PositionDownVisible = true;
                 }
 
-                if (this.LuIdOnBay2Up != null || this.LuIdOnBay2Down != null)
+                //if (this.LuIdOnBay2Up != null || this.LuIdOnBay2Down != null)
+                //{
+                //    this.Bay2StepText = stepValue.ToString();
+                //    stepValue++;
+                //    this.Bay2StepVisible = true;
+                //}
+
+                if (this.IsBay2PositionUpVisible || this.IsBay2PositionDownVisible)
                 {
                     this.Bay2StepText = stepValue.ToString();
                     stepValue++;
@@ -790,7 +804,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     this.IsBay3PositionDownVisible = true;
                 }
 
-                if (this.LuIdOnBay3Up != null || this.LuIdOnBay3Down != null)
+                //if (this.LuIdOnBay3Up != null || this.LuIdOnBay3Down != null)
+                //{
+                //    this.Bay3StepText = stepValue.ToString();
+                //    stepValue++;
+                //    this.Bay3StepVisible = true;
+                //}
+
+                if (this.IsBay3PositionUpVisible || this.IsBay3PositionDownVisible)
                 {
                     this.Bay3StepText = stepValue.ToString();
                     stepValue++;
@@ -908,7 +929,51 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
         }
 
-        
+        private bool CanAutomaticCommand()
+        {
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving &&
+                   this.MachineService.MachineMode != MachineMode.Automatic;
+        }
+
+        private bool CanBaseExecute()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                !this.IsMoving;
+        }
+
+        private bool CanManualCommand()
+        {
+            return !this.IsKeyboardOpened &&
+                   !this.IsMoving &&
+                   this.MachineService.MachineMode != MachineMode.Automatic;
+        }
+
+        private bool CanMarkAsResolved()
+        {
+            return
+                this.MachineError != null &&
+                (this.MachineError.Code == (int)MachineErrorCode.LoadUnitMissingOnElevator ||
+                 (this.MachineError.Code == (int)MachineErrorCode.LoadUnitMissingOnBay && this.MachineError.BayNumber == this.MachineService.BayNumber)) &&
+                !this.IsWaitingForResponse;
+        }
+
+        private bool CanMoveLoadunit()
+        {
+            return
+                this.CanMarkAsResolved();
+        }
+
+        private bool CanStop()
+        {
+            return
+                this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
+        }
+
         private async Task ManualCommandAsync()
         {
             try
@@ -985,51 +1050,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private bool CanAutomaticCommand()
-        {
-            return !this.IsKeyboardOpened &&
-                   !this.IsMoving &&
-                   this.MachineService.MachineMode != MachineMode.Automatic;
-        }
-
-        private bool CanManualCommand()
-        {
-            return !this.IsKeyboardOpened &&
-                   !this.IsMoving &&
-                   this.MachineService.MachineMode != MachineMode.Automatic;
-        }
-
-        private bool CanBaseExecute()
-        {
-            return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsMoving;
-        }
-
-        private bool CanMarkAsResolved()
-        {
-            return
-                this.MachineError != null &&
-                (this.MachineError.Code == (int)MachineErrorCode.LoadUnitMissingOnElevator ||
-                 (this.MachineError.Code == (int)MachineErrorCode.LoadUnitMissingOnBay && this.MachineError.BayNumber == this.MachineService.BayNumber)) &&
-                !this.IsWaitingForResponse;
-        }
-
-        private bool CanMoveLoadunit()
-        {
-            return
-                this.CanMarkAsResolved();
-        }
-
-        private bool CanStop()
-        {
-            return
-                this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
         }
 
         private async Task MarkAsResolvedAsync()
@@ -1214,25 +1234,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 {
                     if (this.SensorsService.IsLoadingUnitOnElevator)
                     {
-                        if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
-                        {
-                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
-                        }
-                        else
-                        {
-                            this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
-                        }
+                        this.CurrentStep = default(ErrorLoadunitMissingStepLoadunitOnElevator);
                     }
                     else
                     {
-                        if (ScaffolderUserAccesLevel.User == UserAccessLevel.Operator)
-                        {
-                            this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
-                        }
-                        else
-                        {
-                            this.CurrentStep = default(ErrorLoadunitMissingStepManualMode);
-                        }
+                        this.CurrentStep = default(ErrorLoadunitMissingStepStart);
                     }
                 }
             }

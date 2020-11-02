@@ -2840,4 +2840,13 @@ Po provedení pokračujte stisknutím tlačítka „Následující“</value>
   <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
     <value>Blokováno</value>
   </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Aktualizujte táru</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Postup aktualizace táry zásuvky</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Potvrzujete, že je vybraná zásuvka prázdná?</value>
+  </data>
 </root>

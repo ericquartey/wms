@@ -40,6 +40,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private double loadingUnitWidth;
 
+        private string selectedMessage;
+
+        private double? selectedPosition;
+
         private AlphaNumericBarSize size = AlphaNumericBarSize.ExtraLarge;
 
         private bool testEnabled;
@@ -57,6 +61,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public int NumberOfLeds => ((int)this.size) * 8;
 
         public int Port { get; private set; } = PORT_DEFAULT;
+
+        public string SelectedMessage { get; set; }
+
+        public double? SelectedPosition { get; set; }
 
         public AlphaNumericBarSize Size => this.size;
 
@@ -814,6 +822,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             var data = Encoding.ASCII.GetBytes(sendMessage);
                             stream = client.GetStream();
                             stream.ReadTimeout = this.tcpTimeout;
+                            stream.WriteTimeout = this.tcpTimeout;
                             stream.Write(data, 0, data.Length);
                             this.logger.Debug($"ExecuteCommands();Sent: {sendMessage}");
 
