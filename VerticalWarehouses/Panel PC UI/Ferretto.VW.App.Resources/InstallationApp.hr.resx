@@ -2840,4 +2840,13 @@ Nakon toga nastavite pritiskom na tipku "Sljedeći“</value>
   <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
     <value>Blokiran</value>
   </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Ažurirana tare</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Postupak ažuriranja tare ladice</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Potvrđujete li da je odabrana ladica prazna?</value>
+  </data>
 </root>

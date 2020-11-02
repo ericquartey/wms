@@ -2857,4 +2857,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
     <value>Bloccato</value>
   </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Aggiorna tara</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Procedura di aggiornamento tara dei cassetti</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Confermi che il cassetto selezionato è vuoto?</value>
+  </data>
 </root>

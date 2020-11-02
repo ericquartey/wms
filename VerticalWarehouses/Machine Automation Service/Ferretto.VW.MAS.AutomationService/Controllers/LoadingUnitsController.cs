@@ -143,6 +143,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.loadingUnitsDataProvider.GetLoadUnitMaxHeight());
         }
 
+        [HttpGet("get-LU-tare")]
+        public ActionResult<double> GetMachineLoadingUnitTare()
+        {
+            var machine = this.machineProvider.Get();
+            return this.Ok(machine.LoadUnitTare);
+        }
+
         [HttpGet("statistics/space")]
         public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync(
             [FromServices] IWmsSettingsProvider wmsSettingsProvider,
