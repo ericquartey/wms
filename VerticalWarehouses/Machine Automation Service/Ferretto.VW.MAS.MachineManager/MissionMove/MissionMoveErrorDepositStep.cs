@@ -89,6 +89,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveShutterClosed))
                             {
+                                this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveShutterClosed;
+                                this.MissionsDataProvider.Update(this.Mission);
+
                                 // after closing the shutter i check again the situation
                                 this.RestoreDepositStart();
                             }
@@ -265,7 +268,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         // in the first movement the shutter always goes to Opened
                         this.Mission.OpenShutterPosition = ShutterPosition.Opened;
-                        this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id} from position {shutterPosition} to {this.Mission.OpenShutterPosition}");
+                        this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start 1 Mission:Id={this.Mission.Id} from position {shutterPosition} to {this.Mission.OpenShutterPosition}");
                         this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, restore: true);
                         this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterOpen;
                         this.MissionsDataProvider.Update(this.Mission);
@@ -278,9 +281,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && shutterPosition != this.Mission.OpenShutterPosition
                         )
                     {
-                        this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id} from position {shutterPosition} to {this.Mission.OpenShutterPosition}");
-                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.OpenShutterPosition);
-                        this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterOpen;
+                        this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start 2 Mission:Id={this.Mission.Id} from position {shutterPosition} to {this.Mission.OpenShutterPosition}");
+                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: false, this.Mission.OpenShutterPosition);
+                        this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
                         this.MissionsDataProvider.Update(this.Mission);
                         return;
                     }
