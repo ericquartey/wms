@@ -310,6 +310,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         if (message.Length > 0)
                         {
                             this.alphaNumericBarDriver.GetOffsetMessage(socketLinkMessage.Data.X, message, out offsetMessage);
+
+                            this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; position {socketLinkMessage.Data.X}; message {message}");
                             await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
                         }
                         break;
@@ -318,10 +320,12 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         message = this.alphaNumericBarDriver.NormalizeMessageCharacters(socketLinkMessage.Data.TextMessage);
                         this.alphaNumericBarDriver.GetOffsetArrowAndMessage(socketLinkMessage.Data.X, message, out offsetArrow, out offsetMessage);
 
+                        this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; set arrow {offsetArrow}");
                         await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
 
                         if (message.Length > 0)
                         {
+                            this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; position {socketLinkMessage.Data.X}; message {message}");
                             await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
                         }
 

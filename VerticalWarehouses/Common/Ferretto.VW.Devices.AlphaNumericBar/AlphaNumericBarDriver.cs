@@ -795,6 +795,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             var result = false;
             try
             {
+                this.ClearConcurrentQueue(this.messagesReceivedQueue);
                 this.ClearConcurrentQueue(this.errorsQueue);
                 var client = new TcpClient();
                 NetworkStream stream = null;
@@ -841,7 +842,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             }
                             else
                             {
-                                this.logger.Debug($"ArgumentException;no wait {sendMessage}");
+                                //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
                                 this.messagesReceivedQueue.Enqueue("");
                             }
                         }
@@ -931,7 +932,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 return false;
             }
 
-            if (message.StartsWith("CLEAR", StringComparison.Ordinal) || message.StartsWith("ENABLE", StringComparison.Ordinal) || message.StartsWith("TEST OFF", StringComparison.Ordinal))
+            if (message.StartsWith("CLEAR", StringComparison.Ordinal)
+                || message.StartsWith("ENABLE", StringComparison.Ordinal)
+                || message.StartsWith("TEST OFF", StringComparison.Ordinal)
+                || message.StartsWith("SCROLL OFF", StringComparison.Ordinal)
+                )
             {
                 result = false;
             }
