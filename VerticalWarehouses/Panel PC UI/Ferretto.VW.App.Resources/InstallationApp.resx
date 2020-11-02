@@ -2944,4 +2944,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
     <value>Blocked</value>
   </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Update tare</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Drawer tare update procedure</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Do you confirm that the selected drawer is empty?</value>
+  </data>
 </root>

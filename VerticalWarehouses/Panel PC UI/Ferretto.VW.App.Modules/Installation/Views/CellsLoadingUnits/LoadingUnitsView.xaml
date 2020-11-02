@@ -259,8 +259,14 @@
       <controls:PpcButton Grid.Column="1"
                           Margin="0,0,15,0"
                           Command="{Binding FreeDrawerCommand}"
-                          Content="{res:Loc InstallationApp.FreeUnit}"
+                          Content="{res:Loc Operator.FreeUnit}"
                           Visibility="Collapsed" />
+
+      <controls:PpcButton Grid.Column="3"
+                          Margin="0,0,15,0"
+                          Command="{Binding UpdateTareCommand}"
+                          Content="{res:Loc InstallationApp.UpdateTare}"
+                          IsBusy="{Binding IsBusyUpdateDrawer}" />
 
       <controls:PpcButton Grid.Column="2"
                           Margin="0,0,15,0"
@@ -273,7 +279,7 @@
                           Command="{Binding BlockUnlockCommand}"
                           Content="{Binding BlockUnlockText}" />
 
-      <controls:PpcButton Grid.Column="3"
+      <controls:PpcButton Grid.Column="1"
                           Margin="0,0,15,0"
                           Command="{Binding RemoveDrawerCommand}"
                           Content="{res:Loc InstallationApp.DeleteUnit}" />

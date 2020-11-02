@@ -2841,4 +2841,13 @@ Anschließend auf "Weiter" drücken.</value>
   <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
     <value>Verstopft</value>
   </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Tara aktualisiert</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Aktualisierung der Schubladen-Tara</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Bestätigen Sie, dass die ausgewählte Schublade leer ist?</value>
+  </data>
 </root>
