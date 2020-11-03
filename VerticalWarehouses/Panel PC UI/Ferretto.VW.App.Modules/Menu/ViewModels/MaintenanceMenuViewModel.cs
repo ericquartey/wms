@@ -98,8 +98,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.menuUpdateCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Update),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineModeService.MachinePower == MachinePowerState.Powered || this.MachineModeService.MachinePower == MachinePowerState.Unpowered)));
+                 this.MachineModeService.MachineMode != MachineMode.Automatic
+                      /*this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineModeService.MachinePower == MachinePowerState.Powered || this.MachineModeService.MachinePower == MachinePowerState.Unpowered)*/
+                      ));
 
         #endregion
 
