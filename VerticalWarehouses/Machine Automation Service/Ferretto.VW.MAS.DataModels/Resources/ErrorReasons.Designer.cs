@@ -781,6 +781,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid bay presence sensors..
+        /// </summary>
+        public static string MoveExtBayNotAllowed {
+            get {
+                return ResourceManager.GetString("MoveExtBayNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No error.
         /// </summary>
         public static string NoError {

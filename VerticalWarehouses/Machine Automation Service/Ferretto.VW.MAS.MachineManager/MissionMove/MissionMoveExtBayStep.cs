@@ -79,11 +79,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (position != null &&
                 position.LoadingUnit != null &&
                 position.LoadingUnit.Id == this.Mission.LoadUnitId &&
-                !this.SensorsProvider.IsLoadingUnitInLocation(destination.Location) &&
+                //!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location) &&
                 (loadingUnitLocation == this.Mission.LoadUnitDestination && this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)) ||
                 (loadingUnitLocation != this.Mission.LoadUnitDestination && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
             {
-                this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;   // Maybe define a MachineErrorCode.MoveExtBayNotAllowed
+                this.Logger.LogDebug($"movement is finished");
+
+                this.ExternalBayChainEnd();
+                return true;
             }
 
             try
@@ -93,7 +96,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, bay.Number, MessageActor.MachineManager);
                 }
 
-                if (this.Mission.ErrorCode != MachineErrorCode.MoveBayChainNotAllowed)
+                if (this.Mission.ErrorCode != MachineErrorCode.MoveExtBayNotAllowed)
                 {
                     var isLoadUnitDestinationInBay = (bay.Number == BayNumber.BayOne && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up) ||
                         (bay.Number == BayNumber.BayTwo && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up) ||
@@ -151,7 +154,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
 
-                if (this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed)
+                if (this.Mission.ErrorCode == MachineErrorCode.MoveExtBayNotAllowed)
                 {
                     this.SetErrorMoveExtBayChain(bay, position);
                     return true;
@@ -302,7 +305,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.Logger.LogDebug($"Waiting for homing Mission:Id={this.Mission.Id}");
                 }
-                else if (this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed)
+                else if (this.Mission.ErrorCode == MachineErrorCode.MoveExtBayNotAllowed)
                 {
                     this.SetErrorMoveExtBayChain(bay, bay.Positions.FirstOrDefault());
                 }
@@ -415,6 +418,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         // Detect an error condition
                         this.Logger.LogDebug($"2. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
 
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, this.Mission.TargetBay);
                         this.Mission.RestoreStep = this.Mission.Step;
                         newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
@@ -432,6 +436,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         // Detect an error condition
                         this.Logger.LogDebug($"4. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
 
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, this.Mission.TargetBay);
                         this.Mission.RestoreStep = this.Mission.Step;
                         newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
@@ -442,13 +447,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void SetErrorMoveExtBayChain(Bay bay, BayPosition position)
         {
-            this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, bay.Number);
+            this.ErrorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, bay.Number);
 
             this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
             this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
             this.BaysDataProvider.Light(this.Mission.TargetBay, true);
 
-            this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
+            this.Mission.ErrorCode = MachineErrorCode.MoveExtBayNotAllowed;
             this.Mission.RestoreStep = this.Mission.Step;
 
             var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
