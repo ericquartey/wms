@@ -155,7 +155,11 @@ namespace Ferretto.VW.App.Accessories
                     if (this.laserPointerDriver != null)
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
-                        await this.laserPointerDriver.EnabledAsync(false, false);
+                        if (!await this.laserPointerDriver.EnabledAsync(false, false))
+                        {
+                            // retry
+                            await this.laserPointerDriver.EnabledAsync(false, false);
+                        }
                     }
                     return;
                 }

@@ -94,11 +94,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.size;
             set
             {
-                    if (this.SetProperty(ref this.size, value))
-                    {
-                        this.AreSettingsChanged = true;
-                        this.RaiseCanExecuteChanged();
-                    }
+                if (this.SetProperty(ref this.size, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -203,13 +203,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.testOffIsChecked;
             set
             {
-                    if (this.SetProperty(ref this.testOffIsChecked, value))
+                if (this.SetProperty(ref this.testOffIsChecked, value))
+                {
+                    if (value)
                     {
-                        if (value)
-                        {
-                            _ = this.DoTestLedAsync(false);
-                        }
+                        _ = this.DoTestLedAsync(false);
                     }
+                }
             }
         }
 
@@ -346,6 +346,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     await this.deviceDriver.TestAsync(false);
                 }
+
+                this.Logger.Debug($"DoTestMessageOnAsync; message {message}");
 
                 await this.deviceDriver.EnabledAsync(false);
 
