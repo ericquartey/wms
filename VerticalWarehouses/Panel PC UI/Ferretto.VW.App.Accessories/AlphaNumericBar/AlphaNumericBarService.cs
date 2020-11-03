@@ -179,7 +179,11 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     if (this.alphaNumericBarDriver != null)
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
-                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                        if (!await this.alphaNumericBarDriver.EnabledAsync(false))
+                        {
+                            // retry
+                            await this.alphaNumericBarDriver.EnabledAsync(false);
+                        }
 
                         this.alphaNumericBarDriver.SelectedMessage = string.Empty;
                         this.alphaNumericBarDriver.SelectedPosition = null;

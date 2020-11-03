@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -222,7 +223,15 @@ namespace Ferretto.VW.Devices.LaserPointer
                 this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
                 this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);
 
-                return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+                if (!await this.ExecuteCommandsAsync().ConfigureAwait(true))
+                {
+                    // retry
+                    return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+                }
+                else
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -473,7 +482,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                             stream.ReadTimeout = this.tcpTimeout;
                             stream.WriteTimeout = this.tcpTimeout;
                             stream.Write(data, 0, data.Length);
-                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage}");
+                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
 
                             if (this.IsWaitResponse(sendMessage))
                             {
@@ -482,7 +491,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                                 var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
                                 this.messagesReceivedQueue.Enqueue(responseMessage);
-                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;ExecuteCommands();Received: {responseMessage}");
+                                this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                                 if (!this.IsResponseOk(sendMessage, responseMessage))
                                 {
                                     this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");

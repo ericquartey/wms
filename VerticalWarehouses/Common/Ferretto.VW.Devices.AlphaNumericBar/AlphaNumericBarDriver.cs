@@ -825,7 +825,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             stream.ReadTimeout = this.tcpTimeout;
                             stream.WriteTimeout = this.tcpTimeout;
                             stream.Write(data, 0, data.Length);
-                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage}");
+                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
 
                             if (this.IsWaitResponse(sendMessage))
                             {
@@ -834,7 +834,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                                 var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
                                 this.messagesReceivedQueue.Enqueue(responseMessage);
-                                this.logger.Debug($"ExecuteCommands();Received: {responseMessage}");
+                                this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                                 if (!this.IsResponseOk(sendMessage, responseMessage))
                                 {
                                     this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
