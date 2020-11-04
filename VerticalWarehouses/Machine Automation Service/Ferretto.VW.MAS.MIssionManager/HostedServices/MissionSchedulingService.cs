@@ -1073,7 +1073,10 @@ namespace Ferretto.VW.MAS.MissionManager
                     &&
                     mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                     &&
-                    mission.Status != MissionStatus.Waiting)
+                    mission.Status != MissionStatus.Waiting
+                    &&
+                    mission.Status != MissionStatus.Completed
+                    )
                 // loading unit to bay mission
                 {
                     baysDataProvider.AssignMission(mission.TargetBay, mission);
