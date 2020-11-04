@@ -517,7 +517,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public void MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore)
+        public bool MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore)
         {
             if (restore)
             {
@@ -526,21 +526,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 switch (direction)
                 {
                     case ExternalBayMovementDirection.TowardMachine:
-                        distance = Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)) - bay.ChainOffset;
+                        distance = this.baysDataProvider.GetChainPosition(requestingBay) - bay.ChainOffset;
                         break;
 
                     case ExternalBayMovementDirection.TowardOperator:
-                        distance -= Math.Abs(this.baysDataProvider.GetChainPosition(requestingBay)); //+ bay.ChainOffset;
+                        distance -= this.baysDataProvider.GetChainPosition(requestingBay); //+ bay.ChainOffset;
                         break;
+                }
+                if (distance < Math.Abs(bay.ChainOffset / 2))
+                {
+                    return false;
                 }
 
                 try
                 {
-                    this.externalBayProvider.MoveManual(direction, distance, loadUnitId, false, requestingBay, sender);
+                    this.externalBayProvider.MoveManual(direction, distance, loadUnitId, bypassConditions: false, requestingBay, sender);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    // we don't want to show errors here. It is managed by MissionMoveExtBayChainStep
+                    this.errorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, requestingBay, ex.Message);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
@@ -552,10 +556,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 catch (InvalidOperationException ex)
                 {
-                    // we don't want to show errors here. It is managed by MissionMoveExtBayChainStep
+                    this.errorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, requestingBay, ex.Message);
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
+            return true;
         }
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId, bool fastDeposit = true)

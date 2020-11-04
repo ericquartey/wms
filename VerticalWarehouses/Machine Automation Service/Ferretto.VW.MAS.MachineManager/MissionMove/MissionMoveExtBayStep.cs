@@ -76,99 +76,110 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var position = bay.Positions.FirstOrDefault();
 
-            if (position != null &&
-                position.LoadingUnit != null &&
-                position.LoadingUnit.Id == this.Mission.LoadUnitId &&
-                //!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location) &&
-                (loadingUnitLocation == this.Mission.LoadUnitDestination && this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)) ||
-                (loadingUnitLocation != this.Mission.LoadUnitDestination && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
-            {
-                this.Logger.LogDebug($"movement is finished");
+            //if (position != null &&
+            //    position.LoadingUnit != null &&
+            //    position.LoadingUnit.Id == this.Mission.LoadUnitId &&
+            //    //!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location) &&
+            //    this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) != this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) &&
+            //    (loadingUnitLocation == this.Mission.LoadUnitDestination && this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)) ||
+            //    (loadingUnitLocation != this.Mission.LoadUnitDestination && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
+            //{
+            //    this.Logger.LogDebug($"Movement is finished");
 
-                this.ExternalBayChainEnd();
-                return true;
+            //    this.ExternalBayChainEnd();
+            //    return true;
+            //}
+
+            if (this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id))
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, bay.Number, MessageActor.MachineManager);
             }
 
-            try
+            if (this.Mission.ErrorCode != MachineErrorCode.MoveExtBayNotAllowed)
             {
-                if (this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id))
+                var isLoadUnitDestinationInBay = (bay.Number == BayNumber.BayOne && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up) ||
+                    (bay.Number == BayNumber.BayTwo && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up) ||
+                    (bay.Number == BayNumber.BayThree && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up);
+
+                if (this.Mission.RestoreConditions)
                 {
-                    throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, bay.Number, MessageActor.MachineManager);
-                }
+                    this.Logger.LogDebug($"Move in restore conditions => LoadUnitDestination: {this.Mission.LoadUnitDestination}, bay number: {bay.Number}");
+                    // Move in the restoring (move always toward machine with manual motion parameter)
+                    //if (isLoadUnitDestinationInBay)
+                    //{
+                    //    // Restore the drawer in the internal position
+                    //    this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                    //}
+                    //else
+                    //{
+                    //    // Move toward the internal position
+                    //    this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                    //}
 
-                if (this.Mission.ErrorCode != MachineErrorCode.MoveExtBayNotAllowed)
-                {
-                    var isLoadUnitDestinationInBay = (bay.Number == BayNumber.BayOne && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up) ||
-                        (bay.Number == BayNumber.BayTwo && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up) ||
-                        (bay.Number == BayNumber.BayThree && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up);
-
-                    if (this.Mission.RestoreConditions)
+                    // Move toward machine anyway
+                    if (!this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions))
                     {
-                        this.Logger.LogDebug($"Move in restore conditions => LoadUnitDestination: {this.Mission.LoadUnitDestination}, bay number: {bay.Number}");
-                        // Move in the restoring (move always toward machine with manual motion parameter)
-                        //if (isLoadUnitDestinationInBay)
-                        //{
-                        //    // Restore the drawer in the internal position
-                        //    this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
-                        //}
-                        //else
-                        //{
-                        //    // Move toward the internal position
-                        //    this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
-                        //}
-
-                        // Move toward machine anyway
-                        this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
-                    }
-                    else
-                    {
-                        this.Logger.LogDebug($"Move into external bay => LoadUnitDestination: {this.Mission.LoadUnitDestination}, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
-
-                        // Move during normal positioning
                         if (isLoadUnitDestinationInBay)
                         {
-                            if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) ||
-                                this.Mission.RestoreConditions)
-                            {
-                                this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
-                                this.Mission.LoadUnitDestination = destination.Location;
-                            }
-                            if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
-                            {
-                                // No movement for external bay is required
-                            }
+                            // already arrived: go back at slow speed
+                            this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
                         }
                         else
                         {
-                            if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) ||
-                                this.Mission.RestoreConditions)
+                            this.ExternalBayChainEnd();
+                        }
+                        return true;
+                    }
+                }
+                else
+                {
+                    this.Logger.LogDebug($"Move into external bay => LoadUnitDestination: {this.Mission.LoadUnitDestination}, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
+
+                    // Move during normal positioning
+                    if (isLoadUnitDestinationInBay)
+                    {
+                        if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) ||
+                            this.Mission.RestoreConditions)
+                        {
+                            if (!this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions))
                             {
-                                this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
-                                //x this.Mission.LoadUnitDestination = destination.Location;
+                                this.ExternalBayChainEnd();
+                                return true;
                             }
-                            if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                            this.Mission.LoadUnitDestination = destination.Location;
+                        }
+                        if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
+                        {
+                            // No movement for external bay is required
+                        }
+                    }
+                    else
+                    {
+                        if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) ||
+                            this.Mission.RestoreConditions)
+                        {
+                            if (!this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions))
                             {
-                                // No movement for external bay is required
+                                this.ExternalBayChainEnd();
+                                return true;
                             }
+                            //x this.Mission.LoadUnitDestination = destination.Location;
+                        }
+                        if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                        {
+                            // No movement for external bay is required
                         }
                     }
                 }
+            }
 
-                if (this.Mission.ErrorCode == MachineErrorCode.MoveExtBayNotAllowed)
-                {
-                    this.SetErrorMoveExtBayChain(bay, position);
-                    return true;
-                }
-                this.Mission.Status = MissionStatus.Executing;
-            }
-            catch (StateMachineException ex)
+            if (this.Mission.ErrorCode == MachineErrorCode.MoveExtBayNotAllowed)
             {
-                var description = $"Move External Bay chain not allowed at the moment in bay {bay.Number}. Reason {ex.NotificationMessage.Description}. Wait for resume";
-                // we don't want any exception here because this is the normal procedure:
-                // send a second LU in lower position while operator is working on upper position
-                this.Logger.LogInformation(description);
-                this.Mission.Status = MissionStatus.Waiting;
+                this.SetErrorMoveExtBayChain(bay, position);
+                return true;
             }
+            this.Mission.Status = MissionStatus.Executing;
 
             this.MissionsDataProvider.Update(this.Mission);
 
