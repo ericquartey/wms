@@ -341,45 +341,31 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 // Retrieve the bay related to the source location (if exists)
                                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
 
-                                if (bay != null)
+                                if (bay != null && bay.IsExternal)
                                 {
-                                    if (bay.IsExternal)
+                                    // Handle the external bay with a proper step
+                                    var isExternalBayMovementRequested = bay.IsExternal &&
+                                        this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+
+                                    if ((this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                        this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
                                     {
-                                        // Handle the external bay with a proper step
-                                        var isExternalBayMovementRequested = bay.IsExternal &&
-                                            this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
-                                            !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.ExternalBayOccupied, notification.RequestingBay);
+                                        throw new StateMachineException(ErrorDescriptions.ExternalBayOccupied, this.Mission.TargetBay, MessageActor.MachineManager);
+                                    }
+                                    if ((!this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.ExternalBayEmpty, notification.RequestingBay);
+                                        throw new StateMachineException(ErrorDescriptions.ExternalBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);
+                                    }
 
-                                        if ((this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
-                                            this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
-                                        {
-                                            this.Logger.LogError(ErrorDescriptions.ExternalBayOccupied);
-                                            this.ErrorsProvider.RecordNew(MachineErrorCode.ExternalBayOccupied, notification.RequestingBay);
-
-                                            this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
-                                            return;
-                                        }
-                                        if ((!this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
-                                            !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
-                                        {
-                                            this.Logger.LogError(ErrorDescriptions.ExternalBayEmpty);
-                                            this.ErrorsProvider.RecordNew(MachineErrorCode.ExternalBayEmpty, notification.RequestingBay);
-
-                                            this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
-                                            return;
-                                        }
-
-                                        if (isExternalBayMovementRequested)
-                                        {
-                                            // Move the external bay
-                                            var newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                            newStep.OnEnter(null);
-                                        }
-                                        else
-                                        {
-                                            var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                            newStep.OnEnter(null);
-                                        }
+                                    if (isExternalBayMovementRequested)
+                                    {
+                                        // Move the external bay
+                                        var newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        newStep.OnEnter(null);
                                     }
                                     else
                                     {

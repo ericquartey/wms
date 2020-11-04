@@ -203,11 +203,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition != this.Mission.OpenShutterPosition)
                             {
-                                this.Logger.LogError(ErrorDescriptions.LoadUnitShutterClosed);
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, notification.RequestingBay);
-
-                                this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
-                                return;
+                                throw new StateMachineException(ErrorDescriptions.LoadUnitShutterClosed, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                         }
                         if (notification.Type == MessageType.Homing
