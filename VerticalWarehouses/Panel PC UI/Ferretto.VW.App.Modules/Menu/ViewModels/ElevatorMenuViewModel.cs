@@ -32,6 +32,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand weightAnalysisCommand;
 
+        private DelegateCommand weightCalibration;
+
         private DelegateCommand weightMeasurement;
 
         #endregion
@@ -68,6 +70,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             TestDepositAndPickUp,
 
             HorizontalChainCalibration,
+
+            WeightCalibration,
         }
 
         #endregion
@@ -164,8 +168,16 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.weightAnalysisCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightAnalysis),
+                () => this.CanExecuteCommand()));
+
+        public ICommand WeightCalibrationCommand =>
+                    this.weightCalibration
+            ??
+            (this.weightCalibration = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.WeightCalibration),
                 () => this.CanExecuteCommand() &&
-                (this.VerticalOriginCalibration.IsCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
+                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.VerticalResolutionCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand WeightMeasurementCommand =>
             this.weightMeasurement
@@ -211,6 +223,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.weightMeasurement?.RaiseCanExecuteChanged();
             this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
             this.horizontalChainCalibration?.RaiseCanExecuteChanged();
+            this.weightCalibration?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -277,6 +290,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                        nameof(Utils.Modules.Installation),
                        Utils.Modules.Installation.HORIZONTALCHAINCALIBRATION,
+                       data: null,
+                       trackCurrentView: true);
+                    break;
+
+                case Menu.WeightCalibration:
+                    this.NavigationService.Appear(
+                       nameof(Utils.Modules.Installation),
+                       Utils.Modules.Installation.WEIGHTCALIBRATION,
                        data: null,
                        trackCurrentView: true);
                     break;
