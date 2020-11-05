@@ -365,30 +365,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
                 this.MissionsDataProvider.Update(this.Mission);
             }
-            else if (((isLoadUnitDestinationInBay
-                    && this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)
-                    && !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(this.Mission.TargetBay))
-                || (!isLoadUnitDestinationInBay
-                    && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
-                    && !this.LoadingUnitMovementProvider.IsExternalPositionOccupied(this.Mission.TargetBay))
-                )
-                )
-            {
-                // movement is finished
-
-                this.Mission.RestoreStep = MissionStep.NotDefined;
-                this.Mission.RestoreConditions = false;
-                this.Mission.NeedMovingBackward = false;
-                if (isLoadUnitDestinationInBay)
-                {
-                    newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                }
-                else
-                {
-                    newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                }
-                newStep.OnEnter(null);
-            }
             else
             {
                 this.Mission.RestoreConditions = true;
