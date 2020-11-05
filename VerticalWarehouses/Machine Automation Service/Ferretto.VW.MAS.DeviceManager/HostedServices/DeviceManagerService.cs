@@ -876,6 +876,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                         if (data != null)
                         {
+                            msg.TorqueCurrentSample = new DataSample();
                             msg.TorqueCurrentSample.Value = data.AbsorbedCurrent;
                         }
 

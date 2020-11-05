@@ -47,7 +47,7 @@
           </TextBlock>
           <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                     Text="Caricare un cassetto in baia o chimarne uno per iniziare la procedura guidata di calibrazione peso" />
+                     Text="{res:Loc InstallationApp.WeightCalibrationDescriptionProcedure}" />
         </StackPanel>
 
         <ctrls:PpcSpinEdit Grid.Row="1"
@@ -98,11 +98,11 @@
 
         <StackPanel Grid.ColumnSpan="2">
           <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-            <Run Text="Pesata con cassetto vuoto" /><Run Text=":" />
+            <Run Text="{res:Loc InstallationApp.EmptyUnitWeighing}" /><Run Text=":" />
           </TextBlock>
           <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="Esegui uno scarico e carico cassetto per ottenere i dati di corrente" /><Run Text="." />
+            <Run Text="{res:Loc InstallationApp.UnitWeighingDescription}" /><Run Text="." />
           </TextBlock>
         </StackPanel>
 
@@ -129,8 +129,8 @@
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
                            EditValue="{Binding NetWeight, Mode=TwoWay}"
-                           LabelText="Peso netto"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.NetWeight}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
@@ -141,8 +141,8 @@
                            VerticalAlignment="Center"
                            EditValue="{Binding Current, Mode=OneWay}"
                            IsEnabled="False"
-                           LabelText="Corrente asorbita"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.AbsorbedCurrent}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <controls:PpcButton Grid.Row="3"
@@ -174,12 +174,12 @@
 
         <StackPanel Grid.ColumnSpan="2">
           <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-            <Run Text="Prima pesata con peso intermedio" /><Run Text=":" />
+            <Run Text="{res:Loc InstallationApp.OptionalWeighing1}" /><Run Text=":" />
           </TextBlock>
           <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
                      Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
-            <Run Text="Esegui uno scarico e carico cassetto per ottenere i dati di corrente" /><Run Text="." />
+            <Run Text="{res:Loc InstallationApp.UnitWeighingDescription}" /><Run Text="." />
           </TextBlock>
         </StackPanel>
 
@@ -206,8 +206,8 @@
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
                            EditValue="{Binding NetWeight, Mode=TwoWay}"
-                           LabelText="Peso netto"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.NetWeight}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
@@ -218,8 +218,8 @@
                            VerticalAlignment="Center"
                            EditValue="{Binding Current, Mode=OneWay}"
                            IsEnabled="False"
-                           LabelText="Corrente asorbita"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.AbsorbedCurrent}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <controls:PpcButton Grid.Row="3"
@@ -260,11 +260,11 @@
 
         <StackPanel Grid.ColumnSpan="2">
           <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-            <Run Text="Seconda pesata intermedia" /><Run Text=":" />
+            <Run Text="{res:Loc InstallationApp.OptionalWeighing2}" /><Run Text=":" />
           </TextBlock>
           <TextBlock Grid.ColumnSpan="2"
                      Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="Esegui uno scarico e carico cassetto per ottenere i dati di corrente" />
+            <Run Text="{res:Loc InstallationApp.UnitWeighingDescription}" />
           </TextBlock>
         </StackPanel>
 
@@ -291,8 +291,8 @@
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
                            EditValue="{Binding NetWeight, Mode=TwoWay}"
-                           LabelText="Peso netto"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.NetWeight}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
@@ -303,8 +303,8 @@
                            VerticalAlignment="Center"
                            EditValue="{Binding Current, Mode=OneWay}"
                            IsEnabled="False"
-                           LabelText="Corrente asorbita"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.AbsorbedCurrent}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <controls:PpcButton Grid.Row="3"
@@ -322,7 +322,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Command="{Binding SkipCommand}"
-                            Content="Salta" />
+                            Content="{res:Loc InstallationApp.Skip}" />
 
       </Grid>
     </DataTemplate>
@@ -344,10 +344,10 @@
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="2">
           <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-            <Run Text="Terza pesata intermedia" /><Run Text=":" />
+            <Run Text="{res:Loc InstallationApp.OptionalWeighing3}" /><Run Text=":" />
           </TextBlock>
           <TextBlock Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="Esegui uno scarico e carico cassetto per ottenere i dati di corrente" />
+            <Run Text="{res:Loc InstallationApp.UnitWeighingDescription}" />
           </TextBlock>
         </StackPanel>
         <controls:PpcButton Grid.Row="1"
@@ -373,8 +373,8 @@
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
                            EditValue="{Binding NetWeight, Mode=TwoWay}"
-                           LabelText="Peso netto"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.NetWeight}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
@@ -385,8 +385,8 @@
                            VerticalAlignment="Center"
                            EditValue="{Binding Current, Mode=OneWay}"
                            IsEnabled="False"
-                           LabelText="Corrente asorbita"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.AbsorbedCurrent}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <controls:PpcButton Grid.Row="3"
@@ -404,7 +404,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Command="{Binding SkipCommand}"
-                            Content="Salta" />
+                            Content="{res:Loc InstallationApp.Skip}" />
 
       </Grid>
     </DataTemplate>
@@ -426,10 +426,10 @@
         <StackPanel Grid.Row="0"
                     Grid.ColumnSpan="2">
           <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-            <Run Text="Pesata con cassetto a pieno carico" /><Run Text=":" />
+            <Run Text="{res:Loc InstallationApp.FullUnitWeighing}" /><Run Text=":" />
           </TextBlock>
           <TextBlock Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="Esegui uno scarico e carico cassetto per ottenere i dati di corrente" />
+            <Run Text="{res:Loc InstallationApp.UnitWeighingDescription}" />
           </TextBlock>
         </StackPanel>
 
@@ -460,8 +460,8 @@
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
                            EditValue="{Binding NetWeight, Mode=TwoWay}"
-                           LabelText="Peso netto"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.NetWeight}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
@@ -472,8 +472,8 @@
                            VerticalAlignment="Center"
                            EditValue="{Binding Current, Mode=OneWay}"
                            IsEnabled="False"
-                           LabelText="Corrente asorbita"
-                           Mask="#0.0"
+                           LabelText="{res:Loc InstallationApp.AbsorbedCurrent}"
+                           Mask="###0.00"
                            MinValue="0" />
 
         <controls:PpcButton Grid.Row="3"
@@ -521,7 +521,7 @@
             <DataGridTextColumn x:Name="Column1"
                                 Width="1.5*"
                                 Binding="{Binding Path=NetWeight}"
-                                Header="Peso misurato">
+                                Header="{res:Loc InstallationApp.MeasuredWeight}">
               <DataGridTextColumn.HeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                   <Setter Property="Height" Value="40" />
@@ -548,7 +548,7 @@
             <DataGridTextColumn x:Name="Column2"
                                 Width="1*"
                                 Binding="{Binding Path=Current}"
-                                Header="Corrente assorbita">
+                                Header="{res:Loc InstallationApp.AbsorbedCurrent}">
               <DataGridTextColumn.HeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                   <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -665,7 +665,7 @@
                  Margin="0,10,15,10"
                  VerticalAlignment="Top"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="Calibrazione peso" />
+                 Text="{res:Loc InstallationApp.WeightCalibration}" />
     </StackPanel>
     <!--#endregion-->
 
@@ -676,7 +676,7 @@
                Margin="0,0,15,0"
                VerticalAlignment="Top"
                Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-               Text="La funzione di calibrazione peso permette di tarare la lettura del peso tramite pesi campione" />
+               Text="{res:Loc InstallationApp.WeightCalibrationDescription}" />
     <!--#endregion-->
 
     <!--#region Tails-->

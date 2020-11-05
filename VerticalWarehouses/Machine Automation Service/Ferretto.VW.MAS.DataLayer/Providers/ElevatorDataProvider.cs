@@ -446,6 +446,26 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateMeasureConst(double measureConst0, double measureConst1, double measureConst2)
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
+                this.cache.Remove(cacheKey);
+
+                var axis = this.GetAxis(Orientation.Vertical);
+
+                axis.WeightMeasurement.MeasureConst0 = measureConst0;
+
+                axis.WeightMeasurement.MeasureConst1 = measureConst1;
+
+                axis.WeightMeasurement.MeasureConst2 = measureConst2;
+
+                this.dataContext.ElevatorAxes.Update(axis);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateLastCalibrationCycles(Orientation orientation = Orientation.Horizontal)
         {
             lock (this.dataContext)

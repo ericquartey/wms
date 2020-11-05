@@ -702,6 +702,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> SetHorizontalChainCalibrationDistanceAsync(double distance, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetLoadUnitOnElevatorAsync(int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3171,6 +3178,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         WmsError = 79,
     
         BayPositionDisabled = 80,
+    
+        MoveExtBayNotAllowed = 81,
     
         InverterErrorBaseCode = 1000,
     

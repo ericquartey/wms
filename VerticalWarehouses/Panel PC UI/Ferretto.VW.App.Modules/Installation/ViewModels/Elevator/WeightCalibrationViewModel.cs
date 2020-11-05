@@ -13,6 +13,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Ferretto.VW.Utils.Maths;
 using Prism.Commands;
 using Prism.Events;
 
@@ -69,7 +70,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand callLoadunitToBayCommand;
 
-        private double current = 1.0;
+        private double current;
 
         private WeightCalibartionStep currentStep;
 
@@ -169,7 +170,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.forwardCommand
             ??
             (this.forwardCommand = new DelegateCommand(
-                () => this.GoForwardCommand(),
+                () => this.GoForward(),
                 this.CanGoForward));
 
         public bool HasBayExternal => this.MachineService.HasBayExternal;
@@ -269,7 +270,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand SkipCommand =>
             this.skipCommand ?? (this.skipCommand =
             new DelegateCommand(
-                () => this.GoForwardCommand(),
+                () => this.Skip(),
                 this.CanBaseExecute));
 
         public ICommand StopCommand =>
@@ -617,7 +618,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return res;
         }
 
-        private void GoForwardCommand()
+        private void GoForward()
         {
             WeightData data = new WeightData();
             switch (this.currentStep)
@@ -630,6 +631,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     data.Current = this.current;
                     data.NetWeight = this.netWeight;
                     this.unitsWeighing.Add(data);
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
                     this.CurrentStep = WeightCalibartionStep.OptionalWeighing1;
                     break;
 
@@ -637,6 +640,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     data.Current = this.current;
                     data.NetWeight = this.netWeight;
                     this.unitsWeighing.Add(data);
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
                     this.CurrentStep = WeightCalibartionStep.SetWeight;
                     break;
 
@@ -644,6 +649,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     data.Current = this.current;
                     data.NetWeight = this.netWeight;
                     this.unitsWeighing.Add(data);
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
                     this.CurrentStep = WeightCalibartionStep.OptionalWeighing2;
                     break;
 
@@ -651,6 +658,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     data.Current = this.current;
                     data.NetWeight = this.netWeight;
                     this.unitsWeighing.Add(data);
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
                     this.CurrentStep = WeightCalibartionStep.OptionalWeighing3;
                     break;
 
@@ -658,6 +667,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     data.Current = this.current;
                     data.NetWeight = this.netWeight;
                     this.unitsWeighing.Add(data);
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
                     this.CurrentStep = WeightCalibartionStep.FullUnitWeighing;
                     break;
             }
@@ -718,14 +729,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         break;
 
                     case MessageStatus.OperationError:
-                        this.isBusyLoadingFromBay = false;
-                        this.isBusyUnloadingToBay = false;
+                        this.IsBusyLoadingFromBay = false;
+                        this.IsBusyUnloadingToBay = false;
                         break;
 
                     case MessageStatus.OperationStop:
                     case MessageStatus.OperationEnd:
-                        this.isBusyLoadingFromBay = false;
-                        this.isBusyUnloadingToBay = false;
+                        this.IsBusyLoadingFromBay = false;
+                        this.IsBusyUnloadingToBay = false;
                         break;
                 }
 
@@ -745,6 +756,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task SaveAsync()
         {
+            try
+            {
+                await this.machineElevatorWebService.SetMeasureConstAsync(this.measureConst0, this.measureConst1, this.measureConst2);
+
+                this.ShowNotification(
+                        VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
+                        Services.Models.NotificationSeverity.Success);
+
+                this.NavigationService.GoBack();
+
+                this.CurrentStep = WeightCalibartionStep.CallUnit;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(
+                       ex.Message,
+                       Services.Models.NotificationSeverity.Error);
+            }
         }
 
         private void SetMeasureConst()
@@ -755,11 +784,59 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.UnitsWeighing));
 
-            this.MeasureConst0 = 0.0;
+            LstSquQuadRegr solvr = new LstSquQuadRegr();
 
-            this.MeasureConst1 = 0.0;
+            foreach (var units in this.unitsWeighing)
+            {
+                solvr.AddPoints(units.Current, units.NetWeight);
+            }
 
-            this.MeasureConst2 = 0.0;
+            this.MeasureConst0 = Math.Round(solvr.cTerm(), 4);
+
+            this.MeasureConst1 = Math.Round(solvr.bTerm(), 4);
+
+            this.MeasureConst2 = Math.Round(solvr.aTerm(), 4);
+        }
+
+        private void Skip()
+        {
+            WeightData data = new WeightData();
+            switch (this.currentStep)
+            {
+                case WeightCalibartionStep.CallUnit:
+                    this.CurrentStep = WeightCalibartionStep.EmptyUnitWeighing;
+                    break;
+
+                case WeightCalibartionStep.EmptyUnitWeighing:
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
+                    this.CurrentStep = WeightCalibartionStep.OptionalWeighing1;
+                    break;
+
+                case WeightCalibartionStep.FullUnitWeighing:
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
+                    this.CurrentStep = WeightCalibartionStep.SetWeight;
+                    break;
+
+                case WeightCalibartionStep.OptionalWeighing1:
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
+                    this.CurrentStep = WeightCalibartionStep.OptionalWeighing2;
+                    break;
+
+                case WeightCalibartionStep.OptionalWeighing2:
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
+                    this.CurrentStep = WeightCalibartionStep.OptionalWeighing3;
+                    break;
+
+                case WeightCalibartionStep.OptionalWeighing3:
+                    this.Current = 0.0;
+                    this.NetWeight = 0.0;
+                    this.CurrentStep = WeightCalibartionStep.FullUnitWeighing;
+                    break;
+            }
         }
 
         private async Task StopAsync()
@@ -777,6 +854,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+                this.IsBusyLoadingFromBay = false;
+                this.IsBusyUnloadingToBay = false;
             }
         }
 

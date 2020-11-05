@@ -374,6 +374,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("update/MeasureConst")]
+        public IActionResult SetMeasureConst(double measureConst0, double measureConst1, double measureConst2)
+        {
+            this.elevatorDataProvider.UpdateMeasureConst(measureConst0, measureConst1, measureConst2);
+            return this.Ok();
+        }
+
         [HttpPost("set-loadunit-on-elevator")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
