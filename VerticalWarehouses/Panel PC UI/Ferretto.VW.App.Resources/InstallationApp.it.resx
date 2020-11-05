@@ -2866,37 +2866,4 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="UpdateTareProcedure" xml:space="preserve">
     <value>Confermi che il cassetto selezionato è vuoto?</value>
   </data>
-  <data name="WeightCalibration" xml:space="preserve">
-    <value>Calibrazione peso</value>
-  </data>
-  <data name="WeightCalibrationDescription" xml:space="preserve">
-    <value>La funzione di calibrazione peso permette di variare la lettura del peso tramite pesi campione</value>
-  </data>
-  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
-    <value>Caricare un cassetto in baia o chiamarne uno per iniziare la procedura guidata di calibrazione peso</value>
-  </data>
-  <data name="EmptyUnitWeighing" xml:space="preserve">
-    <value>Pesata con cassetto vuoto</value>
-  </data>
-  <data name="UnitWeighingDescription" xml:space="preserve">
-    <value>Esegui uno carico e scarico cassetto per ottenere i dati di corrente ed inserisci il peso netto del cassetto</value>
-  </data>
-  <data name="AbsorbedCurrent" xml:space="preserve">
-    <value>Corrente assorbita</value>
-  </data>
-  <data name="OptionalWeighing1" xml:space="preserve">
-    <value>Prima pesata con peso intermedio</value>
-  </data>
-  <data name="OptionalWeighing2" xml:space="preserve">
-    <value>Seconda pesata con peso intermedio</value>
-  </data>
-  <data name="OptionalWeighing3" xml:space="preserve">
-    <value>Terza pesata con peso intermedio</value>
-  </data>
-  <data name="Skip" xml:space="preserve">
-    <value>Salta</value>
-  </data>
-  <data name="FullUnitWeighing" xml:space="preserve">
-    <value>Pesata con cassetto a pieno carico</value>
-  </data>
 </root>

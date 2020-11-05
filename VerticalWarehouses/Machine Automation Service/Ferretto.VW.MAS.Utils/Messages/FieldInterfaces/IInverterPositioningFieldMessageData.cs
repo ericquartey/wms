@@ -58,9 +58,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         bool WaitContinue { get; set; }
 
-        double AbsorbedCurrent { get; set; }
-        
-
         #endregion
     }
 }

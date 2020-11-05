@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogDebug($"1:Process Notification Message {message.Type} Source {message.Source}");
+            this.Logger.LogDebug($"1:Process Notitication Message {message.Type} Source {message.Source}");
             if (message.Type == MessageType.Positioning)
             {
                 switch (message.Status)

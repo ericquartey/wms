@@ -1,5 +1,5 @@
 {
-  "LoadingUnits": [],
+    "LoadingUnits": [],
     "Machine": {
         "Bays": [
             {
@@ -530,7 +530,7 @@
         "LoadUnitVeryHeavyPercent": 0.0,
         "LoadUnitWidth": 4250.0,
         "MaxGrossWeight": 70000.0,
-        "ModelName": "103XL800-BIG H8261",
+        "ModelName": "NEW VERTIMAG 103XL800-BIG H8261",
         "Panels": [
             {
                 "Cells": [
@@ -5939,303 +5939,303 @@
         "SerialNumber": "MV20-0144",
         "Simulation": false
     },
-  "MachineStatistics": [],
-  "ServicingInfo": [],
-  "SetupProcedures": {
-    "Bay1CarouselCalibration": {
-      "FeedRate": 0.9,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 600
+    "MachineStatistics": [],
+    "ServicingInfo": [],
+    "SetupProcedures": {
+        "Bay1CarouselCalibration": {
+            "FeedRate": 0.9,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 600
+        },
+        "Bay1ExternalCalibration": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay1FullTest": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 1
+        },
+        "Bay1HeightCheck": {
+            "FeedRate": 0.1,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay1Laser": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay1ProfileCheck": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "ProfileCorrectDistance": 150.0,
+            "ProfileDegrees": 5.0,
+            "ProfileTotalDistance": 265.0
+        },
+        "Bay1ShutterTest": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 20
+        },
+        "Bay2CarouselCalibration": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay2ExternalCalibration": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay2FullTest": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay2HeightCheck": {
+            "FeedRate": 0.1,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay2Laser": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay2ProfileCheck": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "ProfileCorrectDistance": 150.0,
+            "ProfileDegrees": 5.0,
+            "ProfileTotalDistance": 265.0
+        },
+        "Bay2ShutterTest": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 20
+        },
+        "Bay3CarouselCalibration": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay3ExternalCalibration": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay3FullTest": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay3HeightCheck": {
+            "FeedRate": 0.1,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay3Laser": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Bay3ProfileCheck": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "ProfileCorrectDistance": 150.0,
+            "ProfileDegrees": 5.0,
+            "ProfileTotalDistance": 265.0
+        },
+        "Bay3ShutterTest": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 20
+        },
+        "BeltBurnishingTest": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 150
+        },
+        "CellPanelsCheck": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "Step": 0.5
+        },
+        "CellsHeightCheck": {
+            "FeedRate": 0.2,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "Step": 0.5
+        },
+        "DepositAndPickUpTest": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 10
+        },
+        "HorizontalChainCalibration": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "PerformedCycles": 0,
+            "RequiredCycles": 0
+        },
+        "Id": 0,
+        "LoadFirstDrawerTest": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "Step": 0.0
+        },
+        "ShutterHeightCheck": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "Step": 0.0
+        },
+        "VerticalOffsetCalibration": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "ReferenceCellId": 50,
+            "Step": 0.5
+        },
+        "VerticalOriginCalibration": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "InProgress": false,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "ReferenceCellId": 0,
+            "Step": 0.0
+        },
+        "VerticalResolutionCalibration": {
+            "FeedRate": 0.2,
+            "FinalPosition": 5500.0,
+            "Id": 0,
+            "InitialPosition": 1000.0,
+            "IsBypassed": false,
+            "IsCompleted": false,
+            "StartPosition": 500.0
+        },
+        "WeightMeasurement": {
+            "FeedRate": 1.0,
+            "Id": 0,
+            "IsBypassed": false,
+            "IsCompleted": false
+        }
     },
-    "Bay1ExternalCalibration": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay1FullTest": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 1
-    },
-    "Bay1HeightCheck": {
-      "FeedRate": 0.1,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay1Laser": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay1ProfileCheck": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "ProfileCorrectDistance": 150.0,
-      "ProfileDegrees": 5.0,
-      "ProfileTotalDistance": 265.0
-    },
-    "Bay1ShutterTest": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 20
-    },
-    "Bay2CarouselCalibration": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay2ExternalCalibration": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay2FullTest": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay2HeightCheck": {
-      "FeedRate": 0.1,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay2Laser": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay2ProfileCheck": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "ProfileCorrectDistance": 150.0,
-      "ProfileDegrees": 5.0,
-      "ProfileTotalDistance": 265.0
-    },
-    "Bay2ShutterTest": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 20
-    },
-    "Bay3CarouselCalibration": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay3ExternalCalibration": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay3FullTest": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay3HeightCheck": {
-      "FeedRate": 0.1,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay3Laser": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Bay3ProfileCheck": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "ProfileCorrectDistance": 150.0,
-      "ProfileDegrees": 5.0,
-      "ProfileTotalDistance": 265.0
-    },
-    "Bay3ShutterTest": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 20
-    },
-    "BeltBurnishingTest": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 150
-    },
-    "CellPanelsCheck": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "Step": 0.5
-    },
-    "CellsHeightCheck": {
-      "FeedRate": 0.2,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "Step": 0.5
-    },
-    "DepositAndPickUpTest": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 10
-    },
-    "HorizontalChainCalibration": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "PerformedCycles": 0,
-      "RequiredCycles": 0
-    },
-    "Id": 0,
-    "LoadFirstDrawerTest": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "Step": 0.0
-    },
-    "ShutterHeightCheck": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "Step": 0.0
-    },
-    "VerticalOffsetCalibration": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "ReferenceCellId": 50,
-      "Step": 0.5
-    },
-    "VerticalOriginCalibration": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "ReferenceCellId": 0,
-      "Step": 0.0
-    },
-    "VerticalResolutionCalibration": {
-      "FeedRate": 0.2,
-      "FinalPosition": 5500.0,
-      "Id": 0,
-      "InitialPosition": 1000.0,
-      "IsBypassed": false,
-      "IsCompleted": false,
-      "StartPosition": 500.0
-    },
-    "WeightMeasurement": {
-      "FeedRate": 1.0,
-      "Id": 0,
-      "IsBypassed": false,
-      "IsCompleted": false
+    "Wms": {
+        "Id": 0,
+        "IsConnected": false,
+        "IsEnabled": false,
+        "IsTimeSyncEnabled": false,
+        "LastWmsTimeSync": "0001-01-01T00:00:00+00:00",
+        "ServiceUrl": "http://192.168.137.1:10000/",
+        "SocketLinkIsEnabled": false,
+        "SocketLinkPolling": 0,
+        "SocketLinkPort": 7075,
+        "SocketLinkTimeout": 600,
+        "TimeSyncIntervalMilliseconds": 10000
     }
-  },
-  "Wms": {
-    "Id": 0,
-    "IsConnected": false,
-    "IsEnabled": false,
-    "IsTimeSyncEnabled": false,
-    "LastWmsTimeSync": "0001-01-01T00:00:00+00:00",
-    "ServiceUrl": "http://192.168.137.1:10000/",
-    "SocketLinkIsEnabled": false,
-    "SocketLinkPolling": 0,
-    "SocketLinkPort": 7075,
-    "SocketLinkTimeout": 600,
-    "TimeSyncIntervalMilliseconds": 10000
-  }
 }

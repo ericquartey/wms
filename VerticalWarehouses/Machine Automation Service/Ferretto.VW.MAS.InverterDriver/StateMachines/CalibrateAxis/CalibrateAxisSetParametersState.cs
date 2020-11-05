@@ -137,28 +137,101 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 {
                     case InverterParameterId.HomingCalibration:
                         {
-                            if (this.axisToCalibrate == Axis.BayChain)
-                            {
-                                this.SetFastSpeed();
-                            }
-                            else
-                            {
-                                var sensor = (this.axisToCalibrate == Axis.Horizontal && this.InverterStatus.SystemIndex == InverterIndex.MainInverter) ? HORIZONTAL_SENSOR : VERTICAL_SENSOR;
-                                var inverterMessage = new InverterMessage(
-                                    this.InverterStatus.SystemIndex,
-                                    (short)InverterParameterId.HomingSensor,
-                                    sensor);
+                            var sensor = (this.axisToCalibrate == Axis.Horizontal && this.InverterStatus.SystemIndex == InverterIndex.MainInverter) ? HORIZONTAL_SENSOR : VERTICAL_SENSOR;
+                            var inverterMessage = new InverterMessage(
+                                this.InverterStatus.SystemIndex,
+                                (short)InverterParameterId.HomingSensor,
+                                sensor);
 
-                                this.Logger.LogDebug($"Set Homing Sensor={sensor}, Axis={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing Sensor={sensor}, Axis={this.axisToCalibrate}");
 
-                                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-                            }
+                            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
                             break;
                         }
 
                     case InverterParameterId.HomingSensor:
                         {
-                            this.SetFastSpeed();
+                            int fastSpeed;
+                            if (this.axisToCalibrate == Axis.Horizontal)
+                            {
+                                var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Horizontal);
+
+                                if (axisParameters.HomingFastSpeed >= 2 * FAST_SPEED_ELEVATOR_HORIZ_DEFAULT)
+                                {
+                                    isCommandToSend = false;
+                                    this.Logger.LogError($"Homing Fast Speed parameter={axisParameters.HomingFastSpeed} mm/s is too high! for Axis={this.axisToCalibrate}");
+                                    this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                                }
+
+                                speedValue = axisParameters.HomingFastSpeed;
+                                fastSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(
+                                    speedValue,
+                                    Orientation.Horizontal);
+                            }
+                            else if (this.axisToCalibrate == Axis.BayChain)
+                            {
+                                var bayProvider = this.ParentStateMachine.GetRequiredService<IBaysDataProvider>();
+                                var bayNumber = bayProvider.GetByInverterIndex(this.InverterStatus.SystemIndex);
+                                var bay = bayProvider.GetByNumber(bayNumber);
+
+                                if (!bay.IsExternal && bay.Carousel != null)
+                                {
+                                    // Handle the carousel
+                                    if (bay.Carousel.HomingFastSpeed >= 2 * FAST_SPEED_CAROUSEL_DEFAULT)
+                                    {
+                                        isCommandToSend = false;
+                                        this.Logger.LogError($"Homing Fast Speed parameter={bay.Carousel.HomingFastSpeed} mm/s is too high! for Bay={bayNumber}");
+                                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                                    }
+
+                                    speedValue = bay.Carousel.HomingFastSpeed;
+                                    fastSpeed = (int)(speedValue *
+                                        this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                }
+                                else
+                                {
+                                    // Handle the external bay
+                                    if (bay.External.HomingFastSpeed >= 2 * FAST_SPEED_EXTERNALBAY_DEFAULT)
+                                    {
+                                        isCommandToSend = false;
+                                        this.Logger.LogError($"Homing Fast Speed parameter={bay.External.HomingFastSpeed} mm/s is too high! for Bay={bayNumber}");
+                                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                                    }
+
+                                    speedValue = bay.External.HomingFastSpeed;
+                                    fastSpeed = (int)(speedValue *
+                                        this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                }
+                            }
+                            else
+                            {
+                                var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
+
+                                if (axisParameters.HomingFastSpeed >= 2 * FAST_SPEED_ELEVATOR_VERT_DEFAULT)
+                                {
+                                    isCommandToSend = false;
+                                    this.Logger.LogError($"Homing Fast Speed parameter={axisParameters.HomingFastSpeed} mm/s is too high! for Axis={this.axisToCalibrate}");
+                                    this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                                }
+
+                                speedValue = axisParameters.HomingFastSpeed;
+                                fastSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(
+                                    speedValue,
+                                    Orientation.Vertical);
+                            }
+
+                            if (isCommandToSend)
+                            {
+                                var inverterMessage = new InverterMessage(
+                                    this.InverterStatus.SystemIndex,
+                                    (short)InverterParameterId.HomingFastSpeed,
+                                    fastSpeed);
+
+                                this.Logger.LogDebug($"Set Homing Fast Speed={speedValue} mm/s [{fastSpeed} impulses], Axis={this.axisToCalibrate}");
+
+                                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                            }
 
                             break;
                         }
@@ -299,92 +372,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
 
             return false;
-        }
-
-        private void SetFastSpeed()
-        {
-            double speedValue;
-            var isCommandToSend = true;
-            int fastSpeed;
-            if (this.axisToCalibrate == Axis.Horizontal)
-            {
-                var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Horizontal);
-
-                if (axisParameters.HomingFastSpeed >= 2 * FAST_SPEED_ELEVATOR_HORIZ_DEFAULT)
-                {
-                    isCommandToSend = false;
-                    this.Logger.LogError($"Homing Fast Speed parameter={axisParameters.HomingFastSpeed} mm/s is too high! for Axis={this.axisToCalibrate}");
-                    this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
-                }
-
-                speedValue = axisParameters.HomingFastSpeed;
-                fastSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(
-                    speedValue,
-                    Orientation.Horizontal);
-            }
-            else if (this.axisToCalibrate == Axis.BayChain)
-            {
-                var bayProvider = this.ParentStateMachine.GetRequiredService<IBaysDataProvider>();
-                var bayNumber = bayProvider.GetByInverterIndex(this.InverterStatus.SystemIndex);
-                var bay = bayProvider.GetByNumber(bayNumber);
-
-                if (!bay.IsExternal && bay.Carousel != null)
-                {
-                    // Handle the carousel
-                    if (bay.Carousel.HomingFastSpeed >= 2 * FAST_SPEED_CAROUSEL_DEFAULT)
-                    {
-                        isCommandToSend = false;
-                        this.Logger.LogError($"Homing Fast Speed parameter={bay.Carousel.HomingFastSpeed} mm/s is too high! for Bay={bayNumber}");
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
-                    }
-
-                    speedValue = bay.Carousel.HomingFastSpeed;
-                    fastSpeed = (int)(speedValue *
-                        this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
-                }
-                else
-                {
-                    // Handle the external bay
-                    if (bay.External.HomingFastSpeed >= 2 * FAST_SPEED_EXTERNALBAY_DEFAULT)
-                    {
-                        isCommandToSend = false;
-                        this.Logger.LogError($"Homing Fast Speed parameter={bay.External.HomingFastSpeed} mm/s is too high! for Bay={bayNumber}");
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
-                    }
-
-                    speedValue = bay.External.HomingFastSpeed;
-                    fastSpeed = (int)(speedValue *
-                        this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
-                }
-            }
-            else
-            {
-                var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
-
-                if (axisParameters.HomingFastSpeed >= 2 * FAST_SPEED_ELEVATOR_VERT_DEFAULT)
-                {
-                    isCommandToSend = false;
-                    this.Logger.LogError($"Homing Fast Speed parameter={axisParameters.HomingFastSpeed} mm/s is too high! for Axis={this.axisToCalibrate}");
-                    this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
-                }
-
-                speedValue = axisParameters.HomingFastSpeed;
-                fastSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(
-                    speedValue,
-                    Orientation.Vertical);
-            }
-
-            if (isCommandToSend)
-            {
-                var inverterMessage = new InverterMessage(
-                    this.InverterStatus.SystemIndex,
-                    (short)InverterParameterId.HomingFastSpeed,
-                    fastSpeed);
-
-                this.Logger.LogDebug($"Set Homing Fast Speed={speedValue} mm/s [{fastSpeed} impulses], Axis={this.axisToCalibrate}");
-
-                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-            }
         }
 
         #endregion

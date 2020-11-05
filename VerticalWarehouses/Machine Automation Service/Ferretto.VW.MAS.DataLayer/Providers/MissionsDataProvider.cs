@@ -443,14 +443,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        // removes completed missions older than 1 day
-        public int PurgeMissions()
+        // removes wms completed missions older than 1 day
+        public int PurgeWmsMissions()
         {
             lock (this.dataContext)
             {
                 var count = 0;
                 foreach (var mission in this.dataContext.Missions
-                    .Where(x => DateTime.UtcNow.Subtract(x.CreationDate).Days > 1
+                    .Where(x => x.WmsId != null
+                        && DateTime.UtcNow.Subtract(x.CreationDate).Days > 1
                         && (x.Status == MissionStatus.Completed
                             || x.Status == MissionStatus.Aborted)
                         )

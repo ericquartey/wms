@@ -414,7 +414,4 @@
   <data name="BayPositionDisabled" xml:space="preserve">
     <value>The bay position is disabled</value>
   </data>
-  <data name="MoveExtBayNotAllowed" xml:space="preserve">
-    <value>Invalid bay presence sensors.</value>
-  </data>
 </root>

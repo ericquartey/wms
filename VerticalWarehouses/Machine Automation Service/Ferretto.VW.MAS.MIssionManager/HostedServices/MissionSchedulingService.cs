@@ -502,10 +502,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
-            missionsDataProvider.PurgeMissions();
-
-            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-            errorsProvider.PurgeErrors();
+            missionsDataProvider.PurgeWmsMissions();
 
             var missions = missionsDataProvider.GetAllMissions().ToList();
             foreach (var mission in missions)
@@ -1073,10 +1070,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     &&
                     mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                     &&
-                    mission.Status != MissionStatus.Waiting
-                    &&
-                    mission.Status != MissionStatus.Completed
-                    )
+                    mission.Status != MissionStatus.Waiting)
                 // loading unit to bay mission
                 {
                     baysDataProvider.AssignMission(mission.TargetBay, mission);
@@ -1155,7 +1149,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
                 // clean missions
-                missionsDataProvider.PurgeMissions();
+                missionsDataProvider.PurgeWmsMissions();
 
                 // clean errors
                 var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();

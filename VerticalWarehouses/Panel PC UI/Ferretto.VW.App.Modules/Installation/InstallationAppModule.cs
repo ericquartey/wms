@@ -71,7 +71,6 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<CellsSideControlView>();
 
             containerRegistry.RegisterForNavigation<HorizontalChainCalibrationView>();
-            containerRegistry.RegisterForNavigation<WeightCalibrationView>();
 
             containerRegistry.RegisterForNavigation<LoadFirstDrawerView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToCellView>();

@@ -2849,37 +2849,4 @@ Nakon toga nastavite pritiskom na tipku "Sljedeći“</value>
   <data name="UpdateTareProcedure" xml:space="preserve">
     <value>Potvrđujete li da je odabrana ladica prazna?</value>
   </data>
-  <data name="WeightCalibration" xml:space="preserve">
-    <value>Umjeravanje težine</value>
-  </data>
-  <data name="WeightCalibrationDescription" xml:space="preserve">
-    <value>Funkcija kalibracije utega omogućuje vam promjenu očitanja težine pomoću utega uzoraka</value>
-  </data>
-  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
-    <value>Umetnite ladicu u ležište ili je nazovite za pokretanje čarobnjaka za umjeravanje težine</value>
-  </data>
-  <data name="EmptyUnitWeighing" xml:space="preserve">
-    <value>Vaganje s praznom ladicom</value>
-  </data>
-  <data name="UnitWeighingDescription" xml:space="preserve">
-    <value>Izvršite utovar i istovar ladice kako biste dobili trenutne podatke i unijeli neto težinu ladice</value>
-  </data>
-  <data name="AbsorbedCurrent" xml:space="preserve">
-    <value>Trenutna potrošnja</value>
-  </data>
-  <data name="OptionalWeighing3" xml:space="preserve">
-    <value>Treće vaganje sa srednjom težinom</value>
-  </data>
-  <data name="OptionalWeighing2" xml:space="preserve">
-    <value>Drugo vaganje sa srednjom težinom</value>
-  </data>
-  <data name="OptionalWeighing1" xml:space="preserve">
-    <value>Prvo vaganje sa srednjom težinom</value>
-  </data>
-  <data name="Skip" xml:space="preserve">
-    <value>Preskočiti</value>
-  </data>
-  <data name="FullUnitWeighing" xml:space="preserve">
-    <value>Vaganje s punom ladicom</value>
-  </data>
 </root>

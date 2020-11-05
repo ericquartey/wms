@@ -31,6 +31,8 @@
 
         public const string CAROUSELCALIBRATION = "CarouselCalibrationViewModel";
 
+        public const string EXTERNALBAYCALIBRATION = "ExternalBayCalibrationViewModel";
+
         public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
 
         public const string CELLSHEIGHTCHECK = "CellsHeightCheckViewModel";
@@ -38,8 +40,6 @@
         public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
         public const string DATETIME = "DateTimeViewModel";
-
-        public const string EXTERNALBAYCALIBRATION = "ExternalBayCalibrationViewModel";
 
         public const string FULLTEST = "FullTestViewModel";
 
@@ -68,8 +68,6 @@
         public const string VERTICALRESOLUTIONCALIBRATION = "VerticalResolutionCalibrationViewModel";
 
         public const string WEIGHTANALYSIS = "ElevatorWeightAnalysisViewModel";
-
-        public const string WEIGHTCALIBRATION = "WeightCalibrationViewModel";
 
         public const string WMSSETTINGS = "WmsSettingsViewModel";
 

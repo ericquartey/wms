@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Input;
@@ -8,7 +7,6 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Modules.Layout.Presentation;
 using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.Utils.Maths;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
@@ -183,31 +181,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             //this.barcodeReaderService.SimulateRead("TEST010000100001\r");
             //this.barcodeReaderService.SimulateRead("VMC1000001\r");
             //this.barcodeReaderService.SimulateRead("TEST0001\r");
-
-            // TEST linear regression
-            //var measures = new Dictionary<double, double>() {
-            //    { 6.9, 318 },
-            //    { 7.3, 398 },
-            //    { 7.8, 478 },
-            //    { 13.5, 1108 },
-            //    { 10.5, 788 },
-            //};
-            //var regression = new LinearRegression(measures);
-            //var result = regression.Coefficients;
-
-            // TEST quadratic regression
-            //LstSquQuadRegr solvr = new LstSquQuadRegr();
-            //solvr.AddPoints(6.9, 318);
-            //solvr.AddPoints(7.3, 398);
-            //solvr.AddPoints(7.8, 478);
-            //solvr.AddPoints(13.5, 1108);
-            //solvr.AddPoints(10.5, 788);
-
-            //var measureConst2 = solvr.aTerm();
-            //var measureConst1 = solvr.bTerm();
-            //var measureConst0 = solvr.cTerm();
-
-            //string text = $"{measureConst2}, {measureConst1}, {measureConst0}";
 
             this.NavigationService.Appear(
                     nameof(Utils.Modules.Menu),

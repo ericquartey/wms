@@ -7,11 +7,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
     {
         #region Constructors
 
-        public InverterPositioningFieldMessageData(MessageVerbosity verbosity = MessageVerbosity.Debug)
-            : base(verbosity)
-        {
-        }
-
         public InverterPositioningFieldMessageData(
             IPositioningFieldMessageData positioningFieldMessageData,
             int[] targetAcceleration,
@@ -59,14 +54,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.IsWeightMeasureDone = false;
             this.MeasuredWeight = 0.0;
             this.IsProfileCalibrateDone = false;
-            this.AbsorbedCurrent = 0.0;
         }
 
         #endregion
 
         #region Properties
-
-        public double AbsorbedCurrent { get; set; }
 
         public Axis AxisMovement { get; set; }
 
