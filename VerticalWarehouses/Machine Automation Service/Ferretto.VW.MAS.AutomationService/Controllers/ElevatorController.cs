@@ -186,6 +186,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Vertical).Resolution);
         }
 
+        [HttpGet("elevator/weight")]
+        public ActionResult<double> GetWeight()
+        {
+            return this.Ok(this.elevatorDataProvider.GetWeight());
+        }
+
         [HttpPost("horizontal/load-from-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -374,13 +380,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
-        [HttpPost("update/MeasureConst")]
-        public IActionResult SetMeasureConst(double measureConst0, double measureConst1, double measureConst2)
-        {
-            this.elevatorDataProvider.UpdateMeasureConst(measureConst0, measureConst1, measureConst2);
-            return this.Ok();
-        }
-
         [HttpPost("set-loadunit-on-elevator")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -389,6 +388,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.loadingUnits.TryAdd(loadingUnitId);
             this.elevatorDataProvider.SetLoadingUnit(loadingUnitId);
             return this.Accepted();
+        }
+
+        [HttpPost("update/MeasureConst")]
+        public IActionResult SetMeasureConst(double measureConst0, double measureConst1, double measureConst2)
+        {
+            this.elevatorDataProvider.UpdateMeasureConst(measureConst0, measureConst1, measureConst2);
+            return this.Ok();
         }
 
         [HttpPost("stop")]

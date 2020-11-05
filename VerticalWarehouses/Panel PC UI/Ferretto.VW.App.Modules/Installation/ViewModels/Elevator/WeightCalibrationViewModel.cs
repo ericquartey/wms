@@ -483,6 +483,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.skipCommand?.RaiseCanExecuteChanged();
 
+            this.saveCommand?.RaiseCanExecuteChanged();
+
             this.UpdateStatusButtonFooter();
         }
 
@@ -526,6 +528,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             switch (this.currentStep)
             {
+                case WeightCalibartionStep.CallUnit:
+                    this.IsEnabledForwards = !this.IsMachineMoving &&
+                        this.SensorsService.IsLoadingUnitInBay &&
+                        this.MachineService.Loadunits.DrawerInBay();
+                    break;
+
                 case WeightCalibartionStep.EmptyUnitWeighing:
                     this.IsEnabledForwards = !this.IsMachineMoving &&
                         this.SensorsService.IsLoadingUnitInBay &&
@@ -776,8 +784,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void SetMeasureConst()
+        private async void SetMeasureConst()
         {
+            var unitTare = this.selectedLoadingUnit.Tare;
+            var elevatorWeight = await this.machineElevatorWebService.GetWeightAsync();
+
             var orderList = this.unitsWeighing.OrderBy(s => s.NetWeight).ToList();
 
             this.UnitsWeighing = orderList;
@@ -788,7 +799,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             foreach (var units in this.unitsWeighing)
             {
-                solvr.AddPoints(units.Current, units.NetWeight);
+                solvr.AddPoints(units.Current, (units.NetWeight + unitTare + elevatorWeight));
             }
 
             this.MeasureConst0 = Math.Round(solvr.cTerm(), 4);

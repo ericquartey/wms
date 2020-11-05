@@ -54,6 +54,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ElevatorStructuralProperties GetStructuralProperties();
 
+        double GetWeight();
+
         bool IsVerticalPositionWithinTolerance(double position);
 
         void ResetMachine();

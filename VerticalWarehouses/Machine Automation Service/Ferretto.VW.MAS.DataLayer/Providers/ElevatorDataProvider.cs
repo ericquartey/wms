@@ -426,6 +426,18 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public double GetWeight()
+        {
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.StructuralProperties)
+                    .Single();
+
+                return elevator.StructuralProperties.ElevatorWeight;
+            }
+        }
+
         public void UpdateHorizontalDistance(double newDistance)
         {
             lock (this.dataContext)
