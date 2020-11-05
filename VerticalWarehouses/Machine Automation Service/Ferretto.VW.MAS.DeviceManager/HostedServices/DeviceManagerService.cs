@@ -871,30 +871,12 @@ namespace Ferretto.VW.MAS.DeviceManager
                                                            receivedMessage.Source is FieldMessageActor.InverterDriver &&
                                                            receivedMessage.Data is IInverterPositioningFieldMessageData:
 
-                        var data = receivedMessage.Data as IInverterStatusUpdateFieldMessageData;
+                        var data = receivedMessage.Data as IInverterPositioningFieldMessageData;
                         var msg = new PositioningMessageData();
 
                         if (data != null)
                         {
-                            if (data.CurrentPosition != null)
-                            {
-                                // TEMP Update X, Y axis positions
-                                if (data.CurrentAxis is Axis.Vertical)
-                                {
-                                    msg.AxisMovement = data.CurrentAxis;
-                                }
-                                else if (data.CurrentAxis is Axis.Horizontal)
-                                {
-                                    msg.AxisMovement = data.CurrentAxis;
-                                }
-                                else
-                                {
-                                    msg.AxisMovement = Axis.BayChain;
-                                    msg.MovementMode = MovementMode.BayChain;
-                                }
-                            }
-
-                            msg.TorqueCurrentSample = data.TorqueCurrent;
+                            msg.TorqueCurrentSample.Value = data.AbsorbedCurrent;
                         }
 
                         this.EventAggregator
