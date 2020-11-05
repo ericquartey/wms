@@ -7665,7 +7665,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2)
-        public System.Threading.Tasks.Task SetLoadUnitOnElevatorAsync(int loadingUnitId)
         {
             return SetMeasureConstAsync(measureConst0, measureConst1, measureConst2, System.Threading.CancellationToken.None);
         }

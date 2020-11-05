@@ -80,6 +80,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal);
 
+        void UpdateMeasureConst(double measureConst0, double measureConst1, double measureConst2);
+
         void UpdateVerticalLowerBound(double newLowerBound);
 
         void UpdateVerticalOffset(double newOffset);
