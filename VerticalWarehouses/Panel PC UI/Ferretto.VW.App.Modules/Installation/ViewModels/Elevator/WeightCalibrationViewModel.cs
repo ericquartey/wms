@@ -784,18 +784,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.UnitsWeighing));
 
-            LstSquQuadRegr solvr = new LstSquQuadRegr();
+            var ParameterCalculator = new LstSquQuadRegr();
 
             foreach (var units in this.unitsWeighing)
             {
-                solvr.AddPoints(units.Current, units.NetWeight);
+                ParameterCalculator.AddPoints(units.Current, units.NetWeight);
             }
 
-            this.MeasureConst0 = Math.Round(solvr.cTerm(), 4);
+            this.MeasureConst0 = Math.Round(ParameterCalculator.cTerm(), 4);
 
-            this.MeasureConst1 = Math.Round(solvr.bTerm(), 4);
+            this.MeasureConst1 = Math.Round(ParameterCalculator.bTerm(), 4);
 
-            this.MeasureConst2 = Math.Round(solvr.aTerm(), 4);
+            this.MeasureConst2 = Math.Round(ParameterCalculator.aTerm(), 4);
         }
 
         private void Skip()
