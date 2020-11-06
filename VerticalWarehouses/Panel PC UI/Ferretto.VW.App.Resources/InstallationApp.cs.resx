@@ -2840,4 +2840,49 @@ Po provedení pokračujte stisknutím tlačítka „Následující“</value>
   <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
     <value>Blokováno</value>
   </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Aktualizujte táru</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Postup aktualizace táry zásuvky</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Potvrzujete, že je vybraná zásuvka prázdná?</value>
+  </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Kalibrace hmotnosti</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>Funkce kalibrace hmotnosti umožňuje měnit hodnoty hmotnosti pomocí vzorkovacích závaží</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>Vložte zásuvku do šachty nebo ji zavolejte a spusťte průvodce kalibrací hmotnosti</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Vážení s prázdnou zásuvkou</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Proveďte nakládku a vykládku zásuvky, abyste získali aktuální data a zadejte čistou hmotnost zásuvky</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>Aktuální spotřeba</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>Nejprve vážení se střední hmotností</value>
+  </data>
+  <data name="OptionalWeighing2" xml:space="preserve">
+    <value>Druhé vážení se střední hmotností</value>
+  </data>
+  <data name="OptionalWeighing3" xml:space="preserve">
+    <value>Třetí vážení se střední hmotností</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+    <value>Přeskočit</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Vážení s plnou zásuvkou</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Změnit jednotku</value>
+  </data>
 </root>

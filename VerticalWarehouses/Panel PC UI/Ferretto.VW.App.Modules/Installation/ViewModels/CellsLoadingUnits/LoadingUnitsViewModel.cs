@@ -48,6 +48,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand insertDrawerCommand;
 
+        private bool isBusyUpdateDrawer;
+
         private SubscriptionToken loadunitsToken;
 
         private DelegateCommand removeDrawerCommand;
@@ -63,6 +65,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private LoadingUnit selectedLU;
 
         private DelegateCommand stopMovingCommand;
+
+        private DelegateCommand updateTareCommand;
 
         #endregion
 
@@ -96,7 +100,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.BlockUnlockAsync(),
                 () => !this.IsMoving &&
                 this.SelectedLU != null &&
-                (this.SelectedLU.Status == LoadingUnitStatus.InLocation || this.SelectedLU.Status == LoadingUnitStatus.Blocked)));
+                (this.SelectedLU.Status == LoadingUnitStatus.InLocation || this.SelectedLU.Status == LoadingUnitStatus.Blocked) &&
+                !this.isBusyUpdateDrawer));
 
         public string BlockUnlockText
         {
@@ -122,14 +127,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.immediateDrawerCallCommand = new DelegateCommand(
                 async () => await this.ImmediateDrawerCallAsync(),
-                () => !this.IsMoving && !this.SensorsService.IsLoadingUnitInBay && this.SelectedLU != null && this.SelectedLU.Status == LoadingUnitStatus.InLocation));
+                () => !this.IsMoving &&
+                !this.SensorsService.IsLoadingUnitInBay &&
+                this.SelectedLU != null &&
+                this.SelectedLU.Status == LoadingUnitStatus.InLocation &&
+                !this.isBusyUpdateDrawer));
 
         public ICommand ImmediateDrawerReturnCommand =>
             this.immediateDrawerReturnCommand
             ??
             (this.immediateDrawerReturnCommand = new DelegateCommand(
                 async () => await this.ImmediateDrawerReturnAsync(),
-                () => !this.IsMoving && this.SensorsService.IsLoadingUnitInBay && this.MachineStatus.LoadingUnitPositionUpInBay != null));
+                () => !this.IsMoving &&
+                this.SensorsService.IsLoadingUnitInBay &&
+                this.MachineStatus.LoadingUnitPositionUpInBay != null &&
+                !this.isBusyUpdateDrawer));
 
         public ICommand InsertDrawerCommand =>
             this.insertDrawerCommand
@@ -137,6 +149,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.insertDrawerCommand = new DelegateCommand(
                 async () => await this.InsertDrawer(),
                 () => false));
+
+        public bool IsBusyUpdateDrawer
+        {
+            get => this.isBusyUpdateDrawer;
+            set => this.SetProperty(ref this.isBusyUpdateDrawer, value);
+        }
 
         public bool IsDrawerCallVisible => !this.IsMoving && !this.SensorsService.IsLoadingUnitInBay;
 
@@ -154,14 +172,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.removeDrawerCommand = new DelegateCommand(
                 async () => await this.RemoveDrawer(),
                 () => !this.IsMoving &&
-                      this.SelectedLU != null));
+                      this.SelectedLU != null &&
+                !this.isBusyUpdateDrawer));
 
         public ICommand SaveDrawerCommand =>
             this.saveDrawerCommand
             ??
             (this.saveDrawerCommand = new DelegateCommand(
                 async () => await this.SaveDrawerAsync(),
-                () => !this.IsMoving && this.SelectedLU != null));
+                () => !this.IsMoving &&
+                this.SelectedLU != null &&
+                !this.isBusyUpdateDrawer));
 
         public int? SelectedBayPositionId
         {
@@ -202,6 +223,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.MachineService.StopMovingByAllAsync(),
                 () => this.IsMoving));
 
+        public ICommand UpdateTareCommand =>
+            this.updateTareCommand
+            ??
+            (this.updateTareCommand = new DelegateCommand(
+                async () => await this.UpdateDrawerTare(),
+                this.CanUpdateDrawerTare));
+
         #endregion
 
         #region Indexers
@@ -238,6 +266,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public bool CanUpdateDrawerTare()
+        {
+            return !this.IsMoving &&
+                   this.selectedLU != null &&
+                   this.selectedLU.NetWeight > 0.0 &&
+                   this.selectedLU.NetWeight < 25.0 &&
+                   !this.isBusyUpdateDrawer;
+        }
 
         public override void Disappear()
         {
@@ -299,6 +336,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.removeDrawerCommand?.RaiseCanExecuteChanged();
             this.immediateDrawerCallCommand?.RaiseCanExecuteChanged();
             this.immediateDrawerReturnCommand?.RaiseCanExecuteChanged();
+            this.updateTareCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsDrawerReturnVisible));
             this.RaisePropertyChanged(nameof(this.IsDrawerCallVisible));
@@ -440,6 +478,46 @@ namespace Ferretto.VW.App.Installation.ViewModels
                          m => this.RaiseCanExecuteChanged(),
                          ThreadOption.UIThread,
                          false);
+        }
+
+        private async Task UpdateDrawerTare()
+        {
+            try
+            {
+                this.IsBusyUpdateDrawer = true;
+                var machineLoadUnitTare = await this.machineLoadingUnitsWebService.GetMachineLoadingUnitTareAsync();
+
+                if (machineLoadUnitTare == null)
+                {
+                    return;
+                }
+
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.UpdateTareProcedure"), Localized.Get("InstallationApp.UpdateTareProcedureHeader"), DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    var LUtoUpdate = this.LoadingUnits.Where(s => s.MaxNetWeight == this.selectedLU.MaxNetWeight).ToList();
+                    var errorNetWeight = this.selectedLU.NetWeight;
+
+                    foreach (var unit in LUtoUpdate)
+                    {
+                        if (unit.Tare != machineLoadUnitTare + errorNetWeight)
+                        {
+                            unit.Tare = machineLoadUnitTare + errorNetWeight;
+                            await this.machineLoadingUnitsWebService.SaveLoadUnitAsync(unit);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.error = true;
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                await this.MachineService.GetLoadUnits();
+                this.IsBusyUpdateDrawer = false;
+            }
         }
 
         #endregion

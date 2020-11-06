@@ -189,17 +189,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.MissionsDataProvider.Update(this.Mission);
                             }
                             // restart movement from the beginning!
-                            if (bay != null
-                                && bay.IsExternal)
-                            {
-                                var newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                newStep.OnEnter(null);
-                            }
-                            else
-                            {
-                                var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                newStep.OnEnter(null);
-                            }
+                            var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep.OnEnter(null);
                         }
                         else if (this.Mission.NeedHomingAxis == Axis.BayChain)
                         {

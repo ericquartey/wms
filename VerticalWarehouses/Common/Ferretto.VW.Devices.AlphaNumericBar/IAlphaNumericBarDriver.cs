@@ -12,6 +12,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         int NumberOfLeds { get; }
 
         bool TestEnabled { get; }
+        string SelectedMessage { get; set; }
+        double? SelectedPosition { get; set; }
 
         #endregion
 

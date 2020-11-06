@@ -509,7 +509,10 @@ namespace Ferretto.VW.MAS.MissionManager
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
-            missionsDataProvider.PurgeWmsMissions();
+            missionsDataProvider.PurgeMissions();
+
+            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+            errorsProvider.PurgeErrors();
 
             var missions = missionsDataProvider.GetAllMissions().ToList();
             foreach (var mission in missions)
@@ -811,7 +814,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 if (bay.IsActive)
                                 {
-                                    this.Logger.LogDebug("Machine mode: {this.machineVolatileDataProvider.Mode}");
+                                    this.Logger.LogDebug($"Machine mode: {this.machineVolatileDataProvider.Mode}");
                                     await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
                                 }
                                 else if (bay.Number < BayNumber.ElevatorBay)
@@ -1079,7 +1082,8 @@ namespace Ferretto.VW.MAS.MissionManager
                     &&
                     mission.Status != MissionStatus.Waiting
                     &&
-                    mission.Status != MissionStatus.Completed)
+                    mission.Status != MissionStatus.Completed
+                    )
                 // loading unit to bay mission
                 {
                     baysDataProvider.AssignMission(mission.TargetBay, mission);
@@ -1207,7 +1211,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
                 // clean missions
-                missionsDataProvider.PurgeWmsMissions();
+                missionsDataProvider.PurgeMissions();
 
                 // clean errors
                 var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();

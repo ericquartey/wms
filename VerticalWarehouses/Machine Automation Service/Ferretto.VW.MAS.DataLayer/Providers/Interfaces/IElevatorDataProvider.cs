@@ -54,6 +54,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ElevatorStructuralProperties GetStructuralProperties();
 
+        double GetWeight();
+
         bool IsVerticalPositionWithinTolerance(double position);
 
         void ResetMachine();
@@ -77,6 +79,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void UpdateLastCalibrationCycles(Orientation orientation = Orientation.Horizontal);
 
         void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal);
+
+        void UpdateMeasureConst(double measureConst0, double measureConst1, double measureConst2);
 
         void UpdateVerticalLowerBound(double newLowerBound);
 

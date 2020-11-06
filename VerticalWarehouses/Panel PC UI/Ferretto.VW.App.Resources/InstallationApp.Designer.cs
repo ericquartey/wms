@@ -70,6 +70,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AbsorbedCurrent.
+        /// </summary>
+        public static string AbsorbedCurrent {
+            get {
+                return ResourceManager.GetString("AbsorbedCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Acceptable weight tolerance (%).
         /// </summary>
         public static string AcceptableWeightTolerance {
@@ -799,6 +808,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Block Unit.
+        /// </summary>
+        public static string BlockLU {
+            get {
+                return ResourceManager.GetString("BlockLU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Boarding not performed due to missing drawer.
         /// </summary>
         public static string BoardingNotExecutedMissingDrawer {
@@ -1272,6 +1290,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ChangeCellBlockObsoleteMenuTitle {
             get {
                 return ResourceManager.GetString("ChangeCellBlockObsoleteMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change unit.
+        /// </summary>
+        public static string ChangeUnit {
+            get {
+                return ResourceManager.GetString("ChangeUnit", resourceCulture);
             }
         }
         
@@ -2392,6 +2419,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Weighing with empty unit.
+        /// </summary>
+        public static string EmptyUnitWeighing {
+            get {
+                return ResourceManager.GetString("EmptyUnitWeighing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string Error {
@@ -2820,6 +2856,15 @@ namespace Ferretto.VW.App.Resources {
         public static string FullTestSessionCycles {
             get {
                 return ResourceManager.GetString("FullTestSessionCycles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weighing with full unit.
+        /// </summary>
+        public static string FullUnitWeighing {
+            get {
+                return ResourceManager.GetString("FullUnitWeighing", resourceCulture);
             }
         }
         
@@ -4435,6 +4480,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blocked.
+        /// </summary>
+        public static string LoadingUnitStatus_Blocked {
+            get {
+                return ResourceManager.GetString("LoadingUnitStatus_Blocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In Bay.
         /// </summary>
         public static string LoadingUnitStatus_InBay {
@@ -5421,6 +5475,33 @@ namespace Ferretto.VW.App.Resources {
         public static string Operator {
             get {
                 return ResourceManager.GetString("Operator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First weighing with intermediate weight.
+        /// </summary>
+        public static string OptionalWeighing1 {
+            get {
+                return ResourceManager.GetString("OptionalWeighing1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Second weighing with intermediate weight.
+        /// </summary>
+        public static string OptionalWeighing2 {
+            get {
+                return ResourceManager.GetString("OptionalWeighing2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third weighing with intermediate weight.
+        /// </summary>
+        public static string OptionalWeighing3 {
+            get {
+                return ResourceManager.GetString("OptionalWeighing3", resourceCulture);
             }
         }
         
@@ -6840,6 +6921,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skip.
+        /// </summary>
+        public static string Skip {
+            get {
+                return ResourceManager.GetString("Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Software Update.
         /// </summary>
         public static string SoftwareUpdate {
@@ -7596,6 +7686,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Perform a drawer loading and unloading to get the current data and enter the net weight of the drawer.
+        /// </summary>
+        public static string UnitWeighingDescription {
+            get {
+                return ResourceManager.GetString("UnitWeighingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown.
         /// </summary>
         public static string Unknown {
@@ -7619,6 +7718,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UnloadToCell {
             get {
                 return ResourceManager.GetString("UnloadToCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unlock Unit.
+        /// </summary>
+        public static string UnlockLU {
+            get {
+                return ResourceManager.GetString("UnlockLU", resourceCulture);
             }
         }
         
@@ -7655,6 +7763,33 @@ namespace Ferretto.VW.App.Resources {
         public static string UpdateSuccessfullyCompleted {
             get {
                 return ResourceManager.GetString("UpdateSuccessfullyCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update tare.
+        /// </summary>
+        public static string UpdateTare {
+            get {
+                return ResourceManager.GetString("UpdateTare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you confirm that the selected drawer is empty?.
+        /// </summary>
+        public static string UpdateTareProcedure {
+            get {
+                return ResourceManager.GetString("UpdateTareProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawer tare update procedure.
+        /// </summary>
+        public static string UpdateTareProcedureHeader {
+            get {
+                return ResourceManager.GetString("UpdateTareProcedureHeader", resourceCulture);
             }
         }
         
@@ -7979,6 +8114,33 @@ namespace Ferretto.VW.App.Resources {
         public static string WeightAnalysis {
             get {
                 return ResourceManager.GetString("WeightAnalysis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight calibration.
+        /// </summary>
+        public static string WeightCalibration {
+            get {
+                return ResourceManager.GetString("WeightCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The weight calibration function allows you to vary the weight reading using sample weights.
+        /// </summary>
+        public static string WeightCalibrationDescription {
+            get {
+                return ResourceManager.GetString("WeightCalibrationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load a drawer in the bay or call one to start the weight calibration wizard.
+        /// </summary>
+        public static string WeightCalibrationDescriptionProcedure {
+            get {
+                return ResourceManager.GetString("WeightCalibrationDescriptionProcedure", resourceCulture);
             }
         }
         

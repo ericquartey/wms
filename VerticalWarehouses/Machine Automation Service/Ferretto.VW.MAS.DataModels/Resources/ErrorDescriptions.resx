@@ -420,4 +420,7 @@
   <data name="LoadUnitNumber" xml:space="preserve">
     <value>Load unit number</value>
   </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Invalid bay sensors</value>
+  </data>
 </root>

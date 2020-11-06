@@ -2944,4 +2944,49 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
     <value>Blocked</value>
   </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Update tare</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Drawer tare update procedure</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Do you confirm that the selected drawer is empty?</value>
+  </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Weight calibration</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>The weight calibration function allows you to vary the weight reading using sample weights</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>Load a drawer in the bay or call one to start the weight calibration wizard</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Weighing with empty unit</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Perform a drawer loading and unloading to get the current data and enter the net weight of the drawer</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>AbsorbedCurrent</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>First weighing with intermediate weight</value>
+  </data>
+  <data name="OptionalWeighing2" xml:space="preserve">
+    <value>Second weighing with intermediate weight</value>
+  </data>
+  <data name="OptionalWeighing3" xml:space="preserve">
+    <value>Third weighing with intermediate weight</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Weighing with full unit</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Change unit</value>
+  </data>
 </root>

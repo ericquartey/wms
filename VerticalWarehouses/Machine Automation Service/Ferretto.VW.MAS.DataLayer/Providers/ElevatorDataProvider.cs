@@ -291,6 +291,18 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public double GetWeight()
+        {
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.StructuralProperties)
+                    .Single();
+
+                return elevator.StructuralProperties.ElevatorWeight;
+            }
+        }
+
         public bool IsVerticalPositionWithinTolerance(double position)
         {
             return
@@ -486,6 +498,26 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.NotifyElevatorPositionChanged(useCachedValue: true);
                 }
+            }
+        }
+
+        public void UpdateMeasureConst(double measureConst0, double measureConst1, double measureConst2)
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
+                this.cache.Remove(cacheKey);
+
+                var axis = this.GetAxis(Orientation.Vertical);
+
+                axis.WeightMeasurement.MeasureConst0 = measureConst0;
+
+                axis.WeightMeasurement.MeasureConst1 = measureConst1;
+
+                axis.WeightMeasurement.MeasureConst2 = measureConst2;
+
+                this.dataContext.ElevatorAxes.Update(axis);
+                this.dataContext.SaveChanges();
             }
         }
 

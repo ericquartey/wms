@@ -315,6 +315,23 @@ namespace Ferretto.VW.App.Modules.Operator
                 else
                 {
                     this.logger.Trace($"No Active mission.");
+
+                    if (this.ActiveMachineMission?.LoadUnitId != null)
+                    {
+                        var machineMissions = await this.missionsWebService.GetAllAsync();
+                        if (!machineMissions.Any(m =>
+                                m.LoadUnitId == this.ActiveMachineMission.LoadUnitId
+                                &&
+                                m.TargetBay == this.bayNumber
+                                &&
+                                (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.Executing || m.Status == MissionStatus.New)
+                                )
+                            )
+                        {
+                            this.logger.Debug($"Old WMS mission '{this.ActiveMachineMission.Id}' was removed, but must be completed before proceeding: removing loading unit '{this.ActiveMachineMission.LoadUnitId}'.");
+                            await this.loadingUnitsWebService.RemoveFromBayAsync(this.ActiveMachineMission.LoadUnitId);
+                        }
+                    }
                 }
 
                 if (newMachineMission?.Id != this.ActiveMachineMission?.Id
@@ -329,13 +346,6 @@ namespace Ferretto.VW.App.Modules.Operator
                    ||
                    (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true))
                 {
-                    // if (this.ActiveMachineMission?.LoadUnitId != null
-                    //    &&
-                    //    this.ActiveMachineMission?.LoadUnitId != newMachineMission?.LoadUnitId)
-                    // {
-                    //    this.logger.Debug($"Old WMS mission '{this.ActiveMachineMission.Id}' was removed, but must be completed before proceeding: recalling loading unit '{this.ActiveMachineMission.LoadUnitId}'.");
-                    //    await this.loadingUnitsWebService.RemoveFromBayAsync(this.ActiveMachineMission.LoadUnitId);
-                    // }
                     this.ActiveMachineMission = newMachineMission;
                     this.ActiveWmsMission = newWmsMission;
                     this.ActiveWmsOperation = newWmsOperation;
@@ -373,24 +383,24 @@ namespace Ferretto.VW.App.Modules.Operator
                     // Retrieve the active missions according to the enlisted condition.
                     // The missions are ordered by the location of destination for the load unit
                     activeMissions = machineMissions.Where(m =>
-                    m.Step is MissionStep.WaitPick
-                    &&
-                    m.TargetBay == this.bayNumber
-                    &&
-                    m.Status == MissionStatus.Waiting)
-                    .OrderBy(o => o.LoadUnitDestination);
+                        m.Step is MissionStep.WaitPick
+                        &&
+                        m.TargetBay == this.bayNumber
+                        &&
+                        m.Status == MissionStatus.Waiting)
+                        .OrderBy(o => o.LoadUnitDestination);
                 }
                 else
                 {
                     // Retrieve the active missions according to the enlisted condition.
                     // The missions are ordered by creation date (descending way)
                     activeMissions = machineMissions.Where(m =>
-                    m.Step is MissionStep.WaitPick
-                    &&
-                    m.TargetBay == this.bayNumber
-                    &&
-                    m.Status == MissionStatus.Waiting)
-                    .OrderByDescending(d => d.CreationDate);
+                        m.Step is MissionStep.WaitPick
+                        &&
+                        m.TargetBay == this.bayNumber
+                        &&
+                        m.Status == MissionStatus.Waiting)
+                        .OrderByDescending(d => d.CreationDate);
                 }
 
                 if (activeMissions.Any())

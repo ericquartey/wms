@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using NLog;
 
 namespace Ferretto.VW.Devices.LaserPointer
 {
@@ -20,6 +22,8 @@ namespace Ferretto.VW.Devices.LaserPointer
         private const string NEW_LINE = "\r\n";
 
         private readonly ConcurrentQueue<string> errorsQueue;
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly ConcurrentQueue<string> messagesReceivedQueue;
 
@@ -64,6 +68,8 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public int Port => this.port;
 
+        public LaserPoint SelectedPoint { get; set; }
+
         public bool TestEnabled => this.testEnabled;
 
         #endregion
@@ -95,6 +101,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             result.Z -= (int)Math.Round(missionOperationItemHeight);
 
             result.Speed = LaserPoint.SPEEDDEFAULT;
+
             return result;
         }
 
@@ -156,6 +163,8 @@ namespace Ferretto.VW.Devices.LaserPointer
                 {
                     this.EnqueueCommand(LaserPointerCommands.Command.LASER_OFF);
                 }
+
+                this.SelectedPoint = null;
             }
 
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
@@ -205,10 +214,27 @@ namespace Ferretto.VW.Devices.LaserPointer
                 return false;
             }
 
-            this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
-            this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);
+            if (this.SelectedPoint is null
+                || point.X != this.SelectedPoint.X
+                || point.Y != this.SelectedPoint.Y
+                || point.Z != this.SelectedPoint.Z)
+            {
+                this.SelectedPoint = point;
+                this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
+                this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+                if (!await this.ExecuteCommandsAsync().ConfigureAwait(true))
+                {
+                    // retry
+                    return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -454,8 +480,9 @@ namespace Ferretto.VW.Devices.LaserPointer
                             var data = Encoding.ASCII.GetBytes(sendMessage);
                             stream = client.GetStream();
                             stream.ReadTimeout = this.tcpTimeout;
+                            stream.WriteTimeout = this.tcpTimeout;
                             stream.Write(data, 0, data.Length);
-                            System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;ExecuteCommands();Sent: {sendMessage}");
+                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
 
                             if (this.IsWaitResponse(sendMessage))
                             {
@@ -464,15 +491,15 @@ namespace Ferretto.VW.Devices.LaserPointer
                                 var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
                                 this.messagesReceivedQueue.Enqueue(responseMessage);
-                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;ExecuteCommands();Received: {responseMessage}");
+                                this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                                 if (!this.IsResponseOk(sendMessage, responseMessage))
                                 {
-                                    System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};LaserPointerDriver;ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                    this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
                                 }
                             }
                             else
                             {
-                                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss)};LaserPointerDriver;ExecuteCommands;ArgumentException;no wait {sendMessage}");
+                                //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
                                 this.messagesReceivedQueue.Enqueue("");
                             }
                         }
@@ -483,7 +510,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                     }
                     catch (Exception e)
                     {
-                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;ExecuteCommands;{e.Message}");
+                        this.logger.Error(e);
                         this.errorsQueue.Enqueue(e.Message);
                     }
                 }
@@ -498,7 +525,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             }
             catch (Exception e)
             {
-                System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss};LaserPointerDriver;{e.Message}");
+                this.logger.Error(e);
             }
 
             return result;

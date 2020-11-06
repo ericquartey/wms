@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex} ");
             FieldCommandMessage commandMessage = null;
             var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
 
@@ -496,19 +496,18 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                             machineProvider.UpdateBayChainStatistics(distance, this.machineData.RequestingBay);
                         }
 
-                        //if (!this.machineData.MessageData.BypassConditions &&
-                        //    this.IsBracketSensorError())
-                        //{
-                        //    this.Logger.LogError($"Bracket sensor error");
-                        //    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
-                        //    this.Stop(StopRequestReason.Stop);
-                        //}
-                        //else
-                        //{
-                        //    this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData));
-                        //}
-
-                        this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData, this.Logger));
+                        if (!this.machineData.MessageData.BypassConditions &&
+                            this.IsInvalidSensorsCondition()
+                            )
+                        {
+                            this.Logger.LogError($"Invalid sensors condition. An error occurs");
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.MoveExtBayNotAllowed, this.machineData.RequestingBay);
+                            this.Stop(StopRequestReason.Stop);
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new ExtBayPositioningEndState(this.stateData, this.Logger));
+                        }
                     }
                     break;
 

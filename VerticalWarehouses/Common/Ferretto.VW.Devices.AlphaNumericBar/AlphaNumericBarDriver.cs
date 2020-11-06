@@ -40,6 +40,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private double loadingUnitWidth;
 
+        private string selectedMessage;
+
+        private double? selectedPosition;
+
         private AlphaNumericBarSize size = AlphaNumericBarSize.ExtraLarge;
 
         private bool testEnabled;
@@ -57,6 +61,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public int NumberOfLeds => ((int)this.size) * 8;
 
         public int Port { get; private set; } = PORT_DEFAULT;
+
+        public string SelectedMessage { get; set; }
+
+        public double? SelectedPosition { get; set; }
 
         public AlphaNumericBarSize Size => this.size;
 
@@ -787,6 +795,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             var result = false;
             try
             {
+                this.ClearConcurrentQueue(this.messagesReceivedQueue);
                 this.ClearConcurrentQueue(this.errorsQueue);
                 var client = new TcpClient();
                 NetworkStream stream = null;
@@ -814,8 +823,9 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             var data = Encoding.ASCII.GetBytes(sendMessage);
                             stream = client.GetStream();
                             stream.ReadTimeout = this.tcpTimeout;
+                            stream.WriteTimeout = this.tcpTimeout;
                             stream.Write(data, 0, data.Length);
-                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage}");
+                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
 
                             if (this.IsWaitResponse(sendMessage))
                             {
@@ -824,7 +834,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                                 var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
                                 this.messagesReceivedQueue.Enqueue(responseMessage);
-                                this.logger.Debug($"ExecuteCommands();Received: {responseMessage}");
+                                this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                                 if (!this.IsResponseOk(sendMessage, responseMessage))
                                 {
                                     this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
@@ -832,7 +842,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             }
                             else
                             {
-                                this.logger.Debug($"ArgumentException;no wait {sendMessage}");
+                                //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
                                 this.messagesReceivedQueue.Enqueue("");
                             }
                         }
@@ -922,7 +932,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 return false;
             }
 
-            if (message.StartsWith("CLEAR", StringComparison.Ordinal) || message.StartsWith("ENABLE", StringComparison.Ordinal) || message.StartsWith("TEST OFF", StringComparison.Ordinal))
+            if (message.StartsWith("CLEAR", StringComparison.Ordinal)
+                || message.StartsWith("ENABLE", StringComparison.Ordinal)
+                || message.StartsWith("TEST OFF", StringComparison.Ordinal)
+                || message.StartsWith("SCROLL OFF", StringComparison.Ordinal)
+                )
             {
                 result = false;
             }
