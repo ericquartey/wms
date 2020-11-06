@@ -354,6 +354,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else if (this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed)
                     {
+                        var waitingMission = this.MissionsDataProvider.GetAllActiveMissions()
+                            .FirstOrDefault(m => m.LoadUnitSource == this.Mission.LoadUnitDestination
+                                && (m.Step == MissionStep.WaitDepositCell || m.Step == MissionStep.WaitChain));
+
+                        if (waitingMission != null)
+                        {
+                            // wake up the mission waiting for the bay chain movement
+                            this.Logger.LogInformation($"Resume waiting deposit Mission:Id={waitingMission.Id}");
+                            this.LoadingUnitMovementProvider.ResumeOperation(
+                                waitingMission.Id,
+                                waitingMission.LoadUnitSource,
+                                waitingMission.LoadUnitDestination,
+                                waitingMission.WmsId,
+                                waitingMission.MissionType,
+                                waitingMission.TargetBay,
+                                MessageActor.MachineManager);
+                        }
                         this.SetErrorMoveBayChain(bay, position);
                         return;
                     }
