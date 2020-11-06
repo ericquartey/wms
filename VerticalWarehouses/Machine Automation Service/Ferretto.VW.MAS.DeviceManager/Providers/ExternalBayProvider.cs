@@ -381,7 +381,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"bayNumber: {bayNumber}; " +
                 $"direction: {direction}; " +
                 $"LoadUnitId: {loadUnitId}; " +
-                $"targetPosition: {targetPosition}; " +
+                $"bypass: {bypassConditions}; " +
+                $"targetPosition: {targetPosition:0.00}; " +
                 $"Direction: {direction}; " +
                 $"feedrate: {procedureParameters.FeedRate}; " +
                 $"speed: {speed[0]:0.00}; " +

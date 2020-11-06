@@ -418,7 +418,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (isLoadUnitDestinationInBay)
                 {
-                    if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
+                    if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)
+                        && !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
+                        )
                     {
                         this.Logger.LogDebug($"1. Go to MissionMoveEndStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
 
@@ -436,7 +438,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                    if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
+                        && !this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)
+                        )
                     {
                         this.Logger.LogDebug($"3. Go to MissionMoveLoadElevatorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
 
