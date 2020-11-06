@@ -146,6 +146,14 @@
                            MinValue="0" />
 
         <controls:PpcButton Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="15,15,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding ChangeUnitCommand}"
+                            Content="{res:Loc InstallationApp.ChangeUnit}" />
+
+        <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
                             Margin="15,15,0,0"
                             HorizontalAlignment="Right"
@@ -221,6 +229,14 @@
                            LabelText="{res:Loc InstallationApp.AbsorbedCurrent}"
                            Mask="###0.00"
                            MinValue="0" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="15,15,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding ChangeUnitCommand}"
+                            Content="{res:Loc InstallationApp.ChangeUnit}" />
 
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
@@ -307,22 +323,31 @@
                            Mask="###0.00"
                            MinValue="0" />
 
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="15,15,0,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ForwardCommand}"
-                            Content="{res:Loc InstallationApp.Forwards}"
-                            Style="{StaticResource WizardConfirmButton}" />
+        <StackPanel Grid.Row="3"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
 
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="0"
-                            Margin="15,15,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding SkipCommand}"
-                            Content="{res:Loc InstallationApp.Skip}" />
+          <controls:PpcButton Margin="5,15,40,0"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding ChangeUnitCommand}"
+                              Content="{res:Loc InstallationApp.ChangeUnit}" />
+
+          <controls:PpcButton Grid.Row="3"
+                              Grid.Column="0"
+                              Margin="15,15,40,0"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding SkipCommand}"
+                              Content="{res:Loc InstallationApp.Skip}" />
+
+          <controls:PpcButton Grid.Row="3"
+                              Grid.Column="1"
+                              Margin="15,15,0,0"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding ForwardCommand}"
+                              Content="{res:Loc InstallationApp.Forwards}"
+                              Style="{StaticResource WizardConfirmButton}" />
+        </StackPanel>
 
       </Grid>
     </DataTemplate>
@@ -389,22 +414,31 @@
                            Mask="###0.00"
                            MinValue="0" />
 
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="15,15,0,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ForwardCommand}"
-                            Content="{res:Loc InstallationApp.Forwards}"
-                            Style="{StaticResource WizardConfirmButton}" />
+        <StackPanel Grid.Row="3"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
 
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="0"
-                            Margin="15,15,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding SkipCommand}"
-                            Content="{res:Loc InstallationApp.Skip}" />
+          <controls:PpcButton Margin="5,15,40,0"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding ChangeUnitCommand}"
+                              Content="{res:Loc InstallationApp.ChangeUnit}" />
+
+          <controls:PpcButton Grid.Row="3"
+                              Grid.Column="0"
+                              Margin="15,15,40,0"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding SkipCommand}"
+                              Content="{res:Loc InstallationApp.Skip}" />
+
+          <controls:PpcButton Grid.Row="3"
+                              Grid.Column="1"
+                              Margin="15,15,0,0"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding ForwardCommand}"
+                              Content="{res:Loc InstallationApp.Forwards}"
+                              Style="{StaticResource WizardConfirmButton}" />
+        </StackPanel>
 
       </Grid>
     </DataTemplate>
@@ -477,6 +511,14 @@
                            MinValue="0" />
 
         <controls:PpcButton Grid.Row="3"
+                            Grid.Column="0"
+                            Margin="15,15,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding ChangeUnitCommand}"
+                            Content="{res:Loc InstallationApp.ChangeUnit}" />
+
+        <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
                             Margin="15,15,0,0"
                             HorizontalAlignment="Right"
@@ -519,7 +561,7 @@
                   ItemsSource="{Binding UnitsWeighing}">
           <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
-                                Width="1.5*"
+                                Width="1.3*"
                                 Binding="{Binding Path=NetWeight}"
                                 Header="{res:Loc InstallationApp.MeasuredWeight}">
               <DataGridTextColumn.HeaderStyle>
@@ -546,9 +588,35 @@
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column2"
-                                Width="1*"
+                                Width="1.3*"
                                 Binding="{Binding Path=Current}"
                                 Header="{res:Loc InstallationApp.AbsorbedCurrent}">
+              <DataGridTextColumn.HeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                  <Setter Property="HorizontalContentAlignment" Value="Center" />
+                  <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                  <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                  <Setter Property="BorderThickness" Value="0,0,0,1" />
+                  <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                </Style>
+              </DataGridTextColumn.HeaderStyle>
+              <DataGridTextColumn.CellStyle>
+                <Style TargetType="DataGridCell">
+                  <Setter Property="BorderThickness" Value="0" />
+                  <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                </Style>
+              </DataGridTextColumn.CellStyle>
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column3"
+                                Width="0.5*"
+                                Binding="{Binding Path=LUTare}"
+                                Header="{res:Loc InstallationApp.Tare}">
               <DataGridTextColumn.HeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                   <Setter Property="HorizontalContentAlignment" Value="Center" />

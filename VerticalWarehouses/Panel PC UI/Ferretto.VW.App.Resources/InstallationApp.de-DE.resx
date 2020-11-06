@@ -2883,4 +2883,7 @@ Anschließend auf "Weiter" drücken.</value>
   <data name="FullUnitWeighing" xml:space="preserve">
     <value>Wiegen mit voller Schublade</value>
   </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Einheit wechseln</value>
+  </data>
 </root>
