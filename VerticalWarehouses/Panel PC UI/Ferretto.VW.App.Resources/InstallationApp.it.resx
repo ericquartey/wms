@@ -2899,4 +2899,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="FullUnitWeighing" xml:space="preserve">
     <value>Pesata con cassetto a pieno carico</value>
   </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Cambia cassetto</value>
+  </data>
 </root>

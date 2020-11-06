@@ -2986,4 +2986,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="FullUnitWeighing" xml:space="preserve">
     <value>Weighing with full unit</value>
   </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Change unit</value>
+  </data>
 </root>
