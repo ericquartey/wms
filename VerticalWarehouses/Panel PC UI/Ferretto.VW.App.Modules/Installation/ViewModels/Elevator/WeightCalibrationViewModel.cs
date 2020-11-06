@@ -27,10 +27,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         OptionalWeighing1,
 
-        OptionalWeighing2,
-
-        OptionalWeighing3,
-
         FullUnitWeighing,
 
         SetWeight
@@ -109,8 +105,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand saveCommand;
 
         private LoadingUnit selectedLoadingUnit;
-
-        private DelegateCommand skipCommand;
 
         private SubscriptionToken stepChangedToken;
 
@@ -210,9 +204,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepOptionalWeighing1 => this.currentStep is WeightCalibartionStep.OptionalWeighing1;
 
-        public bool HasStepOptionalWeighing2 => this.currentStep is WeightCalibartionStep.OptionalWeighing2;
+        public bool HasStepOptionalWeighing2 => false;
 
-        public bool HasStepOptionalWeighing3 => this.currentStep is WeightCalibartionStep.OptionalWeighing3;
+        public bool HasStepOptionalWeighing3 => false;
 
         public bool HasStepSetWeight => this.currentStep is WeightCalibartionStep.SetWeight;
 
@@ -289,12 +283,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.selectedLoadingUnit;
             set => this.SetProperty(ref this.selectedLoadingUnit, value, this.RaiseCanExecuteChanged);
         }
-
-        public ICommand SkipCommand =>
-            this.skipCommand ?? (this.skipCommand =
-            new DelegateCommand(
-                () => this.Skip(),
-                this.CanBaseExecute));
 
         public ICommand StopCommand =>
                             this.stopCommand
@@ -427,38 +415,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     break;
 
+                //case WeightCalibartionStep.OptionalWeighing1:
+                //    if (e.Next)
+                //    {
+                //        this.CurrentStep = WeightCalibartionStep.OptionalWeighing2;
+                //    }
+                //    else
+                //    {
+                //        this.CurrentStep = WeightCalibartionStep.EmptyUnitWeighing;
+                //    }
+
+                //    break;
+
                 case WeightCalibartionStep.OptionalWeighing1:
-                    if (e.Next)
-                    {
-                        this.CurrentStep = WeightCalibartionStep.OptionalWeighing2;
-                    }
-                    else
-                    {
-                        this.CurrentStep = WeightCalibartionStep.EmptyUnitWeighing;
-                    }
-
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing2:
-                    if (e.Next)
-                    {
-                        this.CurrentStep = WeightCalibartionStep.OptionalWeighing3;
-                    }
-                    else
-                    {
-                        this.CurrentStep = WeightCalibartionStep.OptionalWeighing1;
-                    }
-
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing3:
                     if (e.Next)
                     {
                         this.CurrentStep = WeightCalibartionStep.FullUnitWeighing;
                     }
                     else
                     {
-                        this.CurrentStep = WeightCalibartionStep.OptionalWeighing2;
+                        this.CurrentStep = WeightCalibartionStep.EmptyUnitWeighing;
                     }
 
                     break;
@@ -470,7 +446,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                     else
                     {
-                        this.CurrentStep = WeightCalibartionStep.OptionalWeighing3;
+                        this.CurrentStep = WeightCalibartionStep.OptionalWeighing1;
                     }
 
                     break;
@@ -503,8 +479,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.loadFromBayCommand?.RaiseCanExecuteChanged();
 
             this.unloadToBayCommand?.RaiseCanExecuteChanged();
-
-            this.skipCommand?.RaiseCanExecuteChanged();
 
             this.saveCommand?.RaiseCanExecuteChanged();
 
@@ -579,26 +553,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case WeightCalibartionStep.OptionalWeighing1:
-                    this.IsEnabledForwards = !this.IsMachineMoving &&
-                        this.SensorsService.IsLoadingUnitInBay &&
-                        this.MachineService.Loadunits.DrawerInBay() &&
-                        this.current != null &&
-                        this.netWeight != null &&
-                        this.netWeight > 0 &&
-                        this.current > 0;
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing2:
-                    this.IsEnabledForwards = !this.IsMachineMoving &&
-                        this.SensorsService.IsLoadingUnitInBay &&
-                        this.MachineService.Loadunits.DrawerInBay() &&
-                        this.current != null &&
-                        this.netWeight != null &&
-                        this.netWeight > 0 &&
-                        this.current > 0;
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing3:
                     this.IsEnabledForwards = !this.IsMachineMoving &&
                         this.SensorsService.IsLoadingUnitInBay &&
                         this.MachineService.Loadunits.DrawerInBay() &&
@@ -710,36 +664,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         data.Current = this.current;
                         data.NetWeight = this.netWeight;
                         data.Step = WeightCalibartionStep.OptionalWeighing1;
-                        data.LUTare = this.MachineStatus.LoadingUnitPositionUpInBay.Tare;
-                        this.unitsWeighing.Add(data);
-                    }
-
-                    this.UpdateNextData();
-
-                    this.CurrentStep = WeightCalibartionStep.OptionalWeighing2;
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing2:
-                    if (!this.unitsWeighing.Where(s => s.Step == WeightCalibartionStep.OptionalWeighing2).Any())
-                    {
-                        data.Current = this.current;
-                        data.NetWeight = this.netWeight;
-                        data.Step = WeightCalibartionStep.OptionalWeighing2;
-                        data.LUTare = this.MachineStatus.LoadingUnitPositionUpInBay.Tare;
-                        this.unitsWeighing.Add(data);
-                    }
-
-                    this.UpdateNextData();
-
-                    this.CurrentStep = WeightCalibartionStep.OptionalWeighing3;
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing3:
-                    if (!this.unitsWeighing.Where(s => s.Step == WeightCalibartionStep.OptionalWeighing3).Any())
-                    {
-                        data.Current = this.current;
-                        data.NetWeight = this.netWeight;
-                        data.Step = WeightCalibartionStep.OptionalWeighing3;
                         data.LUTare = this.MachineStatus.LoadingUnitPositionUpInBay.Tare;
                         this.unitsWeighing.Add(data);
                     }
@@ -881,38 +805,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.MeasureConst2 = Math.Round(ParameterCalculator.aTerm(), 4);
         }
 
-        private void Skip()
-        {
-            switch (this.currentStep)
-            {
-                case WeightCalibartionStep.CallUnit:
-                    this.CurrentStep = WeightCalibartionStep.EmptyUnitWeighing;
-                    break;
-
-                case WeightCalibartionStep.EmptyUnitWeighing:
-                    this.CurrentStep = WeightCalibartionStep.OptionalWeighing1;
-                    break;
-
-                case WeightCalibartionStep.FullUnitWeighing:
-                    this.CurrentStep = WeightCalibartionStep.SetWeight;
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing1:
-                    this.CurrentStep = WeightCalibartionStep.OptionalWeighing2;
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing2:
-                    this.CurrentStep = WeightCalibartionStep.OptionalWeighing3;
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing3:
-                    this.CurrentStep = WeightCalibartionStep.FullUnitWeighing;
-                    break;
-            }
-
-            this.UpdateNextData();
-        }
-
         private async Task StopAsync()
         {
             this.IsWaitingForResponse = true;
@@ -1046,36 +938,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
 
                     break;
-
-                case WeightCalibartionStep.OptionalWeighing2:
-
-                    if (!this.unitsWeighing.Where(s => s.Step == WeightCalibartionStep.OptionalWeighing2).Any())
-                    {
-                        this.Current = 0.0;
-                        this.NetWeight = 0.0;
-                    }
-                    else
-                    {
-                        this.Current = this.unitsWeighing.Where(s => s.Step == WeightCalibartionStep.OptionalWeighing2).Select(s => s.Current).FirstOrDefault();
-                        this.NetWeight = this.unitsWeighing.Where(s => s.Step == WeightCalibartionStep.OptionalWeighing2).Select(s => s.NetWeight).FirstOrDefault();
-                    }
-
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing3:
-
-                    if (!this.unitsWeighing.Where(s => s.Step == WeightCalibartionStep.OptionalWeighing3).Any())
-                    {
-                        this.Current = 0.0;
-                        this.NetWeight = 0.0;
-                    }
-                    else
-                    {
-                        this.Current = this.unitsWeighing.Where(s => s.Step == WeightCalibartionStep.OptionalWeighing3).Select(s => s.Current).FirstOrDefault();
-                        this.NetWeight = this.unitsWeighing.Where(s => s.Step == WeightCalibartionStep.OptionalWeighing3).Select(s => s.NetWeight).FirstOrDefault();
-                    }
-
-                    break;
             }
         }
 
@@ -1101,16 +963,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case WeightCalibartionStep.OptionalWeighing1:
                     this.ShowPrevStepSinglePage(true, !this.IsMoving);
                     this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards);
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing2:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving);
-                    break;
-
-                case WeightCalibartionStep.OptionalWeighing3:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving);
                     break;
 
                 case WeightCalibartionStep.FullUnitWeighing:

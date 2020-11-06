@@ -258,191 +258,7 @@
 
       </Grid>
     </DataTemplate>
-
-    <DataTemplate x:Key="DataTemplateOptionalWeighing2">
-      <Grid Margin="20"
-            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="*" />
-          <RowDefinition />
-          <RowDefinition />
-          <RowDefinition />
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.ColumnSpan="2">
-          <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.OptionalWeighing2}" /><Run Text=":" />
-          </TextBlock>
-          <TextBlock Grid.ColumnSpan="2"
-                     Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.UnitWeighingDescription}" />
-          </TextBlock>
-        </StackPanel>
-
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="5"
-                            HorizontalAlignment="Center"
-                            Command="{Binding UnloadToBayCommand}"
-                            Content="{res:Loc InstallationApp.UnloadToBay}"
-                            IsBusy="{Binding IsBusyUnloadingToBay}" />
-
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="5"
-                            HorizontalAlignment="Center"
-                            Command="{Binding LoadFromBayCommand}"
-                            Content="{res:Loc InstallationApp.LoadFromBay}"
-                            IsBusy="{Binding IsBusyLoadingFromBay}" />
-
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.Column="0"
-                           Height="90"
-                           Margin="15,5"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center"
-                           EditValue="{Binding NetWeight, Mode=TwoWay}"
-                           LabelText="{res:Loc InstallationApp.NetWeight}"
-                           Mask="###0.00"
-                           MinValue="0" />
-
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.Column="1"
-                           Height="90"
-                           Margin="15,5"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center"
-                           EditValue="{Binding Current, Mode=OneWay}"
-                           IsEnabled="False"
-                           LabelText="{res:Loc InstallationApp.AbsorbedCurrent}"
-                           Mask="###0.00"
-                           MinValue="0" />
-
-        <StackPanel Grid.Row="3"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal">
-
-          <controls:PpcButton Margin="5,15,40,0"
-                              VerticalAlignment="Bottom"
-                              Command="{Binding ChangeUnitCommand}"
-                              Content="{res:Loc InstallationApp.ChangeUnit}" />
-
-          <controls:PpcButton Grid.Row="3"
-                              Grid.Column="0"
-                              Margin="15,15,40,0"
-                              VerticalAlignment="Bottom"
-                              Command="{Binding SkipCommand}"
-                              Content="{res:Loc InstallationApp.Skip}" />
-
-          <controls:PpcButton Grid.Row="3"
-                              Grid.Column="1"
-                              Margin="15,15,0,0"
-                              VerticalAlignment="Bottom"
-                              Command="{Binding ForwardCommand}"
-                              Content="{res:Loc InstallationApp.Forwards}"
-                              Style="{StaticResource WizardConfirmButton}" />
-        </StackPanel>
-
-      </Grid>
-    </DataTemplate>
-
-    <DataTemplate x:Key="DataTemplateOptionalWeighing3">
-      <Grid Margin="20"
-            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="*" />
-          <RowDefinition />
-          <RowDefinition />
-          <RowDefinition />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.Row="0"
-                    Grid.ColumnSpan="2">
-          <TextBlock Style="{StaticResource VWAPP_WizardTitleTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.OptionalWeighing3}" /><Run Text=":" />
-          </TextBlock>
-          <TextBlock Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.UnitWeighingDescription}" />
-          </TextBlock>
-        </StackPanel>
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="5"
-                            HorizontalAlignment="Center"
-                            Command="{Binding UnloadToBayCommand}"
-                            Content="{res:Loc InstallationApp.UnloadToBay}"
-                            IsBusy="{Binding IsBusyUnloadingToBay}" />
-
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="5"
-                            HorizontalAlignment="Center"
-                            Command="{Binding LoadFromBayCommand}"
-                            Content="{res:Loc InstallationApp.LoadFromBay}"
-                            IsBusy="{Binding IsBusyLoadingFromBay}" />
-
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.Column="0"
-                           Height="90"
-                           Margin="15,5"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center"
-                           EditValue="{Binding NetWeight, Mode=TwoWay}"
-                           LabelText="{res:Loc InstallationApp.NetWeight}"
-                           Mask="###0.00"
-                           MinValue="0" />
-
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.Column="1"
-                           Height="90"
-                           Margin="15,5"
-                           HorizontalAlignment="Stretch"
-                           VerticalAlignment="Center"
-                           EditValue="{Binding Current, Mode=OneWay}"
-                           IsEnabled="False"
-                           LabelText="{res:Loc InstallationApp.AbsorbedCurrent}"
-                           Mask="###0.00"
-                           MinValue="0" />
-
-        <StackPanel Grid.Row="3"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal">
-
-          <controls:PpcButton Margin="5,15,40,0"
-                              VerticalAlignment="Bottom"
-                              Command="{Binding ChangeUnitCommand}"
-                              Content="{res:Loc InstallationApp.ChangeUnit}" />
-
-          <controls:PpcButton Grid.Row="3"
-                              Grid.Column="0"
-                              Margin="15,15,40,0"
-                              VerticalAlignment="Bottom"
-                              Command="{Binding SkipCommand}"
-                              Content="{res:Loc InstallationApp.Skip}" />
-
-          <controls:PpcButton Grid.Row="3"
-                              Grid.Column="1"
-                              Margin="15,15,0,0"
-                              VerticalAlignment="Bottom"
-                              Command="{Binding ForwardCommand}"
-                              Content="{res:Loc InstallationApp.Forwards}"
-                              Style="{StaticResource WizardConfirmButton}" />
-        </StackPanel>
-
-      </Grid>
-    </DataTemplate>
-
+    
     <DataTemplate x:Key="DataTemplateFullUnitWeighing">
       <Grid Margin="20"
             DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
@@ -700,8 +516,6 @@
                                                  EnumEmptyUnitWeighing="{StaticResource DataTemplateEmptyUnitWeighing}"
                                                  EnumFullUnitWeighing="{StaticResource DataTemplateFullUnitWeighing}"
                                                  EnumOptionalWeighing1="{StaticResource DataTemplateOptionalWeighing1}"
-                                                 EnumOptionalWeighing2="{StaticResource DataTemplateOptionalWeighing2}"
-                                                 EnumOptionalWeighing3="{StaticResource DataTemplateOptionalWeighing3}"
                                                  EnumSetWeight="{StaticResource DataTemplateSetWeight}" />
     <!--#endregion-->
   </ctrls:View.Resources>
@@ -961,8 +775,6 @@
         <RowDefinition Height="4*" />
         <RowDefinition Height="4*" />
         <RowDefinition Height="4*" />
-        <RowDefinition Height="4*" />
-        <RowDefinition Height="4*" />
         <RowDefinition Height="1" />
       </Grid.RowDefinitions>
       <!--#region Body-->
@@ -981,7 +793,7 @@
       <!--#endregion-->
       <!--#region TimeLine-->
       <Border Grid.Row="0"
-              Grid.RowSpan="8"
+              Grid.RowSpan="6"
               Style="{DynamicResource BorderTimeLine}" />
 
       <Grid Grid.Row="1">
@@ -1036,46 +848,12 @@
       </Grid>
 
       <Grid Grid.Row="4">
-        <Border Background="{Binding HasStepOptionalWeighing2, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+        <Border Background="{Binding HasStepFullUnitWeighing, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                 Style="{DynamicResource BorderTimeLineCirle}" />
         <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                    Text="4" />
       </Grid>
       <Grid Grid.Row="4"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Visibility="{Binding HasStepOptionalWeighing2, Converter={StaticResource BTVC}, Mode=OneWay}">
-        <Path Height="24"
-              VerticalAlignment="Center"
-              StrokeThickness="0"
-              Style="{DynamicResource BorderTimeLinePath}" />
-        <Path Style="{DynamicResource BorderTimeLinePath}" />
-      </Grid>
-
-      <Grid Grid.Row="5">
-        <Border Background="{Binding HasStepOptionalWeighing3, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                Style="{DynamicResource BorderTimeLineCirle}" />
-        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="5" />
-      </Grid>
-      <Grid Grid.Row="5"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Visibility="{Binding HasStepOptionalWeighing3, Converter={StaticResource BTVC}, Mode=OneWay}">
-        <Path Height="24"
-              VerticalAlignment="Center"
-              StrokeThickness="0"
-              Style="{DynamicResource BorderTimeLinePath}" />
-        <Path Style="{DynamicResource BorderTimeLinePath}" />
-      </Grid>
-
-      <Grid Grid.Row="6">
-        <Border Background="{Binding HasStepFullUnitWeighing, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                Style="{DynamicResource BorderTimeLineCirle}" />
-        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="6" />
-      </Grid>
-      <Grid Grid.Row="6"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Visibility="{Binding HasStepFullUnitWeighing, Converter={StaticResource BTVC}, Mode=OneWay}">
@@ -1086,13 +864,13 @@
         <Path Style="{DynamicResource BorderTimeLinePath}" />
       </Grid>
 
-      <Grid Grid.Row="7">
+      <Grid Grid.Row="5">
         <Border Background="{Binding HasStepSetWeight, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                 Style="{DynamicResource BorderTimeLineCirle}" />
         <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="7" />
+                   Text="5" />
       </Grid>
-      <Grid Grid.Row="7"
+      <Grid Grid.Row="5"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Visibility="{Binding HasStepSetWeight, Converter={StaticResource BTVC}, Mode=OneWay}">

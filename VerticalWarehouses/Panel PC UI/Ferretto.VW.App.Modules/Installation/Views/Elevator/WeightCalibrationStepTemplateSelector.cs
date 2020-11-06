@@ -16,10 +16,6 @@ namespace Ferretto.VW.App.Installation.Views
 
         public DataTemplate EnumOptionalWeighing1 { get; set; }
 
-        public DataTemplate EnumOptionalWeighing2 { get; set; }
-
-        public DataTemplate EnumOptionalWeighing3 { get; set; }
-
         public DataTemplate EnumSetWeight { get; set; }
 
         #endregion
@@ -40,12 +36,6 @@ namespace Ferretto.VW.App.Installation.Views
 
                 case WeightCalibartionStep.OptionalWeighing1:
                     return this.EnumOptionalWeighing1;
-
-                case WeightCalibartionStep.OptionalWeighing2:
-                    return this.EnumOptionalWeighing2;
-
-                case WeightCalibartionStep.OptionalWeighing3:
-                    return this.EnumOptionalWeighing3;
 
                 case WeightCalibartionStep.FullUnitWeighing:
                     return this.EnumFullUnitWeighing;
