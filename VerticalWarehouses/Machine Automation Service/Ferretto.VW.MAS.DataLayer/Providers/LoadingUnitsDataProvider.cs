@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     check = MachineErrorCode.LoadUnitWeightTooLow;
                 }
-                else if (loadingUnit.GrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare)
+                else if (loadingUnit.GrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + 20)
                 {
                     check = MachineErrorCode.LoadUnitWeightExceeded;
                 }

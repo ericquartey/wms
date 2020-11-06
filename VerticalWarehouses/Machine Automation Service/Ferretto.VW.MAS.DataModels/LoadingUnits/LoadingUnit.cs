@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.DataModels
         /// <summary>
         /// Gets the actual net weight of the loading unit's content.
         /// </summary>
-        public double NetWeight => System.Math.Max(0, this.GrossWeight - this.Tare);
+        public double NetWeight => (System.Math.Max(0, this.GrossWeight - this.Tare) < 20) ? 0 : this.GrossWeight - this.Tare;
 
         public LoadingUnitStatus Status { get; set; }
 
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsVeryHeavy(double veryHeavyPercent)
         {
-            if(veryHeavyPercent <= 0)
+            if (veryHeavyPercent <= 0)
             {
                 return false;
             }
