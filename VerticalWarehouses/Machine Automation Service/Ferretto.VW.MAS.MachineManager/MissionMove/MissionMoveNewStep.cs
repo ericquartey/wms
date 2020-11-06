@@ -31,11 +31,58 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
+        /// <summary>
+        /// Delete any completed mission with the same loadUnit Id and the error condition is
+        /// LoadUnitWeightExceeded placed in the current bay.
+        /// This is mandatory for the management of missions in a double internal bay
+        /// </summary>
+        private void removeMissionWithErrorConditionExceededWeightOnBID()
+        {
+            var retValue = false;
+
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+            if (!(bay is null))
+            {
+                if (bay.IsDouble && bay.Carousel == null && !(bay.IsExternal))
+                {
+                    // List of completed mission on the bay with properties:
+                    //  status = Completed
+                    //  step   = End
+                    //  error code = MachineErrorCode.LoadUnitWeightExceeded
+                    var errorMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId == this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            m.Status == MissionStatus.Completed &&
+                            m.Step == MissionStep.End &&
+                            m.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded);
+
+                    // Check if an error mission exists
+                    retValue = errorMissions.Any();
+
+                    if (retValue)
+                    {
+                        // Retrieve the mission
+                        var mission = errorMissions.FirstOrDefault();
+
+                        // Delete the selected mission
+                        this.MissionsDataProvider.Delete(mission.Id);
+                        this.Logger.LogDebug($"{this.GetType().Name}: Delete {mission}");
+                    }
+                }
+            }
+        }
+
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             var returnValue = this.CheckStartConditions(this.Mission, command, showErrors);
             if (returnValue)
             {
+                // ------------------
+                // Add this
+                this.removeMissionWithErrorConditionExceededWeightOnBID();
+                // ------------------
+
                 this.Mission.Status = MissionStatus.New;
 
                 if (command != null

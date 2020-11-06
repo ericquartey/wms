@@ -21,6 +21,7 @@ using Ferretto.VW.MAS.MachineManager;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+//using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -409,9 +410,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (activeMissions.Any(m => m.Status == MissionStatus.Completing))
             {
+                this.Logger.LogDebug($"Do not process any other missions until this is completed...");
+
                 // there is a mission being completed: do not process any other missions until this is completed
                 return;
             }
+
+            this.Logger.LogDebug($"ScheduleMissionsOnBayAsync | Get the active missions...");
 
             var missions = activeMissions
                 .Where(m =>
@@ -436,6 +441,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (!missions.Any())
             {
+                this.Logger.LogDebug($"No more missions are available for scheduling on this bay");
+
                 // no more missions are available for scheduling on this bay
                 this.NotifyAssignedMissionChanged(bayNumber, null);
                 return;
@@ -1070,17 +1077,67 @@ namespace Ferretto.VW.MAS.MissionManager
                     &&
                     mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                     &&
-                    mission.Status != MissionStatus.Waiting)
+                    mission.Status != MissionStatus.Waiting
+                    &&
+                    mission.Status != MissionStatus.Completed)
                 // loading unit to bay mission
                 {
                     baysDataProvider.AssignMission(mission.TargetBay, mission);
                     this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
+
+                    // ------------------------------------
+                    // Handle an exceptional case
+                    if (mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
+                    {
+                        // Create a new mission to recall the drawer into the warehouse
+                        //this.Logger.LogDebug($" <*> Create a new mission to recall loading unit into warehouse"); // uncomment
+                        //var missionNew = missionsDataProvider.CreateBayMission(mission.LoadUnitId, mission.TargetBay, MissionType.IN);  // uncomment
+
+                        //// Delete (or complete) the previous mission (the mission with loadingUnitWeightExceeded)
+                        //if (mission.WmsId.HasValue)
+                        //{
+                        //    missionsDataProvider.Complete(mission.Id);
+                        //    this.Logger.LogDebug($"{this.GetType().Name}: Complete {mission}");
+                        //}
+                        //else
+                        //{
+                        //    missionsDataProvider.Delete(mission.Id);
+                        //    this.Logger.LogDebug($"{this.GetType().Name}: Delete {mission}");
+                        //}
+                    }
+                    else
+                    {
+                        //this.Logger.LogDebug($"Notify the assigned mission changed!!!");  // uncomment
+                        //this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);  // uncomment
+                    }
+                    // --------------------------------------
+
+                    //this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
                 }
                 else if (mission.Status != MissionStatus.Waiting)
                 // any other mission type
                 {
                     missionsDataProvider.Complete(mission.Id);
                     this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+
+                    this.Logger.LogDebug($" <<**>>");
+                    if (mission.Status == MissionStatus.Completed)
+                    {
+                        // Handle this exceptional case...
+                        if (mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
+                        {
+                            var bay = baysDataProvider.GetByLoadingUnitLocation(mission.LoadUnitSource);
+                            if (!(bay is null))
+                            {
+                                if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
+                                {
+                                    // Create a new mission to recall the drawer into the warehouse
+                                    var missionNew = missionsDataProvider.CreateBayMission(mission.LoadUnitId, mission.TargetBay, MissionType.IN);
+                                    this.Logger.LogDebug($" <*> Create a new mission {missionNew.Id} to recall loading unit into warehouse");
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1098,6 +1155,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnNewMachineMissionAvailableAsync(IServiceProvider serviceProvider)
         {
+            this.Logger.LogDebug($"OnNewMachineMissionAvailableAsync | A new machine mission is available....");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 

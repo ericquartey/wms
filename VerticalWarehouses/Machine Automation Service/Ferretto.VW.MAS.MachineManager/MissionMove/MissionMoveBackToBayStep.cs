@@ -116,8 +116,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                 )
             {
-                var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                newStep.OnEnter(null);
+                // --------------------
+                // Add this code block
+                var isAtLeastOneWaitingMission = this.isWaitingMissionOnThisBay();
+                if (!isAtLeastOneWaitingMission)
+                {
+                    // Eject the loading unit onto the current bay
+                    var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+                }
+                else
+                {
+                    // Send a notification message to UI
+
+                    // The loading unit is waiting to unload in the bay
+                    var newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+                }
+                // --------------------
+
+                //var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                //newStep.OnEnter(null);
             }
         }
 
@@ -209,6 +228,38 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out targetBayPositionId, out targetCellId);
             }
             return ok;
+        }
+
+        /// <summary>
+        /// Check if exist at least a waiting mission (step == MissionStep.WaitPick) in the current bay.
+        /// Applied only for double bay.
+        /// </summary>
+        /// <returns>
+        ///     <c>true</c> if exists at least a waiting mission,
+        ///     <c>false</c> otherwise.
+        /// </returns>
+        private bool isWaitingMissionOnThisBay()
+        {
+            var retValue = false;
+
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            if (bay != null)
+            {
+                if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
+                {
+                    // List of waiting mission on the bay
+                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                        );
+
+                    retValue = waitMissions.Any();
+                }
+            }
+
+            return retValue;
         }
 
         private void StartMovement(double? destinationHeight, int? targetBayPositionId, int? targetCellId, Bay bay)
