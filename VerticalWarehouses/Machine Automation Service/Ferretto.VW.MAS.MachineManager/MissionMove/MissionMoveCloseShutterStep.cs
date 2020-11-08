@@ -54,13 +54,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var executeShutterClosing = true;
             if (bay.IsDouble && (bay.Carousel == null) && !bay.IsExternal)
             {
+                // Detect if a waiting mission exists
+                // Only applied for the internal double bay configuration
                 var isAtLeastOneWaitingMission = this.isWaitingMissionOnThisBay(bay);
                 if (isAtLeastOneWaitingMission &&
                    (this.Mission.MissionType == MissionType.OUT ||
                     this.Mission.MissionType == MissionType.WMS ||
                     this.Mission.MissionType == MissionType.FullTestOUT))
                 {
-                    // Check if bay is internal double Bay (not carousel bay or external bay), mission type is OUT, WMS, ... and
+                    // Check if bay is an internal double Bay (not carousel bay or external bay), the mission type is OUT, WMS, ... and
                     // check if there is at least one waiting mission different from the current one
                     executeShutterClosing = false;
                 }

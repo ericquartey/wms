@@ -148,9 +148,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             return (stopped == this.Mission.BayNotifications);
         }
 
-        private void checkOtherMissionsOnCurrentBay()
+        /// <summary>
+        /// Check existence of error missions.
+        /// Only applied for internal double bay.
+        /// </summary>
+        /// <returns></returns>
+        private Mission checkOtherMissionsOnCurrentBay()
         {
-            // ???? ///
+            Mission retValue = null;
+
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
             if (!(bay is null))
             {
@@ -167,52 +173,53 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     if (waitMissions.Any())
                     {
-                        var mission = waitMissions.FirstOrDefault();
-                        // this.SendMoveNotification(mission.TargetBay, mission.Step.ToString(), MessageStatus.OperationEnd);
-
-                        this.Logger.LogDebug($"Show the error mission: reason {mission.ErrorCode}");
-                        // Show the error message (reserved for LoadUnitWeightExceeded)
-                        this.CheckMissionShowError(mission);
-
-                        // Send information about the mission with LoadUnitWeightExceeded
-                        var messageData = new MoveLoadingUnitMessageData(
-                            mission.MissionType,
-                            mission.LoadUnitSource,
-                            mission.LoadUnitDestination,
-                            mission.LoadUnitCellSourceId,
-                            mission.DestinationCellId,
-                            mission.LoadUnitId,
-                            (mission.LoadUnitDestination == LoadingUnitLocation.Cell),
-                            mission.Id,
-                            mission.Action,
-                            mission.StopReason,
-                            mission.Step);
-
-                        this.Logger.LogDebug($"Send a notification message to the MissionManager: loading unit Id {mission.LoadUnitId} movement is completed");
-                        var msg = new NotificationMessage(
-                            messageData,
-                            mission.Step.ToString(),
-                            MessageActor.AutomationService,
-                            MessageActor.MachineManager,
-                            MessageType.MoveLoadingUnit,
-                            mission.TargetBay,
-                            mission.TargetBay,
-                            MessageStatus.OperationEnd);
-                        this.EventAggregator.GetEvent<Ferretto.VW.MAS.Utils.Events.NotificationEvent>().Publish(msg);
+                        retValue = waitMissions.FirstOrDefault();
                     }
                 }
             }
+
+            return retValue;
         }
 
         private void SendNotification()
         {
+            // Detect if an error codition exist. The error condition is a MachineErrorCode.LoadUnitWeigthExceeded and it happens
+            // in a internal double bay
+            var missionError = this.checkOtherMissionsOnCurrentBay();
             this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationEnd);
 
-            // -------------------------------------
-            // Add this code...
-            this.Logger.LogDebug($"Check the missions in a double internal bay with mission error code = Exceeded weight in the loading unit");
-            this.checkOtherMissionsOnCurrentBay();
-            // -------------------------------------
+            if (missionError != null)
+            {
+                this.Logger.LogDebug($"Show the error mission: reason {missionError.ErrorCode}");
+                // Show the error message (reserved for LoadUnitWeightExceeded)
+                this.CheckMissionShowError(missionError);
+
+                // Send information about the mission with LoadUnitWeightExceeded
+                var messageData = new MoveLoadingUnitMessageData(
+                    missionError.MissionType,
+                    missionError.LoadUnitSource,
+                    missionError.LoadUnitDestination,
+                    missionError.LoadUnitCellSourceId,
+                    missionError.DestinationCellId,
+                    missionError.LoadUnitId,
+                    (missionError.LoadUnitDestination == LoadingUnitLocation.Cell),
+                    missionError.Id,
+                    missionError.Action,
+                    missionError.StopReason,
+                    missionError.Step);
+
+                this.Logger.LogDebug($"Send a notification message to the MissionManager: loading unit Id {missionError.LoadUnitId} movement is completed");
+                var msg = new NotificationMessage(
+                    messageData,
+                    missionError.Step.ToString(),
+                    MessageActor.AutomationService,
+                    MessageActor.MachineManager,
+                    MessageType.MoveLoadingUnit,
+                    missionError.TargetBay,
+                    missionError.TargetBay,
+                    MessageStatus.OperationEnd);
+                this.EventAggregator.GetEvent<Ferretto.VW.MAS.Utils.Events.NotificationEvent>().Publish(msg);
+            }
         }
 
         private bool UpdateStopList(BayNumber bay)

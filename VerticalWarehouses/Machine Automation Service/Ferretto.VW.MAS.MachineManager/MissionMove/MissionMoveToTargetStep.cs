@@ -278,7 +278,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    // Check if do not exist any waiting missions on the current bay (reserved for double bay only)
+                    // Check if do not exist any waiting missions on the current bay
+                    // Only reserved for internal double bay
                     if (!this.isWaitingMissionOnThisBay())
                     {
                         newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);

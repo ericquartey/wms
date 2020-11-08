@@ -448,6 +448,15 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
+            // -------------
+            //var allMissions = missionsDataProvider.GetAllMissions();
+            //this.Logger.LogDebug($"all Missions: Count:{allMissions.Count()}");
+            //foreach (var m in allMissions)
+            //{
+            //    this.Logger.LogDebug($"Mission Id:{m.Id}");
+            //}
+            // --------------
+
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
             foreach (var mission in missions)
@@ -1088,59 +1097,44 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     baysDataProvider.AssignMission(mission.TargetBay, mission);
                     this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
-
-                    // ------------------------------------
-                    // Handle an exceptional case
-                    if (mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
-                    {
-                        // Create a new mission to recall the drawer into the warehouse
-                        //this.Logger.LogDebug($" <*> Create a new mission to recall loading unit into warehouse"); // uncomment
-                        //var missionNew = missionsDataProvider.CreateBayMission(mission.LoadUnitId, mission.TargetBay, MissionType.IN);  // uncomment
-
-                        //// Delete (or complete) the previous mission (the mission with loadingUnitWeightExceeded)
-                        //if (mission.WmsId.HasValue)
-                        //{
-                        //    missionsDataProvider.Complete(mission.Id);
-                        //    this.Logger.LogDebug($"{this.GetType().Name}: Complete {mission}");
-                        //}
-                        //else
-                        //{
-                        //    missionsDataProvider.Delete(mission.Id);
-                        //    this.Logger.LogDebug($"{this.GetType().Name}: Delete {mission}");
-                        //}
-                    }
-                    else
-                    {
-                        //this.Logger.LogDebug($"Notify the assigned mission changed!!!");  // uncomment
-                        //this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);  // uncomment
-                    }
-                    // --------------------------------------
-
-                    //this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
                 }
                 else if (mission.Status != MissionStatus.Waiting)
                 // any other mission type
                 {
-                    missionsDataProvider.Complete(mission.Id);
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
-
-                    this.Logger.LogDebug($" <<**>>");
+                    var bCreateAMissionForExceptionalCase = false;
                     if (mission.Status == MissionStatus.Completed)
                     {
-                        // Handle this exceptional case...
+                        // Analyze the given mission.
+                        // If mission has an error code of MachineErrorCode.LoadUnitWeightExceeded and in MissionStep.Completed then
+                        // it is prompted the creation of a new mission to handle the showing of error condition for the
+                        // LoadUnitWeightExceeded and the following return of drawer in the warehouse
                         if (mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
                         {
                             var bay = baysDataProvider.GetByLoadingUnitLocation(mission.LoadUnitSource);
                             if (!(bay is null))
                             {
+                                // Only applied for internal double bay
                                 if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
                                 {
-                                    // Create a new mission to recall the drawer into the warehouse
-                                    var missionNew = missionsDataProvider.CreateBayMission(mission.LoadUnitId, mission.TargetBay, MissionType.IN);
-                                    this.Logger.LogDebug($" <*> Create a new mission {missionNew.Id} to recall loading unit into warehouse");
+                                    bCreateAMissionForExceptionalCase = true;
                                 }
                             }
                         }
+                    }
+
+                    if (!bCreateAMissionForExceptionalCase)
+                    {
+                        // Set the given mission to MissionStatus.Completed.
+                        // The given mission is also deleted from the collection of active missions
+                        missionsDataProvider.Complete(mission.Id);
+                        this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                    }
+                    else
+                    {
+                        // Create a new mission one. It is handled the condition described above
+                        this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                        var missionNew = missionsDataProvider.CreateBayMission(mission.LoadUnitId, mission.TargetBay, MissionType.IN);
+                        this.Logger.LogDebug($"Handle condition on double internal bay. Create a new mission {missionNew.Id} to recall loading unit into warehouse");
                     }
                 }
             }

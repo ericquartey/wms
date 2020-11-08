@@ -301,32 +301,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            // -----------------------
-                            // Add this code line
-                            var bShowErrorCndition = true;
+                            // Use a flag to prompt showing the MachineErrorCode.LoadUnitWeightExceeded condition
+                            var bShowErrorCondition = true;
                             if (this.Mission.MissionType == MissionType.IN && this.Mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
                             {
                                 // In this case (see conditions), close the shutter
                                 newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                bShowErrorCndition = false;
+                                bShowErrorCondition = false;
                             }
-                            // ------------
 
-                            //if (this.Mission.MissionType == MissionType.OUT
-                            //    || this.Mission.MissionType == MissionType.WMS
-                            //    || this.Mission.MissionType == MissionType.FullTestOUT
-                            //)
-                            if (this.Mission.MissionType == MissionType.OUT ||          // ADD this condition code
+                            // For the mission of OUT type or WMS type
+                            if (this.Mission.MissionType == MissionType.OUT ||
                                 this.Mission.MissionType == MissionType.WMS ||
-                                this.Mission.MissionType == MissionType.FullTestOUT /*||
-                                this.Mission.MissionType == MissionType.IN && this.Mission.ErrorCode != MachineErrorCode.NoError*/)
+                                this.Mission.MissionType == MissionType.FullTestOUT)
                             {
+                                // Go to the waiting step
                                 newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
                             else
                             {
-                                //if (!this.CheckMissionShowError())
-                                if (bShowErrorCndition && !this.CheckMissionShowError())  // ADD this condition code
+                                // Detect the error condition and add it to the errors list
+                                if (bShowErrorCondition && !this.CheckMissionShowError())
                                 {
                                     this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                                     if (this.Mission.MissionType != MissionType.Manual)
@@ -334,13 +329,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
                                     }
                                 }
+                                // End the mission
                                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
                         }
                     }
                     else
                     {
-                        // Carousel bay movement
+                        // Handle the Carousel bay movement
                         if (this.Mission.MissionType == MissionType.Manual)
                         {
                             newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
@@ -370,7 +366,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             if (bay != null)
             {
-                if (bay.IsDouble)
+                // Only applied for internal double bay
+                if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
                 {
                     // List of waiting mission on the bay
                     var waitMissions = this.MissionsDataProvider.GetAllMissions()

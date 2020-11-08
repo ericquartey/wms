@@ -116,12 +116,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                 )
             {
-                // --------------------
-                // Add this code block
+                // Use a different step according to the current configuration bay
                 var isAtLeastOneWaitingMission = this.isWaitingMissionOnThisBay();
                 if (!isAtLeastOneWaitingMission)
                 {
                     // Eject the loading unit onto the current bay
+                    // Use for everything configuration bay types but the internal double bay
                     var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
                 }
@@ -129,14 +129,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     // Send a notification message to UI
 
-                    // The loading unit is waiting to unload in the bay
+                    // The loading unit is waiting to unload in the bay.
+                    // Only applied for the double internal bay
                     var newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
                 }
-                // --------------------
-
-                //var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                //newStep.OnEnter(null);
             }
         }
 
@@ -232,7 +229,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         /// <summary>
         /// Check if exist at least a waiting mission (step == MissionStep.WaitPick) in the current bay.
-        /// Applied only for double bay.
+        /// Applied only for internal double bay.
         /// </summary>
         /// <returns>
         ///     <c>true</c> if exists at least a waiting mission,
@@ -245,6 +242,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             if (bay != null)
             {
+                // Only applied for the internal double bay
                 if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
                 {
                     // List of waiting mission on the bay
