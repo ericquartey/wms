@@ -21,6 +21,7 @@ using Ferretto.VW.MAS.MachineManager;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+//using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -409,9 +410,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (activeMissions.Any(m => m.Status == MissionStatus.Completing))
             {
+                this.Logger.LogDebug($"Do not process any other missions until this is completed...");
+
                 // there is a mission being completed: do not process any other missions until this is completed
                 return;
             }
+
+            this.Logger.LogDebug($"ScheduleMissionsOnBayAsync | Get the active missions...");
 
             var missions = activeMissions
                 .Where(m =>
@@ -436,10 +441,21 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (!missions.Any())
             {
+                this.Logger.LogDebug($"No more missions are available for scheduling on this bay");
+
                 // no more missions are available for scheduling on this bay
                 this.NotifyAssignedMissionChanged(bayNumber, null);
                 return;
             }
+
+            // -------------
+            //var allMissions = missionsDataProvider.GetAllMissions();
+            //this.Logger.LogDebug($"all Missions: Count:{allMissions.Count()}");
+            //foreach (var m in allMissions)
+            //{
+            //    this.Logger.LogDebug($"Mission Id:{m.Id}");
+            //}
+            // --------------
 
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
@@ -502,7 +518,10 @@ namespace Ferretto.VW.MAS.MissionManager
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
-            missionsDataProvider.PurgeWmsMissions();
+            missionsDataProvider.PurgeMissions();
+
+            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+            errorsProvider.PurgeErrors();
 
             var missions = missionsDataProvider.GetAllMissions().ToList();
             foreach (var mission in missions)
@@ -1070,7 +1089,10 @@ namespace Ferretto.VW.MAS.MissionManager
                     &&
                     mission.LoadUnitDestination != LoadingUnitLocation.Elevator
                     &&
-                    mission.Status != MissionStatus.Waiting)
+                    mission.Status != MissionStatus.Waiting
+                    &&
+                    mission.Status != MissionStatus.Completed
+                    )
                 // loading unit to bay mission
                 {
                     baysDataProvider.AssignMission(mission.TargetBay, mission);
@@ -1079,8 +1101,41 @@ namespace Ferretto.VW.MAS.MissionManager
                 else if (mission.Status != MissionStatus.Waiting)
                 // any other mission type
                 {
-                    missionsDataProvider.Complete(mission.Id);
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                    var bCreateAMissionForExceptionalCase = false;
+                    if (mission.Status == MissionStatus.Completed)
+                    {
+                        // Analyze the given mission.
+                        // If mission has an error code of MachineErrorCode.LoadUnitWeightExceeded and in MissionStep.Completed then
+                        // it is prompted the creation of a new mission to handle the showing of error condition for the
+                        // LoadUnitWeightExceeded and the following return of drawer in the warehouse
+                        if (mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
+                        {
+                            var bay = baysDataProvider.GetByLoadingUnitLocation(mission.LoadUnitSource);
+                            if (!(bay is null))
+                            {
+                                // Only applied for internal double bay
+                                if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
+                                {
+                                    bCreateAMissionForExceptionalCase = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!bCreateAMissionForExceptionalCase)
+                    {
+                        // Set the given mission to MissionStatus.Completed.
+                        // The given mission is also deleted from the collection of active missions
+                        missionsDataProvider.Complete(mission.Id);
+                        this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                    }
+                    else
+                    {
+                        // Create a new mission one. It is handled the condition described above
+                        this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                        var missionNew = missionsDataProvider.CreateBayMission(mission.LoadUnitId, mission.TargetBay, MissionType.IN);
+                        this.Logger.LogDebug($"Handle condition on double internal bay. Create a new mission {missionNew.Id} to recall loading unit into warehouse");
+                    }
                 }
             }
             catch (Exception ex)
@@ -1098,6 +1153,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnNewMachineMissionAvailableAsync(IServiceProvider serviceProvider)
         {
+            this.Logger.LogDebug($"OnNewMachineMissionAvailableAsync | A new machine mission is available....");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
@@ -1149,7 +1205,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
                 // clean missions
-                missionsDataProvider.PurgeWmsMissions();
+                missionsDataProvider.PurgeMissions();
 
                 // clean errors
                 var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();

@@ -2850,4 +2850,40 @@ Anschließend auf "Weiter" drücken.</value>
   <data name="UpdateTareProcedure" xml:space="preserve">
     <value>Bestätigen Sie, dass die ausgewählte Schublade leer ist?</value>
   </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Gewichtskalibrierung</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>Mit der Gewichtskalibrierungsfunktion können Sie den Gewichtswert anhand von Probengewichten variieren</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>Laden Sie eine Schublade in den Schacht oder rufen Sie eine an, um den Assistenten zur Gewichtskalibrierung zu starten</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Mit leerer Schublade wiegen</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Führen Sie ein Laden und Entladen der Schublade durch, um die aktuellen Daten zu erhalten und das Nettogewicht der Schublade einzugeben</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>Derzeitiger Verbrauch</value>
+  </data>
+  <data name="OptionalWeighing3" xml:space="preserve">
+    <value>Drittes Wiegen mit Zwischengewicht</value>
+  </data>
+  <data name="OptionalWeighing2" xml:space="preserve">
+    <value>Zweites Wiegen mit Zwischengewicht</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>Zuerst mit mittlerem Gewicht wiegen</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+    <value>Überspringen</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Wiegen mit voller Schublade</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Einheit wechseln</value>
+  </data>
 </root>

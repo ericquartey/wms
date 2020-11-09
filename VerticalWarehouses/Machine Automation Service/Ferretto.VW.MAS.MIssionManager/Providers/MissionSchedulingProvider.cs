@@ -264,6 +264,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private void NotifyNewMachineMissionAvailable(BayNumber bay)
         {
+            this.logger.LogDebug($"Notify a new machine mission available!");
+
             var notificationMessage = new NotificationMessage(
                 null,
                 $"New machine mission available for bay {bay}.",

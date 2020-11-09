@@ -871,11 +871,20 @@ namespace Ferretto.VW.MAS.DeviceManager
                                                            receivedMessage.Source is FieldMessageActor.InverterDriver &&
                                                            receivedMessage.Data is IInverterPositioningFieldMessageData:
 
+                        var data = receivedMessage.Data as IInverterPositioningFieldMessageData;
+                        var msg = new PositioningMessageData();
+
+                        if (data != null)
+                        {
+                            msg.TorqueCurrentSample = new DataSample();
+                            msg.TorqueCurrentSample.Value = data.AbsorbedCurrent;
+                        }
+
                         this.EventAggregator
                             .GetEvent<NotificationEvent>()
                             .Publish(
                                 new NotificationMessage(
-                                    null,
+                                    msg,
                                     receivedMessage.Description,
                                     MessageActor.Any,
                                     MessageActor.DeviceManager,

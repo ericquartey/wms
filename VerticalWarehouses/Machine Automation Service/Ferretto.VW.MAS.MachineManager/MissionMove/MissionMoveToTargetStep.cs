@@ -241,7 +241,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         //check = MachineErrorCode.LoadUnitWeightExceeded;    // TEST
                         if (check != MachineErrorCode.NoError)
                         {
-                            this.Logger.LogDebug($"Stop movement and go back to bay. Mission:Id={this.Mission.Id}");
+                            this.Logger.LogDebug($"Stop movement and go back to bay. Mission:Id={this.Mission.Id}. Error:{check}");
                             this.Mission.ErrorCode = check;
                             this.Mission.EjectLoadUnit = true;
                             this.Mission.LoadUnitDestination = this.Mission.LoadUnitSource;
@@ -278,7 +278,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    // Check if do not exist any waiting missions on the current bay (reserved for double bay only)
+                    // Check if do not exist any waiting missions on the current bay
+                    // Only reserved for internal double bay
                     if (!this.isWaitingMissionOnThisBay())
                     {
                         newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);

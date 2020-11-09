@@ -179,7 +179,11 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     if (this.alphaNumericBarDriver != null)
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
-                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                        if (!await this.alphaNumericBarDriver.EnabledAsync(false))
+                        {
+                            // retry
+                            await this.alphaNumericBarDriver.EnabledAsync(false);
+                        }
 
                         this.alphaNumericBarDriver.SelectedMessage = string.Empty;
                         this.alphaNumericBarDriver.SelectedPosition = null;
@@ -310,6 +314,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         if (message.Length > 0)
                         {
                             this.alphaNumericBarDriver.GetOffsetMessage(socketLinkMessage.Data.X, message, out offsetMessage);
+
+                            this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; position {socketLinkMessage.Data.X}; message {message}");
                             await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
                         }
                         break;
@@ -318,10 +324,12 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         message = this.alphaNumericBarDriver.NormalizeMessageCharacters(socketLinkMessage.Data.TextMessage);
                         this.alphaNumericBarDriver.GetOffsetArrowAndMessage(socketLinkMessage.Data.X, message, out offsetArrow, out offsetMessage);
 
+                        this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; set arrow {offsetArrow}");
                         await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
 
                         if (message.Length > 0)
                         {
+                            this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; position {socketLinkMessage.Data.X}; message {message}");
                             await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
                         }
 

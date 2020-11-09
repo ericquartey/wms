@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
     public class MissionMoveBayChainStep : MissionMoveBase
     {
-        private const double LoadUnitMaxNetWeightBayChainPercent = 1.1;
+        private const double LoadUnitMaxNetWeightBayChain = 80;
 
         #region Constructors
 
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && position.LoadingUnit.Id == this.Mission.LoadUnitId
                 && !this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                 && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
-                && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)
+                && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight + LoadUnitMaxNetWeightBayChain)
                 )
             {
                 this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
@@ -151,10 +151,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         )
                     {
+                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
-                            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                             if (notification.Type == MessageType.Positioning
                                 && notification.TargetBay == notification.RequestingBay
                             )
@@ -203,11 +203,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition != this.Mission.OpenShutterPosition)
                             {
-                                this.Logger.LogError(ErrorDescriptions.LoadUnitShutterClosed);
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterClosed, notification.RequestingBay);
-
-                                this.OnStop(StopRequestReason.Error, !this.ErrorsProvider.IsErrorSmall());
-                                return;
+                                throw new StateMachineException(ErrorDescriptions.LoadUnitShutterClosed, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                            if (this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed)
+                            {
+                                var position = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                                this.SetErrorMoveBayChain(bay, position);
                             }
                         }
                         if (notification.Type == MessageType.Homing
@@ -324,7 +326,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (position != null
                     && position.LoadingUnit != null
                     && position.LoadingUnit.Id == this.Mission.LoadUnitId
-                    && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)
+                    && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight + LoadUnitMaxNetWeightBayChain)
                     )
                 {
                     this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
@@ -392,7 +394,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed,
                 bay.Number,
                 string.Format(Resources.Missions.RemoveMaterialFromLoadUnit,
-                    Math.Round((position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) - (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)),
+                    Math.Round((position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) - (position.LoadingUnit.MaxNetWeight + LoadUnitMaxNetWeightBayChain)),
                     this.Mission.LoadUnitId,
                     Math.Round(position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare)));
 
@@ -402,7 +404,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
 
             // set gross weight to the maximum that do not show this error again
-            this.LoadingUnitsDataProvider.SetWeight(this.Mission.LoadUnitId, position.LoadingUnit.MaxNetWeight + position.LoadingUnit.Tare);
+            this.LoadingUnitsDataProvider.SetWeight(this.Mission.LoadUnitId, position.LoadingUnit.MaxNetWeight + position.LoadingUnit.Tare + this.ElevatorDataProvider.GetWeight());
 
             this.Mission.ErrorCode = MachineErrorCode.LoadUnitWeightExceeded;
             this.Mission.RestoreStep = this.Mission.Step;
