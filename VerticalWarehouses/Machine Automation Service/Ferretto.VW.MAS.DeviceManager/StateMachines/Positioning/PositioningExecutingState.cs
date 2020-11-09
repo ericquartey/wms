@@ -1007,7 +1007,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 Math.Abs(this.zeroPlateMeasure[2] + this.zeroPlateMeasure[3]) / 2;
                             measured = -measured / 2;
                         }
-                        this.Logger.LogDebug($"Send Horizontal calibration result: {this.zeroPlateMeasure[0]}, {this.zeroPlateMeasure[1]}, {this.zeroPlateMeasure[2]}, {this.zeroPlateMeasure[3]}, measured {measured:0.0000}");
+                        this.Logger.LogDebug($"Send Horizontal calibration result: {this.zeroPlateMeasure[0]:0.00}, {this.zeroPlateMeasure[1]:0.00}, {this.zeroPlateMeasure[2]:0.00}, {this.zeroPlateMeasure[3]:0.00}, measured {measured:0.00}");
 
                         var notificationMessage = new NotificationMessage(
                             new ProfileCalibrationMessageData(profileOriginalDistance, measured - profileOriginalDistance, measured),
