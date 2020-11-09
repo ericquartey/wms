@@ -266,7 +266,8 @@
                           Margin="0,0,15,0"
                           Command="{Binding UpdateTareCommand}"
                           Content="{res:Loc InstallationApp.UpdateTare}"
-                          IsBusy="{Binding IsBusyUpdateDrawer}" />
+                          IsBusy="{Binding IsBusyUpdateDrawer}"
+                          Visibility="Collapsed" />
 
       <controls:PpcButton Grid.Column="2"
                           Margin="0,0,15,0"
