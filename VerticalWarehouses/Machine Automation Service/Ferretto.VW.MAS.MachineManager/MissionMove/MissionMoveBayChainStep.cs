@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
     public class MissionMoveBayChainStep : MissionMoveBase
     {
-        private const double LoadUnitMaxNetWeightBayChainPercent = 1.15;
+        private const double LoadUnitMaxNetWeightBayChain = 80;
 
         #region Constructors
 
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && position.LoadingUnit.Id == this.Mission.LoadUnitId
                 && !this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                 && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
-                && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)
+                && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight + LoadUnitMaxNetWeightBayChain)
                 )
             {
                 this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
@@ -326,7 +326,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (position != null
                     && position.LoadingUnit != null
                     && position.LoadingUnit.Id == this.Mission.LoadUnitId
-                    && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)
+                    && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight + LoadUnitMaxNetWeightBayChain)
                     )
                 {
                     this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
@@ -394,7 +394,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed,
                 bay.Number,
                 string.Format(Resources.Missions.RemoveMaterialFromLoadUnit,
-                    Math.Round((position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) - (position.LoadingUnit.MaxNetWeight * LoadUnitMaxNetWeightBayChainPercent)),
+                    Math.Round((position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) - (position.LoadingUnit.MaxNetWeight + LoadUnitMaxNetWeightBayChain)),
                     this.Mission.LoadUnitId,
                     Math.Round(position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare)));
 
