@@ -193,6 +193,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (activeMission != null)
                         {
                             this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay} Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+                            this.Mission.Status = MissionStatus.Waiting;
+                            this.MissionsDataProvider.Update(this.Mission);
                         }
                         else
                         {

@@ -177,7 +177,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
 
-                    if (bay.Positions.Count() == 1
+                    if (bay.IsDouble
+                        && bay.Carousel is null
+                        && this.Mission.ErrorCode != MachineErrorCode.NoError)
+                    {
+                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
+                    else if (bay.Positions.Count() == 1
                         || bay.Positions.Any(x => x.Location == this.Mission.LoadUnitDestination && x.IsUpper)
                         || bay.Positions.Any(x => x.IsUpper && x.IsBlocked)
                         || bay.Carousel is null)

@@ -1101,41 +1101,44 @@ namespace Ferretto.VW.MAS.MissionManager
                 else if (mission.Status != MissionStatus.Waiting)
                 // any other mission type
                 {
-                    var bCreateAMissionForExceptionalCase = false;
-                    if (mission.Status == MissionStatus.Completed)
-                    {
-                        // Analyze the given mission.
-                        // If mission has an error code of MachineErrorCode.LoadUnitWeightExceeded and in MissionStep.Completed then
-                        // it is prompted the creation of a new mission to handle the showing of error condition for the
-                        // LoadUnitWeightExceeded and the following return of drawer in the warehouse
-                        if (mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
-                        {
-                            var bay = baysDataProvider.GetByLoadingUnitLocation(mission.LoadUnitSource);
-                            if (!(bay is null))
-                            {
-                                // Only applied for internal double bay
-                                if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
-                                {
-                                    bCreateAMissionForExceptionalCase = true;
-                                }
-                            }
-                        }
-                    }
+                    missionsDataProvider.Complete(mission.Id);
+                    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
 
-                    if (!bCreateAMissionForExceptionalCase)
-                    {
-                        // Set the given mission to MissionStatus.Completed.
-                        // The given mission is also deleted from the collection of active missions
-                        missionsDataProvider.Complete(mission.Id);
-                        this.NotifyAssignedMissionChanged(mission.TargetBay, null);
-                    }
-                    else
-                    {
-                        // Create a new mission one. It is handled the condition described above
-                        this.NotifyAssignedMissionChanged(mission.TargetBay, null);
-                        var missionNew = missionsDataProvider.CreateBayMission(mission.LoadUnitId, mission.TargetBay, MissionType.IN);
-                        this.Logger.LogDebug($"Handle condition on double internal bay. Create a new mission {missionNew.Id} to recall loading unit into warehouse");
-                    }
+                    //var bCreateAMissionForExceptionalCase = false;
+                    //if (mission.Status == MissionStatus.Completed)
+                    //{
+                    //    // Analyze the given mission.
+                    //    // If mission has an error code of MachineErrorCode.LoadUnitWeightExceeded and in MissionStep.Completed then
+                    //    // it is prompted the creation of a new mission to handle the showing of error condition for the
+                    //    // LoadUnitWeightExceeded and the following return of drawer in the warehouse
+                    //    if (mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
+                    //    {
+                    //        var bay = baysDataProvider.GetByLoadingUnitLocation(mission.LoadUnitSource);
+                    //        if (!(bay is null))
+                    //        {
+                    //            // Only applied for internal double bay
+                    //            if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
+                    //            {
+                    //                bCreateAMissionForExceptionalCase = true;
+                    //            }
+                    //        }
+                    //    }
+                    //}
+
+                    //if (!bCreateAMissionForExceptionalCase)
+                    //{
+                    //    // Set the given mission to MissionStatus.Completed.
+                    //    // The given mission is also deleted from the collection of active missions
+                    //    missionsDataProvider.Complete(mission.Id);
+                    //    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                    //}
+                    //else
+                    //{
+                    //    // Create a new mission one. It is handled the condition described above
+                    //    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                    //    var missionNew = missionsDataProvider.CreateBayMission(mission.LoadUnitId, mission.TargetBay, MissionType.IN);
+                    //    this.Logger.LogDebug($"Handle condition on double internal bay. Create a new mission {missionNew.Id} to recall loading unit into warehouse");
+                    //}
                 }
             }
             catch (Exception ex)
