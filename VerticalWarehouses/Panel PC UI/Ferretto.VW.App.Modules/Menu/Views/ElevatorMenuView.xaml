@@ -108,7 +108,6 @@
                               Content="{res:Loc InstallationApp.HorizontalChainCalibrationDescription}"
                               IsBypassed="{Binding IsHorizontalChainBypassed}"
                               IsCompleted="{Binding IsHorizChainCompleted}"
-                              IsEnabled="False"
                               Kind="Account"
                               Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
