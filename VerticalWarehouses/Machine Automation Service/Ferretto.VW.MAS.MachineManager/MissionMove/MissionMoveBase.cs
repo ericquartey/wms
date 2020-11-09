@@ -213,7 +213,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
             {
                 bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                bayShutter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified);
+
+                // ------------------------------
+                // Add this block code
+                if (!(bay.IsDouble &&
+                     bay.Carousel == null &&
+                     !(bay.IsExternal)))
+                {
+                    bayShutter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified);
+                }
+                else
+                {
+                    bayShutter = bay.Shutter != null &&
+                        bay.Shutter.Type != ShutterType.NotSpecified &&
+                        !this.isWaitingMissionOnThisBay();
+                }
+
                 if (bayShutter)
                 {
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
@@ -228,6 +243,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.CloseShutterPosition = shutterClosed;
                     }
                 }
+                // ---------------------
+
+                //bayShutter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified);
+                //if (bayShutter)
+                //{
+                //    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);
+                //    var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                //    var shutterClosed = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                //    if (shutterPosition == shutterClosed)
+                //    {
+                //        bayShutter = false;
+                //    }
+                //    else
+                //    {
+                //        this.Mission.CloseShutterPosition = shutterClosed;
+                //    }
+                //}
             }
             if (restore)
             {
@@ -269,16 +301,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            if (this.Mission.MissionType == MissionType.OUT
-                                || this.Mission.MissionType == MissionType.WMS
-                                || this.Mission.MissionType == MissionType.FullTestOUT
-                            )
+                            // Use a flag to prompt showing the MachineErrorCode.LoadUnitWeightExceeded condition
+                            var bShowErrorCondition = true;
+                            if (this.Mission.MissionType == MissionType.IN && this.Mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
                             {
+                                // In this case (see conditions), close the shutter
+                                newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                bShowErrorCondition = false;
+                            }
+
+                            // For the mission of OUT type or WMS type
+                            if (this.Mission.MissionType == MissionType.OUT ||
+                                this.Mission.MissionType == MissionType.WMS ||
+                                this.Mission.MissionType == MissionType.FullTestOUT)
+                            {
+                                // Go to the waiting step
                                 newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
                             else
                             {
-                                if (!this.CheckMissionShowError())
+                                // Detect the error condition and add it to the errors list
+                                if (bShowErrorCondition && !this.CheckMissionShowError())
                                 {
                                     this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                                     if (this.Mission.MissionType != MissionType.Manual)
@@ -286,13 +329,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
                                     }
                                 }
+                                // End the mission
                                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
                         }
                     }
                     else
                     {
-                        // Carousel bay movement
+                        // Handle the Carousel bay movement
                         if (this.Mission.MissionType == MissionType.Manual)
                         {
                             newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
@@ -305,6 +349,39 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
             newStep.OnEnter(null);
+        }
+
+        /// <summary>
+        /// Check if exist at least a waiting mission (step == MissionStep.WaitPick) in the current bay.
+        /// Applied only for double bay.
+        /// </summary>
+        /// <returns>
+        ///     <c>true</c> if exists at least a waiting mission,
+        ///     <c>false</c> otherwise.
+        /// </returns>
+        private bool isWaitingMissionOnThisBay()
+        {
+            var retValue = false;
+
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            if (bay != null)
+            {
+                // Only applied for internal double bay
+                if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
+                {
+                    // List of waiting mission on the bay
+                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                        );
+
+                    retValue = waitMissions.Any();
+                }
+            }
+
+            return retValue;
         }
 
         public bool CheckMissionShowError()
@@ -324,6 +401,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                 this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
+                return true;
+            }
+            return false;
+        }
+
+        public bool CheckMissionShowError(Mission mission)
+        {
+            if (mission.ErrorCode != MachineErrorCode.NoError)
+            {
+                var loadUnit = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
+                this.ErrorsProvider.RecordNew(mission.ErrorCode,
+                    mission.TargetBay,
+                    string.Format(Resources.Missions.ErrorMissionDetails,
+                        mission.LoadUnitId,
+                        Math.Round(loadUnit.GrossWeight - loadUnit.Tare),
+                        Math.Round(loadUnit.Height),
+                        mission.WmsId ?? 0));
+
+                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                this.BaysDataProvider.Light(mission.TargetBay, true);
+                this.BaysDataProvider.CheckIntrusion(mission.TargetBay, true);
                 return true;
             }
             return false;

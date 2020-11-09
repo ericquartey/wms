@@ -31,11 +31,57 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
         }
 
+        /// <summary>
+        /// Delete any completed mission with the same loadUnit Id and the error condition is
+        /// LoadUnitWeightExceeded placed in the current bay.
+        /// This is mandatory for the management of missions in a double internal bay
+        /// </summary>
+        private void removeMissionWithErrorConditionExceededWeightOnBID()
+        {
+            var retValue = false;
+
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+            if (!(bay is null))
+            {
+                // Only applied for internal double bay
+                if (bay.IsDouble && bay.Carousel == null && !(bay.IsExternal))
+                {
+                    // List of completed mission on the bay with properties:
+                    //  status = Completed
+                    //  step   = End
+                    //  error code = MachineErrorCode.LoadUnitWeightExceeded
+                    var errorMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId == this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            m.Status == MissionStatus.Completed &&
+                            m.Step == MissionStep.End &&
+                            m.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded);
+
+                    // Check if an error mission exists
+                    retValue = errorMissions.Any();
+
+                    if (retValue)
+                    {
+                        // Retrieve the mission
+                        var mission = errorMissions.FirstOrDefault();
+
+                        // Delete the selected mission
+                        this.MissionsDataProvider.Delete(mission.Id);
+                        this.Logger.LogDebug($"{this.GetType().Name}: Delete {mission}");
+                    }
+                }
+            }
+        }
+
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
             var returnValue = this.CheckStartConditions(this.Mission, command, showErrors);
             if (returnValue)
             {
+                // Remove error mission, if exists, for a internal double bay
+                this.removeMissionWithErrorConditionExceededWeightOnBID();
+
                 this.Mission.Status = MissionStatus.New;
 
                 if (command != null
@@ -354,66 +400,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             return false;
                         }
-
-                        // Previous code ....
-                        //// always check upper position first
-                        //returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
-                        //if (returnValue)
-                        //{
-                        //    // upper position is empty. we can use it only if bottom is also free
-                        //    returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
-                        //    if (returnValue
-                        //        || bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked
-                        //        )
-                        //    {
-                        //        returnValue = true;
-                        //        // both positions are free: choose upper if not fixed by message
-                        //        if (messageData.Destination == bottom && !bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked)
-                        //        {
-                        //            mission.LoadUnitDestination = bottom;
-                        //        }
-                        //        else
-                        //        {
-                        //            mission.LoadUnitDestination = upper;
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        if (showErrors
-                        //            || !bay.Positions.Any(p => p.LoadingUnit is null && !p.IsBlocked)
-                        //            )
-                        //        {
-                        //            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
-                        //        }
-                        //        else
-                        //        {
-                        //            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
-                        //        }
-                        //        return false;
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    if (messageData.Destination == upper)
-                        //    {
-                        //        if (showErrors)
-                        //        {
-                        //            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
-                        //        }
-                        //        else
-                        //        {
-                        //            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
-                        //        }
-                        //        return false;
-                        //    }
-                        //    // if upper position is not empty we can try lower position
-                        //    returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
-                        //    if (returnValue)
-                        //    {
-                        //        // upper is occupied and bottom is free: choose bottom
-                        //        mission.LoadUnitDestination = bottom;
-                        //    }
-                        //}
 
                         if (!bay.IsDouble ||
                             bay.Carousel != null)

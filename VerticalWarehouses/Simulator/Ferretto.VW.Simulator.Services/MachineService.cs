@@ -779,6 +779,7 @@ namespace Ferretto.VW.Simulator.Services
                     // simulate measure weight
                     var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(this.MinTorqueCurrent, this.MaxTorqueCurrent)));
                     //var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)((this.MinTorqueCurrent+ this.MaxTorqueCurrent)/2)));
+
                     result = client.Client.Send(torqueMessage);
                     break;
 
