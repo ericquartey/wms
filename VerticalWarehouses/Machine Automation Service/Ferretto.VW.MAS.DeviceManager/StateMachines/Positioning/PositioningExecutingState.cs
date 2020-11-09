@@ -999,7 +999,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.findZeroStep == HorizontalCalibrationStep.FindCenter && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                         {
                             profileCalibrateDistance = Math.Abs(this.elevatorProvider.HorizontalPosition);
-                            measured = this.zeroPlateMeasure[1] - this.zeroPlateMeasure[2]; ;
+                            measured = this.zeroPlateMeasure[1] - this.zeroPlateMeasure[2];
+
+                            measured = - Math.Abs(this.zeroPlateMeasure[2] - this.zeroPlateMeasure[1]);
                         }
                         this.Logger.LogDebug($"Send Horizontal calibration result: Calibrate Distance {profileCalibrateDistance:0.0000}, Original Distance {profileOriginalDistance:0.0000}, measured {measured:0.0000}");
 
