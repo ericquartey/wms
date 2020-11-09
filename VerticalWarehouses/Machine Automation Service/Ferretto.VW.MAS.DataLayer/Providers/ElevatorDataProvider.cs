@@ -447,12 +447,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var axis = this.GetAxis(Orientation.Horizontal);
 
-                foreach (var profile in axis.Profiles)
-                {
-                    profile.TotalDistance = newDistance;
-                    var lastStep = profile.Steps.OrderBy(x => x.Number).Last();
-                    lastStep.Position = newDistance;
-                }
+                axis.ChainOffset = Math.Round(newDistance, 2);
+
+                //foreach (var profile in axis.Profiles)
+                //{
+                //    profile.TotalDistance = newDistance;
+                //    var lastStep = profile.Steps.OrderBy(x => x.Number).Last();
+                //    lastStep.Position = newDistance;
+                //}
                 this.dataContext.ElevatorAxes.Update(axis);
                 this.dataContext.SaveChanges();
             }
