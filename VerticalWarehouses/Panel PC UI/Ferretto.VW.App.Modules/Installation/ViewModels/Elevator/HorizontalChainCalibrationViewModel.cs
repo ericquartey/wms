@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         ChainCalibration,
 
-        GoToBay,
-
         StartCalibration,
 
         RunningCalibration,
@@ -210,8 +208,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepConfirmAdjustment => this.currentStep is HorizontalChainCalibrationStep.ConfirmAdjustment;
 
-        public bool HasStepGoToBay => this.currentStep is HorizontalChainCalibrationStep.GoToBay;
-
         public bool HasStepRunningCalibration => this.currentStep is HorizontalChainCalibrationStep.RunningCalibration;
 
         public bool HasStepStartCalibration => this.currentStep is HorizontalChainCalibrationStep.StartCalibration;
@@ -331,7 +327,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToGoToBayCommand
             ??
             (this.moveToGoToBayCommand = new DelegateCommand(
-                () => this.CurrentStep = HorizontalChainCalibrationStep.GoToBay,
+                () => this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration,
                 () => this.CanMoveToGoToBay()));
 
         public ICommand MoveToStartCalibrationCommand =>
@@ -591,19 +587,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case HorizontalChainCalibrationStep.ChainCalibration:
                     if (e.Next)
                     {
-                        this.CurrentStep = HorizontalChainCalibrationStep.GoToBay;
-                    }
-
-                    break;
-
-                case HorizontalChainCalibrationStep.GoToBay:
-                    if (e.Next)
-                    {
                         this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
-                    }
-                    else
-                    {
-                        this.CurrentStep = HorizontalChainCalibrationStep.ChainCalibration;
                     }
 
                     break;
@@ -615,7 +599,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                     else
                     {
-                        this.CurrentStep = HorizontalChainCalibrationStep.GoToBay;
+                        this.CurrentStep = HorizontalChainCalibrationStep.ChainCalibration;
                     }
 
                     break;
@@ -708,8 +692,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToStartCalibration()
         {
-            return this.CanBaseExecute() &&
-                this.MachineStatus.ElevatorPositionType == ElevatorPositionType.Bay;
+            return this.CanBaseExecute();
         }
 
         private bool CanStartCalibration()
@@ -953,12 +936,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                    this.IsExecutingProcedure = true;
-                    this.RaiseCanExecuteChanged();
+                this.IsExecutingProcedure = true;
+                this.RaiseCanExecuteChanged();
 
-                    await this.machineElevatorWebService.MoveHorizontalCalibrationAsync(MAS.AutomationService.Contracts.HorizontalMovementDirection.Forwards);
+                await this.machineElevatorWebService.MoveHorizontalCalibrationAsync(MAS.AutomationService.Contracts.HorizontalMovementDirection.Forwards);
 
-                    this.CurrentStep = HorizontalChainCalibrationStep.RunningCalibration;
+                this.CurrentStep = HorizontalChainCalibrationStep.RunningCalibration;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -1019,7 +1002,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                        (m) =>
                        {
                            this.RaisePropertyChanged(nameof(this.HasStepChainCalibration));
-                           this.RaisePropertyChanged(nameof(this.HasStepGoToBay));
                            this.RaisePropertyChanged(nameof(this.HasStepStartCalibration));
                            this.RaisePropertyChanged(nameof(this.HasStepRunningCalibration));
                            this.RaisePropertyChanged(nameof(this.HasStepConfirmAdjustment));
@@ -1070,14 +1052,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNextStepSinglePage(true, this.moveToGoToBayCommand?.CanExecute() ?? false);
                     break;
 
-                case HorizontalChainCalibrationStep.GoToBay:
-                    this.ShowPrevStepSinglePage(true, true);
-                    this.ShowNextStepSinglePage(true, this.moveToStartCalibrationCommand?.CanExecute() ?? false);
-                    break;
-
                 case HorizontalChainCalibrationStep.StartCalibration:
                     this.ShowPrevStepSinglePage(true, true);
-                    this.ShowNextStepSinglePage(true, false);
+                    this.ShowNextStepSinglePage(true, true);
                     break;
 
                 case HorizontalChainCalibrationStep.RunningCalibration:
@@ -1094,7 +1071,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowAbortStep(true, !this.IsMoving);
 
             this.RaisePropertyChanged(nameof(this.HasStepChainCalibration));
-            this.RaisePropertyChanged(nameof(this.HasStepGoToBay));
             this.RaisePropertyChanged(nameof(this.HasStepStartCalibration));
             this.RaisePropertyChanged(nameof(this.HasStepRunningCalibration));
             this.RaisePropertyChanged(nameof(this.HasStepConfirmAdjustment));
