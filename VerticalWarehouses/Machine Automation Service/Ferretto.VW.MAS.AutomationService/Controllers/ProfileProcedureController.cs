@@ -68,7 +68,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult Save()
         {
             this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetBayProfileCheck(this.BayNumber));
-            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalChainCalibration());
 
             return this.Accepted();
         }
