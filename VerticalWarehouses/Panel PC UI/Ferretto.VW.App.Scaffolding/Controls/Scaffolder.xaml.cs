@@ -306,11 +306,25 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
+        private void HideHorizontalCalibrateSpeedOnVerticalAxis(Models.ScaffoldedStructure scaffoldedStructure)
+        {
+            if(scaffoldedStructure != null && scaffoldedStructure.Id == 510)//510 is Vertical Axis Id
+            {
+                if(this.Entities != null && this.Entities.Where(s => s.Id == 525).Any())//525 is HorizontalCalibrateSpeed Id in Vertical Axis
+                {
+                    var item = this.Entities.Where(s => s.Id == 525).FirstOrDefault();
+                    this.Entities.Remove(item);
+                }
+            }
+        }
+
         private void OnFocusStructureChanged(DependencyPropertyChangedEventArgs e)
         {
             var current = e.NewValue as Models.ScaffoldedStructure;
             this.Entities = new ObservableCollection<Models.ScaffoldedEntity>(current?.Entities.AsEnumerable() ?? Array.Empty<Models.ScaffoldedEntity>());
             this.Structures = new ObservableCollection<Models.ScaffoldedStructure>(current?.Children.AsEnumerable() ?? Array.Empty<Models.ScaffoldedStructure>());
+
+            this.HideHorizontalCalibrateSpeedOnVerticalAxis(current);
 
             // navigating? (aka: deeper than the root?)
             var navigating = this.IsNavigating = current != this._navigationRoot;
@@ -394,6 +408,19 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
+        private IEnumerable<Models.ScaffoldedEntity> HideSearchHorizontalCalibrateSpeedOnVerticalAxis(IEnumerable<Models.ScaffoldedEntity> entry)
+        {
+            if(entry !=  null)
+            {
+                if (entry.Where(s => s.Id == 525).Any())//525 is HorizontalCalibrateSpeed Id in Vertical Axis
+                {
+                    entry = entry.Where(s => s.Id != 525);
+                }
+            }
+
+            return entry;
+        }
+
         private void OnSearchTextChanged(DependencyPropertyChangedEventArgs e)
         {
             var searchText = (string)e.NewValue;
@@ -422,6 +449,8 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                     // remove last search (in order to replace it as the `FocusStructure` property changes).
                     breadcrumb.RemoveAt(breadcrumb.Count - 1);
                 }
+
+                query = this.HideSearchHorizontalCalibrateSpeedOnVerticalAxis(query);
 
                 // exec
                 this.FocusStructure = new Models.ScaffoldedStructure($"\"{searchText}\"", query, Array.Empty<Models.ScaffoldedStructure>());
