@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 }
                 else
                 {
-                    this.Logger.LogDebug("Target position reached: horizontal calibration failed!");
+                    this.Logger.LogDebug("Target position reached: horizontal calibration end");
                     this.ParentStateMachine.ChangeState(
                         new PositioningDisableOperationState(
                             this.ParentStateMachine,

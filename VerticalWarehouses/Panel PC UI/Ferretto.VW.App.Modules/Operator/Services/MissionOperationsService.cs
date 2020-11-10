@@ -377,8 +377,12 @@ namespace Ferretto.VW.App.Modules.Operator
                 var machineMissions = await this.missionsWebService.GetAllAsync();
 
                 // Retrieve the active missions in the given bay according to the bay's properties
+                // in BID we show LU window only when 1 LU is ready
                 IOrderedEnumerable<Mission> activeMissions = null;
-                if (isInternalDoubleBay == false)
+                if (!isInternalDoubleBay
+                    ||
+                    bay.Positions.Count(x => x.LoadingUnit != null) == 1
+                    )
                 {
                     // Retrieve the active missions according to the enlisted condition.
                     // The missions are ordered by the location of destination for the load unit
@@ -390,18 +394,18 @@ namespace Ferretto.VW.App.Modules.Operator
                         m.Status == MissionStatus.Waiting)
                         .OrderBy(o => o.LoadUnitDestination);
                 }
-                else
-                {
-                    // Retrieve the active missions according to the enlisted condition.
-                    // The missions are ordered by creation date (descending way)
-                    activeMissions = machineMissions.Where(m =>
-                        m.Step is MissionStep.WaitPick
-                        &&
-                        m.TargetBay == this.bayNumber
-                        &&
-                        m.Status == MissionStatus.Waiting)
-                        .OrderByDescending(d => d.CreationDate);
-                }
+                //else
+                //{
+                //    // Retrieve the active missions according to the enlisted condition.
+                //    // The missions are ordered by creation date (descending way)
+                //    activeMissions = machineMissions.Where(m =>
+                //        m.Step is MissionStep.WaitPick
+                //        &&
+                //        m.TargetBay == this.bayNumber
+                //        &&
+                //        m.Status == MissionStatus.Waiting)
+                //        .OrderByDescending(d => d.CreationDate);
+                //}
 
                 if (activeMissions.Any())
                 {

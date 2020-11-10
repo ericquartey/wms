@@ -990,22 +990,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
                         this.machineData.ExecutedSteps = this.performedCycles;
-                        var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                        //var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                         var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                         var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
-                        double profileOriginalDistance = (double)(axis.Profiles.FirstOrDefault()?.TotalDistance);
-                        double profileCalibrateDistance = 0;
+                        double profileOriginalDistance = (double)(axis.ChainOffset);
+                        //double profileCalibrateDistance = 0;
                         double measured = 0;
                         if (this.findZeroStep == HorizontalCalibrationStep.FindCenter && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                         {
-                            profileCalibrateDistance = Math.Abs(this.elevatorProvider.HorizontalPosition);
-                            //measured = this.zeroPlateMeasure[1] - this.zeroPlateMeasure[2];
-
-                            //measured = - Math.Abs(this.zeroPlateMeasure[2] - this.zeroPlateMeasure[1]);
+                            //profileCalibrateDistance = Math.Abs(this.elevatorProvider.HorizontalPosition);
 
                             measured = Math.Abs(this.zeroPlateMeasure[0] + this.zeroPlateMeasure[1]) / 2 +
                                 Math.Abs(this.zeroPlateMeasure[2] + this.zeroPlateMeasure[3]) / 2;
-                            measured = -measured / 2;
+                            measured /= -2;
                         }
                         this.Logger.LogDebug($"Send Horizontal calibration result: {this.zeroPlateMeasure[0]:0.00}, {this.zeroPlateMeasure[1]:0.00}, {this.zeroPlateMeasure[2]:0.00}, {this.zeroPlateMeasure[3]:0.00}, measured {measured:0.00}");
 
