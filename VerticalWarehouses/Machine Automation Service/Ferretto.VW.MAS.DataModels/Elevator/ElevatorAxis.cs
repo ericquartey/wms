@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double HomingCreepSpeed { get; set; }
 
+        public double HorizontalCalibrateSpeed { get; set; }
+
         public double HomingFastSpeed { get; set; }
 
         public Inverter Inverter { get; set; }

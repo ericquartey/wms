@@ -93,52 +93,6 @@
       </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="DataTemplateGoToBay">
-      <Grid Margin="20"
-            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="154" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition />
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.ColumnSpan="2">
-          <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.BeforeStart}" /><Run Text=":" />
-          </TextBlock>
-          <TextBlock Grid.ColumnSpan="2"
-                     Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationGoToBay}" /><Run Text="." />
-          </TextBlock>
-        </StackPanel>
-
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            VerticalAlignment="Center"
-                            Command="{Binding MoveToBayPositionCommand}"
-                            Content="{res:Loc InstallationApp.GoToBay}"
-                            IsBusy="{Binding IsElevatorMovingToBay}"
-                            Style="{StaticResource WizardIntoButton}" />
-
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="15,15,0,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding MoveToStartCalibrationCommand}"
-                            Content="{res:Loc InstallationApp.Forwards}"
-                            Style="{StaticResource WizardConfirmButton}" />
-
-      </Grid>
-    </DataTemplate>
-
     <DataTemplate x:Key="DataTemplateStartCalibration">
       <Grid Margin="20"
             DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
@@ -436,7 +390,6 @@
     <local:HorizontalCalibrationStepTemplateSelector x:Key="selector"
                                                      EnumChainCalibration="{StaticResource DataTemplateChainCalibration}"
                                                      EnumConfirmAdjustment="{StaticResource DataTemplateConfirmAdjustment}"
-                                                     EnumGoToBay="{StaticResource DataTemplateGoToBay}"
                                                      EnumRunningCalibration="{StaticResource DataTemplateRunningCalibration}"
                                                      EnumStartCalibration="{StaticResource DataTemplateStartCalibration}" />
     <!--#endregion-->
@@ -696,7 +649,6 @@
         <RowDefinition Height="4*" />
         <RowDefinition Height="4*" />
         <RowDefinition Height="4*" />
-        <RowDefinition Height="4*" />
         <RowDefinition Height="1" />
       </Grid.RowDefinitions>
       <!--#region Body-->
@@ -715,7 +667,7 @@
       <!--#endregion-->
       <!--#region TimeLine-->
       <Border Grid.Row="0"
-              Grid.RowSpan="6"
+              Grid.RowSpan="5"
               Style="{DynamicResource BorderTimeLine}" />
 
       <Grid Grid.Row="1">
@@ -736,29 +688,12 @@
       </Grid>
 
       <Grid Grid.Row="2">
-        <Border Background="{Binding HasStepGoToBay, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+        <Border Background="{Binding HasStepStartCalibration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                 Style="{DynamicResource BorderTimeLineCirle}" />
         <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                    Text="2" />
       </Grid>
       <Grid Grid.Row="2"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Visibility="{Binding HasStepGoToBay, Converter={StaticResource BTVC}, Mode=OneWay}">
-        <Path Height="24"
-              VerticalAlignment="Center"
-              StrokeThickness="0"
-              Style="{DynamicResource BorderTimeLinePath}" />
-        <Path Style="{DynamicResource BorderTimeLinePath}" />
-      </Grid>
-
-      <Grid Grid.Row="3">
-        <Border Background="{Binding HasStepStartCalibration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                Style="{DynamicResource BorderTimeLineCirle}" />
-        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="3" />
-      </Grid>
-      <Grid Grid.Row="3"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Visibility="{Binding HasStepStartCalibration, Converter={StaticResource BTVC}, Mode=OneWay}">
@@ -769,13 +704,13 @@
         <Path Style="{DynamicResource BorderTimeLinePath}" />
       </Grid>
 
-      <Grid Grid.Row="4">
+      <Grid Grid.Row="3">
         <Border Background="{Binding HasStepRunningCalibration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                 Style="{DynamicResource BorderTimeLineCirle}" />
         <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="4" />
+                   Text="3" />
       </Grid>
-      <Grid Grid.Row="4"
+      <Grid Grid.Row="3"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Visibility="{Binding HasStepRunningCalibration, Converter={StaticResource BTVC}, Mode=OneWay}">
@@ -786,13 +721,13 @@
         <Path Style="{DynamicResource BorderTimeLinePath}" />
       </Grid>
 
-      <Grid Grid.Row="5">
+      <Grid Grid.Row="4">
         <Border Background="{Binding HasStepConfirmAdjustment, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                 Style="{DynamicResource BorderTimeLineCirle}" />
         <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="5" />
+                   Text="4" />
       </Grid>
-      <Grid Grid.Row="5"
+      <Grid Grid.Row="4"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Visibility="{Binding HasStepConfirmAdjustment, Converter={StaticResource BTVC}, Mode=OneWay}">

@@ -748,7 +748,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
 
-            var speed = new[] { 2.5 };
+            var speed = new[] { axis.HorizontalCalibrateSpeed };
             var acceleration = new[] { axis.FullLoadMovement.Acceleration };
             var deceleration = new[] { axis.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };

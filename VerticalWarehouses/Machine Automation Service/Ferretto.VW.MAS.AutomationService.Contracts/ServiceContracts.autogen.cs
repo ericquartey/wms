@@ -4307,6 +4307,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HomingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingCreepSpeed { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("HorizontalCalibrateSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double HorizontalCalibrateSpeed { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("HomingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingFastSpeed { get; set; }
     
