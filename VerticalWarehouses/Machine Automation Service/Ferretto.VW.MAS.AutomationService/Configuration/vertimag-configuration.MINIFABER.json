@@ -52,10 +52,10 @@
         "ChainOffset": -10.0,
         "CyclesToCalibrate": 50,
         "EmptyLoadMovement": {
-          "Acceleration": 350.0,
-          "Deceleration": 350.0,
+          "Acceleration": 400.0,
+          "Deceleration": 400.0,
           "Id": 3,
-          "Speed": 450.0
+          "Speed": 500.0
         },
         "External": {
           "AssistedMovements": {
@@ -74,10 +74,10 @@
           "Race": 1016.0
         },
         "FullLoadMovement": {
-          "Acceleration": 350.0,
-          "Deceleration": 350.0,
+          "Acceleration": 400.0,
+          "Deceleration": 400.0,
           "Id": 6,
-          "Speed": 4500.0
+          "Speed": 500.0
         },
         "Id": 1,
         "Inventory": true,
