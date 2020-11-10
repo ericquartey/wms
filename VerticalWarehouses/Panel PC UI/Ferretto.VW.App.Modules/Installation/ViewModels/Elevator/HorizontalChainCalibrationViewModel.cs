@@ -686,8 +686,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToGoToBay()
         {
-            return this.CanBaseExecute() &&
-                   this.MachineStatus.ElevatorHorizontalPosition == 0;
+            return this.CanBaseExecute();
         }
 
         private bool CanMoveToStartCalibration()

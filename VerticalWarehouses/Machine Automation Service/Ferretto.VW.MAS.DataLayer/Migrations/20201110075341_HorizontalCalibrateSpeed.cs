@@ -19,9 +19,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "HorizontalCalibrateSpeed",
                 table: "ElevatorAxes",
                 nullable: false,
-                defaultValue: 3.0);
+                defaultValue: 1.5);
 
-            migrationBuilder.Sql("UPDATE ElevatorAxes SET HorizontalCalibrateSpeed = 3.0");
+            migrationBuilder.Sql("UPDATE ElevatorAxes SET HorizontalCalibrateSpeed = 1.5");
         }
 
         #endregion

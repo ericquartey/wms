@@ -1000,9 +1000,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             //profileCalibrateDistance = Math.Abs(this.elevatorProvider.HorizontalPosition);
 
-                            measured = Math.Abs(this.zeroPlateMeasure[0] + this.zeroPlateMeasure[1]) / 2 +
-                                Math.Abs(this.zeroPlateMeasure[2] + this.zeroPlateMeasure[3]) / 2;
-                            measured /= -2;
+                            //measured = Math.Abs(this.zeroPlateMeasure[0] + this.zeroPlateMeasure[1]) / 2 +
+                            //    Math.Abs(this.zeroPlateMeasure[2] + this.zeroPlateMeasure[3]) / 2;
+                            //measured /= -2;
+
+                            var sensorLength = Math.Abs(this.zeroPlateMeasure[0] - this.zeroPlateMeasure[1]) +
+                                this.zeroPlateMeasure[2] - this.zeroPlateMeasure[3];
+                            measured = -((this.zeroPlateMeasure[2] + Math.Abs(this.zeroPlateMeasure[0])) / 2 - sensorLength);
                         }
                         this.Logger.LogDebug($"Send Horizontal calibration result: {this.zeroPlateMeasure[0]:0.00}, {this.zeroPlateMeasure[1]:0.00}, {this.zeroPlateMeasure[2]:0.00}, {this.zeroPlateMeasure[3]:0.00}, measured {measured:0.00}");
 
