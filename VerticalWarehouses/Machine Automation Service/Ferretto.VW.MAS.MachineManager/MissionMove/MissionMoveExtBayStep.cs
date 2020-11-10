@@ -374,6 +374,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             IMissionMoveBase newStep;
             if (this.CheckMissionShowError())
             {
+                this.WakeUpMission();
+
                 this.Logger.LogDebug($"Detect an error :: go to MissionMoveEndStep");
 
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
@@ -383,23 +385,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.MissionType == MissionType.WMS ||
                 this.Mission.MissionType == MissionType.FullTestOUT)
             {
-                var waitingMission = this.MissionsDataProvider.GetAllActiveMissions()
-                    .FirstOrDefault(m => m.LoadUnitSource == this.Mission.LoadUnitDestination
-                        && (m.Step == MissionStep.WaitDepositCell || m.Step == MissionStep.WaitChain));
-
-                if (waitingMission != null)
-                {
-                    // wake up the mission waiting for the bay chain movement
-                    this.Logger.LogInformation($"Resume waiting deposit Mission:Id={waitingMission.Id}");
-                    this.LoadingUnitMovementProvider.ResumeOperation(
-                        waitingMission.Id,
-                        waitingMission.LoadUnitSource,
-                        waitingMission.LoadUnitDestination,
-                        waitingMission.WmsId,
-                        waitingMission.MissionType,
-                        waitingMission.TargetBay,
-                        MessageActor.MachineManager);
-                }
+                this.WakeUpMission();
 
                 this.Logger.LogDebug($"Go to MissionMoveWaitPickStep, Mission Type: {this.Mission.MissionType}");
 
@@ -473,6 +459,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             newStep.OnEnter(null);
+        }
+
+        private void WakeUpMission()
+        {
+            var waitingMission = this.MissionsDataProvider.GetAllActiveMissions()
+                .FirstOrDefault(m => m.LoadUnitSource == this.Mission.LoadUnitDestination
+                    && (m.Step == MissionStep.WaitDepositCell || m.Step == MissionStep.WaitChain));
+
+            if (waitingMission != null)
+            {
+                // wake up the mission waiting for the bay chain movement
+                this.Logger.LogInformation($"Resume waiting deposit Mission:Id={waitingMission.Id}");
+                this.LoadingUnitMovementProvider.ResumeOperation(
+                    waitingMission.Id,
+                    waitingMission.LoadUnitSource,
+                    waitingMission.LoadUnitDestination,
+                    waitingMission.WmsId,
+                    waitingMission.MissionType,
+                    waitingMission.TargetBay,
+                    MessageActor.MachineManager);
+            }
         }
 
         #endregion
