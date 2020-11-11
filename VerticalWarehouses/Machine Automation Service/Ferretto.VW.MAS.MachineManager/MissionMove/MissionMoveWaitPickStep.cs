@@ -185,6 +185,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
+                        // if this.Mission.ErrorCode != MachineErrorCode.NoError
+                        //{
+                        //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                        //this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                        //this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+                        //this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                        // return;
+                        //}
+
                         var activeMission = this.MissionsDataProvider.GetAllActiveMissions()
                             .FirstOrDefault(x => x.Status == MissionStatus.Executing
                                 && x.Id != this.Mission.Id
