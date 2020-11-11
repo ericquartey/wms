@@ -217,13 +217,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 // ------------------------------
                 // Add this block code
                 if (!(bay.IsDouble &&
-                     bay.Carousel == null &&
-                     !(bay.IsExternal)))
+                        bay.Carousel == null &&
+                        !bay.IsExternal
+                     )
+                )
                 {
-                    bayShutter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified);
+                    // all bays different from BID
+                    bayShutter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified && !bay.IsExternal);
                 }
                 else
                 {
+                    // BID
                     bayShutter = bay.Shutter != null &&
                         bay.Shutter.Type != ShutterType.NotSpecified &&
                         !this.isWaitingMissionOnThisBay();

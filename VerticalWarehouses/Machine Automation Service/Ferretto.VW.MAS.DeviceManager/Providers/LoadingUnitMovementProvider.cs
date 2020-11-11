@@ -530,10 +530,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         break;
 
                     case ExternalBayMovementDirection.TowardOperator:
-                        distance -= this.baysDataProvider.GetChainPosition(requestingBay); //+ bay.ChainOffset;
+                        distance -= this.baysDataProvider.GetChainPosition(requestingBay) - bay.ChainOffset;
                         break;
                 }
-                if (distance < Math.Abs(bay.ChainOffset / 2))
+                if (distance < Math.Abs(bay.ChainOffset / 4))
                 {
                     return false;
                 }
