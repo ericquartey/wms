@@ -370,7 +370,7 @@
     <value>DEBUG</value>
   </data>
   <data name="FiniteMachineState" xml:space="preserve">
-    <value>Finite state machine</value>
+    <value>Macchina a stati finiti</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
@@ -379,7 +379,7 @@
     <value>IO Drive</value>
   </data>
   <data name="StatusDebug" xml:space="preserve">
-    <value>Status:</value>
+    <value>Stato:</value>
   </data>
   <data name="NoRows" xml:space="preserve">
     <value>Nessuna riga presente nell'elenco</value>
@@ -451,5 +451,8 @@
   </data>
   <data name="TokenStatus" xml:space="preserve">
     <value>Stato Gettone</value>
+  </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>Sintassi per NameOf è Type={x:Type className&gt;}.&lt;</value>
   </data>
 </root>

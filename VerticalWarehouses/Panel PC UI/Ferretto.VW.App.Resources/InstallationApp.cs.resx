@@ -1464,7 +1464,7 @@ Po provedení pokračujte stisknutím tlačítka „Následující“</value>
     <value>ID vytažené zásuvky {0}</value>
   </data>
   <data name="ErrorCheckFile" xml:space="preserve">
-    <value>Chyba během kontroly souboru {0}.</value>
+    <value>Chyba během kontroly souboru {0}</value>
   </data>
   <data name="ErrorChecksum" xml:space="preserve">
     <value>Chyba kontroly kontrolního součtu souboru:</value>
@@ -2580,7 +2580,7 @@ Po provedení pokračujte stisknutím tlačítka „Následující“</value>
     <value>Zrušit</value>
   </data>
   <data name="Bay4" xml:space="preserve">
-    <value>Stan</value>
+    <value>Stan 4</value>
   </data>
   <data name="StartTest" xml:space="preserve">
     <value>Spust test</value>

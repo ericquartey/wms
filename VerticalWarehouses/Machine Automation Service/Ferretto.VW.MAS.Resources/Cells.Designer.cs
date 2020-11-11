@@ -106,6 +106,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The drawer cannot be placed in front of a deactivated cell..
+        /// </summary>
+        public static string TheLoadingCannotBePlacedOppositeADeactivatedCell {
+            get {
+                return ResourceManager.GetString("TheLoadingCannotBePlacedOppositeADeactivatedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The loading unit cannot occupy a blocked cell..
         /// </summary>
         public static string TheLoadingCannotOccupyABlockedCell {
@@ -178,11 +187,29 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The target cell is disabled..
+        /// </summary>
+        public static string TheTargetCellIsDeactivated {
+            get {
+                return ResourceManager.GetString("TheTargetCellIsDeactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The target cell is space only, it cannot support a load unit..
         /// </summary>
         public static string TheTargetCellIsSpaceOnly {
             get {
                 return ResourceManager.GetString("TheTargetCellIsSpaceOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target cell is unusable..
+        /// </summary>
+        public static string TheTargetCellIsUnusable {
+            get {
+                return ResourceManager.GetString("TheTargetCellIsUnusable", resourceCulture);
             }
         }
     }

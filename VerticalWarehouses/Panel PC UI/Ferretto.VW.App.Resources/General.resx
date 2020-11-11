@@ -439,7 +439,7 @@
     <value>The '{0}' property of the '{1}' view model shall contain a valid loading unit identifier.</value>
   </data>
   <data name="MarkupNameOfSyntax" xml:space="preserve">
-    <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}.</value>
+    <value>Syntax for NameOf is Type={x:Type className&gt;}.&lt;</value>
   </data>
   <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
     <value>Parameter cannot be null or empty.</value>
