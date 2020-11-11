@@ -87,6 +87,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         return true;
                     }
                 }
+                else
+                {
+                    // check mission this.Mission.ErrorCode != MachineErrorCode.NoError
+                    //this.LoadingUnitMovementProvider.ResumeOperation(
+                    //    lowerMission.Id,
+                    //    lowerMission.LoadUnitSource,
+                    //    lowerMission.LoadUnitDestination,
+                    //    lowerMission.WmsId,
+                    //    lowerMission.MissionType,
+                    //    lowerMission.TargetBay,
+                    //    MessageActor.MachineManager);
+
+                    //this.MissionsDataProvider.Update(this.Mission);
+
+                    //this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+                    //return true;
+                }
             }
             // no need to wait
             var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
