@@ -1464,7 +1464,7 @@ Nakon toga nastavite pritiskom na tipku "Sljedeći“</value>
     <value>Pretinac id {0} izvađen</value>
   </data>
   <data name="ErrorCheckFile" xml:space="preserve">
-    <value>Greška tijekom provjere datoteke {0}.</value>
+    <value>Greška tijekom provjere datoteke {0}</value>
   </data>
   <data name="ErrorChecksum" xml:space="preserve">
     <value>Greška provjere kontrolnog zbroja datoteke:</value>
@@ -2580,7 +2580,7 @@ Nakon toga nastavite pritiskom na tipku "Sljedeći“</value>
     <value>Poništi</value>
   </data>
   <data name="Bay4" xml:space="preserve">
-    <value>Uv.</value>
+    <value>Uv. 4</value>
   </data>
   <data name="StartTest" xml:space="preserve">
     <value>Pokr.Test</value>

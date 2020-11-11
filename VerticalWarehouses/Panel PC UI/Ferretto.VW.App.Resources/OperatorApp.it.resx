@@ -1439,10 +1439,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>Istruzione</value>
   </data>
   <data name="IsDone" xml:space="preserve">
-    <value>IsDone</value>
+    <value>Fatta</value>
   </data>
   <data name="IsToDo" xml:space="preserve">
-    <value>IsToDo</value>
+    <value>Da fare</value>
   </data>
   <data name="MachineStatisticsCounter" xml:space="preserve">
     <value>MachineStatisticsCounter</value>
@@ -1538,13 +1538,13 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
     <value>BayNumber</value>
   </data>
   <data name="CounterName" xml:space="preserve">
-    <value>CounterName</value>
+    <value>Nome contatore</value>
   </data>
   <data name="InstructionState" xml:space="preserve">
     <value>Stato riga</value>
   </data>
   <data name="InstructionStatus" xml:space="preserve">
-    <value>Status</value>
+    <value>Stato</value>
   </data>
   <data name="ExecuteRow" xml:space="preserve">
     <value>Esegui riga</value>

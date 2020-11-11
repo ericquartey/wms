@@ -159,4 +159,13 @@
   <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
     <value>The Specified height is out of the elevator vertical bounds</value>
   </data>
+  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
+    <value>The drawer cannot be placed in front of a deactivated cell.</value>
+  </data>
+  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
+    <value>The target cell is disabled.</value>
+  </data>
+  <data name="TheTargetCellIsUnusable" xml:space="preserve">
+    <value>The target cell is unusable.</value>
+  </data>
 </root>

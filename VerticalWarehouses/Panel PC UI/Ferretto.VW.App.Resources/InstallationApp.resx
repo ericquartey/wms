@@ -136,7 +136,7 @@
     <value>Error</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
-    <value>Feed rate</value>
+    <value>Feed rate %</value>
   </data>
   <data name="Forwards" xml:space="preserve">
     <value>Forwards</value>
@@ -428,7 +428,7 @@
     <value>Gate correction [mm]</value>
   </data>
   <data name="GateOutOfTolerance" xml:space="preserve">
-    <value>Gate is out of tolerance.</value>
+    <value>Gate is out of tolerance</value>
   </data>
   <data name="Gate1HeightControl" xml:space="preserve">
     <value>Gate 1 Height Control</value>
@@ -458,7 +458,7 @@
     <value>Gate 3 Height Control</value>
   </data>
   <data name="GateHeightControl" xml:space="preserve">
-    <value>Gate Height Control</value>
+    <value>Gate height control</value>
   </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
     <value>Acceptable weight tolerance (%)</value>
@@ -1213,7 +1213,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Upper Position</value>
   </data>
   <data name="BayChainHorizontalPosition" xml:space="preserve">
-    <value>BayChainHorizontalPosition</value>
+    <value>Bay chain horizontal position</value>
   </data>
   <data name="CurrentBayChainPosition" xml:space="preserve">
     <value>CurrentBayChainPosition</value>
@@ -1374,7 +1374,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Height reaced</value>
   </data>
   <data name="Result" xml:space="preserve">
-    <value>Risultato</value>
+    <value>Result</value>
   </data>
   <data name="ResetMachine" xml:space="preserve">
     <value>Reset machine</value>
@@ -1571,13 +1571,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Error on clear temp folder:</value>
   </data>
   <data name="ErrorExtractingFiles" xml:space="preserve">
-    <value>Error excracting files:</value>
+    <value>Error extracting files:</value>
   </data>
   <data name="ErrorOnStarting" xml:space="preserve">
     <value>Error on starting:</value>
   </data>
   <data name="ExtractingFilesCompleted" xml:space="preserve">
-    <value>Extraction successfullly completed.</value>
+    <value>Extraction successfully completed.</value>
   </data>
   <data name="FieldRequired" xml:space="preserve">
     <value>Field is required.</value>
@@ -1700,7 +1700,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Carousel calibration</value>
   </data>
   <data name="InputDelayMustBePositive" xml:space="preserve">
-    <value>InputDelay must be strictly positive.</value>
+    <value>InputDelay must be strictly positive</value>
   </data>
   <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
     <value>InputLowerBound must be greater than InputUpperBound.</value>
@@ -2444,10 +2444,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Apply the following measurement to the machine</value>
   </data>
   <data name="ProfileCalibrateDistance" xml:space="preserve">
-    <value>ProfileCalibrateDistance</value>
+    <value>Profile Calibrate Distance</value>
   </data>
   <data name="ProfileStartDistance" xml:space="preserve">
-    <value>ProfileStartDistance</value>
+    <value>Profile Start Distance</value>
   </data>
   <data name="RetryProcedure" xml:space="preserve">
     <value>Retry procedure</value>
@@ -2688,7 +2688,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Abort</value>
   </data>
   <data name="Bay4" xml:space="preserve">
-    <value>Bay</value>
+    <value>Bay 4</value>
   </data>
   <data name="StartTest" xml:space="preserve">
     <value>Start Test</value>
@@ -2803,7 +2803,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Horizontal</value>
   </data>
   <data name="HorizontalAndVertical" xml:space="preserve">
-    <value>HorizontalAndVertical</value>
+    <value>Horizontal and vertical</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>

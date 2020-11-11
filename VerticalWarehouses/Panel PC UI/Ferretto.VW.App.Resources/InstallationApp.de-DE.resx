@@ -1471,7 +1471,7 @@ Anschließend auf "Weiter" drücken.</value>
     <value>ID {0} ausgez. Kasten</value>
   </data>
   <data name="ErrorCheckFile" xml:space="preserve">
-    <value>Fehler beim Prüfen der Datei {0}.</value>
+    <value>Fehler beim Prüfen der Datei {0}</value>
   </data>
   <data name="ErrorChecksum" xml:space="preserve">
     <value>Fehler bei Prüfung der Checksum der Datei:</value>
@@ -2587,7 +2587,7 @@ Anschließend auf "Weiter" drücken.</value>
     <value>Annull.</value>
   </data>
   <data name="Bay4" xml:space="preserve">
-    <value>Bucht</value>
+    <value>Bucht4</value>
   </data>
   <data name="StartTest" xml:space="preserve">
     <value>Start Test</value>

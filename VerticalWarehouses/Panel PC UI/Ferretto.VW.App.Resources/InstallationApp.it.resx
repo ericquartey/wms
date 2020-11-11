@@ -305,7 +305,7 @@
     <value>L'origine dell'asse verticale non è stata effettuata.</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
-    <value>Feed rate %</value>
+    <value>Velocità di avanzamento %</value>
   </data>
   <data name="OriginVerticalAxis" xml:space="preserve">
     <value>Origine asse verticale</value>
@@ -434,7 +434,7 @@
     <value>Regolazione barriera misura altezza cassetto baia 3</value>
   </data>
   <data name="GateHeightControl" xml:space="preserve">
-    <value>Barriera misura altezza </value>
+    <value>Barriera misura altezza</value>
   </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
     <value>Tolleranza richiesta (%)</value>
@@ -704,7 +704,7 @@
     <value>Test imbarco sbarco cassetto in baia.</value>
   </data>
   <data name="DLUTestFeedRate" xml:space="preserve">
-    <value>Feed rate %</value>
+    <value>Velocità di avanzamento %</value>
   </data>
   <data name="DLUTestCycleRequired" xml:space="preserve">
     <value>Cicli richiesti</value>
@@ -779,7 +779,7 @@
     <value>Calibrazione completata con successo</value>
   </data>
   <data name="HomingStarted" xml:space="preserve">
-    <value>Start calibrazione</value>
+    <value>Inizia la calibrazione</value>
   </data>
   <data name="HorizontalHomingCompleted" xml:space="preserve">
     <value>Calibrazione asse orizzontale completata</value>
@@ -1068,10 +1068,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Altezza raggiunta</value>
   </data>
   <data name="Result" xml:space="preserve">
-    <value>Result</value>
+    <value>Risultato</value>
   </data>
   <data name="Bay4" xml:space="preserve">
-    <value>Baia</value>
+    <value>Baia 4</value>
   </data>
   <data name="WeightAnalysis" xml:space="preserve">
     <value>Analisi Peso</value>
@@ -1152,7 +1152,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Presenza UDC lato operatore</value>
   </data>
   <data name="BayChainHorizontalPosition" xml:space="preserve">
-    <value>BayChainHorizontalPosition</value>
+    <value>Posizione catena dalla baia</value>
   </data>
   <data name="CurrentBayChainPosition" xml:space="preserve">
     <value>CurrentBayChainPosition</value>
@@ -1504,7 +1504,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Cassetto id {0} estratto</value>
   </data>
   <data name="ErrorCheckFile" xml:space="preserve">
-    <value>Errore durante il controllo del file {0}.</value>
+    <value>Errore durante il controllo del file {0}</value>
   </data>
   <data name="ErrorChecksum" xml:space="preserve">
     <value>Errore nel controllo del checksum del file:</value>
@@ -1516,13 +1516,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Errore durante la cancellazione della cartella temporanea:</value>
   </data>
   <data name="ErrorExtractingFiles" xml:space="preserve">
-    <value>Error excracting files:</value>
+    <value>Errore durante l'estrazione dei file:</value>
   </data>
   <data name="ErrorOnStarting" xml:space="preserve">
-    <value>Error on starting:</value>
+    <value>Errore all'avvio:</value>
   </data>
   <data name="ExtractingFilesCompleted" xml:space="preserve">
-    <value>Extraction successfullly completed.</value>
+    <value>Estrazione completata con successo.</value>
   </data>
   <data name="FieldRequired" xml:space="preserve">
     <value>Campo necessario.</value>
@@ -1537,7 +1537,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>InputDelayBetweenCycles deve essere strettamente positivo.</value>
   </data>
   <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
-    <value>InputDelayBetweenCycles necessario.</value>
+    <value>InputDelayBetweenCycles  necessario.</value>
   </data>
   <data name="InputWeightMustBePositive" xml:space="preserve">
     <value>InputWeightRequired  deve essere strettamente positivo.</value>
@@ -1567,7 +1567,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Tipo scelta sorgente non valida</value>
   </data>
   <data name="InvalidValue" xml:space="preserve">
-    <value>Invalid Value</value>
+    <value>Valore non valido</value>
   </data>
   <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
     <value>LoadingUnitId deve essere strettamente positivo.</value>
@@ -2374,10 +2374,10 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Applicare la seguente misurazione alla macchina</value>
   </data>
   <data name="ProfileCalibrateDistance" xml:space="preserve">
-    <value>ProfileCalibrateDistance</value>
+    <value>Distanza di calibrazione del profilo</value>
   </data>
   <data name="ProfileStartDistance" xml:space="preserve">
-    <value>ProfileStartDistance</value>
+    <value>Distanza iniziale del profilo</value>
   </data>
   <data name="RetryProcedure" xml:space="preserve">
     <value>Riesegui procedura</value>
@@ -2818,7 +2818,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Extra movimento per inserimento cassetto</value>
   </data>
   <data name="InverterInFault" xml:space="preserve">
-    <value>Inverters in errore</value>
+    <value>Inverter in errore</value>
     <comment>Sensors</comment>
   </data>
   <data name="ScreenCastDurationExpire" xml:space="preserve">

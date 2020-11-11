@@ -994,7 +994,7 @@
     <comment>Label</comment>
   </data>
   <data name="ItemSearchGridMachine" xml:space="preserve">
-    <value>ItemSearchGridMachine</value>
+    <value>Machines</value>
     <comment>Label</comment>
   </data>
   <data name="DrawerCompactingRear" xml:space="preserve">
