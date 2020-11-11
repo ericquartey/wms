@@ -305,8 +305,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var bShowErrorCondition = true;
                             if (this.Mission.MissionType == MissionType.IN && this.Mission.ErrorCode != MachineErrorCode.NoError)
                             {
+                                switch (this.Mission.ErrorCode)
+                                {
+                                    case MachineErrorCode.LoadUnitWeightExceeded:
+                                        // WaitPick step
+                                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        break;
+
+                                    default:
+                                        // Close shutter (?)
+                                        newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        break;
+                                }
+
                                 // In this case (see conditions), close the shutter
-                                newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                //newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
                             // For the mission of OUT type or WMS type
                             else if (this.Mission.MissionType == MissionType.OUT ||

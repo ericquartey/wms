@@ -53,6 +53,8 @@ namespace Ferretto.VW.Simulator.Services
 
         private int alphaNumericBar1Offset = 0;
 
+        private bool bOverWeight;
+
         private CancellationTokenSource cts = new CancellationTokenSource();
 
         private DateTime heartBeatTime;
@@ -87,6 +89,8 @@ namespace Ferretto.VW.Simulator.Services
 
             this.MinTorqueCurrent = 72;
             this.MaxTorqueCurrent = 120;
+
+            this.bOverWeight = true;
 
             this.MinProfileHeight = new Dictionary<LoadingUnitLocation, int>();
             this.MaxProfileHeight = new Dictionary<LoadingUnitLocation, int>();
@@ -780,6 +784,12 @@ namespace Ferretto.VW.Simulator.Services
                     var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(this.MinTorqueCurrent, this.MaxTorqueCurrent)));
                     //var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)((this.MinTorqueCurrent+ this.MaxTorqueCurrent)/2)));
 
+                    if (this.bOverWeight)
+                    {
+                        torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)(this.MaxTorqueCurrent + 5)));
+                        this.bOverWeight = false;
+                    }
+
                     result = client.Client.Send(torqueMessage);
                     break;
 
@@ -787,6 +797,8 @@ namespace Ferretto.VW.Simulator.Services
                     // simulate measure profile height
                     this.GetProfileRange(inverter, out var minProfileHeight, out var maxProfileHeight);
                     var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(minProfileHeight, maxProfileHeight)));
+
+                    profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)(3500)));
 
                     //
                     // TEST: check intrusion
