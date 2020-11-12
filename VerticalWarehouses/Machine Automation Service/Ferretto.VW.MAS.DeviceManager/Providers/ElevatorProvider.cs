@@ -153,6 +153,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return ActionPolicy.Allowed;
         }
 
+        public ActionPolicy CanCalibrateZeroPlate()
+        {
+            // check #3: no loading unit must be on board of the elevator
+            if (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null
+                ||
+                !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("ALoadingUnitIsAlreadyOnBoardOfTheElevator", CommonUtils.Culture.Actual) };
+            }
+
+            // check #5: elevator's pawl must be in zero position
+            if (!this.machineResourcesProvider.IsSensorZeroOnCradle)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", CommonUtils.Culture.Actual) };
+            }
+
+            return ActionPolicy.Allowed;
+        }
+
         public ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber)
         {
             // check #1: a loading unit must be present in the bay position
@@ -717,7 +736,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
             var bayPositionId = bay.Positions.OrderByDescending(b => b.Height).FirstOrDefault().Id;
-            var policy = this.CanCalibrateHorizontal(bayPositionId, requestingBay);
+            var policy = this.CanCalibrateZeroPlate();
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
@@ -725,11 +744,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var direction = (bay.Side == WarehouseSide.Back) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance * 2.5;
+            var targetPosition = 100;
 
             targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
 
-            var speed = new[] { axis.FullLoadMovement.Speed * axis.ManualMovements.FeedRate };
+            var speed = new[] { axis.HorizontalCalibrateSpeed };
             var acceleration = new[] { axis.FullLoadMovement.Acceleration };
             var deceleration = new[] { axis.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
@@ -764,9 +783,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     var shutterInverter = otherBay.Shutter.Inverter.Index;
                     var shutterPosition = this.machineResourcesProvider.GetShutterPosition(shutterInverter);
-                    if (shutterPosition != ShutterPosition.Opened)
+                    if (shutterPosition != ShutterPosition.Closed)
                     {
-                        this.shutterProvider.MoveTo(ShutterPosition.Opened, otherBay.Number, MessageActor.AutomationService);
+                        this.shutterProvider.MoveTo(ShutterPosition.Closed, otherBay.Number, MessageActor.AutomationService);
                     }
                 }
             }

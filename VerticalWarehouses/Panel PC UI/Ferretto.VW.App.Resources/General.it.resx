@@ -117,47 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Open" xml:space="preserve">
-    <value>Apri</value>
-  </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Scarta</value>
-  </data>
   <data name="Save" xml:space="preserve">
     <value>Salva</value>
-  </data>
-  <data name="MeasureUnit" xml:space="preserve">
-    <value>Unità di Misura</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Cerca</value>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Aggiorna</value>
-  </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Data Ultima Modifica</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Descrizione</value>
   </data>
   <data name="Back" xml:space="preserve">
     <value>Indietro</value>
   </data>
   <data name="Add" xml:space="preserve">
     <value>Aggiungi</value>
-  </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Data Creazione</value>
-  </data>
-  <data name="File" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
-  </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
@@ -168,77 +135,14 @@
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
   </data>
-  <data name="Front" xml:space="preserve">
-    <value>Anteriore</value>
-  </data>
   <data name="Next" xml:space="preserve">
     <value>Successivo</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Modifica</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Elimina</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Codice</value>
-  </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Esegui</value>
-  </data>
-  <data name="ShowDetails" xml:space="preserve">
-    <value>Mostra Dettagli</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Tipo</value>
-  </data>
-  <data name="Down" xml:space="preserve">
-    <value>Giù</value>
-  </data>
-  <data name="Up" xml:space="preserve">
-    <value>Su</value>
-  </data>
-  <data name="Bottom" xml:space="preserve">
-    <value>Inferiore</value>
-  </data>
-  <data name="Top" xml:space="preserve">
-    <value>Superiore</value>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Caricamento</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Stato</value>
-  </data>
-  <data name="Quantity" xml:space="preserve">
-    <value>Quantità</value>
-  </data>
-  <data name="Priority" xml:space="preserve">
-    <value>Priorità</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Dettagli</value>
-  </data>
-  <data name="AdditionalInfo" xml:space="preserve">
-    <value>[{0}]</value>
-  </data>
-  <data name="CheckBoxDark" xml:space="preserve">
-    <value>Tema scuro</value>
-  </data>
-  <data name="MachineOff" xml:space="preserve">
-    <value>Spenta</value>
-  </data>
-  <data name="MachineOn" xml:space="preserve">
-    <value>Accesa</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Errore</value>
   </data>
   <data name="Debug" xml:space="preserve">
     <value>Debug</value>
-  </data>
-  <data name="NumberOnTotal" xml:space="preserve">
-    <value>{0} di {1}</value>
   </data>
   <data name="FilePath" xml:space="preserve">
     <value>Percorso file</value>
@@ -270,26 +174,14 @@
   <data name="ChangeTheme" xml:space="preserve">
     <value>Cambia tema</value>
   </data>
-  <data name="AutomaticMode" xml:space="preserve">
-    <value>Automatico</value>
-  </data>
   <data name="BayNumber" xml:space="preserve">
     <value>Baia</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
     <value>{0:0} giorni fa</value>
   </data>
-  <data name="EmergencyIsOn" xml:space="preserve">
-    <value>Emergenza attiva</value>
-  </data>
-  <data name="EnsureEmergencyIsOff" xml:space="preserve">
-    <value>Assicurarsi che nessun bottone di emergenza sia premuto.</value>
-  </data>
   <data name="ErrorCommunicatingWithServices" xml:space="preserve">
     <value>Errore di comunicazione con i servizi.</value>
-  </data>
-  <data name="ErrorLogin" xml:space="preserve">
-    <value>Errore: login fallito. Controlla la correttezza di user e password</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
     <value>{0:0} ore fa</value>
@@ -303,20 +195,8 @@
   <data name="Now" xml:space="preserve">
     <value>Adesso</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PasswordLogin" xml:space="preserve">
-    <value>Password</value>
-  </data>
   <data name="SerialNumber" xml:space="preserve">
     <value>Numero Seriale:</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Nome Utente</value>
-  </data>
-  <data name="UserLogin_Password" xml:space="preserve">
-    <value>Password</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Versione {0}</value>
@@ -333,20 +213,11 @@
   <data name="BayOneName" xml:space="preserve">
     <value>Uno</value>
   </data>
-  <data name="BayOneNumber" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="BayThreeName" xml:space="preserve">
     <value>Tre</value>
   </data>
-  <data name="BayThreeNumber" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="BayTwoName" xml:space="preserve">
     <value>Due</value>
-  </data>
-  <data name="BayTwoNumber" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Inizia</value>
@@ -360,9 +231,6 @@
   <data name="TargetNullValue" xml:space="preserve">
     <value>-</value>
   </data>
-  <data name="LoadUnitOperations" xml:space="preserve">
-    <value>Operazioni cassetto</value>
-  </data>
   <data name="Devices" xml:space="preserve">
     <value>Devices</value>
   </data>
@@ -370,7 +238,7 @@
     <value>DEBUG</value>
   </data>
   <data name="FiniteMachineState" xml:space="preserve">
-    <value>Finite state machine</value>
+    <value>Macchina a stati finiti</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
@@ -379,7 +247,7 @@
     <value>IO Drive</value>
   </data>
   <data name="StatusDebug" xml:space="preserve">
-    <value>Status:</value>
+    <value>Stato:</value>
   </data>
   <data name="NoRows" xml:space="preserve">
     <value>Nessuna riga presente nell'elenco</value>
@@ -411,17 +279,8 @@
   <data name="DateFormatDayNumber" xml:space="preserve">
     <value>{0: dd.MM.yyyy}</value>
   </data>
-  <data name="DateFormatHourMinutes" xml:space="preserve">
-    <value>{0: HH:mm}</value>
-  </data>
-  <data name="DateFormatHourMinuteSecond" xml:space="preserve">
-    <value>{0: HH:mm:ss}</value>
-  </data>
   <data name="SwitchToManual" xml:space="preserve">
     <value>Passa in manuale</value>
-  </data>
-  <data name="UserLogin_UserName" xml:space="preserve">
-    <value>Nome Utente</value>
   </data>
   <data name="BackShutterTest" xml:space="preserve">
     <value>Test in corso... Impossibile uscire dalla pagina</value>
@@ -451,5 +310,8 @@
   </data>
   <data name="TokenStatus" xml:space="preserve">
     <value>Stato Gettone</value>
+  </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>Sintassi per NameOf è Type={x:Type className&gt;}.&lt;</value>
   </data>
 </root>

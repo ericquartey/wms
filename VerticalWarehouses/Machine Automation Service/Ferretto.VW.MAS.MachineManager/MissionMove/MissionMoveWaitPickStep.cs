@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationRunningStop:
                 case MessageStatus.OperationFaultStop:
-                    if (notification.RequestingBay == this.Mission.TargetBay
+                    if ((notification.RequestingBay == this.Mission.TargetBay || notification.RequestingBay == BayNumber.None)
                         && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.EjectLoadUnit)
                         )
                     {
@@ -185,6 +185,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
+                        // if this.Mission.ErrorCode != MachineErrorCode.NoError
+                        //{
+                        //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                        //this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                        //this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+                        //this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                        // return;
+                        //}
+
                         var activeMission = this.MissionsDataProvider.GetAllActiveMissions()
                             .FirstOrDefault(x => x.Status == MissionStatus.Executing
                                 && x.Id != this.Mission.Id
@@ -193,6 +202,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (activeMission != null)
                         {
                             this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay} Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+                            this.Mission.Status = MissionStatus.Waiting;
+                            this.MissionsDataProvider.Update(this.Mission);
                         }
                         else
                         {

@@ -120,29 +120,17 @@
   <data name="CalibrationBarierError" xml:space="preserve">
     <value>Chyba nesmí být větší než 1 mm</value>
   </data>
-  <data name="CellSide" xml:space="preserve">
-    <value>Str buňky</value>
-  </data>
   <data name="CheckUnit" xml:space="preserve">
     <value>Kontrola zásuvky:</value>
   </data>
-  <data name="CurrentCell" xml:space="preserve">
-    <value>Vybraná buňka</value>
-  </data>
   <data name="DetailCode" xml:space="preserve">
     <value>Detail kódu</value>
-  </data>
-  <data name="Displacement" xml:space="preserve">
-    <value>Posun (mm)</value>
   </data>
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Po skončení postupu identifikace zásuvky přejde do autom režimu.</value>
   </data>
   <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
     <value>Po skončení postupu identifikace zásuvky přejde do manuálního režimu.</value>
-  </data>
-  <data name="DrawerReturn" xml:space="preserve">
-    <value>Zasunutí zásuvky</value>
   </data>
   <data name="DrawerSelection" xml:space="preserve">
     <value>Volba zásuvky</value>
@@ -170,9 +158,6 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
-  </data>
-  <data name="InitialPosition" xml:space="preserve">
-    <value>Výchozí kóta (mm)</value>
   </data>
   <data name="InvalidUnit" xml:space="preserve">
     <value>Zásuvka není platná, zadejte: </value>

@@ -52,6 +52,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(5)]
             public double HomingFastSpeed { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_HorizontalCalibrateSpeed))]
+            [Unit("mm/s")]
+            [Id(15)]
+            public double HorizontalCalibrateSpeed { get; set; }
+
             [Id(20)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Inverter))]
             public Inverter Inverter { get; set; }

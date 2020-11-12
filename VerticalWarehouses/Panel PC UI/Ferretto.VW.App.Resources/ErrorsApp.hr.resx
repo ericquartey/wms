@@ -120,29 +120,17 @@
   <data name="CalibrationBarierError" xml:space="preserve">
     <value>Greška ne može biti veća od 1 mm</value>
   </data>
-  <data name="CellSide" xml:space="preserve">
-    <value>Str.Ćelije</value>
-  </data>
   <data name="CheckUnit" xml:space="preserve">
     <value>Provjera pretinca:</value>
   </data>
-  <data name="CurrentCell" xml:space="preserve">
-    <value>Odab. ćelija (mm)</value>
-  </data>
   <data name="DetailCode" xml:space="preserve">
     <value>Detalj. Kod</value>
-  </data>
-  <data name="Displacement" xml:space="preserve">
-    <value>Pomicanje (mm)</value>
   </data>
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Kada završi postupak identifikacije pretinca, prelazi u automatsko.</value>
   </data>
   <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
     <value>Kada završi postupak identifikacije pretinca, prelazi u ručno.</value>
-  </data>
-  <data name="DrawerReturn" xml:space="preserve">
-    <value>Vrati pret natr</value>
   </data>
   <data name="DrawerSelection" xml:space="preserve">
     <value>Odabir pretinca</value>
@@ -170,9 +158,6 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
-  </data>
-  <data name="InitialPosition" xml:space="preserve">
-    <value>Početna visina (mm)</value>
   </data>
   <data name="InvalidUnit" xml:space="preserve">
     <value>Pretinac nije valjan, unesi: </value>

@@ -129,14 +129,8 @@
   <data name="InvalidCredentials" xml:space="preserve">
     <value>Invalid credentials.</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
   <data name="ModuleLoaded" xml:space="preserve">
     <value>Module Loaded.</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Password</value>
   </data>
   <data name="PasswordEnter" xml:space="preserve">
     <value>Enter your password</value>
@@ -155,9 +149,6 @@
   </data>
   <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
     <value>Unable to authenticate user with the barcode.</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>User name</value>
   </data>
   <data name="UserNameMustBeSpecified" xml:space="preserve">
     <value>User name must be specified.</value>

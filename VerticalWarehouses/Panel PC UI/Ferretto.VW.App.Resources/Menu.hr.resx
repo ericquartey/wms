@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccessoriesAccessoryNotAvailable" xml:space="preserve">
-    <value>Dodatak nije raspoloživ</value>
-  </data>
   <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
     <value>Konfiguracija i provjera alfanumeričke trake</value>
   </data>
@@ -161,9 +158,6 @@
   </data>
   <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
     <value>Čitač Znaka</value>
-  </data>
-  <data name="AccessoriesEnable" xml:space="preserve">
-    <value>Omogućavanje</value>
   </data>
   <data name="AccessoriesIpAddress" xml:space="preserve">
     <value>IP Adresa</value>
@@ -207,9 +201,6 @@
   <data name="AccessoriesSize" xml:space="preserve">
     <value>Dimenzija</value>
   </data>
-  <data name="AccessoriesTest" xml:space="preserve">
-    <value>Test</value>
-  </data>
   <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
     <value>Konfiguracija i provjera čitača tokena</value>
   </data>
@@ -246,9 +237,6 @@
   <data name="MenuAccessories" xml:space="preserve">
     <value>Dod.opr.</value>
   </data>
-  <data name="MenuBays" xml:space="preserve">
-    <value>Uv.</value>
-  </data>
   <data name="MenuCells" xml:space="preserve">
     <value>Ćel.</value>
   </data>
@@ -269,8 +257,5 @@
   </data>
   <data name="UnitsMenuName" xml:space="preserve">
     <value>Izbor.Pretin.</value>
-  </data>
-  <data name="NoAccessoriesInstalled" xml:space="preserve">
-    <value>Nijedan ugrađen dodatni dio.</value>
   </data>
 </root>

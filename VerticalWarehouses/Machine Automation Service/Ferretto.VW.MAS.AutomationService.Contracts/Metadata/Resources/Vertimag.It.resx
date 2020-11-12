@@ -540,4 +540,7 @@
   <data name="Machine_LoadUnitWidth" xml:space="preserve">
     <value>Larghezza</value>
   </data>
+  <data name="ElevatorAxis_HorizontalCalibrateSpeed" xml:space="preserve">
+    <value>Velocità calibrazione orizzontale</value>
+  </data>
 </root>

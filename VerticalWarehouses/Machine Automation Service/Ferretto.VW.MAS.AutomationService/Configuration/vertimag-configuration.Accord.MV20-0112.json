@@ -140,7 +140,7 @@
           "ProfileCalibratePosition": 0,
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
-          "Resolution": 77.4970626897481,
+          "Resolution": 61.06443,
           "UpperBound": 6500.0,
           "WeightMeasurement": {
             "Id": 1,
@@ -444,7 +444,7 @@
     "Height": 6861.0,
     "HorizontalCyclesToCalibrate": 10,
     "HorizontalPositionToCalibrate": 3000,
-    "Id": 2,
+    "Id": 13,
     "LoadUnitMaxHeight": 695.0,
     "LoadUnitMaxNetWeight": 550.0,
     "LoadUnitMinHeight": 95.0,

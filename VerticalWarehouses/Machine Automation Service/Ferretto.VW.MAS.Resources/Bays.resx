@@ -135,15 +135,6 @@
   <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
     <value>The bay chain is not in zero position.</value>
   </data>
-  <data name="TheBayContainsALoadingUnitInItsLowerPosition" xml:space="preserve">
-    <value>TheBayContainsALoadingUnitInItsLowerPosition</value>
-  </data>
-  <data name="TheBayNotContainsALoadingUnitInItsLowerPosition" xml:space="preserve">
-    <value>TheBayNotContainsALoadingUnitInItsLowerPosition</value>
-  </data>
-  <data name="TheBayNotContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
-    <value>TheBayNotContainsALoadingUnitInItsUpperPosition</value>
-  </data>
   <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
     <value>Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method</value>
   </data>

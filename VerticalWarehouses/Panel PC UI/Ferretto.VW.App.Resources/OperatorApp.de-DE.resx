@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Availability" xml:space="preserve">
-    <value>Verfügb. [Einheiten]</value>
-  </data>
   <data name="Confirm" xml:space="preserve">
     <value>Bestät.</value>
   </data>
@@ -129,47 +126,14 @@
   <data name="Details" xml:space="preserve">
     <value>Dettail</value>
   </data>
-  <data name="DispatchedQuantity" xml:space="preserve">
-    <value>Erled. Menge</value>
-  </data>
-  <data name="FIFOPeriod" xml:space="preserve">
-    <value>FIFO-Periode</value>
-  </data>
-  <data name="InstantArticle" xml:space="preserve">
-    <value>Unmittel. Art.</value>
-  </data>
-  <data name="LIFOPeriod" xml:space="preserve">
-    <value>LIFO-Periode</value>
-  </data>
   <data name="List" xml:space="preserve">
     <value>Liste</value>
-  </data>
-  <data name="ListDescription" xml:space="preserve">
-    <value>Beschr. Liste</value>
-  </data>
-  <data name="Lists" xml:space="preserve">
-    <value>List.</value>
-  </data>
-  <data name="Machine" xml:space="preserve">
-    <value>Maschine</value>
   </data>
   <data name="Machines" xml:space="preserve">
     <value>Maschine</value>
   </data>
-  <data name="Management" xml:space="preserve">
-    <value>Verwalt.</value>
-  </data>
-  <data name="Notes" xml:space="preserve">
-    <value>Anm.</value>
-  </data>
   <data name="PackagingType" xml:space="preserve">
     <value>Art der Verpackung</value>
-  </data>
-  <data name="Picking" xml:space="preserve">
-    <value>Picking</value>
-  </data>
-  <data name="Position" xml:space="preserve">
-    <value>Position</value>
   </data>
   <data name="ProductionDate" xml:space="preserve">
     <value>Produktionsdatum</value>
@@ -179,15 +143,6 @@
   </data>
   <data name="RequestedQuantity" xml:space="preserve">
     <value>Angeforderte Menge [{0}]</value>
-  </data>
-  <data name="SearchCode" xml:space="preserve">
-    <value>Suche nach Code</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Suche</value>
-  </data>
-  <data name="ExecutableListsRows" xml:space="preserve">
-    <value>Ausführbare Listenzeilen</value>
   </data>
   <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
     <value>Vorgänge auf Kasten</value>
@@ -234,9 +189,6 @@
   <data name="ListsInWaitHeader" xml:space="preserve">
     <value>Wartelisten Ausführung</value>
   </data>
-  <data name="ListsInWaitNote" xml:space="preserve">
-    <value>Anm.</value>
-  </data>
   <data name="ListsInWaitDetail" xml:space="preserve">
     <value>Listendetail</value>
   </data>
@@ -249,14 +201,8 @@
   <data name="ItemSearchKeySearch" xml:space="preserve">
     <value>Suche</value>
   </data>
-  <data name="ItemSearchSearch" xml:space="preserve">
-    <value>Artikel suchen</value>
-  </data>
   <data name="AvailableQuantity" xml:space="preserve">
     <value>Verfügbare Menge [{0}]</value>
-  </data>
-  <data name="ItemSearchDetail" xml:space="preserve">
-    <value>Artikel-Detail</value>
   </data>
   <data name="ItemSearchCall" xml:space="preserve">
     <value>Artikel aufr.</value>
@@ -278,9 +224,6 @@
   </data>
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
     <value>Kasten angefordert</value>
-  </data>
-  <data name="DrawerActivityPickingRowList" xml:space="preserve">
-    <value>Listenzei</value>
   </data>
   <data name="GeneralInfoHeader" xml:space="preserve">
     <value>Allgemeine Infos</value>
@@ -339,14 +282,8 @@
   <data name="OtherNavigationMaintenance" xml:space="preserve">
     <value>Wartung</value>
   </data>
-  <data name="OtherNavigationErrorSimulation" xml:space="preserve">
-    <value>Simulationsfehler</value>
-  </data>
   <data name="StatisticsGeneralDataHeader" xml:space="preserve">
     <value>Statistik : allg. Daten.</value>
-  </data>
-  <data name="Back" xml:space="preserve">
-    <value>Zurück</value>
   </data>
   <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
     <value>Bewegte Kästen</value>
@@ -488,9 +425,6 @@
   </data>
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
     <value>Aufruf Kasten</value>
-  </data>
-  <data name="StatisticsNavigationItems" xml:space="preserve">
-    <value>Artikel-Statistik</value>
   </data>
   <data name="StatisticsNavigationDrawers" xml:space="preserve">
     <value>Kasten-Statistik</value>
@@ -720,9 +654,6 @@
   <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
     <value>Zeil</value>
   </data>
-  <data name="StatisticsItemDataGridHeaderClass" xml:space="preserve">
-    <value>Klasse</value>
-  </data>
   <data name="StatisticsNavigationMachine" xml:space="preserve">
     <value>Maschinenstatistik</value>
   </data>
@@ -780,9 +711,6 @@
   <data name="DrawerCompactingRear" xml:space="preserve">
     <value>Daten hintere Seite.</value>
   </data>
-  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
-    <value> 002350467 - Kette Hebebühne</value>
-  </data>
   <data name="CommonListType" xml:space="preserve">
     <value>Listentyp</value>
   </data>
@@ -819,29 +747,11 @@
   <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
     <value>Zurückzugew. Raum mm.</value>
   </data>
-  <data name="DrawerCompactingDetailAbort" xml:space="preserve">
-    <value>Beenden</value>
-  </data>
   <data name="DrawerCompactingAntStop" xml:space="preserve">
     <value>Verdichtung beenden</value>
   </data>
   <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
     <value>Akt. Status</value>
-  </data>
-  <data name="DrawerActivityLocalCallHeader" xml:space="preserve">
-    <value>Sofort pro Kasten in lokal.</value>
-  </data>
-  <data name="DrawerActivityLocalCallDrawer" xml:space="preserve">
-    <value>Kasten-Code</value>
-  </data>
-  <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>Aktuelle Kastenhöhe (mm)</value>
-  </data>
-  <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
-    <value>Bruttogew. (kg)</value>
-  </data>
-  <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
-    <value>Akt. Gew. (kg)</value>
   </data>
   <data name="BlockLevelNone" xml:space="preserve">
     <value>Keine</value>
@@ -873,12 +783,6 @@
   <data name="MachineServiceStatus_Valid" xml:space="preserve">
     <value>Gültig</value>
   </data>
-  <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
-    <value>Max. Nettotragf. (kg)</value>
-  </data>
-  <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
-    <value>Anzahl durchgef. Aufg.</value>
-  </data>
   <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
     <value>Kastenrückkehr</value>
   </data>
@@ -906,14 +810,8 @@
   <data name="ItemListType_NotSpecified" xml:space="preserve">
     <value>Nicht angegeben</value>
   </data>
-  <data name="Abort" xml:space="preserve">
-    <value>Annull.</value>
-  </data>
   <data name="QuantityToPick" xml:space="preserve">
     <value>Zu entnehmende Menge</value>
-  </data>
-  <data name="QuantityToPut" xml:space="preserve">
-    <value>Auszugebende Menge</value>
   </data>
   <data name="PickedQuantity" xml:space="preserve">
     <value>Entnommene Menge [{0}]</value>
@@ -933,32 +831,14 @@
   <data name="ListAvailable" xml:space="preserve">
     <value>Verfügbar</value>
   </data>
-  <data name="Empty" xml:space="preserve">
-    <value>Leer</value>
-  </data>
-  <data name="Full" xml:space="preserve">
-    <value>Voll</value>
-  </data>
   <data name="CommonListRow" xml:space="preserve">
     <value>Listenzeil</value>
   </data>
   <data name="LoadingUnitId" xml:space="preserve">
     <value>Kasten ID</value>
   </data>
-  <data name="LoadingUnitWidth" xml:space="preserve">
-    <value>Breite</value>
-  </data>
-  <data name="LoadingUnitDepth" xml:space="preserve">
-    <value>Tiefe</value>
-  </data>
   <data name="LoadingUnit" xml:space="preserve">
     <value>Kasten</value>
-  </data>
-  <data name="CompleteCheck" xml:space="preserve">
-    <value>Volle Kontrolle</value>
-  </data>
-  <data name="LoadingUnitCheck" xml:space="preserve">
-    <value>Kontrolle Kasten</value>
   </data>
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Bestätigen leer</value>
@@ -968,10 +848,6 @@
   </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Verfügbarkeit auf Masch.</value>
-  </data>
-  <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
-    <value>Aktueller Vorgang ferngesteuert gelöscht.
-Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition verschoben wurden.</value>
   </data>
   <data name="OperationCancelled" xml:space="preserve">
     <value>Vorgang abgebrochen</value>
@@ -1066,9 +942,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   <data name="BayTarget" xml:space="preserve">
     <value>Buc.</value>
   </data>
-  <data name="MissionStateNotDefined" xml:space="preserve">
-    <value>0. Nicht def.</value>
-  </data>
   <data name="MissionStateNew" xml:space="preserve">
     <value>1.Neu</value>
   </data>
@@ -1114,9 +987,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   <data name="MissionTypeOut" xml:space="preserve">
     <value>Ausg.</value>
   </data>
-  <data name="MissionTypeFullTest" xml:space="preserve">
-    <value>Vollst. Test</value>
-  </data>
   <data name="MissionTypeCompact" xml:space="preserve">
     <value>Komprimieren</value>
   </data>
@@ -1140,12 +1010,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   </data>
   <data name="Adjustment" xml:space="preserve">
     <value>Bearbeit</value>
-  </data>
-  <data name="CompartmentWidth" xml:space="preserve">
-    <value>Breite</value>
-  </data>
-  <data name="CompartmentDepth" xml:space="preserve">
-    <value>Tiefe</value>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
     <value>Bestand</value>
@@ -1207,12 +1071,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
     <value>Vorgänge auf Kasten</value>
   </data>
-  <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
-    <value>Freier Raum Rückseite</value>
-  </data>
-  <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
-    <value>Freier Raum Vorderseite</value>
-  </data>
   <data name="DrawerCompacting" xml:space="preserve">
     <value>Komprimieren</value>
   </data>
@@ -1221,9 +1079,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   </data>
   <data name="Code" xml:space="preserve">
     <value>Code</value>
-  </data>
-  <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
-    <value>Aktuelle Seite unterstützt kein Scannen von Strichcodes</value>
   </data>
   <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
     <value>Es ist kein Artikel mit dem Code '{0}' verfügbar.</value>
@@ -1375,18 +1230,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
     <value>Der Strichcode '{0}' enthält nicht den ID-Code der Liste.</value>
   </data>
-  <data name="GoToCellHeight" xml:space="preserve">
-    <value>Zu Zellenhöhe</value>
-  </data>
-  <data name="LowerBayPosition" xml:space="preserve">
-    <value>Untere Position</value>
-  </data>
-  <data name="MaintenanceMainPageDetail" xml:space="preserve">
-    <value>Detail</value>
-  </data>
-  <data name="UpperBayPosition" xml:space="preserve">
-    <value>Obere Position</value>
-  </data>
   <data name="NoListWithIdWasFound" xml:space="preserve">
     <value>Es gibt keine Liste mit einem ID-Code '{0}'.</value>
   </data>
@@ -1435,23 +1278,11 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   <data name="ServiceStatus" xml:space="preserve">
     <value>Status Service</value>
   </data>
-  <data name="TotalMission" xml:space="preserve">
-    <value>Gesamte Aufgabe</value>
-  </data>
-  <data name="Instruction" xml:space="preserve">
-    <value>Anleitung</value>
-  </data>
   <data name="IsDone" xml:space="preserve">
     <value>IsDone</value>
   </data>
   <data name="IsToDo" xml:space="preserve">
     <value>IsToDo</value>
-  </data>
-  <data name="MachineStatisticsCounter" xml:space="preserve">
-    <value>MachineStatisticsCounter</value>
-  </data>
-  <data name="MaintenanceRequired" xml:space="preserve">
-    <value>Wartung erforderlich</value>
   </data>
   <data name="MaxDays" xml:space="preserve">
     <value>MaxDays</value>
@@ -1533,9 +1364,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   </data>
   <data name="Axis" xml:space="preserve">
     <value>Achs</value>
-  </data>
-  <data name="BayNumberHeader" xml:space="preserve">
-    <value>BayNumber</value>
   </data>
   <data name="CounterName" xml:space="preserve">
     <value>CounterName</value>
@@ -1681,21 +1509,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   <data name="Up" xml:space="preserve">
     <value>Hoch</value>
   </data>
-  <data name="Cell_Status_Free" xml:space="preserve">
-    <value>Frei</value>
-  </data>
-  <data name="Cell_Status_Disabled" xml:space="preserve">
-    <value>Deakt.</value>
-  </data>
-  <data name="Cell_Status_Occupied" xml:space="preserve">
-    <value>Belegt</value>
-  </data>
-  <data name="Cell_Status_Unusable" xml:space="preserve">
-    <value>Unbenutzbar</value>
-  </data>
-  <data name="Complete Check" xml:space="preserve">
-    <value>Kontr. vervollst.</value>
-  </data>
   <data name="MissionStateBackToBay" xml:space="preserve">
     <value>Zuür.zur Buc</value>
   </data>
@@ -1711,9 +1524,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   <data name="MissionStateWaitChain" xml:space="preserve">
     <value>Warten Kette</value>
   </data>
-  <data name="MissionStateWaitDeposit" xml:space="preserve">
-    <value>Warten Ablage</value>
-  </data>
   <data name="UnitInBayWarning" xml:space="preserve">
     <value>Kasten in Bucht vorhanden Verdichtung nicht erlaubt</value>
   </data>
@@ -1722,9 +1532,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   </data>
   <data name="ActualAverageWeight" xml:space="preserve">
     <value>Effek. Durchschn. Stückgew. [g]</value>
-  </data>
-  <data name="MeasuredWeight" xml:space="preserve">
-    <value>Gemess. Gew. [g]</value>
   </data>
   <data name="OriginalAverageWeight" xml:space="preserve">
     <value>Urspr. durchsch. Stückgewicht [g]</value>
@@ -1758,9 +1565,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   </data>
   <data name="BarcodeMismatchRestart" xml:space="preserve">
     <value>Einige Felder des Strichcodes '{0}' stimmen nicht mit denen des Art.überein. Neu anfangen.</value>
-  </data>
-  <data name="BarcodeOperationValidated" xml:space="preserve">
-    <value>Durch Strichcode validierter Artikel.</value>
   </data>
   <data name="BarcodeMissingQuantity" xml:space="preserve">
     <value>Menge vor Bestätigung angeben</value>
@@ -1812,9 +1616,6 @@ Bitte alle etwaigen Artikel zurückgeben, die aus ursprünglicherPosition versch
   </data>
   <data name="PickBox" xml:space="preserve">
     <value>Auswahlbox</value>
-  </data>
-  <data name="Command" xml:space="preserve">
-    <value>Befehl</value>
   </data>
   <data name="Box" xml:space="preserve">
     <value>Box</value>

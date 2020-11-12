@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccessoriesAccessoryNotAvailable" xml:space="preserve">
-    <value>Zubehör nicht verfügbar</value>
-  </data>
   <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
     <value>Konfig. und Überp. des alphanumerischen Balkens</value>
   </data>
@@ -161,9 +158,6 @@
   </data>
   <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
     <value>Badge-Leser</value>
-  </data>
-  <data name="AccessoriesEnable" xml:space="preserve">
-    <value>Aktivierung</value>
   </data>
   <data name="AccessoriesIpAddress" xml:space="preserve">
     <value>IP-Adresse</value>
@@ -207,9 +201,6 @@
   <data name="AccessoriesSize" xml:space="preserve">
     <value>Abmessung</value>
   </data>
-  <data name="AccessoriesTest" xml:space="preserve">
-    <value>Test</value>
-  </data>
   <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
     <value>Konfigurieren und Prüfen Token-Lesegerät</value>
   </data>
@@ -246,9 +237,6 @@
   <data name="MenuAccessories" xml:space="preserve">
     <value>Zubehör</value>
   </data>
-  <data name="MenuBays" xml:space="preserve">
-    <value>Bu.</value>
-  </data>
   <data name="MenuCells" xml:space="preserve">
     <value>Zelle</value>
   </data>
@@ -269,8 +257,5 @@
   </data>
   <data name="UnitsMenuName" xml:space="preserve">
     <value>Menü Kästen</value>
-  </data>
-  <data name="NoAccessoriesInstalled" xml:space="preserve">
-    <value>Kein Zubehör installiert.</value>
   </data>
 </root>

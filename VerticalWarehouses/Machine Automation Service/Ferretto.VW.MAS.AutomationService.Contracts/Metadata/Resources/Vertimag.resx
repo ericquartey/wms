@@ -249,6 +249,9 @@
   <data name="ElevatorAxis_HomingFastSpeed" xml:space="preserve">
     <value>Homing Fast Speed</value>
   </data>
+  <data name="ElevatorAxis_HorizontalCalibrateSpeed" xml:space="preserve">
+    <value>Horizontal Calibration Speed</value>
+  </data>
   <data name="ElevatorAxis_LowerBound" xml:space="preserve">
     <value>Axis Lower Bound</value>
   </data>

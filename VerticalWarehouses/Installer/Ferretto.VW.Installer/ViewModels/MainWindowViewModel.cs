@@ -113,7 +113,6 @@ namespace Ferretto.VW.Installer.ViewModels
             this.ActiveViewModel = this.navigationService.ActiveViewModel;
         }
 
-     
         private bool TrySetCurrentDirectory()
         {
 #if !DEBUG
@@ -137,7 +136,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private async Task StartInstallationAsync()
         {
-            if(!this.TrySetCurrentDirectory())
+            if (!this.TrySetCurrentDirectory())
             {
                 return;
             }
@@ -206,9 +205,11 @@ namespace Ferretto.VW.Installer.ViewModels
                 case SetupMode.Update:
                 case SetupMode.Restore:
                     {
-                        var viewModel = new StepsViewModel(
+                        var viewModel = new RoleSelectionViewModel(
+                            NavigationService.GetInstance(),
                             Core.Container.GetInstallationService(),
-                            NotificationService.GetInstance());
+                            NotificationService.GetInstance(),
+                            Core.Container.GetMachineConfigurationService());
 
                         await this.navigationService.NavigateToAsync(viewModel);
 

@@ -627,7 +627,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var shutterIndex = baysDataProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index;
 
-            if (this.currentStateMachines.Any(x => x.BayNumber == message.RequestingBay && !(x is PositioningStateMachine)))
+            if (this.currentStateMachines.Any(x => x.BayNumber == message.RequestingBay && !(x is PositioningStateMachine) && !(x is ExtBayPositioningStateMachine)))
             {
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
                     $"Error while starting shutter position state machine. Operation already in progress on {message.RequestingBay}",

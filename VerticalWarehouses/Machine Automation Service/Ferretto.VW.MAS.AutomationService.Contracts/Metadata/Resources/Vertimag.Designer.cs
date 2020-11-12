@@ -466,6 +466,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal Calibration Speed.
+        /// </summary>
+        public static string ElevatorAxis_HorizontalCalibrateSpeed {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_HorizontalCalibrateSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Axis Lower Bound.
         /// </summary>
         public static string ElevatorAxis_LowerBound {

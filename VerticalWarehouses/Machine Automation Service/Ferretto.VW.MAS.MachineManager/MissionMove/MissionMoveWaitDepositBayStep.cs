@@ -54,9 +54,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             // get the (target) bay
             var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
 
-            // check if bay is double
-            var isBayDouble = bay.IsDouble;
-
             // upper location
             var upperBayLocation = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
             if (upperBayLocation is LoadingUnitLocation.NoLocation)
@@ -69,8 +66,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 // TODO Add warning log
             }
-
-            // get the loading unit on the upper bay position
             var upperBayPosition = bay.Positions.FirstOrDefault(p => p.IsUpper);
             var isLoadingUnitOnUpperBayPosition = (upperBayPosition.LoadingUnit != null);
 
@@ -78,59 +73,33 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var lowerBayPosition = bay.Positions.FirstOrDefault(p => !p.IsUpper);
             var isLoadingUnitOnLowerBayPosition = (lowerBayPosition.LoadingUnit != null);
 
-            if (isLoadingUnitOnUpperBayPosition || isLoadingUnitOnLowerBayPosition)
+            if ((isLoadingUnitOnUpperBayPosition || isLoadingUnitOnLowerBayPosition)
+                && this.IsWaitingRequested(bay))
             {
-                // List of waiting mission on the bay
-                var waitMissions = this.MissionsDataProvider.GetAllMissions()
-                    .Where(
-                        m => m.LoadUnitId != this.Mission.LoadUnitId &&
-                        m.Id != this.Mission.Id &&
-                        ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick) || m.Status == MissionStatus.New)
-                    );
-
-                var isWaitingRequested = false;
-
-                foreach (var m in waitMissions)
+                var reasonDescription = "";
+                if (isLoadingUnitOnLowerBayPosition)
                 {
-                    if (m.TargetBay == this.Mission.TargetBay)
-                    {
-                        if (bay.Carousel == null
-                            || this.SensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadUnitDestination)
-                            )
-
-                        {
-                            isWaitingRequested = true;
-                        }
-                    }
+                    reasonDescription = $"Reason: {lowerBayLocation} is occupied";
                 }
-
-                if (isWaitingRequested)
+                if (isLoadingUnitOnUpperBayPosition)
                 {
-                    var reasonDescription = "";
-                    if (isLoadingUnitOnLowerBayPosition)
-                    {
-                        reasonDescription = $"Reason: {lowerBayLocation} is occupied";
-                    }
-                    if (isLoadingUnitOnUpperBayPosition)
-                    {
-                        reasonDescription = $"Reason: {upperBayLocation} is occupied";
-                    }
-                    var description = $"Deposit on Bay {bay.Number} not allowed at the moment in bay." + $" {reasonDescription}" + " Wait for resume";
-
-                    // we don't send the current LU in bay while operator is working on other position
-                    this.Logger.LogInformation(description);
-                    this.Mission.Status = MissionStatus.Waiting;
-
-                    this.MissionsDataProvider.Update(this.Mission);
-
-                    this.SendMoveNotification(
-                        this.Mission.TargetBay,
-                        this.Mission.Step.ToString(),
-                        MessageStatus.OperationEnd
-                    );
-
-                    return true;
+                    reasonDescription = $"Reason: {upperBayLocation} is occupied";
                 }
+                var description = $"Deposit on Bay {bay.Number} not allowed at the moment in bay." + $" {reasonDescription}" + " Wait for resume";
+
+                // we don't send the current LU in bay while operator is working on other position
+                this.Logger.LogInformation(description);
+                this.Mission.Status = MissionStatus.Waiting;
+
+                this.MissionsDataProvider.Update(this.Mission);
+
+                this.SendMoveNotification(
+                    this.Mission.TargetBay,
+                    this.Mission.Step.ToString(),
+                    MessageStatus.OperationEnd
+                );
+
+                return true;
             }
 
             // No need to wait
@@ -154,11 +123,51 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             // get the (target) bay
             var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
 
-            this.Mission.Status = MissionStatus.Executing;
+            // are there waiting mission on the bay?
+            if (!bay.Positions.Any(x => x.LoadingUnit != null)
+                || !this.IsWaitingRequested(bay)
+                )
+            {
+                this.Mission.Status = MissionStatus.Executing;
 
-            // No need to wait, go ahead with no worries
-            var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-            newStep.OnEnter(null);
+                // No need to wait, go ahead with no worries
+                var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
+        }
+
+        private bool IsWaitingRequested(Bay bay)
+        {
+            // List of waiting mission on the bay
+            var waitMissions = this.MissionsDataProvider.GetAllActiveMissions()
+                .Where(m =>
+                    m.TargetBay == this.Mission.TargetBay &&
+                    ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                        || m.Status == MissionStatus.New
+                        )
+                );
+
+            var isWaitingRequested = false;
+
+            foreach (var m in waitMissions.Where(x => x.Status == MissionStatus.Waiting
+                && x.Step == MissionStep.WaitPick
+                && x.LoadUnitId != this.Mission.LoadUnitId)
+                )
+            {
+                if (bay.Carousel == null
+                    || this.SensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadUnitDestination)
+                    )
+
+                {
+                    // there are more missions when user has requestd to return to cell
+                    if (waitMissions.Count(x => x.LoadUnitId == m.LoadUnitId) == 1)
+                    {
+                        this.Logger.LogInformation($"LU {m.LoadUnitId} is blocking");
+                        isWaitingRequested = true;
+                    }
+                }
+            }
+            return isWaitingRequested;
         }
 
         #endregion

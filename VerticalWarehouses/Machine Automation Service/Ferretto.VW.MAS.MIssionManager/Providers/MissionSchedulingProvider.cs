@@ -83,6 +83,16 @@ namespace Ferretto.VW.MAS.MissionManager
                 loadingUnitId,
                 targetBayNumber);
 
+            var loadingUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId);
+            if (!loadingUnit.IsIntoMachine)
+            {
+                throw new InvalidOperationException($"The load unit {loadingUnitId} is not contained in the machine.");
+            }
+            if (!this.CheckBayHeight(targetBayNumber, loadingUnit.Height))
+            {
+                throw new InvalidOperationException($"The load unit {loadingUnitId} is too high for bay {targetBayNumber}.");
+            }
+
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, missionType);
 
             if (mission != null)
@@ -103,6 +113,10 @@ namespace Ferretto.VW.MAS.MissionManager
             if (!loadingUnit.IsIntoMachine)
             {
                 throw new InvalidOperationException($"The loading unit {loadingUnitId} is not contained in the machine.");
+            }
+            if (!this.CheckBayHeight(targetBayNumber, loadingUnit.Height))
+            {
+                throw new InvalidOperationException($"The loading unit {loadingUnitId} is too high for bay {targetBayNumber}.");
             }
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
@@ -204,6 +218,28 @@ namespace Ferretto.VW.MAS.MissionManager
                   loadingUnitId,
                   sourceBayNumber);
             }
+        }
+
+        private bool CheckBayHeight(BayNumber targetBayNumber, double height)
+        {
+            var returnValue = true;
+            const double tolerance = 2.5;
+
+            var bay = this.baysDataProvider.GetByNumber(targetBayNumber);
+            if (bay.Positions.All(p => p.MaxDoubleHeight == 0))
+            {
+                if (bay.Positions.All(p => height > p.MaxSingleHeight + tolerance))
+                {
+                    this.logger.LogWarning($"Load unit Height {height:0.00} higher than single in bay {targetBayNumber} ");
+                    returnValue = false;
+                }
+            }
+            else if (bay.Positions.Any(p => p.MaxDoubleHeight > 0 && height > p.MaxDoubleHeight + tolerance))
+            {
+                this.logger.LogWarning($"Load unit Height {height:0.00} higher than double in bay {targetBayNumber} ");
+                returnValue = false;
+            }
+            return returnValue;
         }
 
         private bool CompactDownCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)

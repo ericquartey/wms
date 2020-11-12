@@ -217,13 +217,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 // ------------------------------
                 // Add this block code
                 if (!(bay.IsDouble &&
-                     bay.Carousel == null &&
-                     !(bay.IsExternal)))
+                        bay.Carousel == null &&
+                        !bay.IsExternal
+                     )
+                )
                 {
-                    bayShutter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified);
+                    // all bays different from BID
+                    bayShutter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified && !bay.IsExternal);
                 }
                 else
                 {
+                    // BID
                     bayShutter = bay.Shutter != null &&
                         bay.Shutter.Type != ShutterType.NotSpecified &&
                         !this.isWaitingMissionOnThisBay();
@@ -294,7 +298,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || bay.Positions.Any(x => x.IsUpper && x.IsBlocked)
                         || bay.Carousel is null)
                     {
-                        if (bay.External != null)
+                        if (bay?.External != null)
                         {
                             // External bay movement
                             newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
@@ -303,15 +307,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             // Use a flag to prompt showing the MachineErrorCode.LoadUnitWeightExceeded condition
                             var bShowErrorCondition = true;
-                            if (this.Mission.MissionType == MissionType.IN && this.Mission.ErrorCode == MachineErrorCode.LoadUnitWeightExceeded)
+                            if (this.Mission.MissionType == MissionType.IN && this.Mission.ErrorCode != MachineErrorCode.NoError)
                             {
                                 // In this case (see conditions), close the shutter
                                 newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                bShowErrorCondition = false;
                             }
-
                             // For the mission of OUT type or WMS type
-                            if (this.Mission.MissionType == MissionType.OUT ||
+                            else if (this.Mission.MissionType == MissionType.OUT ||
                                 this.Mission.MissionType == MissionType.WMS ||
                                 this.Mission.MissionType == MissionType.FullTestOUT)
                             {
@@ -321,7 +323,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             else
                             {
                                 // Detect the error condition and add it to the errors list
-                                if (bShowErrorCondition && !this.CheckMissionShowError())
+                                if (!this.CheckMissionShowError())
                                 {
                                     this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                                     if (this.Mission.MissionType != MissionType.Manual)
@@ -725,8 +727,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Mission.LoadUnitDestination = this.Mission.LoadUnitSource;
             this.MissionsDataProvider.Update(this.Mission);
-            var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-            newStep.OnEnter(null);
+
+            if (!this.isWaitingMissionOnThisBay())
+            {
+                var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
+            else
+            {
+                var newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
         }
 
         #endregion

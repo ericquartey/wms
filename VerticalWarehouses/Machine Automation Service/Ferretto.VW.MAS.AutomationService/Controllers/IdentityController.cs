@@ -123,6 +123,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(statistics);
         }
 
+        [HttpPost("set/machine/id")]
+        public IActionResult SetMachineId(int newMachineId)
+        {
+            this.machineProvider.SetMachineId(newMachineId);
+            return this.Ok();
+        }
+
         #endregion
     }
 }

@@ -510,9 +510,6 @@
   <data name="HelpBCTRStepValue" xml:space="preserve">
     <value>Valore dello step applicato alla quota corrente dell'asse ad ogni pressione dei pulsanti di spostamento.</value>
   </data>
-  <data name="HelpBCTRActualHeight" xml:space="preserve">
-    <value>Posizione attuale dell'asse verticale.</value>
-  </data>
   <data name="HelpBCTRCorrectionValue" xml:space="preserve">
     <value>Valore cumulativo della correzione che verra' applicata all quota della baia-posizione selezionata. </value>
   </data>
@@ -617,9 +614,6 @@
   </data>
   <data name="HelpSRCLoadSide" xml:space="preserve">
     <value>Procedura di ripristino configurazione.</value>
-  </data>
-  <data name="HelpSRCLoadFolder" xml:space="preserve">
-    <value>Indica la cartella rilevata da cui verranno prelevati i files da ripristinare.</value>
   </data>
   <data name="HelpSRCLoadButton" xml:space="preserve">
     <value>Avvia la procedura di caricamento dei files di configurazione. Eventuali files gia' presenti verranno sovrascritti.</value>
@@ -930,12 +924,6 @@
   <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
     <value>Indica il numero di scomparti mappati, presenti all'interno del cassetto indipendentemente dal loro stato.</value>
   </data>
-  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
-    <value>Riporta, in forma grafica, il grado di riempimento del cassetto.</value>
-  </data>
-  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
-    <value>Indica il grado di riempimento del cassetto in valore percentuale.</value>
-  </data>
   <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
     <value>Riporta il numero totale di cassetti allocati nella macchina.</value>
   </data>
@@ -1016,9 +1004,6 @@
   </data>
   <data name="HelpMachineStatisticsBay3" xml:space="preserve">
     <value>Il campo riporta il numero totale di cassetti che hanno interessato la baia n. 3. Il conteggio si incrementa quando un cassetto viene portato in baia e poi riportato a magazzino.</value>
-  </data>
-  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
-    <value>La procedura permette di visualizzare lo stato di manutenzione della macchina. Per ogni kit viene indicato lo stato attuale segnalando con il colore arancione l'approssimarsi della necessita' di manutenere un componente. Con il colore rosso sono indicate quelle parti che hanno superato il periodo fra due manutenzioni successive.</value>
   </data>
   <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
     <value>La colonna riporta il codice del kit relativo al componente selezionato.</value>

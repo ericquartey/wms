@@ -134,6 +134,7 @@
       "title": "Installa TeamViewerQS",
       "description": "Estrai TeamViewerQS in F:",
       "script": "scripts/install_TeamViewer.ps1",
+      "rollbackScript": "scripts/install_TeamViewer.rollback.ps1",
       "setupMode": "install"
     },
     {

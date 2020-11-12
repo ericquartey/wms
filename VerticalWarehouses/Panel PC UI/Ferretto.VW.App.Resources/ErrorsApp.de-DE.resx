@@ -120,29 +120,17 @@
   <data name="CalibrationBarierError" xml:space="preserve">
     <value>Fehler darf nicht mehr als 1 mm betragen</value>
   </data>
-  <data name="CellSide" xml:space="preserve">
-    <value>Zellens.</value>
-  </data>
   <data name="CheckUnit" xml:space="preserve">
     <value>Kastenprüfung:</value>
   </data>
-  <data name="CurrentCell" xml:space="preserve">
-    <value>Ausgewählte Zelle</value>
-  </data>
   <data name="DetailCode" xml:space="preserve">
     <value>Detail Code</value>
-  </data>
-  <data name="Displacement" xml:space="preserve">
-    <value>Verschieb. (mm)</value>
   </data>
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Nach Abschluss der Kastenidentifizierung, Umschaltung auf Automatik</value>
   </data>
   <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
     <value>Nach Abschluss der Kastenidentifizierung, Umschaltung auf Manuell</value>
-  </data>
-  <data name="DrawerReturn" xml:space="preserve">
-    <value>Kastenrückkehr</value>
   </data>
   <data name="DrawerSelection" xml:space="preserve">
     <value>Auswahl des Kastens</value>
@@ -170,9 +158,6 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
-  </data>
-  <data name="InitialPosition" xml:space="preserve">
-    <value>Anfangshöhe (mm)</value>
   </data>
   <data name="InvalidUnit" xml:space="preserve">
     <value>Ungültiger Kasten, eingeben: </value>
