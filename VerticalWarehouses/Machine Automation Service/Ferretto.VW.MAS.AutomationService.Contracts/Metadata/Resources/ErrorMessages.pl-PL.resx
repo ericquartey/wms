@@ -120,6 +120,12 @@
   <data name="Range" xml:space="preserve">
     <value>Wartość pola {0} musi zawierać się między {1} a {2}</value>
   </data>
+  <data name="RangeMax" xml:space="preserve">
+    <value>Wartość pola {0} nie może być większa niż {2}</value>
+  </data>
+  <data name="RangeMin" xml:space="preserve">
+    <value>Wartość pola {0} nie może być mniejsza niż {1}</value>
+  </data>
   <data name="Regex" xml:space="preserve">
     <value>Wartość pola {0} jest nieprawidłowa</value>
   </data>

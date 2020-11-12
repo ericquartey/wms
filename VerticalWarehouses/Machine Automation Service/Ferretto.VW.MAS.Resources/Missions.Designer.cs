@@ -61,11 +61,38 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An active mission for load unit {0} on bay {1} already exists..
+        /// </summary>
+        public static string ActiveMissionForLoadingUnit {
+            get {
+                return ResourceManager.GetString("ActiveMissionForLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An active mission for WMS mission {0} already exists..
+        /// </summary>
+        public static string ActiveMissionForWMS {
+            get {
+                return ResourceManager.GetString("ActiveMissionForWMS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load unit {0},  weight {1}, height {2}, WmsId {3}.
         /// </summary>
         public static string ErrorMissionDetails {
             get {
                 return ResourceManager.GetString("ErrorMissionDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A recall mission for load unit {0} already exists..
+        /// </summary>
+        public static string RecallMissionForLoadingUnit {
+            get {
+                return ResourceManager.GetString("RecallMissionForLoadingUnit", resourceCulture);
             }
         }
         

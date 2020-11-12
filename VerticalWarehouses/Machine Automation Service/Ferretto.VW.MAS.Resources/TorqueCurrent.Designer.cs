@@ -59,5 +59,14 @@ namespace Ferretto.VW.MAS.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot specify a loaded net weight when no loading unit is specified..
+        /// </summary>
+        public static string CannotSpecifyLoadedNet {
+            get {
+                return ResourceManager.GetString("CannotSpecifyLoadedNet", resourceCulture);
+            }
+        }
     }
 }

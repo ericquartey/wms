@@ -132,6 +132,9 @@
   <data name="BayCarousel_Description" xml:space="preserve">
     <value>Param. Vrtuljka</value>
   </data>
+  <data name="BayInverter" xml:space="preserve">
+    <value>Invert. uvale {0}</value>
+  </data>
   <data name="BayIoDevice" xml:space="preserve">
     <value>IdUređ. uvale {0}</value>
   </data>
@@ -140,6 +143,18 @@
   </data>
   <data name="BayNumber" xml:space="preserve">
     <value>Broj uvale</value>
+  </data>
+  <data name="BayNumber.BayOne" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayNumber.BayThree" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayNumber.BayTwo" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BayNumber.ElevatorBay" xml:space="preserve">
+    <value>kol.</value>
   </data>
   <data name="BayPosition_Height" xml:space="preserve">
     <value>Vis.</value>
@@ -165,11 +180,17 @@
   <data name="Bay_ChainOffset" xml:space="preserve">
     <value>Nulti pomak lanca</value>
   </data>
+  <data name="Bay_IsActive" xml:space="preserve">
+    <value>Aktiv.</value>
+  </data>
   <data name="Bay_IsAdjustByWeight" xml:space="preserve">
     <value>Smanji visinu preuzimanja s teškim pretincima u uvali</value>
   </data>
   <data name="Bay_IsCheckIntrusion" xml:space="preserve">
     <value>Provjera upada s barijerom za kontrolu visine</value>
+  </data>
+  <data name="Bay_IsDouble" xml:space="preserve">
+    <value>Dvost.</value>
   </data>
   <data name="Bay_IsExternal" xml:space="preserve">
     <value>Vanjska</value>
@@ -188,6 +209,9 @@
   </data>
   <data name="BeltSpacing" xml:space="preserve">
     <value>Udaljenost blokova za zatezanje remena</value>
+  </data>
+  <data name="Carousel" xml:space="preserve">
+    <value>Vrt.   </value>
   </data>
   <data name="Carousel_ElevatorDistance" xml:space="preserve">
     <value>Međurazmak polica</value>
@@ -233,6 +257,9 @@
   </data>
   <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
     <value>Brzina kalibracije oblika</value>
+  </data>
+  <data name="ElevatorAxis_Profiles" xml:space="preserve">
+    <value>Profili</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Rezolucija</value>
@@ -294,6 +321,9 @@
   <data name="Inverter_Type" xml:space="preserve">
     <value>Vrsta Invert.</value>
   </data>
+  <data name="IoDevice" xml:space="preserve">
+    <value>IoUređ.</value>
+  </data>
   <data name="IoDevice_Index" xml:space="preserve">
     <value>Indeks IoUređ.</value>
   </data>
@@ -302,6 +332,9 @@
   </data>
   <data name="IoDevice_TcpPort" xml:space="preserve">
     <value>Vrata IoUređ.</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Laser</value>
   </data>
   <data name="Laser_IpAddress" xml:space="preserve">
     <value>IP Las.</value>
@@ -378,6 +411,33 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Vrsta vaganja</value>
   </data>
+  <data name="MovementParameters" xml:space="preserve">
+    <value>ParametriKretanja</value>
+  </data>
+  <data name="MovementProfileType.LongDeposit" xml:space="preserve">
+    <value>Dugo odlaganje</value>
+  </data>
+  <data name="MovementProfileType.LongPickup" xml:space="preserve">
+    <value>Dugo preuzim.</value>
+  </data>
+  <data name="MovementProfileType.ShortDeposit" xml:space="preserve">
+    <value>Kratko odlag.</value>
+  </data>
+  <data name="MovementProfileType.ShortPickup" xml:space="preserve">
+    <value>Kratko preuz.</value>
+  </data>
+  <data name="MovementProfileType.Undefined" xml:space="preserve">
+    <value>Nije defin.</value>
+  </data>
+  <data name="NetworkConfiguration" xml:space="preserve">
+    <value>Konfiguracija mreže</value>
+  </data>
+  <data name="Orientation.Horizontal" xml:space="preserve">
+    <value>vodoravna</value>
+  </data>
+  <data name="Orientation.Vertical" xml:space="preserve">
+    <value>okomita</value>
+  </data>
   <data name="Pick" xml:space="preserve">
     <value>Preuzim.</value>
   </data>
@@ -423,6 +483,15 @@
   <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
     <value>Min brzina zaklopke</value>
   </data>
+  <data name="ShutterType.NotSpecified" xml:space="preserve">
+    <value>Nije navedeno</value>
+  </data>
+  <data name="ShutterType.ThreeSensors" xml:space="preserve">
+    <value>Tri senzora</value>
+  </data>
+  <data name="ShutterType.TwoSensors" xml:space="preserve">
+    <value>Dva senzora</value>
+  </data>
   <data name="Shutter_AssistedMovements" xml:space="preserve">
     <value>Vođeni pokr. zaklopke</value>
   </data>
@@ -461,6 +530,9 @@
   </data>
   <data name="CyclesToCalibrate" xml:space="preserve">
     <value>Ciklusi za kalibr.</value>
+  </data>
+  <data name="LastCalibrationCycles" xml:space="preserve">
+    <value>Posljed.ciklusi kalibracije</value>
   </data>
   <data name="Machine_LoadDepth" xml:space="preserve">
     <value>Dubina</value>

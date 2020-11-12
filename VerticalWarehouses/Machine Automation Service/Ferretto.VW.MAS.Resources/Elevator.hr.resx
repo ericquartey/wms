@@ -117,4 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ALoadingUnitIsAlreadyOnBoardOfTheElevator" xml:space="preserve">
+    <value>Već je prisutan pretinac na dizalici.</value>
+  </data>
+  <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Već je prisutan pretinac u položaju navedene uvale.</value>
+  </data>
+  <data name="MovementDistanceCannotBeZero" xml:space="preserve">
+    <value>Udaljenost kretanja ne može biti nula.</value>
+  </data>
+  <data name="NoLoadingUnitIsOnBoardOfTheElevator" xml:space="preserve">
+    <value>Nijedan pretinac nije pris. na dizalici.</value>
+  </data>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Nijedan pretinac nije prisutan u navedenoj uvali.</value>
+  </data>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
+    <value>Nijedan pretinac nije prisutan u navedenoj ćeliji.</value>
+  </data>
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>Pomak ({0}mm) okomite osi nije valjan: mora biti obuhvaćen u intervalu [{1}mm; {2}mm].</value>
+  </data>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
+    <value>Odredišni položaj ({0}mm) mora biti obuhvaćen u intervalu [{1}mm; {2}mm].</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Dizalica se već nalazi ispred položaja navedene uvale.</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Dizalica se već nalazi ispred navedene ćelije.</value>
+  </data>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>Dizalica nije prazna ali je zapinjač u nultom položaju.</value>
+  </data>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>Dizalica nije puna ali zapinjač nije u nultom položaju.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Dizalica nije ispred položaja navedene uvale.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Dizalica nije ispred navedene ćelije.</value>
+  </data>
+  <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
+    <value>U navedenoj ćeliji nema dovoljno prostora za smještaj pretinca.</value>
+  </data>
+  <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
+    <value>Kalibracija okomite osi se mora izvršiti prije pokušaja apsolutnog kretanja dizalice.</value>
+  </data>
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Nijedna jedinica za utovar ne čeka izvlačenje u navedenom položaju ležišta.</value>
+  </data>
 </root>

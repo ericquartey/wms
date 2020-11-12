@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActiveMissionForLoadingUnit" xml:space="preserve">
+    <value>Pro zásuvku {0} ve stanici {1} již existuje aktivní mise.</value>
+  </data>
+  <data name="ActiveMissionForWMS" xml:space="preserve">
+    <value>Pro misi WMS {0} již existuje aktivní mise.</value>
+  </data>
   <data name="ErrorMissionDetails" xml:space="preserve">
     <value>Zásuvka {0}, čistá hmotnost {1}, výška {2}, WmsId {3}</value>
+  </data>
+  <data name="RecallMissionForLoadingUnit" xml:space="preserve">
+    <value>Již existuje mise vyvolání pro zásuvku {0}.</value>
   </data>
   <data name="RemoveMaterialFromLoadUnit" xml:space="preserve">
     <value>Odstraňte minim {0} kg z jednotky nakládky {1}, hmot {2}</value>

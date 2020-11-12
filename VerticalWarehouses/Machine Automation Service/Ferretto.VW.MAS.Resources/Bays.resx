@@ -117,4 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
+    <value>The bay height ({0}) must be in range [{1},{2}].</value>
+  </data>
+  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
+    <value>The specified bay position is not valid.</value>
+  </data>
+  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
+    <value>The specified bay has no carousel.</value>
+  </data>
+  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
+    <value>The bay contains at least one loading unit.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value>The bay contains a loading unit in its upper position.</value>
+  </data>
+  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
+    <value>The bay chain is not in zero position.</value>
+  </data>
+  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
+    <value>Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method</value>
+  </data>
+  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
+    <value>The maximum height of the loading unit is not valid.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>The bay contains a Loading Unit in its external position</value>
+  </data>
+  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
+    <value>The specified bay is not an external bay</value>
+  </data>
+  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
+    <value>The external bay cannot perform an invalid movement</value>
+  </data>
 </root>

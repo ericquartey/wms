@@ -120,6 +120,12 @@
   <data name="Range" xml:space="preserve">
     <value>Значение поля {0} должно быть между {1} и {2}</value>
   </data>
+  <data name="RangeMax" xml:space="preserve">
+    <value>Значение поля {0} не может быть больше, чем {2}</value>
+  </data>
+  <data name="RangeMin" xml:space="preserve">
+    <value>Значение поля {0} не может быть меньше {1}</value>
+  </data>
   <data name="Regex" xml:space="preserve">
     <value>Значение поля {0} недопустимо</value>
   </data>

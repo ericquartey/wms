@@ -59,5 +59,104 @@ namespace Ferretto.VW.MAS.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bay chain is not in zero position..
+        /// </summary>
+        public static string TheBayChainIsNotInZeroPosition {
+            get {
+                return ResourceManager.GetString("TheBayChainIsNotInZeroPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bay contains a Loading Unit in its external position.
+        /// </summary>
+        public static string TheBayContainsALoadingUnitInItsExternalPosition {
+            get {
+                return ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bay contains a loading unit in its upper position..
+        /// </summary>
+        public static string TheBayContainsALoadingUnitInItsUpperPosition {
+            get {
+                return ResourceManager.GetString("TheBayContainsALoadingUnitInItsUpperPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bay contains at least one loading unit..
+        /// </summary>
+        public static string TheBayContainsAtLeastOneLoadingUnit {
+            get {
+                return ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bay height ({0}) must be in range [{1},{2}]..
+        /// </summary>
+        public static string TheBayHeightMustBeInRange {
+            get {
+                return ResourceManager.GetString("TheBayHeightMustBeInRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Axis.HorizontalAndVertical is not a valid Axis for GetInverterIndexByMovementType() method.
+        /// </summary>
+        public static string TheBayHorizontalAndVerticalNotValid {
+            get {
+                return ResourceManager.GetString("TheBayHorizontalAndVerticalNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The maximum height of the loading unit is not valid..
+        /// </summary>
+        public static string TheBayLoadingMaxHeightNotValid {
+            get {
+                return ResourceManager.GetString("TheBayLoadingMaxHeightNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The external bay cannot perform an invalid movement.
+        /// </summary>
+        public static string TheExtBayCannotPerformAnInvalidMovement {
+            get {
+                return ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified bay has no carousel..
+        /// </summary>
+        public static string TheSpecifiedBayHasNoCarousel {
+            get {
+                return ResourceManager.GetString("TheSpecifiedBayHasNoCarousel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified bay is not an external bay.
+        /// </summary>
+        public static string TheSpecifiedBayIsNotAnExternalBay {
+            get {
+                return ResourceManager.GetString("TheSpecifiedBayIsNotAnExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified bay position is not valid..
+        /// </summary>
+        public static string TheSpecifiedBayPositionIsNotValid {
+            get {
+                return ResourceManager.GetString("TheSpecifiedBayPositionIsNotValid", resourceCulture);
+            }
+        }
     }
 }

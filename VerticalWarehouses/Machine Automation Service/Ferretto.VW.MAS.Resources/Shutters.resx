@@ -117,4 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TheDelayBetweenTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>The delay between two cycles must be strictly positive.</value>
+  </data>
+  <data name="TheMinSpeedIsNotValid" xml:space="preserve">
+    <value>The shutter MinSpeed is not valid</value>
+  </data>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>The number of test cycles must be strictly positive.</value>
+  </data>
+  <data name="ThePositionIsNotValid" xml:space="preserve">
+    <value>The shutter starting position is not valid</value>
+  </data>
+  <data name="TheShutterIsNotCompletelyOpen" xml:space="preserve">
+    <value>The shutter is not completely open.</value>
+  </data>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>The Shutter Type is not valid</value>
+  </data>
+  <data name="TheSpeedRateIsNotValid" xml:space="preserve">
+    <value>The shutter SpeedRate is not valid</value>
+  </data>
+  <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
+    <value>The shutter of bay {0} is not completely closed.</value>
+  </data>
 </root>

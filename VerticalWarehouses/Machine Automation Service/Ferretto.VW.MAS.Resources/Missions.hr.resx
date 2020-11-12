@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActiveMissionForLoadingUnit" xml:space="preserve">
+    <value>Već postoji aktivna misija za pretinac {0} na uvali{1}.</value>
+  </data>
+  <data name="ActiveMissionForWMS" xml:space="preserve">
+    <value>Već postoji aktivna misija za misiju WMS {0}.</value>
+  </data>
   <data name="ErrorMissionDetails" xml:space="preserve">
     <value>Pretinac {0},  neto težina {1}, visina {2}, WmsId {3}</value>
+  </data>
+  <data name="RecallMissionForLoadingUnit" xml:space="preserve">
+    <value>Već postoji aktivna misija opoziva za pretinac {0}.</value>
   </data>
   <data name="RemoveMaterialFromLoadUnit" xml:space="preserve">
     <value>Uklonite najmanje {0} kg iz jed. za utovar {1}, težina{2}</value>

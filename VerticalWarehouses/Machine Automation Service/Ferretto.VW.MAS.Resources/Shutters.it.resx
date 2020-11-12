@@ -117,4 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TheDelayBetweenTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Il ritardo tra due cicli di test deve essere strettamente positivo.</value>
+  </data>
+  <data name="TheMinSpeedIsNotValid" xml:space="preserve">
+    <value>La velocità bassa della serranda non è valida</value>
+  </data>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Il numero di cicli di test deve essere strettamente positivo.</value>
+  </data>
+  <data name="ThePositionIsNotValid" xml:space="preserve">
+    <value>La Posizione iniziale della serranda non è valida</value>
+  </data>
+  <data name="TheShutterIsNotCompletelyOpen" xml:space="preserve">
+    <value>La serranda non è completamente aperta.</value>
+  </data>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>Il tipo di serranda non è valido</value>
+  </data>
+  <data name="TheSpeedRateIsNotValid" xml:space="preserve">
+    <value>La Velocità alta della serranda non è valida</value>
+  </data>
+  <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
+    <value>La serranda della baia {0} non è completamente chiusa.</value>
+  </data>
 </root>

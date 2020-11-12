@@ -117,4 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ALoadingUnitIsAlreadyOnBoardOfTheElevator" xml:space="preserve">
+    <value>Ve zvedáku už je přítomna zásuvka.</value>
+  </data>
+  <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Ve specifikované pozici stanice je již přítomna zásuvka.</value>
+  </data>
+  <data name="MovementDistanceCannotBeZero" xml:space="preserve">
+    <value>Vzdálenost pohybu nesmí být nulová.</value>
+  </data>
+  <data name="NoLoadingUnitIsOnBoardOfTheElevator" xml:space="preserve">
+    <value>Ve zvedáku není přítomna žádná zásuvka.</value>
+  </data>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>V uvedené stanici není přítomna žádná zásuvka.</value>
+  </data>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
+    <value>V uvedené buňce není přítomna žádná zásuvka.</value>
+  </data>
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>Posunutí ({0}mm) vertikální osy není platné: musí se pohybovat v intervalu [{1}mm; {2}mm].</value>
+  </data>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
+    <value>Cílová poloha ({0} mm) musí být v intervalu [{1}mm; {2}mm].</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Zvedák se již nachází před stanovenou pozicí stanice.</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Zvedák se již nachází před stanovenou buňkou.</value>
+  </data>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>Zvedák není prázdný, ale západka je v nulové poloze.</value>
+  </data>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>Zvedák není plný, ale západka není v nulové poloze.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Zvedák se nenachází před stanovenou pozicí stanice.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Zvedák se nenachází před stanovenou buňkou.</value>
+  </data>
+  <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
+    <value>Pro vložení zásuvky není ve stanovené buňce k dispozici dostatek místa.</value>
+  </data>
+  <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
+    <value>Kalibrace vertikální osy je třeba provést před pokusem o absolutní pohyb zvedáku.</value>
+  </data>
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Žádná nakládací jednotka nečeká na vytažení ve stanovené poloze pole.!</value>
+  </data>
 </root>

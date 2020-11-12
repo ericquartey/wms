@@ -120,10 +120,16 @@
   <data name="Range" xml:space="preserve">
     <value>Il valore del campo {0} dev'essere compreso tra {1} e {2}</value>
   </data>
+  <data name="RangeMax" xml:space="preserve">
+    <value>Il valore del campo {0} non può essere superiore a {2}</value>
+  </data>
   <data name="Regex" xml:space="preserve">
     <value>Il valore del campo {0} non è valido</value>
   </data>
   <data name="Required" xml:space="preserve">
     <value>Il campo {0} è obbligatorio</value>
+  </data>
+  <data name="RangeMin" xml:space="preserve">
+    <value>Il valore del campo {0} non può essere inferiore a  {1}</value>
   </data>
 </root>

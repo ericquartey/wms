@@ -117,4 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TheDelayBetweenTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Kašnjenje između dva ciklusa testa mora biti strogo pozitivno.</value>
+  </data>
+  <data name="TheMinSpeedIsNotValid" xml:space="preserve">
+    <value>Niska brzina zaklopke nije valjana</value>
+  </data>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Broj ciklusa testa mora biti strogo pozitivan.</value>
+  </data>
+  <data name="ThePositionIsNotValid" xml:space="preserve">
+    <value>Početni položaj zaklopke nije valjan</value>
+  </data>
+  <data name="TheShutterIsNotCompletelyOpen" xml:space="preserve">
+    <value>Zaklopka nije potpuno otvorena.</value>
+  </data>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>Vrsta zaklopke nije valjana</value>
+  </data>
+  <data name="TheSpeedRateIsNotValid" xml:space="preserve">
+    <value>Visoka brzina zaklopke nije valjana</value>
+  </data>
+  <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
+    <value>Zaklopka uvale {0} nije potpuno zatvorena.</value>
+  </data>
 </root>

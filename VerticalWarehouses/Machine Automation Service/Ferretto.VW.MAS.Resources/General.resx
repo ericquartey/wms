@@ -117,10 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Bad Request.</value>
+  </data>
+  <data name="InternalServerErrorTitle" xml:space="preserve">
+    <value>Internal Server Error.</value>
+  </data>
   <data name="MaintenanceStateExpired" xml:space="preserve">
     <value>Maintenance status expired</value>
   </data>
   <data name="MaintenanceStateExpiring" xml:space="preserve">
     <value>Maintenance status expiring</value>
+  </data>
+  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
+    <value>No entity with the specified id '{0}' exists.</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Not Found.</value>
+  </data>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Service is initializing.</value>
+  </data>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Service startup sequence completed.</value>
+  </data>
+  <data name="UnprocessableEntityTitle" xml:space="preserve">
+    <value>Unprocessable Entity.</value>
+  </data>
+  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Value cannot be null or whitespace.</value>
   </data>
 </root>

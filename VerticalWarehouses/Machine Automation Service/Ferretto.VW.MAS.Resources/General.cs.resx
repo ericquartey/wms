@@ -117,10 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Požadavek není správně formulován.</value>
+  </data>
+  <data name="InternalServerErrorTitle" xml:space="preserve">
+    <value>Interní chyba serveru.</value>
+  </data>
   <data name="MaintenanceStateExpired" xml:space="preserve">
     <value>Vypršel stav údržby</value>
   </data>
   <data name="MaintenanceStateExpiring" xml:space="preserve">
     <value>Blíží se vypršení stavu údržby</value>
+  </data>
+  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
+    <value>Neexistuje subjekt se stanoveným identifikátorem „{0}“.</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Prvek nenalezen.</value>
+  </data>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Služba je ve fázi inicializace.</value>
+  </data>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Služba dokončila fázi inicializace.</value>
+  </data>
+  <data name="UnprocessableEntityTitle" xml:space="preserve">
+    <value>Požadavek nelze zpracovat s ohledem na stávající stav.</value>
+  </data>
+  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Hodn nesmí být nulová ani neobsahovat pouze mezery.</value>
   </data>
 </root>

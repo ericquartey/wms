@@ -59,5 +59,32 @@ namespace Ferretto.VW.MAS.Resources {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expected distance must be strictly positive..
+        /// </summary>
+        public static string ExpectedDistanceMustBeStrictlyPositive {
+            get {
+                return ResourceManager.GetString("ExpectedDistanceMustBeStrictlyPositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Measured distance must be strictly positive..
+        /// </summary>
+        public static string MeasuredDistanceMustBeStrictlyPositive {
+            get {
+                return ResourceManager.GetString("MeasuredDistanceMustBeStrictlyPositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procedure cannot be started because of the current setup status..
+        /// </summary>
+        public static string ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus {
+            get {
+                return ResourceManager.GetString("ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus", resourceCulture);
+            }
+        }
     }
 }

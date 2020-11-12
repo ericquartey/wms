@@ -117,8 +117,206 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Zkontrolujte, zda je západka v nulové poloze nebo zda je zásuvka zcela naložena do zvedáku.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Zkontrolujte, zda jsou tlačítka nouz zast deaktivovány a zda jsou všechny bezp snímače neaktiv.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Zásuvka by se mohla zaseknout.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Zdá se, že zásuvka není po fázi nakládky zcela na zvedáku.</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Zdá se, že zásuvka není po fázi vykládky zcela mimo zvedák.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Snímač západky v nulové poloze je po operaci uložení neaktivní.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Snímače přítomnosti na zvedáku nejsou po operaci nakládky aktivní.</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Zkontrolujte, zda jsou tlačítka nouz zast deaktivovány a zda jsou všechny bezp snímače neAktiv.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Zkontrolujte, zda je cílová buňka zásuvky v databázi správně nakonfigurována</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Zkontrolujte, zda je kolébka zvedáku prázdná. Zkontrolujte správné fungování snímače přítomnosti zásuvky v kolébce.</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Zkontrolujte, zda je zdrojová poloha zásuvky v databázi správně nakonfigurována</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Ujistěte se, zda je zásuvka přítomna ve stanici a zda snímače přítomnosti fungují správně</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Pokud byla zásuvka odstraněna, zkontrolujte snímače přít zásuvky ve stan, v opačném případě zásuvku ze stan odstraňte.</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Zkontrolujte, zda je cílová stanice zásuvky skutečně prázdná. Zkontrolujte, zda snímače přítomnosti zásuvky ve stanici fungují správně.</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Vybraná zásuvka není přítomna v databázi. Zkontrolujte zadané číslo zásuvky a správnou konfiguraci databáze.</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Vybraná zásuvka je přítomna v databázi, ale není naložena do zásobníku. Zkontrolujte konfiguraci databáze.</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Zkontrolujte, zda je zásuvka skutečně přítomna ve zdrojové stanici. Zkontrolujte, zda snímače přítomnosti zásuvky ve stanici fungují správně.</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Zkontrolujte, zda je zdrojová buňka zásuvky v databázi správně nakonfigurována</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Nízká hladina stan obsazená.</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Neplatné snímače přítomnosti</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Přítomn na zvedáku v případě, že je zvedák logicky prázdný.</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Nesoulad stavu snímačů. Snímač západky v nulové poloze je neaktivní.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Nesoulad stavu snímačů. Snímač nulové polohy stanice je neaktivní.</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Vysoká hladina stan obsaz</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Snímač západky v nulové poloze je aktivní současně se snímači přítomnosti na zvedáku.</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Vyložte zásuvku ve stan a odstraňte nadměrnou hmot.  Následně jej nastavte to automat režimu.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Roleta není v otevřené pozici. Zkontrolujte stav snímačů.</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Roleta není v zavřené pozici. Zkontrolujte stav snímačů.</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Chyba cíle osy pod minimální úrovní. Zkontrolujte parametry stroje.</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>Stanice už provádí příkaz a nemůže přijmout další.</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Chyba cíle osy nad maximální úrovní. Zkontrolujte parametry stroje.</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Chyba řízení zařízení vstupů/výstupů nebo provedení příkazu.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Zásuvka je již přít v buňce.</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Stroj nedokáže akceptovat požadovanou misi v důsledku neplatného režimu stroje.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Bezpečnostní bariéra je přerušena. Uvolněte oblast a zkuste to znovu.</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Bylo stisknuto nouz tlač. Zkontrolujte jeho stav a zkuste to znovu.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Zásuvka je již přítomna v jiné stanici.</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Nelze stanovit zásuvku ve zvedáku.</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Nízká hladina prázdné stan</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Vysoká hladina práz stan</value>
+  </data>
   <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
     <value>Pro tuto stanici se již provádí mise.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Pro tuto zásuvku se již provádí mise.</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Pro tento typ mise se již provádí mise.</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Nezjištěna žádná chyba.</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>hmot zásuvky nižší než oček hmot.  Následně jej nastavte do autom režimu.</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Překročen limit celkové hmotnosti stroje. Zkontrolujte stav nakládky stroje a jeho zásuvek.</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Zásobník je plný a nelze určit volnou buňku pro vybranou zásuvku.</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Zkontrolujte ID zásuvky ve stanici. Zkontrolujte, zda snímače přítomnosti zásuvky ve stanici fungují správně. Nastavte stroj do automatického režimu.</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Zkontrolujte ID zásuvky ve zvedáku. Zkontrolujte, zda snímače přítomnosti zásuvky na zvedáku fungují správně. Nastavte stroj do automatického režimu.</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Chyba spojení s měničem (měniči). Zkontrolujte stav ethernetového připojení.</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Chyba připojení k zařízení vstupů/výstupů. Zkontrolujte stav ethernetového připojení.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Chyba spojení s laserem. Zkontrolujte stav ethernetového připojení.</value>
   </data>
   <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
     <value>Zrychlení pohybu osy {0} {1} je neplatné: Zrychlení na prázdno je nižší než zrychlení při plném zatížení</value>
@@ -126,10 +324,94 @@
   <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
     <value>Rychl pohybu osy {0} {1} je neplatná: Rychl na prázdno je nižší než při plném zatížení</value>
   </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Zkontrolujte snímače přítomnosti zvedáku a stanice</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Typ cíle je neplatný</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Dolní poloha stanice není definována</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Horní poloha stanice není definována</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Typ mise je neplatný</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Vyložte zásuvku ve stanici a odstraňte nadměrnou hmotnost. Po skončení postupujte dle pokynů výstrahy.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Příkaz zatažení odběru je neplatný</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Chyba aktualizace archivu buněk. Jedna nebo několik buněk jsou logicky obsazené</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Zkontrolujte, zda je západka v nulové poloze nebo zda je zásuvka zcela naložena do zvedáku. Dále zkontrolujte, zda je roleta zavřená.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Snižte výšku materiálu v zásuvce. Následně jej nastavte to automatického režimu.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Roleta není v otevřené ani zavřené pozici. Zkontrolujte stav snímačů.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Cílová stanice bez kalibrace.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Test první zásuvky selhal: nejsou kolaudovány všechny buňky.</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Zásobník není prázdný. Test plnění první zásuvky není povolen.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Snímač nulové polohy stanice je na konci umístění neaktivní</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Levý boční panel je otevřený. Zkontrolujte, zda jsou panel stroje správně umístěny a uzavřeny.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Pravý boční panel je otevřený. Zkontrolujte, zda jsou panel stroje správně umístěny a uzavřeny.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Vertikální poloha zvedáku se po spuštění stroje změnila.</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Úplný test selhal: nebyly provedeny všechny předpokládané cykly.</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Vybraná stanice je neplatná</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Vybraná pozice stanice je neplatná</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Zvedák dosáhl snímače mimoběhu nahoře</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Vnější stanice je obsazena</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Vnější stan je prázdná</value>
+  </data>
   <data name="InvalidAxisAccelerationRange" xml:space="preserve">
     <value>Zrychlení pohybu osy {0} {1} je nižší než zrychlení při plném zatížení nebo vyšší než zrychlení na prázdno</value>
   </data>
   <data name="InvalidAxisSpeedRange" xml:space="preserve">
     <value>Rychl pohybu osy {0} {1} je nižší než Rychl při plném zatížení nebo vyšší než rychl naprázd</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>WMS vyslal chybový kód</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Zásuvka je příliš vysoká pro tuto stan. Odeberte s jinou stanicí nebo ji manuál přesuňte</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Zvedák dosáhl snímače mimoběhu dole</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>Pozice stanice je zakázána</value>
   </data>
 </root>

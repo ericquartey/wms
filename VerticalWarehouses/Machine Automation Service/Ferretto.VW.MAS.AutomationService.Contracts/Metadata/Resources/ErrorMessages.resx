@@ -120,6 +120,12 @@
   <data name="Range" xml:space="preserve">
     <value>The value of the {0} field must be between {1} and {2}</value>
   </data>
+  <data name="RangeMax" xml:space="preserve">
+    <value>The value of the {0} field cannot be greater than {2}</value>
+  </data>
+  <data name="RangeMin" xml:space="preserve">
+    <value>The value of the {0} field cannot be less than {1}</value>
+  </data>
   <data name="Regex" xml:space="preserve">
     <value>The value of the {0} field is not valid</value>
   </data>

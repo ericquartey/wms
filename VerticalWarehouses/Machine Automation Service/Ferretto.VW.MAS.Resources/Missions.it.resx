@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActiveMissionForLoadingUnit" xml:space="preserve">
+    <value>Esiste già una missione attiva per il cassetto {0} sulla baia {1}.</value>
+  </data>
+  <data name="ActiveMissionForWMS" xml:space="preserve">
+    <value>Esiste già una missione attiva per una missione WMS {0}.</value>
+  </data>
   <data name="ErrorMissionDetails" xml:space="preserve">
     <value>Cassetto {0},  peso netto {1}, altezza {2}, WmsId {3}</value>
+  </data>
+  <data name="RecallMissionForLoadingUnit" xml:space="preserve">
+    <value>Esiste già una missione di richiamo per il cassetto {0}.</value>
   </data>
   <data name="RemoveMaterialFromLoadUnit" xml:space="preserve">
     <value>Rimuovere almeno {0} kg dal cassetto {1}, peso {2}</value>

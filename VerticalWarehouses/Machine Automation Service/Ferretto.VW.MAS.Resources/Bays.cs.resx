@@ -117,4 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
+    <value>Kóta stanice ({0}) musí být v intervalu [{1},{2}].</value>
+  </data>
+  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
+    <value>Stanovená pozice stanice je neplatná.</value>
+  </data>
+  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
+    <value>Stanovená stanice nemá karusel.</value>
+  </data>
+  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
+    <value>Stan obsahuje minim jednu zásuvku.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value>Stanice obsahuje zásuvku v horní pozici.</value>
+  </data>
+  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
+    <value>Řetěz stanice není v nulové pozici.</value>
+  </data>
+  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
+    <value>Horizontální a vertikální osa není platná osa pro metodu GetInverterIndexByMovementType ()</value>
+  </data>
+  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
+    <value>Maximální výška vozíku je neplatná.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>Stanice obsahuje zásuvku ve vnější pozici</value>
+  </data>
+  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
+    <value>Stanovená stanice není vnější stanice</value>
+  </data>
+  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
+    <value>Vnější stanice nemůže provádět neplatný pohyb</value>
+  </data>
 </root>

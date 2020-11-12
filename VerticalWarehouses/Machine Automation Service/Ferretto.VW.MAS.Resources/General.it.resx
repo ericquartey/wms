@@ -117,10 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Richiesta non formulata correttamente.</value>
+  </data>
+  <data name="InternalServerErrorTitle" xml:space="preserve">
+    <value>Errore interno del server.</value>
+  </data>
   <data name="MaintenanceStateExpired" xml:space="preserve">
     <value>Stato manutenzione scaduto</value>
   </data>
   <data name="MaintenanceStateExpiring" xml:space="preserve">
     <value>Stato manutenzione in scadenza</value>
+  </data>
+  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
+    <value>Non esiste una entità con l'identificativo '{0}' specificato.</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Elemento non trovato.</value>
+  </data>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Il servizio è in fase di inizializzazione.</value>
+  </data>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Il servizio ha completato la fase di inizializzazione.</value>
+  </data>
+  <data name="UnprocessableEntityTitle" xml:space="preserve">
+    <value>Impossibile processare la richiesta, dato lo stato corrente.</value>
+  </data>
+  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Il valore non può essere nullo o contenere soli spazi.</value>
   </data>
 </root>

@@ -117,10 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Anforderung nicht korrekt formuliert.</value>
+  </data>
+  <data name="InternalServerErrorTitle" xml:space="preserve">
+    <value>Interner Serverfehler.</value>
+  </data>
   <data name="MaintenanceStateExpired" xml:space="preserve">
     <value>Wartungsstatus abgelaufen</value>
   </data>
   <data name="MaintenanceStateExpiring" xml:space="preserve">
     <value>Auslaufender Wartungsstatus</value>
+  </data>
+  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
+    <value>Keine Einheit mit dem angegebenen '{0}'-Identifikator.</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Elem. nicht gefunden.</value>
+  </data>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Der Betrieb wird gerade initialisiert.</value>
+  </data>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Betrieb hat die Initialisierungsphase abgeschlossen.</value>
+  </data>
+  <data name="UnprocessableEntityTitle" xml:space="preserve">
+    <value>Bearbeit. der Anford. aufgrund des akt. Status nicht möglich</value>
+  </data>
+  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Wert kann nicht null sein oder nur Leerzeichen enth.</value>
   </data>
 </root>

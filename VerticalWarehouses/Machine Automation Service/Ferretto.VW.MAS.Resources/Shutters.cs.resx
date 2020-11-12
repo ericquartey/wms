@@ -117,4 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TheDelayBetweenTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Prodleva mezi dvěma testovacími cykly musí být zásadně kladná.</value>
+  </data>
+  <data name="TheMinSpeedIsNotValid" xml:space="preserve">
+    <value>Nízká rychlost rolety je neplatná</value>
+  </data>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Počet testovacích cyklů musí být zásadně kladný.</value>
+  </data>
+  <data name="ThePositionIsNotValid" xml:space="preserve">
+    <value>Výchozí poloha rolety je neplatná</value>
+  </data>
+  <data name="TheShutterIsNotCompletelyOpen" xml:space="preserve">
+    <value>Roleta není zcela otevřena.</value>
+  </data>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>Typ rolety je neplatný</value>
+  </data>
+  <data name="TheSpeedRateIsNotValid" xml:space="preserve">
+    <value>Vysoká rychlost rolety je neplatná</value>
+  </data>
+  <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
+    <value>Roleta stanice {0} není zcela uzavřena.</value>
+  </data>
 </root>

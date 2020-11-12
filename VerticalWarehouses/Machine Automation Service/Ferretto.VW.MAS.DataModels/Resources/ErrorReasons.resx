@@ -117,8 +117,206 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Check that the pawl is at zero or that the loading unit is fully loaded on the elevator.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Check that the emergency mushrooms are deactivated and that all the safety sensors are deactivated.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>The loading unit may have got stuck.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>The loading unit does not seem to be completely on the elevator after the loading phase.</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>The loading unit does not appear to be completely out of the elevator after the unloading phase.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>The elevator is full after a deposit.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>The elevator is empty after a pickup.</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Switch the machine off and on again. If the problem persists, contact support.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Check that the emergency buttons are deactivated and that all the safety sensors are deactivated.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Verify that the target cell of the loading unit inside the database is correctly configured</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Check that the lift cradle is empty. Check the correct operation of the loading unit presence sensors on the cradle.</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Check that the source position of the loading unit in the database is correctly configured</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Make sure that a loading unit is present in the bay and that the presence sensors work correctly</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>If the loading unit has been removed, check the loading unit presence sensors in the bay, otherwise remove the loading unit from the bay.</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Verify that the destination bay of the drawer is actually empty. Check that the bay loading unit sensors are working correctly.</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>The selected loading unit is not present in the database. Check the loading unit number entered and the correct configuration of the database.</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>The selected loading unit is present in the database but is not loaded in the warehouse. Check the database configuration.</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Check that the loading unit is actually present in the source bay. Check that the bay loading unit sensors are working correctly.</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Check that the source cell of the loading unit inside the database is correctly configured</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Lower bay position is already occupied by a Load unit.</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Invalid elevator presence sensors.</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Presence on the elevator with the elevator logically unloaded.</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>The zero sensor is active but elevator is empty.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Sensors error. The Bay Zero Sensor is not active.</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Upper bay position is already occupied by a drawer.</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>The elevator chain zero sensor is active but the elevator is full.</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Unload the loading unit in the bay and remove the excess weight. Then set Auto mode.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>The shutter is not open. Please check shutter sensors.</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>The shutter is open. Please check shutter sensors.</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>The vertical destination is below lower bound. Please check machine parameters.</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>The bay is already executing a command and cannot process any more</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>The vertical destination exceeds upper bound. Please check machine parameters.</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>I/O device error.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>The load unit is inside the warehouse</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>The requested command is not valid in the present machine mode.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Please check all security barriers.</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Please check all security buttons.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>The load unit is in another bay.</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>The load unit on board is unknown</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Bottom Bay Level is Empty</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>The top bay level is empty.</value>
+  </data>
   <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
     <value>Another Mission Is Active For This Bay</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Another Mission Is Active For This Load Unit</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Another Mission Of This Type Is Active</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>No error</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>The load unit weight is below minimum value.  Then set Auto mode.</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>The sum of total load unit weights is exceeds the maximum value.</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>The warehouse is full. It is not possible to find any free cell for the Load Unit.</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Check the loading unit id on the bay. Check that the loading unit presence sensors are working properly. Put the machine in Automatic.</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Check the id of the loading unit on the elevator. Check that the loading unit presence sensors on the elevator are working properly. Put the machine in Automatic.</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Inverter connection error. Please check ethernet connections</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>I/O device connection error. Please check ethernet connections.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Laser connection error. Please check ethernet connections.</value>
   </data>
   <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
     <value>The {0} Axis movement Acceleration {1} is invalid: Empty load acceleration lower than full load acceleration</value>
@@ -126,10 +324,97 @@
   <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
     <value>The {0} Axis movement Speed {1} is invalid: Empty load speed lower than full load speed</value>
   </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Check presence sensors of elevator and bay</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>The destination type is not valid</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Bottom bay position undefined</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Upper bay position undefined</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>The mission type is not valid</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Please remove the excess weight. Then close the error.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>The picking confirmation command is not valid</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Update database failed. One or more destination cells are logically occupied</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Check that the pawl is at zero or that the loading unit is fully loaded on the elevator. Check also that the shutter is not closed</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Try to lower the height of the load unit. Then set Auto mode.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>The shutter is not open nor closed. Please check shutter sensors.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Destination bay needs calibration.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>First load unit  test failed: Not all cells could be tested!</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>The warehouse is not empty. The first load unit test is not allowed.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>The Bay Zero Sensor is not active at the end of positioning.</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>The left side panel is open. Please check that all side panels are correctly positioned and closed.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>The right side panel is open. Please check that all side panels are correctly positioned and closed.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Vertical position has changed after machine start</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Full load unit  test failed: Not all requested loops could be performed!</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>The selected bay is invalid</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>The selected bay position is invalid</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>The elevator is positioned on the overrun top sensor.</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>The external bay is occupied</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>The external bay is empty</value>
+  </data>
   <data name="InvalidAxisAccelerationRange" xml:space="preserve">
     <value>The {0} Axis movement Acceleration {1} is lower than full load acceleration or higher than Empty load acceleration</value>
   </data>
   <data name="InvalidAxisSpeedRange" xml:space="preserve">
     <value>The {0} Axis movement Speed {1} is lower than full load speed or higher than empty load speed</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>The WMS system has answerd with an error code</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>The height of the load unit is too high for this bay. Send it to another bay or move it manually</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>The elevator is positioned on the overrun bottom sensor.</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>The bay position is disabled</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Invalid bay presence sensors.</value>
   </data>
 </root>

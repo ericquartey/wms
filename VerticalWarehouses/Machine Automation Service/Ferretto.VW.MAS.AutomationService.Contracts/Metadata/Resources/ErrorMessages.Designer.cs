@@ -70,6 +70,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value of the {0} field cannot be greater than {2}.
+        /// </summary>
+        public static string RangeMax {
+            get {
+                return ResourceManager.GetString("RangeMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value of the {0} field cannot be less than {1}.
+        /// </summary>
+        public static string RangeMin {
+            get {
+                return ResourceManager.GetString("RangeMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value of the {0} field is not valid.
         /// </summary>
         public static string Regex {
