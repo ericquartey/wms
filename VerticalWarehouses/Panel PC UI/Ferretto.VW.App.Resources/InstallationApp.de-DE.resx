@@ -2886,4 +2886,13 @@ Anschließend auf "Weiter" drücken.</value>
   <data name="ChangeUnit" xml:space="preserve">
     <value>Einheit wechseln</value>
   </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Maschinennummer ändern</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Neue Maschinen-ID</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>ID ändern</value>
+  </data>
 </root>

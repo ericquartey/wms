@@ -23,6 +23,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IUsbWatcherService usbWatcher;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
+        private readonly ISessionService sessionService;
+
+        private readonly IMachineIdentityWebService identityService;
+
         private VertimagConfiguration configuration;
 
         private IEnumerable<DriveInfo> exportableDrives = Array.Empty<DriveInfo>();
@@ -31,19 +37,33 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand goToImport;
 
+        private DelegateCommand changeIdCommand;
+
         private IEnumerable<FileInfo> importableFiles = Array.Empty<FileInfo>();
 
         private bool isBusy;
 
         private DelegateCommand saveCommand;
 
+        private int newMachineId;
+
+        private bool changeMachineIdVisible;
+
         #endregion
 
         #region Constructors
 
-        public ParametersViewModel(IMachineConfigurationWebService machineConfigurationWebService, IUsbWatcherService usb)
+        public ParametersViewModel(
+            IMachineIdentityWebService identityService,
+            ISessionService sessionService,
+            IMachineIdentityWebService machineIdentityWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
+            IUsbWatcherService usb)
             : base(Services.PresentationMode.Installer)
         {
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.usbWatcher = usb;
         }
@@ -68,6 +88,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.goToImport = new DelegateCommand(
                 this.ShowImport, this.CanShowImport));
 
+        public ICommand ChangeIdCommand => this.changeIdCommand
+                    ??
+            (this.changeIdCommand = new DelegateCommand(
+                async () => await this.ChangeIdAsync(), () => true));
+
         public IEnumerable<FileInfo> ImportableFiles => this.importableFiles;
 
         public bool IsBusy
@@ -91,9 +116,35 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
            (this.saveCommand = new DelegateCommand(
             async () => await this.SaveAsync(), this.CanSave));
 
+        public int NewMachineId
+        {
+            get => this.newMachineId;
+            set => this.SetProperty(ref this.newMachineId, value);
+        }
+
+        public bool ChangeMachineIdVisible
+        {
+            get => this.changeMachineIdVisible;
+            set => this.SetProperty(ref this.changeMachineIdVisible, value);
+        }
+
         #endregion
 
         #region Methods
+
+        private async Task ChangeIdAsync()
+        {
+            try
+            {
+                await this.machineIdentityWebService.SetMachineIdAsync(this.newMachineId);
+
+                this.ShowNotification(Resources.Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
 
         public override void Disappear()
         {
@@ -109,6 +160,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
             this.usbWatcher.Enable();
+
+            this.ChangeMachineIdVisible = this.sessionService.UserAccessLevel == UserAccessLevel.Support ||
+                                      this.sessionService.UserAccessLevel == UserAccessLevel.Admin; ;
+
+            var model = await this.identityService.GetAsync();
+
+            this.NewMachineId = model.Id;
 
 #if DEBUG
             this.exportableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());

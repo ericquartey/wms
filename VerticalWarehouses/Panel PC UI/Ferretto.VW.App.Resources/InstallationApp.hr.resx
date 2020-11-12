@@ -2885,4 +2885,13 @@ Nakon toga nastavite pritiskom na tipku "Sljedeći“</value>
   <data name="ChangeUnit" xml:space="preserve">
     <value>Promjena jedinice</value>
   </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Promijenite broj stroja</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Id novog stroja</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>Promijeni Id</value>
+  </data>
 </root>
