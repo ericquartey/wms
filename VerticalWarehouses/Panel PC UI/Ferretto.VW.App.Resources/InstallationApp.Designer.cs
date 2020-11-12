@@ -484,7 +484,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bay.
+        ///   Looks up a localized string similar to Bay 4.
         /// </summary>
         public static string Bay4 {
             get {
@@ -511,7 +511,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BayChainHorizontalPosition.
+        ///   Looks up a localized string similar to Bay chain horizontal position.
         /// </summary>
         public static string BayChainHorizontalPosition {
             get {
@@ -1290,6 +1290,24 @@ namespace Ferretto.VW.App.Resources {
         public static string ChangeCellBlockObsoleteMenuTitle {
             get {
                 return ResourceManager.GetString("ChangeCellBlockObsoleteMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Id.
+        /// </summary>
+        public static string ChangeId {
+            get {
+                return ResourceManager.GetString("ChangeId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change machine number.
+        /// </summary>
+        public static string ChangeMachineNumber {
+            get {
+                return ResourceManager.GetString("ChangeMachineNumber", resourceCulture);
             }
         }
         
@@ -2491,7 +2509,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error excracting files:.
+        ///   Looks up a localized string similar to Error extracting files:.
         /// </summary>
         public static string ErrorExtractingFiles {
             get {
@@ -2698,7 +2716,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extraction successfullly completed..
+        ///   Looks up a localized string similar to Extraction successfully completed..
         /// </summary>
         public static string ExtractingFilesCompleted {
             get {
@@ -2734,7 +2752,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feed rate.
+        ///   Looks up a localized string similar to Feed rate %.
         /// </summary>
         public static string FeedRate {
             get {
@@ -3013,7 +3031,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gate Height Control.
+        ///   Looks up a localized string similar to Gate height control.
         /// </summary>
         public static string GateHeightControl {
             get {
@@ -3031,7 +3049,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gate is out of tolerance..
+        ///   Looks up a localized string similar to Gate is out of tolerance.
         /// </summary>
         public static string GateOutOfTolerance {
             get {
@@ -3211,7 +3229,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HorizontalAndVertical.
+        ///   Looks up a localized string similar to Horizontal and vertical.
         /// </summary>
         public static string HorizontalAndVertical {
             get {
@@ -3481,7 +3499,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InputDelay must be strictly positive..
+        ///   Looks up a localized string similar to InputDelay must be strictly positive.
         /// </summary>
         public static string InputDelayMustBePositive {
             get {
@@ -5272,6 +5290,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New machine Id.
+        /// </summary>
+        public static string NewMachineId {
+            get {
+                return ResourceManager.GetString("NewMachineId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New offset (mm).
         /// </summary>
         public static string NewOffset {
@@ -5877,7 +5904,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProfileCalibrateDistance.
+        ///   Looks up a localized string similar to Profile Calibrate Distance.
         /// </summary>
         public static string ProfileCalibrateDistance {
             get {
@@ -5931,7 +5958,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProfileStartDistance.
+        ///   Looks up a localized string similar to Profile Start Distance.
         /// </summary>
         public static string ProfileStartDistance {
             get {
@@ -6354,7 +6381,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Risultato.
+        ///   Looks up a localized string similar to Result.
         /// </summary>
         public static string Result {
             get {

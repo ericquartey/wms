@@ -2902,4 +2902,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ChangeUnit" xml:space="preserve">
     <value>Cambia cassetto</value>
   </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Cambio numero macchina</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Nuovo Id macchina</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>Cambia Id</value>
+  </data>
 </root>

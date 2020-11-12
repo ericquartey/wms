@@ -2989,4 +2989,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ChangeUnit" xml:space="preserve">
     <value>Change unit</value>
   </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Change machine number</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>New machine Id</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>Change Id</value>
+  </data>
 </root>

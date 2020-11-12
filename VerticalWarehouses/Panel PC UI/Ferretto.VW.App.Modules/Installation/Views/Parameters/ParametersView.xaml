@@ -16,104 +16,105 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <ctrls:View.Resources>
-        <ctrls:PropertyGridCellTemplateSelector x:Key="PropertyGridCellTemplateSelector" />
-        <Style TargetType="{x:Type dxprg:RowControl}">
-            <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
-            <Setter Property="ctrls:PropertyGridRowControlAttachedProperties.IsEnabled" Value="True" />
-        </Style>
-    </ctrls:View.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+  <ctrls:View.Resources>
+    <ctrls:PropertyGridCellTemplateSelector x:Key="PropertyGridCellTemplateSelector" />
+    <Style TargetType="{x:Type dxprg:RowControl}">
+      <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
+      <Setter Property="ctrls:PropertyGridRowControlAttachedProperties.IsEnabled" Value="True" />
+    </Style>
+  </ctrls:View.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
 
-        <Image Grid.ColumnSpan="2"
-               Width="60"
-               Margin="30"
-               gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
-               gif:ImageBehavior.AutoStart="true">
-            <Image.Visibility>
-                <MultiBinding Converter="{StaticResource MBTUI}">
-                    <Binding Path="IsBusy" />
-                    <Binding Converter="{StaticResource TTUI}"
-                             ConverterParameter="Invert"
-                             ElementName="scaffolder"
-                             Path="FocusStructure" />
-                </MultiBinding>
-            </Image.Visibility>
-        </Image>
+    <Image Grid.ColumnSpan="2"
+           Width="60"
+           Margin="30"
+           gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
+           gif:ImageBehavior.AutoStart="true">
+      <Image.Visibility>
+        <MultiBinding Converter="{StaticResource MBTUI}">
+          <Binding Path="IsBusy" />
+          <Binding Converter="{StaticResource TTUI}"
+                   ConverterParameter="Invert"
+                   ElementName="scaffolder"
+                   Path="FocusStructure" />
+        </MultiBinding>
+      </Image.Visibility>
+    </Image>
 
 
-        <Grid Grid.Column="0"
-              Margin="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <Grid Grid.Column="0"
+          Margin="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+      <Grid Grid.Row="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-                <controls:PpcButton Grid.Row="0"
-                                    Margin="15,0,15,0"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="Imp"
-                                    BorderBrush="{DynamicResource FerrettoRed}"
-                                    Command="{Binding GoToImport}"
-                                    Content="{res:Loc InstallationApp.Import}"
-                                    Kind="Magnify"
-                                    Style="{DynamicResource PpcButtonMenuStyle}"
-                                    Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
+        <controls:PpcButton Grid.Row="0"
+                            Margin="15,0,15,0"
+                            Padding="-2,1,0,0"
+                            Abbrevation="Imp"
+                            BorderBrush="{DynamicResource FerrettoRed}"
+                            Command="{Binding GoToImport}"
+                            Content="{res:Loc InstallationApp.Import}"
+                            Kind="Magnify"
+                            Style="{DynamicResource PpcButtonMenuStyle}"
+                            Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
 
-                <controls:PpcButton Grid.Row="1"
-                                    Margin="15,15,15,0"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="Exp"
-                                    BorderBrush="{DynamicResource FerrettoRed}"
-                                    Command="{Binding GoToExport}"
-                                    Content="{res:Loc InstallationApp.Export}"
-                                    Kind="Magnify"
-                                    Style="{DynamicResource PpcButtonMenuStyle}"
-                                    Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
+        <controls:PpcButton Grid.Row="1"
+                            Margin="15,15,15,0"
+                            Padding="-2,1,0,0"
+                            Abbrevation="Exp"
+                            BorderBrush="{DynamicResource FerrettoRed}"
+                            Command="{Binding GoToExport}"
+                            Content="{res:Loc InstallationApp.Export}"
+                            Kind="Magnify"
+                            Style="{DynamicResource PpcButtonMenuStyle}"
+                            Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
 
-            </Grid>
-        </Grid>
+      </Grid>
+    </Grid>
 
-        <Grid Grid.Column="1"
-              Margin="15,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+    <Grid Grid.Column="1"
+          Margin="15,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
 
-            <!--#region Title-->
-            <StackPanel Grid.Column="1"
-                        Orientation="Horizontal">
-                <TextBlock Margin="0,10,15,10"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="4.7.2" />
-                <TextBlock Grid.ColumnSpan="2"
-                           Margin="0,10,15,10"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{res:Loc InstallationApp.Parameters}" />
-            </StackPanel>
-            <!--#endregion-->
+      <!--#region Title-->
+      <StackPanel Grid.Column="1"
+                  Orientation="Horizontal">
+        <TextBlock Margin="0,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="4.7.2" />
+        <TextBlock Grid.ColumnSpan="2"
+                   Margin="0,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.Parameters}" />
+      </StackPanel>
+      <!--#endregion-->
 
-            <scaffolding:Scaffolder x:Name="scaffolder"
-                                    Grid.Row="1"
-                                    HorizontalAlignment="Stretch"
-                                    Command="{Binding SaveCommand}"
-                                    IsBusy="{Binding IsBusy}"
-                                    Model="{Binding Path=Configuration}">
-                <!--<scaffolding:Scaffolder.Style>
+      <scaffolding:Scaffolder x:Name="scaffolder"
+                              Grid.Row="1"
+                              HorizontalAlignment="Stretch"
+                              Command="{Binding SaveCommand}"
+                              IsBusy="{Binding IsBusy}"
+                              Model="{Binding Path=Configuration}">
+        <!--<scaffolding:Scaffolder.Style>
                 <Style TargetType="{x:Type scaffolding:Scaffolder}">
                     <Style.Triggers>
                         <Trigger Property="IsNavigating" Value="True">
@@ -122,8 +123,39 @@
                     </Style.Triggers>
                 </Style>
             </scaffolding:Scaffolder.Style>-->
-            </scaffolding:Scaffolder>
+      </scaffolding:Scaffolder>
 
-        </Grid>
+      <Grid Grid.Row="2"
+            Visibility="{Binding ChangeMachineIdVisible, Converter={StaticResource BTVC}}">
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.ColumnSpan="2"
+                   Margin="0,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.ChangeMachineNumber}" />
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+          <ctrls:PpcSpinEdit Grid.Row="3"
+                             Grid.Column="0"
+                             Width="220"
+                             Height="90"
+                             Margin="0"
+                             HorizontalAlignment="Left"
+                             EditValue="{Binding NewMachineId, Mode=TwoWay}"
+                             LabelText="{res:Loc InstallationApp.NewMachineId}" />
+          <controls:PpcButton Margin="30,0"
+                              HorizontalAlignment="Right"
+                              Command="{Binding ChangeIdCommand}"
+                              Content="{res:Loc InstallationApp.ChangeId}" />
+        </StackPanel>
+
+      </Grid>
+
+
     </Grid>
+  </Grid>
 </ctrls:View>
