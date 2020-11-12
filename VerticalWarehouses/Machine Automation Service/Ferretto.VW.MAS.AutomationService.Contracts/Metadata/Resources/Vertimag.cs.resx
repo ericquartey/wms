@@ -132,9 +132,6 @@
   <data name="BayCarousel_Description" xml:space="preserve">
     <value>Param karus</value>
   </data>
-  <data name="BayInverter" xml:space="preserve">
-    <value>Měniče stan {0}</value>
-  </data>
   <data name="BayIoDevice" xml:space="preserve">
     <value>IoDevice stan {0}</value>
   </data>
@@ -143,18 +140,6 @@
   </data>
   <data name="BayNumber" xml:space="preserve">
     <value>Číslo stan</value>
-  </data>
-  <data name="BayNumber.BayOne" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="BayNumber.BayThree" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="BayNumber.BayTwo" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="BayNumber.ElevatorBay" xml:space="preserve">
-    <value>koléb</value>
   </data>
   <data name="BayPosition_Height" xml:space="preserve">
     <value>Kóta</value>
@@ -180,17 +165,11 @@
   <data name="Bay_ChainOffset" xml:space="preserve">
     <value>Posun nuly řetězu</value>
   </data>
-  <data name="Bay_IsActive" xml:space="preserve">
-    <value>Aktiv</value>
-  </data>
   <data name="Bay_IsAdjustByWeight" xml:space="preserve">
     <value>Snižte kótu odběru se zásuvkami dostupnými ve stanici</value>
   </data>
   <data name="Bay_IsCheckIntrusion" xml:space="preserve">
     <value>Kontrola proniknutí do kontrolní bariéry výšky</value>
-  </data>
-  <data name="Bay_IsDouble" xml:space="preserve">
-    <value>Dvojit</value>
   </data>
   <data name="Bay_IsExternal" xml:space="preserve">
     <value>Vnější</value>
@@ -209,9 +188,6 @@
   </data>
   <data name="BeltSpacing" xml:space="preserve">
     <value>Vzdálenost bloků napínání řemene</value>
-  </data>
-  <data name="Carousel" xml:space="preserve">
-    <value>Karusel</value>
   </data>
   <data name="Carousel_ElevatorDistance" xml:space="preserve">
     <value>Rozvor polic</value>
@@ -257,9 +233,6 @@
   </data>
   <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
     <value>Rychlost kalibrace šablony</value>
-  </data>
-  <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profily</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Rozlišení</value>
@@ -321,9 +294,6 @@
   <data name="Inverter_Type" xml:space="preserve">
     <value>Typ měniče</value>
   </data>
-  <data name="IoDevice" xml:space="preserve">
-    <value>IoDevice</value>
-  </data>
   <data name="IoDevice_Index" xml:space="preserve">
     <value>Index IoDevice</value>
   </data>
@@ -332,9 +302,6 @@
   </data>
   <data name="IoDevice_TcpPort" xml:space="preserve">
     <value>Port IoDevice</value>
-  </data>
-  <data name="Laser" xml:space="preserve">
-    <value>Laser</value>
   </data>
   <data name="Laser_IpAddress" xml:space="preserve">
     <value>IP laser</value>
@@ -411,33 +378,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Doba vážení</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>Parametry pohybů</value>
-  </data>
-  <data name="MovementProfileType.LongDeposit" xml:space="preserve">
-    <value>Dlouhé uložení</value>
-  </data>
-  <data name="MovementProfileType.LongPickup" xml:space="preserve">
-    <value>Dlouhý odběr</value>
-  </data>
-  <data name="MovementProfileType.ShortDeposit" xml:space="preserve">
-    <value>Krátké uložení</value>
-  </data>
-  <data name="MovementProfileType.ShortPickup" xml:space="preserve">
-    <value>Krátký odběr</value>
-  </data>
-  <data name="MovementProfileType.Undefined" xml:space="preserve">
-    <value>Nedefinován</value>
-  </data>
-  <data name="NetworkConfiguration" xml:space="preserve">
-    <value>Síťová konfigurace</value>
-  </data>
-  <data name="Orientation.Horizontal" xml:space="preserve">
-    <value>horizont</value>
-  </data>
-  <data name="Orientation.Vertical" xml:space="preserve">
-    <value>vertikál</value>
-  </data>
   <data name="Pick" xml:space="preserve">
     <value>Odběr</value>
   </data>
@@ -483,15 +423,6 @@
   <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
     <value>Minimální Rychl rolety</value>
   </data>
-  <data name="ShutterType.NotSpecified" xml:space="preserve">
-    <value>Nespecifikováno</value>
-  </data>
-  <data name="ShutterType.ThreeSensors" xml:space="preserve">
-    <value>Tři snímače</value>
-  </data>
-  <data name="ShutterType.TwoSensors" xml:space="preserve">
-    <value>Dva snímače</value>
-  </data>
   <data name="Shutter_AssistedMovements" xml:space="preserve">
     <value>Naváděné pohyb rolety</value>
   </data>
@@ -530,9 +461,6 @@
   </data>
   <data name="CyclesToCalibrate" xml:space="preserve">
     <value>Cyklus pro kalibr</value>
-  </data>
-  <data name="LastCalibrationCycles" xml:space="preserve">
-    <value>Poslední cykly kalibrace</value>
   </data>
   <data name="Machine_LoadDepth" xml:space="preserve">
     <value>Hloubka zatížení stroje!</value>

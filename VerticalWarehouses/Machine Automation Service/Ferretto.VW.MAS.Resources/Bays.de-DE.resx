@@ -117,37 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
-    <value>Die Höhe der Bucht ({0}) muss in dem Bereich [{1},{2}] liegen.</value>
-  </data>
-  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
-    <value>Die angegebene Buchtposition ist nicht gültig.</value>
-  </data>
-  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
-    <value>Angegebene Bucht hat kein Karussell.</value>
-  </data>
-  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
-    <value>Bucht enthält mind. ein Kasten.</value>
-  </data>
-  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
-    <value>Die Bucht enthält einen Kasten in seiner oberen Position.</value>
-  </data>
-  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
-    <value>Kette der Bucht nicht in Nullposition.</value>
-  </data>
-  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
-    <value>Axis.HorizontalAndVertical ist keine gültige Achse für GetInverterIndexByMovementType ()</value>
-  </data>
-  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
-    <value>Die maximale Wagenhöhe ist nicht gültig.</value>
-  </data>
-  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
-    <value>Bucht enthält einen Kasten in äußeren Position</value>
-  </data>
-  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
-    <value>Die angegebene Bucht ist keine Außenbucht</value>
-  </data>
-  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
-    <value>Die Außenbucht kann keine ungültige Bewegung ausführen</value>
-  </data>
 </root>

@@ -117,13 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ExpectedDistanceMustBeStrictlyPositive" xml:space="preserve">
-    <value>Vzdálenost výšky musí být zásadně kladná.</value>
-  </data>
-  <data name="MeasuredDistanceMustBeStrictlyPositive" xml:space="preserve">
-    <value>Naměřená vzdálenost musí být zásadně kladná.</value>
-  </data>
-  <data name="ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus" xml:space="preserve">
-    <value>Postup nelze spustit v důsledku aktuálního stavu instalace.</value>
-  </data>
 </root>

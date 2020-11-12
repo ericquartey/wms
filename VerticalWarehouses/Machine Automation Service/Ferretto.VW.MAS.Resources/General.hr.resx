@@ -117,34 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BadRequestTitle" xml:space="preserve">
-    <value>Zahtjev nije pravilno formuliran.</value>
-  </data>
-  <data name="InternalServerErrorTitle" xml:space="preserve">
-    <value>Unutarnja greška servera.</value>
-  </data>
   <data name="MaintenanceStateExpired" xml:space="preserve">
     <value>Status održav. je istekao</value>
   </data>
   <data name="MaintenanceStateExpiring" xml:space="preserve">
     <value>Status održavanja ističe</value>
-  </data>
-  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
-    <value>Ne postoji entitet s navedenim identifikatorom '{0}'.</value>
-  </data>
-  <data name="NotFoundTitle" xml:space="preserve">
-    <value>Elem. nije pronađen.</value>
-  </data>
-  <data name="ServiceIsInitializing" xml:space="preserve">
-    <value>Usluga je u fazi inicijalizacije.</value>
-  </data>
-  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
-    <value>Usluga je završila fazu inicijalizacije.</value>
-  </data>
-  <data name="UnprocessableEntityTitle" xml:space="preserve">
-    <value>Nije moguće obraditi zahtjev s obzirom na trenutni status.</value>
-  </data>
-  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
-    <value>Vrijed. ne može biti ništavna ili sadrž. samo razmake.</value>
   </data>
 </root>

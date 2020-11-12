@@ -112,9 +112,6 @@
   <data name="BayCarousel_Description" xml:space="preserve">
     <value>Karussell-Param.</value>
   </data>
-  <data name="BayInverter" xml:space="preserve">
-    <value>Inv. Bucht {0}</value>
-  </data>
   <data name="BayIoDevice" xml:space="preserve">
     <value>IoDevice Bucht{0}</value>
   </data>
@@ -123,18 +120,6 @@
   </data>
   <data name="BayNumber" xml:space="preserve">
     <value>Nr. Bucht</value>
-  </data>
-  <data name="BayNumber.BayOne" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="BayNumber.BayThree" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="BayNumber.BayTwo" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="BayNumber.ElevatorBay" xml:space="preserve">
-    <value>Wiege</value>
   </data>
   <data name="BayPosition_Height" xml:space="preserve">
     <value>Höhe</value>
@@ -160,17 +145,11 @@
   <data name="Bay_ChainOffset" xml:space="preserve">
     <value>Offset Null Kette</value>
   </data>
-  <data name="Bay_IsActive" xml:space="preserve">
-    <value>Aktiv.</value>
-  </data>
   <data name="Bay_IsAdjustByWeight" xml:space="preserve">
     <value>Entnahmehöhe mit schweren Kästen in der Bucht verringern</value>
   </data>
   <data name="Bay_IsCheckIntrusion" xml:space="preserve">
     <value>Zugangsschutz mit Höhenkontrolle mit Schranke</value>
-  </data>
-  <data name="Bay_IsDouble" xml:space="preserve">
-    <value>Dopp.</value>
   </data>
   <data name="Bay_IsExternal" xml:space="preserve">
     <value>Extern</value>
@@ -189,9 +168,6 @@
   </data>
   <data name="BeltSpacing" xml:space="preserve">
     <value>Abstand zwischen Riemenspannblöcken</value>
-  </data>
-  <data name="Carousel" xml:space="preserve">
-    <value>Karuss.</value>
   </data>
   <data name="Carousel_ElevatorDistance" xml:space="preserve">
     <value>Abst. Zw. Kons.</value>
@@ -240,9 +216,6 @@
   </data>
   <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
     <value>Kalibriergschw. Profil</value>
-  </data>
-  <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profiles</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Auflösung</value>
@@ -304,9 +277,6 @@
   <data name="Inverter_Type" xml:space="preserve">
     <value>Inverter-Typ</value>
   </data>
-  <data name="IoDevice" xml:space="preserve">
-    <value>IoDevice</value>
-  </data>
   <data name="IoDevice_Index" xml:space="preserve">
     <value>Index IoDevice</value>
   </data>
@@ -316,17 +286,11 @@
   <data name="IoDevice_TcpPort" xml:space="preserve">
     <value>Ansch.IoDevice</value>
   </data>
-  <data name="Laser" xml:space="preserve">
-    <value>Laser</value>
-  </data>
   <data name="Laser_IpAddress" xml:space="preserve">
     <value>IP Laser</value>
   </data>
   <data name="Laser_TcpPort" xml:space="preserve">
     <value>Laser-Halt.</value>
-  </data>
-  <data name="LastCalibrationCycles" xml:space="preserve">
-    <value>Letzte Kalibrierzyklen</value>
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Maschine</value>
@@ -403,33 +367,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Wiegezeit</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>MovementParameters</value>
-  </data>
-  <data name="MovementProfileType.LongDeposit" xml:space="preserve">
-    <value>Lange Ablage</value>
-  </data>
-  <data name="MovementProfileType.LongPickup" xml:space="preserve">
-    <value>Lange Entnahme</value>
-  </data>
-  <data name="MovementProfileType.ShortDeposit" xml:space="preserve">
-    <value>Kurze Ablage</value>
-  </data>
-  <data name="MovementProfileType.ShortPickup" xml:space="preserve">
-    <value>Kurze Entnahme</value>
-  </data>
-  <data name="MovementProfileType.Undefined" xml:space="preserve">
-    <value>Nicht def.</value>
-  </data>
-  <data name="NetworkConfiguration" xml:space="preserve">
-    <value>Netzwerk-Konfiguration</value>
-  </data>
-  <data name="Orientation.Horizontal" xml:space="preserve">
-    <value>horizontal</value>
-  </data>
-  <data name="Orientation.Vertical" xml:space="preserve">
-    <value>vertikal</value>
-  </data>
   <data name="Pick" xml:space="preserve">
     <value>Entnahme</value>
   </data>
@@ -474,15 +411,6 @@
   </data>
   <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
     <value>Min Rolltürgschw.</value>
-  </data>
-  <data name="ShutterType.NotSpecified" xml:space="preserve">
-    <value>Nicht angegeben</value>
-  </data>
-  <data name="ShutterType.ThreeSensors" xml:space="preserve">
-    <value>Drei Sens.</value>
-  </data>
-  <data name="ShutterType.TwoSensors" xml:space="preserve">
-    <value>Zwei Sens.</value>
   </data>
   <data name="Shutter_AssistedMovements" xml:space="preserve">
     <value>Geführte Rolltürbew.</value>

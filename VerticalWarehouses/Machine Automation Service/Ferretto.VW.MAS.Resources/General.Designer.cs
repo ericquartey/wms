@@ -61,24 +61,6 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bad Request..
-        /// </summary>
-        public static string BadRequestTitle {
-            get {
-                return ResourceManager.GetString("BadRequestTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Internal Server Error..
-        /// </summary>
-        public static string InternalServerErrorTitle {
-            get {
-                return ResourceManager.GetString("InternalServerErrorTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Maintenance status expired.
         /// </summary>
         public static string MaintenanceStateExpired {
@@ -93,60 +75,6 @@ namespace Ferretto.VW.MAS.Resources {
         public static string MaintenanceStateExpiring {
             get {
                 return ResourceManager.GetString("MaintenanceStateExpiring", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No entity with the specified id &apos;{0}&apos; exists..
-        /// </summary>
-        public static string NoEntityWithTheSpecifiedIdExists {
-            get {
-                return ResourceManager.GetString("NoEntityWithTheSpecifiedIdExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not Found..
-        /// </summary>
-        public static string NotFoundTitle {
-            get {
-                return ResourceManager.GetString("NotFoundTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Service is initializing..
-        /// </summary>
-        public static string ServiceIsInitializing {
-            get {
-                return ResourceManager.GetString("ServiceIsInitializing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Service startup sequence completed..
-        /// </summary>
-        public static string ServiceStartupSequenceCompleted {
-            get {
-                return ResourceManager.GetString("ServiceStartupSequenceCompleted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unprocessable Entity..
-        /// </summary>
-        public static string UnprocessableEntityTitle {
-            get {
-                return ResourceManager.GetString("UnprocessableEntityTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Value cannot be null or whitespace..
-        /// </summary>
-        public static string ValueCannotBeNullOrWhiteSpace {
-            get {
-                return ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", resourceCulture);
             }
         }
     }

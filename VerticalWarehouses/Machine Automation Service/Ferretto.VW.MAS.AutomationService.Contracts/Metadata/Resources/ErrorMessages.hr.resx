@@ -120,12 +120,6 @@
   <data name="Range" xml:space="preserve">
     <value>Vrijednost polja {0}mora biti između {1} i {2}</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Vrijednost polja {0} ne može biti veća od {2}</value>
-  </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Vrijednost polja {0} ne može biti manja od {1}</value>
-  </data>
   <data name="Regex" xml:space="preserve">
     <value>Vrijednost polja {0} nije valjana</value>
   </data>

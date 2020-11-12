@@ -120,12 +120,6 @@
   <data name="Range" xml:space="preserve">
     <value>Hodnota pole {0} se musí pohybovat mezi {1} a {2}</value>
   </data>
-  <data name="RangeMax" xml:space="preserve">
-    <value>Hodnota pole {0} nesmí být vyšší než {2}</value>
-  </data>
-  <data name="RangeMin" xml:space="preserve">
-    <value>Hodnota pole {0} nesmí být nižší než {1}</value>
-  </data>
   <data name="Regex" xml:space="preserve">
     <value>Hodnota pole {0} není platná</value>
   </data>

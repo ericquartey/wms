@@ -132,9 +132,6 @@
   <data name="BayCarousel_Description" xml:space="preserve">
     <value>Carousel Parameter</value>
   </data>
-  <data name="BayInverter" xml:space="preserve">
-    <value>Bay {0} Inverter</value>
-  </data>
   <data name="BayIoDevice" xml:space="preserve">
     <value>Bay {0} IoDevice</value>
   </data>
@@ -143,18 +140,6 @@
   </data>
   <data name="BayNumber" xml:space="preserve">
     <value>Bay number</value>
-  </data>
-  <data name="BayNumber.BayOne" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="BayNumber.BayThree" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="BayNumber.BayTwo" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="BayNumber.ElevatorBay" xml:space="preserve">
-    <value>Cradle</value>
   </data>
   <data name="BayPosition_Height" xml:space="preserve">
     <value>Height</value>
@@ -180,17 +165,11 @@
   <data name="Bay_ChainOffset" xml:space="preserve">
     <value>Zero Chain Offset</value>
   </data>
-  <data name="Bay_IsActive" xml:space="preserve">
-    <value>Active</value>
-  </data>
   <data name="Bay_IsAdjustByWeight" xml:space="preserve">
     <value>Reduce pickup height when heavy load units are in bay</value>
   </data>
   <data name="Bay_IsCheckIntrusion" xml:space="preserve">
     <value>Check Intrusion by light curtain</value>
-  </data>
-  <data name="Bay_IsDouble" xml:space="preserve">
-    <value>Double</value>
   </data>
   <data name="Bay_IsExternal" xml:space="preserve">
     <value>External</value>
@@ -209,9 +188,6 @@
   </data>
   <data name="BeltSpacing" xml:space="preserve">
     <value>DistanBelt tension block distance</value>
-  </data>
-  <data name="Carousel" xml:space="preserve">
-    <value>Carousel</value>
   </data>
   <data name="Carousel_ElevatorDistance" xml:space="preserve">
     <value>Elevator Distance</value>
@@ -263,9 +239,6 @@
   </data>
   <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
     <value>Profile Calibration Speed</value>
-  </data>
-  <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profiles</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Resolution</value>
@@ -327,9 +300,6 @@
   <data name="Inverter_Type" xml:space="preserve">
     <value>Inverter Type</value>
   </data>
-  <data name="IoDevice" xml:space="preserve">
-    <value>IoDevice</value>
-  </data>
   <data name="IoDevice_Index" xml:space="preserve">
     <value>IoDevice Index</value>
   </data>
@@ -339,17 +309,11 @@
   <data name="IoDevice_TcpPort" xml:space="preserve">
     <value>IoDevice Port</value>
   </data>
-  <data name="Laser" xml:space="preserve">
-    <value>Laser</value>
-  </data>
   <data name="Laser_IpAddress" xml:space="preserve">
     <value>IP Laser</value>
   </data>
   <data name="Laser_TcpPort" xml:space="preserve">
     <value>Laser Port</value>
-  </data>
-  <data name="LastCalibrationCycles" xml:space="preserve">
-    <value>Last calibration cycles</value>
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>
@@ -426,33 +390,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Measure Time</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>MovementParameters</value>
-  </data>
-  <data name="MovementProfileType.LongDeposit" xml:space="preserve">
-    <value>Long Deposit</value>
-  </data>
-  <data name="MovementProfileType.LongPickup" xml:space="preserve">
-    <value>Long Pickup</value>
-  </data>
-  <data name="MovementProfileType.ShortDeposit" xml:space="preserve">
-    <value>Short Deposit</value>
-  </data>
-  <data name="MovementProfileType.ShortPickup" xml:space="preserve">
-    <value>Short Pickup</value>
-  </data>
-  <data name="MovementProfileType.Undefined" xml:space="preserve">
-    <value>Undefined</value>
-  </data>
-  <data name="NetworkConfiguration" xml:space="preserve">
-    <value>Network Configuration</value>
-  </data>
-  <data name="Orientation.Horizontal" xml:space="preserve">
-    <value>Horizontal</value>
-  </data>
-  <data name="Orientation.Vertical" xml:space="preserve">
-    <value>Vertical</value>
-  </data>
   <data name="Pick" xml:space="preserve">
     <value>Pick</value>
   </data>
@@ -497,15 +434,6 @@
   </data>
   <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
     <value>Shutter Min speed</value>
-  </data>
-  <data name="ShutterType.NotSpecified" xml:space="preserve">
-    <value>Not Specified</value>
-  </data>
-  <data name="ShutterType.ThreeSensors" xml:space="preserve">
-    <value>Three Sensor</value>
-  </data>
-  <data name="ShutterType.TwoSensors" xml:space="preserve">
-    <value>Two Sensor</value>
   </data>
   <data name="Shutter_AssistedMovements" xml:space="preserve">
     <value>Shutter Assisted Movements</value>

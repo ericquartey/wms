@@ -117,37 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
-    <value>Visina uvale ({0}) mora biti u intervalu [{1},{2}].</value>
-  </data>
-  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
-    <value>Položaj navedene uvale nije valjan.</value>
-  </data>
-  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
-    <value>Navedena uvala nema vrtuljak.</value>
-  </data>
-  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
-    <value>Uvala sadrži barem jedan pretinac.</value>
-  </data>
-  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
-    <value>Uvala sadrži pretinac u svom gornjem položaju.</value>
-  </data>
-  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
-    <value>lanac uvale nije u nultom položaju.</value>
-  </data>
-  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
-    <value>OkomitaIVodoravnaOs nije važeća os za metodu DohvatiObrnutiIndeksPremaVrstiPokreta ()</value>
-  </data>
-  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
-    <value>Maksimalna visina kolica nije valjana.</value>
-  </data>
-  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
-    <value>Uvala sadrži pretinac u svom vanjskom položaju</value>
-  </data>
-  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
-    <value>Navedena uvala nije vanjska uvala</value>
-  </data>
-  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
-    <value>Vanjska uvala ne može izvršiti nevaljani pokret</value>
-  </data>
 </root>

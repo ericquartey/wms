@@ -106,15 +106,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active.
-        /// </summary>
-        public static string Bay_IsActive {
-            get {
-                return ResourceManager.GetString("Bay_IsActive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reduce pickup height when heavy load units are in bay.
         /// </summary>
         public static string Bay_IsAdjustByWeight {
@@ -129,15 +120,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Bay_IsCheckIntrusion {
             get {
                 return ResourceManager.GetString("Bay_IsCheckIntrusion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Double.
-        /// </summary>
-        public static string Bay_IsDouble {
-            get {
-                return ResourceManager.GetString("Bay_IsDouble", resourceCulture);
             }
         }
         
@@ -196,15 +178,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bay {0} Inverter.
-        /// </summary>
-        public static string BayInverter {
-            get {
-                return ResourceManager.GetString("BayInverter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bay {0} IoDevice.
         /// </summary>
         public static string BayIoDevice {
@@ -228,42 +201,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string BayNumber {
             get {
                 return ResourceManager.GetString("BayNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 1.
-        /// </summary>
-        public static string BayNumber_BayOne {
-            get {
-                return ResourceManager.GetString("BayNumber.BayOne", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 3.
-        /// </summary>
-        public static string BayNumber_BayThree {
-            get {
-                return ResourceManager.GetString("BayNumber.BayThree", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 2.
-        /// </summary>
-        public static string BayNumber_BayTwo {
-            get {
-                return ResourceManager.GetString("BayNumber.BayTwo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cradle.
-        /// </summary>
-        public static string BayNumber_ElevatorBay {
-            get {
-                return ResourceManager.GetString("BayNumber.ElevatorBay", resourceCulture);
             }
         }
         
@@ -336,15 +273,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string BeltSpacing {
             get {
                 return ResourceManager.GetString("BeltSpacing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Carousel.
-        /// </summary>
-        public static string Carousel {
-            get {
-                return ResourceManager.GetString("Carousel", resourceCulture);
             }
         }
         
@@ -507,15 +435,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string ElevatorAxis_ProfileCalibrateSpeed {
             get {
                 return ResourceManager.GetString("ElevatorAxis_ProfileCalibrateSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profiles.
-        /// </summary>
-        public static string ElevatorAxis_Profiles {
-            get {
-                return ResourceManager.GetString("ElevatorAxis_Profiles", resourceCulture);
             }
         }
         
@@ -691,15 +610,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IoDevice.
-        /// </summary>
-        public static string IoDevice {
-            get {
-                return ResourceManager.GetString("IoDevice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to IoDevice Index.
         /// </summary>
         public static string IoDevice_Index {
@@ -727,15 +637,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Laser.
-        /// </summary>
-        public static string Laser {
-            get {
-                return ResourceManager.GetString("Laser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to IP Laser.
         /// </summary>
         public static string Laser_IpAddress {
@@ -750,15 +651,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Laser_TcpPort {
             get {
                 return ResourceManager.GetString("Laser_TcpPort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last calibration cycles.
-        /// </summary>
-        public static string LastCalibrationCycles {
-            get {
-                return ResourceManager.GetString("LastCalibrationCycles", resourceCulture);
             }
         }
         
@@ -988,87 +880,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MovementParameters.
-        /// </summary>
-        public static string MovementParameters {
-            get {
-                return ResourceManager.GetString("MovementParameters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Long Deposit.
-        /// </summary>
-        public static string MovementProfileType_LongDeposit {
-            get {
-                return ResourceManager.GetString("MovementProfileType.LongDeposit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Long Pickup.
-        /// </summary>
-        public static string MovementProfileType_LongPickup {
-            get {
-                return ResourceManager.GetString("MovementProfileType.LongPickup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Short Deposit.
-        /// </summary>
-        public static string MovementProfileType_ShortDeposit {
-            get {
-                return ResourceManager.GetString("MovementProfileType.ShortDeposit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Short Pickup.
-        /// </summary>
-        public static string MovementProfileType_ShortPickup {
-            get {
-                return ResourceManager.GetString("MovementProfileType.ShortPickup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Undefined.
-        /// </summary>
-        public static string MovementProfileType_Undefined {
-            get {
-                return ResourceManager.GetString("MovementProfileType.Undefined", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Network Configuration.
-        /// </summary>
-        public static string NetworkConfiguration {
-            get {
-                return ResourceManager.GetString("NetworkConfiguration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Horizontal.
-        /// </summary>
-        public static string Orientation_Horizontal {
-            get {
-                return ResourceManager.GetString("Orientation.Horizontal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vertical.
-        /// </summary>
-        public static string Orientation_Vertical {
-            get {
-                return ResourceManager.GetString("Orientation.Vertical", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Pick.
         /// </summary>
         public static string Pick {
@@ -1227,33 +1038,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string ShutterManualParameters_MinSpeed {
             get {
                 return ResourceManager.GetString("ShutterManualParameters_MinSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not Specified.
-        /// </summary>
-        public static string ShutterType_NotSpecified {
-            get {
-                return ResourceManager.GetString("ShutterType.NotSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Three Sensor.
-        /// </summary>
-        public static string ShutterType_ThreeSensors {
-            get {
-                return ResourceManager.GetString("ShutterType.ThreeSensors", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Two Sensor.
-        /// </summary>
-        public static string ShutterType_TwoSensors {
-            get {
-                return ResourceManager.GetString("ShutterType.TwoSensors", resourceCulture);
             }
         }
         
