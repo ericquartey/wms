@@ -58,6 +58,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var stopMessageData = new StopMessageData(this.Mission.StopReason);
                 this.LoadingUnitMovementProvider.StopOperation(stopMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
                 this.Mission.RestoreConditions = false;
+                this.Mission.Status = MissionStatus.Executing;
                 this.MissionsDataProvider.Update(this.Mission);
 
                 this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
@@ -78,6 +79,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 throw new ArgumentNullException(nameof(notification));
             }
+
+            this.Logger.LogTrace($"type {notification.Type}, status {notification.Status}, target {notification.TargetBay}, request {notification.RequestingBay}");
 
             var notificationStatus = this.LoadingUnitMovementProvider.StopOperationStatus(notification);
 
