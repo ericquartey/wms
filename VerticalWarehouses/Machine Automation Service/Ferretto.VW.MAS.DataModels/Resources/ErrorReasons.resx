@@ -205,7 +205,7 @@
     <value>Verify that the destination bay of the drawer is actually empty. Check that the bay loading unit sensors are working correctly.</value>
   </data>
   <data name="LoadUnitNotFound" xml:space="preserve">
-    <value>The selected loading unit is not present in the database. Check the loading unit number entered and the correct configuration of the database.</value>
+    <value>The selected load unit is not available. Check the load unit number entered and the logical position of the load unit.</value>
   </data>
   <data name="LoadUnitNotLoaded" xml:space="preserve">
     <value>The selected loading unit is present in the database but is not loaded in the warehouse. Check the database configuration.</value>
