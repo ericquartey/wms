@@ -125,35 +125,39 @@
             </scaffolding:Scaffolder.Style>-->
       </scaffolding:Scaffolder>
 
-      <Grid Grid.Row="2"
-            Visibility="{Binding ChangeMachineIdVisible, Converter={StaticResource BTVC}}">
-        <Grid.RowDefinitions>
-          <RowDefinition />
-          <RowDefinition />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.ColumnSpan="2"
-                   Margin="0,10,15,10"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.ChangeMachineNumber}" />
+      <Border Grid.Row="2"
+              BorderThickness="0"
+              Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}">
+        <Grid Visibility="{Binding ChangeMachineIdVisible, Converter={StaticResource BTVC}}">
 
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal">
-          <ctrls:PpcSpinEdit Grid.Row="3"
-                             Grid.Column="0"
-                             Width="220"
-                             Height="90"
-                             Margin="0"
-                             HorizontalAlignment="Left"
-                             EditValue="{Binding NewMachineId, Mode=TwoWay}"
-                             LabelText="{res:Loc InstallationApp.NewMachineId}" />
-          <controls:PpcButton Margin="30,0"
-                              HorizontalAlignment="Right"
-                              Command="{Binding ChangeIdCommand}"
-                              Content="{res:Loc InstallationApp.ChangeId}" />
-        </StackPanel>
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+          <TextBlock Grid.ColumnSpan="2"
+                     Margin="0,10,15,10"
+                     VerticalAlignment="Top"
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.ChangeMachineNumber}" />
 
-      </Grid>
+          <StackPanel Grid.Row="1"
+                      Orientation="Horizontal">
+            <ctrls:PpcSpinEdit Grid.Row="3"
+                               Grid.Column="0"
+                               Width="220"
+                               Height="90"
+                               Margin="0"
+                               HorizontalAlignment="Left"
+                               EditValue="{Binding NewMachineId, Mode=TwoWay}"
+                               LabelText="{res:Loc InstallationApp.NewMachineId}" />
+            <controls:PpcButton Margin="30,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding ChangeIdCommand}"
+                                Content="{res:Loc InstallationApp.ChangeId}" />
+          </StackPanel>
+
+        </Grid>
+      </Border>
 
 
     </Grid>
