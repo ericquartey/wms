@@ -235,6 +235,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Type == MessageType.RunningStateChanged ||
                  notification.Type == MessageType.CombinedMovements ||
                  notification.Type == MessageType.CheckIntrusion ||
+                 notification.Type == MessageType.PowerEnable ||
+                 notification.Type == MessageType.InverterPowerEnable ||
                  notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
