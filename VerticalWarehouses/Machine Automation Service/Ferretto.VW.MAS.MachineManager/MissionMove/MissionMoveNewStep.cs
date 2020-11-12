@@ -202,15 +202,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             && !this.CheckBayHeight(destinationBay, destination, mission, out var canRetry)
                             )
                         {
-                            if (!canRetry)
+                            if (showErrors || !canRetry)
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitHeightToBayExceeded, requestingBay);
-                                // delete mission
-                                throw new StateMachineException(ErrorDescriptions.LoadUnitHeightToBayExceeded, requestingBay, MessageActor.MachineManager);
-                            }
-                            if (showErrors)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitHeightToBayExceeded, requestingBay);
+                                if (!showErrors)
+                                {
+                                    throw new StateMachineException(ErrorDescriptions.LoadUnitHeightToBayExceeded, requestingBay, MessageActor.MachineManager);
+                                }
                             }
                             returnValue = false;
                         }
