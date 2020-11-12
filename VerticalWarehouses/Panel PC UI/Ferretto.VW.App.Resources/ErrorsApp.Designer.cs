@@ -70,15 +70,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell Side.
-        /// </summary>
-        public static string CellSide {
-            get {
-                return ResourceManager.GetString("CellSide", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Check load unit:.
         /// </summary>
         public static string CheckUnit {
@@ -88,29 +79,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current cell.
-        /// </summary>
-        public static string CurrentCell {
-            get {
-                return ResourceManager.GetString("CurrentCell", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Detail Code.
         /// </summary>
         public static string DetailCode {
             get {
                 return ResourceManager.GetString("DetailCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Displacement (mm).
-        /// </summary>
-        public static string Displacement {
-            get {
-                return ResourceManager.GetString("Displacement", resourceCulture);
             }
         }
         
@@ -129,15 +102,6 @@ namespace Ferretto.VW.App.Resources {
         public static string DrawerIdentificationCompletedManual {
             get {
                 return ResourceManager.GetString("DrawerIdentificationCompletedManual", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Return Drawer.
-        /// </summary>
-        public static string DrawerReturn {
-            get {
-                return ResourceManager.GetString("DrawerReturn", resourceCulture);
             }
         }
         
@@ -219,15 +183,6 @@ namespace Ferretto.VW.App.Resources {
         public static string Id {
             get {
                 return ResourceManager.GetString("Id", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initial position [mm].
-        /// </summary>
-        public static string InitialPosition {
-            get {
-                return ResourceManager.GetString("InitialPosition", resourceCulture);
             }
         }
         

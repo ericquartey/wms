@@ -641,10 +641,6 @@
     <value>HelpBCTRStepValue</value>
     <comment>Note text</comment>
   </data>
-  <data name="HelpBCTRActualHeight" xml:space="preserve">
-    <value>HelpBCTRActualHeight</value>
-    <comment>Note text</comment>
-  </data>
   <data name="HelpBCTRCorrectionValue" xml:space="preserve">
     <value>HelpBCTRCorrectionValue</value>
     <comment>Note text</comment>
@@ -784,10 +780,6 @@
   <data name="HelpSRCLoadSide" xml:space="preserve">
     <value>HelpSRCLoadSide</value>
     <comment>Block description</comment>
-  </data>
-  <data name="HelpSRCLoadFolder" xml:space="preserve">
-    <value>HelpSRCLoadFolder</value>
-    <comment>Note text</comment>
   </data>
   <data name="HelpSRCLoadButton" xml:space="preserve">
     <value>HelpSRCLoadButton</value>
@@ -1201,14 +1193,6 @@
     <value>HelpDrawerSpaceSaturationGridCompartments</value>
     <comment>Note text</comment>
   </data>
-  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationGridFilling</value>
-    <comment>Note text</comment>
-  </data>
-  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationGridFillingPercent</value>
-    <comment>Note text</comment>
-  </data>
   <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
     <value>HelpDrawerSpaceSaturationTotalDrawer</value>
     <comment>Note text</comment>
@@ -1316,10 +1300,6 @@
   <data name="HelpMachineStatisticsBay3" xml:space="preserve">
     <value>HelpMachineStatisticsBay3</value>
     <comment>Note text</comment>
-  </data>
-  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
-    <value>HelpMaintenanceMainPageDescription</value>
-    <comment>Procedure description</comment>
   </data>
   <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
     <value>HelpMaintenanceMainPageGridKit</value>

@@ -510,9 +510,6 @@
   <data name="HelpBCTRStepValue" xml:space="preserve">
     <value>Step, der bei jedem Drücken der Bewegungstasten auf die aktuelle Höhe der Achse angewendet wird.</value>
   </data>
-  <data name="HelpBCTRActualHeight" xml:space="preserve">
-    <value>Aktuelle Position der vert. Achse.</value>
-  </data>
   <data name="HelpBCTRCorrectionValue" xml:space="preserve">
     <value>Kumulativer Korrekturwert, der auf die Höhe der ausgewählten Bucht-Position angewendet wird. </value>
   </data>
@@ -617,9 +614,6 @@
   </data>
   <data name="HelpSRCLoadSide" xml:space="preserve">
     <value>Zurücksetzen der Konfiguration.</value>
-  </data>
-  <data name="HelpSRCLoadFolder" xml:space="preserve">
-    <value>Nennt den erkannten Ordner mit den wiederherzustellenden Dateien.</value>
   </data>
   <data name="HelpSRCLoadButton" xml:space="preserve">
     <value>Startet die Prozedur zum Laden der Konfigurationsdateien. Bereits vorhandene Dateien werden überschrieben.</value>
@@ -930,12 +924,6 @@
   <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
     <value>Zeigt die Anzahl der zugeordneten Fächer innerhalb des Kastens an, unabhängig von ihrem Status.</value>
   </data>
-  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
-    <value>Zeigt in grafischer Form die Befüllung des Kastens an.</value>
-  </data>
-  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
-    <value>Gibt die Befüllung des Kastens in Prozent an.</value>
-  </data>
   <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
     <value>Gesamtzahl der in der Maschine untergebrachten Kästen.</value>
   </data>
@@ -1016,9 +1004,6 @@
   </data>
   <data name="HelpMachineStatisticsBay3" xml:space="preserve">
     <value>Das Feld zeigt die Gesamtzahl der Kästen der Bucht n an. 3. Die Zählung erhöht sich, wenn ein Kasten in die Bucht gebracht und dann wieder ins Lager gebracht wird.</value>
-  </data>
-  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
-    <value>Mit dem Verfahren kann der Wartungszustand der Maschine angezeigt werden. Für jeden Bausatz wird der aktuelle Status angegeben, wobei der nahenden Wartungsbedarf einer Komponente orange angezeigt wird. Rot kennzeichnet die Teile, die den Zeitraum zwischen zwei aufeinander folgenden Wartungsarbeiten überschritten haben.</value>
   </data>
   <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
     <value>Spalte mit dem Code des auf die ausgewählte Komponente bez. Bausatzes.</value>

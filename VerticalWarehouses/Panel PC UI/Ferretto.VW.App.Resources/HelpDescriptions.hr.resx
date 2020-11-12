@@ -510,9 +510,6 @@
   <data name="HelpBCTRStepValue" xml:space="preserve">
     <value>Vrijednost koraka primijenjena na trenutačnu visinu osi kod svakog pritiskanja gumba za premještanje.</value>
   </data>
-  <data name="HelpBCTRActualHeight" xml:space="preserve">
-    <value>Stavlja trenutnu os u okomiti položaj.</value>
-  </data>
   <data name="HelpBCTRCorrectionValue" xml:space="preserve">
     <value>Kumulativna vrijednost ispravka koji će se primijeniti na visinu uvale-odabrani položaj. </value>
   </data>
@@ -617,9 +614,6 @@
   </data>
   <data name="HelpSRCLoadSide" xml:space="preserve">
     <value>Postupak obnove konfiguracije.</value>
-  </data>
-  <data name="HelpSRCLoadFolder" xml:space="preserve">
-    <value>Označuje pronađenu mapu s koje će se preuzeti datoteke za obnovu.</value>
   </data>
   <data name="HelpSRCLoadButton" xml:space="preserve">
     <value>Pokreće postupak učitavanja datoteka konfiguracije. Eventualne već prisutne datoteke će biti ispisane preko.</value>
@@ -930,12 +924,6 @@
   <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
     <value>Označuje broj mapiranih odjeljenja, prisutnih unutar pretinca, neovisno o njihovom stanju.</value>
   </data>
-  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
-    <value>Navodi, u grafičkom obliku, stupanj napunjenosti pretinca.</value>
-  </data>
-  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
-    <value>Označuje stupanj napunjenosti pretinca u postotnoj vrijednosti.</value>
-  </data>
   <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
     <value>Navodi sveukupni broj pretinaca smještenih na stroju.</value>
   </data>
@@ -1016,9 +1004,6 @@
   </data>
   <data name="HelpMachineStatisticsBay3" xml:space="preserve">
     <value>Polje navodi sveukupan broj pretinaca koji su se odnosili na uvalu br. 3. Zbroj se povećava kad jedan pretinac dođe u uvalu i potom se vrati u skladište.</value>
-  </data>
-  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
-    <value>Postupak vam omogućuje prikaz stanja održavanja stroja. Za svaki komplet naznačen je trenutni status koji narančastom bojom signalizira nadolazeću potrebu održavanja komponente. Crvena boja označava one dijelove koji su prošli razdoblje između dva uzastopna održavanja.</value>
   </data>
   <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
     <value>Stupac prikazuje kôd kompleta za odabranu komponentu.</value>

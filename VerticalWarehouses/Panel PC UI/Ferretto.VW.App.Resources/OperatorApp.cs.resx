@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Availability" xml:space="preserve">
-    <value>Dostupnost [jednotky]</value>
-  </data>
   <data name="Confirm" xml:space="preserve">
     <value>Potvrdit</value>
   </data>
@@ -129,47 +126,14 @@
   <data name="Details" xml:space="preserve">
     <value>Podrob</value>
   </data>
-  <data name="DispatchedQuantity" xml:space="preserve">
-    <value>Uniklé množ</value>
-  </data>
-  <data name="FIFOPeriod" xml:space="preserve">
-    <value>Období FIFO</value>
-  </data>
-  <data name="InstantArticle" xml:space="preserve">
-    <value>Okamžitá položka</value>
-  </data>
-  <data name="LIFOPeriod" xml:space="preserve">
-    <value>Období LIFO</value>
-  </data>
   <data name="List" xml:space="preserve">
     <value>Sezn</value>
-  </data>
-  <data name="ListDescription" xml:space="preserve">
-    <value>Popis seznamu</value>
-  </data>
-  <data name="Lists" xml:space="preserve">
-    <value>Sezn</value>
-  </data>
-  <data name="Machine" xml:space="preserve">
-    <value>Stroj</value>
   </data>
   <data name="Machines" xml:space="preserve">
     <value>Stroje</value>
   </data>
-  <data name="Management" xml:space="preserve">
-    <value>Správa</value>
-  </data>
-  <data name="Notes" xml:space="preserve">
-    <value>Pozn</value>
-  </data>
   <data name="PackagingType" xml:space="preserve">
     <value>Typ balení</value>
-  </data>
-  <data name="Picking" xml:space="preserve">
-    <value>Odběr</value>
-  </data>
-  <data name="Position" xml:space="preserve">
-    <value>Pozice</value>
   </data>
   <data name="ProductionDate" xml:space="preserve">
     <value>Datum výroby</value>
@@ -179,15 +143,6 @@
   </data>
   <data name="RequestedQuantity" xml:space="preserve">
     <value>požad množství [{0}]</value>
-  </data>
-  <data name="SearchCode" xml:space="preserve">
-    <value>Vyhled dle kódu</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Vyhl</value>
-  </data>
-  <data name="ExecutableListsRows" xml:space="preserve">
-    <value>Proveditelné řádky seznamu</value>
   </data>
   <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
     <value>Operace na zásuvce</value>
@@ -234,9 +189,6 @@
   <data name="ListsInWaitHeader" xml:space="preserve">
     <value>Seznamy čekající na proved</value>
   </data>
-  <data name="ListsInWaitNote" xml:space="preserve">
-    <value>Pozn</value>
-  </data>
   <data name="ListsInWaitDetail" xml:space="preserve">
     <value>Podrob seznamu</value>
   </data>
@@ -249,14 +201,8 @@
   <data name="ItemSearchKeySearch" xml:space="preserve">
     <value>Vyhled</value>
   </data>
-  <data name="ItemSearchSearch" xml:space="preserve">
-    <value>Vyhled položku</value>
-  </data>
   <data name="AvailableQuantity" xml:space="preserve">
     <value>Dostupné množství [{0}]</value>
-  </data>
-  <data name="ItemSearchDetail" xml:space="preserve">
-    <value>Podrob položky</value>
   </data>
   <data name="ItemSearchCall" xml:space="preserve">
     <value>Vyvolat položku</value>
@@ -278,9 +224,6 @@
   </data>
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
     <value>Požadovaná zásuvka</value>
-  </data>
-  <data name="DrawerActivityPickingRowList" xml:space="preserve">
-    <value>Řádek sezn</value>
   </data>
   <data name="GeneralInfoHeader" xml:space="preserve">
     <value>Obecné informace</value>
@@ -339,14 +282,8 @@
   <data name="OtherNavigationMaintenance" xml:space="preserve">
     <value>Údržba</value>
   </data>
-  <data name="OtherNavigationErrorSimulation" xml:space="preserve">
-    <value>Simulace chyb</value>
-  </data>
   <data name="StatisticsGeneralDataHeader" xml:space="preserve">
     <value>Statistika: obecné údaje.</value>
-  </data>
-  <data name="Back" xml:space="preserve">
-    <value>Zpět</value>
   </data>
   <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
     <value>Přesunuté zásuvky</value>
@@ -488,9 +425,6 @@
   </data>
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
     <value>Vyvolání zásuvky</value>
-  </data>
-  <data name="StatisticsNavigationItems" xml:space="preserve">
-    <value>Statistiky položek</value>
   </data>
   <data name="StatisticsNavigationDrawers" xml:space="preserve">
     <value>Statistika zásuvek</value>
@@ -720,9 +654,6 @@
   <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
     <value>Řád</value>
   </data>
-  <data name="StatisticsItemDataGridHeaderClass" xml:space="preserve">
-    <value>Třída</value>
-  </data>
   <data name="StatisticsNavigationMachine" xml:space="preserve">
     <value>Statistiky stroje</value>
   </data>
@@ -780,9 +711,6 @@
   <data name="DrawerCompactingRear" xml:space="preserve">
     <value>Údaje na zadní straně</value>
   </data>
-  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
-    <value> 002350467 - Řet převody zvedáku</value>
-  </data>
   <data name="CommonListType" xml:space="preserve">
     <value>Typ sezn</value>
   </data>
@@ -819,29 +747,11 @@
   <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
     <value>Prostor pro obnovení mm.</value>
   </data>
-  <data name="DrawerCompactingDetailAbort" xml:space="preserve">
-    <value>Ukončit</value>
-  </data>
   <data name="DrawerCompactingAntStop" xml:space="preserve">
     <value>Ukončit zhutnění</value>
   </data>
   <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
     <value>Aktuální stav</value>
-  </data>
-  <data name="DrawerActivityLocalCallHeader" xml:space="preserve">
-    <value>Okamžitý pro zásuvku v místě.</value>
-  </data>
-  <data name="DrawerActivityLocalCallDrawer" xml:space="preserve">
-    <value>Kód zásuvky</value>
-  </data>
-  <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>Aktuální výška zásuvky (mm)</value>
-  </data>
-  <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
-    <value>Hrubá hmot (kg)</value>
-  </data>
-  <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
-    <value>Aktuál hmot (kg)</value>
   </data>
   <data name="BlockLevelNone" xml:space="preserve">
     <value>Žádná</value>
@@ -873,12 +783,6 @@
   <data name="MachineServiceStatus_Valid" xml:space="preserve">
     <value>Platný</value>
   </data>
-  <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
-    <value>maxim. čistá kapacita (kg)</value>
-  </data>
-  <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
-    <value>Počet provedených misí</value>
-  </data>
   <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
     <value>Návrat zásuvky</value>
   </data>
@@ -906,14 +810,8 @@
   <data name="ItemListType_NotSpecified" xml:space="preserve">
     <value>Nespecifikováno</value>
   </data>
-  <data name="Abort" xml:space="preserve">
-    <value>Zrušit</value>
-  </data>
   <data name="QuantityToPick" xml:space="preserve">
     <value>Množství k odběru</value>
-  </data>
-  <data name="QuantityToPut" xml:space="preserve">
-    <value>Množství k naplnění</value>
   </data>
   <data name="PickedQuantity" xml:space="preserve">
     <value>Odebrané množství [{0}]</value>
@@ -933,32 +831,14 @@
   <data name="ListAvailable" xml:space="preserve">
     <value>Dostupný</value>
   </data>
-  <data name="Empty" xml:space="preserve">
-    <value>Prázd</value>
-  </data>
-  <data name="Full" xml:space="preserve">
-    <value>Plný</value>
-  </data>
   <data name="CommonListRow" xml:space="preserve">
     <value>Řádek sezn</value>
   </data>
   <data name="LoadingUnitId" xml:space="preserve">
     <value>ID zásuvky</value>
   </data>
-  <data name="LoadingUnitWidth" xml:space="preserve">
-    <value>Šířka</value>
-  </data>
-  <data name="LoadingUnitDepth" xml:space="preserve">
-    <value>Hloubka</value>
-  </data>
   <data name="LoadingUnit" xml:space="preserve">
     <value>Zásuvka</value>
-  </data>
-  <data name="CompleteCheck" xml:space="preserve">
-    <value>Kontrola dokončena</value>
-  </data>
-  <data name="LoadingUnitCheck" xml:space="preserve">
-    <value>Kontrola zásuvky</value>
   </data>
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Potvrdit na prázd</value>
@@ -968,10 +848,6 @@
   </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Dostupnost na stroji</value>
-  </data>
-  <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
-    <value>Aktuální operace byla vzdáleně zrušena.
-Uveďte prosím případné přesunuté položky do původní pozice.</value>
   </data>
   <data name="OperationCancelled" xml:space="preserve">
     <value>Operace zrušena</value>
@@ -1066,9 +942,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   <data name="BayTarget" xml:space="preserve">
     <value>Stan</value>
   </data>
-  <data name="MissionStateNotDefined" xml:space="preserve">
-    <value>0. Nedefinován</value>
-  </data>
   <data name="MissionStateNew" xml:space="preserve">
     <value>1. Nový</value>
   </data>
@@ -1114,9 +987,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   <data name="MissionTypeOut" xml:space="preserve">
     <value>Výstup</value>
   </data>
-  <data name="MissionTypeFullTest" xml:space="preserve">
-    <value>Test dokončen</value>
-  </data>
   <data name="MissionTypeCompact" xml:space="preserve">
     <value>Zhutnění</value>
   </data>
@@ -1140,12 +1010,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   </data>
   <data name="Adjustment" xml:space="preserve">
     <value>Upravit</value>
-  </data>
-  <data name="CompartmentWidth" xml:space="preserve">
-    <value>Šířka</value>
-  </data>
-  <data name="CompartmentDepth" xml:space="preserve">
-    <value>Prof.</value>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
     <value>Stav zás</value>
@@ -1207,12 +1071,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
     <value>Operace na zásuvce</value>
   </data>
-  <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
-    <value>Volný prostor vzadu</value>
-  </data>
-  <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
-    <value>Volný prostor vepředu</value>
-  </data>
   <data name="DrawerCompacting" xml:space="preserve">
     <value>Zhutnění</value>
   </data>
@@ -1221,9 +1079,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   </data>
   <data name="Code" xml:space="preserve">
     <value>Kód</value>
-  </data>
-  <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
-    <value>Aktuální stránka nepodporuje skenování čárových kódů.</value>
   </data>
   <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
     <value>Položka s kódem „{0}“ není k dispozici.</value>
@@ -1375,18 +1230,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
     <value>Čárový kód „{0}“ neobsahuje identifikační kód seznamu.</value>
   </data>
-  <data name="GoToCellHeight" xml:space="preserve">
-    <value>Přej na kótu buň</value>
-  </data>
-  <data name="LowerBayPosition" xml:space="preserve">
-    <value>Dolní poloha</value>
-  </data>
-  <data name="MaintenanceMainPageDetail" xml:space="preserve">
-    <value>Podrobn</value>
-  </data>
-  <data name="UpperBayPosition" xml:space="preserve">
-    <value>Horní poloha</value>
-  </data>
   <data name="NoListWithIdWasFound" xml:space="preserve">
     <value>Neexistuje seznam s identifikačním kódem „{0}“.</value>
   </data>
@@ -1435,23 +1278,11 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   <data name="ServiceStatus" xml:space="preserve">
     <value>Stav servisu</value>
   </data>
-  <data name="TotalMission" xml:space="preserve">
-    <value>Celkem mise</value>
-  </data>
-  <data name="Instruction" xml:space="preserve">
-    <value>Pokyn</value>
-  </data>
   <data name="IsDone" xml:space="preserve">
     <value>Proved</value>
   </data>
   <data name="IsToDo" xml:space="preserve">
     <value>K prov</value>
-  </data>
-  <data name="MachineStatisticsCounter" xml:space="preserve">
-    <value>Počít statistik stroje</value>
-  </data>
-  <data name="MaintenanceRequired" xml:space="preserve">
-    <value>Požadována údržba</value>
   </data>
   <data name="MaxDays" xml:space="preserve">
     <value>Max.dní</value>
@@ -1533,9 +1364,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   </data>
   <data name="Axis" xml:space="preserve">
     <value>Osa</value>
-  </data>
-  <data name="BayNumberHeader" xml:space="preserve">
-    <value>Čís stan</value>
   </data>
   <data name="CounterName" xml:space="preserve">
     <value>Název počít</value>
@@ -1681,21 +1509,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   <data name="Up" xml:space="preserve">
     <value>Hor</value>
   </data>
-  <data name="Cell_Status_Free" xml:space="preserve">
-    <value>Volná</value>
-  </data>
-  <data name="Cell_Status_Disabled" xml:space="preserve">
-    <value>Zakázaná</value>
-  </data>
-  <data name="Cell_Status_Occupied" xml:space="preserve">
-    <value>Obsazená</value>
-  </data>
-  <data name="Cell_Status_Unusable" xml:space="preserve">
-    <value>Nepoužitelná</value>
-  </data>
-  <data name="Complete Check" xml:space="preserve">
-    <value>Dokončit kontrolu</value>
-  </data>
   <data name="MissionStateBackToBay" xml:space="preserve">
     <value>Zpět do stan</value>
   </data>
@@ -1711,17 +1524,11 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   <data name="MissionStateWaitChain" xml:space="preserve">
     <value>Ček na řetěz</value>
   </data>
-  <data name="MissionStateWaitDeposit" xml:space="preserve">
-    <value>Čekání na ulož</value>
-  </data>
   <data name="UnitInBayWarning" xml:space="preserve">
     <value>Zásuvka přítomna ve stanici zhutnění není povolena</value>
   </data>
   <data name="ActualAverageWeight" xml:space="preserve">
     <value>Skutečná jednotková prům hmot [g]</value>
-  </data>
-  <data name="MeasuredWeight" xml:space="preserve">
-    <value>Naměřená hmot [g]</value>
   </data>
   <data name="OriginalAverageWeight" xml:space="preserve">
     <value>Původní jednotková prům hmot [g]</value>
@@ -1755,9 +1562,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   </data>
   <data name="BarcodeMismatchRestart" xml:space="preserve">
     <value>Některá políčka čárového kódu „{0}“ nesouhlasí s políčky položky. Znovu začít.</value>
-  </data>
-  <data name="BarcodeOperationValidated" xml:space="preserve">
-    <value>Položka potvrzena pomocí čárového kódu.</value>
   </data>
   <data name="BarcodeMissingQuantity" xml:space="preserve">
     <value>Před potvrzením potvrďte množství.</value>
@@ -1818,9 +1622,6 @@ Uveďte prosím případné přesunuté položky do původní pozice.</value>
   </data>
   <data name="RemoveBox" xml:space="preserve">
     <value>Odebrat krabici!</value>
-  </data>
-  <data name="Command" xml:space="preserve">
-    <value>Příkaz</value>
   </data>
   <data name="SelectReasons" xml:space="preserve">
     <value>Vyberte důvod...</value>

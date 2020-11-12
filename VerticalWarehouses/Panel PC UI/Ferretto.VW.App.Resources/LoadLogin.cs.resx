@@ -129,14 +129,8 @@
   <data name="InvalidCredentials" xml:space="preserve">
     <value>Neplatné přihlaš údaje.</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Přihl</value>
-  </data>
   <data name="ModuleLoaded" xml:space="preserve">
     <value>Modul nahrán.</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Heslo</value>
   </data>
   <data name="PasswordEnter" xml:space="preserve">
     <value>Zadejte heslo</value>
@@ -155,9 +149,6 @@
   </data>
   <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
     <value>Čárový kód neodpovídá registrovanému uživateli.</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Uživ jméno</value>
   </data>
   <data name="UserNameMustBeSpecified" xml:space="preserve">
     <value>Je třeba zadat uživatelské jméno.</value>

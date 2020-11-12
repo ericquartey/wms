@@ -117,10 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Availability" xml:space="preserve">
-    <value>Availability [units]</value>
-    <comment>Label</comment>
-  </data>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
     <comment>Button text</comment>
@@ -133,60 +129,16 @@
     <value>Details</value>
     <comment>Button - Title text</comment>
   </data>
-  <data name="DispatchedQuantity" xml:space="preserve">
-    <value>Dispatched quantity</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="FIFOPeriod" xml:space="preserve">
-    <value>FIFO time span</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="InstantArticle" xml:space="preserve">
-    <value>Instant Article</value>
-    <comment>Label</comment>
-  </data>
-  <data name="LIFOPeriod" xml:space="preserve">
-    <value>LIFO time span</value>
-    <comment>Label</comment>
-  </data>
   <data name="List" xml:space="preserve">
     <value>List</value>
-    <comment>Label</comment>
-  </data>
-  <data name="ListDescription" xml:space="preserve">
-    <value>List description</value>
-    <comment>Label</comment>
-  </data>
-  <data name="Lists" xml:space="preserve">
-    <value>Lists</value>
-    <comment>Label</comment>
-  </data>
-  <data name="Machine" xml:space="preserve">
-    <value>Machine</value>
     <comment>Label</comment>
   </data>
   <data name="Machines" xml:space="preserve">
     <value>Machines</value>
     <comment>Label</comment>
   </data>
-  <data name="Management" xml:space="preserve">
-    <value>Management</value>
-    <comment>Label</comment>
-  </data>
-  <data name="Notes" xml:space="preserve">
-    <value>Notes</value>
-    <comment>Label</comment>
-  </data>
   <data name="PackagingType" xml:space="preserve">
     <value>Packaging type</value>
-    <comment>Label</comment>
-  </data>
-  <data name="Picking" xml:space="preserve">
-    <value>Picking</value>
-    <comment>Label</comment>
-  </data>
-  <data name="Position" xml:space="preserve">
-    <value>Position</value>
     <comment>Label</comment>
   </data>
   <data name="ProductionDate" xml:space="preserve">
@@ -200,18 +152,6 @@
   <data name="RequestedQuantity" xml:space="preserve">
     <value>Requested quantity  [{0}]</value>
     <comment>Label</comment>
-  </data>
-  <data name="SearchCode" xml:space="preserve">
-    <value>Search by code</value>
-    <comment>Action</comment>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
-    <comment>Action</comment>
-  </data>
-  <data name="ExecutableListsRows" xml:space="preserve">
-    <value>Executable Lists' Rows</value>
-    <comment>Button - Title text</comment>
   </data>
   <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
     <value>Drawer operations</value>
@@ -273,10 +213,6 @@
     <value>Waiting for execution lists</value>
     <comment>Label</comment>
   </data>
-  <data name="ListsInWaitNote" xml:space="preserve">
-    <value>Note</value>
-    <comment>Label</comment>
-  </data>
   <data name="ListsInWaitDetail" xml:space="preserve">
     <value>List details</value>
     <comment>Label</comment>
@@ -293,17 +229,9 @@
     <value>Search</value>
     <comment>Action</comment>
   </data>
-  <data name="ItemSearchSearch" xml:space="preserve">
-    <value>Search item</value>
-    <comment>Action</comment>
-  </data>
   <data name="AvailableQuantity" xml:space="preserve">
     <value>Available quantity  [{0}]</value>
     <comment>Label</comment>
-  </data>
-  <data name="ItemSearchDetail" xml:space="preserve">
-    <value>Show Details</value>
-    <comment>Action</comment>
   </data>
   <data name="ItemSearchCall" xml:space="preserve">
     <value>Call Item</value>
@@ -332,10 +260,6 @@
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
     <value>Requested tray</value>
     <comment>Label</comment>
-  </data>
-  <data name="DrawerActivityPickingRowList" xml:space="preserve">
-    <value>List row</value>
-    <comment>Label text</comment>
   </data>
   <data name="GeneralInfoHeader" xml:space="preserve">
     <value>General information</value>
@@ -413,17 +337,9 @@
     <value>Maintenance</value>
     <comment>Label</comment>
   </data>
-  <data name="OtherNavigationErrorSimulation" xml:space="preserve">
-    <value>Error Simulation</value>
-    <comment>Label</comment>
-  </data>
   <data name="StatisticsGeneralDataHeader" xml:space="preserve">
     <value>StatisticsGeneralDataHeader</value>
     <comment>Label</comment>
-  </data>
-  <data name="Back" xml:space="preserve">
-    <value>Back</value>
-    <comment>Action</comment>
   </data>
   <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
     <value>MachineStatistics_TotalMovedTrays</value>
@@ -611,10 +527,6 @@
   </data>
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
     <value>Drawer Call</value>
-    <comment>Label</comment>
-  </data>
-  <data name="StatisticsNavigationItems" xml:space="preserve">
-    <value>StatisticsNavigationItems</value>
     <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationDrawers" xml:space="preserve">
@@ -921,10 +833,6 @@
     <value>Row</value>
     <comment>Label</comment>
   </data>
-  <data name="StatisticsItemDataGridHeaderClass" xml:space="preserve">
-    <value>Class</value>
-    <comment>Label</comment>
-  </data>
   <data name="StatisticsNavigationMachine" xml:space="preserve">
     <value>StatisticsNavigationMachine</value>
     <comment>Label</comment>
@@ -1001,10 +909,6 @@
     <value>DrawerCompactingFront</value>
     <comment>Section Header</comment>
   </data>
-  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
-    <value>MaintenanceDetailHeaderKit</value>
-    <comment>Label</comment>
-  </data>
   <data name="CommonListType" xml:space="preserve">
     <value>CommonListType</value>
     <comment>Label text</comment>
@@ -1053,36 +957,12 @@
     <value>DrawerCompactingDetailSpaceToRecover</value>
     <comment>Label text</comment>
   </data>
-  <data name="DrawerCompactingDetailAbort" xml:space="preserve">
-    <value>DrawerCompactingDetailAbort</value>
-    <comment>Button text</comment>
-  </data>
   <data name="DrawerCompactingAntStop" xml:space="preserve">
     <value>DrawerCompactingAntStop</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
     <value>DrawerCompactingProcedureStatus</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="DrawerActivityLocalCallHeader" xml:space="preserve">
-    <value>DrawerActivityLocalCallHeader</value>
-    <comment>Page header</comment>
-  </data>
-  <data name="DrawerActivityLocalCallDrawer" xml:space="preserve">
-    <value>DrawerActivityLocalCallDrawer</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>Height (mm)</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
-    <value>Gross Weight [kg]</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
-    <value>DrawerActivityLocalCallActualWeight</value>
     <comment>Label text</comment>
   </data>
   <data name="BlockLevelNone" xml:space="preserve">
@@ -1125,14 +1005,6 @@
     <value>Valid</value>
     <comment>Label for Enumeration</comment>
   </data>
-  <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
-    <value>DrawerActivityLocalCallMaxCapacity</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
-    <value>DrawerActivityLocalCallMissions</value>
-    <comment>Label text</comment>
-  </data>
   <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
     <value>DrawerActivityLocalCallGoBack</value>
     <comment>Button text</comment>
@@ -1169,16 +1041,8 @@
     <value>NotSpecified</value>
     <comment>Label for Enumeration</comment>
   </data>
-  <data name="Abort" xml:space="preserve">
-    <value>Abort</value>
-    <comment>Action</comment>
-  </data>
   <data name="QuantityToPick" xml:space="preserve">
     <value>Quantity to pick</value>
-    <comment>Label</comment>
-  </data>
-  <data name="QuantityToPut" xml:space="preserve">
-    <value>Quantity to put</value>
     <comment>Label</comment>
   </data>
   <data name="PickedQuantity" xml:space="preserve">
@@ -1205,12 +1069,6 @@
     <value>Available</value>
     <comment>Label</comment>
   </data>
-  <data name="Empty" xml:space="preserve">
-    <value>Empty</value>
-  </data>
-  <data name="Full" xml:space="preserve">
-    <value>Full</value>
-  </data>
   <data name="CommonListRow" xml:space="preserve">
     <value>List row</value>
     <comment>Label text</comment>
@@ -1219,23 +1077,8 @@
     <value>Loading unit Id</value>
     <comment>Label</comment>
   </data>
-  <data name="LoadingUnitWidth" xml:space="preserve">
-    <value>Width</value>
-    <comment>Label</comment>
-  </data>
-  <data name="LoadingUnitDepth" xml:space="preserve">
-    <value>Depth</value>
-    <comment>Label</comment>
-  </data>
   <data name="LoadingUnit" xml:space="preserve">
     <value>Loading unit</value>
-    <comment>Label</comment>
-  </data>
-  <data name="CompleteCheck" xml:space="preserve">
-    <value>Complete Check</value>
-  </data>
-  <data name="LoadingUnitCheck" xml:space="preserve">
-    <value>Loading unit check</value>
     <comment>Label</comment>
   </data>
   <data name="ConfirmOnEmpty" xml:space="preserve">
@@ -1247,10 +1090,6 @@
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Machines availabiility</value>
     <comment>Label</comment>
-  </data>
-  <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
-    <value>The current operation was remotely cancelled.
-Please put back any moved pieces in their original position.</value>
   </data>
   <data name="OperationCancelled" xml:space="preserve">
     <value>Operation cancelled.</value>
@@ -1373,10 +1212,6 @@ Please put back any moved pieces in their original position.</value>
     <value>Bay</value>
     <comment>Label</comment>
   </data>
-  <data name="MissionStateNotDefined" xml:space="preserve">
-    <value>0.Not defined</value>
-    <comment>Label for Enumeration</comment>
-  </data>
   <data name="MissionStateNew" xml:space="preserve">
     <value>1.New</value>
     <comment>Label for Enumeration</comment>
@@ -1437,10 +1272,6 @@ Please put back any moved pieces in their original position.</value>
     <value>Out</value>
     <comment>Label for Enumeration</comment>
   </data>
-  <data name="MissionTypeFullTest" xml:space="preserve">
-    <value>Full test</value>
-    <comment>Label for Enumeration</comment>
-  </data>
   <data name="MissionTypeCompact" xml:space="preserve">
     <value>Compact</value>
     <comment>Label for Enumeration</comment>
@@ -1472,14 +1303,6 @@ Please put back any moved pieces in their original position.</value>
   <data name="Adjustment" xml:space="preserve">
     <value>Adjustment</value>
     <comment>Action</comment>
-  </data>
-  <data name="CompartmentWidth" xml:space="preserve">
-    <value>Width</value>
-    <comment>Headet text</comment>
-  </data>
-  <data name="CompartmentDepth" xml:space="preserve">
-    <value>Depth</value>
-    <comment>Header text</comment>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
     <value>Stock</value>
@@ -1561,12 +1384,6 @@ Please put back any moved pieces in their original position.</value>
     <value>Drawer operations</value>
     <comment>Label</comment>
   </data>
-  <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
-    <value>Back free space</value>
-  </data>
-  <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
-    <value>Front free space</value>
-  </data>
   <data name="DrawerCompacting" xml:space="preserve">
     <value>Compacting</value>
   </data>
@@ -1576,9 +1393,6 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="Code" xml:space="preserve">
     <value>Code</value>
-  </data>
-  <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
-    <value>The current page does not support barcode scanning.</value>
   </data>
   <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
     <value>No item with code '{0}' is available</value>
@@ -1764,20 +1578,6 @@ Please put back any moved pieces in their original position.</value>
     <value>The barcode '{0}' does not contain the list identifier.</value>
     <comment>Error Message</comment>
   </data>
-  <data name="GoToCellHeight" xml:space="preserve">
-    <value>Go to Cell Height</value>
-  </data>
-  <data name="LowerBayPosition" xml:space="preserve">
-    <value>Lower bay position</value>
-    <comment>Label</comment>
-  </data>
-  <data name="MaintenanceMainPageDetail" xml:space="preserve">
-    <value>Details</value>
-  </data>
-  <data name="UpperBayPosition" xml:space="preserve">
-    <value>Upper Position</value>
-    <comment>Label</comment>
-  </data>
   <data name="NoListWithIdWasFound" xml:space="preserve">
     <value>No list with identifier '{0}' was found.</value>
     <comment>Error Message</comment>
@@ -1828,23 +1628,11 @@ Please put back any moved pieces in their original position.</value>
   <data name="ServiceStatus" xml:space="preserve">
     <value>Service status</value>
   </data>
-  <data name="TotalMission" xml:space="preserve">
-    <value>Total mission</value>
-  </data>
-  <data name="Instruction" xml:space="preserve">
-    <value>Instruction</value>
-  </data>
   <data name="IsDone" xml:space="preserve">
     <value>IsDone</value>
   </data>
   <data name="IsToDo" xml:space="preserve">
     <value>IsToDo</value>
-  </data>
-  <data name="MachineStatisticsCounter" xml:space="preserve">
-    <value>MachineStatisticsCounter</value>
-  </data>
-  <data name="MaintenanceRequired" xml:space="preserve">
-    <value>Maintenance required</value>
   </data>
   <data name="MaxDays" xml:space="preserve">
     <value>MaxDays</value>
@@ -1927,9 +1715,6 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="Axis" xml:space="preserve">
     <value>Axis</value>
-  </data>
-  <data name="BayNumberHeader" xml:space="preserve">
-    <value>BayNumber</value>
   </data>
   <data name="CounterName" xml:space="preserve">
     <value>CounterName</value>
@@ -2077,21 +1862,6 @@ Please put back any moved pieces in their original position.</value>
   <data name="Up" xml:space="preserve">
     <value>Up</value>
   </data>
-  <data name="Cell_Status_Free" xml:space="preserve">
-    <value>Free</value>
-  </data>
-  <data name="Cell_Status_Disabled" xml:space="preserve">
-    <value>Disabled</value>
-  </data>
-  <data name="Cell_Status_Occupied" xml:space="preserve">
-    <value>Occupied</value>
-  </data>
-  <data name="Cell_Status_Unusable" xml:space="preserve">
-    <value>Unavailable</value>
-  </data>
-  <data name="Complete Check" xml:space="preserve">
-    <value>Complete check</value>
-  </data>
   <data name="MissionStateBackToBay" xml:space="preserve">
     <value>Back to bay</value>
   </data>
@@ -2107,9 +1877,6 @@ Please put back any moved pieces in their original position.</value>
   <data name="MissionStateWaitChain" xml:space="preserve">
     <value>Wait chain</value>
   </data>
-  <data name="MissionStateWaitDeposit" xml:space="preserve">
-    <value>Wait deposit</value>
-  </data>
   <data name="UnitInBayWarning" xml:space="preserve">
     <value>Unit present in bay compaction not allowed</value>
   </data>
@@ -2118,9 +1885,6 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="ActualAverageWeight" xml:space="preserve">
     <value>Actual Average Unitary Weight [g]</value>
-  </data>
-  <data name="MeasuredWeight" xml:space="preserve">
-    <value>Measured Weight [g]</value>
   </data>
   <data name="OriginalAverageWeight" xml:space="preserve">
     <value>Original Average Unitary Weight [g]</value>
@@ -2158,9 +1922,6 @@ Please put back any moved pieces in their original position.</value>
   <data name="BarcodeMismatchRestart" xml:space="preserve">
     <value>Some parts of the barcode '{0}' do not match the article. Restart.</value>
     <comment>Error Message</comment>
-  </data>
-  <data name="BarcodeOperationValidated" xml:space="preserve">
-    <value>Article validated by Barcode reader</value>
   </data>
   <data name="BarcodeMissingQuantity" xml:space="preserve">
     <value>Missing quantity before confirming.</value>
@@ -2219,9 +1980,6 @@ Please put back any moved pieces in their original position.</value>
   </data>
   <data name="RemoveBox" xml:space="preserve">
     <value>Remove box</value>
-  </data>
-  <data name="Command" xml:space="preserve">
-    <value>Command</value>
   </data>
   <data name="Note" xml:space="preserve">
     <value>Note</value>

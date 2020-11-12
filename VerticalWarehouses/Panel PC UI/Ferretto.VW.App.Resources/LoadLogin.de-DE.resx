@@ -129,14 +129,8 @@
   <data name="InvalidCredentials" xml:space="preserve">
     <value>Ungültige Anmeldedaten.</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
   <data name="ModuleLoaded" xml:space="preserve">
     <value>Modul geladen.</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Passwort</value>
   </data>
   <data name="PasswordEnter" xml:space="preserve">
     <value>Passwort eingeben</value>
@@ -155,9 +149,6 @@
   </data>
   <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
     <value>Strichcode entspricht nicht einem registrierten Benutzer.</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Benutzern.</value>
   </data>
   <data name="UserNameMustBeSpecified" xml:space="preserve">
     <value>Der Benutzername muss angegeben werden.</value>

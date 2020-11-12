@@ -510,9 +510,6 @@
   <data name="HelpBCTRStepValue" xml:space="preserve">
     <value>Hodnota kroku aplikovaná na aktuální kótu osy při každém stisknutí tlačítka přesunu.</value>
   </data>
-  <data name="HelpBCTRActualHeight" xml:space="preserve">
-    <value>Aktuální poloha vertikální osy.</value>
-  </data>
   <data name="HelpBCTRCorrectionValue" xml:space="preserve">
     <value>Kumulativní hodnota korekce, která se aplikuje na vybranou kótu pozice stanice. </value>
   </data>
@@ -617,9 +614,6 @@
   </data>
   <data name="HelpSRCLoadSide" xml:space="preserve">
     <value>Postup obnovení konfigurace.</value>
-  </data>
-  <data name="HelpSRCLoadFolder" xml:space="preserve">
-    <value>Uvádí zjištěnou složku, z níž budou převzaty soubory pro obnovení.</value>
   </data>
   <data name="HelpSRCLoadButton" xml:space="preserve">
     <value>Spustí postup nahrávání konfiguračních souborů. Případné již přítomné soubory se přepíší.</value>
@@ -930,12 +924,6 @@
   <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
     <value>Uvádí počet zmapovaných oddělení přítomných v zásuvce nezávisle na jejich stavu.</value>
   </data>
-  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
-    <value>V grafické formě uvádí míru naplnění zásuvky.</value>
-  </data>
-  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
-    <value>Uvádí míru naplnění zásuvky v procentuální hodnotě.</value>
-  </data>
   <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
     <value>Uvádí celkový počet zásuvek umístěný ve stroji.</value>
   </data>
@@ -1016,9 +1004,6 @@
   </data>
   <data name="HelpMachineStatisticsBay3" xml:space="preserve">
     <value>Pole uvádí celkový počet zásuvek, které se vztahují ke stanici č. 3. Počet se zvyšuje, když je zásuvka přenesena do stanice a následně umístěna do zásobníku.</value>
-  </data>
-  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
-    <value>Postup umožňuje zobrazit stav údržby stroje. Pro každou soupravu je uveden aktuální stav zobrazením oranžové barvy, když se blíží termín údržby komponenty. Červenou barvou jsou vyznačeny ty díly, které překročily lhůtu mezi dvěma údržbami.</value>
   </data>
   <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
     <value>Ve sloupku je uveden kód sady pro vybranou komponentu.</value>

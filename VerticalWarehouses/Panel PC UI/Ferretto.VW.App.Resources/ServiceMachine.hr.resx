@@ -189,9 +189,6 @@
   <data name="MovementVerticalInProgress" xml:space="preserve">
     <value>Okomiti pokret u tijeku...</value>
   </data>
-  <data name="NoGear" xml:space="preserve">
-    <value>Nedost.kret.</value>
-  </data>
   <data name="NoLoadingUnitInBay" xml:space="preserve">
     <value>Nema prisutnih pretinaca u uvali.</value>
   </data>
