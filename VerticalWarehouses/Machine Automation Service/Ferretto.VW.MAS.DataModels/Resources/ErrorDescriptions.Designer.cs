@@ -592,7 +592,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit database inconsistency.
+        ///   Looks up a localized string similar to Loading unit not available.
         /// </summary>
         public static string LoadUnitNotFound {
             get {

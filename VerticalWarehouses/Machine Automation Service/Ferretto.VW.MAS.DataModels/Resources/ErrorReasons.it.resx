@@ -217,7 +217,7 @@
     <value>Verificare l'id del cassetto sull'elevatore. Verificare che i sensori di presenza cassetto sull'elevatore funzionino correttamente. Mettere la macchina in Automatico.</value>
   </data>
   <data name="LoadUnitNotFound" xml:space="preserve">
-    <value>Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database.</value>
+    <value>Il cassetto selezionato non è disponibile. Verificare il numero cassetto inserito e la posizione logica del cassetto.</value>
   </data>
   <data name="LoadUnitNotLoaded" xml:space="preserve">
     <value>Il cassetto selezionato risulta presente nel database ma non risulta caricato nel magazzino. Verificare la configurazione del database.</value>

@@ -205,7 +205,7 @@
     <value>Tray destination bay occupied</value>
   </data>
   <data name="LoadUnitNotFound" xml:space="preserve">
-    <value>Loading unit database inconsistency</value>
+    <value>Loading unit not available</value>
   </data>
   <data name="LoadUnitNotLoaded" xml:space="preserve">
     <value>The selected loading unit is not loaded in the warehouse</value>
