@@ -282,10 +282,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RemovableDevicesCount = this.usbWatcher.Drives.Count();
             if (this.RemovableDevicesCount > 0)
             {
-                var exePackageFiles = this.usbWatcher.Drives.FindFiles(InstallPackageExeExtension).ToList();
-                var zipPackageFiles = this.usbWatcher.Drives.FindFiles(InstallPackageZipExtension).ToList();
+                var exePackageFiles = this.usbWatcher.Drives.FindFiles(InstallPackageExeExtension);
+                var zipPackageFiles = this.usbWatcher.Drives.FindFiles(InstallPackageZipExtension);
 
-                return exePackageFiles.Union(zipPackageFiles).ToArray();
+                if (!(zipPackageFiles is null))
+                {
+                    exePackageFiles = exePackageFiles.Union(zipPackageFiles);
+                }
+
+                return exePackageFiles.ToArray();
             }
 
             return Array.Empty<string>();
@@ -299,7 +304,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var exePackageFiles = Directory.EnumerateFiles(this.RepositoryPath, InstallPackageExeExtension, SearchOption.TopDirectoryOnly);
                 var zipPackageFiles = Directory.EnumerateFiles(this.RepositoryPath, InstallPackageZipExtension, SearchOption.TopDirectoryOnly);
 
-                return exePackageFiles.Union(zipPackageFiles).ToArray();
+                if (!(zipPackageFiles is null))
+                {
+                    exePackageFiles = exePackageFiles.Union(zipPackageFiles);
+                }
+
+                return exePackageFiles.ToArray();
             }
 
             return Array.Empty<string>();
@@ -308,8 +318,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private IEnumerable<InstallerInfo> SelectValidPackages()
         {
             var validPackages = new List<InstallerInfo>();
+            var packages = this.removableDevicePackages;
 
-            foreach (var fileName in this.removableDevicePackages.Union(this.repositoryPackages))
+            if (!(this.repositoryPackages is null))
+            {
+                packages = packages.Union(this.repositoryPackages);
+            }
+
+            foreach (var fileName in packages)
             {
                 try
                 {
