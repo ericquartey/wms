@@ -880,7 +880,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load unit very heavy % of net weight (0 to disable).
+        ///   Looks up a localized string similar to Net weight for very heavy drawer, 0 disables.
         /// </summary>
         public static string Machine_LoadUnitVeryHeavyPercent {
             get {
