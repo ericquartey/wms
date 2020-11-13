@@ -129,14 +129,8 @@
   <data name="InvalidCredentials" xml:space="preserve">
     <value>Nevažeći prist. podaci.</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Prij.</value>
-  </data>
   <data name="ModuleLoaded" xml:space="preserve">
     <value>Modul učitan.</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Lozinka</value>
   </data>
   <data name="PasswordEnter" xml:space="preserve">
     <value>Unesi lozinku</value>
@@ -155,9 +149,6 @@
   </data>
   <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
     <value>Bar kod ne odgovara registriranom korisniku.</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Korisn. Ime</value>
   </data>
   <data name="UserNameMustBeSpecified" xml:space="preserve">
     <value>Korisničko ime se mora navesti.</value>

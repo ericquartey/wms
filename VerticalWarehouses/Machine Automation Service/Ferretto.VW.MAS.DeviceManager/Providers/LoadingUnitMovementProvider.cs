@@ -235,6 +235,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Type == MessageType.RunningStateChanged ||
                  notification.Type == MessageType.CombinedMovements ||
                  notification.Type == MessageType.CheckIntrusion ||
+                 notification.Type == MessageType.PowerEnable ||
+                 notification.Type == MessageType.InverterPowerEnable ||
                  notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
@@ -530,10 +532,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         break;
 
                     case ExternalBayMovementDirection.TowardOperator:
-                        distance -= this.baysDataProvider.GetChainPosition(requestingBay); //+ bay.ChainOffset;
+                        distance -= this.baysDataProvider.GetChainPosition(requestingBay) - bay.ChainOffset;
                         break;
                 }
-                if (distance < Math.Abs(bay.ChainOffset / 2))
+                if (distance < Math.Abs(bay.ChainOffset / 4))
                 {
                     return false;
                 }

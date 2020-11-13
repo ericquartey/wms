@@ -120,29 +120,17 @@
   <data name="CalibrationBarierError" xml:space="preserve">
     <value>L'errore non può essere superiore a 1 mm</value>
   </data>
-  <data name="CellSide" xml:space="preserve">
-    <value>Lato Cella</value>
-  </data>
   <data name="CheckUnit" xml:space="preserve">
     <value>Verifica cassetto:</value>
   </data>
-  <data name="CurrentCell" xml:space="preserve">
-    <value>Cella selezionata</value>
-  </data>
   <data name="DetailCode" xml:space="preserve">
-    <value>Detail Code</value>
-  </data>
-  <data name="Displacement" xml:space="preserve">
-    <value>Spostamento (mm)</value>
+    <value>Codice Dettaglio</value>
   </data>
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Terminata la procedura di identificazione cassetto, passa in autmatico.</value>
   </data>
   <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
     <value>Terminata la procedura di identificazione cassetto, passa in manuale.</value>
-  </data>
-  <data name="DrawerReturn" xml:space="preserve">
-    <value>Rientra cassetto</value>
   </data>
   <data name="DrawerSelection" xml:space="preserve">
     <value>Selezione del cassetto</value>
@@ -170,9 +158,6 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
-  </data>
-  <data name="InitialPosition" xml:space="preserve">
-    <value>Quota iniziale (mm)</value>
   </data>
   <data name="InvalidUnit" xml:space="preserve">
     <value>Cassetto non valido, inserire: </value>

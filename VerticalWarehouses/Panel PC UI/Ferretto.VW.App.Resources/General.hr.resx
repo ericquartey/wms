@@ -123,122 +123,26 @@
   <data name="Back" xml:space="preserve">
     <value>Natrag</value>
   </data>
-  <data name="Bottom" xml:space="preserve">
-    <value>Donji</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Poništi</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Kod</value>
-  </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Datum Izrade</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Ukloni</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Opis</value>
-  </data>
-  <data name="Down" xml:space="preserve">
-    <value>Dol</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Promjeni</value>
-  </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Izvrši</value>
-  </data>
-  <data name="File" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="Front" xml:space="preserve">
-    <value>Prednji</value>
-  </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Datum Poslj Izmjene</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
-  </data>
   <data name="Next" xml:space="preserve">
     <value>Sljedeći</value>
-  </data>
-  <data name="Open" xml:space="preserve">
-    <value>Otv</value>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Ažuriraj</value>
-  </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Odbaci</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Spre</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Traži</value>
-  </data>
-  <data name="ShowDetails" xml:space="preserve">
-    <value>Pokaži Detalje</value>
-  </data>
   <data name="SwitchOff" xml:space="preserve">
     <value>Isklj</value>
-  </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
-  </data>
-  <data name="Top" xml:space="preserve">
-    <value>Gornji</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Vrs</value>
-  </data>
-  <data name="MeasureUnit" xml:space="preserve">
-    <value>Jedinica Mjere</value>
-  </data>
-  <data name="Up" xml:space="preserve">
-    <value>Go</value>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Utovar</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Stanj</value>
-  </data>
-  <data name="Quantity" xml:space="preserve">
-    <value>Količina</value>
-  </data>
-  <data name="Priority" xml:space="preserve">
-    <value>Prior.</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Detalji</value>
-  </data>
-  <data name="AdditionalInfo" xml:space="preserve">
-    <value>[{0}]</value>
-  </data>
-  <data name="CheckBoxDark" xml:space="preserve">
-    <value>Tamna tema</value>
-  </data>
-  <data name="MachineOff" xml:space="preserve">
-    <value>Isklj.</value>
-  </data>
-  <data name="MachineOn" xml:space="preserve">
-    <value>Uklj.</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Greška</value>
   </data>
   <data name="Debug" xml:space="preserve">
     <value>Is gr</value>
-  </data>
-  <data name="NumberOnTotal" xml:space="preserve">
-    <value>{0} od {1}</value>
   </data>
   <data name="FilePath" xml:space="preserve">
     <value>Put. datot.</value>
@@ -270,20 +174,11 @@
   <data name="ChangeTheme" xml:space="preserve">
     <value>Prom. temu</value>
   </data>
-  <data name="AutomaticMode" xml:space="preserve">
-    <value>Automatsko</value>
-  </data>
   <data name="BayNumber" xml:space="preserve">
     <value>Uv.</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
     <value>pr. {0:0} dana</value>
-  </data>
-  <data name="EmergencyIsOn" xml:space="preserve">
-    <value>Akt. st.nužde</value>
-  </data>
-  <data name="EnsureEmergencyIsOff" xml:space="preserve">
-    <value>Uvjerite se da tipkalo za stanje nužde nije pritisn.</value>
   </data>
   <data name="ErrorCommunicatingWithServices" xml:space="preserve">
     <value>Greška komunikacije s uslugama.</value>
@@ -300,23 +195,8 @@
   <data name="Now" xml:space="preserve">
     <value>Sada</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PasswordLogin" xml:space="preserve">
-    <value>Zaporka</value>
-  </data>
   <data name="SerialNumber" xml:space="preserve">
     <value>Serijski Broj:</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Korisn. Ime</value>
-  </data>
-  <data name="UserLogin_Password" xml:space="preserve">
-    <value>Zaporka</value>
-  </data>
-  <data name="UserLogin_UserName" xml:space="preserve">
-    <value>Korisn. Ime</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Verzija {0}</value>
@@ -333,20 +213,11 @@
   <data name="BayOneName" xml:space="preserve">
     <value>Jed</value>
   </data>
-  <data name="BayOneNumber" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="BayThreeName" xml:space="preserve">
     <value>Tri</value>
   </data>
-  <data name="BayThreeNumber" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="BayTwoName" xml:space="preserve">
     <value>Dva</value>
-  </data>
-  <data name="BayTwoNumber" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="SwitchToAutomatic" xml:space="preserve">
     <value>Prijeđi na autom.</value>
@@ -359,9 +230,6 @@
   </data>
   <data name="TargetNullValue" xml:space="preserve">
     <value>-</value>
-  </data>
-  <data name="LoadUnitOperations" xml:space="preserve">
-    <value>Operacija pretinca</value>
   </data>
   <data name="Devices" xml:space="preserve">
     <value>Uređaji</value>
@@ -411,17 +279,8 @@
   <data name="DateFormatDayNumber" xml:space="preserve">
     <value>{0: dd.MM.gggg}</value>
   </data>
-  <data name="DateFormatHourMinutes" xml:space="preserve">
-    <value>{0: HH:mm}</value>
-  </data>
-  <data name="DateFormatHourMinuteSecond" xml:space="preserve">
-    <value>{0: HH:mm:ss}</value>
-  </data>
   <data name="SwitchToManual" xml:space="preserve">
     <value>Prijeđi u ručni</value>
-  </data>
-  <data name="ErrorLogin" xml:space="preserve">
-    <value>Greška: prijavlj. nije uspjelo. Provj. ispr. koris.imena i lozinke</value>
   </data>
   <data name="BackShutterTest" xml:space="preserve">
     <value>Test je u tijeku... Nemoguće izaći sa stranice</value>

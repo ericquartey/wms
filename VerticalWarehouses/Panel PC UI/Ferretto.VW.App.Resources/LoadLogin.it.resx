@@ -129,14 +129,8 @@
   <data name="InvalidCredentials" xml:space="preserve">
     <value>Credenziali non valide.</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
   <data name="ModuleLoaded" xml:space="preserve">
     <value>Modulo caricato.</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Password</value>
   </data>
   <data name="PasswordEnter" xml:space="preserve">
     <value>Inserisci la password</value>
@@ -155,9 +149,6 @@
   </data>
   <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
     <value>Il codice a barre non corrisponde ad un utente registrato.</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Nome utente</value>
   </data>
   <data name="UserNameMustBeSpecified" xml:space="preserve">
     <value>Il nome utente deve essere specificato.</value>

@@ -40,7 +40,7 @@
             "XOffset": 0.0,
             "YOffset": 0.0,
             "ZOffsetLowerPosition": 0.0,
-            "ZOffsetUpperPosition": 875.0
+            "ZOffsetUpperPosition": 1030.0
           },
           "WeightingScale": {
             "Id": 6,
@@ -99,10 +99,10 @@
         "Shutter": {
           "AssistedMovements": {
             "FeedRate": 0.2,
-            "HighSpeedDurationClose": 14.0,
-            "HighSpeedDurationOpen": 14.0,
-            "HighSpeedHalfDurationClose": 6.0,
-            "HighSpeedHalfDurationOpen": 7.0,
+            "HighSpeedDurationClose": 15.0,
+            "HighSpeedDurationOpen": 15.0,
+            "HighSpeedHalfDurationClose": 8.0,
+            "HighSpeedHalfDurationOpen": 8.0,
             "Id": 1,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
@@ -115,7 +115,7 @@
             "Type": "Agl"
           },
           "ManualMovements": {
-            "FeedRate": 0.1,
+            "FeedRate": 0.2,
             "HighSpeedDurationClose": 0.0,
             "HighSpeedDurationOpen": 0.0,
             "HighSpeedHalfDurationClose": 0.0,
@@ -124,7 +124,7 @@
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
-          "Type": "ThreeSensors"
+          "Type": "TwoSensors"
         },
         "Side": "Front",
         "Status": "Idle",
@@ -184,7 +184,7 @@
           "ProfileCalibratePosition": 0,
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
-          "Resolution": 77.497,
+          "Resolution": 61.06443,
           "UpperBound": 4700.0,
           "WeightMeasurement": {
             "Id": 1,
@@ -497,6 +497,7 @@
     "LoadUnitVeryHeavyPercent": 0.0,
     "LoadUnitWidth": 4250.0,
     "MaxGrossWeight": 70000.0,
+    "ModelName": "NEW VERTIMAG 103XL550-BIS H5061",
     "Panels": [
       {
         "Cells": [

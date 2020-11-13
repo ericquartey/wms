@@ -120,29 +120,17 @@
   <data name="CalibrationBarierError" xml:space="preserve">
     <value>The support cannot be more than 1 mm</value>
   </data>
-  <data name="CellSide" xml:space="preserve">
-    <value>Cell Side</value>
-  </data>
   <data name="CheckUnit" xml:space="preserve">
     <value>Check load unit:</value>
   </data>
-  <data name="CurrentCell" xml:space="preserve">
-    <value>Current cell</value>
-  </data>
   <data name="DetailCode" xml:space="preserve">
     <value>Detail Code</value>
-  </data>
-  <data name="Displacement" xml:space="preserve">
-    <value>Displacement (mm)</value>
   </data>
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Drawer identification completed, switch to automatic mode.</value>
   </data>
   <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
     <value>Drawer identification completed, switch to manual mode.</value>
-  </data>
-  <data name="DrawerReturn" xml:space="preserve">
-    <value>Return Drawer</value>
   </data>
   <data name="DrawerSelection" xml:space="preserve">
     <value>Drawer selection</value>
@@ -175,9 +163,6 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
-  </data>
-  <data name="InitialPosition" xml:space="preserve">
-    <value>Initial position [mm]</value>
   </data>
   <data name="InvalidUnit" xml:space="preserve">
     <value>Invalid unit, insert: </value>

@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Availability" xml:space="preserve">
-    <value>Dostupnost [jedinica]</value>
-  </data>
   <data name="Confirm" xml:space="preserve">
     <value>Potvrdi</value>
   </data>
@@ -129,47 +126,14 @@
   <data name="Details" xml:space="preserve">
     <value>Detalji</value>
   </data>
-  <data name="DispatchedQuantity" xml:space="preserve">
-    <value>Obrađ. količ.</value>
-  </data>
-  <data name="FIFOPeriod" xml:space="preserve">
-    <value>Razdob. FIFO</value>
-  </data>
-  <data name="InstantArticle" xml:space="preserve">
-    <value>Neposredan Artikl</value>
-  </data>
-  <data name="LIFOPeriod" xml:space="preserve">
-    <value>Razdob. LIFO</value>
-  </data>
   <data name="List" xml:space="preserve">
     <value>Lista</value>
-  </data>
-  <data name="ListDescription" xml:space="preserve">
-    <value>Opis Liste</value>
-  </data>
-  <data name="Lists" xml:space="preserve">
-    <value>Liste</value>
-  </data>
-  <data name="Machine" xml:space="preserve">
-    <value>Stroj</value>
   </data>
   <data name="Machines" xml:space="preserve">
     <value>Strojevi</value>
   </data>
-  <data name="Management" xml:space="preserve">
-    <value>Upravlj.</value>
-  </data>
-  <data name="Notes" xml:space="preserve">
-    <value>Bilj</value>
-  </data>
   <data name="PackagingType" xml:space="preserve">
     <value>Tip Pakiranja</value>
-  </data>
-  <data name="Picking" xml:space="preserve">
-    <value>Uzim.</value>
-  </data>
-  <data name="Position" xml:space="preserve">
-    <value>Položaj</value>
   </data>
   <data name="ProductionDate" xml:space="preserve">
     <value>Datum Proizvodnje</value>
@@ -179,15 +143,6 @@
   </data>
   <data name="RequestedQuantity" xml:space="preserve">
     <value>Tražena količina [{0}]</value>
-  </data>
-  <data name="SearchCode" xml:space="preserve">
-    <value>Traži prema Kodu</value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Traži</value>
-  </data>
-  <data name="ExecutableListsRows" xml:space="preserve">
-    <value>Ostvarivi redovi Liste</value>
   </data>
   <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
     <value>Operacije na pretincu</value>
@@ -234,9 +189,6 @@
   <data name="ListsInWaitHeader" xml:space="preserve">
     <value>Liste na čekanju provođ.</value>
   </data>
-  <data name="ListsInWaitNote" xml:space="preserve">
-    <value>Bilj</value>
-  </data>
   <data name="ListsInWaitDetail" xml:space="preserve">
     <value>Detalj liste</value>
   </data>
@@ -249,14 +201,8 @@
   <data name="ItemSearchKeySearch" xml:space="preserve">
     <value>Pretr.</value>
   </data>
-  <data name="ItemSearchSearch" xml:space="preserve">
-    <value>Traži artikl</value>
-  </data>
   <data name="AvailableQuantity" xml:space="preserve">
     <value>Dostupna količina [{0}]</value>
-  </data>
-  <data name="ItemSearchDetail" xml:space="preserve">
-    <value>Detalj o artiklu</value>
   </data>
   <data name="ItemSearchCall" xml:space="preserve">
     <value>Pozovi artikl</value>
@@ -278,9 +224,6 @@
   </data>
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
     <value>Pretinac zatražen</value>
-  </data>
-  <data name="DrawerActivityPickingRowList" xml:space="preserve">
-    <value>Red liste</value>
   </data>
   <data name="GeneralInfoHeader" xml:space="preserve">
     <value>Opće informacije</value>
@@ -339,14 +282,8 @@
   <data name="OtherNavigationMaintenance" xml:space="preserve">
     <value>Održavanje</value>
   </data>
-  <data name="OtherNavigationErrorSimulation" xml:space="preserve">
-    <value>Simulacija Grešaka</value>
-  </data>
   <data name="StatisticsGeneralDataHeader" xml:space="preserve">
     <value>Statistika: opći podaci.</value>
-  </data>
-  <data name="Back" xml:space="preserve">
-    <value>Natrag</value>
   </data>
   <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
     <value>Pretinci pomaknuti</value>
@@ -488,9 +425,6 @@
   </data>
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
     <value>Poziv pretinca</value>
-  </data>
-  <data name="StatisticsNavigationItems" xml:space="preserve">
-    <value>Statistika artikala</value>
   </data>
   <data name="StatisticsNavigationDrawers" xml:space="preserve">
     <value>Statistika pretinaca</value>
@@ -720,9 +654,6 @@
   <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
     <value>Red</value>
   </data>
-  <data name="StatisticsItemDataGridHeaderClass" xml:space="preserve">
-    <value>Klasa</value>
-  </data>
   <data name="StatisticsNavigationMachine" xml:space="preserve">
     <value>Statistike stroja</value>
   </data>
@@ -780,9 +711,6 @@
   <data name="DrawerCompactingRear" xml:space="preserve">
     <value>Pod. o straž. strani.</value>
   </data>
-  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
-    <value> 002350467 - Lančanica dizalice</value>
-  </data>
   <data name="CommonListType" xml:space="preserve">
     <value>Vrs. liste</value>
   </data>
@@ -819,29 +747,11 @@
   <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
     <value>Prostor za nadokn. mm.</value>
   </data>
-  <data name="DrawerCompactingDetailAbort" xml:space="preserve">
-    <value>Završi</value>
-  </data>
   <data name="DrawerCompactingAntStop" xml:space="preserve">
     <value>Završi sabijanje</value>
   </data>
   <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
     <value>Tren. stanje</value>
-  </data>
-  <data name="DrawerActivityLocalCallHeader" xml:space="preserve">
-    <value>Neposredno za pretinac u mjestu.</value>
-  </data>
-  <data name="DrawerActivityLocalCallDrawer" xml:space="preserve">
-    <value>Kod pretinca</value>
-  </data>
-  <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
-    <value>Visina tren. pretinca (mm)</value>
-  </data>
-  <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
-    <value>Bruto Tež. (kg)</value>
-  </data>
-  <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
-    <value>Tren. težina (kg)</value>
   </data>
   <data name="BlockLevelNone" xml:space="preserve">
     <value>Nijedna</value>
@@ -873,12 +783,6 @@
   <data name="MachineServiceStatus_Valid" xml:space="preserve">
     <value>Važeći</value>
   </data>
-  <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
-    <value>Max neto nosivost (kg)</value>
-  </data>
-  <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
-    <value>Broj izvršenih misija</value>
-  </data>
   <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
     <value>Povrat. pretinca</value>
   </data>
@@ -906,14 +810,8 @@
   <data name="ItemListType_NotSpecified" xml:space="preserve">
     <value>Nije navedeno</value>
   </data>
-  <data name="Abort" xml:space="preserve">
-    <value>Poništi</value>
-  </data>
   <data name="QuantityToPick" xml:space="preserve">
     <value>Količina za preuzeti</value>
-  </data>
-  <data name="QuantityToPut" xml:space="preserve">
-    <value>Količinu položiti</value>
   </data>
   <data name="PickedQuantity" xml:space="preserve">
     <value>Preuzeta količina [{0}]</value>
@@ -933,32 +831,14 @@
   <data name="ListAvailable" xml:space="preserve">
     <value>Dostupno</value>
   </data>
-  <data name="Empty" xml:space="preserve">
-    <value>Praz.</value>
-  </data>
-  <data name="Full" xml:space="preserve">
-    <value>Puno</value>
-  </data>
   <data name="CommonListRow" xml:space="preserve">
     <value>Red liste</value>
   </data>
   <data name="LoadingUnitId" xml:space="preserve">
     <value>Id pretinca</value>
   </data>
-  <data name="LoadingUnitWidth" xml:space="preserve">
-    <value>Širina</value>
-  </data>
-  <data name="LoadingUnitDepth" xml:space="preserve">
-    <value>Dubina</value>
-  </data>
   <data name="LoadingUnit" xml:space="preserve">
     <value>Pretinac</value>
-  </data>
-  <data name="CompleteCheck" xml:space="preserve">
-    <value>Potpuni pregled</value>
-  </data>
-  <data name="LoadingUnitCheck" xml:space="preserve">
-    <value>Pregled pretinca</value>
   </data>
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Potvrdi na prazno</value>
@@ -968,10 +848,6 @@
   </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Dostupnost na strojevima</value>
-  </data>
-  <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
-    <value>Trenutačna operacija je poništena s daljine.
-Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   </data>
   <data name="OperationCancelled" xml:space="preserve">
     <value>Operacija poništena</value>
@@ -1066,9 +942,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="BayTarget" xml:space="preserve">
     <value>Uval</value>
   </data>
-  <data name="MissionStateNotDefined" xml:space="preserve">
-    <value>0.Nije defin.</value>
-  </data>
   <data name="MissionStateNew" xml:space="preserve">
     <value>1.Novi</value>
   </data>
@@ -1114,9 +987,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="MissionTypeOut" xml:space="preserve">
     <value>Izlaz</value>
   </data>
-  <data name="MissionTypeFullTest" xml:space="preserve">
-    <value>Test dovršen</value>
-  </data>
   <data name="MissionTypeCompact" xml:space="preserve">
     <value>Sabijanje</value>
   </data>
@@ -1140,12 +1010,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   </data>
   <data name="Adjustment" xml:space="preserve">
     <value>Promjeni</value>
-  </data>
-  <data name="CompartmentWidth" xml:space="preserve">
-    <value>Širina</value>
-  </data>
-  <data name="CompartmentDepth" xml:space="preserve">
-    <value>Dub.</value>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
     <value>Zaliha</value>
@@ -1207,12 +1071,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
     <value>Operacije na pretincu</value>
   </data>
-  <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
-    <value>Slob. stražnji prostor</value>
-  </data>
-  <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
-    <value>Slob. prednji prostor</value>
-  </data>
   <data name="DrawerCompacting" xml:space="preserve">
     <value>Sabijanje</value>
   </data>
@@ -1221,9 +1079,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   </data>
   <data name="Code" xml:space="preserve">
     <value>Kod</value>
-  </data>
-  <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
-    <value>Trenutačna stranica ne podnosi skeniranje bar kodova.</value>
   </data>
   <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
     <value>Nema prisutnog artikla s kodom ‚{0}‘.</value>
@@ -1375,18 +1230,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
     <value>Bar kod ‚{0}‘ ne sadrži identifikacijski kod liste.</value>
   </data>
-  <data name="GoToCellHeight" xml:space="preserve">
-    <value>Idi na Vis. Ćel.</value>
-  </data>
-  <data name="LowerBayPosition" xml:space="preserve">
-    <value>Donji Položaj</value>
-  </data>
-  <data name="MaintenanceMainPageDetail" xml:space="preserve">
-    <value>Detalj</value>
-  </data>
-  <data name="UpperBayPosition" xml:space="preserve">
-    <value>Gornji Položaj</value>
-  </data>
   <data name="NoListWithIdWasFound" xml:space="preserve">
     <value>Ne postoji lista s identifikacijskim kodom ‚{0}‘.</value>
   </data>
@@ -1435,23 +1278,11 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="ServiceStatus" xml:space="preserve">
     <value>Stanje servisa</value>
   </data>
-  <data name="TotalMission" xml:space="preserve">
-    <value>Ukupna misija</value>
-  </data>
-  <data name="Instruction" xml:space="preserve">
-    <value>Uputa</value>
-  </data>
   <data name="IsDone" xml:space="preserve">
     <value>Urađ.</value>
   </data>
   <data name="IsToDo" xml:space="preserve">
     <value>Urad.</value>
-  </data>
-  <data name="MachineStatisticsCounter" xml:space="preserve">
-    <value>BrojačStatistikaStroja</value>
-  </data>
-  <data name="MaintenanceRequired" xml:space="preserve">
-    <value>Potrebno održavanje</value>
   </data>
   <data name="MaxDays" xml:space="preserve">
     <value>MaxDana</value>
@@ -1533,9 +1364,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   </data>
   <data name="Axis" xml:space="preserve">
     <value>Os</value>
-  </data>
-  <data name="BayNumberHeader" xml:space="preserve">
-    <value>BrojUvale</value>
   </data>
   <data name="CounterName" xml:space="preserve">
     <value>ImeBrojača</value>
@@ -1681,21 +1509,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="Up" xml:space="preserve">
     <value>Vis.</value>
   </data>
-  <data name="Cell_Status_Free" xml:space="preserve">
-    <value>Slob.</value>
-  </data>
-  <data name="Cell_Status_Disabled" xml:space="preserve">
-    <value>Onemogućena</value>
-  </data>
-  <data name="Cell_Status_Occupied" xml:space="preserve">
-    <value>Zauzet</value>
-  </data>
-  <data name="Cell_Status_Unusable" xml:space="preserve">
-    <value>Neuporabljiv</value>
-  </data>
-  <data name="Complete Check" xml:space="preserve">
-    <value>Završi Pregled</value>
-  </data>
   <data name="MissionStateBackToBay" xml:space="preserve">
     <value>Vrać.u uvalu</value>
   </data>
@@ -1711,17 +1524,11 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   <data name="MissionStateWaitChain" xml:space="preserve">
     <value>Čekanje lanca</value>
   </data>
-  <data name="MissionStateWaitDeposit" xml:space="preserve">
-    <value>Čekanje odlag.</value>
-  </data>
   <data name="UnitInBayWarning" xml:space="preserve">
     <value>Pretinac prisutan u uvali sabijanje nje dozvoljeno</value>
   </data>
   <data name="ActualAverageWeight" xml:space="preserve">
     <value>Prosj. stvarna jedinič.težina [g]</value>
-  </data>
-  <data name="MeasuredWeight" xml:space="preserve">
-    <value>Izmj. težina [g]</value>
   </data>
   <data name="OriginalAverageWeight" xml:space="preserve">
     <value>Prosj. izv. jedinična težina [g]</value>
@@ -1755,9 +1562,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   </data>
   <data name="BarcodeMismatchRestart" xml:space="preserve">
     <value>Neka polja bar koda ‚{0}‘ se ne podudaraju s onima artikla. Početi ponovno.</value>
-  </data>
-  <data name="BarcodeOperationValidated" xml:space="preserve">
-    <value>Artikl potvrđen pomoću bar koda.</value>
   </data>
   <data name="BarcodeMissingQuantity" xml:space="preserve">
     <value>Točno navesti količinu prije potvrđivanja.</value>
@@ -1809,9 +1613,6 @@ Molimo vas vratite moguće pomaknute artikle u njihov izvorni položaj.</value>
   </data>
   <data name="RemoveBox" xml:space="preserve">
     <value>Izvadite posudu</value>
-  </data>
-  <data name="Command" xml:space="preserve">
-    <value>Naredba</value>
   </data>
   <data name="Note" xml:space="preserve">
     <value>Bilješka</value>

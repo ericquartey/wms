@@ -196,7 +196,7 @@
     <value>Elevatore occupato con cassetto sconosciuto</value>
   </data>
   <data name="LoadUnitNotFound" xml:space="preserve">
-    <value>Inconsistenza database cassetto</value>
+    <value>Cassetto non disponibile</value>
   </data>
   <data name="LoadUnitNotLoaded" xml:space="preserve">
     <value>Il cassetto selezionato non risulta caricato in magazzino</value>

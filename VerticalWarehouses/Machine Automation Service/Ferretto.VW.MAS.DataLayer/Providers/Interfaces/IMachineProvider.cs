@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.DataLayer
         void ImportMachineStatistics(IEnumerable<MachineStatistics> machineStatistics, DataLayerContext context);
 
         bool IsOneTonMachine();
-
+        void SetMachineId(int newMachineId);
         void Update(Machine machine, DataLayerContext context);
 
         void UpdateBayChainStatistics(double distance, BayNumber bayNumber);

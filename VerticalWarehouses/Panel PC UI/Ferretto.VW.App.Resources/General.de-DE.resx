@@ -123,122 +123,26 @@
   <data name="Back" xml:space="preserve">
     <value>Zurück</value>
   </data>
-  <data name="Bottom" xml:space="preserve">
-    <value>Unten</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annull.</value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Datum Erstell.</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Beschr.</value>
-  </data>
-  <data name="Down" xml:space="preserve">
-    <value>Unt</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Bearbeit</value>
-  </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Ausfü.</value>
-  </data>
-  <data name="File" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="Front" xml:space="preserve">
-    <value>Vorders.</value>
-  </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Datum letzte Änd.</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
-  </data>
   <data name="Next" xml:space="preserve">
     <value>Nächste</value>
-  </data>
-  <data name="Open" xml:space="preserve">
-    <value>Öffn</value>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Aktual.</value>
-  </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Verwer</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Speic</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Suche</value>
-  </data>
-  <data name="ShowDetails" xml:space="preserve">
-    <value>Details anzeig.</value>
-  </data>
   <data name="SwitchOff" xml:space="preserve">
     <value>Aussch</value>
-  </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
-  </data>
-  <data name="Top" xml:space="preserve">
-    <value>Oben</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Typ</value>
-  </data>
-  <data name="MeasureUnit" xml:space="preserve">
-    <value>Maßeinheit</value>
-  </data>
-  <data name="Up" xml:space="preserve">
-    <value>Su</value>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Laden</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Stat.</value>
-  </data>
-  <data name="Quantity" xml:space="preserve">
-    <value>Menge</value>
-  </data>
-  <data name="Priority" xml:space="preserve">
-    <value>Priorit.</value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value>Dettail</value>
-  </data>
-  <data name="AdditionalInfo" xml:space="preserve">
-    <value>[{0}]</value>
-  </data>
-  <data name="CheckBoxDark" xml:space="preserve">
-    <value>Dkl. Thema</value>
-  </data>
-  <data name="MachineOff" xml:space="preserve">
-    <value>Aus</value>
-  </data>
-  <data name="MachineOn" xml:space="preserve">
-    <value>Ein</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
   </data>
   <data name="Debug" xml:space="preserve">
     <value>Debug</value>
-  </data>
-  <data name="NumberOnTotal" xml:space="preserve">
-    <value>{0}von{1}</value>
   </data>
   <data name="FilePath" xml:space="preserve">
     <value>Dateipfad</value>
@@ -270,20 +174,11 @@
   <data name="ChangeTheme" xml:space="preserve">
     <value>Thema wech</value>
   </data>
-  <data name="AutomaticMode" xml:space="preserve">
-    <value>Automatik</value>
-  </data>
   <data name="BayNumber" xml:space="preserve">
     <value>B.</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
     <value>vor {0:0} Tagen</value>
-  </data>
-  <data name="EmergencyIsOn" xml:space="preserve">
-    <value>Not-Aus aktiv</value>
-  </data>
-  <data name="EnsureEmergencyIsOff" xml:space="preserve">
-    <value>Sicherstellen, dass keine Not-Aus-Taste gedrückt ist.</value>
   </data>
   <data name="ErrorCommunicatingWithServices" xml:space="preserve">
     <value>Falsche Kommunikation mit Betrieben.</value>
@@ -300,23 +195,8 @@
   <data name="Now" xml:space="preserve">
     <value>Jetzt</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PasswordLogin" xml:space="preserve">
-    <value>Password</value>
-  </data>
   <data name="SerialNumber" xml:space="preserve">
     <value>Seriennummer:</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Benutzern.</value>
-  </data>
-  <data name="UserLogin_Password" xml:space="preserve">
-    <value>Passwort</value>
-  </data>
-  <data name="UserLogin_UserName" xml:space="preserve">
-    <value>Benutzern.</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version {0}</value>
@@ -333,19 +213,10 @@
   <data name="BayOneName" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="BayOneNumber" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="BayThreeName" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="BayThreeNumber" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="BayTwoName" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="BayTwoNumber" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="SwitchToAutomatic" xml:space="preserve">
@@ -359,9 +230,6 @@
   </data>
   <data name="TargetNullValue" xml:space="preserve">
     <value>-</value>
-  </data>
-  <data name="LoadUnitOperations" xml:space="preserve">
-    <value>Kastenvorgänge</value>
   </data>
   <data name="Devices" xml:space="preserve">
     <value>Devices</value>
@@ -411,17 +279,8 @@
   <data name="DateFormatDayNumber" xml:space="preserve">
     <value>{0: dd.MM.yyyy}</value>
   </data>
-  <data name="DateFormatHourMinutes" xml:space="preserve">
-    <value>{0: HH:mm}</value>
-  </data>
-  <data name="DateFormatHourMinuteSecond" xml:space="preserve">
-    <value>{0: HH:mm:ss}</value>
-  </data>
   <data name="SwitchToManual" xml:space="preserve">
     <value>Umsch. auf Man</value>
-  </data>
-  <data name="ErrorLogin" xml:space="preserve">
-    <value>Fehler: Anm. fehlgeschl. Richtigkeit Benutzer und Passw. kontr.</value>
   </data>
   <data name="BackShutterTest" xml:space="preserve">
     <value>Test läuft... Seite nicht verlassen</value>

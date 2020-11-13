@@ -583,7 +583,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selected loading unit is not present in the database. Check the loading unit number entered and the correct configuration of the database..
+        ///   Looks up a localized string similar to The selected load unit is not available. Check the load unit number entered and the logical position of the load unit..
         /// </summary>
         public static string LoadUnitNotFound {
             get {

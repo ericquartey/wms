@@ -189,9 +189,6 @@
   <data name="MovementVerticalInProgress" xml:space="preserve">
     <value>Probíhá vertikální pohyb...</value>
   </data>
-  <data name="NoGear" xml:space="preserve">
-    <value>Chybí chod</value>
-  </data>
   <data name="NoLoadingUnitInBay" xml:space="preserve">
     <value>Ve stan není přít žádná zásuvka.</value>
   </data>
