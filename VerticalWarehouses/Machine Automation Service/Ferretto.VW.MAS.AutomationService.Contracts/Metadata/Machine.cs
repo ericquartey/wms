@@ -88,6 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double LoadUnitTare { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadUnitVeryHeavyPercent))]
+            [Unit("%")]
             [Id(15)]
             public double LoadUnitVeryHeavyPercent { get; set; }
 
