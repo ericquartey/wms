@@ -181,6 +181,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && bay.Carousel is null
                         && this.Mission.ErrorCode != MachineErrorCode.NoError)
                     {
+                        this.Mission.ErrorCode = MachineErrorCode.NoError;
                         newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                     else if (bay.Positions.Count() == 1
