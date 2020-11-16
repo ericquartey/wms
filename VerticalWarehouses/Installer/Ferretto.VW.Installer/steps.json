@@ -135,7 +135,6 @@
       "description": "Estrai TeamViewerQS in F:",
       "script": "scripts/install_TeamViewer.ps1",
       "rollbackScript": "scripts/install_TeamViewer.rollback.ps1",
-      "setupMode": "install"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",

@@ -780,6 +780,9 @@ namespace Ferretto.VW.Simulator.Services
                     var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(this.MinTorqueCurrent, this.MaxTorqueCurrent)));
                     //var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)((this.MinTorqueCurrent+ this.MaxTorqueCurrent)/2)));
 
+                    // To simulate an overweight condition: value to use
+                    // torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)(this.MaxTorqueCurrent + 5)));
+
                     result = client.Client.Send(torqueMessage);
                     break;
 
@@ -787,6 +790,11 @@ namespace Ferretto.VW.Simulator.Services
                     // simulate measure profile height
                     this.GetProfileRange(inverter, out var minProfileHeight, out var maxProfileHeight);
                     var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(minProfileHeight, maxProfileHeight)));
+
+                    profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)(3500)));
+
+                    // To simulate an height exceeded condition: value to use
+                    // this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)(maxProfileHeight + 500)));
 
                     //
                     // TEST: check intrusion

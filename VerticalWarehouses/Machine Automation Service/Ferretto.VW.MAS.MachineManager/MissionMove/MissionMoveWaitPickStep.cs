@@ -71,55 +71,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.BaysDataProvider.Light(this.Mission.TargetBay, true);
             this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
 
-            // Only applied for double bay, when there is already another mission on bay in WaitPick step
-            //if (bay.IsDouble)
-            //{
-            //    // ---------------------
-            //    // WORKAROUND
-            //    // ---------------------
-
-            //    // It seems this code is not used!!!
-
-            //    // Check for another mission
-            //    // Retrieve the mission on the bay with Step = MissionStep.WaitDepositInBay
-            //    var waitMissionOnCurrentBay = this.MissionsDataProvider.GetAllActiveMissions()
-            //        .FirstOrDefault(
-            //            m => m.LoadUnitId != this.Mission.LoadUnitId &&
-            //            m.Id != this.Mission.Id &&
-            //            m.Step == MissionStep.WaitPick
-            //        );
-
-            //    if (waitMissionOnCurrentBay != null)
-            //    {
-            //        this.Logger.LogDebug($"MissionId:{waitMissionOnCurrentBay.Id} => Send a Notification message Type:{MessageType.MoveLoadingUnit}, CommandAction:{CommandAction.Activate}");
-
-            //        // Send a MoveLoadingUnit message to the MachineManager component for the selected mission
-            //        var moveLoadingUnitMessageData = new MoveLoadingUnitMessageData(
-            //            waitMissionOnCurrentBay.MissionType,
-            //            LoadingUnitLocation.LoadUnit,
-            //            LoadingUnitLocation.Cell,
-            //            sourceCellId: null,
-            //            destinationCellId: null,
-            //            waitMissionOnCurrentBay.LoadUnitId,
-            //            insertLoadUnit: true,
-            //            waitMissionOnCurrentBay.Id,
-            //            CommandAction.Activate);
-
-            //        this.EventAggregator
-            //            .GetEvent<CommandEvent>()
-            //            .Publish(
-            //                new CommandMessage(
-            //                    moveLoadingUnitMessageData,
-            //                    $"Bay {bay.Number} requested to activate move Loading unit {waitMissionOnCurrentBay.LoadUnitId} to Bay {bay.Number}",
-            //                    MessageActor.MachineManager,
-            //                    MessageActor.MachineManager,
-            //                    MessageType.MoveLoadingUnit,
-            //                    bay.Number,
-            //                    BayNumber.None)
-            //                );
-            //    }
-            //}
-
             return true;
         }
 
@@ -185,14 +136,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        // if this.Mission.ErrorCode != MachineErrorCode.NoError
-                        //{
-                        //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
-                        //this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                        //this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
-                        //this.BaysDataProvider.Light(this.Mission.TargetBay, true);
-                        // return;
-                        //}
+                        if (this.Mission.ErrorCode != MachineErrorCode.NoError)
+                        {
+                            this.Logger.LogInformation($"Mission:Id={this.Mission.Id}, ErrorCode={this.Mission.ErrorCode} > Prompt to display the error condition view");
+
+                            // Handle error condition for the given mission, if exists
+                            this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                            this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+                            this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+                            // End (forced) the current mission
+                            var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep.OnEnter(null);
+
+                            return;
+                        }
 
                         var activeMission = this.MissionsDataProvider.GetAllActiveMissions()
                             .FirstOrDefault(x => x.Status == MissionStatus.Executing
