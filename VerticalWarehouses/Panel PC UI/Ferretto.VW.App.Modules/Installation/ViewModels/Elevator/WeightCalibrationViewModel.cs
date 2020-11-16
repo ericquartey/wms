@@ -610,7 +610,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.GetBayPosition(), null, this.MachineStatus.LoadingUnitPositionUpInBay.Id);
-                this.CurrentStep = WeightCalibartionStep.CallUnit;
+                //this.CurrentStep = WeightCalibartionStep.CallUnit;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
