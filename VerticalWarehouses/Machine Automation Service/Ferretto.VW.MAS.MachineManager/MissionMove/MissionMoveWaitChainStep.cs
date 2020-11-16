@@ -89,20 +89,35 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    // check mission this.Mission.ErrorCode != MachineErrorCode.NoError
-                    //this.LoadingUnitMovementProvider.ResumeOperation(
-                    //    lowerMission.Id,
-                    //    lowerMission.LoadUnitSource,
-                    //    lowerMission.LoadUnitDestination,
-                    //    lowerMission.WmsId,
-                    //    lowerMission.MissionType,
-                    //    lowerMission.TargetBay,
-                    //    MessageActor.MachineManager);
+                    // Check if exist error mission and resume it
+                    var errorMission = this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(
+                        m => m.ErrorCode != MachineErrorCode.NoError);
 
-                    //this.MissionsDataProvider.Update(this.Mission);
+                    if (errorMission != null)
+                    {
+                        var b = this.BaysDataProvider.GetByLoadingUnitLocation(errorMission.LoadUnitDestination);
+                        if (b != null)
+                        {
+                            // Only applied for internal double bay
+                            if (b.IsDouble && b.Carousel == null && !b.IsExternal)
+                            {
+                                this.Logger.LogInformation($"Current mission:Id={this.Mission.Id}, Resume error Mission:Id={errorMission.Id}, ErrorCode={errorMission.ErrorCode}");
 
-                    //this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
-                    //return true;
+                                this.LoadingUnitMovementProvider.ResumeOperation(
+                                    errorMission.Id,
+                                    errorMission.LoadUnitSource,
+                                    errorMission.LoadUnitDestination,
+                                    errorMission.WmsId,
+                                    errorMission.MissionType,
+                                    errorMission.TargetBay,
+                                    MessageActor.MachineManager);
+
+                                this.MissionsDataProvider.Update(this.Mission);
+
+                                this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+                            }
+                        }
+                    }
                 }
             }
             // no need to wait

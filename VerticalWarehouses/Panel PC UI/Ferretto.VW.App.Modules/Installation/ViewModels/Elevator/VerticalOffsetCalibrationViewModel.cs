@@ -231,11 +231,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveToConfirmCommand = new DelegateCommand(
                 () =>
                 {
-                    this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
-                    this.NewDisplacement = this.CurrentVerticalOffset.Value - (double)this.Displacement.Value;
+                    if (this.Displacement != null)
+                    {
+                        this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
+                        this.NewDisplacement = this.CurrentVerticalOffset.Value - (double)this.Displacement.Value;
 
-                    this.IsOriginCalibrationStepVisible = (this.Displacement.Value != 0);
-                    this.RaisePropertyChanged(nameof(this.IsOriginCalibrationStepVisible));
+                        this.IsOriginCalibrationStepVisible = (this.Displacement.Value != 0);
+                        this.RaisePropertyChanged(nameof(this.IsOriginCalibrationStepVisible));
+                    }
+                    else
+                    {
+                        this.CurrentStep = VerticalOffsetCalibrationStep.OriginCalibration;
+
+                        this.IsOriginCalibrationStepVisible = true;
+                        this.RaisePropertyChanged(nameof(this.IsOriginCalibrationStepVisible));
+                    }
                 },
                 this.CanMoveToConfirm));
 
@@ -602,8 +612,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToConfirm()
         {
-            return this.CanBaseExecute() &&
-                   this.Displacement != null;
+            return this.CanBaseExecute();
+            //&&
+            //   this.Displacement != null;
         }
 
         private bool CanMoveToStartPosition()

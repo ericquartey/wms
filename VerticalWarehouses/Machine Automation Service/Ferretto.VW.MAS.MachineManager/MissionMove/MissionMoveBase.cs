@@ -309,8 +309,31 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var bShowErrorCondition = true;
                             if (this.Mission.MissionType == MissionType.IN && this.Mission.ErrorCode != MachineErrorCode.NoError)
                             {
+                                switch (this.Mission.ErrorCode)
+                                {
+                                    case MachineErrorCode.LoadUnitWeightExceeded:
+                                        // WaitPick step
+                                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        break;
+
+                                    case MachineErrorCode.LoadUnitHeightFromBayExceeded:
+                                        // WaitPick step
+                                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        break;
+
+                                    case MachineErrorCode.WarehouseIsFull:
+                                        // WaitPick step
+                                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        break;
+
+                                    default:
+                                        // Close shutter (?)
+                                        newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        break;
+                                }
+
                                 // In this case (see conditions), close the shutter
-                                newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                //newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
                             // For the mission of OUT type or WMS type
                             else if (this.Mission.MissionType == MissionType.OUT ||
@@ -735,6 +758,29 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                if (bay != null)
+                {
+                    // Only applied for internal double bay
+                    if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
+                    {
+                        switch (this.Mission.ErrorCode)
+                        {
+                            case MachineErrorCode.LoadUnitHeightFromBayExceeded:
+                                var newStep1 = new MissionMoveBackToBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                newStep1.OnEnter(null);
+                                break;
+
+                            default:
+                                var newStep2 = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                newStep2.OnEnter(null);
+                                break;
+                        }
+
+                        return;
+                    }
+                }
+
                 var newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
