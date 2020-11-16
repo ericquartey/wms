@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly ILogger<DataLayerContext> logger;
 
         private readonly IMachineProvider machineProvider;
@@ -47,10 +50,12 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Constructors
 
         public CellsProvider(DataLayerContext dataContext,
+            IErrorsProvider errorsProvider,
             IElevatorDataProvider elevatorDataProvider,
             IMachineProvider machineProvider,
             ILogger<DataLayerContext> logger)
         {
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
@@ -527,10 +532,12 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public int SetCellsToTest()
+        public int SetCellsToTest(BayNumber bayNumber)
         {
             lock (this.dataContext)
             {
+                var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+
                 var cells = this.dataContext.Cells
                     .Include(c => c.Panel)
                     .ToArray()                      // this ToArray is needed to sort correctly
@@ -560,9 +567,25 @@ namespace Ferretto.VW.MAS.DataLayer
                             || (next.BlockLevel != BlockLevel.None && next.BlockLevel != BlockLevel.NeedsTest)
                             )
                         {
-                            cell.BlockLevel = BlockLevel.NeedsTest;
-                            this.dataContext.Cells.Update(cell);
-                            count++;
+                            if (cell.Position > verticalAxis.UpperBound)
+                            {
+                                this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, bayNumber);
+                                count = 0;
+                                break;
+                            }
+                            else if (cell.Position < verticalAxis.LowerBound)
+                            {
+                                this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, bayNumber);
+                                count = 0;
+                                break;
+                            }
+                            else
+                            {
+                                cell.BlockLevel = BlockLevel.NeedsTest;
+                                this.dataContext.Cells.Update(cell);
+
+                                count++;
+                            }
                         }
                         else
                         {
@@ -577,9 +600,25 @@ namespace Ferretto.VW.MAS.DataLayer
                                 || (prev.BlockLevel != BlockLevel.None && prev.BlockLevel != BlockLevel.NeedsTest)
                                 )
                             {
-                                cell.BlockLevel = BlockLevel.NeedsTest;
-                                this.dataContext.Cells.Update(cell);
-                                count++;
+                                if (cell.Position > verticalAxis.UpperBound)
+                                {
+                                    this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, bayNumber);
+                                    count = 0;
+                                    break;
+                                }
+                                else if (cell.Position < verticalAxis.LowerBound)
+                                {
+                                    this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, bayNumber);
+                                    count = 0;
+                                    break;
+                                }
+                                else
+                                {
+                                    cell.BlockLevel = BlockLevel.NeedsTest;
+                                    this.dataContext.Cells.Update(cell);
+
+                                    count++;
+                                }
                             }
                         }
                     }
