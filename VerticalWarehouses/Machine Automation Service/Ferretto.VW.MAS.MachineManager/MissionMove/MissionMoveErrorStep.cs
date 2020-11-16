@@ -182,6 +182,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionStep.ToTarget:
                 case MissionStep.BackToBay:
                 case MissionStep.WaitDepositCell:
+                case MissionStep.WaitDepositBay:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
                         this.Mission.StepTime = DateTime.UtcNow;
