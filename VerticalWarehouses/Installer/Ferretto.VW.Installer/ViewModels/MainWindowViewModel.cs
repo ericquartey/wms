@@ -179,6 +179,8 @@ namespace Ferretto.VW.Installer.ViewModels
             switch (this.setupModeService.Mode)
             {
                 case SetupMode.Install:
+                case SetupMode.Update:
+                case SetupMode.Restore:
                     {
                         if (snapshotFileFound)
                         {
@@ -198,20 +200,6 @@ namespace Ferretto.VW.Installer.ViewModels
 
                             await this.navigationService.NavigateToAsync(viewModel);
                         }
-
-                        break;
-                    }
-
-                case SetupMode.Update:
-                case SetupMode.Restore:
-                    {
-                        var viewModel = new RoleSelectionViewModel(
-                            NavigationService.GetInstance(),
-                            Core.Container.GetInstallationService(),
-                            NotificationService.GetInstance(),
-                            Core.Container.GetMachineConfigurationService());
-
-                        await this.navigationService.NavigateToAsync(viewModel);
 
                         break;
                     }

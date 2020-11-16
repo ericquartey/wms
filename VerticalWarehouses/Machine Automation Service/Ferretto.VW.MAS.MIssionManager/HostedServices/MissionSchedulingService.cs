@@ -89,9 +89,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 // first cycle: init RequiredCycles and cells to test
                 var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
                 this.loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId.Value);
+                var bayNumber = baysDataProvider.GetByLoadingUnitLocation(this.loadUnitSource)?.Number ?? BayNumber.None;
                 if (this.loadUnitSource != LoadingUnitLocation.NoLocation)
                 {
-                    var bayNumber = baysDataProvider.GetByLoadingUnitLocation(this.loadUnitSource)?.Number ?? BayNumber.None;
                     if (bayNumber != machineProvider.BayTestNumber)
                     {
                         this.Logger.LogError($"First Test error: Load Unit not found in Bay!");
@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     errorsProvider.RecordNew(MachineErrorCode.WarehouseNotEmpty, machineProvider.BayTestNumber);
                     return false;
                 }
-                machineProvider.RequiredCycles = cellsProvider.SetCellsToTest();
+                machineProvider.RequiredCycles = cellsProvider.SetCellsToTest(bayNumber);
                 if (machineProvider.RequiredCycles.Value == 0)
                 {
                     this.Logger.LogError($"First Test error: no cell to test found!");
