@@ -2355,4 +2355,7 @@
   <data name="ChangeId" xml:space="preserve">
     <value>Change Id</value>
   </data>
+  <data name="StartCalibrationButton" xml:space="preserve">
+    <value>Press start to begin calibration</value>
+  </data>
 </root>

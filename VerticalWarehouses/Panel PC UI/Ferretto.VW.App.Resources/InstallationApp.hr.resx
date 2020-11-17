@@ -2298,4 +2298,7 @@
   <data name="ChangeId" xml:space="preserve">
     <value>Promijeni Id</value>
   </data>
+  <data name="StartCalibrationButton" xml:space="preserve">
+    <value>Pritisnite start da biste započeli kalibraciju</value>
+  </data>
 </root>
