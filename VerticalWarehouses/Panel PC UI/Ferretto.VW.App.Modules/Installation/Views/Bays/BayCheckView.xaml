@@ -15,767 +15,768 @@
             UseLayoutRounding="True"
             mc:Ignorable="d">
 
-    <ctrls:View.Resources>
-        <!--#region Converters-->
-        <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
-                                        FalseBrushResourceName="PpcBackground"
-                                        TrueBrush="{StaticResource FerrettoBlue}" />
-        <!--#endregion-->
-
-        <!--#region DataTemplate Body-->
-        <DataTemplate x:Key="DataTemplatePositionUp">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.ColumnSpan="3">
-                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{res:Loc InstallationApp.HighPositionControl}" /><Run Text=":" />
-
-                    </TextBlock>
-
-                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{res:Loc InstallationApp.MoveElevatorAtBayHeightOpenShutter}" />
-                </StackPanel>
-
-                <Border Grid.Row="1"
-                        Grid.ColumnSpan="3"
-                        Margin="1,-10,0,20"
-                        Background="{DynamicResource PpcBackground}">
-                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.ColumnSpan="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{res:Loc InstallationApp.Bay}"
-                                           TextAlignment="Left" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding BayNumber}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="3"
-                                  Grid.ColumnSpan="3">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{res:Loc InstallationApp.Position}"
-                                           TextAlignment="Left" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding CurrentBayPosition}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="6"
-                                  Grid.ColumnSpan="3">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{res:Loc InstallationApp.InitialPosition}" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding BayPositionActive.Height}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="9"
-                                  Grid.ColumnSpan="3"
-                                  Margin="0,0,15,0">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{res:Loc InstallationApp.Displacement}"
-                                           TextAlignment="Left" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding DisplacementUp, StringFormat={}{0:F1}, FallbackValue=0}"
-                                           TextWrapping="Wrap" />
-
-                            </Grid>
-
-                        </Grid>
-                    </Border>
-                </Border>
-
-                <StackPanel Grid.Row="2"
-                            Grid.ColumnSpan="3"
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal">
-
-                    <controls:PpcButton Grid.Row="2"
-                                        Grid.Column="1"
-                                        Margin="0"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding MoveToBayPositionCommand}"
-                                        Content="{res:Loc InstallationApp.MoveToPosition}"
-                                        Style="{DynamicResource WizardIntoButton}" />
-
-                    <controls:PpcButton Grid.Row="2"
-                                        Grid.Column="2"
-                                        Margin="15,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding MoveToShutterCommand}"
-                                        Content="{Binding ShutterLabel}"
-                                        Style="{DynamicResource WizardIntoButton}" />
-
-                </StackPanel>
-
-                <TextBlock Grid.Row="3"
-                           Grid.ColumnSpan="3"
-                           Margin="0,30,0,15"
-                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                           Text="{res:Loc InstallationApp.CheckBayElevatorAlignment}" />
-
-                <ctrls:PpcSpinEdit Grid.Row="4"
-                                   Width="215"
-                                   Height="80"
-                                   Margin="0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   EditValue="{Binding StepValueUp, Mode=TwoWay}"
-                                   IsEnabled="{Binding IsCanStepValue}"
-                                   LabelText="{res:Loc InstallationApp.StepValue}"
-                                   Mask="###0.0" />
-
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="1"
-                                    Margin="15,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding DisplacementCommand}"
-                                    Content="{res:Loc InstallationApp.MoveElevator}"
-                                    Style="{DynamicResource WizardIntoButton}" />
-
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="2"
-                                    Margin="0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc InstallationApp.NextLarge}"
-                                    Style="{DynamicResource WizardConfirmButton}" />
-
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="DataTemplatePositionDown">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.ColumnSpan="3">
-                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{res:Loc InstallationApp.HighPositionControl}" /> <Run Text=":" />
-                    </TextBlock>
-                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{res:Loc InstallationApp.MoveElevatorAtBayHeightOpenShutter}" />
-                </StackPanel>
-
-                <Border Grid.Row="1"
-                        Grid.ColumnSpan="3"
-                        Margin="1,-10,0,20"
-                        Background="{DynamicResource PpcBackground}">
-                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.ColumnSpan="3">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{res:Loc InstallationApp.Bay}"
-                                           TextAlignment="Left" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding BayNumber}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="3"
-                                  Grid.ColumnSpan="3">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{res:Loc InstallationApp.Position}"
-                                           TextAlignment="Left" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding CurrentBayPosition}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="6"
-                                  Grid.ColumnSpan="3">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{res:Loc InstallationApp.InitialPosition}" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding BayPositionActive.Height}"
-                                           TextWrapping="Wrap" />
-
-                                <Border Grid.RowSpan="2"
-                                        Grid.Column="1"
-                                        Margin="0,25"
-                                        VerticalAlignment="Stretch"
-                                        BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                        BorderThickness="1" />
-
-                            </Grid>
-
-                            <Grid Grid.Column="9"
-                                  Grid.ColumnSpan="3"
-                                  Margin="0,0,15,0">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Margin="0,20,0,0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Style="{DynamicResource VWAPP_CardSensor}"
-                                           Text="{res:Loc InstallationApp.Displacement}"
-                                           TextAlignment="Left" />
-
-                                <TextBlock Grid.Row="1"
-                                           Margin="0"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Top"
-                                           Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                           Text="{Binding DisplacementDown, StringFormat={}{0:F1}, FallbackValue=0}"
-                                           TextWrapping="Wrap" />
-
-                            </Grid>
-
-                        </Grid>
-                    </Border>
-                </Border>
-
-                <StackPanel Grid.Row="2"
-                            Grid.ColumnSpan="3"
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal">
-
-                    <controls:PpcButton Grid.Row="2"
-                                        Grid.Column="1"
-                                        Margin="0"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding MoveToBayPositionCommand}"
-                                        Content="{res:Loc InstallationApp.MoveToPosition}"
-                                        Style="{DynamicResource WizardIntoButton}" />
-
-                    <controls:PpcButton Grid.Row="2"
-                                        Grid.Column="2"
-                                        Margin="15,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding MoveToShutterCommand}"
-                                        Content="{Binding ShutterLabel}"
-                                        Style="{DynamicResource WizardIntoButton}" />
-                </StackPanel>
-
-                <TextBlock Grid.Row="3"
-                           Grid.ColumnSpan="3"
-                           Margin="0,30,0,15"
-                           Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                           Text="{res:Loc InstallationApp.CheckBayElevatorAlignment}" />
-
-                <ctrls:PpcSpinEdit Grid.Row="4"
-                                   Width="215"
-                                   Height="80"
-                                   Margin="0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   EditValue="{Binding StepValueDown, Mode=TwoWay}"
-                                   IsEnabled="{Binding IsCanStepValue}"
-                                   LabelText="{res:Loc InstallationApp.StepValue}"
-                                   Mask="###0.0" />
-
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="1"
-                                    Margin="15,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding DisplacementCommand}"
-                                    Content="{res:Loc InstallationApp.MoveElevator}"
-                                    Style="{DynamicResource WizardIntoButton}" />
-
-                <controls:PpcButton Grid.Row="4"
-                                    Grid.Column="2"
-                                    Margin="0"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Command="{Binding MoveToNextCommand}"
-                                    Content="{res:Loc InstallationApp.NextLarge}"
-                                    Style="{DynamicResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="DataTemplateConfirm">
-            <Grid Margin="20"
-                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.ColumnSpan="2">
-                    <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-                        <Run Text="{res:Loc InstallationApp.ConfirmChanges}" /><Run Text=":" />
-
-                    </TextBlock>
-
-                    <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{res:Loc InstallationApp.SaveCheckPosition}" />
-                </StackPanel>
-
-                <Grid Grid.Row="1"
-                      Grid.RowSpan="2"
-                      Visibility="{Binding HasDisplacementValue, Converter={StaticResource BTVIC}, Mode=OneWay}">
-
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                               Text="{res:Loc InstallationApp.NoChanges}" />
-                </Grid>
-
-                <Grid Grid.Row="1"
-                      Visibility="{Binding HasDisplacementUpValue, Converter={StaticResource BTVC}, Mode=OneWay}">
-                    <Border Width="300"
-                            Height="90"
-                            Margin="0"
-                            BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Margin="8,4"
-                                       Style="{DynamicResource VWAPP_CardSensor}"
-                                       Text="{res:Loc InstallationApp.BayPositionUpHeightNew}" />
-
-                            <TextBlock Grid.Row="1"
-                                       Margin="8,4"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource VWAPP_CardSensor_Data}">
-                                <Run Text="{Binding NewPositionUp, StringFormat={}{0:0.00}}" />
-                                <Run Text="{Binding DisplacementUp, StringFormat={}({0:+0.0;-#.0})}" />
-                            </TextBlock>
-                        </Grid>
-                    </Border>
-                </Grid>
-
-                <Grid Grid.Row="2"
-                      Visibility="{Binding HasDisplacementDownValue, Converter={StaticResource BTVC}, Mode=OneWay}">
-                    <Border Width="300"
-                            Height="90"
-                            Margin="0"
-                            BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}"
-                            Visibility="{Binding HasStepPositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Margin="8,4"
-                                       Style="{DynamicResource VWAPP_CardSensor}"
-                                       Text="{res:Loc InstallationApp.BayPositionDownHeightNew}" />
-
-                            <TextBlock Grid.Row="1"
-                                       Margin="8,4"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource VWAPP_CardSensor_Data}">
-                                <Run Text="{Binding NewPositionDown, StringFormat={}{0:0.00}}" />
-                                <Run Text="{Binding DisplacementDown, StringFormat={}({0:+0.0;-#.0})}" />
-                            </TextBlock>
-                        </Grid>
-                    </Border>
-                </Grid>
-
-                <controls:PpcButton Grid.Row="3"
-                                    Command="{Binding SaveCommand}"
-                                    Content="{res:Loc General.Save}"
-                                    Style="{StaticResource WizardConfirmButton}" />
-            </Grid>
-        </DataTemplate>
-
-        <local:BayCheckStepTemplateSelector x:Key="selector"
-                                            EnumConfirm="{StaticResource DataTemplateConfirm}"
-                                            EnumPositionDown="{StaticResource DataTemplatePositionDown}"
-                                            EnumPositionUp="{StaticResource DataTemplatePositionUp}" />
-        <!--#endregion-->
-    </ctrls:View.Resources>
-
-    <Grid Margin="15,0,0,0">
+  <ctrls:View.Resources>
+    <!--#region Converters-->
+    <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
+                                    FalseBrushResourceName="PpcBackground"
+                                    TrueBrush="{StaticResource FerrettoBlue}" />
+    <!--#endregion-->
+
+    <!--#region DataTemplate Body-->
+    <DataTemplate x:Key="DataTemplatePositionUp">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60" />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <!--#region Title-->
-        <StackPanel Grid.ColumnSpan="4"
-                    Orientation="Horizontal">
-            <TextBlock Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="4.3.1" />
-            <TextBlock Grid.ColumnSpan="2"
-                       Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc InstallationApp.BayHeightCheck}" />
+
+        <StackPanel Grid.ColumnSpan="3">
+          <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+            <Run Text="{res:Loc InstallationApp.HighPositionControl}" /><Run Text=":" />
+
+          </TextBlock>
+
+          <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.MoveElevatorAtBayHeightOpenShutter}" />
         </StackPanel>
-        <!--#endregion-->
 
-        <!--#region Description-->
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="4"
-                   Height="Auto"
-                   Margin="0,0,15,0"
-                   VerticalAlignment="Top"
-                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{res:Loc HelpDescriptions.HelpBCTRDescription}" />
-        <!--#endregion-->
+        <Border Grid.Row="1"
+                Grid.ColumnSpan="3"
+                Margin="1,-10,0,20"
+                Background="{DynamicResource PpcBackground}">
+          <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                  BorderThickness="{DynamicResource PpcBorderThickness}">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+              </Grid.ColumnDefinitions>
 
-        <!--#region Tails-->
-        <controls:CardSensorAxisVertical Grid.Row="2"
-                                         Grid.Column="3"
-                                         Width="230"
-                                         Height="90"
-                                         MinHeight="90"
-                                         Margin="0,15,15,0" />
-        <controls:CardSensorAxisHorizontal Grid.Row="3"
-                                           Grid.Column="3"
-                                           Width="230"
-                                           Height="90"
-                                           MinHeight="90"
-                                           Margin="0,15,15,0" />
-        <controls:CardSensorShutter Grid.Row="4"
-                                    Grid.Column="3"
-                                    Width="230"
-                                    Height="90"
-                                    MinHeight="90"
-                                    Margin="0,15,15,0"
-                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+              <Grid Grid.ColumnSpan="3">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-        <controls:PpcButton Grid.Row="6"
-                            Grid.Column="3"
-                            Margin="0,0,15,0"
+                <TextBlock Margin="0,20,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource VWAPP_CardSensor}"
+                           Text="{res:Loc InstallationApp.Bay}"
+                           TextAlignment="Left" />
+
+                <TextBlock Grid.Row="1"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                           Text="{Binding BayNumber}"
+                           TextWrapping="Wrap" />
+
+                <Border Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Margin="0,25"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                        BorderThickness="1" />
+
+              </Grid>
+
+              <Grid Grid.Column="3"
+                    Grid.ColumnSpan="3">
+
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Margin="0,20,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource VWAPP_CardSensor}"
+                           Text="{res:Loc InstallationApp.Position}"
+                           TextAlignment="Left" />
+
+                <TextBlock Grid.Row="1"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                           Text="{Binding CurrentBayPosition}"
+                           TextWrapping="Wrap" />
+
+                <Border Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Margin="0,25"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                        BorderThickness="1" />
+
+              </Grid>
+
+              <Grid Grid.Column="6"
+                    Grid.ColumnSpan="3">
+
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Margin="0,20,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource VWAPP_CardSensor}"
+                           Text="{res:Loc InstallationApp.InitialPosition}" />
+
+                <TextBlock Grid.Row="1"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                           Text="{Binding BayPositionActive.Height}"
+                           TextWrapping="Wrap" />
+
+                <Border Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Margin="0,25"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                        BorderThickness="1" />
+
+              </Grid>
+
+              <Grid Grid.Column="9"
+                    Grid.ColumnSpan="3"
+                    Margin="0,0,15,0">
+
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="0,20,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource VWAPP_CardSensor}"
+                           Text="{res:Loc InstallationApp.Displacement}"
+                           TextAlignment="Left" />
+
+                <TextBlock Grid.Row="1"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                           Text="{Binding DisplacementUp, StringFormat={}{0:F1}, FallbackValue=0}"
+                           TextWrapping="Wrap" />
+
+              </Grid>
+
+            </Grid>
+          </Border>
+        </Border>
+
+        <StackPanel Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+
+          <controls:PpcButton Grid.Row="2"
+                              Grid.Column="1"
+                              Margin="0"
+                              VerticalAlignment="Center"
+                              Command="{Binding MoveToBayPositionCommand}"
+                              Content="{res:Loc InstallationApp.MoveToPosition}"
+                              Style="{DynamicResource WizardIntoButton}" />
+
+          <controls:PpcButton Grid.Row="2"
+                              Grid.Column="2"
+                              Margin="15,0,0,0"
+                              VerticalAlignment="Center"
+                              Command="{Binding MoveToShutterCommand}"
+                              Content="{Binding ShutterLabel}"
+                              Style="{DynamicResource WizardIntoButton}"
+                              Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+
+        </StackPanel>
+
+        <TextBlock Grid.Row="3"
+                   Grid.ColumnSpan="3"
+                   Margin="0,30,0,15"
+                   Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.CheckBayElevatorAlignment}" />
+
+        <ctrls:PpcSpinEdit Grid.Row="4"
+                           Width="215"
+                           Height="80"
+                           Margin="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           EditValue="{Binding StepValueUp, Mode=TwoWay}"
+                           IsEnabled="{Binding IsCanStepValue}"
+                           LabelText="{res:Loc InstallationApp.StepValue}"
+                           Mask="###0.0" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="1"
+                            Margin="15,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding DisplacementCommand}"
+                            Content="{res:Loc InstallationApp.MoveElevator}"
+                            Style="{DynamicResource WizardIntoButton}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="2"
+                            Margin="0"
                             HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding StopCommand}"
-                            Content="{res:Loc InstallationApp.Stop}" />
-        <!--#endregion-->
+                            VerticalAlignment="Center"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc InstallationApp.NextLarge}"
+                            Style="{DynamicResource WizardConfirmButton}" />
 
-        <!--#region Wizard-->
-        <Grid Grid.Row="2"
-              Grid.RowSpan="5"
-              Grid.ColumnSpan="3"
-              Margin="5,15,15,0">
+      </Grid>
+    </DataTemplate>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="42" />
-                <ColumnDefinition Width="17" />
-                <ColumnDefinition Width="10" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <DataTemplate x:Key="DataTemplatePositionDown">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="1" />
-            </Grid.RowDefinitions>
-            <!--#region Body-->
-            <Border Grid.Row="0"
-                    Grid.RowSpan="6"
-                    Grid.Column="2"
-                    Grid.ColumnSpan="2"
-                    Margin="8,0,0,0"
-                    Background="{DynamicResource PpcBackground}"
-                    BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}"
-                    CornerRadius="2,0,0,2">
-                <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
-                                ContentTemplateSelector="{StaticResource selector}" />
-            </Border>
-            <!--#endregion-->
-            <!--#region TimeLine-->
-            <Border Grid.Row="0"
-                    Grid.RowSpan="6"
-                    Style="{DynamicResource BorderTimeLine}" />
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="1">
-                <Border Background="{Binding HasStepPositionUp, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="1" />
+        <StackPanel Grid.ColumnSpan="3">
+          <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+            <Run Text="{res:Loc InstallationApp.HighPositionControl}" /> <Run Text=":" />
+          </TextBlock>
+          <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.MoveElevatorAtBayHeightOpenShutter}" />
+        </StackPanel>
+
+        <Border Grid.Row="1"
+                Grid.ColumnSpan="3"
+                Margin="1,-10,0,20"
+                Background="{DynamicResource PpcBackground}">
+          <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                  BorderThickness="{DynamicResource PpcBorderThickness}">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+              </Grid.ColumnDefinitions>
+
+              <Grid Grid.ColumnSpan="3">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Margin="0,20,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource VWAPP_CardSensor}"
+                           Text="{res:Loc InstallationApp.Bay}"
+                           TextAlignment="Left" />
+
+                <TextBlock Grid.Row="1"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                           Text="{Binding BayNumber}"
+                           TextWrapping="Wrap" />
+
+                <Border Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Margin="0,25"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                        BorderThickness="1" />
+
+              </Grid>
+
+              <Grid Grid.Column="3"
+                    Grid.ColumnSpan="3">
+
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Margin="0,20,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource VWAPP_CardSensor}"
+                           Text="{res:Loc InstallationApp.Position}"
+                           TextAlignment="Left" />
+
+                <TextBlock Grid.Row="1"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                           Text="{Binding CurrentBayPosition}"
+                           TextWrapping="Wrap" />
+
+                <Border Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Margin="0,25"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                        BorderThickness="1" />
+
+              </Grid>
+
+              <Grid Grid.Column="6"
+                    Grid.ColumnSpan="3">
+
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Margin="0,20,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource VWAPP_CardSensor}"
+                           Text="{res:Loc InstallationApp.InitialPosition}" />
+
+                <TextBlock Grid.Row="1"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                           Text="{Binding BayPositionActive.Height}"
+                           TextWrapping="Wrap" />
+
+                <Border Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Margin="0,25"
+                        VerticalAlignment="Stretch"
+                        BorderBrush="{DynamicResource FerrettoMediumGray}"
+                        BorderThickness="1" />
+
+              </Grid>
+
+              <Grid Grid.Column="9"
+                    Grid.ColumnSpan="3"
+                    Margin="0,0,15,0">
+
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="0,20,0,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{DynamicResource VWAPP_CardSensor}"
+                           Text="{res:Loc InstallationApp.Displacement}"
+                           TextAlignment="Left" />
+
+                <TextBlock Grid.Row="1"
+                           Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Style="{DynamicResource VWAPP_CardSensor_Data}"
+                           Text="{Binding DisplacementDown, StringFormat={}{0:F1}, FallbackValue=0}"
+                           TextWrapping="Wrap" />
+
+              </Grid>
+
             </Grid>
-            <Grid Grid.Row="1"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepPositionUp, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
+          </Border>
+        </Border>
 
-            <Grid Grid.Row="2"
-                  Visibility="{Binding HasStepPositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Border Background="{Binding HasStepPositionDown, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="2" />
-            </Grid>
-            <Grid Grid.Row="2"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepPositionDown, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
+        <StackPanel Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
 
-            <Grid Grid.Row="3">
-                <Border Background="{Binding HasStepConfirm, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                        Style="{DynamicResource BorderTimeLineCirle}" />
-                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                           Text="{Binding NumberStepConfirm}" />
-            </Grid>
-            <Grid Grid.Row="3"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasStepConfirm, Converter={StaticResource BTVC}, Mode=OneWay}">
-                <Path Height="24"
-                      VerticalAlignment="Center"
-                      StrokeThickness="0"
-                      Style="{DynamicResource BorderTimeLinePath}" />
-                <Path Style="{DynamicResource BorderTimeLinePath}" />
-            </Grid>
+          <controls:PpcButton Grid.Row="2"
+                              Grid.Column="1"
+                              Margin="0"
+                              VerticalAlignment="Center"
+                              Command="{Binding MoveToBayPositionCommand}"
+                              Content="{res:Loc InstallationApp.MoveToPosition}"
+                              Style="{DynamicResource WizardIntoButton}" />
 
-            <!--#endregion-->
+          <controls:PpcButton Grid.Row="2"
+                              Grid.Column="2"
+                              Margin="15,0,0,0"
+                              VerticalAlignment="Center"
+                              Command="{Binding MoveToShutterCommand}"
+                              Content="{Binding ShutterLabel}"
+                              Style="{DynamicResource WizardIntoButton}" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="3"
+                   Grid.ColumnSpan="3"
+                   Margin="0,30,0,15"
+                   Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.CheckBayElevatorAlignment}" />
+
+        <ctrls:PpcSpinEdit Grid.Row="4"
+                           Width="215"
+                           Height="80"
+                           Margin="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           EditValue="{Binding StepValueDown, Mode=TwoWay}"
+                           IsEnabled="{Binding IsCanStepValue}"
+                           LabelText="{res:Loc InstallationApp.StepValue}"
+                           Mask="###0.0" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="1"
+                            Margin="15,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Command="{Binding DisplacementCommand}"
+                            Content="{res:Loc InstallationApp.MoveElevator}"
+                            Style="{DynamicResource WizardIntoButton}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="2"
+                            Margin="0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc InstallationApp.NextLarge}"
+                            Style="{DynamicResource WizardConfirmButton}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataTemplateConfirm">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2">
+          <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+            <Run Text="{res:Loc InstallationApp.ConfirmChanges}" /><Run Text=":" />
+
+          </TextBlock>
+
+          <TextBlock Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.SaveCheckPosition}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1"
+              Grid.RowSpan="2"
+              Visibility="{Binding HasDisplacementValue, Converter={StaticResource BTVIC}, Mode=OneWay}">
+
+          <TextBlock HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.NoChanges}" />
         </Grid>
-        <!--#endregion-->
+
+        <Grid Grid.Row="1"
+              Visibility="{Binding HasDisplacementUpValue, Converter={StaticResource BTVC}, Mode=OneWay}">
+          <Border Width="300"
+                  Height="90"
+                  Margin="0"
+                  BorderBrush="{DynamicResource PpcBorderBrush}"
+                  BorderThickness="{DynamicResource PpcBorderThickness}">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+
+              <TextBlock Margin="8,4"
+                         Style="{DynamicResource VWAPP_CardSensor}"
+                         Text="{res:Loc InstallationApp.BayPositionUpHeightNew}" />
+
+              <TextBlock Grid.Row="1"
+                         Margin="8,4"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Style="{DynamicResource VWAPP_CardSensor_Data}">
+                <Run Text="{Binding NewPositionUp, StringFormat={}{0:0.00}}" />
+                <Run Text="{Binding DisplacementUp, StringFormat={}({0:+0.0;-#.0})}" />
+              </TextBlock>
+            </Grid>
+          </Border>
+        </Grid>
+
+        <Grid Grid.Row="2"
+              Visibility="{Binding HasDisplacementDownValue, Converter={StaticResource BTVC}, Mode=OneWay}">
+          <Border Width="300"
+                  Height="90"
+                  Margin="0"
+                  BorderBrush="{DynamicResource PpcBorderBrush}"
+                  BorderThickness="{DynamicResource PpcBorderThickness}"
+                  Visibility="{Binding HasStepPositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+
+              <TextBlock Margin="8,4"
+                         Style="{DynamicResource VWAPP_CardSensor}"
+                         Text="{res:Loc InstallationApp.BayPositionDownHeightNew}" />
+
+              <TextBlock Grid.Row="1"
+                         Margin="8,4"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Style="{DynamicResource VWAPP_CardSensor_Data}">
+                <Run Text="{Binding NewPositionDown, StringFormat={}{0:0.00}}" />
+                <Run Text="{Binding DisplacementDown, StringFormat={}({0:+0.0;-#.0})}" />
+              </TextBlock>
+            </Grid>
+          </Border>
+        </Grid>
+
+        <controls:PpcButton Grid.Row="3"
+                            Command="{Binding SaveCommand}"
+                            Content="{res:Loc General.Save}"
+                            Style="{StaticResource WizardConfirmButton}" />
+      </Grid>
+    </DataTemplate>
+
+    <local:BayCheckStepTemplateSelector x:Key="selector"
+                                        EnumConfirm="{StaticResource DataTemplateConfirm}"
+                                        EnumPositionDown="{StaticResource DataTemplatePositionDown}"
+                                        EnumPositionUp="{StaticResource DataTemplatePositionUp}" />
+    <!--#endregion-->
+  </ctrls:View.Resources>
+
+  <Grid Margin="15,0,0,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="60" />
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <!--#region Title-->
+    <StackPanel Grid.ColumnSpan="4"
+                Orientation="Horizontal">
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="4.3.1" />
+      <TextBlock Grid.ColumnSpan="2"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc InstallationApp.BayHeightCheck}" />
+    </StackPanel>
+    <!--#endregion-->
+
+    <!--#region Description-->
+    <TextBlock Grid.Row="1"
+               Grid.ColumnSpan="4"
+               Height="Auto"
+               Margin="0,0,15,0"
+               VerticalAlignment="Top"
+               Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+               Text="{res:Loc HelpDescriptions.HelpBCTRDescription}" />
+    <!--#endregion-->
+
+    <!--#region Tails-->
+    <controls:CardSensorAxisVertical Grid.Row="2"
+                                     Grid.Column="3"
+                                     Width="230"
+                                     Height="90"
+                                     MinHeight="90"
+                                     Margin="0,15,15,0" />
+    <controls:CardSensorAxisHorizontal Grid.Row="3"
+                                       Grid.Column="3"
+                                       Width="230"
+                                       Height="90"
+                                       MinHeight="90"
+                                       Margin="0,15,15,0" />
+    <controls:CardSensorShutter Grid.Row="4"
+                                Grid.Column="3"
+                                Width="230"
+                                Height="90"
+                                MinHeight="90"
+                                Margin="0,15,15,0"
+                                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+
+    <controls:PpcButton Grid.Row="6"
+                        Grid.Column="3"
+                        Margin="0,0,15,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding StopCommand}"
+                        Content="{res:Loc InstallationApp.Stop}" />
+    <!--#endregion-->
+
+    <!--#region Wizard-->
+    <Grid Grid.Row="2"
+          Grid.RowSpan="5"
+          Grid.ColumnSpan="3"
+          Margin="5,15,15,0">
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="42" />
+        <ColumnDefinition Width="17" />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1" />
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="1" />
+      </Grid.RowDefinitions>
+      <!--#region Body-->
+      <Border Grid.Row="0"
+              Grid.RowSpan="6"
+              Grid.Column="2"
+              Grid.ColumnSpan="2"
+              Margin="8,0,0,0"
+              Background="{DynamicResource PpcBackground}"
+              BorderBrush="{DynamicResource PpcBorderBrush}"
+              BorderThickness="{DynamicResource PpcBorderThickness}"
+              CornerRadius="2,0,0,2">
+        <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
+                        ContentTemplateSelector="{StaticResource selector}" />
+      </Border>
+      <!--#endregion-->
+      <!--#region TimeLine-->
+      <Border Grid.Row="0"
+              Grid.RowSpan="6"
+              Style="{DynamicResource BorderTimeLine}" />
+
+      <Grid Grid.Row="1">
+        <Border Background="{Binding HasStepPositionUp, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="1" />
+      </Grid>
+      <Grid Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding HasStepPositionUp, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <Grid Grid.Row="2"
+            Visibility="{Binding HasStepPositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Border Background="{Binding HasStepPositionDown, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="2" />
+      </Grid>
+      <Grid Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding HasStepPositionDown, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <Grid Grid.Row="3">
+        <Border Background="{Binding HasStepConfirm, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="{Binding NumberStepConfirm}" />
+      </Grid>
+      <Grid Grid.Row="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding HasStepConfirm, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <!--#endregion-->
     </Grid>
+    <!--#endregion-->
+  </Grid>
 </ctrls:View>
