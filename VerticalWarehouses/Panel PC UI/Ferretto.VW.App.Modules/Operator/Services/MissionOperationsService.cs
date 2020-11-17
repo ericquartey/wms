@@ -391,7 +391,9 @@ namespace Ferretto.VW.App.Modules.Operator
                         &&
                         m.TargetBay == this.bayNumber
                         &&
-                        m.Status == MissionStatus.Waiting)
+                        m.Status == MissionStatus.Waiting
+                        &&
+                        m.ErrorCode == MachineErrorCode.NoError)
                         .OrderBy(o => o.LoadUnitDestination);
                 }
                 //else

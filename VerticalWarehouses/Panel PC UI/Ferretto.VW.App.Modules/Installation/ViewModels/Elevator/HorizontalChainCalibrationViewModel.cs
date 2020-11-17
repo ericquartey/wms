@@ -728,8 +728,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanTuningChain()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed) &&
-
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || !this.MachineService.HasShutter)
+                &&
                 this.CanBaseExecute()
                 &&
                 !this.IsTuningChain

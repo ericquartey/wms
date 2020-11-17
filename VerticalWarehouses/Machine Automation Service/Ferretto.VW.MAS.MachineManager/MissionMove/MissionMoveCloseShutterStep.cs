@@ -142,9 +142,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void CloseShutterEnd()
         {
-            var currentBay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-            if (this.Mission.ErrorCode != MachineErrorCode.NoError &&
-                !this.isWaitingMissionOnThisBay(currentBay))
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            if (this.Mission.ErrorCode != MachineErrorCode.NoError
+                && !this.isWaitingMissionOnThisBay(bay)
+                )
             {
                 this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
@@ -164,7 +165,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || this.Mission.MissionType == MissionType.LoadUnitOperation
                     )
                 {
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                     this.BaysDataProvider.Light(bay.Number, true);
 
                     if (bay.External != null)
@@ -178,8 +178,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-
                     if (bay.IsDouble
                         && bay.Carousel is null
                         && this.Mission.ErrorCode != MachineErrorCode.NoError)

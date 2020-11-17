@@ -164,17 +164,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.Bay1HasShutter = bays
                 .Where(b => b.Number == BayNumber.BayOne)
-                .Select(b => b.Shutter != null)
+                .Select(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified)
                 .SingleOrDefault();
 
             this.Bay2HasShutter = bays
                 .Where(b => b.Number == BayNumber.BayTwo)
-                .Select(b => b.Shutter != null)
+                .Select(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified)
                 .SingleOrDefault();
 
             this.Bay3HasShutter = bays
                 .Where(b => b.Number == BayNumber.BayThree)
-                .Select(b => b.Shutter != null)
+                .Select(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified)
                 .SingleOrDefault();
 
             this.CheckZeroChainOnBays(bays);

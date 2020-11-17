@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private ISensorsService sensorsService;
 
+        public IMachineService machineService;
+
         #endregion
 
         #region Constructors
@@ -52,6 +54,8 @@ namespace Ferretto.VW.App.Controls.Controls
             this.SubscribeToEvents();
 
             this.DataContext = this.sensorsService.ShutterSensors;
+
+            this.Visibility = this.machineService.HasShutter ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
         }
 
         protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
@@ -62,6 +66,8 @@ namespace Ferretto.VW.App.Controls.Controls
         private void SubscribeToEvents()
         {
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
+
+            this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
         }
 
         #endregion

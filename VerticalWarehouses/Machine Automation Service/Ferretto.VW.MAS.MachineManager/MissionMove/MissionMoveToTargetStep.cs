@@ -293,6 +293,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 newStep.OnEnter(null);
             }
+            if (this.MachineVolatileDataProvider.Mode != MachineMode.Manual
+                && (this.Mission.CloseShutterBayNumber == BayNumber.None
+                    || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
+                && this.isWaitingMissionOnThisBay(inError: true)
+                )
+            {
+                var errorMission = this.MissionsDataProvider.GetAllActiveMissionsByBay(this.Mission.TargetBay)
+                        .FirstOrDefault(
+                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick) &&
+                            m.ErrorCode != MachineErrorCode.NoError);
+                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                this.ErrorsProvider.RecordNew(errorMission.ErrorCode, this.Mission.TargetBay);
+                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+            }
         }
 
         /// <summary>
@@ -303,7 +320,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         ///     <c>true</c> if exists at least a waiting mission,
         ///     <c>false</c> otherwise.
         /// </returns>
-        private bool isWaitingMissionOnThisBay()
+        private bool isWaitingMissionOnThisBay(bool inError = false)
         {
             var retValue = false;
 
@@ -313,14 +330,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (bay.IsDouble)
                 {
                     // List of waiting mission on the bay
-                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
-                        .Where(
+                    retValue = this.MissionsDataProvider.GetAllActiveMissionsByBay(this.Mission.TargetBay).Any(
                             m => m.LoadUnitId != this.Mission.LoadUnitId &&
                             m.Id != this.Mission.Id &&
-                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick) &&
+                            (!inError || m.ErrorCode != MachineErrorCode.NoError)
                         );
-
-                    retValue = (waitMissions != null);
                 }
 
                 return retValue;
