@@ -147,6 +147,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsCanStepValue => this.CanBaseExecute();
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public double LowerBound
         {
             get => this.lowerBound;
