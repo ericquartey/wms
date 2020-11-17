@@ -86,14 +86,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 (bay.Number == BayNumber.BayTwo && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up) ||
                 (bay.Number == BayNumber.BayThree && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up);
 
-            if (this.Mission.RestoreConditions)
+            if (this.Mission.NeedHomingAxis == Axis.BayChain)
+            {
+                this.Logger.LogInformation($"Homing External Bay Start Mission:Id={this.Mission.Id}");
+                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
+            }
+            else if (this.Mission.RestoreConditions)
             {
                 this.Logger.LogDebug($"Move in restore conditions => LoadUnitDestination: {this.Mission.LoadUnitDestination}, bay number: {bay.Number}");
                 if (!this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId,
                     (isLoadUnitDestinationInBay ? ExternalBayMovementDirection.TowardOperator : ExternalBayMovementDirection.TowardMachine),
                     MessageActor.MachineManager,
                     bay.Number,
-                    this.Mission.RestoreConditions))
+                    restore: true))
                 {
                     // already arrived
                     this.ExternalBayChainEnd();
@@ -128,10 +133,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
                         }
                     }
-                    if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
+                    else
                     {
-                        // No movement for external bay is required
+                        this.Mission.ErrorCode = MachineErrorCode.MoveExtBayNotAllowed;
                     }
+                    //if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
+                    //{
+                    //    // No movement for external bay is required
+                    //}
                 }
                 else
                 {
@@ -142,6 +151,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.ExternalBayChainEnd();
                             return true;
                         }
+
                         this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
                         var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                         if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
@@ -201,6 +211,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         )
                     {
+                        var isLoadUnitDestinationInBay = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up ||
+                            this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
+                            this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up;
+
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
@@ -234,14 +248,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     //this.MissionsDataProvider.Update(this.Mission);
                                 }
 
-                                // Execute the homing for bay, if required
-                                if (this.Mission.NeedHomingAxis == Axis.BayChain)
-                                {
-                                    this.MissionsDataProvider.Update(this.Mission);
+                                //// Execute the homing for bay, if required
+                                //if (this.Mission.NeedHomingAxis == Axis.BayChain
+                                //    && !isLoadUnitDestinationInBay
+                                //    )
+                                //{
+                                //    this.MissionsDataProvider.Update(this.Mission);
 
-                                    this.Logger.LogInformation($"Homing External Bay Start Mission:Id={this.Mission.Id}");
-                                    this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
-                                }
+                                //    this.Logger.LogInformation($"Homing External Bay Start Mission:Id={this.Mission.Id}");
+                                //    this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
+                                //}
                             }
                         }
 
@@ -257,13 +273,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
 
                             // Calibrate external bay
-                            if (messageData.AxisToCalibrate == Axis.BayChain &&
-                                this.LoadingUnitMovementProvider.IsInternalPositionOccupied(this.Mission.TargetBay))
+                            if (messageData.AxisToCalibrate == Axis.BayChain)
                             {
                                 this.Logger.LogDebug($"Acquired the {notificationStatus} of {notification.Type}");
-                                var isLoadUnitDestinationInBay = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up ||
-                                    this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
-                                    this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up;
+                                this.Mission.NeedHomingAxis = Axis.None;
 
                                 if (isLoadUnitDestinationInBay)
                                 {
@@ -275,9 +288,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 }
                                 else
                                 {
-                                    this.Logger.LogDebug($"1. Call the ExternalBayChainEnd");
+                                    this.Logger.LogDebug($"Simulate positioning end");
 
-                                    this.ExternalBayChainEnd();
+                                    this.UpdateResponseList(MessageType.Positioning);
+                                    this.MissionsDataProvider.Update(this.Mission);
                                 }
                             }
                         }
