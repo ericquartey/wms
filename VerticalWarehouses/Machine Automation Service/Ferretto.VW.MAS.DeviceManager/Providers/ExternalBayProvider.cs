@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IMachineResourcesProvider machineResourcesProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -36,6 +38,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IBaysDataProvider baysDataProvider,
             IElevatorDataProvider elevatorDataProvider,
             IMachineResourcesProvider machineResourcesProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IEventAggregator eventAggregator,
@@ -45,6 +48,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -332,6 +336,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     throw new InvalidOperationException(policy.Reason);
                 }
             }
+
+            this.machineVolatileDataProvider.IsBayHomingExecuted[bayNumber] = false;
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
             var targetPosition = bay.External.Race;    // USE for .Relative
