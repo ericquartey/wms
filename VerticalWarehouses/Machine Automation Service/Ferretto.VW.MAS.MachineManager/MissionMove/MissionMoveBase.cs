@@ -309,27 +309,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var bShowErrorCondition = true;
                             if (this.Mission.MissionType == MissionType.IN && this.Mission.ErrorCode != MachineErrorCode.NoError)
                             {
-                                switch (this.Mission.ErrorCode)
+                                if (this.Mission.ErrorCode != MachineErrorCode.NoError)
                                 {
-                                    case MachineErrorCode.LoadUnitWeightExceeded:
-                                        // WaitPick step
-                                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                        break;
-
-                                    case MachineErrorCode.LoadUnitHeightFromBayExceeded:
-                                        // WaitPick step
-                                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                        break;
-
-                                    case MachineErrorCode.WarehouseIsFull:
-                                        // WaitPick step
-                                        newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                        break;
-
-                                    default:
-                                        // Close shutter (?)
-                                        newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                        break;
+                                    newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                }
+                                else
+                                {
+                                    newStep = new MissionMoveCloseShutterStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                                 }
 
                                 // In this case (see conditions), close the shutter
