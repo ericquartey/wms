@@ -182,6 +182,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionStep.ToTarget:
                 case MissionStep.BackToBay:
                 case MissionStep.WaitDepositCell:
+                case MissionStep.WaitDepositBay:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
                         this.Mission.StepTime = DateTime.UtcNow;
@@ -352,7 +353,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-            if (shutterPosition != ShutterPosition.Closed
+            if (bay.Shutter != null
+                && bay.Shutter.Type != ShutterType.NotSpecified
+                && shutterPosition != ShutterPosition.Closed
                 && shutterPosition != ShutterPosition.Opened
                 )
             {

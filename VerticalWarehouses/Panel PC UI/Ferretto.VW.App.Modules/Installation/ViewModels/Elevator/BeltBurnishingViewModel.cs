@@ -442,7 +442,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 (!this.MachineService.MachineStatus.IsMoving ||this.isCarouselCalibration)
                 &&
-                this.SensorsService.ShutterSensors.Closed
+                (this.SensorsService.ShutterSensors.Closed || !this.MachineService.HasShutter)
                 //&&
                 //(!this.IsExecutingProcedure || this.isCarouselCalibration)
                 &&

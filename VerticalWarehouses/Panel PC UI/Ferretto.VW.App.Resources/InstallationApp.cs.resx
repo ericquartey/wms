@@ -2298,4 +2298,7 @@
   <data name="ChangeId" xml:space="preserve">
     <value>Změnit ID</value>
   </data>
+  <data name="StartCalibrationButton" xml:space="preserve">
+    <value>Stiskněte start pro zahájení kalibrace</value>
+  </data>
 </root>

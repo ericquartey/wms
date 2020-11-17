@@ -745,14 +745,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                 // !this.IsShutterMoving &&
-                this.SensorsService.ShutterSensors.Open;
+                (this.SensorsService.ShutterSensors.Open || !this.MachineService.HasShutter);
         }
 
         private bool CanMoveToEndTest()
         {
             return this.CanBaseExecute() &&
                 // !this.IsShutterMoving &&
-                this.SensorsService.ShutterSensors.Closed;
+                (this.SensorsService.ShutterSensors.Closed || !this.MachineService.HasShutter);
         }
 
         private bool CanMoveToOpenShutter()

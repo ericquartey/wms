@@ -108,13 +108,21 @@
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.ColumnSpan="2">
+
+        <StackPanel Grid.ColumnSpan="2"
+                    Visibility="{Binding HasShutter, Converter={StaticResource BTVIC}}">
+          <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+            <Run Text="{res:Loc InstallationApp.StartCalibrationButton}" /><Run Text=":" />
+          </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.ColumnSpan="2"
+                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
           <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
             <Run Text="{res:Loc InstallationApp.BeforeStart}" /><Run Text=":" />
           </TextBlock>
           <TextBlock Grid.ColumnSpan="2"
-                     Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                     Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
+                     Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
             <Run Text="{res:Loc InstallationApp.CheckDrawersThenStart}" /><Run Text="." />
           </TextBlock>
         </StackPanel>

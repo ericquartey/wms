@@ -581,7 +581,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             var selectedBayPosition = this.Bay.Positions.Single(p => p.Height == this.Bay.Positions.Max(pos => pos.Height));
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
+            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay || !this.HasShutter) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
                    this.MachineStatus.LogicalPositionId == this.Bay.Id &&
                    this.CanBaseExecute() &&
@@ -594,7 +594,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanUnloadToBay()
         {
             var selectedBayPosition = this.Bay.Positions.Single(p => p.Height == this.Bay.Positions.Max(pos => pos.Height));
-            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay) &&
+            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay || !this.HasShutter) &&
                    this.CanBaseExecute() &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
                    this.MachineStatus.LogicalPositionId == this.Bay.Id &&
@@ -610,7 +610,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.GetBayPosition(), null, this.MachineStatus.LoadingUnitPositionUpInBay.Id);
-                this.CurrentStep = WeightCalibartionStep.CallUnit;
+                //this.CurrentStep = WeightCalibartionStep.CallUnit;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
