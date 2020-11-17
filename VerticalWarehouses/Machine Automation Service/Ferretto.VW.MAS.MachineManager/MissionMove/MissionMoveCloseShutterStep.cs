@@ -149,6 +149,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                this.Logger.LogInformation($"Display error for Mission.Id={this.Mission.Id}, ErrorCode={this.Mission.ErrorCode}");
                 this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
             }
@@ -181,13 +182,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && bay.Carousel is null
                         && this.Mission.ErrorCode != MachineErrorCode.NoError)
                     {
-                        if (!this.isWaitingMissionOnThisBay(bay))
+                        if (this.isWaitingMissionOnThisBay(bay))
                         {
-                            newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            this.Logger.LogInformation($"Mission.Id={this.Mission.Id}: Go to WaitPick step, there are waiting missions.");
+                            newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         }
                         else
                         {
-                            newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            this.Logger.LogInformation($"Mission.Id={this.Mission.Id}: Go to End step, there are no waiting missions.");
+                            newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         }
                     }
                     else if (bay.Positions.Count() == 1
