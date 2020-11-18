@@ -514,6 +514,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.cancelCommand?.RaiseCanExecuteChanged();
 
+            this.retryCommand?.RaiseCanExecuteChanged();
+
             this.UpdateStatusButtonFooter();
         }
 
