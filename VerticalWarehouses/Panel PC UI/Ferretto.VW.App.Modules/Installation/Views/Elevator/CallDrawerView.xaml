@@ -21,9 +21,12 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition />
       <ColumnDefinition />
+      <ColumnDefinition />
     </Grid.ColumnDefinitions>
 
     <TextBlock Grid.ColumnSpan="2"
+               Margin="0,15,15,0"
+               VerticalAlignment="Top"
                Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
       <Run Text="{res:Loc InstallationApp.CallUnit}" /><Run Text=":" />
     </TextBlock>
@@ -32,7 +35,7 @@
                        Grid.Column="0"
                        Width="300"
                        Height="120"
-                       HorizontalAlignment="Center"
+                       HorizontalAlignment="Left"
                        VerticalAlignment="Center"
                        EditValue="{Binding LoadingUnitId, Mode=TwoWay}"
                        LabelText="{res:Loc InstallationApp.DrawerNumber}"
@@ -48,9 +51,38 @@
 
     <controls:PpcButton Grid.Row="3"
                         Grid.Column="0"
-                        HorizontalAlignment="left"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Bottom"
                         Command="{Binding CancelCommand}"
                         Content="{res:Loc General.Cancel}" />
+
+    <StackPanel Grid.RowSpan="3"
+                Grid.Column="2"
+                HorizontalAlignment="Right"
+                Orientation="Vertical">
+
+      <controls:CardSensorAxisHorizontal Width="250"
+                                         Height="90"
+                                         MinHeight="90"
+                                         Margin="0,15,15,0" />
+      <controls:CardSensorAxisVertical Width="250"
+                                       Height="90"
+                                       MinHeight="90"
+                                       Margin="0,15,15,0" />
+      <controls:CardSensorShutter Width="250"
+                                  Height="90"
+                                  MinHeight="90"
+                                  Margin="0,15,15,0"
+                                  Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+      <controls:CardSensorPosition Width="250"
+                                   Height="90"
+                                   MinHeight="90"
+                                   Margin="0,15,15,0" />
+      <controls:PpcButton Margin="0,35,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding StopCommand}"
+                          Content="{res:Loc InstallationApp.Stop}" />
+    </StackPanel>
   </Grid>
 </UserControl>
