@@ -385,7 +385,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         .Where(
                             m => m.LoadUnitId != this.Mission.LoadUnitId &&
                             m.Id != this.Mission.Id &&
-                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            || (m.Status == MissionStatus.New && bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)))
                         );
 
                     retValue = waitMissions.Any();

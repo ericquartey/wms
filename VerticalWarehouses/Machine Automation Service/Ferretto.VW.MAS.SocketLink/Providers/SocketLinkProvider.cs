@@ -968,7 +968,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 switch (commandCode)
                 {
                     case (int)SocketLinkCommand.UtcCommand.timeWrite:
-                        var utc = DateTimeOffset.Parse(cmdReceived.GetPayloadByPosition(2), CultureInfo.InvariantCulture).UtcDateTime;
+                        var utc = DateTimeOffset.Parse(cmdReceived.GetPayloadByPosition(1), CultureInfo.InvariantCulture).UtcDateTime;
                         this.timeChangedEvent.Publish(new SystemTimeChangedEventArgs(utc));
                         break;
                 }

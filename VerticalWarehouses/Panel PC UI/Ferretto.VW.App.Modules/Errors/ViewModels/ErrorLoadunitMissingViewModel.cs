@@ -358,6 +358,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.luIdOnElevator, value);
         }
 
+        internal bool LUPresentInBay1 => this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) : this.SensorsService.Sensors.LUPresentInBay1;
+
+        internal bool LUPresentInBay2 => this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) : this.SensorsService.Sensors.LUPresentInBay2;
+
+        internal bool LUPresentInBay3 => this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) : this.SensorsService.Sensors.LUPresentInBay3;
+
         public MachineError MachineError
         {
             get => this.machineError;
@@ -545,6 +551,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         internal IEnumerable<BayPosition> Bay3Positions => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.Positions;
 
+        internal bool IsBay1External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayOne)?.IsExternal ?? false;
+
+        internal bool IsBay2External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.IsExternal ?? false;
+
+        internal bool IsBay3External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.IsExternal ?? false;
+
         #endregion
 
         #region Indexers
@@ -573,7 +585,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         break;
 
                     case nameof(this.LuIdOnBay1Down):
-                        if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                        if (this.LUPresentInBay1 &&
                             this.HasBay1PositionUpVisible &&
                             ((!this.LuIdOnBay1Down.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay1Down && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
                         {
@@ -595,7 +607,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         break;
 
                     case nameof(this.LuIdOnBay2Down):
-                        if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                        if (this.LUPresentInBay2 &&
                             this.HasBay2PositionUpVisible &&
                             ((!this.LuIdOnBay2Down.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay2Down && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
                         {
@@ -617,7 +629,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         break;
 
                     case nameof(this.LuIdOnBay3Down):
-                        if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                        if (this.LUPresentInBay3 &&
                             this.HasBay3PositionUpVisible &&
                             ((!this.LuIdOnBay3Down.HasValue) || (!this.MachineService.Loadunits.Any(l => l.Id == this.LuIdOnBay3Down && l.Status == LoadingUnitStatus.Undefined && l.Height != 0))))
                         {
@@ -730,7 +742,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 // Bay 1
                 this.LuIdOnBay1Up = null;
                 this.LuIdOnBay1Down = null;
-                if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                if (this.LUPresentInBay1 &&
                     this.HasBay1PositionUpVisible)
                 {
                     this.LuIdOnBay1Up = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0)?.Id;
@@ -760,7 +772,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 // Bay 2
                 this.LuIdOnBay2Up = null;
-                if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                if (this.LUPresentInBay2 &&
                     this.HasBay2PositionUpVisible)
                 {
                     this.LuIdOnBay2Up = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0)?.Id;
@@ -790,7 +802,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 // Bay 3
                 this.LuIdOnBay3Up = null;
-                if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                if (this.LUPresentInBay3 &&
                     this.HasBay3PositionUpVisible)
                 {
                     this.LuIdOnBay3Up = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0)?.Id;
@@ -865,7 +877,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
 
                 // Bay 1
-                if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                if (this.LUPresentInBay1 &&
                     this.HasBay1PositionUpVisible &&
                     this.LuIdOnBay1Up.HasValue)
                 {
@@ -882,7 +894,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
 
                 // Bay 2
-                if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                if (this.LUPresentInBay2 &&
                     this.HasBay2PositionUpVisible &&
                     this.LuIdOnBay2Up.HasValue)
                 {
@@ -899,7 +911,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
 
                 // Bay 3
-                if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                if (this.LUPresentInBay3 &&
                     this.HasBay3PositionUpVisible &&
                     this.LuIdOnBay3Up.HasValue)
                 {
@@ -988,7 +1000,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
 
                 // Bay 1
-                if (this.SensorsService.Sensors.LUPresentInBay1 &&
+                if (this.LUPresentInBay1 &&
                     this.HasBay1PositionUpVisible &&
                     this.LuIdOnBay1Up.HasValue)
                 {
@@ -1005,7 +1017,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
 
                 // Bay 2
-                if (this.SensorsService.Sensors.LUPresentInBay2 &&
+                if (this.LUPresentInBay2 &&
                     this.HasBay2PositionUpVisible &&
                     this.LuIdOnBay2Up.HasValue)
                 {
@@ -1022,7 +1034,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
 
                 // Bay 3
-                if (this.SensorsService.Sensors.LUPresentInBay3 &&
+                if (this.LUPresentInBay3 &&
                     this.HasBay3PositionUpVisible &&
                     this.LuIdOnBay3Up.HasValue)
                 {

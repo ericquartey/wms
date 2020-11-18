@@ -246,11 +246,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
                 {
                     // List of waiting mission on the bay
-                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                    var waitMissions = this.MissionsDataProvider.GetAllActiveMissionsByBay(this.Mission.TargetBay)
                         .Where(
                             m => m.LoadUnitId != this.Mission.LoadUnitId &&
                             m.Id != this.Mission.Id &&
-                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            || (m.Status == MissionStatus.New && bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId))
+                            )
                         );
 
                     retValue = waitMissions.Any();

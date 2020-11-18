@@ -139,8 +139,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     return this.carouselProvider.CanElevatorPickup(bayPosition);
                 }
             }
-
-            if (bay.External != null)
+            else if (bay.External != null)
             {
                 if (deposit)
                 {
@@ -151,8 +150,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     return this.externalBayProvider.CanElevatorPickup(bay.Number);
                 }
             }
-
-            return MachineErrorCode.NoError;
+            else
+            {
+                if (deposit)
+                {
+                    return this.elevatorProvider.CanElevatorDeposit(bayPosition);
+                }
+                else
+                {
+                    return this.elevatorProvider.CanElevatorPickup(bayPosition);
+                }
+            }
         }
 
         /// <summary>

@@ -933,6 +933,7 @@ namespace Ferretto.VW.MAS.MissionManager
             if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
             {
                 var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var loadUnitMovementProvider = serviceProvider.GetRequiredService<ILoadingUnitMovementProvider>();
                 var bays = bayProvider.GetAll();
                 foreach (var bay in bays)
                 {
@@ -956,6 +957,16 @@ namespace Ferretto.VW.MAS.MissionManager
                                 moveLoadingUnitProvider.InsertToCell(missionType, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
                                 return true;
                             }
+                        }
+                        else if (bay.IsExternal
+                            && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
+                            && position.LoadingUnit is null)
+                        {
+                            errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            return true;
                         }
                     }
                 }

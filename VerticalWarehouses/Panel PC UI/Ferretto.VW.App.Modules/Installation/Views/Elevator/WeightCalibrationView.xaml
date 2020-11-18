@@ -6,6 +6,7 @@
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:local="clr-namespace:Ferretto.VW.App.Installation.Views"
+            xmlns:localcontrol="clr-namespace:Ferretto.VW.App.Modules.Installation.Views.Elevator"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -258,7 +259,7 @@
 
       </Grid>
     </DataTemplate>
-    
+
     <DataTemplate x:Key="DataTemplateFullUnitWeighing">
       <Grid Margin="20"
             DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
@@ -524,21 +525,11 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="60" />
-      <ColumnDefinition />
-      <ColumnDefinition />
-      <ColumnDefinition Width="Auto" />
-    </Grid.ColumnDefinitions>
+
     <!--#region Title-->
-    <StackPanel Grid.ColumnSpan="4"
-                Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal">
       <TextBlock Margin="0,10,15,10"
                  VerticalAlignment="Top"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -553,7 +544,6 @@
 
     <!--#region Description-->
     <TextBlock Grid.Row="1"
-               Grid.ColumnSpan="4"
                Height="Auto"
                Margin="0,0,15,0"
                VerticalAlignment="Top"
@@ -561,328 +551,351 @@
                Text="{res:Loc InstallationApp.WeightCalibrationDescription}" />
     <!--#endregion-->
 
-    <!--#region Tails-->
+    <localcontrol:CallDrawerView Grid.Row="2"
+                                 Visibility="{Binding IsBusyCallDrawer, Converter={StaticResource BTVC}}" />
 
-    <controls:CardSensorAxisHorizontal Grid.Row="2"
+    <Grid Grid.Row="2"
+          Visibility="{Binding IsBusyCallDrawer, Converter={StaticResource BTVIC}}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="60" />
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+
+      <!--#region Tails-->
+
+      <controls:CardSensorAxisHorizontal Grid.Row="0"
+                                         Grid.Column="3"
+                                         Width="250"
+                                         Height="90"
+                                         MinHeight="90"
+                                         Margin="0,15,15,0" />
+      <controls:CardSensorAxisVertical Grid.Row="1"
                                        Grid.Column="3"
                                        Width="250"
                                        Height="90"
                                        MinHeight="90"
                                        Margin="0,15,15,0" />
-    <controls:CardSensorAxisVertical Grid.Row="3"
-                                     Grid.Column="3"
-                                     Width="250"
-                                     Height="90"
-                                     MinHeight="90"
-                                     Margin="0,15,15,0" />
-    <controls:CardSensorShutter Grid.Row="4"
-                                Grid.Column="3"
-                                Width="250"
-                                Height="90"
-                                MinHeight="90"
-                                Margin="0,15,15,0"
-                                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
-    <controls:CardSensorPosition Grid.Row="5"
-                                 Grid.Column="3"
-                                 Width="250"
-                                 Height="90"
-                                 MinHeight="90"
-                                 Margin="0,15,15,0" />
+      <controls:CardSensorShutter Grid.Row="2"
+                                  Grid.Column="3"
+                                  Width="250"
+                                  Height="90"
+                                  MinHeight="90"
+                                  Margin="0,15,15,0"
+                                  Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+      <controls:CardSensorPosition Grid.Row="3"
+                                   Grid.Column="3"
+                                   Width="250"
+                                   Height="90"
+                                   MinHeight="90"
+                                   Margin="0,15,15,0" />
 
 
-    <Border Grid.Row="3"
-            Grid.Column="3"
-            Height="90"
-            MinHeight="90"
-            Margin="0,15,15,0"
-            Background="{DynamicResource PpcBackground}"
-            Visibility="Collapsed">
-      <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-              BorderThickness="{DynamicResource PpcBorderThickness}">
-
-        <Grid Grid.Column="8"
-              Grid.ColumnSpan="4">
-
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-          </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-          </Grid.ColumnDefinitions>
-
-          <TextBlock Margin="8,4"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Center"
-                     FontSize="{StaticResource FontSize_Normal}"
-                     FontWeight="Normal"
-                     Foreground="{DynamicResource Text_Foreground}"
-                     Text="{res:Loc InstallationApp.CurrentResolution}" />
-
-          <TextBlock Grid.Row="1"
-                     Margin="4,0,4,4"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"
-                     FontSize="{StaticResource FontSize_Very_High}"
-                     Foreground="{DynamicResource PpcForeground}"
-                     Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F6}}"
-                     TextWrapping="Wrap" />
-
-        </Grid>
-      </Border>
-    </Border>
-
-    <Border Grid.Row="4"
-            Grid.Column="3"
-            Height="90"
-            MinHeight="90"
-            Margin="0,15,15,0"
-            Background="{DynamicResource PpcBackground}"
-            Visibility="Collapsed">
-      <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-              BorderThickness="{DynamicResource PpcBorderThickness}">
-
-        <Grid Grid.Column="8"
-              Grid.ColumnSpan="4">
-
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-          </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-          </Grid.ColumnDefinitions>
-
-          <TextBlock Margin="8,4"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Center"
-                     FontSize="{StaticResource FontSize_Normal}"
-                     FontWeight="Normal"
-                     Foreground="{DynamicResource Text_Foreground}"
-                     Text="{res:Loc InstallationApp.Interaxle}" />
-
-          <TextBlock Grid.Row="1"
-                     Margin="4,0,4,4"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"
-                     FontSize="{StaticResource FontSize_Very_High}"
-                     Foreground="{DynamicResource PpcForeground}"
-                     Text="{Binding CurrentDistance, Mode=OneWay, StringFormat={}{0:F6}}"
-                     TextWrapping="Wrap" />
-
-        </Grid>
-      </Border>
-    </Border>
-
-    <Border Grid.Row="5"
-            Grid.Column="3"
-            Width="250"
-            Height="90"
-            Margin="0,15,15,0"
-            HorizontalAlignment="Stretch"
-            Background="{DynamicResource PpcBackground}"
-            Visibility="Collapsed">
-      <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-              BorderThickness="{DynamicResource PpcBorderThickness}">
-
-        <Grid>
-
-          <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-          </Grid.RowDefinitions>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-          </Grid.ColumnDefinitions>
-
-          <TextBlock Margin="8,4"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Center"
-                     FontSize="{StaticResource FontSize_Normal}"
-                     FontWeight="Normal"
-                     Foreground="{DynamicResource Text_Foreground}"
-                     Text="{res:Loc InstallationApp.RaisingsPerformed}" />
-
-          <StackPanel Grid.Row="1"
-                      Margin="4"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Top"
-                      Orientation="Horizontal">
-            <TextBlock Margin="4,0,4,4"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontSize="{StaticResource FontSize_Very_High}"
-                       Foreground="{DynamicResource PpcForeground}"
-                       Text="{Binding PerformedCycles}" />
-            <TextBlock Margin="4,0,4,4"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontSize="{StaticResource FontSize_Very_High}"
-                       Foreground="{DynamicResource PpcForeground}"
-                       Text="/" />
-            <TextBlock Margin="4,0,4,4"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontSize="{StaticResource FontSize_Very_High}"
-                       Foreground="{DynamicResource PpcForeground}"
-                       Text="{Binding RequiredCycles}" />
-          </StackPanel>
-
-          <controls:PpcProgressBar Grid.Row="2"
-                                   Height="8"
-                                   Margin="8,4,8,8"
-                                   Color1="{DynamicResource FerrettoGreen}"
-                                   Color2="Green"
-                                   Maximum="100"
-                                   Minimum="0"
-                                   Value="{Binding CyclesPercent, Mode=OneWay, Converter={StaticResource DNTPV}}" />
-
-        </Grid>
-
-      </Border>
-    </Border>
-
-    <controls:PpcButton Grid.Row="6"
-                        Grid.Column="3"
-                        Margin="0,0,15,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Command="{Binding StopCommand}"
-                        Content="{res:Loc InstallationApp.Stop}" />
-    <!--#endregion-->
-
-    <!--#region Wizard-->
-    <Grid Grid.Row="2"
-          Grid.RowSpan="5"
-          Grid.ColumnSpan="3"
-          Margin="5,15,15,0">
-
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="42" />
-        <ColumnDefinition Width="17" />
-        <ColumnDefinition Width="10" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
-
-      <Grid.RowDefinitions>
-        <RowDefinition Height="1" />
-        <RowDefinition Height="4*" />
-        <RowDefinition Height="4*" />
-        <RowDefinition Height="4*" />
-        <RowDefinition Height="4*" />
-        <RowDefinition Height="4*" />
-        <RowDefinition Height="1" />
-      </Grid.RowDefinitions>
-      <!--#region Body-->
-      <Border Grid.Row="0"
-              Grid.RowSpan="8"
-              Grid.Column="2"
-              Grid.ColumnSpan="2"
-              Margin="8,0,0,0"
+      <Border Grid.Row="1"
+              Grid.Column="3"
+              Height="90"
+              MinHeight="90"
+              Margin="0,15,15,0"
               Background="{DynamicResource PpcBackground}"
-              BorderBrush="{DynamicResource PpcBorderBrush}"
-              BorderThickness="{DynamicResource PpcBorderThickness}"
-              CornerRadius="2,0,0,2">
-        <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
-                        ContentTemplateSelector="{StaticResource selector}" />
+              Visibility="Collapsed">
+        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
+
+          <Grid Grid.Column="8"
+                Grid.ColumnSpan="4">
+
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Margin="8,4"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Normal}"
+                       FontWeight="Normal"
+                       Foreground="{DynamicResource Text_Foreground}"
+                       Text="{res:Loc InstallationApp.CurrentResolution}" />
+
+            <TextBlock Grid.Row="1"
+                       Margin="4,0,4,4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_High}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F6}}"
+                       TextWrapping="Wrap" />
+
+          </Grid>
+        </Border>
       </Border>
+
+      <Border Grid.Row="2"
+              Grid.Column="3"
+              Height="90"
+              MinHeight="90"
+              Margin="0,15,15,0"
+              Background="{DynamicResource PpcBackground}"
+              Visibility="Collapsed">
+        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
+
+          <Grid Grid.Column="8"
+                Grid.ColumnSpan="4">
+
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Margin="8,4"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Normal}"
+                       FontWeight="Normal"
+                       Foreground="{DynamicResource Text_Foreground}"
+                       Text="{res:Loc InstallationApp.Interaxle}" />
+
+            <TextBlock Grid.Row="1"
+                       Margin="4,0,4,4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_High}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding CurrentDistance, Mode=OneWay, StringFormat={}{0:F6}}"
+                       TextWrapping="Wrap" />
+
+          </Grid>
+        </Border>
+      </Border>
+
+      <Border Grid.Row="3"
+              Grid.Column="3"
+              Width="250"
+              Height="90"
+              Margin="0,15,15,0"
+              HorizontalAlignment="Stretch"
+              Background="{DynamicResource PpcBackground}"
+              Visibility="Collapsed">
+        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
+
+          <Grid>
+
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition />
+              <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Margin="8,4"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Normal}"
+                       FontWeight="Normal"
+                       Foreground="{DynamicResource Text_Foreground}"
+                       Text="{res:Loc InstallationApp.RaisingsPerformed}" />
+
+            <StackPanel Grid.Row="1"
+                        Margin="4"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Orientation="Horizontal">
+              <TextBlock Margin="4,0,4,4"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         FontSize="{StaticResource FontSize_Very_High}"
+                         Foreground="{DynamicResource PpcForeground}"
+                         Text="{Binding PerformedCycles}" />
+              <TextBlock Margin="4,0,4,4"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         FontSize="{StaticResource FontSize_Very_High}"
+                         Foreground="{DynamicResource PpcForeground}"
+                         Text="/" />
+              <TextBlock Margin="4,0,4,4"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         FontSize="{StaticResource FontSize_Very_High}"
+                         Foreground="{DynamicResource PpcForeground}"
+                         Text="{Binding RequiredCycles}" />
+            </StackPanel>
+
+            <controls:PpcProgressBar Grid.Row="2"
+                                     Height="8"
+                                     Margin="8,4,8,8"
+                                     Color1="{DynamicResource FerrettoGreen}"
+                                     Color2="Green"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding CyclesPercent, Mode=OneWay, Converter={StaticResource DNTPV}}" />
+
+          </Grid>
+
+        </Border>
+      </Border>
+
+      <controls:PpcButton Grid.Row="4"
+                          Grid.Column="3"
+                          Margin="0,0,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding StopCommand}"
+                          Content="{res:Loc InstallationApp.Stop}" />
       <!--#endregion-->
-      <!--#region TimeLine-->
-      <Border Grid.Row="0"
-              Grid.RowSpan="6"
-              Style="{DynamicResource BorderTimeLine}" />
 
-      <Grid Grid.Row="1">
-        <Border Background="{Binding HasStepCallUnit, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                Style="{DynamicResource BorderTimeLineCirle}" />
-        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="1" />
-      </Grid>
-      <Grid Grid.Row="1"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Visibility="{Binding HasStepCallUnit, Converter={StaticResource BTVC}, Mode=OneWay}">
-        <Path Height="24"
-              VerticalAlignment="Center"
-              StrokeThickness="0"
-              Style="{DynamicResource BorderTimeLinePath}" />
-        <Path Style="{DynamicResource BorderTimeLinePath}" />
-      </Grid>
+      <!--#region Wizard-->
+      <Grid Grid.Row="0"
+            Grid.RowSpan="5"
+            Grid.ColumnSpan="3"
+            Margin="5,15,15,0">
 
-      <Grid Grid.Row="2">
-        <Border Background="{Binding HasStepEmptyUnitWeighing, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                Style="{DynamicResource BorderTimeLineCirle}" />
-        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="2" />
-      </Grid>
-      <Grid Grid.Row="2"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Visibility="{Binding HasStepEmptyUnitWeighing, Converter={StaticResource BTVC}, Mode=OneWay}">
-        <Path Height="24"
-              VerticalAlignment="Center"
-              StrokeThickness="0"
-              Style="{DynamicResource BorderTimeLinePath}" />
-        <Path Style="{DynamicResource BorderTimeLinePath}" />
-      </Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="42" />
+          <ColumnDefinition Width="17" />
+          <ColumnDefinition Width="10" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-      <Grid Grid.Row="3">
-        <Border Background="{Binding HasStepOptionalWeighing1, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                Style="{DynamicResource BorderTimeLineCirle}" />
-        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="3" />
-      </Grid>
-      <Grid Grid.Row="3"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Visibility="{Binding HasStepOptionalWeighing1, Converter={StaticResource BTVC}, Mode=OneWay}">
-        <Path Height="24"
-              VerticalAlignment="Center"
-              StrokeThickness="0"
-              Style="{DynamicResource BorderTimeLinePath}" />
-        <Path Style="{DynamicResource BorderTimeLinePath}" />
-      </Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="1" />
+          <RowDefinition Height="4*" />
+          <RowDefinition Height="4*" />
+          <RowDefinition Height="4*" />
+          <RowDefinition Height="4*" />
+          <RowDefinition Height="4*" />
+          <RowDefinition Height="1" />
+        </Grid.RowDefinitions>
+        <!--#region Body-->
+        <Border Grid.Row="0"
+                Grid.RowSpan="8"
+                Grid.Column="2"
+                Grid.ColumnSpan="2"
+                Margin="8,0,0,0"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                CornerRadius="2,0,0,2">
+          <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
+                          ContentTemplateSelector="{StaticResource selector}" />
+        </Border>
+        <!--#endregion-->
+        <!--#region TimeLine-->
+        <Border Grid.Row="0"
+                Grid.RowSpan="6"
+                Style="{DynamicResource BorderTimeLine}" />
 
-      <Grid Grid.Row="4">
-        <Border Background="{Binding HasStepFullUnitWeighing, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                Style="{DynamicResource BorderTimeLineCirle}" />
-        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="4" />
-      </Grid>
-      <Grid Grid.Row="4"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Visibility="{Binding HasStepFullUnitWeighing, Converter={StaticResource BTVC}, Mode=OneWay}">
-        <Path Height="24"
-              VerticalAlignment="Center"
-              StrokeThickness="0"
-              Style="{DynamicResource BorderTimeLinePath}" />
-        <Path Style="{DynamicResource BorderTimeLinePath}" />
-      </Grid>
+        <Grid Grid.Row="1">
+          <Border Background="{Binding HasStepCallUnit, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                  Style="{DynamicResource BorderTimeLineCirle}" />
+          <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                     Text="1" />
+        </Grid>
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              Grid.ColumnSpan="2"
+              Visibility="{Binding HasStepCallUnit, Converter={StaticResource BTVC}, Mode=OneWay}">
+          <Path Height="24"
+                VerticalAlignment="Center"
+                StrokeThickness="0"
+                Style="{DynamicResource BorderTimeLinePath}" />
+          <Path Style="{DynamicResource BorderTimeLinePath}" />
+        </Grid>
 
-      <Grid Grid.Row="5">
-        <Border Background="{Binding HasStepSetWeight, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                Style="{DynamicResource BorderTimeLineCirle}" />
-        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="5" />
-      </Grid>
-      <Grid Grid.Row="5"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Visibility="{Binding HasStepSetWeight, Converter={StaticResource BTVC}, Mode=OneWay}">
-        <Path Height="24"
-              VerticalAlignment="Center"
-              StrokeThickness="0"
-              Style="{DynamicResource BorderTimeLinePath}" />
-        <Path Style="{DynamicResource BorderTimeLinePath}" />
-      </Grid>
+        <Grid Grid.Row="2">
+          <Border Background="{Binding HasStepEmptyUnitWeighing, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                  Style="{DynamicResource BorderTimeLineCirle}" />
+          <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                     Text="2" />
+        </Grid>
+        <Grid Grid.Row="2"
+              Grid.Column="1"
+              Grid.ColumnSpan="2"
+              Visibility="{Binding HasStepEmptyUnitWeighing, Converter={StaticResource BTVC}, Mode=OneWay}">
+          <Path Height="24"
+                VerticalAlignment="Center"
+                StrokeThickness="0"
+                Style="{DynamicResource BorderTimeLinePath}" />
+          <Path Style="{DynamicResource BorderTimeLinePath}" />
+        </Grid>
 
+        <Grid Grid.Row="3">
+          <Border Background="{Binding HasStepOptionalWeighing1, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                  Style="{DynamicResource BorderTimeLineCirle}" />
+          <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                     Text="3" />
+        </Grid>
+        <Grid Grid.Row="3"
+              Grid.Column="1"
+              Grid.ColumnSpan="2"
+              Visibility="{Binding HasStepOptionalWeighing1, Converter={StaticResource BTVC}, Mode=OneWay}">
+          <Path Height="24"
+                VerticalAlignment="Center"
+                StrokeThickness="0"
+                Style="{DynamicResource BorderTimeLinePath}" />
+          <Path Style="{DynamicResource BorderTimeLinePath}" />
+        </Grid>
+
+        <Grid Grid.Row="4">
+          <Border Background="{Binding HasStepFullUnitWeighing, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                  Style="{DynamicResource BorderTimeLineCirle}" />
+          <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                     Text="4" />
+        </Grid>
+        <Grid Grid.Row="4"
+              Grid.Column="1"
+              Grid.ColumnSpan="2"
+              Visibility="{Binding HasStepFullUnitWeighing, Converter={StaticResource BTVC}, Mode=OneWay}">
+          <Path Height="24"
+                VerticalAlignment="Center"
+                StrokeThickness="0"
+                Style="{DynamicResource BorderTimeLinePath}" />
+          <Path Style="{DynamicResource BorderTimeLinePath}" />
+        </Grid>
+
+        <Grid Grid.Row="5">
+          <Border Background="{Binding HasStepSetWeight, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                  Style="{DynamicResource BorderTimeLineCirle}" />
+          <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                     Text="5" />
+        </Grid>
+        <Grid Grid.Row="5"
+              Grid.Column="1"
+              Grid.ColumnSpan="2"
+              Visibility="{Binding HasStepSetWeight, Converter={StaticResource BTVC}, Mode=OneWay}">
+          <Path Height="24"
+                VerticalAlignment="Center"
+                StrokeThickness="0"
+                Style="{DynamicResource BorderTimeLinePath}" />
+          <Path Style="{DynamicResource BorderTimeLinePath}" />
+        </Grid>
+
+        <!--#endregion-->
+      </Grid>
       <!--#endregion-->
+
     </Grid>
-    <!--#endregion-->
+
   </Grid>
 </ctrls:View>

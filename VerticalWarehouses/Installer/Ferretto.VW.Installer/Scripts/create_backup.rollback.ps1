@@ -9,10 +9,10 @@ $installer="$(Install:Root:Path)\$(Installer:DirName)";
 $telemetry="$(Install:Root:Path)\$(TS:DirName)";
 
 
-Copy-Item $stageAs -Recurse -Exclude (Get-ChildItem $as -Recurse);
+Copy-Item $stageAs $as -Recurse -Exclude (Get-ChildItem $as -Recurse);
 Copy-Item $stagePpc $ppc -Recurse -Exclude (Get-ChildItem $ppc -Recurse);
-Copy-Item $stageInstaller $installer -Recurse -Exclude (Get-ChildItem $ppc -Recurse);
-Copy-Item $stageTelemetry $telemetry -Recurse -Exclude (Get-ChildItem $ppc -Recurse);
+Copy-Item $stageInstaller $installer -Recurse -Exclude (Get-ChildItem $installer -Recurse);
+Copy-Item $stageTelemetry $telemetry -Recurse -Exclude (Get-ChildItem $telemetry -Recurse);
 
 Remove-Item $stageAs -Force -Recurse;
 Remove-Item $stagePpc -Force -Recurse;

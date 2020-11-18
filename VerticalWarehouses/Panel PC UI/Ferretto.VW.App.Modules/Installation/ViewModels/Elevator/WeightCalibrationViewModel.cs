@@ -72,6 +72,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand callLoadunitToBayCommand;
 
+        private DelegateCommand cancelCommand;
+
         private DelegateCommand changeUnitCommand;
 
         private double current;
@@ -79,6 +81,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private WeightCalibartionStep currentStep;
 
         private DelegateCommand forwardCommand;
+
+        private bool isBusyCallDrawer;
 
         private bool isBusyLoadingFromBay;
 
@@ -95,6 +99,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double measureConst1;
 
         private double measureConst2;
+
+        private SubscriptionToken moveLoadingUnitToken;
 
         private double netWeight;
 
@@ -158,8 +164,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.CallLoadunitToBayCommandAsync(),
                 this.CanCallLoadunitToBay));
 
+        public ICommand CancelCommand =>
+           this.cancelCommand ?? (this.cancelCommand =
+           new DelegateCommand(
+               () =>
+               {
+                   this.IsBusyCallDrawer = false;
+                   this.UpdateStatusButtonFooter();
+               }));
+
         public ICommand ChangeUnitCommand =>
-            this.changeUnitCommand ?? (this.changeUnitCommand =
+                    this.changeUnitCommand ?? (this.changeUnitCommand =
             new DelegateCommand(
                 async () => await this.ChangeUnitAsync(),
                 () => !this.IsMoving &&
@@ -209,6 +224,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool HasStepOptionalWeighing3 => false;
 
         public bool HasStepSetWeight => this.currentStep is WeightCalibartionStep.SetWeight;
+
+        public bool IsBusyCallDrawer
+        {
+            get => this.isBusyCallDrawer;
+            private set => this.SetProperty(ref this.isBusyCallDrawer, value);
+        }
 
         public bool IsBusyLoadingFromBay
         {
@@ -312,6 +333,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
+
+            if (this.moveLoadingUnitToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>().Unsubscribe(this.moveLoadingUnitToken);
+                this.moveLoadingUnitToken?.Dispose();
+                this.moveLoadingUnitToken = null;
+            }
 
             if (this.positioningMessageReceivedToken != null)
             {
@@ -484,6 +512,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.changeUnitCommand?.RaiseCanExecuteChanged();
 
+            this.cancelCommand?.RaiseCanExecuteChanged();
+
+            this.retryCommand?.RaiseCanExecuteChanged();
+
             this.UpdateStatusButtonFooter();
         }
 
@@ -610,7 +642,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.GetBayPosition(), null, this.MachineStatus.LoadingUnitPositionUpInBay.Id);
+                this.IsBusyCallDrawer = true;
                 //this.CurrentStep = WeightCalibartionStep.CallUnit;
+
+                this.UpdateStatusButtonFooter();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -717,6 +752,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void OnMoveLoadingUnitChanged(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.OperationEnd:
+                    if ((message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay1Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay1Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay2Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay3Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay1Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay2Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay3Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay2Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay3Up)
+                    {
+                        this.IsBusyCallDrawer = false;
+                        break;
+                    }
+
+                    break;
             }
         }
 
@@ -860,6 +926,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                       this.OnPositioningMessageReceived,
                       ThreadOption.UIThread,
                       false);
+
+            this.moveLoadingUnitToken = this.moveLoadingUnitToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                    .Subscribe(
+                        this.OnMoveLoadingUnitChanged,
+                        ThreadOption.UIThread,
+                        false);
         }
 
         private async Task UnloadToBayAsync()
@@ -952,22 +1027,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case WeightCalibartionStep.CallUnit:
                     this.ShowPrevStepSinglePage(true, false);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards);
+                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards && !this.IsBusyCallDrawer);
                     break;
 
                 case WeightCalibartionStep.EmptyUnitWeighing:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving && !this.IsBusyCallDrawer);
+                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards && !this.IsBusyCallDrawer);
                     break;
 
                 case WeightCalibartionStep.OptionalWeighing1:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving && !this.IsBusyCallDrawer);
+                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards && !this.IsBusyCallDrawer);
                     break;
 
                 case WeightCalibartionStep.FullUnitWeighing:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving && !this.IsBusyCallDrawer);
+                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards && !this.IsBusyCallDrawer);
                     break;
 
                 case WeightCalibartionStep.SetWeight:
