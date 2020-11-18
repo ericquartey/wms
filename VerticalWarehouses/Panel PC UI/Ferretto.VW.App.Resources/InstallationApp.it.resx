@@ -1410,7 +1410,7 @@
     <value>Corrente Media [A]</value>
   </data>
   <data name="CallUnit" xml:space="preserve">
-    <value>Chiamata cassetto</value>
+    <value>Chiamata cassetto: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso</value>
   </data>
   <data name="CarouselCalibrationDescription" xml:space="preserve">
     <value>Attendere il termine della procedura, in caso di necessita il tasto di 'STOP' per un arresto immediato e 'ARRESTA PROCEDURA' per uno stop in fase.</value>
@@ -2269,7 +2269,7 @@
     <value>Calibrazione peso</value>
   </data>
   <data name="WeightCalibrationDescription" xml:space="preserve">
-    <value>La funzione di calibrazione peso permette di variare la lettura del peso tramite pesi campione</value>
+    <value>La funzione di calibrazione peso permette di regolare l'algoritmo di lettura del peso tramite pesi campione</value>
   </data>
   <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
     <value>Caricare un cassetto in baia o chiamarne uno per iniziare la procedura guidata di calibrazione peso</value>
@@ -2278,7 +2278,7 @@
     <value>Pesata con cassetto vuoto</value>
   </data>
   <data name="UnitWeighingDescription" xml:space="preserve">
-    <value>Esegui uno carico e scarico cassetto per ottenere i dati di corrente ed inserisci il peso netto del cassetto</value>
+    <value>Esegui un carico e scarico cassetto per ottenere i dati di corrente ed inserisci il peso netto del cassetto. Al termine premi Avanti per confermare l'operazione</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
     <value>Corrente assorbita</value>
