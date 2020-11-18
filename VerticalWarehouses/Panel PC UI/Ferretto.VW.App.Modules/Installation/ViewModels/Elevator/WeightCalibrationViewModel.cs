@@ -72,6 +72,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand callLoadunitToBayCommand;
 
+        private DelegateCommand cancelCommand;
+
         private DelegateCommand changeUnitCommand;
 
         private double current;
@@ -98,6 +100,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double measureConst2;
 
+        private SubscriptionToken moveLoadingUnitToken;
+
         private double netWeight;
 
         private SubscriptionToken positioningMessageReceivedToken;
@@ -112,15 +116,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
-        private DelegateCommand cancelCommand;
-
         private SubscriptionToken themeChangedToken;
 
         private List<WeightData> unitsWeighing = new List<WeightData>();
 
         private DelegateCommand unloadToBayCommand;
-
-        private SubscriptionToken moveLoadingUnitToken;
 
         #endregion
 
@@ -164,8 +164,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.CallLoadunitToBayCommandAsync(),
                 this.CanCallLoadunitToBay));
 
+        public ICommand CancelCommand =>
+           this.cancelCommand ?? (this.cancelCommand =
+           new DelegateCommand(
+               () =>
+               {
+                   this.IsBusyCallDrawer = false;
+                   this.UpdateStatusButtonFooter();
+               }));
+
         public ICommand ChangeUnitCommand =>
-            this.changeUnitCommand ?? (this.changeUnitCommand =
+                    this.changeUnitCommand ?? (this.changeUnitCommand =
             new DelegateCommand(
                 async () => await this.ChangeUnitAsync(),
                 () => !this.IsMoving &&
@@ -284,14 +293,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                () => this.GoRetryCommand(),
                this.CanBaseExecute));
 
-        public ICommand CancelCommand =>
-           this.cancelCommand ?? (this.cancelCommand =
-           new DelegateCommand(
-               () =>
-               {
-                   this.IsBusyCallDrawer = false;
-               }));
-
         public ICommand SaveCommand => this.saveCommand
                            ??
            (this.saveCommand = new DelegateCommand(
@@ -359,38 +360,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
                 this.themeChangedToken?.Dispose();
                 this.themeChangedToken = null;
-            }
-        }
-
-        private void OnMoveLoadingUnitChanged(NotificationMessageUI<MoveLoadingUnitMessageData> message)
-        {
-            switch (message.Status)
-            {
-
-                case MessageStatus.OperationEnd:
-                    if ((message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay1Up
-                        ||
-                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay1Up
-                        ||
-                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay2Up
-                        ||
-                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay3Up
-                        ||
-                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay1Up
-                        ||
-                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay2Up
-                        ||
-                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay3Up
-                        ||
-                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay2Up
-                        ||
-                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay3Up)
-                    {
-                        this.IsBusyCallDrawer = false;
-                        break;
-                    }
-
-                    break;
             }
         }
 
@@ -673,6 +642,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.GetBayPosition(), null, this.MachineStatus.LoadingUnitPositionUpInBay.Id);
                 this.IsBusyCallDrawer = true;
                 //this.CurrentStep = WeightCalibartionStep.CallUnit;
+
+                this.UpdateStatusButtonFooter();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -779,6 +750,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void OnMoveLoadingUnitChanged(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.OperationEnd:
+                    if ((message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay1Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay1Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay2Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay3Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay1Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay2Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay3Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay2Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay3Up)
+                    {
+                        this.IsBusyCallDrawer = false;
+                        break;
+                    }
+
+                    break;
             }
         }
 
