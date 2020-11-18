@@ -172,6 +172,44 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return ActionPolicy.Allowed;
         }
 
+        public MachineErrorCode CanElevatorDeposit(BayPosition bayPosition)
+        {
+            var bayNumber = bayPosition.Bay.Number;
+            var returnValue = MachineErrorCode.NoError;
+            if (bayPosition.IsUpper
+                && this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.TopLevelBayOccupied;
+            }
+            else if (!bayPosition.IsUpper
+                && this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.BottomLevelBayOccupied;
+            }
+            return returnValue;
+        }
+
+        public MachineErrorCode CanElevatorPickup(BayPosition bayPosition)
+        {
+            var bayNumber = bayPosition.Bay.Number;
+            var returnValue = MachineErrorCode.NoError;
+            if (bayPosition.IsUpper
+                && !this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.TopLevelBayEmpty;
+            }
+            else if (!bayPosition.IsUpper
+                && !this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.BottomLevelBayEmpty;
+            }
+            return returnValue;
+        }
+
         public ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber)
         {
             // check #1: a loading unit must be present in the bay position

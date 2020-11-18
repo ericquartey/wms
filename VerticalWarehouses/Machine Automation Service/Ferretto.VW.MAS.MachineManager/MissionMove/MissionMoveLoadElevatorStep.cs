@@ -109,14 +109,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
                         }
 #if CHECK_BAY_SENSOR
+                        var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitSource, deposit: false);
+                        if (result != MachineErrorCode.NoError)
+                        {
+                            var error = this.ErrorsProvider.RecordNew(result, bay.Number);
+                            throw new StateMachineException(error.Reason, bay.Number, MessageActor.MachineManager);
+                        }
                         if (bay.Carousel != null)
                         {
-                            var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitSource, deposit: false);
-                            if (result != MachineErrorCode.NoError)
-                            {
-                                var error = this.ErrorsProvider.RecordNew(result, bay.Number);
-                                throw new StateMachineException(error.Reason, bay.Number, MessageActor.MachineManager);
-                            }
                             if (this.Mission.NeedHomingAxis == Axis.None)
                             {
                                 this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
