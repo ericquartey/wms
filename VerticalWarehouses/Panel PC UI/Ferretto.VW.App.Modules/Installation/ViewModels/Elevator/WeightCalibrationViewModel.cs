@@ -80,6 +80,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand forwardCommand;
 
+        private bool isBusyCallDrawer;
+
         private bool isBusyLoadingFromBay;
 
         private bool isBusyUnloadingToBay;
@@ -110,11 +112,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private DelegateCommand cancelCommand;
+
         private SubscriptionToken themeChangedToken;
 
         private List<WeightData> unitsWeighing = new List<WeightData>();
 
         private DelegateCommand unloadToBayCommand;
+
+        private SubscriptionToken moveLoadingUnitToken;
 
         #endregion
 
@@ -210,6 +216,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepSetWeight => this.currentStep is WeightCalibartionStep.SetWeight;
 
+        public bool IsBusyCallDrawer
+        {
+            get => this.isBusyCallDrawer;
+            private set => this.SetProperty(ref this.isBusyCallDrawer, value);
+        }
+
         public bool IsBusyLoadingFromBay
         {
             get => this.isBusyLoadingFromBay;
@@ -272,6 +284,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                () => this.GoRetryCommand(),
                this.CanBaseExecute));
 
+        public ICommand CancelCommand =>
+           this.cancelCommand ?? (this.cancelCommand =
+           new DelegateCommand(
+               () =>
+               {
+                   this.IsBusyCallDrawer = false;
+               }));
+
         public ICommand SaveCommand => this.saveCommand
                            ??
            (this.saveCommand = new DelegateCommand(
@@ -313,6 +333,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
+            if (this.moveLoadingUnitToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>().Unsubscribe(this.moveLoadingUnitToken);
+                this.moveLoadingUnitToken?.Dispose();
+                this.moveLoadingUnitToken = null;
+            }
+
             if (this.positioningMessageReceivedToken != null)
             {
                 this.EventAggregator.GetEvent<StepChangedPubSubEvent>().Unsubscribe(this.positioningMessageReceivedToken);
@@ -332,6 +359,38 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
                 this.themeChangedToken?.Dispose();
                 this.themeChangedToken = null;
+            }
+        }
+
+        private void OnMoveLoadingUnitChanged(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        {
+            switch (message.Status)
+            {
+
+                case MessageStatus.OperationEnd:
+                    if ((message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay1Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay1Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay2Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.CarouselBay3Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay1Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay2Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.ExternalBay3Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay2Up
+                        ||
+                        (message.Data as MoveLoadingUnitMessageData).Destination == CommonUtils.Messages.Enumerations.LoadingUnitLocation.InternalBay3Up)
+                    {
+                        this.IsBusyCallDrawer = false;
+                        break;
+                    }
+
+                    break;
             }
         }
 
@@ -484,6 +543,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.changeUnitCommand?.RaiseCanExecuteChanged();
 
+            this.cancelCommand?.RaiseCanExecuteChanged();
+
             this.UpdateStatusButtonFooter();
         }
 
@@ -610,6 +671,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.GetBayPosition(), null, this.MachineStatus.LoadingUnitPositionUpInBay.Id);
+                this.IsBusyCallDrawer = true;
                 //this.CurrentStep = WeightCalibartionStep.CallUnit;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -860,6 +922,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                       this.OnPositioningMessageReceived,
                       ThreadOption.UIThread,
                       false);
+
+            this.moveLoadingUnitToken = this.moveLoadingUnitToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                    .Subscribe(
+                        this.OnMoveLoadingUnitChanged,
+                        ThreadOption.UIThread,
+                        false);
         }
 
         private async Task UnloadToBayAsync()
@@ -952,22 +1023,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case WeightCalibartionStep.CallUnit:
                     this.ShowPrevStepSinglePage(true, false);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards);
+                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards && !this.IsBusyCallDrawer);
                     break;
 
                 case WeightCalibartionStep.EmptyUnitWeighing:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving && !this.IsBusyCallDrawer);
+                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards && !this.IsBusyCallDrawer);
                     break;
 
                 case WeightCalibartionStep.OptionalWeighing1:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving && !this.IsBusyCallDrawer);
+                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards && !this.IsBusyCallDrawer);
                     break;
 
                 case WeightCalibartionStep.FullUnitWeighing:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
-                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving && !this.IsBusyCallDrawer);
+                    this.ShowNextStepSinglePage(true, !this.IsMoving && this.IsEnabledForwards && !this.IsBusyCallDrawer);
                     break;
 
                 case WeightCalibartionStep.SetWeight:
