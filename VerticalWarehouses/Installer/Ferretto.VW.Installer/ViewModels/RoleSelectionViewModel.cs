@@ -158,16 +158,10 @@ namespace Ferretto.VW.Installer.ViewModels
 
             this.IsLoadingMachineConfiguration = true;
 
-            var initialDirectory = Directory.GetCurrentDirectory();
-            if (this.setupModeService.Mode == SetupMode.Update)
-            {
-                initialDirectory = $"d:\\{ConfigurationManager.AppSettings.GetMasDirName()}";
-            }
-
             var dialog = new OpenFileDialog()
             {
                 DefaultExt = "*.json",
-                InitialDirectory = initialDirectory,
+                InitialDirectory = (this.setupModeService.Mode == SetupMode.Update) ? $"d:\\{ConfigurationManager.AppSettings.GetMasDirName()}" : Directory.GetCurrentDirectory(),
                 Filter = $"{Resources.VertimagConfigurationFiles}|*.json|{Resources.AllFiles}|*.*",
                 Title = Resources.SelectVertimagConfigurationFile,
                 Multiselect = false
