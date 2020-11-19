@@ -436,7 +436,6 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
 
                     var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
-                    cmdResponse.AddPayload((int)bay.Number);
 
                     if (bay.Accessories.AlphaNumericBar.IsEnabledNew)
                     {
@@ -645,7 +644,6 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
 
                     var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
-                    cmdResponse.AddPayload((int)bay.Number);
 
                     if (bay.Accessories.LaserPointer.IsEnabledNew)
                     {
