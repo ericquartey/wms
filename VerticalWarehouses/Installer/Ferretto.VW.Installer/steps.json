@@ -134,7 +134,7 @@
       "title": "Installa TeamViewerQS",
       "description": "Estrai TeamViewerQS in F:",
       "script": "scripts/install_TeamViewer.ps1",
-      "rollbackScript": "scripts/install_TeamViewer.rollback.ps1",
+      "rollbackScript": "scripts/install_TeamViewer.rollback.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
@@ -341,15 +341,6 @@
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 40,
-      "title": "Cancella file temporanei",
-      "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
-      "script": "Remove-Item $(Backup:Root:Path)\\Staging -Recurse",
-      "setupMode": "UpdateAndRestore",
-      "skipRollback": true
-    },
-    {
-      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 41,
       "title": "Crea utente Ferretto",
       "description": "Crea utente Ferretto.",
       "script": "scripts/create_user_ferretto.ps1",
@@ -357,14 +348,14 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 42,
+      "number": 41,
       "title": "Imposta auto-logon",
       "description": "Crea utente Ferretto e imposta l'utente per il logon automatico.",
       "script": "scripts/set_auto_logon_ferretto.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 43,
+      "number": 42,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
       "script": "scripts/restart_windows.ps1",
@@ -372,7 +363,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 44,
+      "number": 43,
       "title": "Imposta shell utente",
       "description": "Imposta la shell di default per utente Ferretto a PanelPc.",
       "script": "scripts/set_default_shell.ps1",
@@ -380,11 +371,20 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 45,
+      "number": 44,
       "title": "Abilita UWF",
       "description": "Abilita la protezione del disco fisso per sigillare il PanelPC.",
       "script": "uwfmgr.exe filter enable",
       "rollbackScript": "uwfmgr.exe filter disable",
+      "skipRollback": true
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 45,
+      "title": "Cancella file temporanei",
+      "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
+      "script": "Remove-Item $(Backup:Root:Path)\\Staging -Recurse",
+      "setupMode": "UpdateAndRestore",
       "skipRollback": true
     },
     {

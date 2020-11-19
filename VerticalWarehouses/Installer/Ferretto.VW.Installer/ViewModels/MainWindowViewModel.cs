@@ -196,6 +196,7 @@ namespace Ferretto.VW.Installer.ViewModels
                                 NavigationService.GetInstance(),
                                 Core.Container.GetInstallationService(),
                                 NotificationService.GetInstance(),
+                                Core.Container.GetSetupModeService(),
                                 Core.Container.GetMachineConfigurationService());
 
                             await this.navigationService.NavigateToAsync(viewModel);

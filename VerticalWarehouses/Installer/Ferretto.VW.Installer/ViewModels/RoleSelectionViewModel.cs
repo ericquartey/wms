@@ -28,9 +28,11 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private readonly INavigationService navigationService;
 
+        private readonly INotificationService notificationService;
+
         private readonly Command openFileCommand;
 
-        private readonly INotificationService notificationService;
+        private readonly ISetupModeService setupModeService;
 
         private bool isLoadingMachineConfiguration;
 
@@ -52,12 +54,18 @@ namespace Ferretto.VW.Installer.ViewModels
             INavigationService navigationService,
             IInstallationService installationService,
             INotificationService statusBarService,
+            ISetupModeService setupModeService,
             IMachineConfigurationService machineConfigurationService)
         {
+            if (setupModeService is null)
+            {
+                throw new ArgumentNullException(nameof(setupModeService));
+            }
             this.navigationService = navigationService;
             this.installationService = installationService;
             this.machineConfigurationService = machineConfigurationService;
             this.notificationService = statusBarService;
+            this.setupModeService = setupModeService;
 
             this.navigateToNextPageCommand = new Command(async () => await this.NavigateToNextPageAsync(), this.CanNavigateToNextPage);
             this.openFileCommand = new Command(
@@ -153,6 +161,7 @@ namespace Ferretto.VW.Installer.ViewModels
             var dialog = new OpenFileDialog()
             {
                 DefaultExt = "*.json",
+                InitialDirectory = (this.setupModeService.Mode == SetupMode.Update) ? $"d:\\{ConfigurationManager.AppSettings.GetMasDirName()}" : Directory.GetCurrentDirectory(),
                 Filter = $"{Resources.VertimagConfigurationFiles}|*.json|{Resources.AllFiles}|*.*",
                 Title = Resources.SelectVertimagConfigurationFile,
                 Multiselect = false
@@ -184,7 +193,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
                     this.notificationService.SetMessage("Configuration file loaded.");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     this.notificationService.SetErrorMessage($"Unable to load configuration from file.{Environment.NewLine}{ex.Message}");
                     this.MachineConfigurationFileName = null;
@@ -236,7 +245,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
                 this.notificationService.SetMessage("Configuration loaded.");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.notificationService.SetErrorMessage($"Unable to load configuration from web service.{Environment.NewLine}{ex.Message}");
             }
