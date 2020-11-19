@@ -80,65 +80,61 @@ namespace Ferretto.VW.MAS.SocketLink
 
         public enum HeaderType
         {
-            EXTRACT_CMD,
-
-            EXTRACT_CMD_RES,
-
-            STORE_CMD,
-
-            STORE_CMD_RES,
-
-            STATUS_REQUEST_CMD,
-
-            STATUS,
-
-            REQUEST_RESET_CMD,
-
-            REQUEST_RESET_RES,
-
             ALARM_RESET_CMD,
 
             ALARM_RESET_RES,
 
+            ALPHANUMBAR_CMD,
+
+            ALPHANUMBAR_RES,
+
             CMD_NOT_RECOGNIZED,
 
+            EXTRACT_CMD,
+
+            EXTRACT_CMD_RES,
+
             INVALID_FORMAT,
-
-            LED_CMD,
-
-            LED_RES,
-
-            REQUEST_VERSION,
-
-            REQUEST_VERSION_RES,
-
-            REQUEST_ALARMS,
-
-            REQUEST_ALARMS_RES,
-
-            CONFIRM_OPERATION,
-
-            CONFIRM_OPERATION_RES,
-
-            REQUEST_INFO,
-
-            REQUEST_INFO_RES,
-
-            STATUS_EXT_REQUEST_CMD,
-
-            STATUS_EXT,
-
-            REQUEST_UDCS_HEIGHT,
-
-            REQUEST_UDCS_HEIGHT_RES,
 
             LASER_CMD,
 
             LASER_RES,
 
-            ALPHANUMBAR_CMD,
+            REQUEST_ALARMS,
 
-            ALPHANUMBAR_RES,
+            REQUEST_ALARMS_RES,
+
+            REQUEST_INFO,
+
+            REQUEST_INFO_RES,
+
+            REQUEST_MISSION_TRAY,
+
+            REQUEST_MISSION_TRAY_RES,
+
+            REQUEST_RESET_CMD,
+
+            REQUEST_RESET_RES,
+
+            REQUEST_UDCS_HEIGHT,
+
+            REQUEST_UDCS_HEIGHT_RES,
+
+            REQUEST_VERSION,
+
+            REQUEST_VERSION_RES,
+
+            STATUS,
+
+            STATUS_EXT,
+
+            STATUS_EXT_REQUEST_CMD,
+
+            STATUS_REQUEST_CMD,
+
+            STORE_CMD,
+
+            STORE_CMD_RES,
 
             UTC_CMD,
 
@@ -325,10 +321,6 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 case HeaderType.STORE_CMD:
                 case HeaderType.REQUEST_RESET_CMD:
-                case HeaderType.LED_CMD:
-                case HeaderType.LED_RES:
-                case HeaderType.CONFIRM_OPERATION:
-                case HeaderType.CONFIRM_OPERATION_RES:
                 case HeaderType.REQUEST_INFO:
                 case HeaderType.REQUEST_INFO_RES:
                 case HeaderType.LASER_CMD:

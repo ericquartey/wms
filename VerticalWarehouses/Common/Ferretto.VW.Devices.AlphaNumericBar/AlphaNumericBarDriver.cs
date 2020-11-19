@@ -40,9 +40,9 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private double loadingUnitWidth;
 
-        private string selectedMessage;
+        //private string selectedMessage;
 
-        private double? selectedPosition;
+        //private double? selectedPosition;
 
         private AlphaNumericBarSize size = AlphaNumericBarSize.ExtraLarge;
 

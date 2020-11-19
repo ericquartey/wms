@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.TimeManagement;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.VW.MAS.Utils.Events;
@@ -20,7 +19,7 @@ namespace Ferretto.VW.MAS.SocketLink
     {
         #region Fields
 
-        private const string VERSION = "4.7";
+        private const string VERSION = "4.9";
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -153,6 +152,10 @@ namespace Ferretto.VW.MAS.SocketLink
                         commandsResponse.Add(this.ProcessCommandStatusExt(cmdReceived));
                         break;
 
+                    case SocketLinkCommand.HeaderType.REQUEST_MISSION_TRAY:
+                        commandsResponse.Add(this.ProcessCommandRequestMissionTray(cmdReceived));
+                        break;
+
                     case SocketLinkCommand.HeaderType.REQUEST_UDCS_HEIGHT:
                         commandsResponse.Add(this.ProcessCommandLoadingUnitsHeight(cmdReceived));
                         break;
@@ -170,8 +173,6 @@ namespace Ferretto.VW.MAS.SocketLink
                         break;
 
                     case SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED:
-                    case SocketLinkCommand.HeaderType.CONFIRM_OPERATION:
-                    case SocketLinkCommand.HeaderType.LED_CMD:
                         commandsResponse.Add(SocketLinkProvider.GetCommandNotRecognizedResponse(cmdReceived));
                         break;
                 }
@@ -436,7 +437,6 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
 
                     var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
-                    cmdResponse.AddPayload((int)bay.Number);
 
                     if (bay.Accessories.AlphaNumericBar.IsEnabledNew)
                     {
@@ -645,7 +645,6 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
 
                     var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
-                    cmdResponse.AddPayload((int)bay.Number);
 
                     if (bay.Accessories.LaserPointer.IsEnabledNew)
                     {
@@ -729,6 +728,52 @@ namespace Ferretto.VW.MAS.SocketLink
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
                 }
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandRequestMissionTray(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_MISSION_TRAY_RES);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
+
+                    var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
+                    var missionType = (MissionType)Enum.Parse(typeof(MissionType), cmdReceived.GetPayloadByPosition(2));
+
+                    var activeMissions = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number).Where(m => m.MissionType == missionType);
+
+                    if (activeMissions.Any())
+                    {
+                        foreach (var mission in activeMissions)
+                        {
+                            cmdResponse.AddPayload(mission.LoadUnitId);
+                        }
+                    }
+                    else
+                    {
+                        cmdResponse.AddPayload("0");
+                    }
+                }
+                else
+                {
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                }
+            }
+            catch (BayNumberException ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid bay number {ex.BayNumber}");
             }
             catch (Exception ex)
             {
