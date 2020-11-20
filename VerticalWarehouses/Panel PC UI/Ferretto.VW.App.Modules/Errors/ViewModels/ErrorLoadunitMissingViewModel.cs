@@ -360,9 +360,9 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         internal bool LUPresentInBay1 => this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) : this.SensorsService.Sensors.LUPresentInBay1;
 
-        internal bool LUPresentInBay2 => this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) : this.SensorsService.Sensors.LUPresentInBay2;
+        internal bool LUPresentInBay2 => this.IsBay2External ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) : this.SensorsService.Sensors.LUPresentInBay2;
 
-        internal bool LUPresentInBay3 => this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) : this.SensorsService.Sensors.LUPresentInBay3;
+        internal bool LUPresentInBay3 => this.IsBay3External ? (this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) : this.SensorsService.Sensors.LUPresentInBay3;
 
         public MachineError MachineError
         {
