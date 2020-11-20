@@ -540,4 +540,7 @@
   <data name="Machine_LoadUnitWidth" xml:space="preserve">
     <value>Širina</value>
   </data>
+  <data name="Center" xml:space="preserve">
+    <value>Centar</value>
+  </data>
 </root>

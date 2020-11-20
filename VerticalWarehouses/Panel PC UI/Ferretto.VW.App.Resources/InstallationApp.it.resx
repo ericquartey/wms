@@ -1410,7 +1410,7 @@
     <value>Corrente Media [A]</value>
   </data>
   <data name="CallUnit" xml:space="preserve">
-    <value>Chiamata cassetto: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso</value>
+    <value>Chiamata cassetto</value>
   </data>
   <data name="CarouselCalibrationDescription" xml:space="preserve">
     <value>Attendere il termine della procedura, in caso di necessita il tasto di 'STOP' per un arresto immediato e 'ARRESTA PROCEDURA' per uno stop in fase.</value>
@@ -2303,5 +2303,8 @@
   </data>
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Premi inizia per cominciare la calibrazione</value>
+  </data>
+  <data name="CallUnitWeight" xml:space="preserve">
+    <value>Chiamata cassetto: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso</value>
   </data>
 </root>
