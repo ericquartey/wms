@@ -21,6 +21,42 @@ namespace Ferretto.VW.MAS.DataModels
         /// <summary>
         /// In horizontal movements some steps can be scaled by weight, depending on Adjust___ByWeight parameters.
         /// </summary>
+        /// <param name="adjustpositionbyweight">min value 0, max value 1.The higher is scalingFactor the lower goes speed/Acceleration </param>
+        /// <param name="axis"></param>
+        public void AdjustPositionByCenter(ElevatorAxis axis, MovementProfileType movementProfileType, int center)
+        {
+            if (axis is null)
+            {
+                throw new ArgumentNullException(nameof(axis));
+            }
+            if (axis.EmptyLoadMovement.Speed < axis.FullLoadMovement.Speed)
+            {
+                throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisSpeedConfiguration, axis.Orientation, this.Speed));
+            }
+            if (axis.EmptyLoadMovement.Acceleration < axis.FullLoadMovement.Acceleration)
+            {
+                throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisAccelerationConfiguration, axis.Orientation, this.Acceleration));
+            }
+
+            if (movementProfileType == MovementProfileType.ShortPickup || movementProfileType == MovementProfileType.LongDeposit)
+            {
+                if (center != 0)
+                {
+                    this.Position += center;
+                }
+            }
+            else if (movementProfileType == MovementProfileType.ShortDeposit || movementProfileType == MovementProfileType.LongPickup)
+            {
+                if (center != 0)
+                {
+                    this.Position -= center;
+                }
+            }
+        }
+
+        /// <summary>
+        /// In horizontal movements some steps can be scaled by weight, depending on Adjust___ByWeight parameters.
+        /// </summary>
         /// <param name="scalingFactor">min value 0, max value 1.The higher is scalingFactor the lower goes speed/Acceleration </param>
         /// <param name="axis"></param>
         public void ScaleMovementsByWeight(double scalingFactor, ElevatorAxis axis)

@@ -805,6 +805,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     statistics.WeightCapacityPercentage = ((statistics.TotalWeightFront + statistics.TotalWeightBack) / machine.MaxGrossWeight) * 100;
                 }
                 this.dataContext.SaveChanges();
+
+                // TODO - THIS IS A GOOD POINT TO MAKE A DATABASE BACKUP
             }
         }
 

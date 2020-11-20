@@ -540,4 +540,7 @@
   <data name="Machine_LoadUnitWidth" xml:space="preserve">
     <value>Šířka LoadUnit!</value>
   </data>
+  <data name="Center" xml:space="preserve">
+    <value>Centrum</value>
+  </data>
 </root>

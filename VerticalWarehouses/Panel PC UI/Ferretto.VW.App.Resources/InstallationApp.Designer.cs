@@ -754,6 +754,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chiamata cassetto: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso.
+        /// </summary>
+        public static string CallUnitWeight {
+            get {
+                return ResourceManager.GetString("CallUnitWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel calibration.
         /// </summary>
         public static string CarouselCalibration {
@@ -5448,6 +5457,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press start to begin calibration.
+        /// </summary>
+        public static string StartCalibrationButton {
+            get {
+                return ResourceManager.GetString("StartCalibrationButton", resourceCulture);
             }
         }
         

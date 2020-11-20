@@ -69,6 +69,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var profileType = this.SelectProfileType(direction, isLoadingUnitOnBoard);
 
             var horizontalAxis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
+            var center = horizontalAxis.Profiles.Where(s => s.Name == profileType).Select(s => s.Center).FirstOrDefault();
+
             var profileSteps = horizontalAxis.Profiles
                 .Single(p => p.Name == profileType)
                 .Steps
@@ -107,6 +110,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             foreach (var profileStep in profileSteps)
             {
                 profileStep.ScaleMovementsByWeight(scalingFactor, horizontalAxis);
+                profileStep.AdjustPositionByCenter(horizontalAxis, profileType, center);
             }
 
             // if direction is Forwards then height increments, otherwise it decrements

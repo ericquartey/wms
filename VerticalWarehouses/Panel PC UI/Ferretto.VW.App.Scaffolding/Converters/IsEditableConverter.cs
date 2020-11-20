@@ -18,6 +18,12 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             {
                 // detour to the 'Metadata'
                 value = entity.Metadata;
+
+
+                if (entity.Property.Name == "Center" && ScaffolderUserAccesLevel.User == MAS.AutomationService.Contracts.UserAccessLevel.Installer)
+                {
+                    return true;
+                }
             }
 
             if (value is IEnumerable<Attribute> metadata)
