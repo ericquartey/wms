@@ -359,7 +359,8 @@
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
       "script": "scripts/restart_windows.ps1",
-      "skipRollback": true
+      "skipRollback": true,
+      "setupMode": "install"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
@@ -383,7 +384,7 @@
       "number": 45,
       "title": "Cancella file temporanei",
       "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
-      "script": "Remove-Item $(Backup:Root:Path)\\Staging -Recurse",
+      "script": "scripts/delete_temp_folder.ps1",
       "setupMode": "UpdateAndRestore",
       "skipRollback": true
     },

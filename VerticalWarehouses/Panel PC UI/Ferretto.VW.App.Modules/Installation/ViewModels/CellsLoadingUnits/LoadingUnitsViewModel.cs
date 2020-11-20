@@ -210,7 +210,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.SelectedId = this.SelectedLU?.Id;
                 this.SelectedCode = this.SelectedLU?.Code;
                 this.SelectedBayPositionId = null;
-                this.BlockUnlockText = this.selectedLU.Status == LoadingUnitStatus.Blocked ? Localized.Get("InstallationApp.UnlockLU") : Localized.Get("InstallationApp.BlockLU");
+                if (this.selectedLU != null)
+                {
+                    this.BlockUnlockText = this.selectedLU.Status == LoadingUnitStatus.Blocked ? Localized.Get("InstallationApp.UnlockLU") : Localized.Get("InstallationApp.BlockLU");
+                }
             });
         }
 
