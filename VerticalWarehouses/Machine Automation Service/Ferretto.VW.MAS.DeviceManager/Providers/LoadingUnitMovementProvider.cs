@@ -651,6 +651,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             if (distance > horizontalAxis.Profiles.First().TotalDistance)
             {
+                this.logger.LogError($"Invalid horizontal distance={distance} mm value [current HorizontalPosition={this.elevatorDataProvider.HorizontalPosition} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition} mm");
+
                 this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
                 throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, requestingBay, MessageActor.MachineManager);
             }
