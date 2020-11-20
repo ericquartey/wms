@@ -543,4 +543,7 @@
   <data name="ElevatorAxis_HorizontalCalibrateSpeed" xml:space="preserve">
     <value>Velocità calibrazione orizzontale</value>
   </data>
+  <data name="Center" xml:space="preserve">
+    <value>Centro</value>
+  </data>
 </root>

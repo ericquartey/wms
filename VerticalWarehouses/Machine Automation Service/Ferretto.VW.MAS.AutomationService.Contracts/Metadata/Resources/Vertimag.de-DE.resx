@@ -520,4 +520,7 @@
   <data name="View" xml:space="preserve">
     <value>Vision</value>
   </data>
+  <data name="Center" xml:space="preserve">
+    <value>Center</value>
+  </data>
 </root>
