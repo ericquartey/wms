@@ -93,6 +93,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(machineInfo);
         }
 
+        [HttpPost("get/box/enable")]
+        public ActionResult<bool> GetBoxEnable()
+        {
+            return this.Ok(this.machineProvider.GetBox());
+        }
+
+        [HttpPost("get/ItemUniqueIdLength")]
+        public ActionResult<int> GetItemUniqueIdLength()
+        {
+            return this.Ok(this.machineProvider.GetItemUniqueIdLength());
+        }
+
         [HttpGet("statistics")]
         public async Task<ActionResult<MachineStatistics>> GetStatistics([FromServices] IMachinesWmsWebService machinesWebService)
         {

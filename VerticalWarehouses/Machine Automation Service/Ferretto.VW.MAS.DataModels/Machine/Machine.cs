@@ -85,6 +85,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool Simulation { get; set; }
 
+        public bool Box { get; set; }
+
+        public int ItemUniqueIdLength { get; set; }
+
         #endregion
 
         #region Methods

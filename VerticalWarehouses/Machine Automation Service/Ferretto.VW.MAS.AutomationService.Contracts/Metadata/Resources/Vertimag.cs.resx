@@ -543,4 +543,10 @@
   <data name="Center" xml:space="preserve">
     <value>Centrum</value>
   </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Jedinečná délka ID položky</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Kontejner</value>
+  </data>
 </root>

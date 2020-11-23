@@ -340,6 +340,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Box.
+        /// </summary>
+        public static string Box {
+            get {
+                return ResourceManager.GetString("Box", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel.
         /// </summary>
         public static string Carousel {
@@ -732,6 +741,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string IoDevice_TcpPort {
             get {
                 return ResourceManager.GetString("IoDevice_TcpPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Id unique length.
+        /// </summary>
+        public static string ItemUniqueIdLength {
+            get {
+                return ResourceManager.GetString("ItemUniqueIdLength", resourceCulture);
             }
         }
         

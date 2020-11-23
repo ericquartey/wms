@@ -175,6 +175,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool GetBox()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().Box;
+            }
+        }
+
         public double GetHeight()
         {
             lock (this.dataContext)
@@ -188,6 +196,14 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.Select(m => m.Id).Single();
+            }
+        }
+
+        public int GetItemUniqueIdLength()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().ItemUniqueIdLength;
             }
         }
 

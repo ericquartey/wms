@@ -14,11 +14,11 @@ namespace Ferretto.VW.MAS.DataLayer
         void ClearAll();
 
         Machine Get();
-
+        bool GetBox();
         double GetHeight();
 
         int GetIdentity();
-
+        int GetItemUniqueIdLength();
         MachineStatistics GetPresentStatistics();
 
         IEnumerable<ServicingInfo> GetServicingInfo();

@@ -546,4 +546,10 @@
   <data name="Center" xml:space="preserve">
     <value>Centro</value>
   </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Lunghezza univoca ID articolo</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Contenitore</value>
+  </data>
 </root>

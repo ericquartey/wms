@@ -30,12 +30,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitInfoViewModel(
+            IMachineIdentityWebService machineIdentityWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IOperatorNavigationService operatorNavigationService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
-            : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
+            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
