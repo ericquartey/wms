@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var horizontalAxis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var center = horizontalAxis.Profiles.Where(s => s.Name == profileType).Select(s => s.Center).FirstOrDefault();
+            var center = horizontalAxis.Center;
 
             var profileSteps = horizontalAxis.Profiles
                 .Single(p => p.Name == profileType)

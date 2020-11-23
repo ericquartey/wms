@@ -333,6 +333,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("BrakeReleaseTime");
 
+                    b.Property<int>("Center");
+
                     b.Property<double>("ChainOffset");
 
                     b.Property<int?>("ElevatorId");
@@ -1426,8 +1428,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Center");
 
                     b.Property<int?>("ElevatorAxisId");
 

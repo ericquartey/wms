@@ -29,6 +29,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(2)]
             public double BrakeReleaseTime { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Center))]
+            [Range(-10, 10)]
+            public int Center { get; set; }
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ChainOffset))]
             [Unit("mm")]
             [Id(3)]

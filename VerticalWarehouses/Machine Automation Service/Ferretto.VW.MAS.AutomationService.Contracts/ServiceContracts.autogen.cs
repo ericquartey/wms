@@ -4302,6 +4302,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("BrakeReleaseTime", Required = Newtonsoft.Json.Required.Always)]
         public double BrakeReleaseTime { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Center", Required = Newtonsoft.Json.Required.Always)]
+        public int Center { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ChainOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ChainOffset { get; set; }
     
@@ -4314,11 +4317,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HomingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingCreepSpeed { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("HorizontalCalibrateSpeed", Required = Newtonsoft.Json.Required.Always)]
-        public double HorizontalCalibrateSpeed { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("HomingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingFastSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HorizontalCalibrateSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double HorizontalCalibrateSpeed { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
@@ -4421,9 +4424,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MovementProfile : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("Center", Required = Newtonsoft.Json.Required.Always)]
-        public int Center { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Always)]
         public MovementProfileType Name { get; set; }
     

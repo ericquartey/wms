@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20201120081115_Center")]
+    [Migration("20201123074054_Center")]
     partial class Center
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -334,6 +334,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("BrakeActivatePercent");
 
                     b.Property<double>("BrakeReleaseTime");
+
+                    b.Property<int>("Center");
 
                     b.Property<double>("ChainOffset");
 
@@ -1428,8 +1430,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Center");
 
                     b.Property<int?>("ElevatorAxisId");
 

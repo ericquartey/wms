@@ -14,10 +14,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Center))]
-            [Range(-10, 10)]
-            public int Center { get; set; }
-
             [Editable(false)]
             public MovementProfileType Name { get; set; }
 
