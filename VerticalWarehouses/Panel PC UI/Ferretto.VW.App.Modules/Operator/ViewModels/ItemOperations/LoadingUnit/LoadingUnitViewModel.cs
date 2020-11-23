@@ -85,6 +85,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitViewModel(
+            IMachineIdentityWebService machineIdentityWebService,
             INavigationService navigationService,
             IMachineItemsWebService itemsWebService,
             IMachineMissionsWebService machineMissionsWebService,
@@ -96,7 +97,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineMissionOperationsWebService missionOperationsWebService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
-            : base(machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
+            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));

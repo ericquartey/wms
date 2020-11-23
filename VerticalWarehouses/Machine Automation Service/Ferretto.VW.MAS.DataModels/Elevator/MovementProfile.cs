@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public int Center { get; set; }
-
         public MovementProfileType Name { get; set; }
 
         public IEnumerable<StepMovementParameters> Steps { get; set; }

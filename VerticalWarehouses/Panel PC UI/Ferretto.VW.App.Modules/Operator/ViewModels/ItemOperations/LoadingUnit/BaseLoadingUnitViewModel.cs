@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private DelegateCommand changeModeListCommand;
 
         private DelegateCommand changeModeLoadingUnitCommand;
@@ -77,12 +79,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public BaseLoadingUnitViewModel(
+            IMachineIdentityWebService machineIdentityWebService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IWmsDataProvider wmsDataProvider)
             : base(PresentationMode.Operator)
         {
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.WmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
@@ -351,9 +355,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.ItemSerialNumberVisibility = false;
 
-            string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
+            //string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
 
-            this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
+            //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
+
+            this.IsBoxEnabled = await this.machineIdentityWebService.GetBoxEnableAsync();
 
             if (this.Data is int loadingUnitId)
             {

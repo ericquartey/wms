@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double BrakeReleaseTime { get; set; }
 
+        public int Center { get; set; }
+
         public double ChainOffset { get; set; }
 
         public MovementParameters EmptyLoadMovement { get; set; }
@@ -33,9 +35,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double HomingCreepSpeed { get; set; }
 
-        public double HorizontalCalibrateSpeed { get; set; }
-
         public double HomingFastSpeed { get; set; }
+
+        public double HorizontalCalibrateSpeed { get; set; }
 
         public Inverter Inverter { get; set; }
 

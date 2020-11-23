@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly List<LoadingUnit> loadingUnits;
 
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
         private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private readonly IMachineService machineService;
@@ -50,6 +52,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemOperationWaitViewModel(
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             ISessionService sessionService,
             IOperatorNavigationService operatorNavigationService,
             IMachineMissionsWebService machineMissionsWebService,
@@ -57,6 +60,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineService machineService)
             : base(PresentationMode.Operator)
         {
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
@@ -203,7 +207,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.operatorNavigationService.NavigateToDrawerViewUnit();
+            //this.operatorNavigationService.NavigateToDrawerViewUnit();
 
             this.RaisePropertyChanged(nameof(this.MoveVisible));
 
@@ -245,6 +249,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var missions = await this.machineMissionsWebService.GetAllAsync();
                 this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
                 this.LoadingUnitsInfo = this.ComputeLoadingUnitInfo();
+
+                await this.ManualUnit(missions);
             }
             catch (Exception)
             {
@@ -263,6 +269,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             return string.Format(Localized.Get("OperatorApp.LoadingUnitsSendToBay"), this.loadingUnitsMovements);
+        }
+
+        private async Task ManualUnit(IEnumerable<Mission> missions)
+        {
+            var loadingUnitInBay = this.machineService.Loadunits.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay);
+
+            if (missions != null && loadingUnitInBay != null)
+            {
+                if (!missions.Where(s => s.LoadUnitId == loadingUnitInBay.Id).Any())
+                {
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
+                        loadingUnitInBay.Id,
+                        trackCurrentView: false);
+                }
+            }
+            else if (missions == null && loadingUnitInBay != null)
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
+                    loadingUnitInBay.Id,
+                    trackCurrentView: false);
+            }
         }
 
         #endregion
