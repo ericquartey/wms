@@ -128,7 +128,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.immediateDrawerCallCommand = new DelegateCommand(
                 async () => await this.ImmediateDrawerCallAsync(),
                 () => !this.IsMoving &&
-                !this.SensorsService.IsLoadingUnitInBay &&
+                (this.isDrawerCurrentlyNotPresenceInUpperPositionBay() || this.isDrawerCurrentlyNotPresentInLowerPositionBay()) &&
                 this.SelectedLU != null &&
                 this.SelectedLU.Status == LoadingUnitStatus.InLocation &&
                 !this.isBusyUpdateDrawer));
@@ -139,8 +139,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.immediateDrawerReturnCommand = new DelegateCommand(
                 async () => await this.ImmediateDrawerReturnAsync(),
                 () => !this.IsMoving &&
-                this.SensorsService.IsLoadingUnitInBay &&
-                this.MachineStatus.LoadingUnitPositionUpInBay != null &&
+                (this.IsDrawerCurrentlyInUpperPositionBay() || this.IsDrawerCurrentlyInLowerPositionBay()) &&
                 !this.isBusyUpdateDrawer));
 
         public ICommand InsertDrawerCommand =>
@@ -156,9 +155,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isBusyUpdateDrawer, value);
         }
 
-        public bool IsDrawerCallVisible => !this.IsMoving && !this.SensorsService.IsLoadingUnitInBay;
+        public bool IsDrawerCallVisible
+        {
+            get
+            {
+                var isDoubleInternalBay = this.MachineService.Bay.IsDouble &&
+                    this.MachineService.Bay.Carousel == null &&
+                    !this.MachineService.Bay.IsExternal;
 
-        public bool IsDrawerReturnVisible => !this.IsMoving && this.SensorsService.IsLoadingUnitInBay;
+                var loadUnitNotPresence = (!isDoubleInternalBay) ? !this.SensorsService.IsLoadingUnitInBay : !this.SensorsService.IsLoadingUnitInMiddleBottomBay;
+
+                return !this.IsMoving && loadUnitNotPresence;
+            }
+        }
+
+        public bool IsDrawerReturnVisible
+        {
+            get
+            {
+                var isDoubleInternalBay = this.MachineService.Bay.IsDouble &&
+                    this.MachineService.Bay.Carousel == null &&
+                    !this.MachineService.Bay.IsExternal;
+
+                var loadUnitPresence = (!isDoubleInternalBay) ? this.SensorsService.IsLoadingUnitInBay : this.SensorsService.IsLoadingUnitInMiddleBottomBay;
+
+                return !this.IsMoving && loadUnitPresence;
+            }
+        }
 
         public bool IsEditStatus => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
@@ -307,7 +330,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.GetBayPosition(), null, this.MachineStatus.LoadingUnitPositionUpInBay.Id);
+                var isDoubleInternalBay = this.MachineService.Bay.IsDouble &&
+                    this.MachineService.Bay.Carousel == null &&
+                    !this.MachineService.Bay.IsExternal;
+
+                var loadingUnitId = (!isDoubleInternalBay) ? this.MachineStatus.LoadingUnitPositionUpInBay.Id : this.MachineStatus.LoadingUnitPositionDownInBay.Id;
+
+                await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.GetBayPosition(), null, loadingUnitId);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -392,19 +421,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private MAS.AutomationService.Contracts.LoadingUnitLocation GetBayPosition()
         {
+            var isDoubleInternalBay = this.MachineService.Bay.IsDouble &&
+                this.MachineService.Bay.Carousel == null &&
+                !this.MachineService.Bay.IsExternal;
+
             if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
             {
-                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
+                return (!isDoubleInternalBay) ? MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up :
+                    MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Down;
             }
 
             if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo)
             {
-                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
+                return (!isDoubleInternalBay) ? MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up :
+                    MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Down;
             }
 
             if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree)
             {
-                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
+                return (!isDoubleInternalBay) ? MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up :
+                    MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Down;
             }
 
             return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
@@ -413,6 +449,56 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private async Task InsertDrawer()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Support function.
+        /// </summary>
+        /// <returns></returns>
+        private bool IsDrawerCurrentlyInLowerPositionBay()
+        {
+            var retValue = this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
+                this.MachineStatus.LoadingUnitPositionDownInBay != null &&
+                this.MachineService.Bay.IsDouble &&
+                this.MachineService.Bay.Carousel == null &&
+                !this.MachineService.Bay.IsExternal;
+
+            return retValue;
+        }
+
+        /// <summary>
+        /// Support function.
+        /// </summary>
+        /// <returns></returns>
+        private bool IsDrawerCurrentlyInUpperPositionBay()
+        {
+            var retValue = this.SensorsService.IsLoadingUnitInBay &&
+                this.MachineStatus.LoadingUnitPositionUpInBay != null;
+
+            return retValue;
+        }
+
+        /// <summary>
+        /// Support function.
+        /// </summary>
+        /// <returns></returns>
+        private bool isDrawerCurrentlyNotPresenceInUpperPositionBay()
+        {
+            return !this.SensorsService.IsLoadingUnitInBay;
+        }
+
+        /// <summary>
+        /// Support function.
+        /// </summary>
+        /// <returns></returns>
+        private bool isDrawerCurrentlyNotPresentInLowerPositionBay()
+        {
+            var retValue = this.MachineService.Bay.IsDouble &&
+                    this.MachineService.Bay.Carousel == null &&
+                    !this.MachineService.Bay.IsExternal &&
+                    !this.SensorsService.IsLoadingUnitInMiddleBottomBay;
+
+            return retValue;
         }
 
         private async Task RemoveDrawer()
