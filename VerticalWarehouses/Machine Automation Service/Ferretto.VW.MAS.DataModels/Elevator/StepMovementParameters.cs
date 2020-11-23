@@ -38,14 +38,14 @@ namespace Ferretto.VW.MAS.DataModels
                 throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisAccelerationConfiguration, axis.Orientation, this.Acceleration));
             }
 
-            if (movementProfileType == MovementProfileType.ShortPickup || movementProfileType == MovementProfileType.LongDeposit)
+            if (movementProfileType == MovementProfileType.LongPickup || movementProfileType == MovementProfileType.LongDeposit)
             {
                 if (center != 0)
                 {
                     this.Position += center;
                 }
             }
-            else if (movementProfileType == MovementProfileType.ShortDeposit || movementProfileType == MovementProfileType.LongPickup)
+            else if (movementProfileType == MovementProfileType.ShortDeposit || movementProfileType == MovementProfileType.ShortPickup)
             {
                 if (center != 0)
                 {
