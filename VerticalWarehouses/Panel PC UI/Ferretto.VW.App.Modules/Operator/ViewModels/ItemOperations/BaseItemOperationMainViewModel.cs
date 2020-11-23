@@ -32,6 +32,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly INavigationService navigationService;
@@ -117,6 +119,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public BaseItemOperationMainViewModel(
+            IMachineIdentityWebService machineIdentityWebService,
             INavigationService navigationService,
             IOperatorNavigationService operatorNavigationService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
@@ -129,6 +132,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IDialogService dialogService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.eventAggregator = eventAggregator;
             this.compartmentsWebService = compartmentsWebService;
             this.missionOperationsWebService = missionOperationsWebService;
@@ -800,20 +804,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
+            //string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
 
-            this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
+            //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
 
-            value = System.Configuration.ConfigurationManager.AppSettings["ItemUniqueIdLength"];
+            this.IsBoxEnabled = await this.machineIdentityWebService.GetBoxEnableAsync();
 
-            if (int.TryParse(value, out var def))
-            {
-                this.BarcodeLenght = def;
-            }
-            else
-            {
-                this.BarcodeLenght = 0;
-            }
+            //value = System.Configuration.ConfigurationManager.AppSettings["ItemUniqueIdLength"];
+
+            //if (int.TryParse(value, out var def))
+            //{
+            //    this.BarcodeLenght = def;
+            //}
+            //else
+            //{
+            //    this.BarcodeLenght = 0;
+            //}
+
+            this.BarcodeLenght = await this.machineIdentityWebService.GetItemUniqueIdLengthAsync();
 
             this.IsWaitingForResponse = false;
             this.IsBusyAbortingOperation = false;

@@ -21,6 +21,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [PullToRoot, Unfold]
             public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Box))]
+            [Id(18)]
+            public bool Box { get; set; }
+
             [Category(Category = nameof(Vertimag.Elevator), ResourceType = typeof(Vertimag))]
             [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.Elevator_CategoryDescription))]
             [Offset(500)]
@@ -56,6 +60,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Id))]
             [Id(14)]
             public bool Id { get; set; }
+
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ItemUniqueIdLength))]
+            [Id(19)]
+            public int ItemUniqueIdLength { get; set; }
 
             [Editable(true)]
             [Unit("mm")]

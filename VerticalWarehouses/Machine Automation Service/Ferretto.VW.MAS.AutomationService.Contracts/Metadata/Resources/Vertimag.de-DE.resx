@@ -523,4 +523,10 @@
   <data name="Center" xml:space="preserve">
     <value>Center</value>
   </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Artikel-ID eindeutige Länge</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Container</value>
+  </data>
 </root>
