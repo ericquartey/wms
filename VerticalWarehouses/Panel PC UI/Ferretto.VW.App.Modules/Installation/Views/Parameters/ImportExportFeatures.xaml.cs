@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using CommonServiceLocator;
 using Ferretto.VW.App.Modules.Login;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Installation.Controls
@@ -79,6 +82,9 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         private static readonly DependencyProperty IncludeAccessoriesProperty
            = DependencyProperty.Register(nameof(IncludeAccessories), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false, OnIncludePropertyChanged));
 
+        [Browsable(false)]
+        public static readonly DependencyProperty MachineServiceProperty =
+            DependencyProperty.Register(nameof(MachineService), typeof(IMachineService), typeof(ImportExportFeatures));
 
         #endregion
 
@@ -87,11 +93,19 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         public ImportExportFeatures()
         {
             this.InitializeComponent();
+
+            this.MachineService = ServiceLocator.Current.GetInstance<IMachineService>();
         }
 
         #endregion
 
         #region Properties
+
+        public IMachineService MachineService
+        {
+            get => (IMachineService)this.GetValue(MachineServiceProperty);
+            set => this.SetValue(MachineServiceProperty, value);
+        }
 
         public bool HasCellPanels
         {
@@ -338,7 +352,7 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             var setup = configuration?.SetupProcedures != null;
             var parameters = configuration?.HasParameters() == true;
             var statistics = configuration?.MachineStatistics != null;
-            var accessories = configuration?.Machine?.Bays?.Where(s => s.Id == ScaffolderUserAccesLevel.ActualBay).Select(s => s.Accessories).Any() == true;
+            var accessories = configuration?.Machine?.Bays?.Where(s => s.Id == (int)this.MachineService.Bay.Number).Select(s => s.Accessories).Any() == true;
 
             this.SetValue(IncludeCellPanelsProperty, cellPanels);
             this.SetValue(IncludeLoadingUnitsProperty, loadingUnits);

@@ -437,8 +437,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task LoginAsync()
         {
-            ScaffolderUserAccesLevel.ActualBay = this.BayNumber;
-
             this.ClearNotifications();
 
             this.UserLogin.IsValidationEnabled = true;
@@ -452,29 +450,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             try
             {
-                switch (this.UserLogin.UserName)
-                {
-                    case "admin":
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Admin;
-                        break;
-
-                    case "service":
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Support;
-                        break;
-
-                    case "installer":
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Installer;
-                        break;
-
-                    case "operator":
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
-                        break;
-
-                    default:
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
-                        break;
-                }
-
                 if (this.BaseUser.Contains(this.UserLogin.UserName))
                 {
                     if (!string.IsNullOrEmpty(this.UserLogin.Error))
@@ -487,6 +462,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                        this.UserLogin.UserName,
                        this.UserLogin.Password,
                        this.UserLogin.SupportToken);
+
+                    ScaffolderUserAccesLevel.User = claims.AccessLevel;
 
                     await this.NavigateToMainMenuAsync(claims);
                 }

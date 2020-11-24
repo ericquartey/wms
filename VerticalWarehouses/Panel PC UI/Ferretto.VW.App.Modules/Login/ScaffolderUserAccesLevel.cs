@@ -11,13 +11,11 @@ namespace Ferretto.VW.App.Modules.Login
     {
         #region Properties
 
-        public static UserAccessLevel User { get; set; }
-
         public static bool IsLogged { get; set; }
 
-        public static int ActualBay { get; set; }
-
         public static bool UseAccessories { get; set; }
+
+        public static UserAccessLevel User { get; set; }
 
         #endregion
     }
