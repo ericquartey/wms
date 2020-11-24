@@ -8,14 +8,6 @@ namespace Ferretto.VW.App.Services
 
         string ActualLanguageKey { get; }
 
-        string AdminLanguageKey { get; }
-
-        string InstallerLanguageKey { get; }
-
-        string OperatorLanguageKey { get; }
-
-        string ServiceLanguageKey { get; }
-
         #endregion
 
         #region Methods

@@ -189,6 +189,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.BadRequest("The Wms is not enabled.");
         }
 
+        [HttpGet("get-culture")]
+        public ActionResult<IEnumerable<DataModels.UserParameters>> GetAllUserWithCulture()
+        {
+            var users = this.usersProvider.GetAllUserWithCulture();
+            return this.Ok(users);
+        }
+
         [HttpPost("token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -208,6 +215,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             CommonUtils.Culture.Actual = culture;
 
             this.logger.LogInformation("Change culture to " + culture.ToString());
+        }
+
+        [HttpPost("set-culture")]
+        public IActionResult SetUserCulture(string culture, string name)
+        {
+            this.usersProvider.SetUserCulture(culture, name);
+            return this.Ok();
         }
 
         #endregion

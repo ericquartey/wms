@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<TorqueCurrentSample> TorqueCurrentSamples { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserParameters> Users { get; set; }
 
         public DbSet<WeightMeasurement> WeightMeasurements { get; set; }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using DevExpress.Xpf.Core.ReflectionExtensions.Internal;
 using Ferretto.VW.App.Services;
@@ -42,6 +43,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly ILocalizationService localizationService;
 
+        private readonly IMachineUsersWebService machineUsersWebService;
+
         private readonly ISessionService sessionService;
 
         private bool adminEnabled;
@@ -66,13 +69,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public UserViewModel(ILocalizationService localizationService,
+        public UserViewModel(
+            ILocalizationService localizationService,
+            IMachineUsersWebService machineUsersWebService,
             ISessionService sessionService)
         {
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
+            this.machineUsersWebService = machineUsersWebService ?? throw new ArgumentNullException(nameof(machineUsersWebService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
-
-            //this.languageList.Sort();
         }
 
         #endregion
@@ -171,14 +175,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.LanguageList = this.SetLanguageList();
-
-            this.GetLanguageFromFile();
-
-            this.IsBackNavigationAllowed = true;
-
-            await base.OnAppearedAsync();
-
             this.OperatorEnabled = true;
 
             this.InstallerEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
@@ -188,6 +184,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
             this.AdminEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+
+            this.LanguageList = this.SetLanguageList();
+
+            this.GetLanguageFromFile();
+
+            this.IsBackNavigationAllowed = true;
+
+            await base.OnAppearedAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -273,15 +277,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private void GetLanguageFromFile()
+        private async void GetLanguageFromFile()
         {
-            var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var settings = configFile.AppSettings.Settings;
+            var users = await this.machineUsersWebService.GetAllUserWithCultureAsync();
 
-            this.AdminLanguage = this.GetItemByCulture(settings[this.localizationService.AdminLanguageKey].Value);
-            this.ServiceLanguage = this.GetItemByCulture(settings[this.localizationService.ServiceLanguageKey].Value);
-            this.InstallerLanguage = this.GetItemByCulture(settings[this.localizationService.InstallerLanguageKey].Value);
-            this.OperatorLanguage = this.GetItemByCulture(settings[this.localizationService.OperatorLanguageKey].Value);
+            this.AdminLanguage = this.GetItemByCulture(users.Where(s => s.Name == "admin").Select(s => s.Language).FirstOrDefault());
+            this.ServiceLanguage = this.GetItemByCulture(users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault());
+            this.InstallerLanguage = this.GetItemByCulture(users.Where(s => s.Name == "installer").Select(s => s.Language).FirstOrDefault());
+            this.OperatorLanguage = this.GetItemByCulture(users.Where(s => s.Name == "operator").Select(s => s.Language).FirstOrDefault());
         }
 
         private List<Culture> SetLanguageList()
