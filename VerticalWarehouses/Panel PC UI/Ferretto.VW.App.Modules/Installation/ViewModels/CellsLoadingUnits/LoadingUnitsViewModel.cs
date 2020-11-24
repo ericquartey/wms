@@ -159,10 +159,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
+                // Check if current bay is a double internal bay
                 var isDoubleInternalBay = this.MachineService.Bay.IsDouble &&
                     this.MachineService.Bay.Carousel == null &&
                     !this.MachineService.Bay.IsExternal;
 
+                // Detect the absence of drawer via related sensor value
                 var loadUnitNotPresence = (!isDoubleInternalBay) ? !this.SensorsService.IsLoadingUnitInBay : !this.SensorsService.IsLoadingUnitInMiddleBottomBay;
 
                 return !this.IsMoving && loadUnitNotPresence;
@@ -173,10 +175,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
+                // Check if current bay is a double internal bay
                 var isDoubleInternalBay = this.MachineService.Bay.IsDouble &&
                     this.MachineService.Bay.Carousel == null &&
                     !this.MachineService.Bay.IsExternal;
 
+                // Detect the presence of drawer via related sensor value
                 var loadUnitPresence = (!isDoubleInternalBay) ? this.SensorsService.IsLoadingUnitInBay : this.SensorsService.IsLoadingUnitInMiddleBottomBay;
 
                 return !this.IsMoving && loadUnitPresence;
@@ -330,6 +334,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                // Select the position bay according to the bay configuration (double internal bay and other configuration types)
                 var isDoubleInternalBay = this.MachineService.Bay.IsDouble &&
                     this.MachineService.Bay.Carousel == null &&
                     !this.MachineService.Bay.IsExternal;
@@ -419,8 +424,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Get the bay position.
+        /// Take account of configuration bay type.
+        /// </summary>
         private MAS.AutomationService.Contracts.LoadingUnitLocation GetBayPosition()
         {
+            // Check if current bay is a double internal bay
             var isDoubleInternalBay = this.MachineService.Bay.IsDouble &&
                 this.MachineService.Bay.Carousel == null &&
                 !this.MachineService.Bay.IsExternal;
@@ -452,9 +462,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         /// <summary>
-        /// Support function.
+        /// Check if drawer is located in the bottom bay position only if current bay is a double internal bay.
         /// </summary>
-        /// <returns></returns>
         private bool IsDrawerCurrentlyInLowerPositionBay()
         {
             var retValue = this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
@@ -467,9 +476,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         /// <summary>
-        /// Support function.
+        /// Check if drawer is located in the upper bay position.
         /// </summary>
-        /// <returns></returns>
         private bool IsDrawerCurrentlyInUpperPositionBay()
         {
             var retValue = this.SensorsService.IsLoadingUnitInBay &&
@@ -479,18 +487,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         /// <summary>
-        /// Support function.
+        /// Get the sensor value related to the existence of drawer in the upper position bay.
         /// </summary>
-        /// <returns></returns>
         private bool isDrawerCurrentlyNotPresenceInUpperPositionBay()
         {
             return !this.SensorsService.IsLoadingUnitInBay;
         }
 
         /// <summary>
-        /// Support function.
+        /// Get the sensor value related to the existence of drawer in the lower position bay only if current bay is a double internal bay.
         /// </summary>
-        /// <returns></returns>
         private bool isDrawerCurrentlyNotPresentInLowerPositionBay()
         {
             var retValue = this.MachineService.Bay.IsDouble &&
