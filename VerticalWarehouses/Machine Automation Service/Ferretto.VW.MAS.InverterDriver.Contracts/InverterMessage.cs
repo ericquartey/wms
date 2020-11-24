@@ -87,12 +87,12 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
         }
 
-        public InverterMessage(InverterIndex systemIndex, InverterParameterId parameterId)
-            : this((short)systemIndex, parameterId)
+        public InverterMessage(InverterIndex systemIndex, InverterParameterId parameterId, InverterDataset dataSetIndex = InverterDataset.ActualDataset)
+            : this((short)systemIndex, parameterId, dataSetIndex)
         {
         }
 
-        public InverterMessage(short systemIndex, InverterParameterId parameterId)
+        public InverterMessage(short systemIndex, InverterParameterId parameterId, InverterDataset dataSetIndex = InverterDataset.ActualDataset)
         {
             if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
             {
@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             this.responseMessage = false;
             this.SystemIndex = inverterIndex;
-            this.DataSetIndex = ActualDataSetIndex;
+            this.DataSetIndex = (byte)dataSetIndex;
             this.parameterId = (short)parameterId;
             this.IsWriteMessage = false;
             this.heartbeatMessage = false;
@@ -622,6 +622,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.HomingCalibration:
                 case InverterParameterId.ProfileInput:
                 case InverterParameterId.CurrentError:
+                case InverterParameterId.AxisChanged:
                     if (this.payloadLength == 2)
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);

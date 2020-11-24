@@ -552,4 +552,10 @@
   <data name="Box" xml:space="preserve">
     <value>Contenitore</value>
   </data>
+  <data name="Machine_IsAxisChanged" xml:space="preserve">
+    <value>Axis Changed</value>
+  </data>
+  <data name="Machine_IsHeartBeat" xml:space="preserve">
+    <value>Heart Beat</value>
+  </data>
 </root>

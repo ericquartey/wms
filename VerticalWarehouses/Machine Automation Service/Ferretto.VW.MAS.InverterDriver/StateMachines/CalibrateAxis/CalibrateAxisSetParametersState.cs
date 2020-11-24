@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             }
             else
             {
-                var isOneTonMachine = this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value;
+                //var isOneTonMachine = this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value;
 
                 this.Logger.LogTrace($"2:message={message}:ID Parameter={message.ParameterId}");
 

@@ -862,6 +862,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Axis Changed in inverter communication.
+        /// </summary>
+        public static string Machine_IsAxisChanged {
+            get {
+                return ResourceManager.GetString("Machine_IsAxisChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HeartBeat in inverter communication .
+        /// </summary>
+        public static string Machine_IsHeartBeat {
+            get {
+                return ResourceManager.GetString("Machine_IsHeartBeat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine Load Depth.
         /// </summary>
         public static string Machine_LoadDepth {

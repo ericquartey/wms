@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20201124115851_UserParameters")]
+    [Migration("20201124153808_UserParameters")]
     partial class UserParameters
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
