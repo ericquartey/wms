@@ -133,8 +133,15 @@ namespace Ferretto.VW.MAS.AutomationService
                 var missionProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
                 if (messageData.MissionId.HasValue)
                 {
-                    var mission = missionProvider.GetById(messageData.MissionId.Value);
-                    missionLog.WmsId = mission?.WmsId;
+                    try
+                    {
+                        var mission = missionProvider.GetById(messageData.MissionId.Value);
+                        missionLog.WmsId = mission.WmsId;
+                    }
+                    catch (EntityNotFoundException)
+                    {
+                        // do nothing
+                    }
                 }
             }
 
