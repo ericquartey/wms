@@ -132,8 +132,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override Task OnAppearedAsync()
         {
-            this.Fix();
-
             this.usbWatcherService.DrivesChanged += this.UsbWatcherService_DrivesChange;
             this.usbWatcherService.Enable();
 
@@ -143,6 +141,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.availableDrives = this.usbWatcherService.Drives.Writable();
 #endif
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
+
+            this.RaisePropertyChanged(nameof(this.Data));
 
             return base.OnAppearedAsync();
         }
@@ -242,40 +242,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.HasFilenameConflict));
             this.RaisePropertyChanged(nameof(this.OverwriteTargetFile));
             this.exportCommand?.RaiseCanExecuteChanged();
-        }
-
-        private async void Fix()
-        {
-            var configuration = this.Data as VertimagConfiguration;
-            try
-            {
-                //fix null Accessories
-                foreach (var bay in configuration.Machine.Bays)
-                {
-                    if (bay.Accessories == null)
-                    {
-                        bay.Accessories = await this.machineAccessoriesWebService.GetAllWithBayNumberAsync(bay.Number);
-                    }
-                }
-
-                //fix null Instructions
-                var service = await this.machineServicingWebService.GetAllAsync();
-
-                foreach (var servicing in configuration.ServicingInfo)
-                {
-                    if (servicing.Instructions == null)
-                    {
-                        servicing.Instructions = service.Where(w => w.Id == servicing.Id).LastOrDefault().Instructions;
-                    }
-                }
-
-                this.Data = configuration;
-
-                this.RaisePropertyChanged(nameof(this.Data));
-            }
-            catch (Exception)
-            {
-            }
         }
 
         private void UsbWatcherService_DrivesChange(object sender, DrivesChangedEventArgs e)

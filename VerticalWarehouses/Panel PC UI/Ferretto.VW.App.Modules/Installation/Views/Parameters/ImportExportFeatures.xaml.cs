@@ -86,6 +86,14 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         public static readonly DependencyProperty MachineServiceProperty =
             DependencyProperty.Register(nameof(MachineService), typeof(IMachineService), typeof(ImportExportFeatures));
 
+        [Browsable(false)]
+        public static readonly DependencyProperty MachineServicingProperty =
+            DependencyProperty.Register(nameof(MachineServicing), typeof(IMachineServicingWebService), typeof(ImportExportFeatures));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty MachineAccessoriesProperty =
+            DependencyProperty.Register(nameof(MachineAccessories), typeof(IMachineAccessoriesWebService), typeof(ImportExportFeatures));
+
         #endregion
 
         #region Constructors
@@ -95,6 +103,8 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
             this.InitializeComponent();
 
             this.MachineService = ServiceLocator.Current.GetInstance<IMachineService>();
+            this.MachineServicing = ServiceLocator.Current.GetInstance<IMachineServicingWebService>();
+            this.MachineAccessories = ServiceLocator.Current.GetInstance<IMachineAccessoriesWebService>();
         }
 
         #endregion
@@ -105,6 +115,18 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         {
             get => (IMachineService)this.GetValue(MachineServiceProperty);
             set => this.SetValue(MachineServiceProperty, value);
+        }
+
+        public IMachineServicingWebService MachineServicing
+        {
+            get => (IMachineServicingWebService)this.GetValue(MachineServicingProperty);
+            set => this.SetValue(MachineServicingProperty, value);
+        }
+
+        public IMachineAccessoriesWebService MachineAccessories
+        {
+            get => (IMachineAccessoriesWebService)this.GetValue(MachineAccessoriesProperty);
+            set => this.SetValue(MachineAccessoriesProperty, value);
         }
 
         public bool HasCellPanels
@@ -277,6 +299,13 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                     output.SetupProcedures = null;
                     output.ServicingInfo = null;
                 }
+                else
+                {
+                    //fix null Instructions
+                    var service = this.MachineServicing.GetAllAsync().Result;
+
+                        output.ServicingInfo = service;
+                }
 
                 if (!this.IncludeStatistics)
                 {
@@ -331,45 +360,58 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                     //remove accessories
                     if (!this.IncludeAccessories)
                     {
-                        var bays = output.Machine.Bays;
-                        foreach(var bay in bays)
+                        if(output.Machine.Bays != null)
                         {
-                            bay.Accessories = null;
+                            foreach (var bay in output.Machine.Bays)
+                            {
+                                bay.Accessories = null;
+                            }
                         }
                     }
+                    else
+                    {
+                        //fix null Accessories
+                        foreach (var bay in output.Machine.Bays)
+                        {
+                            if (bay.Accessories == null)
+                            {
+                                bay.Accessories = this.MachineAccessories.GetAllWithBayNumberAsync(bay.Number).Result;
+                            }
+                        }
+                    }
+
+
                 }
-
-                
+                this.Output = outputObject;
             }
-            this.Output = outputObject;
         }
 
-        private void OnInputChanged(VertimagConfiguration _, VertimagConfiguration configuration)
-        {
-            var cellPanels = configuration?.Machine?.Panels?.Any() == true;
-            var loadingUnits = configuration?.LoadingUnits?.Any() == true;
-            var setup = configuration?.SetupProcedures != null;
-            var parameters = configuration?.HasParameters() == true;
-            var statistics = configuration?.MachineStatistics != null;
-            var accessories = configuration?.Machine?.Bays?.Where(s => s.Id == (int)this.MachineService.Bay.Number).Select(s => s.Accessories).Any() == true;
+            private void OnInputChanged(VertimagConfiguration _, VertimagConfiguration configuration)
+            {
+                var cellPanels = configuration?.Machine?.Panels?.Any() == true;
+                var loadingUnits = configuration?.LoadingUnits?.Any() == true;
+                var setup = configuration?.SetupProcedures != null;
+                var parameters = configuration?.HasParameters() == true;
+                var statistics = configuration?.MachineStatistics != null;
+                var accessories = configuration?.Machine?.Bays?.Where(s => s.Number == this.MachineService.Bay.Number).Select(s => s.Accessories).Any() == true;
 
-            this.SetValue(IncludeCellPanelsProperty, cellPanels);
-            this.SetValue(IncludeLoadingUnitsProperty, loadingUnits);
-            this.SetValue(IncludeParametersProperty, parameters);
-            this.SetValue(IncludeSetupProceduresProperty, setup);
-            this.SetValue(IncludeStatisticsProperty, statistics);
-            this.SetValue(IncludeAccessoriesProperty, accessories);
+                this.SetValue(IncludeCellPanelsProperty, cellPanels);
+                this.SetValue(IncludeLoadingUnitsProperty, loadingUnits);
+                this.SetValue(IncludeParametersProperty, parameters);
+                this.SetValue(IncludeSetupProceduresProperty, setup);
+                this.SetValue(IncludeStatisticsProperty, statistics);
+                this.SetValue(IncludeAccessoriesProperty, accessories);
 
-            this.SetValue(HasCellPanelsPropertyKey, cellPanels);
-            this.SetValue(HasLoadingUnitsPropertyKey, loadingUnits);
-            this.SetValue(HasSetupProceduresPropertyKey, setup);
-            this.SetValue(HasParametersPropertyKey, parameters);
-            this.SetValue(HasStatisticsPropertyKey, statistics);
-            this.SetValue(HasAccessoriesPropertyKey, accessories);
+                this.SetValue(HasCellPanelsPropertyKey, cellPanels);
+                this.SetValue(HasLoadingUnitsPropertyKey, loadingUnits);
+                this.SetValue(HasSetupProceduresPropertyKey, setup);
+                this.SetValue(HasParametersPropertyKey, parameters);
+                this.SetValue(HasStatisticsPropertyKey, statistics);
+                this.SetValue(HasAccessoriesPropertyKey, accessories);
 
-            this.AdjustOutput(configuration);
+                this.AdjustOutput(configuration);
+            }
+
+            #endregion
         }
-
-        #endregion
     }
-}
