@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
                 this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-                this.minTimeout = 100;
+                this.minTimeout = 300;
             }
             else
             {
@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             }
             else
             {
-                this.Logger.LogDebug($"2:message={message}:Parameter Id={message.ParameterId}");
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
 
                 if (message.ParameterId == InverterParameterId.AxisChanged)
                 {

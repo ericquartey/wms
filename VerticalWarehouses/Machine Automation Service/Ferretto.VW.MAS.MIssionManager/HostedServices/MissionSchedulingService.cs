@@ -1000,7 +1000,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnBayOperationalStatusChangedAsync(IServiceProvider serviceProvider)
         {
-            this.Logger.LogDebug("OnBayOperationalStatusChangedAsync");
+            this.Logger.LogDebug("InvokeSchedulerAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
@@ -1017,7 +1017,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.RestoreFullTest(serviceProvider);
 
             this.dataLayerIsReady = true;
-            this.Logger.LogDebug("OnDataLayerReadyAsync");
+            this.Logger.LogDebug("InvokeSchedulerAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
             this.Logger.LogTrace("OnDataLayerReady end");
         }
@@ -1041,6 +1041,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         this.machineVolatileDataProvider.IsHomingExecuted = true;
                     }
 
+                    this.Logger.LogDebug("InvokeSchedulerAsync");
                     await this.InvokeSchedulerAsync(serviceProvider);
                 }
                 else if (message.Status == MessageStatus.OperationError
@@ -1158,17 +1159,19 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogError($"Failed to process mission: {ex.Message}");
             }
 
+            this.Logger.LogDebug("InvokeSchedulerAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
         private async Task OnMachineModeChangedAsync(IServiceProvider serviceProvider)
         {
+            this.Logger.LogDebug("InvokeSchedulerAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
         private async Task OnNewMachineMissionAvailableAsync(IServiceProvider serviceProvider)
         {
-            this.Logger.LogDebug($"OnNewMachineMissionAvailableAsync | A new machine mission is available....");
+            this.Logger.LogDebug($"OnNewMachineMissionAvailableAsync | A new machine mission is available: InvokeSchedulerAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
@@ -1176,6 +1179,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             if (this.dataLayerIsReady)
             {
+                this.Logger.LogDebug("InvokeSchedulerAsync");
                 await this.InvokeSchedulerAsync(serviceProvider);
             }
             else
@@ -1194,6 +1198,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     )
                 {
                     this.machineVolatileDataProvider.IsShutterHomingActive[message.TargetBay] = false;
+                    this.Logger.LogDebug("InvokeSchedulerAsync");
                     await this.InvokeSchedulerAsync(serviceProvider);
                 }
                 else if (message.Status == MessageStatus.OperationError
