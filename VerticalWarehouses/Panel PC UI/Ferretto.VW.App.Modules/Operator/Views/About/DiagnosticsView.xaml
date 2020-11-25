@@ -129,7 +129,7 @@
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Top"
                                                Style="{DynamicResource VWAPP_CardSensor_Data}">
-                                        <Run Text="{Binding LastServiceStatistics.TotalBayChainKilometers2, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalBayChainKilometers3, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" />
+                                        <Run Text="{Binding LastServiceStatistics.TotalBayChainKilometers2, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalBayChainKilometers2, StringFormat={}{0:F2}, TargetNullValue=0, FallbackValue=0}" />
                                     </TextBlock>
 
                                     <Border Grid.RowSpan="2"
