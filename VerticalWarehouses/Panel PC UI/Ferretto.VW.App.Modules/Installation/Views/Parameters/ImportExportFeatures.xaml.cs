@@ -331,11 +331,11 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                     //remove accessories
                     if (!this.IncludeAccessories)
                     {
-                        ScaffolderUserAccesLevel.UseAccessories = false;
-                    }
-                    else
-                    {
-                        ScaffolderUserAccesLevel.UseAccessories = true;
+                        var bays = output.Machine.Bays;
+                        foreach(var bay in bays)
+                        {
+                            bay.Accessories = null;
+                        }
                     }
                 }
 

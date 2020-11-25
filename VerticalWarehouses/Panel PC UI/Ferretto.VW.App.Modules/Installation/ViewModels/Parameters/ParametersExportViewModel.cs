@@ -132,6 +132,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override Task OnAppearedAsync()
         {
+            this.Fix();
+
             this.usbWatcherService.DrivesChanged += this.UsbWatcherService_DrivesChange;
             this.usbWatcherService.Enable();
 
@@ -141,8 +143,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.availableDrives = this.usbWatcherService.Drives.Writable();
 #endif
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
-
-            this.RaisePropertyChanged(nameof(this.Data));
 
             return base.OnAppearedAsync();
         }
@@ -187,8 +187,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 // fetch latest version
                 var output = this.ExportingConfiguration as VertimagConfiguration;
                 var configuration = this.Data as VertimagConfiguration;
-
-                output = await this.UpdateOutputAsync(output);
 
                 var settings = new JsonSerializerSettings()
                 {
@@ -246,51 +244,37 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.exportCommand?.RaiseCanExecuteChanged();
         }
 
-        private async Task<VertimagConfiguration> UpdateOutputAsync(VertimagConfiguration output)
+        private async void Fix()
         {
-            var outsafe = output;
+            var configuration = this.Data as VertimagConfiguration;
             try
             {
                 //fix null Accessories
-                if (Login.ScaffolderUserAccesLevel.UseAccessories)
+                foreach (var bay in configuration.Machine.Bays)
                 {
-                    for (int i = 0; i < output.Machine.Bays.Count(); i++)
+                    if (bay.Accessories == null)
                     {
-                        if (output.Machine.Bays.ElementAtOrDefault(i).Accessories == null)
-                        {
-                            //var config = this.MachineService.Bays.Where(s => s.Id == output.Machine.Bays.ElementAtOrDefault(i).Id).FirstOrDefault();
-                            //output.Machine.Bays.ElementAtOrDefault(i).Accessories = config.Accessories;
-                            output.Machine.Bays.ElementAtOrDefault(i).Accessories = await this.machineAccessoriesWebService.GetAllWithBayNumberAsync(output.Machine.Bays.ElementAtOrDefault(i).Number);
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < output.Machine.Bays.Count(); i++)
-                    {
-                        if (output.Machine.Bays.ElementAtOrDefault(i).Accessories != null)
-                        {
-                            output.Machine.Bays.ElementAtOrDefault(i).Accessories = null;
-                        }
+                        bay.Accessories = await this.machineAccessoriesWebService.GetAllWithBayNumberAsync(bay.Number);
                     }
                 }
 
                 //fix null Instructions
                 var service = await this.machineServicingWebService.GetAllAsync();
 
-                for (int i = 0; i < output.ServicingInfo.Count(); i++)
+                foreach (var servicing in configuration.ServicingInfo)
                 {
-                    if (output.ServicingInfo.ElementAtOrDefault(i).Instructions == null)
+                    if (servicing.Instructions == null)
                     {
-                        output.ServicingInfo.ElementAtOrDefault(i).Instructions = service.Where(w => w.Id == output.ServicingInfo.ElementAtOrDefault(i).Id).LastOrDefault().Instructions;
+                        servicing.Instructions = service.Where(w => w.Id == servicing.Id).LastOrDefault().Instructions;
                     }
                 }
 
-                return output;
+                this.Data = configuration;
+
+                this.RaisePropertyChanged(nameof(this.Data));
             }
             catch (Exception)
             {
-                return outsafe;
             }
         }
 
