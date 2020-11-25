@@ -450,6 +450,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         )
                     {
                         this.Logger.LogDebug($"3. Go to MissionMoveLoadElevatorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
+                        this.BaysDataProvider.IncrementCycles(bay.Number);
+                        bay = this.BaysDataProvider.GetByLoadingUnitLocation(loadingUnitLocation);
+                        if (this.Mission.NeedHomingAxis == Axis.None
+                            && bay.TotalCycles - bay.LastCalibrationCycles >= bay.CyclesToCalibrate
+                            )
+                        {
+                            this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                        }
 
                         newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }

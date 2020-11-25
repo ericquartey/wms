@@ -21,6 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [PullToRoot, Unfold]
             public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
 
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Box))]
             [Id(18)]
             public bool Box { get; set; }
@@ -59,8 +60,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Id))]
             [Id(14)]
-            public bool Id { get; set; }
+            public int Id { get; set; }
 
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsAxisChanged))]
+            [Id(21)]
+            public bool IsAxisChanged { get; set; }
+
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsHeartBeat))]
+            [Id(20)]
+            public bool IsHeartBeat { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ItemUniqueIdLength))]
             [Id(19)]
             public int ItemUniqueIdLength { get; set; }

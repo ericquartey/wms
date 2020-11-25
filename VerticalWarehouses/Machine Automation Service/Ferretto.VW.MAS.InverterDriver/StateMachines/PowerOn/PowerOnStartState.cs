@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -14,6 +15,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
     {
         #region Fields
 
+        private readonly Axis axisToSwitchOn;
+
+        private bool isAxisChanged;
+
         private DateTime startTime;
 
         #endregion
@@ -22,11 +27,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public PowerOnStartState(
             IInverterStateMachine parentStateMachine,
+            Axis axisToSwitchOn,
             IInverterStatusBase inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.Logger.LogTrace("1:Method Start");
+            this.axisToSwitchOn = axisToSwitchOn;
         }
 
         #endregion
@@ -37,8 +44,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         {
             this.Logger.LogDebug($"Power On Start Inverter {this.InverterStatus.SystemIndex}");
             this.startTime = DateTime.UtcNow;
-            this.InverterStatus.CommonControlWord.EnableVoltage = true;
-            this.InverterStatus.CommonControlWord.QuickStop = true;
+            var oldAxis = this.InverterStatus.CommonControlWord.HorizontalAxis;
+
+            this.InverterStatus.CommonControlWord.HorizontalAxis = this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
+                ? false
+                : this.axisToSwitchOn == Axis.Horizontal;
+
+            //this.InverterStatus.CommonControlWord.EnableVoltage = true;
+            //this.InverterStatus.CommonControlWord.QuickStop = true;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
@@ -46,19 +59,44 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-            var notificationMessageData = new InverterPowerOnFieldMessageData();
-            var notificationMessage = new FieldNotificationMessage(
-                notificationMessageData,
-                $"Power On Inverter {this.InverterStatus.SystemIndex}",
-                FieldMessageActor.Any,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterPowerOn,
-                MessageStatus.OperationStart,
-                this.InverterStatus.SystemIndex);
+            if (this.InverterStatus.SystemIndex == 0
+                && oldAxis != this.InverterStatus.CommonControlWord.HorizontalAxis
+                && this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsAxisChanged()
+                )
+            {
+                // read AxisChanged parameter
+                inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
 
-            this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+                this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            }
+            else
+            {
+                this.isAxisChanged = true;
+                this.InverterStatus.CommonControlWord.EnableVoltage = true;
+                this.InverterStatus.CommonControlWord.QuickStop = true;
+
+                inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
+                var notificationMessageData = new InverterPowerOnFieldMessageData();
+                var notificationMessage = new FieldNotificationMessage(
+                    notificationMessageData,
+                    $"Power On Inverter {this.InverterStatus.SystemIndex}",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.InverterPowerOn,
+                    MessageStatus.OperationStart,
+                    this.InverterStatus.SystemIndex);
+
+                this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+                this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+            }
         }
 
         /// <inheritdoc />
@@ -82,7 +120,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-
             if (message.IsError)
             {
                 this.Logger.LogError($"1:PowerOnStartState, message={message}");
@@ -91,10 +128,59 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             }
             else
             {
-                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &&
+                this.Logger.LogDebug($"2:message={message}:Parameter Id={message.ParameterId}");
+
+                if (message.ParameterId == InverterParameterId.AxisChanged)
+                {
+                    if (message.UShortPayload == 0)
+                    {
+                        // read again
+                        var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
+
+                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                    }
+                    else
+                    {
+                        // ack: write response
+                        var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.AxisChanged, message.UShortPayload, InverterDataset.AxisChangeDatasetWrite);
+
+                        this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
+
+                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
+                        this.isAxisChanged = true;
+
+                        // power on axis
+                        this.InverterStatus.CommonControlWord.EnableVoltage = true;
+                        this.InverterStatus.CommonControlWord.QuickStop = true;
+
+                        inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+
+                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
+                        var notificationMessageData = new InverterPowerOnFieldMessageData();
+                        var notificationMessage = new FieldNotificationMessage(
+                            notificationMessageData,
+                            $"Power On Inverter {this.InverterStatus.SystemIndex}",
+                            FieldMessageActor.Any,
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageType.InverterPowerOn,
+                            MessageStatus.OperationStart,
+                            this.InverterStatus.SystemIndex);
+
+                        this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+                        this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+                    }
+                }
+                else if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &&
                     this.InverterStatus.CommonStatusWord.IsQuickStopTrue &&
-                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
+                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn &&
+                    this.isAxisChanged
                     )
                 {
                     this.ParentStateMachine.ChangeState(

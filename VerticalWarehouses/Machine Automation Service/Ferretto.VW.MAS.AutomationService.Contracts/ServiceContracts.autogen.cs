@@ -4219,6 +4219,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Bays", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Box", Required = Newtonsoft.Json.Required.Always)]
+        public bool Box { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Elevator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Elevator Elevator { get; set; }
     
@@ -4236,6 +4239,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("HorizontalPositionToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int HorizontalPositionToCalibrate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsAxisChanged", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAxisChanged { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsHeartBeat", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsHeartBeat { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ItemUniqueIdLength", Required = Newtonsoft.Json.Required.Always)]
+        public int ItemUniqueIdLength { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LoadUnitDepth", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitDepth { get; set; }
@@ -4272,12 +4284,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("Simulation", Required = Newtonsoft.Json.Required.Always)]
         public bool Simulation { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Box", Required = Newtonsoft.Json.Required.Always)]
-        public bool Box { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("ItemUniqueIdLength", Required = Newtonsoft.Json.Required.Always)]
-        public int ItemUniqueIdLength { get; set; }
     
         public string ToJson() 
         {

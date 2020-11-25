@@ -14,11 +14,15 @@ namespace Ferretto.VW.MAS.DataLayer
         void ClearAll();
 
         Machine Get();
+
         bool GetBox();
+
         double GetHeight();
 
         int GetIdentity();
+
         int GetItemUniqueIdLength();
+
         MachineStatistics GetPresentStatistics();
 
         IEnumerable<ServicingInfo> GetServicingInfo();
@@ -31,8 +35,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ImportMachineStatistics(IEnumerable<MachineStatistics> machineStatistics, DataLayerContext context);
 
+        bool IsAxisChanged();
+
+        bool IsHeartBeat();
+
         bool IsOneTonMachine();
+
         void SetMachineId(int newMachineId);
+
         void Update(Machine machine, DataLayerContext context);
 
         void UpdateBayChainStatistics(double distance, BayNumber bayNumber);
