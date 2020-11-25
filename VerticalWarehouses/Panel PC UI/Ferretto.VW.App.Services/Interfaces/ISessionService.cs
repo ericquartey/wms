@@ -6,6 +6,8 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
+        bool IsLogged { get; set; }
+
         MachineIdentity MachineIdentity { get; set; }
 
         UserAccessLevel UserAccessLevel { get; }

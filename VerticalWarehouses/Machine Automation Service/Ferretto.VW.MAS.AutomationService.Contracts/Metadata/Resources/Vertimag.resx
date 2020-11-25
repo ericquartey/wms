@@ -552,4 +552,10 @@
   <data name="Box" xml:space="preserve">
     <value>Box</value>
   </data>
+  <data name="Machine_IsAxisChanged" xml:space="preserve">
+    <value>Axis Changed in inverter communication</value>
+  </data>
+  <data name="Machine_IsHeartBeat" xml:space="preserve">
+    <value>HeartBeat in inverter communication </value>
+  </data>
 </root>

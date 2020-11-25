@@ -126,10 +126,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.LoggingInUsingCard"), Services.Models.NotificationSeverity.Info);
 
                 var claims = await this.authenticationService.LogInAsync(e.Token);
-                if (claims.AccessLevel != UserAccessLevel.NoAccess)
-                {
-                    ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
-                }
 
                 await this.NavigateToMainMenuAsync(claims);
             }
@@ -164,10 +160,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.AuthenticatingUser"), Services.Models.NotificationSeverity.Info);
 
                 var claims = await this.authenticationService.LogInAsync(e.SerialNumber);
-                if (claims.AccessLevel != UserAccessLevel.NoAccess)
-                {
-                    ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
-                }
 
                 await this.NavigateToMainMenuAsync(claims);
             }
@@ -265,10 +257,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     this.ClearNotifications();
                     var bearerToken = e.GetBearerToken();
                     var claims = await this.authenticationService.LogInAsync(bearerToken);
-                    if (claims.AccessLevel != UserAccessLevel.NoAccess)
-                    {
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
-                    }
 
                     await this.NavigateToMainMenuAsync(claims);
                 }
@@ -306,6 +294,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.sessionService.IsLogged = false;
             this.Users.Clear();
 
             this.Users.AddRange(this.BaseUser);
@@ -437,8 +426,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task LoginAsync()
         {
-            ScaffolderUserAccesLevel.ActualBay = this.BayNumber;
-
             this.ClearNotifications();
 
             this.UserLogin.IsValidationEnabled = true;
@@ -452,29 +439,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             try
             {
-                switch (this.UserLogin.UserName)
-                {
-                    case "admin":
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Admin;
-                        break;
-
-                    case "service":
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Support;
-                        break;
-
-                    case "installer":
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Installer;
-                        break;
-
-                    case "operator":
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
-                        break;
-
-                    default:
-                        ScaffolderUserAccesLevel.User = UserAccessLevel.Operator;
-                        break;
-                }
-
                 if (this.BaseUser.Contains(this.UserLogin.UserName))
                 {
                     if (!string.IsNullOrEmpty(this.UserLogin.Error))
@@ -501,10 +465,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                        this.UserLogin.Password,
                        this.UserLogin.SupportToken,
                        UserAccessLevel.Operator);
-
-                    //await this.NavigateToMainMenuAsync(claimWms);
-
-                    ScaffolderUserAccesLevel.User = claims.AccessLevel;
 
                     await this.NavigateToMainMenuAsync(claims);
                 }
@@ -541,9 +501,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                         this.machineErrorsService.AutoNavigateOnError = true;
 
-                        this.localizationService.ActivateCulture(claims.AccessLevel);
+                        if (this.UserLogin.UserName == "service")
+                        {
+                            this.localizationService.ActivateCulture(UserAccessLevel.Support);
+                        }
+                        else
+                        {
+                            this.localizationService.ActivateCulture(claims.AccessLevel);
+                        }
 
-                        ScaffolderUserAccesLevel.IsLogged = true;
+                        this.sessionService.IsLogged = true;
                     });
             }
             else

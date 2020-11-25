@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.EntityFrameworkCore;
 using OtpNet;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -24,15 +26,39 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
-            this.dataContext.Users.Local.Add(User.Values.Service);
-            this.dataContext.Users.Local.Add(User.Values.Operator);
-            this.dataContext.Users.Local.Add(User.Values.Installer);
-            this.dataContext.Users.Local.Add(User.Values.Admin);
+            if (!this.AreSetUsers())
+            {
+                this.dataContext.Users.Add(UserParameters.Values.Service);
+                this.dataContext.Users.Add(UserParameters.Values.Operator);
+                this.dataContext.Users.Add(UserParameters.Values.Installer);
+                this.dataContext.Users.Add(UserParameters.Values.Admin);
+
+                this.dataContext.SaveChanges();
+            }
         }
 
         #endregion
 
         #region Methods
+
+        public bool AreSetUsers()
+        {
+            lock (this.dataContext)
+            {
+                if (this.dataContext.Users.Any() &&
+                    this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Admin.ToString().ToLower()) &&
+                    this.dataContext.Users.Any(s => s.Name == "service") &&
+                    this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Operator.ToString().ToLower()) &&
+                    this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Installer.ToString().ToLower()))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
         public int? Authenticate(string userName, string password, string supportToken)
         {
@@ -48,7 +74,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                var user = this.dataContext.Users.Concat(this.dataContext.Users.Local).SingleOrDefault(u => u.Name == userName);
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
 
                 if (user != null
                     &&
@@ -63,7 +89,7 @@ namespace Ferretto.VW.MAS.DataLayer
             throw new EntityNotFoundException(userName);
         }
 
-        public User Create(string userName, string password, int accessLevel)
+        public UserParameters Create(string userName, string password, int accessLevel)
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
@@ -87,7 +113,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var passwordHash = GeneratePasswordHash(password, salt);
 
-                var user = new User
+                var user = new UserParameters
                 {
                     AccessLevel = accessLevel,
                     Name = userName,
@@ -103,14 +129,24 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<UserParameters> GetAllUserWithCulture()
+        {
+            lock (this.dataContext)
+            {
+                var count = this.dataContext.Users.Count();
+                var result = this.dataContext.Users.AsNoTracking();
+                return result;
+            }
+        }
+
         public string GetServiceToken()
         {
-            if (!string.IsNullOrEmpty(User.Values.Service.PasswordSalt) && DateTime.Now < User.Values.Service.Validity)
+            if (!string.IsNullOrEmpty(UserParameters.Values.Service.PasswordSalt) && DateTime.Now < UserParameters.Values.Service.Validity)
             {
-                return User.Values.Service.PasswordSalt;
+                return UserParameters.Values.Service.PasswordSalt;
             }
 
-            lock (User.Values.Service)
+            lock (UserParameters.Values.Service)
             {
                 var random = new Random();
 
@@ -121,10 +157,25 @@ namespace Ferretto.VW.MAS.DataLayer
                 // Generate a string of six characters as secret key using the above alphabet
                 var secretKey = new string(Enumerable.Repeat(alphabet, 6).Select(s => s[random.Next(s.Length)]).ToArray());
 
-                User.Values.Service.PasswordSalt = secretKey;
-                User.Values.Service.Validity = DateTime.Now.Add(this.tokenValidity);
+                UserParameters.Values.Service.PasswordSalt = secretKey;
+                UserParameters.Values.Service.Validity = DateTime.Now.Add(this.tokenValidity);
 
                 return secretKey;
+            }
+        }
+
+        public void SetUserCulture(string culture, string name)
+        {
+            lock (this.dataContext)
+            {
+                if (this.dataContext.Users.Any(s => s.Name == name))
+                {
+                    var userToUpdate = this.dataContext.Users.FirstOrDefault(s => s.Name == name);
+                    userToUpdate.Language = culture;
+
+                    this.dataContext.Update(userToUpdate);
+                    this.dataContext.SaveChanges();
+                }
             }
         }
 
@@ -153,7 +204,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return salt;
         }
 
-        private static bool IsPasswordValid(User user, string password, string supportToken, TimeSpan validity)
+        private static bool IsPasswordValid(UserParameters user, string password, string supportToken, TimeSpan validity)
         {
             if (!user.IsService)
             {

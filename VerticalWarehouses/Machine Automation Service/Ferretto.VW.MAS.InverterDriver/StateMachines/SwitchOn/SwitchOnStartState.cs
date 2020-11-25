@@ -16,6 +16,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         private readonly Axis axisToSwitchOn;
 
+        private bool isAxisChanged;
+
+        private int minTimeout = 500;
+
         private DateTime startTime;
 
         #endregion
@@ -40,33 +44,60 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         {
             this.Logger.LogDebug($"Switch On Start Inverter {this.InverterStatus.SystemIndex}");
             this.startTime = DateTime.UtcNow;
-            this.InverterStatus.CommonControlWord.SwitchOn = true;
+            var oldAxis = this.InverterStatus.CommonControlWord.HorizontalAxis;
             this.InverterStatus.CommonControlWord.HorizontalAxis =
                 this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
                 ? false
                 : this.axisToSwitchOn == Axis.Horizontal;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+            if (this.InverterStatus.SystemIndex == 0
+                && oldAxis != this.InverterStatus.CommonControlWord.HorizontalAxis
+                && this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsAxisChanged()
+                )
+            {
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-            var inverterIndex = this.InverterStatus.SystemIndex;
+                // read AxisChanged parameter
+                inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
 
-            var notificationMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitchOn);
-            var notificationMessage = new FieldNotificationMessage(
-                notificationMessageData,
-                $"Switch On Inverter for axis {this.axisToSwitchOn}",
-                FieldMessageActor.DeviceManager,
-                FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterSwitchOn,
-                MessageStatus.OperationStart,
-                inverterIndex);
+                this.Logger.LogDebug($"2:inverterMessage={inverterMessage}");
 
-            this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-            this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+                this.minTimeout = 300;
+            }
+            else
+            {
+                this.isAxisChanged = true;
+
+                // switch on axis
+                this.InverterStatus.CommonControlWord.SwitchOn = true;
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
+                var inverterIndex = this.InverterStatus.SystemIndex;
+
+                var notificationMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitchOn);
+                var notificationMessage = new FieldNotificationMessage(
+                    notificationMessageData,
+                    $"Switch On Inverter for axis {this.axisToSwitchOn}",
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.InverterSwitchOn,
+                    MessageStatus.OperationStart,
+                    inverterIndex);
+
+                this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+                this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+            }
         }
 
         /// <inheritdoc />
@@ -85,7 +116,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         /// <inheritdoc />
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            if (message.IsError)
+            {
+                this.Logger.LogError($"1:SwitchOnStartState message={message}");
+                this.ParentStateMachine.ChangeState(new SwitchOnErrorState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
+            }
+            else
+            {
+                this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            }
 
             return true;
         }
@@ -102,8 +141,59 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus.CommonStatusWord.IsSwitchedOn
-                    && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 500)
+
+                if (message.ParameterId == InverterParameterId.AxisChanged)
+                {
+                    if (message.UShortPayload == 0)
+                    {
+                        // read again
+                        var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
+
+                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                    }
+                    else
+                    {
+                        // ack: write response
+                        var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.AxisChanged, message.UShortPayload, InverterDataset.AxisChangeDatasetWrite);
+
+                        this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
+
+                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
+                        this.isAxisChanged = true;
+
+                        // switch on axis
+                        this.InverterStatus.CommonControlWord.SwitchOn = true;
+                        inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+
+                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
+                        var inverterIndex = this.InverterStatus.SystemIndex;
+
+                        var notificationMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitchOn);
+                        var notificationMessage = new FieldNotificationMessage(
+                            notificationMessageData,
+                            $"Switch On Inverter for axis {this.axisToSwitchOn}",
+                            FieldMessageActor.DeviceManager,
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageType.InverterSwitchOn,
+                            MessageStatus.OperationStart,
+                            inverterIndex);
+
+                        this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
+
+                        this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+                        this.startTime = DateTime.UtcNow;
+                    }
+                }
+                else if (this.InverterStatus.CommonStatusWord.IsSwitchedOn
+                    && this.isAxisChanged
+                    && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.minTimeout
+                    )
                 {
                     this.ParentStateMachine.ChangeState(new SwitchOnEndState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
                     returnValue = true;

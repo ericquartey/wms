@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.Linq;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
@@ -11,14 +13,6 @@ namespace Ferretto.VW.App.Services
         #region Fields
 
         private const string actualLanguageKey = "Language";
-
-        private const string adminLanguageKey = "AdminLanguage";
-
-        private const string installerLanguageKey = "InstallerLanguage";
-
-        private const string operatorLanguageKey = "OperatorLanguage";
-
-        private const string serviceLanguageKey = "ServiceLanguage";
 
         private readonly ISessionService sessionService;
 
@@ -40,14 +34,6 @@ namespace Ferretto.VW.App.Services
 
         public string ActualLanguageKey => actualLanguageKey;
 
-        public string AdminLanguageKey => adminLanguageKey;
-
-        public string InstallerLanguageKey => installerLanguageKey;
-
-        public string OperatorLanguageKey => operatorLanguageKey;
-
-        public string ServiceLanguageKey => serviceLanguageKey;
-
         #endregion
 
         #region Methods
@@ -61,18 +47,31 @@ namespace Ferretto.VW.App.Services
             {
                 var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var settings = configFile.AppSettings.Settings;
-                var key = this.GetLanguageKey(userAccessLevel);
-                if (settings.Count == 0 | settings[key] == null)
+
+                var users = this.usersService.GetAllUserWithCultureAsync().Result;
+
+                if (settings.Count == 0 | users == null)
                 {
                     ;
                 }
                 else
                 {
-                    settings[actualLanguageKey].Value = settings[key].Value;
+                    if(userAccessLevel == UserAccessLevel.Support)
+                    {
+                        settings[actualLanguageKey].Value = users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault();
 
-                    Localized.Instance.CurrentCulture = CultureInfo.GetCultureInfo(settings[key].Value);
+                        Localized.Instance.CurrentCulture = CultureInfo.GetCultureInfo(users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault());
 
-                    this.usersService.SetMASCultureAsync(settings[key].Value);
+                        this.usersService.SetMASCultureAsync(users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault());
+                    }
+                    else
+                    {
+                        settings[actualLanguageKey].Value = users.Where(s => (UserAccessLevel)s.AccessLevel == userAccessLevel).Select(s => s.Language).FirstOrDefault();
+
+                        Localized.Instance.CurrentCulture = CultureInfo.GetCultureInfo(users.Where(s => (UserAccessLevel)s.AccessLevel == userAccessLevel).Select(s => s.Language).FirstOrDefault());
+
+                        this.usersService.SetMASCultureAsync(users.Where(s => (UserAccessLevel)s.AccessLevel == userAccessLevel).Select(s => s.Language).FirstOrDefault());
+                    }
                 }
                 configFile.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
@@ -92,8 +91,8 @@ namespace Ferretto.VW.App.Services
             {
                 var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var settings = configFile.AppSettings.Settings;
-                var key = this.GetLanguageKey(userAccessLevel);
-                if (settings.Count == 0 | settings[key] == null)
+
+                if (settings.Count == 0)
                 {
                     ;
                 }
@@ -107,7 +106,15 @@ namespace Ferretto.VW.App.Services
 
                         this.usersService.SetMASCultureAsync(culture);
                     }
-                    settings[key].Value = culture;
+
+                    if (userAccessLevel == UserAccessLevel.Support)
+                    {
+                        this.usersService.SetUserCultureAsync(culture, "service");
+                    }
+                    else
+                    {
+                        this.usersService.SetUserCultureAsync(culture, userAccessLevel.ToString().ToLower());
+                    }
                 }
                 configFile.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
@@ -116,21 +123,6 @@ namespace Ferretto.VW.App.Services
             {
                 // do nothing
             }
-        }
-
-        private string GetLanguageKey(UserAccessLevel userAccessLevel)
-        {
-            var key = "";
-            if (userAccessLevel == UserAccessLevel.Admin)
-            { key = adminLanguageKey; }
-            else if (userAccessLevel == UserAccessLevel.Installer)
-            { key = installerLanguageKey; }
-            else if (userAccessLevel == UserAccessLevel.Support)
-            { key = serviceLanguageKey; }
-            else if (userAccessLevel == UserAccessLevel.Operator)
-            { key = operatorLanguageKey; }
-
-            return key.ToString();
         }
 
         #endregion

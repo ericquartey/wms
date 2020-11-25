@@ -15,5 +15,9 @@
         HomingCalibrationElevator = 6,
 
         HomingCalibration = 7,
+
+        AxisChangeDatasetRead = 1,
+
+        AxisChangeDatasetWrite = 7,
     }
 }

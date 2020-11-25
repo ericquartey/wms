@@ -188,8 +188,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 var output = this.ExportingConfiguration as VertimagConfiguration;
                 var configuration = this.Data as VertimagConfiguration;
 
-                output = await this.UpdateOutputAsync(output);
-
                 var settings = new JsonSerializerSettings()
                 {
                     Formatting = Formatting.Indented,
@@ -244,54 +242,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.HasFilenameConflict));
             this.RaisePropertyChanged(nameof(this.OverwriteTargetFile));
             this.exportCommand?.RaiseCanExecuteChanged();
-        }
-
-        private async Task<VertimagConfiguration> UpdateOutputAsync(VertimagConfiguration output)
-        {
-            var outsafe = output;
-            try
-            {
-                //fix null Accessories
-                if (Login.ScaffolderUserAccesLevel.UseAccessories)
-                {
-                    for (int i = 0; i < output.Machine.Bays.Count(); i++)
-                    {
-                        if (output.Machine.Bays.ElementAtOrDefault(i).Accessories == null)
-                        {
-                            //var config = this.MachineService.Bays.Where(s => s.Id == output.Machine.Bays.ElementAtOrDefault(i).Id).FirstOrDefault();
-                            //output.Machine.Bays.ElementAtOrDefault(i).Accessories = config.Accessories;
-                            output.Machine.Bays.ElementAtOrDefault(i).Accessories = await this.machineAccessoriesWebService.GetAllWithBayNumberAsync(output.Machine.Bays.ElementAtOrDefault(i).Number);
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < output.Machine.Bays.Count(); i++)
-                    {
-                        if (output.Machine.Bays.ElementAtOrDefault(i).Accessories != null)
-                        {
-                            output.Machine.Bays.ElementAtOrDefault(i).Accessories = null;
-                        }
-                    }
-                }
-
-                //fix null Instructions
-                var service = await this.machineServicingWebService.GetAllAsync();
-
-                for (int i = 0; i < output.ServicingInfo.Count(); i++)
-                {
-                    if (output.ServicingInfo.ElementAtOrDefault(i).Instructions == null)
-                    {
-                        output.ServicingInfo.ElementAtOrDefault(i).Instructions = service.Where(w => w.Id == output.ServicingInfo.ElementAtOrDefault(i).Id).LastOrDefault().Instructions;
-                    }
-                }
-
-                return output;
-            }
-            catch (Exception)
-            {
-                return outsafe;
-            }
         }
 
         private void UsbWatcherService_DrivesChange(object sender, DrivesChangedEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace Ferretto.VW.MAS.DataModels
@@ -12,6 +13,11 @@ namespace Ferretto.VW.MAS.DataModels
         /// Gets or sets the bays of the machine.
         /// </summary>
         public IEnumerable<Bay> Bays { get; set; }
+
+        /// <summary>
+        /// Enables the management of logic containers inside Load Units (see Deima project)
+        /// </summary>
+        public bool Box { get; set; }
 
         /// <summary>
         /// Gets or sets the machine's elevator.
@@ -30,6 +36,15 @@ namespace Ferretto.VW.MAS.DataModels
         public int HorizontalCyclesToCalibrate { get; set; } = 10;
 
         public int HorizontalPositionToCalibrate { get; set; } = 3000;
+
+        public bool IsAxisChanged { get; set; }
+
+        public bool IsHeartBeat { get; set; }
+
+        /// <summary>
+        /// When this value is greater than zero it is used to separate item barcode from serial number barcode (see Deima project)
+        /// </summary>
+        public int ItemUniqueIdLength { get; set; }
 
         /// <summary>
         /// Load Unit depth, in millimeters
@@ -84,10 +99,6 @@ namespace Ferretto.VW.MAS.DataModels
         public string SerialNumber { get; set; }
 
         public bool Simulation { get; set; }
-
-        public bool Box { get; set; }
-
-        public int ItemUniqueIdLength { get; set; }
 
         #endregion
 

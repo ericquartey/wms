@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.VW.MAS.DataLayer.Configurations
 {
-    internal class UsersConfiguration : IEntityTypeConfiguration<User>
+    internal class UsersConfiguration : IEntityTypeConfiguration<UserParameters>
     {
         #region Methods
 
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<UserParameters> builder)
         {
             if (builder is null)
             {

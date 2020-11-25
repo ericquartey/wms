@@ -115,7 +115,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var error = this.ErrorsProvider.RecordNew(result, bay.Number);
                             throw new StateMachineException(error.Reason, bay.Number, MessageActor.MachineManager);
                         }
-                        if (bay.Carousel != null)
+                        if (bay.Carousel != null
+                            || bay.IsExternal
+                            )
                         {
                             if (this.Mission.NeedHomingAxis == Axis.None)
                             {

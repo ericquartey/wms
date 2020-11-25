@@ -73,5 +73,7 @@
         HeartBeatTimer1 = 1390,
 
         SoftwareVersion = 12,
+
+        AxisChanged = 520,
     }
 }

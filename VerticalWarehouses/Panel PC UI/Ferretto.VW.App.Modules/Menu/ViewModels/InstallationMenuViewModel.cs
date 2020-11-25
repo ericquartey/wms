@@ -596,7 +596,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     this.source.Add(new ItemListSetupProcedure()
                     {
-                        Text = Localized.Get("InstallationApp.ExtBayCalibration"),
+                        Text = Localized.Get("InstallationApp.ExternalBayCalibrationMenuTitle"),
                         Status = bayStatus.ExternalBayCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                         Bypassable = !bayStatus.ExternalBayCalibration.IsCompleted,
                         Bypassed = bayStatus.ExternalBayCalibration.IsBypassed,

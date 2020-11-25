@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using CommonServiceLocator;
 using Ferretto.VW.App.Modules.Login;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Installation.Controls
@@ -79,6 +82,17 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         private static readonly DependencyProperty IncludeAccessoriesProperty
            = DependencyProperty.Register(nameof(IncludeAccessories), typeof(bool), typeof(ImportExportFeatures), new PropertyMetadata(false, OnIncludePropertyChanged));
 
+        [Browsable(false)]
+        public static readonly DependencyProperty MachineServiceProperty =
+            DependencyProperty.Register(nameof(MachineService), typeof(IMachineService), typeof(ImportExportFeatures));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty MachineServicingProperty =
+            DependencyProperty.Register(nameof(MachineServicing), typeof(IMachineServicingWebService), typeof(ImportExportFeatures));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty MachineAccessoriesProperty =
+            DependencyProperty.Register(nameof(MachineAccessories), typeof(IMachineAccessoriesWebService), typeof(ImportExportFeatures));
 
         #endregion
 
@@ -87,11 +101,33 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
         public ImportExportFeatures()
         {
             this.InitializeComponent();
+
+            this.MachineService = ServiceLocator.Current.GetInstance<IMachineService>();
+            this.MachineServicing = ServiceLocator.Current.GetInstance<IMachineServicingWebService>();
+            this.MachineAccessories = ServiceLocator.Current.GetInstance<IMachineAccessoriesWebService>();
         }
 
         #endregion
 
         #region Properties
+
+        public IMachineService MachineService
+        {
+            get => (IMachineService)this.GetValue(MachineServiceProperty);
+            set => this.SetValue(MachineServiceProperty, value);
+        }
+
+        public IMachineServicingWebService MachineServicing
+        {
+            get => (IMachineServicingWebService)this.GetValue(MachineServicingProperty);
+            set => this.SetValue(MachineServicingProperty, value);
+        }
+
+        public IMachineAccessoriesWebService MachineAccessories
+        {
+            get => (IMachineAccessoriesWebService)this.GetValue(MachineAccessoriesProperty);
+            set => this.SetValue(MachineAccessoriesProperty, value);
+        }
 
         public bool HasCellPanels
         {
@@ -263,6 +299,13 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                     output.SetupProcedures = null;
                     output.ServicingInfo = null;
                 }
+                else
+                {
+                    //fix null Instructions
+                    var service = this.MachineServicing.GetAllAsync().Result;
+
+                        output.ServicingInfo = service;
+                }
 
                 if (!this.IncludeStatistics)
                 {
@@ -317,46 +360,58 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                     //remove accessories
                     if (!this.IncludeAccessories)
                     {
-                        //output.Machine.Bays.Where(s => s.Id == ScaffolderUserAccesLevel.ActualBay).Select(s => s.Accessories).ToList().Clear();
-                        ScaffolderUserAccesLevel.UseAccessories = false;
+                        if(output.Machine.Bays != null)
+                        {
+                            foreach (var bay in output.Machine.Bays)
+                            {
+                                bay.Accessories = null;
+                            }
+                        }
                     }
                     else
                     {
-                        ScaffolderUserAccesLevel.UseAccessories = true;
+                        //fix null Accessories
+                        foreach (var bay in output.Machine.Bays)
+                        {
+                            if (bay.Accessories == null)
+                            {
+                                bay.Accessories = this.MachineAccessories.GetAllWithBayNumberAsync(bay.Number).Result;
+                            }
+                        }
                     }
+
+
                 }
-
-                
+                this.Output = outputObject;
             }
-            this.Output = outputObject;
         }
 
-        private void OnInputChanged(VertimagConfiguration _, VertimagConfiguration configuration)
-        {
-            var cellPanels = configuration?.Machine?.Panels?.Any() == true;
-            var loadingUnits = configuration?.LoadingUnits?.Any() == true;
-            var setup = configuration?.SetupProcedures != null;
-            var parameters = configuration?.HasParameters() == true;
-            var statistics = configuration?.MachineStatistics != null;
-            var accessories = configuration?.Machine?.Bays?.Where(s => s.Id == ScaffolderUserAccesLevel.ActualBay).Select(s => s.Accessories).Any() == true;
+            private void OnInputChanged(VertimagConfiguration _, VertimagConfiguration configuration)
+            {
+                var cellPanels = configuration?.Machine?.Panels?.Any() == true;
+                var loadingUnits = configuration?.LoadingUnits?.Any() == true;
+                var setup = configuration?.SetupProcedures != null;
+                var parameters = configuration?.HasParameters() == true;
+                var statistics = configuration?.MachineStatistics != null;
+                var accessories = configuration?.Machine?.Bays?.Where(s => s.Number == this.MachineService.Bay.Number).Select(s => s.Accessories).Any() == true;
 
-            this.SetValue(IncludeCellPanelsProperty, cellPanels);
-            this.SetValue(IncludeLoadingUnitsProperty, loadingUnits);
-            this.SetValue(IncludeParametersProperty, parameters);
-            this.SetValue(IncludeSetupProceduresProperty, setup);
-            this.SetValue(IncludeStatisticsProperty, statistics);
-            this.SetValue(IncludeAccessoriesProperty, accessories);
+                this.SetValue(IncludeCellPanelsProperty, cellPanels);
+                this.SetValue(IncludeLoadingUnitsProperty, loadingUnits);
+                this.SetValue(IncludeParametersProperty, parameters);
+                this.SetValue(IncludeSetupProceduresProperty, setup);
+                this.SetValue(IncludeStatisticsProperty, statistics);
+                this.SetValue(IncludeAccessoriesProperty, accessories);
 
-            this.SetValue(HasCellPanelsPropertyKey, cellPanels);
-            this.SetValue(HasLoadingUnitsPropertyKey, loadingUnits);
-            this.SetValue(HasSetupProceduresPropertyKey, setup);
-            this.SetValue(HasParametersPropertyKey, parameters);
-            this.SetValue(HasStatisticsPropertyKey, statistics);
-            this.SetValue(HasAccessoriesPropertyKey, accessories);
+                this.SetValue(HasCellPanelsPropertyKey, cellPanels);
+                this.SetValue(HasLoadingUnitsPropertyKey, loadingUnits);
+                this.SetValue(HasSetupProceduresPropertyKey, setup);
+                this.SetValue(HasParametersPropertyKey, parameters);
+                this.SetValue(HasStatisticsPropertyKey, statistics);
+                this.SetValue(HasAccessoriesPropertyKey, accessories);
 
-            this.AdjustOutput(configuration);
+                this.AdjustOutput(configuration);
+            }
+
+            #endregion
         }
-
-        #endregion
     }
-}

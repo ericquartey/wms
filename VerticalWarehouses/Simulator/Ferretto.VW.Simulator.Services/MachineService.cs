@@ -740,6 +740,7 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.SetOperatingMode:
+                    inverter.AxisChanged = 0;
                     inverter.OperationMode = (InverterOperationMode)message.UShortPayload;
                     if (inverter.OperationMode == InverterOperationMode.ProfileVelocity)
                     {
@@ -1012,6 +1013,11 @@ namespace Ferretto.VW.Simulator.Services
                         var replyMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, Encoding.ASCII.GetBytes(InverterMessage.FormatBlockWrite(blockValues)));
                         result = client.Client.Send(replyMessage);
                     }
+                    break;
+
+                case InverterParameterId.AxisChanged:
+                    result = client.Client.Send(message.ToBytes());
+                    inverter.AxisChanged = 1;
                     break;
 
                 default:

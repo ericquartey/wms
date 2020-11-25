@@ -4,12 +4,21 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using CommonServiceLocator;
 using Ferretto.VW.App.Modules.Login;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
     public class IsEditableConverter : IValueConverter
     {
+        #region Fields
+
+        private readonly ISessionService sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
+
+        #endregion
+
         #region Methods
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -19,8 +28,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 // detour to the 'Metadata'
                 value = entity.Metadata;
 
-
-                if (entity.Property.Name == "Center" && ScaffolderUserAccesLevel.User == MAS.AutomationService.Contracts.UserAccessLevel.Installer)
+                if ((entity.Property.Name == "Center" || entity.Property.Name == "Race") && this.sessionService.UserAccessLevel == UserAccessLevel.Installer)
                 {
                     return true;
                 }
@@ -31,7 +39,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 var editable = metadata.OfType<EditableAttribute>().FirstOrDefault();
                 if (editable != null)
                 {
-                    if (ScaffolderUserAccesLevel.User == MAS.AutomationService.Contracts.UserAccessLevel.Admin || ScaffolderUserAccesLevel.User == MAS.AutomationService.Contracts.UserAccessLevel.Support)
+                    if (this.sessionService.UserAccessLevel == UserAccessLevel.Admin || this.sessionService.UserAccessLevel == UserAccessLevel.Support)
                     {
                         return editable.AllowEdit;
                     }
@@ -42,7 +50,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 }
             }
 
-            if (ScaffolderUserAccesLevel.User == MAS.AutomationService.Contracts.UserAccessLevel.Admin || ScaffolderUserAccesLevel.User == MAS.AutomationService.Contracts.UserAccessLevel.Support)
+            if (this.sessionService.UserAccessLevel == UserAccessLevel.Admin || this.sessionService.UserAccessLevel == UserAccessLevel.Support)
             {
                 return true;
             }

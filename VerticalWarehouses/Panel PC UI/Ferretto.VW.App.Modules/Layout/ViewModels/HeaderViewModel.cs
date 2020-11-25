@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         private readonly IMachineErrorsService machineErrorsService;
 
+        private readonly ISessionService sessionService;
+
         private DevExpress.Mvvm.DelegateCommand goToMenuCommand;
 
         private bool isServiceUser;
@@ -30,10 +32,13 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         #region Constructors
 
-        public HeaderViewModel(IMachineErrorsService machineErrorsService,
-                               IAuthenticationService authenticationService,
+        public HeaderViewModel(
+            ISessionService sessionService,
+            IMachineErrorsService machineErrorsService,
+            IAuthenticationService authenticationService,
             IBarcodeReaderService barcodeReaderService)
         {
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineErrorsService = machineErrorsService;
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.authenticationService.UserAuthenticated += this.AuthenticationService_UserAuthenticated;
@@ -172,7 +177,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         private bool CanGoToMenu()
         {
-            return ScaffolderUserAccesLevel.IsLogged;
+            return this.sessionService.IsLogged;
         }
 
         private void GoToMenu()

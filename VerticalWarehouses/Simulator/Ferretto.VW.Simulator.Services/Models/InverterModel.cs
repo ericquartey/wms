@@ -387,6 +387,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
+        public int AxisChanged { get; set; }
+
         public double AxisPosition
         {
             get => this.axisPosition[this.IsHorizontalAxis ? Axis.Horizontal : Axis.Vertical];

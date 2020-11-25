@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -15,6 +16,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
     {
         #region Fields
 
+        private readonly Axis axisToSwitchOn;
         private readonly IInverterStatusBase inverterStatus;
 
         private FieldCommandMessage nextCommandMessage;
@@ -24,6 +26,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         #region Constructors
 
         public PowerOnStateMachine(
+            Axis axisToSwitchOn,
             IInverterStatusBase inverterStatus,
             ILogger logger,
             IEventAggregator eventAggregator,
@@ -34,6 +37,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         {
             this.nextCommandMessage = nextCommandMessage;
             this.inverterStatus = inverterStatus;
+            this.axisToSwitchOn = axisToSwitchOn;
         }
 
         #endregion
@@ -55,7 +59,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         /// <inheritdoc />
         public override void Start()
         {
-            this.CurrentState = new PowerOnStartState(this, this.inverterStatus, this.Logger);
+            this.CurrentState = new PowerOnStartState(this, this.axisToSwitchOn, this.inverterStatus, this.Logger);
             this.CurrentState?.Start();
         }
 

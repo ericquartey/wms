@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     // start communication
                     await this.StartHardwareCommunicationsAsync(serviceProvider);
-                    this.InitializeTimers();
+                    this.InitializeTimers(serviceProvider);
 
                     break;
 

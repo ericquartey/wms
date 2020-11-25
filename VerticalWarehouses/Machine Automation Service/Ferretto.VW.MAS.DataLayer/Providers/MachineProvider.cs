@@ -281,6 +281,22 @@ namespace Ferretto.VW.MAS.DataLayer
             context.MachineStatistics.AddRange(machineStatistics);
         }
 
+        public bool IsAxisChanged()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsAxisChanged ?? false;
+            }
+        }
+
+        public bool IsHeartBeat()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsHeartBeat ?? false;
+            }
+        }
+
         public bool IsOneTonMachine()
         {
             lock (this.dataContext)
