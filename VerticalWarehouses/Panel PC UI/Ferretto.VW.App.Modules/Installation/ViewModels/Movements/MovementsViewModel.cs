@@ -51,6 +51,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
+        private readonly ISessionService sessionService;
+
         private SubscriptionToken cellsToken;
 
         private SubscriptionToken elevatorPositionChangedToken;
@@ -96,6 +98,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public MovementsViewModel(
+            ISessionService sessionService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineCellsWebService machineCellsWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
@@ -110,6 +113,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineExternalBayWebService machineExternalBayWebService)
             : base(PresentationMode.Installer)
         {
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
@@ -209,7 +213,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsMovementsManual => !this.isMovementsGuided && !this.IsOperator;
 
-        public bool IsOperator => Modules.Login.ScaffolderUserAccesLevel.User == UserAccessLevel.Operator;
+        public bool IsOperator => this.sessionService.UserAccessLevel == UserAccessLevel.Operator;
 
         public override bool IsWaitingForResponse
         {

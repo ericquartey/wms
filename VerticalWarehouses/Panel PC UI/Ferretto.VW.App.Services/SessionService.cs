@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Services
 
         public UserAccessLevel UserAccessLevel { get; private set; }
 
+        public bool IsLogged { get; set; }
+
         public MachineIdentity MachineIdentity { get; set; }
 
         public SessionService(

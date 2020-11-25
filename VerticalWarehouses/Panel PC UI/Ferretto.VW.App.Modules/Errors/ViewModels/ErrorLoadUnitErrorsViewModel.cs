@@ -52,6 +52,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private readonly IMachineModeWebService machineModeWebService;
 
+        private readonly ISessionService sessionService;
+
         private DelegateCommand automaticCommand;
 
         private string automaticStepText;
@@ -133,6 +135,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         #region Constructors
 
         public ErrorLoadUnitErrorsViewModel(
+            ISessionService sessionService,
             IMachineModeWebService machineModeWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
@@ -140,6 +143,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
@@ -668,7 +672,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsBay3PositionUpVisible = false;
                 this.IsBay3PositionDownVisible = false;
 
-                this.ManualMode = ((this.MachineError.Code == 27 || this.MachineError.Code == 26 || this.MachineError.Code == 29) && ScaffolderUserAccesLevel.User != UserAccessLevel.Operator);
+                this.ManualMode = ((this.MachineError.Code == 27 || this.MachineError.Code == 26 || this.MachineError.Code == 29) && this.sessionService.UserAccessLevel != UserAccessLevel.Operator);
 
                 // Elevator
                 //this.LuIdOnElevator = null;

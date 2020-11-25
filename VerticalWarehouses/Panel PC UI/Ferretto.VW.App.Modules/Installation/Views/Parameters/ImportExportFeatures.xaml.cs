@@ -331,7 +331,6 @@ namespace Ferretto.VW.App.Modules.Installation.Controls
                     //remove accessories
                     if (!this.IncludeAccessories)
                     {
-                        //output.Machine.Bays.Where(s => s.Id == ScaffolderUserAccesLevel.ActualBay).Select(s => s.Accessories).ToList().Clear();
                         ScaffolderUserAccesLevel.UseAccessories = false;
                     }
                     else

@@ -151,7 +151,6 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private async Task ExecuteLogOutCommand()
         {
-            ScaffolderUserAccesLevel.IsLogged = false;
             this.IsPopupOpen = false;
             await this.authenticationService.LogOutAsync();
             await this.machineBaysWebService.DeactivateAsync();
