@@ -335,7 +335,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (!this.CheckMissionShowError())
                                 {
                                     this.BaysDataProvider.Light(this.Mission.TargetBay, true);
-                                    if (this.Mission.MissionType != MissionType.Manual)
+                                    if (this.Mission.MissionType != MissionType.Manual || this.Mission.MissionType != MissionType.ScaleCalibration)
                                     {
                                         this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
                                     }
@@ -348,7 +348,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         // Handle the Carousel bay movement
-                        if (this.Mission.MissionType == MissionType.Manual)
+                        if (this.Mission.MissionType == MissionType.Manual || this.Mission.MissionType == MissionType.ScaleCalibration)
                         {
                             newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         }
@@ -522,7 +522,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 // if we load from bay and load unit height is not compliant with the bay we go back
                 var sourceBay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                 if (sourceBay != null
-                    && this.Mission.MissionType != MissionType.Manual
+                    && (this.Mission.MissionType != MissionType.Manual || this.Mission.MissionType != MissionType.ScaleCalibration)
                     && (!this.CheckBayHeight(sourceBay, this.Mission.LoadUnitSource, this.Mission, out var canRetry)
                         //|| true    // TEST
                         )

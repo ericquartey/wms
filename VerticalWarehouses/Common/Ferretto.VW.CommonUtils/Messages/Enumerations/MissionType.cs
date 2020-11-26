@@ -20,6 +20,8 @@
 
         FullTestOUT,
 
-        Compact
+        Compact,
+
+        ScaleCalibration
     }
 }

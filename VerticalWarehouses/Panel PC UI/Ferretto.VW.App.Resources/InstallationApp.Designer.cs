@@ -2158,6 +2158,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute Measurement.
+        /// </summary>
+        public static string ExeMeasurement {
+            get {
+                return ResourceManager.GetString("ExeMeasurement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
         public static string Export {
@@ -3468,15 +3477,6 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadFirstDrawerTotCellsToCheck {
             get {
                 return ResourceManager.GetString("LoadFirstDrawerTotCellsToCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Load.
-        /// </summary>
-        public static string LoadFromBay {
-            get {
-                return ResourceManager.GetString("LoadFromBay", resourceCulture);
             }
         }
         
@@ -6100,7 +6100,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Perform a drawer loading and unloading to get the current data and enter the net weight of the drawer.
+        ///   Looks up a localized string similar to Press the button to obtain the current data by moving the drawer and enter its net weight. When finished, press Next to confirm the operation.
         /// </summary>
         public static string UnitWeighingDescription {
             get {
@@ -6114,15 +6114,6 @@ namespace Ferretto.VW.App.Resources {
         public static string Unknown {
             get {
                 return ResourceManager.GetString("Unknown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unload.
-        /// </summary>
-        public static string UnloadToBay {
-            get {
-                return ResourceManager.GetString("UnloadToBay", resourceCulture);
             }
         }
         
