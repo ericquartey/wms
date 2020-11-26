@@ -160,7 +160,7 @@
     <value>Odredišna ćelija je neiskoristiva.</value>
   </data>
   <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
-    <value>La cella di destinazione è solo spazio, non può supportare un'unità di carico.</value>
+    <value>Ciljna ćelija je samo prostor, ne može podržati jedinicu opterećenja.</value>
   </data>
   <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
     <value>Ladica ne može zauzeti zaključanu ćeliju</value>

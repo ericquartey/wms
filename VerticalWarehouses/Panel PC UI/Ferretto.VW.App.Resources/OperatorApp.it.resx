@@ -1123,10 +1123,10 @@
     <value>Primo test</value>
   </data>
   <data name="MissionTypeFullTestIN" xml:space="preserve">
-    <value>Full test IN</value>
+    <value>Test completo IN</value>
   </data>
   <data name="MissionTypeFullTestOUT" xml:space="preserve">
-    <value>Full test OUT</value>
+    <value>Test completo OUT</value>
   </data>
   <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
     <value>Operazione cassetto</value>
