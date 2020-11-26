@@ -198,7 +198,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        if (mission.MissionType != MissionType.Manual
+                        if ((mission.MissionType != MissionType.Manual
+                            || this.Mission.MissionType != MissionType.ScaleCalibration)
                             && !this.CheckBayHeight(destinationBay, destination, mission, out var canRetry)
                             )
                         {
@@ -638,6 +639,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (messageData.MissionType)
             {
                 case MissionType.Manual:
+                case MissionType.ScaleCalibration:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Manual
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
                         );

@@ -416,6 +416,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("start-scale-calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult StartScaleCalibration(int loadingUnitId)
+        {
+            this.logger.LogInformation($"Move load unit {loadingUnitId} to destination {LoadingUnitLocation.Elevator} bay {this.BayNumber}");
+            this.moveLoadingUnitProvider.MoveLoadUnitToBay(MissionType.ScaleCalibration, loadingUnitId, LoadingUnitLocation.Elevator, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
         [HttpPost("start-moving-loading-unit-to-cell")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

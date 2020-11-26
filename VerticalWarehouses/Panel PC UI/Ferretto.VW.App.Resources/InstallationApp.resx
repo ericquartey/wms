@@ -860,16 +860,13 @@
   <data name="UseWeightControl" xml:space="preserve">
     <value>Use weight control</value>
   </data>
-  <data name="LoadFromBay" xml:space="preserve">
-    <value>Load</value>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Execute Measurement</value>
     <comment>Command</comment>
   </data>
   <data name="LoadFromCell" xml:space="preserve">
     <value>Load</value>
     <comment>Command</comment>
-  </data>
-  <data name="UnloadToBay" xml:space="preserve">
-    <value>Unload</value>
   </data>
   <data name="UnloadToCell" xml:space="preserve">
     <value>Unload</value>
@@ -2332,7 +2329,7 @@
     <value>Weighing with empty unit</value>
   </data>
   <data name="UnitWeighingDescription" xml:space="preserve">
-    <value>Perform a drawer loading and unloading to get the current data and enter the net weight of the drawer</value>
+    <value>Press the button to obtain the current data by moving the drawer and enter its net weight. When finished, press Next to confirm the operation</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
     <value>AbsorbedCurrent</value>

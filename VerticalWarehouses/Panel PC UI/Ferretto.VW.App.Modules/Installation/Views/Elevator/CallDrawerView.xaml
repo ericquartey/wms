@@ -46,7 +46,7 @@
                         Grid.Column="1"
                         VerticalAlignment="Center"
                         Command="{Binding CallLoadunitToBayCommand}"
-                        Content="{res:Loc InstallationApp.CallUnitWeight}"
+                        Content="{res:Loc InstallationApp.CallUnit}"
                         Style="{StaticResource WizardIntoButton}" />
 
     <controls:PpcButton Grid.Row="3"
