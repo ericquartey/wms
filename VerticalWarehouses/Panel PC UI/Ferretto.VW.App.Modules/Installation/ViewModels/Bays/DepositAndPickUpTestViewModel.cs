@@ -272,6 +272,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsMovingTest => this.MachineService?.MachineStatus?.IsDepositAndPickUpRunning ?? true;
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public bool IsNewErrorValueVisible
         {
             get => this.isNewErrorValueVisible;

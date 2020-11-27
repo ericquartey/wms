@@ -50,6 +50,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
+        private bool isStopping;
+
         #endregion
 
         #region Constructors
@@ -147,6 +149,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public bool IsStopping
+        {
+            get => this.isStopping;
+            set => this.SetProperty(ref this.isStopping, value);
         }
 
         public ICommand LoadingUnitsCommand =>
@@ -313,6 +321,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                this.IsStopping = true;
                 this.IsWaitingForResponse = true;
 
                 await this.machineLoadingUnitsWebService.StopAsync(null, this.MachineService.BayNumber);
@@ -363,6 +372,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.RestoreStates();
+            }
+        }
+
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
+
+            if (!this.IsMachineMoving)
+            {
+                this.IsStopping = false;
             }
         }
 

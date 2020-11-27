@@ -13,141 +13,141 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <ctrls:View.Resources>
-        <Style x:Key="IPAddressSeparator"
-               TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{DynamicResource IPAddressDotColor}" />
-            <Setter Property="Margin" Value="4,0,6,10" />
-            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-            <Setter Property="Text" Value=":" />
-        </Style>
+  <ctrls:View.Resources>
+    <Style x:Key="IPAddressSeparator"
+           TargetType="{x:Type TextBlock}">
+      <Setter Property="Foreground" Value="{DynamicResource IPAddressDotColor}" />
+      <Setter Property="Margin" Value="4,0,6,10" />
+      <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+      <Setter Property="VerticalAlignment" Value="Bottom" />
+      <Setter Property="Text" Value=":" />
+    </Style>
 
-        <Style x:Key="ByteTextBox"
-               BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
-               TargetType="{x:Type TextBox}">
-            <Setter Property="MaxLength" Value="5" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-        </Style>
-    </ctrls:View.Resources>
+    <Style x:Key="ByteTextBox"
+           BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+           TargetType="{x:Type TextBox}">
+      <Setter Property="MaxLength" Value="5" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+  </ctrls:View.Resources>
 
-    <Grid x:Name="Root"
-          Height="530"
-          Margin="40,0,15,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+  <Grid x:Name="Root"
+        Height="530"
+        Margin="40,0,15,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
 
-        <TextBlock x:Name="Title"
-                   Grid.Row="0"
-                   Grid.ColumnSpan="3"
-                   Margin="0,0,0,0"
-                   VerticalAlignment="Top"
-                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.WmsSetting}" />
+    <TextBlock x:Name="Title"
+               Grid.Row="0"
+               Grid.ColumnSpan="3"
+               Margin="0,0,0,0"
+               VerticalAlignment="Top"
+               Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc InstallationApp.WmsSetting}" />
 
-        <RadioButton Grid.Row="1"
-                     Margin="10,0,10,0"
-                     HorizontalAlignment="Stretch"
-                     HorizontalContentAlignment="Stretch"
-                     GroupName="test"
-                     IsChecked="{Binding IsAllDisabled, Mode=TwoWay, Converter={StaticResource BNC}}">
-            <RadioButton.Content>
-                <TextBlock Grid.Row="2"
-                           Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{res:Loc General.WmsDisabled}" />
-            </RadioButton.Content>
-        </RadioButton>
+    <RadioButton Grid.Row="1"
+                 Margin="10,0,10,0"
+                 HorizontalAlignment="Stretch"
+                 HorizontalContentAlignment="Stretch"
+                 GroupName="test"
+                 IsChecked="{Binding IsAllDisabled, Mode=TwoWay, Converter={StaticResource BNC}}">
+      <RadioButton.Content>
+        <TextBlock Grid.Row="2"
+                   Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                   Text="{res:Loc General.WmsDisabled}" />
+      </RadioButton.Content>
+    </RadioButton>
 
-        <RadioButton Grid.Row="2"
-                     Margin="10,0,10,0"
-                     GroupName="test"
-                     IsChecked="{Binding IsWmsEnabled, Mode=TwoWay}">
-            <RadioButton.Content>
-                <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{res:Loc General.WmsEnabled}" />
-            </RadioButton.Content>
-        </RadioButton>
+    <RadioButton Grid.Row="2"
+                 Margin="10,0,10,0"
+                 GroupName="test"
+                 IsChecked="{Binding IsWmsEnabled, Mode=TwoWay}">
+      <RadioButton.Content>
+        <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                   Text="{res:Loc General.WmsEnabled}" />
+      </RadioButton.Content>
+    </RadioButton>
 
-        <Grid Grid.Row="3"
-              Grid.ColumnSpan="2"
-              Margin="55,0,0,0"
-              IsEnabled="{Binding IsWmsEnabled}">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <Grid Grid.Row="3"
+          Grid.ColumnSpan="2"
+          Margin="55,0,0,0"
+          IsEnabled="{Binding IsWmsEnabled}">
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
 
-            <TextBlock Margin="0"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       FontSize="{DynamicResource FontSize_Small}"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc InstallationApp.WmsHostAddress}" />
-            <TextBox Grid.Row="1"
-                     Width="430"
-                     Height="30"
-                     VerticalAlignment="Top"
-                     VerticalContentAlignment="Center"
-                     Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
-                     Text="{Binding Path=WmsHttpUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <i:Interaction.Behaviors>
-                    <behaviors:TextBoxAutoSelectBehavior />
-                    <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
-                                                             KeyboardLabel="{res:Loc InstallationApp.WmsHostAddress}" />
-                </i:Interaction.Behaviors>
-            </TextBox>
-            <controls:PpcButton Grid.Row="1"
-                                Grid.Column="1"
-                                Margin="10,0,0,10"
-                                HorizontalAlignment="Left"
-                                Command="{Binding CheckEndpointCommand}"
-                                Content="{res:Loc InstallationApp.CheckStatus}"
-                                IsBusy="{Binding IsCheckingEndpoint}" />
+      <TextBlock Margin="0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 FontSize="{DynamicResource FontSize_Small}"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc InstallationApp.WmsHostAddress}" />
+      <TextBox Grid.Row="1"
+               Width="430"
+               Height="30"
+               VerticalAlignment="Top"
+               VerticalContentAlignment="Center"
+               Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+               Text="{Binding Path=WmsHttpUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <i:Interaction.Behaviors>
+          <behaviors:TextBoxAutoSelectBehavior />
+          <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
+                                                   KeyboardLabel="{res:Loc InstallationApp.WmsHostAddress}" />
+        </i:Interaction.Behaviors>
+      </TextBox>
+      <controls:PpcButton Grid.Row="1"
+                          Grid.Column="1"
+                          Margin="10,0,0,10"
+                          HorizontalAlignment="Left"
+                          Command="{Binding CheckEndpointCommand}"
+                          Content="{res:Loc InstallationApp.CheckStatus}"
+                          IsBusy="{Binding IsCheckingEndpoint}" />
 
-            <StackPanel Grid.Row="1"
-                        Grid.Column="2"
-                        HorizontalAlignment="Left"
-                        Orientation="Vertical">
-                <TextBlock Margin="10,5"
-                           HorizontalAlignment="Left"
-                           FontSize="{DynamicResource FontSize_Small}"
-                           Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
-                           Text="{res:Loc OperatorApp.GeneralInfoWmsStatus}"
-                           TextAlignment="Right" />
+      <StackPanel Grid.Row="1"
+                  Grid.Column="2"
+                  HorizontalAlignment="Left"
+                  Orientation="Vertical">
+        <TextBlock Margin="10,5"
+                   HorizontalAlignment="Left"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
+                   Text="{res:Loc OperatorApp.GeneralInfoWmsStatus}"
+                   TextAlignment="Right" />
 
-                <StackPanel HorizontalAlignment="Left"
-                            Orientation="Horizontal">
-                    <Ellipse Width="8"
-                             Height="8"
-                             Margin="10,0"
-                             VerticalAlignment="Center"
-                             Fill="{Binding WmsServicesStatusBrush}" />
-                    <TextBlock Margin="5,5,20,5"
-                               VerticalAlignment="Center"
-                               Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
-                               Text="{Binding WmsServicesStatusDescription}"
-                               TextWrapping="Wrap" />
-                </StackPanel>
-            </StackPanel>
-            <!--<StackPanel Grid.Row="2"
+        <StackPanel HorizontalAlignment="Left"
+                    Orientation="Horizontal">
+          <Ellipse Width="8"
+                   Height="8"
+                   Margin="10,0"
+                   VerticalAlignment="Center"
+                   Fill="{Binding WmsServicesStatusBrush}" />
+          <TextBlock Margin="5,5,20,5"
+                     VerticalAlignment="Center"
+                     Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
+                     Text="{Binding WmsServicesStatusDescription}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+      </StackPanel>
+      <!--<StackPanel Grid.Row="2"
                         Grid.ColumnSpan="2"
                         Orientation="Horizontal">
                 <TextBlock Margin="0,0,5,0"
@@ -163,68 +163,68 @@
                            Text="{Binding Path=HealthStatus, Converter={StaticResource ETHSC}}" />
             </StackPanel>-->
 
-        </Grid>
-
-        <RadioButton Grid.Row="4"
-                     Margin="10,0,10,0"
-                     GroupName="test"
-                     IsChecked="{Binding SocketLinkIsEnabled, Mode=TwoWay}">
-            <RadioButton.Content>
-                <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{res:Loc General.SocketLinkEnabled}" />
-            </RadioButton.Content>
-
-        </RadioButton>
-
-        <Grid Grid.Row="5"
-              Grid.ColumnSpan="2"
-              Margin="55,0,0,0"
-              IsEnabled="{Binding SocketLinkIsEnabled}">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <controls:PpcTextBox Grid.Row="0"
-                                 Grid.Column="0"
-                                 Width="140"
-                                 Margin="5,5,5,5"
-                                 VerticalAlignment="Stretch"
-                                 InputText="{Binding SocketLinkPort, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                 IsEnabled="{Binding IsEnabledEditing}"
-                                 LabelText="{x:Static res:General.SocketLinkPort}" />
-
-            <controls:PpcTextBox Grid.Row="0"
-                                 Grid.Column="1"
-                                 Width="140"
-                                 Margin="0,5,5,5"
-                                 VerticalAlignment="Stretch"
-                                 InputText="{Binding SocketLinkTimeout, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                 IsEnabled="{Binding IsEnabledEditing}"
-                                 LabelText="{x:Static res:General.SocketLinkTimeout}" />
-
-            <controls:PpcTextBox Grid.Row="0"
-                                 Grid.Column="2"
-                                 Width="140"
-                                 Margin="0,5,5,5"
-                                 VerticalAlignment="Stretch"
-                                 InputText="{Binding SocketLinkPolling, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                 IsEnabled="{Binding IsEnabledEditing}"
-                                 LabelText="{x:Static res:General.SocketLinkPolling}" />
-        </Grid>
-
-        <controls:PpcButton Grid.Row="7"
-                            Grid.Column="1"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding SaveCommand}"
-                            Content="{res:Loc General.Save}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
     </Grid>
+
+    <RadioButton Grid.Row="4"
+                 Margin="10,0,10,0"
+                 GroupName="test"
+                 IsChecked="{Binding SocketLinkIsEnabled, Mode=TwoWay}">
+      <RadioButton.Content>
+        <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                   Text="{res:Loc General.SocketLinkEnabled}" />
+      </RadioButton.Content>
+
+    </RadioButton>
+
+    <Grid Grid.Row="5"
+          Grid.ColumnSpan="2"
+          Margin="55,0,0,0"
+          IsEnabled="{Binding SocketLinkIsEnabled}">
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <controls:PpcTextBox Grid.Row="0"
+                           Grid.Column="0"
+                           Width="140"
+                           Margin="5,5,5,5"
+                           VerticalAlignment="Stretch"
+                           InputText="{Binding SocketLinkPort, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding SocketLinkIsEnabled}"
+                           LabelText="{x:Static res:General.SocketLinkPort}" />
+
+      <controls:PpcTextBox Grid.Row="0"
+                           Grid.Column="1"
+                           Width="140"
+                           Margin="0,5,5,5"
+                           VerticalAlignment="Stretch"
+                           InputText="{Binding SocketLinkTimeout, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding SocketLinkIsEnabled}"
+                           LabelText="{x:Static res:General.SocketLinkTimeout}" />
+
+      <controls:PpcTextBox Grid.Row="0"
+                           Grid.Column="2"
+                           Width="140"
+                           Margin="0,5,5,5"
+                           VerticalAlignment="Stretch"
+                           InputText="{Binding SocketLinkPolling, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding SocketLinkIsEnabled}"
+                           LabelText="{x:Static res:General.SocketLinkPolling}" />
+    </Grid>
+
+    <controls:PpcButton Grid.Row="7"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding SaveCommand}"
+                        Content="{res:Loc General.Save}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
+  </Grid>
 </ctrls:View>
