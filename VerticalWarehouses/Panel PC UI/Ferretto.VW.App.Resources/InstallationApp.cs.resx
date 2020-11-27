@@ -2298,4 +2298,10 @@
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Stiskněte start pro zahájení kalibrace</value>
   </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Vyložit</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Nalož</value>
+  </data>
 </root>

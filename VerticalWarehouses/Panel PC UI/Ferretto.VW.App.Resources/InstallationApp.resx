@@ -2358,4 +2358,10 @@
   <data name="CallUnitWeight" xml:space="preserve">
     <value>Chiamata cassetto: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso</value>
   </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Unload</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Load</value>
+  </data>
 </root>

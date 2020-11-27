@@ -3483,6 +3483,15 @@ namespace Ferretto.VW.App.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Load.
         /// </summary>
+        public static string LoadFromBay {
+            get {
+                return ResourceManager.GetString("LoadFromBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
         public static string LoadFromCell {
             get {
                 return ResourceManager.GetString("LoadFromCell", resourceCulture);
@@ -6114,6 +6123,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Unknown {
             get {
                 return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unload.
+        /// </summary>
+        public static string UnloadToBay {
+            get {
+                return ResourceManager.GetString("UnloadToBay", resourceCulture);
             }
         }
         

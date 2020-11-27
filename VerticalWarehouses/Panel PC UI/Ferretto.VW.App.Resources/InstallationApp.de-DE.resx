@@ -2298,4 +2298,10 @@
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Drücken Sie Start, um die Kalibrierung zu starten</value>
   </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Entl.</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Laden</value>
+  </data>
 </root>
