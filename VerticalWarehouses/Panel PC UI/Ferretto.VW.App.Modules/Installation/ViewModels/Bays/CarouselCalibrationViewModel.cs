@@ -182,6 +182,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepStartCalibration => this.currentStep is CarouselCalibrationStep.StartCalibration;
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
+        public bool HasCarousel => this.MachineService.HasCarousel;
+
         public bool IsCalibrationCompletedOrStopped
         {
             get => this.isCalibrationCompletedOrStopped;

@@ -40,6 +40,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int totalStep;
 
+        private bool isStopPressed;
+
         #endregion
 
         #region Constructors
@@ -63,6 +65,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isExecutingProcedure, value);
         }
 
+        public bool IsStopPressed
+        {
+            get => this.isStopPressed;
+            set => this.SetProperty(ref this.isStopPressed, value);
+        }
+
         public bool IsLoadunitIdValid
         {
             get
@@ -70,6 +78,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return this.loadunitId.HasValue && this.MachineService.Loadunits.Any(l => l.Id == this.loadunitId);
             }
         }
+
+        public bool HasShutter => this.MachineService.HasShutter;
 
         public int? LoadUnitId
         {
@@ -129,6 +139,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         try
                         {
+                            this.IsStopPressed = true;
                             this.IsWaitingForResponse = true;
                             await this.machineFirstTestWebService.StopAsync();
                         }
@@ -153,6 +164,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
+
+            if (!this.IsMachineMoving)
+            {
+                this.IsStopPressed = false;
+            }
+        }
 
         public override void Disappear()
         {
