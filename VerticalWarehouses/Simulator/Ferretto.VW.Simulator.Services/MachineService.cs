@@ -1020,6 +1020,10 @@ namespace Ferretto.VW.Simulator.Services
                     inverter.AxisChanged = 1;
                     break;
 
+                case InverterParameterId.ActiveDataset:
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
                 default:
                     Debug.Assert(true);
                     break;

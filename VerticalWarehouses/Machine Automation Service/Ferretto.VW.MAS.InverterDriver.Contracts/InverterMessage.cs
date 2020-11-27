@@ -623,6 +623,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.ProfileInput:
                 case InverterParameterId.CurrentError:
                 case InverterParameterId.AxisChanged:
+                case InverterParameterId.ActiveDataset:
                     if (this.payloadLength == 2)
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);
