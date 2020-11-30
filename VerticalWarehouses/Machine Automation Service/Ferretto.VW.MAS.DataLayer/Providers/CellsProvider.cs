@@ -334,8 +334,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     && loadUnitHeight > 175
                     && loadUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
                     && cells.Any(c => c.Side == loadUnit.Cell.Side && c.Position > loadUnit.Cell.Position && c.Position < loadUnit.Cell.Position + loadUnitHeight && c.BlockLevel == BlockLevel.SpaceOnly)
+                    && cells.Count(c => c.IsFree) < cells.Count * 0.4
                     )
                 {
+                    this.logger.LogError($"FindEmptyCell: do not move LU {loadingUnitId} from space only positions; Height {loadUnitHeight:0.00}; total cells {cells.Count}; ");
                     throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
                 }
 
@@ -360,6 +362,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         && loadUnitHeight > 175
                         && loadUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
                         && cellsFollowing.Any(c => c.IsFree && c.Position > cell.Position && c.Position < cell.Position + loadUnitHeight && c.BlockLevel == BlockLevel.SpaceOnly)
+                        && cells.Count(c => c.IsFree) < cells.Count * 0.4
                         )
                     {
                         isFloating = false;
