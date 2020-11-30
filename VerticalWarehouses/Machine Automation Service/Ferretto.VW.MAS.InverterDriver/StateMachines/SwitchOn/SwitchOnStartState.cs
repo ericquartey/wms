@@ -48,9 +48,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             this.startTime = DateTime.UtcNow;
             var oldAxis = this.InverterStatus.CommonControlWord.HorizontalAxis;
             this.InverterStatus.CommonControlWord.HorizontalAxis =
-                this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
-                ? false
-                : this.axisToSwitchOn == Axis.Horizontal;
+                !this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
+                && this.axisToSwitchOn == Axis.Horizontal;
 
             if (this.InverterStatus.SystemIndex == 0
                 && !this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
@@ -76,6 +75,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             else
             {
                 this.isAxisChanged = true;
+                if (this.InverterStatus.SystemIndex > 0)
+                {
+                    this.minTimeout = 300;
+                }
 
                 // switch on axis
                 this.InverterStatus.CommonControlWord.SwitchOn = true;

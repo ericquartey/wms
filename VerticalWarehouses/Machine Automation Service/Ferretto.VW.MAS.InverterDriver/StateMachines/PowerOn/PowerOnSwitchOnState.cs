@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
     {
         #region Fields
 
-        private bool isAxisChanged;
-
         private double minTimeout;
 
         private DateTime startTime;
@@ -42,6 +40,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                 && this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsAxisChanged()
                 )
             {
+                // the first time we switch on the inverters we reset the ack of axis changed parameter
                 ushort val = 10000;
                 var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.AxisChanged, val, InverterDataset.AxisChangeDatasetWrite);
 
@@ -50,7 +49,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                 this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
             }
 
-            this.isAxisChanged = true;
             this.minTimeout = 300;
 
             {
@@ -96,9 +94,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             }
             else
             {
-                this.Logger.LogDebug($"2:message={message}:Parameter Id={message.ParameterId}");
+                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (this.InverterStatus.CommonStatusWord.IsSwitchedOn
-                    && this.isAxisChanged
                     && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.minTimeout
                     )
                 {
