@@ -328,6 +328,17 @@ namespace Ferretto.VW.MAS.DataLayer
                              && (compactingType == CompactingType.NoCompacting || x.Position < loadUnit.Cell.Position))
                     .OrderBy(o => o.Position)
                     .ToList();
+
+                // high load units in space only positions are not moved by compacting
+                if (compactingType != CompactingType.NoCompacting
+                    && loadUnitHeight > 175
+                    && loadUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
+                    && cells.Any(c => c.Side == loadUnit.Cell.Side && c.Position > loadUnit.Cell.Position && c.Position < loadUnit.Cell.Position + loadUnitHeight && c.BlockLevel == BlockLevel.SpaceOnly)
+                    )
+                {
+                    throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
+                }
+
                 // for each available cell we check if there is space for the requested height
                 Parallel.ForEach(cells.Where(c => c.IsFree
                     && (isCellTest ? c.BlockLevel == BlockLevel.NeedsTest : c.BlockLevel == BlockLevel.None)
@@ -343,6 +354,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     // don't want floating cells: previous cell is free and available
                     var isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None);
+
+                    // SpaceOnly cells can be occupied by high load units
+                    if (compactingType == CompactingType.NoCompacting
+                        && loadUnitHeight > 175
+                        && loadUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
+                        && cellsFollowing.Any(c => c.IsFree && c.Position > cell.Position && c.Position < cell.Position + loadUnitHeight && c.BlockLevel == BlockLevel.SpaceOnly)
+                        )
+                    {
+                        isFloating = false;
+                    }
 
                     if (cellsFollowing.Any() && (!isFloating || isCellTest))
                     {
