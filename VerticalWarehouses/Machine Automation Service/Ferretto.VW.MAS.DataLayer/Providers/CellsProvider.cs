@@ -228,6 +228,23 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
             }
+            // high load units in space only positions are not moved by compacting
+            if (loadingUnit.Height > 175
+                && loadingUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
+                )
+            {
+                cells = this.GetAll(x => x.Position >= verticalAxis.LowerBound
+                             && x.Side == loadingUnit.Cell.Side)
+                    .OrderBy(o => o.Position)
+                    .ToList();
+                if (cells.Any(c => c.Side == loadingUnit.Cell.Side && c.Position > loadingUnit.Cell.Position && c.Position < loadingUnit.Cell.Position + loadingUnit.Height && c.BlockLevel == BlockLevel.SpaceOnly)
+                    && cells.Count(c => c.IsFree) < cells.Count * 0.4
+                )
+                {
+                    this.logger.LogError($"FindDownCell: do not move LU {loadingUnit.Id} from space only positions; Height {loadingUnit.Height:0.00}; total cells {cells.Count}; ");
+                    throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
+                }
+            }
             this.logger.LogInformation($"FindDownCell: found Cell {cellId} for LU {loadingUnit.Id}; from cell {loadingUnit.Cell.Id}");
             return cellId;
         }
@@ -324,8 +341,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 // load all cells
                 var cells = this.GetAll(x => x.Position >= verticalAxis.LowerBound
-                             && (compactingType == CompactingType.NoCompacting || x.Side == loadUnit.Cell.Side)
-                             && (compactingType == CompactingType.NoCompacting || x.Position < loadUnit.Cell.Position))
+                             && (compactingType == CompactingType.NoCompacting || x.Side == loadUnit.Cell.Side))
                     .OrderBy(o => o.Position)
                     .ToList();
 
@@ -337,13 +353,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     && cells.Count(c => c.IsFree) < cells.Count * 0.4
                     )
                 {
-                    this.logger.LogError($"FindEmptyCell: do not move LU {loadingUnitId} from space only positions; Height {loadUnitHeight:0.00}; total cells {cells.Count}; ");
+                    this.logger.LogTrace($"FindEmptyCell: do not move LU {loadingUnitId} from space only positions; Height {loadUnitHeight:0.00}; total cells {cells.Count}; ");
                     throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
                 }
 
                 // for each available cell we check if there is space for the requested height
                 Parallel.ForEach(cells.Where(c => c.IsFree
                     && (isCellTest ? c.BlockLevel == BlockLevel.NeedsTest : c.BlockLevel == BlockLevel.None)
+                    && (compactingType == CompactingType.NoCompacting || c.Position < loadUnit.Cell.Position)
                     ), (cell) =>
                 {
                     // load all cells following the selected cell

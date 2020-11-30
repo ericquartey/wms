@@ -792,7 +792,7 @@ namespace Ferretto.VW.Simulator.Services
                     this.GetProfileRange(inverter, out var minProfileHeight, out var maxProfileHeight);
                     var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(minProfileHeight, maxProfileHeight)));
 
-                    profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)(3500)));
+                    //profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)(3500)));
 
                     // To simulate an height exceeded condition: value to use
                     // this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)(maxProfileHeight + 500)));
