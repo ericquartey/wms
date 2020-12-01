@@ -115,7 +115,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     bayAccessories.WeightingScale != null)
                 {
                     this.IsAccessoryEnabled = bayAccessories.WeightingScale.IsEnabledNew;
-                    this.PortName = bayAccessories.BarcodeReader.PortName;
+                    this.PortName = bayAccessories.WeightingScale.PortName;
 
                     this.SetDeviceInformation(bayAccessories.WeightingScale.DeviceInformation);
                 }
