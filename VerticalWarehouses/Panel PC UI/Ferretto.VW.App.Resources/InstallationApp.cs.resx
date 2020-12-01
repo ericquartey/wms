@@ -822,14 +822,11 @@
   <data name="UseWeightControl" xml:space="preserve">
     <value>Provede pohyby s výpočtem hmot</value>
   </data>
-  <data name="LoadFromBay" xml:space="preserve">
-    <value>Nalož</value>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Proveďte měření</value>
   </data>
   <data name="LoadFromCell" xml:space="preserve">
     <value>Nalož</value>
-  </data>
-  <data name="UnloadToBay" xml:space="preserve">
-    <value>Vyložit</value>
   </data>
   <data name="UnloadToCell" xml:space="preserve">
     <value>Vyložit</value>
@@ -2275,7 +2272,7 @@
     <value>Vážení s prázdnou zásuvkou</value>
   </data>
   <data name="UnitWeighingDescription" xml:space="preserve">
-    <value>Proveďte nakládku a vykládku zásuvky, abyste získali aktuální data a zadejte čistou hmotnost zásuvky</value>
+    <value>Stisknutím tlačítka získáte aktuální data přesunutím zásuvky a zadáním její čisté hmotnosti. Na konci stiskněte Další pro potvrzení operace</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
     <value>Aktuální spotřeba</value>
@@ -2300,5 +2297,11 @@
   </data>
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Stiskněte start pro zahájení kalibrace</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Vyložit</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Nalož</value>
   </data>
 </root>

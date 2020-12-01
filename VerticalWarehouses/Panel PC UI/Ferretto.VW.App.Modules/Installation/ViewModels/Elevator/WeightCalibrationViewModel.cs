@@ -86,8 +86,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBusyLoadingFromBay;
 
-        private bool isBusyUnloadingToBay;
-
         private bool isEnabledForwards;
 
         private DelegateCommand loadFromBayCommand;
@@ -119,8 +117,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken themeChangedToken;
 
         private List<WeightData> unitsWeighing = new List<WeightData>();
-
-        private DelegateCommand unloadToBayCommand;
 
         #endregion
 
@@ -237,12 +233,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isBusyLoadingFromBay, value);
         }
 
-        public bool IsBusyUnloadingToBay
-        {
-            get => this.isBusyUnloadingToBay;
-            private set => this.SetProperty(ref this.isBusyUnloadingToBay, value);
-        }
-
         public bool IsEnabledForwards
         {
             get => this.isEnabledForwards;
@@ -317,12 +307,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.unitsWeighing;
             set => this.SetProperty(ref this.unitsWeighing, value);
         }
-
-        public ICommand UnloadToBayCommand =>
-                                    this.unloadToBayCommand ?? (this.unloadToBayCommand =
-            new DelegateCommand(
-                async () => await this.UnloadToBayAsync(),
-                this.CanUnloadToBay));
 
         private IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
 
@@ -506,8 +490,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.loadFromBayCommand?.RaiseCanExecuteChanged();
 
-            this.unloadToBayCommand?.RaiseCanExecuteChanged();
-
             this.saveCommand?.RaiseCanExecuteChanged();
 
             this.changeUnitCommand?.RaiseCanExecuteChanged();
@@ -623,20 +605,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    conditionOnExternalBay;
         }
 
-        private bool CanUnloadToBay()
-        {
-            var selectedBayPosition = this.Bay.Positions.Single(p => p.Height == this.Bay.Positions.Max(pos => pos.Height));
-            var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay || !this.HasShutter) &&
-                   this.CanBaseExecute() &&
-                   this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
-                   this.MachineStatus.LogicalPositionId == this.Bay.Id &&
-                   selectedBayPosition != null &&
-                   selectedBayPosition.LoadingUnit == null &&
-                   this.MachineStatus.EmbarkedLoadingUnit != null;
-
-            return res;
-        }
-
         private async Task ChangeUnitAsync()
         {
             try
@@ -740,7 +708,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var selectedBayPosition = this.Bay.Positions.Single(p => p.Height == this.Bay.Positions.Max(pos => pos.Height));
                 if (selectedBayPosition.LoadingUnit != null)
                 {
-                    await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(selectedBayPosition.LoadingUnit.Id, MAS.AutomationService.Contracts.LoadingUnitLocation.Elevator);
+                    await this.machineLoadingUnitsWebService.StartScaleCalibrationAsync(selectedBayPosition.LoadingUnit.Id);
+                    //await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(selectedBayPosition.LoadingUnit.Id, MAS.AutomationService.Contracts.LoadingUnitLocation.Elevator);
                 }
 
                 this.IsBusyLoadingFromBay = true;
@@ -797,13 +766,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     case MessageStatus.OperationError:
                         this.IsBusyLoadingFromBay = false;
-                        this.IsBusyUnloadingToBay = false;
                         break;
 
                     case MessageStatus.OperationStop:
                     case MessageStatus.OperationEnd:
                         this.IsBusyLoadingFromBay = false;
-                        this.IsBusyUnloadingToBay = false;
                         break;
                 }
 
@@ -887,7 +854,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
                 this.IsBusyLoadingFromBay = false;
-                this.IsBusyUnloadingToBay = false;
             }
         }
 
@@ -935,34 +901,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.OnMoveLoadingUnitChanged,
                         ThreadOption.UIThread,
                         false);
-        }
-
-        private async Task UnloadToBayAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                var selectedBayPosition = this.Bay.Positions.Single(p => p.Height == this.Bay.Positions.Max(pos => pos.Height));
-                if (this.MachineStatus.EmbarkedLoadingUnit is null)
-                {
-                    await this.machineElevatorWebService.UnloadToBayAsync(selectedBayPosition.Id);
-                }
-                else
-                {
-                    await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(selectedBayPosition.Location, this.MachineStatus.EmbarkedLoadingUnit.Id);
-                }
-
-                this.IsBusyUnloadingToBay = true;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
         }
 
         private void UpdateNextData()

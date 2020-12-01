@@ -163,7 +163,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (this.Mission.MissionType == MissionType.Manual
                     || this.Mission.MissionType == MissionType.LoadUnitOperation
-                    )
+                    || this.Mission.MissionType == MissionType.ScaleCalibration)
                 {
                     this.BaysDataProvider.Light(bay.Number, true);
 

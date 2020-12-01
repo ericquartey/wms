@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -9,6 +10,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
     internal class PowerOnSwitchOnState : InverterStateBase
     {
         #region Fields
+
+        private double minTimeout;
 
         private DateTime startTime;
 
@@ -31,13 +34,34 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         public override void Start()
         {
             this.Logger.LogDebug($"Power On Switch on Inverter {this.InverterStatus.SystemIndex}");
-            this.InverterStatus.CommonControlWord.SwitchOn = true;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+            if (this.InverterStatus.SystemIndex == 0
+                && !this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
+                && this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsAxisChanged()
+                )
+            {
+                // the first time we switch on the inverters we reset the ack of axis changed parameter
+                ushort val = 10000;
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.AxisChanged, val, InverterDataset.AxisChangeDatasetWrite);
 
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
 
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            }
+
+            this.minTimeout = 300;
+
+            {
+                // switch on axis
+                this.InverterStatus.CommonControlWord.SwitchOn = true;
+
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+            }
+
             this.startTime = DateTime.UtcNow;
         }
 
@@ -71,7 +95,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+                if (this.InverterStatus.CommonStatusWord.IsSwitchedOn
+                    && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.minTimeout
+                    )
                 {
                     this.ParentStateMachine.ChangeState(new PowerOnEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }

@@ -822,14 +822,11 @@
   <data name="UseWeightControl" xml:space="preserve">
     <value>Bewegungen mit Gewichtsberechn.</value>
   </data>
-  <data name="LoadFromBay" xml:space="preserve">
-    <value>Laden</value>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Messung durchführen</value>
   </data>
   <data name="LoadFromCell" xml:space="preserve">
     <value>Laden</value>
-  </data>
-  <data name="UnloadToBay" xml:space="preserve">
-    <value>Entl.</value>
   </data>
   <data name="UnloadToCell" xml:space="preserve">
     <value>Entl.</value>
@@ -2275,7 +2272,7 @@
     <value>Mit leerer Schublade wiegen</value>
   </data>
   <data name="UnitWeighingDescription" xml:space="preserve">
-    <value>Führen Sie ein Laden und Entladen der Schublade durch, um die aktuellen Daten zu erhalten und das Nettogewicht der Schublade einzugeben</value>
+    <value>Drücken Sie die Taste, um die aktuellen Daten zu erhalten, indem Sie die Schublade bewegen und das Nettogewicht eingeben. Wenn Sie fertig sind, drücken Sie Weiter, um den Vorgang zu bestätigen</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
     <value>Derzeitiger Verbrauch</value>
@@ -2300,5 +2297,11 @@
   </data>
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Drücken Sie Start, um die Kalibrierung zu starten</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Entl.</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Laden</value>
   </data>
 </root>

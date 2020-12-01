@@ -49,8 +49,4 @@
     <Resource Include="Barcode\Resources\*.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Barcode\Resources\newland3280_energy_saving.png" />
-  </ItemGroup>
-
 </Project>

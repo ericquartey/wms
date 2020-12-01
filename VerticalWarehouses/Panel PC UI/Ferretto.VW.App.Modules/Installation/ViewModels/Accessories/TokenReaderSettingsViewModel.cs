@@ -126,14 +126,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.Data is BayAccessories bayAccessories
                     &&
-                    bayAccessories.BarcodeReader != null)
+                    bayAccessories.TokenReader != null)
                 {
                     this.IsAccessoryEnabled = bayAccessories.TokenReader.IsEnabledNew;
                     this.PortName = bayAccessories.TokenReader.PortName;
                 }
                 else
                 {
-                    this.Logger.Warn("Improper parameters were passed to the barcode reader settings page.");
+                    this.Logger.Warn("Improper parameters were passed to the token reader settings page.");
                 }
 
                 await this.tokenReaderService.StartAsync();

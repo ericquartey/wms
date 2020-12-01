@@ -238,11 +238,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         )
                     {
                         var check = this.LoadingUnitsDataProvider.CheckWeight(this.Mission.LoadUnitId);
+
                         //check = MachineErrorCode.LoadUnitWeightExceeded;    // TEST
-                        if (check != MachineErrorCode.NoError)
+                        if (check != MachineErrorCode.NoError || this.Mission.MissionType == MissionType.ScaleCalibration)
                         {
                             this.Logger.LogDebug($"Stop movement and go back to bay. Mission:Id={this.Mission.Id}. Error:{check}");
-                            this.Mission.ErrorCode = check;
+                            this.Mission.ErrorCode = (this.Mission.MissionType == MissionType.ScaleCalibration) ? MachineErrorCode.NoError : check;
                             this.Mission.EjectLoadUnit = true;
                             this.Mission.LoadUnitDestination = this.Mission.LoadUnitSource;
                             this.Mission.RestoreConditions = true;

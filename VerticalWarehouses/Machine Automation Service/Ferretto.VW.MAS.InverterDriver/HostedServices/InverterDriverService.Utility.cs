@@ -434,7 +434,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             else if (message.ParameterId == InverterParameterId.AxisChanged)
             {
                 currentStateMachine?.ValidateCommandResponse(message);
-        }
+            }
+            else if (message.ParameterId == InverterParameterId.ActiveDataset)
+            {
+                currentStateMachine?.ValidateCommandResponse(message);
+            }
         }
 
         private void EvaluateWriteMessage(

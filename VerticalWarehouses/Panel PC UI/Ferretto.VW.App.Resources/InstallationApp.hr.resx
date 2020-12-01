@@ -822,14 +822,11 @@
   <data name="UseWeightControl" xml:space="preserve">
     <value>Izvodi pokrete s izračun. težine</value>
   </data>
-  <data name="LoadFromBay" xml:space="preserve">
-    <value>Utov.</value>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Izvršite mjerenje</value>
   </data>
   <data name="LoadFromCell" xml:space="preserve">
     <value>Utov.</value>
-  </data>
-  <data name="UnloadToBay" xml:space="preserve">
-    <value>Istov.</value>
   </data>
   <data name="UnloadToCell" xml:space="preserve">
     <value>Istov.</value>
@@ -2275,7 +2272,7 @@
     <value>Vaganje s praznom ladicom</value>
   </data>
   <data name="UnitWeighingDescription" xml:space="preserve">
-    <value>Izvršite utovar i istovar ladice kako biste dobili trenutne podatke i unijeli neto težinu ladice</value>
+    <value>Pritisnite gumb za dobivanje trenutnih podataka pomicanjem ladice i unesite neto težinu. Kada završite, pritisnite Next za potvrdu postupka</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
     <value>Trenutna potrošnja</value>
@@ -2300,5 +2297,11 @@
   </data>
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Pritisnite start da biste započeli kalibraciju</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Istov.</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Utov.</value>
   </data>
 </root>

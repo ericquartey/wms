@@ -832,14 +832,11 @@
   <data name="UseWeightControl" xml:space="preserve">
     <value>Esegui pesata</value>
   </data>
-  <data name="LoadFromBay" xml:space="preserve">
-    <value>Carica</value>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Esegui misurazione</value>
   </data>
   <data name="LoadFromCell" xml:space="preserve">
     <value>Carica</value>
-  </data>
-  <data name="UnloadToBay" xml:space="preserve">
-    <value>Scarica</value>
   </data>
   <data name="UnloadToCell" xml:space="preserve">
     <value>Scarica</value>
@@ -2278,7 +2275,7 @@
     <value>Pesata con cassetto vuoto</value>
   </data>
   <data name="UnitWeighingDescription" xml:space="preserve">
-    <value>Esegui un carico e scarico cassetto per ottenere i dati di corrente ed inserisci il peso netto del cassetto. Al termine premi Avanti per confermare l'operazione</value>
+    <value>Premi il bottone per ottenere i dati di corrente tramite il movimento del cassetto ed inserisci il suo peso netto. Al termine premi Avanti per confermare l'operazione</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
     <value>Corrente assorbita</value>
@@ -2306,5 +2303,11 @@
   </data>
   <data name="CallUnitWeight" xml:space="preserve">
     <value>Chiamata cassetto: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Scarica</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Carica</value>
   </data>
 </root>

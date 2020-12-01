@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterPositioningFieldMessageData data;
 
-        private bool isAxisChanged;
-
         private DateTime startTime;
 
         #endregion
@@ -51,7 +49,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Logger.LogDebug($"Inverter {this.InverterStatus.SystemIndex} Enable Operation {(this.data.MovementType == MovementType.Relative ? "Relative" : "Absolute")}");
             this.startTime = DateTime.UtcNow;
 
-            var oldAxis = this.Inverter.PositionControlWord.HorizontalAxis;
             this.Inverter.PositionControlWord.HorizontalAxis = (this.data.AxisMovement == Axis.Horizontal);
             //this.Inverter.PositionControlWord.EnableOperation = true;
             //this.Inverter.PositionControlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative);
@@ -63,33 +60,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     this.Inverter.PositionControlWord.Value,
                     InverterDataset.ActualDataset));
 
-            if (this.InverterStatus.SystemIndex == 0
-                && oldAxis != this.Inverter.PositionControlWord.HorizontalAxis
-                && this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsAxisChanged()
-                )
-            {
-                // read AxisChanged parameter
-                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
+            this.Inverter.PositionControlWord.EnableOperation = true;
+            this.Inverter.PositionControlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative);
 
-                this.Logger.LogDebug($"2:inverterMessage={inverterMessage}");
+            this.ParentStateMachine.EnqueueCommandMessage(
+                new InverterMessage(
+                    this.InverterStatus.SystemIndex,
+                    (short)InverterParameterId.ControlWord,
+                    this.Inverter.PositionControlWord.Value,
+                    InverterDataset.ActualDataset));
 
-                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-            }
-            else
-            {
-                this.isAxisChanged = true;
-                this.Inverter.PositionControlWord.EnableOperation = true;
-                this.Inverter.PositionControlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative);
-
-                this.ParentStateMachine.EnqueueCommandMessage(
-                    new InverterMessage(
-                        this.InverterStatus.SystemIndex,
-                        (short)InverterParameterId.ControlWord,
-                        this.Inverter.PositionControlWord.Value,
-                        InverterDataset.ActualDataset));
-
-                this.startTime = DateTime.MinValue;
-            }
+            this.startTime = DateTime.MinValue;
         }
 
         /// <inheritdoc />
@@ -131,45 +112,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 this.Logger.LogDebug($"2:message={message}:Parameter Id={message.ParameterId}");
 
-                if (message.ParameterId == InverterParameterId.AxisChanged)
-                {
-                    if (message.UShortPayload == 0)
-                    {
-                        // read again
-                        var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
-
-                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-                    }
-                    else
-                    {
-                        // ack: write response
-                        var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.AxisChanged, message.UShortPayload, InverterDataset.AxisChangeDatasetWrite);
-
-                        this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
-
-                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-
-                        this.isAxisChanged = true;
-
-                        // enable
-                        this.Inverter.PositionControlWord.EnableOperation = true;
-                        this.Inverter.PositionControlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative);
-
-                        this.ParentStateMachine.EnqueueCommandMessage(
-                            new InverterMessage(
-                                this.InverterStatus.SystemIndex,
-                                (short)InverterParameterId.ControlWord,
-                                this.Inverter.PositionControlWord.Value,
-                                InverterDataset.ActualDataset));
-
-                        this.startTime = DateTime.MinValue;
-                    }
-                }
-                else if (this.InverterStatus.CommonStatusWord.IsOperationEnabled
-                    && this.isAxisChanged
-                    )
+                if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
                     // we must wait 100ms between EnableOperation and start moving
                     if (this.startTime == DateTime.MinValue)
