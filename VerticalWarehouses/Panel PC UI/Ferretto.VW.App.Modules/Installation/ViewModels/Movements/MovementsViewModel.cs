@@ -452,7 +452,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanBaseExecute()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    !this.IsKeyboardOpened &&
                    !this.IsExecutingProcedure &&
@@ -473,7 +473,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsGuidedExecuteCommand()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ;
@@ -481,7 +481,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsManualExecuteCommand()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered;
         }
 

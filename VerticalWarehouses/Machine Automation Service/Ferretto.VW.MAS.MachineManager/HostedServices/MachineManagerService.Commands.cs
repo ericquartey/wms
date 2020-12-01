@@ -149,7 +149,8 @@ namespace Ferretto.VW.MAS.MachineManager
                                 {
                                     if (!missionMoveProvider.StartMission(mission, command, serviceProvider, true))
                                     {
-                                        machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                        //machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                        machineVolatileDataProvider.Mode = machineVolatileDataProvider.GetMachineModeManualByBayNumber(mission.TargetBay);
                                         this.Logger.LogInformation($"Start Mission error: Machine status switched to {machineVolatileDataProvider.Mode}");
                                     }
                                 }

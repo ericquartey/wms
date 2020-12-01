@@ -114,7 +114,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsExecutingProcedure = true;
                     }
                 },
-                () => !this.IsMoving && this.MachineModeService.MachineMode == MachineMode.Manual &&
+                () => !this.IsMoving && (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
                     (!this.MachineService.HasCarousel && this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
                    this.LoadUnitId.HasValue));

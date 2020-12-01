@@ -1519,7 +1519,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
-                        else if (this.machineModeService.MachineMode < MachineMode.SwitchingToAutomatic && this.machineModeService.MachineMode != MachineMode.Manual && this.machineModeService.MachineMode != MachineMode.Test)
+                        else if (this.machineModeService.MachineMode < MachineMode.SwitchingToAutomatic && (this.machineModeService.MachineMode != MachineMode.Manual && this.machineModeService.MachineMode != MachineMode.Manual2 && this.machineModeService.MachineMode != MachineMode.Manual3) && this.machineModeService.MachineMode != MachineMode.Test)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineNotManual"), NotificationSeverity.Warning);
                         }
@@ -1819,7 +1819,7 @@ namespace Ferretto.VW.App.Services
             }
             else
             {
-                if (this.machineModeService.MachineMode == MachineMode.Manual)
+                if (this.machineModeService.MachineMode == MachineMode.Manual || this.machineModeService.MachineMode == MachineMode.Manual2 || this.machineModeService.MachineMode == MachineMode.Manual3)
                 {
                     if (axisMovement.HasValue && axisMovement == Axis.Vertical)
                     {

@@ -271,6 +271,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
             return (
                 this.MachineModeService.MachineMode == MachineMode.Manual
                 ||
+                this.MachineModeService.MachineMode == MachineMode.Manual2
+                ||
+                this.MachineModeService.MachineMode == MachineMode.Manual3
+                ||
                 this.MachineModeService.MachineMode == MachineMode.Test)
                 &&
                 this.MachineModeService.MachinePower == MachinePowerState.Powered
@@ -313,7 +317,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanExecuteMovementsCommand()
         {
-            return this.MachineModeService.MachineMode == MachineMode.Manual &&
+            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                    this.MachineModeService.MachinePower == MachinePowerState.Powered &&
                    (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
         }

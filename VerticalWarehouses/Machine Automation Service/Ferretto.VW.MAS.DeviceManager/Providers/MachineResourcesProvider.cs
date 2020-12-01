@@ -493,8 +493,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                             .GetRequiredService<IErrorsProvider>()
                                             .RecordNew(errorCode);
                                     }
-                                    this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                                    this.logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                                    if (this.machineVolatileDataProvider.Mode == MachineMode.Manual ||
+                                        this.machineVolatileDataProvider.Mode == MachineMode.Manual2 ||
+                                        this.machineVolatileDataProvider.Mode == MachineMode.Manual3)
+                                    {
+                                        this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                    }
+                                    else
+                                    {
+                                        this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(BayNumber.All);//to fix
+                                        this.logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                                    }
                                 }
 
                                 Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);

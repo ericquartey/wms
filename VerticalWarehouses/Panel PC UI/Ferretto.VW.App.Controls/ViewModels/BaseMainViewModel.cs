@@ -550,11 +550,11 @@ namespace Ferretto.VW.App.Controls
                                 break;
 
                             case EnableMask.MachineManualMode:
-                                result &= (machineMode == MachineMode.Manual || machineMode == MachineMode.Test);
+                                result &= (machineMode == MachineMode.Manual || machineMode == MachineMode.Manual2 || machineMode == MachineMode.Manual3 || machineMode == MachineMode.Test);
                                 break;
 
                             case EnableMask.MachineAutomaticMode:
-                                result &= (machineMode == MachineMode.Automatic || machineMode == MachineMode.Compact);
+                                result &= (machineMode == MachineMode.Automatic || machineMode == MachineMode.Compact || machineMode == MachineMode.Compact2 || machineMode == MachineMode.Compact3);
                                 break;
                         }
                     }

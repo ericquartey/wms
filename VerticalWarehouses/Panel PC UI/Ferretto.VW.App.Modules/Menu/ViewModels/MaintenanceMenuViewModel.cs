@@ -77,7 +77,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.menuCompactionCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Compaction),
                 () => this.CanExecuteCommand() &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Compact) &&
+                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) || this.MachineModeService.MachineMode == MachineMode.Compact) &&
                       this.MachineModeService.MachinePower == MachinePowerState.Powered &&
                      (!(!this.MachineService.HasShutter && this.MachineService.Loadunits.DrawerInBay()) &&
                      (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()))));
@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
                 () => this.CanExecuteCommand() &&
-                this.MachineModeService.MachineMode == MachineMode.Manual
+                (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3)
                     // && (this.MachineModeService.MachinePower == MachinePowerState.Powered || this.MachineModeService.MachinePower == MachinePowerState.Unpowered)
                     ));
 

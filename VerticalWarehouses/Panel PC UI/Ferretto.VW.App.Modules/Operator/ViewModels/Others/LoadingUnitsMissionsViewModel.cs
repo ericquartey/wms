@@ -149,7 +149,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanDeleteMission()
         {
             return this.selectedMission != null
-                && this.MachineModeService.MachineMode == MachineMode.Manual;
+                && (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3);
         }
 
         private async Task LoadListRowsAsync()

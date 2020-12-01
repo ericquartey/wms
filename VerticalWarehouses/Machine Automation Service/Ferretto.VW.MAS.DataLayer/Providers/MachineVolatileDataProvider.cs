@@ -173,17 +173,27 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     case MachineMode.Automatic:
                     case MachineMode.Manual:
+                    case MachineMode.Manual2:
+                    case MachineMode.Manual3:
                     case MachineMode.LoadUnitOperations:
                     case MachineMode.Test:
                     case MachineMode.Compact:
+                    case MachineMode.Compact2:
+                    case MachineMode.Compact3:
                         return this.Mode;
 
                     case MachineMode.FullTest:
                     case MachineMode.FirstTest:
+                    case MachineMode.FullTest2:
+                    case MachineMode.FirstTest2:
+                    case MachineMode.FullTest3:
+                    case MachineMode.FirstTest3:
                         return MachineMode.Test;
 
                     case MachineMode.SwitchingToAutomatic:
                     case MachineMode.SwitchingToManual:
+                    case MachineMode.SwitchingToManual2:
+                    case MachineMode.SwitchingToManual3:
                         return this.Mode;
 
                     case MachineMode.SwitchingToLoadUnitOperations:
@@ -191,6 +201,18 @@ namespace Ferretto.VW.MAS.DataLayer
                     case MachineMode.SwitchingToFullTest:
                     case MachineMode.SwitchingToFirstTest:
                         return MachineMode.SwitchingToManual;
+
+                    //case MachineMode.SwitchingToLoadUnitOperations:
+                    case MachineMode.SwitchingToCompact2:
+                    case MachineMode.SwitchingToFullTest2:
+                    case MachineMode.SwitchingToFirstTest2:
+                        return MachineMode.SwitchingToManual2;
+
+                    //case MachineMode.SwitchingToLoadUnitOperations:
+                    case MachineMode.SwitchingToCompact3:
+                    case MachineMode.SwitchingToFullTest3:
+                    case MachineMode.SwitchingToFirstTest3:
+                        return MachineMode.SwitchingToManual3;
 
                     default:
                         return MachineMode.NotSpecified;
@@ -210,6 +232,24 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return this.positions[bayNumber];
+        }
+
+        public MachineMode GetMachineModeManualByBayNumber(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                case BayNumber.BayOne:
+                    return MachineMode.Manual;
+
+                case BayNumber.BayTwo:
+                    return MachineMode.Manual2;
+
+                case BayNumber.BayThree:
+                    return MachineMode.Manual3;
+
+                default:
+                    return MachineMode.Manual;
+            }
         }
 
         public void SetBayEncoderPosition(BayNumber bayNumber, double position)

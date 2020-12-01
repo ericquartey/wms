@@ -86,7 +86,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.beltBurnishingCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BeltBurnishing),
                 () => this.CanExecuteCommand() &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
+                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) || this.MachineModeService.MachineMode == MachineMode.Test) &&
                       (this.BeltBurnishing.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -99,7 +99,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.horizontalChainCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.HorizontalChainCalibration),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                       (this.HorizontalChain.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public bool IsBeltBurnishing => this.BeltBurnishing.IsCompleted && !this.BeltBurnishing.IsBypassed;
@@ -128,7 +128,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.testDepositAndPickUpCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestDepositAndPickUp),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                       (this.BeltBurnishing.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         private SetupStepStatus VerticalOffsetCalibration => this.SetupStatusCapabilities?.VerticalOffsetCalibration ?? new SetupStepStatus();
@@ -139,7 +139,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.verticalOffsetCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOffsetCalibration),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                       (this.VerticalOffsetCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
@@ -150,7 +150,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.verticalOriginCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOriginCalibration),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual));
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3)));
 
         private SetupStepStatus VerticalResolutionCalibration => this.SetupStatusCapabilities?.VerticalResolutionCalibration ?? new SetupStepStatus();
 
@@ -160,7 +160,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.verticalResolutionCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalResolutionCalibration),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                       (this.VerticalResolutionCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand WeightAnalysisCommand =>
@@ -176,7 +176,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.weightCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightCalibration),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
+                     (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                       (this.VerticalResolutionCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand WeightMeasurementCommand =>

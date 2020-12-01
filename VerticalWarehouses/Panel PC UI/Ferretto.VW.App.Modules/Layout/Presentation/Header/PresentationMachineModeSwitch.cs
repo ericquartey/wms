@@ -212,7 +212,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 await this.machineModeWebService.SetManualAsync();
             }
-            else if (this.machineMode is MachineMode.Manual || this.machineMode is MachineMode.Test)
+            else if ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) || this.machineMode is MachineMode.Test)
             {
                 if (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 {
@@ -247,6 +247,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 (this.MachineMode is MachineMode.Automatic
                  ||
                  this.MachineMode is MachineMode.Manual
+                 ||
+                 this.MachineMode is MachineMode.Manual2
+                 ||
+                 this.MachineMode is MachineMode.Manual3
                  ||
                  this.MachineMode is MachineMode.Test
                  ||
@@ -307,12 +311,15 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.IsMachineInTestMode = this.MachineMode is MachineMode.Test;
             this.IsMachineInLoadUnitOperations = this.MachineMode is MachineMode.LoadUnitOperations;
             this.IsMachineInSwitchingToLoadUnitOperations = this.MachineMode is MachineMode.SwitchingToLoadUnitOperations;
-            this.IsMachineInCompact = this.MachineMode is MachineMode.Compact;
-            this.IsMachineInFirstTest = this.MachineMode is MachineMode.FirstTest;
+            this.IsMachineInCompact = this.MachineMode is MachineMode.Compact || this.MachineMode is MachineMode.Compact2 || this.MachineMode is MachineMode.Compact3;
+            this.IsMachineInFirstTest = this.MachineMode is MachineMode.FirstTest || this.MachineMode is MachineMode.FirstTest2 || this.MachineMode is MachineMode.FirstTest3;
 
             this.IsMissionInErrorByLoadUnitOperations = this.machineService.IsMissionInErrorByLoadUnitOperations;
 
-            this.IsBusy =
+            switch (this.machineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.IsBusy =
                 this.MachineMode is MachineMode.SwitchingToLoadUnitOperations
                 ||
                 this.MachineMode is MachineMode.SwitchingToAutomatic
@@ -320,6 +327,49 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 this.MachineMode is MachineMode.SwitchingToManual
                 ||
                 this.MachineMode is MachineMode.Test;
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.IsBusy =
+                this.MachineMode is MachineMode.SwitchingToLoadUnitOperations
+                ||
+                this.MachineMode is MachineMode.SwitchingToAutomatic
+                ||
+                this.MachineMode is MachineMode.SwitchingToManual2
+                ||
+                this.MachineMode is MachineMode.Test;
+                    break;
+
+                case BayNumber.BayThree:
+                    this.IsBusy =
+                this.MachineMode is MachineMode.SwitchingToLoadUnitOperations
+                ||
+                this.MachineMode is MachineMode.SwitchingToAutomatic
+                ||
+                this.MachineMode is MachineMode.SwitchingToManual3
+                ||
+                this.MachineMode is MachineMode.Test;
+                    break;
+
+                default:
+                    this.IsBusy =
+                this.MachineMode is MachineMode.SwitchingToLoadUnitOperations
+                ||
+                this.MachineMode is MachineMode.SwitchingToAutomatic
+                ||
+                this.MachineMode is MachineMode.SwitchingToManual
+                ||
+                this.MachineMode is MachineMode.Test;
+                    break;
+            }
+            //this.IsBusy =
+            //    this.MachineMode is MachineMode.SwitchingToLoadUnitOperations
+            //    ||
+            //    this.MachineMode is MachineMode.SwitchingToAutomatic
+            //    ||
+            //    this.MachineMode is MachineMode.SwitchingToManual
+            //    ||
+            //    this.MachineMode is MachineMode.Test;
         }
 
         private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)

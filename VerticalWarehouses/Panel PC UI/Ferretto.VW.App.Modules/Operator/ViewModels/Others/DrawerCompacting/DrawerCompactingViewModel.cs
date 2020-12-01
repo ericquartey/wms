@@ -218,7 +218,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanCompactingStart()
         {
             var result = !this.IsWaitingForResponse &&
-                   this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
                    (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
                    !this.IsMachineMoving;

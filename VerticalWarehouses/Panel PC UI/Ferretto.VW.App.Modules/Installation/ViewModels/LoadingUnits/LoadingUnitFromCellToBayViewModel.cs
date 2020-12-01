@@ -74,7 +74,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return base.CanStart() &&
                    this.LoadingUnitId.HasValue &&
-                   this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
                    this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
                    (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
                     (!this.MachineService.HasCarousel && this.MachineStatus.LoadingUnitPositionDownInBay is null));

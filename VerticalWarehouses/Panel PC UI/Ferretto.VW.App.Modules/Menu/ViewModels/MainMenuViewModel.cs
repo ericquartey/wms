@@ -169,7 +169,25 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanExecuteCommand()
         {
-            return true;
+            if (this.MachineModeService.MachineMode == MachineMode.Automatic)
+            {
+                return true;
+            }
+
+            switch (this.machineService?.BayNumber)
+            {
+                case MAS.AutomationService.Contracts.BayNumber.BayOne:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual ? true : false;
+
+                case MAS.AutomationService.Contracts.BayNumber.BayTwo:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual2 ? true : false;
+
+                case MAS.AutomationService.Contracts.BayNumber.BayThree:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual3 ? true : false;
+
+                default:
+                    return true;
+            }
         }
 
         private void MenuCommand(Menu menu)
