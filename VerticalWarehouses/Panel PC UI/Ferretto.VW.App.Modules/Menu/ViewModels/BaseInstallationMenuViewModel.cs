@@ -275,7 +275,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 ||
                 this.MachineModeService.MachineMode == MachineMode.Manual3
                 ||
-                this.MachineModeService.MachineMode == MachineMode.Test)
+                this.MachineModeService.MachineMode == MachineMode.Test
+                ||
+                this.MachineModeService.MachineMode == MachineMode.Test2
+                ||
+                this.MachineModeService.MachineMode == MachineMode.Test3)
                 &&
                 this.MachineModeService.MachinePower == MachinePowerState.Powered
                 &&

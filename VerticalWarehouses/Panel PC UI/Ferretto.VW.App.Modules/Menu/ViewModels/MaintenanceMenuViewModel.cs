@@ -76,32 +76,21 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuCompactionCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Compaction),
-                () => this.CanExecuteCommand() &&
-                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) || this.MachineModeService.MachineMode == MachineMode.Compact) &&
-                      this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                     (!(!this.MachineService.HasShutter && this.MachineService.Loadunits.DrawerInBay()) &&
-                     (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()))));
+                () => this.CanExecuteCommand(Menu.Compaction)));
 
         public ICommand MenuMaintenanceCommand =>
             this.menuMaintenanceCommand
             ??
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
-                () => this.CanExecuteCommand() &&
-                (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3)
-                    // && (this.MachineModeService.MachinePower == MachinePowerState.Powered || this.MachineModeService.MachinePower == MachinePowerState.Unpowered)
-                    ));
+                () => this.CanExecuteCommand(Menu.Maintenance)));
 
         public ICommand MenuUpdateCommand =>
             this.menuUpdateCommand
             ??
             (this.menuUpdateCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Update),
-                () => this.CanExecuteCommand() &&
-                 this.MachineModeService.MachineMode != MachineMode.Automatic
-                      /*this.MachineModeService.MachineMode == MachineMode.Manual &&
-                      (this.MachineModeService.MachinePower == MachinePowerState.Powered || this.MachineModeService.MachinePower == MachinePowerState.Unpowered)*/
-                      ));
+                () => this.CanExecuteCommand(Menu.Update)));
 
         #endregion
 
@@ -135,8 +124,45 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuUpdateCommand?.RaiseCanExecuteChanged();
         }
 
-        private bool CanExecuteCommand()
+        private bool CanExecuteCommand(Menu menu)
         {
+            switch (menu)
+            {
+                case Menu.Maintenance:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual ||
+                        this.MachineModeService.MachineMode == MachineMode.Manual2 ||
+                        this.MachineModeService.MachineMode == MachineMode.Manual3;
+
+                case Menu.Compaction:
+                    var res = this.MachineModeService.MachinePower == MachinePowerState.Powered &&
+                     (!(!this.MachineService.HasShutter && this.MachineService.Loadunits.DrawerInBay()) &&
+                     (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
+
+                    switch (this.machineService?.BayNumber)
+                    {
+                        case MAS.AutomationService.Contracts.BayNumber.BayOne:
+                            return res &&
+                                (this.MachineModeService.MachineMode == MachineMode.Manual ? true : false ||
+                                this.MachineModeService.MachineMode == MachineMode.Compact);
+
+                        case MAS.AutomationService.Contracts.BayNumber.BayTwo:
+                            return res &&
+                                (this.MachineModeService.MachineMode == MachineMode.Manual2 ? true : false ||
+                                this.MachineModeService.MachineMode == MachineMode.Compact2);
+
+                        case MAS.AutomationService.Contracts.BayNumber.BayThree:
+                            return res &&
+                                (this.MachineModeService.MachineMode == MachineMode.Manual3 ? true : false ||
+                                this.MachineModeService.MachineMode == MachineMode.Compact3);
+
+                        default:
+                            return res ||
+                                this.MachineModeService.MachineMode == MachineMode.Compact;
+                    }
+
+                case Menu.Update:
+                    return this.MachineModeService.MachineMode != MachineMode.Automatic;
+            }
             return true;
         }
 

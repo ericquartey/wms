@@ -1519,15 +1519,19 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
-                        else if (this.machineModeService.MachineMode < MachineMode.SwitchingToAutomatic && (this.machineModeService.MachineMode != MachineMode.Manual && this.machineModeService.MachineMode != MachineMode.Manual2 && this.machineModeService.MachineMode != MachineMode.Manual3) && this.machineModeService.MachineMode != MachineMode.Test)
+                        else if (this.machineModeService.MachineMode < MachineMode.SwitchingToAutomatic &&
+                            (this.machineModeService.MachineMode != MachineMode.Manual && this.machineModeService.MachineMode != MachineMode.Manual2 && this.machineModeService.MachineMode != MachineMode.Manual3) &&
+                            (this.machineModeService.MachineMode != MachineMode.Test && this.machineModeService.MachineMode != MachineMode.Test2 && this.machineModeService.MachineMode != MachineMode.Test3))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineNotManual"), NotificationSeverity.Warning);
                         }
-                        else if (this.sensorsService.IsHorizontalInconsistentBothLow && this.machineModeService.MachineMode != MachineMode.Test)
+                        else if (this.sensorsService.IsHorizontalInconsistentBothLow &&
+                            (this.machineModeService.MachineMode != MachineMode.Test && this.machineModeService.MachineMode != MachineMode.Test2 && this.machineModeService.MachineMode != MachineMode.Test3))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.NoZeroPawlSensor"), NotificationSeverity.Error);
                         }
-                        else if (this.sensorsService.IsHorizontalInconsistentBothHigh && this.machineModeService.MachineMode != MachineMode.Test)
+                        else if (this.sensorsService.IsHorizontalInconsistentBothHigh &&
+                            (this.machineModeService.MachineMode != MachineMode.Test && this.machineModeService.MachineMode != MachineMode.Test2 && this.machineModeService.MachineMode != MachineMode.Test3))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.InconsistencyZeroPawlSensor"), NotificationSeverity.Error);
                         }
@@ -1542,7 +1546,7 @@ namespace Ferretto.VW.App.Services
                             ((this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0 && (this.sensorsService.IsZeroChain || !this.sensorsService.IsLoadingUnitOnElevator)) ||
                                  (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() == 0 && (!this.sensorsService.IsZeroChain || this.sensorsService.IsLoadingUnitOnElevator))
                                  )
-                                 && this.machineModeService.MachineMode != MachineMode.Test)
+                                 && (this.machineModeService.MachineMode != MachineMode.Test && this.machineModeService.MachineMode != MachineMode.Test2 && this.machineModeService.MachineMode != MachineMode.Test3))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.InconsistencyStateAndSensors"), NotificationSeverity.Error);
                         }
@@ -1573,7 +1577,7 @@ namespace Ferretto.VW.App.Services
                                  ((this.bay.Shutter != null) ? this.bay.Shutter.Type != ShutterType.NotSpecified : false) &&
                                  !this.sensorsService.ShutterSensors.Closed && !this.sensorsService.ShutterSensors.MidWay &&
                                  !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) &&
-                                 this.machineModeService.MachineMode != MachineMode.Test)
+                                 (this.machineModeService.MachineMode != MachineMode.Test && this.machineModeService.MachineMode != MachineMode.Test2 && this.machineModeService.MachineMode != MachineMode.Test3))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutterOpenOrUnknowPosition"), NotificationSeverity.Warning);
                         }
@@ -1808,7 +1812,7 @@ namespace Ferretto.VW.App.Services
 
             if (this.MachineStatus.IsMovingShutter)
             {
-                if (this.machineModeService.MachineMode == MachineMode.Test)
+                if (this.machineModeService.MachineMode == MachineMode.Test || this.machineModeService.MachineMode == MachineMode.Test2 || this.machineModeService.MachineMode == MachineMode.Test3)
                 {
                     this.Notification = Resources.Localized.Get("ServiceMachine.TestInProgress");
                 }
@@ -1834,7 +1838,7 @@ namespace Ferretto.VW.App.Services
                         this.Notification = Resources.Localized.Get("ServiceMachine.MovementBayChainInProgress");
                     }
                 }
-                else if (this.machineModeService.MachineMode == MachineMode.Test)
+                else if (this.machineModeService.MachineMode == MachineMode.Test || this.machineModeService.MachineMode == MachineMode.Test2 || this.machineModeService.MachineMode == MachineMode.Test3)
                 {
                     this.Notification = Resources.Localized.Get("ServiceMachine.TestInProgress");
                 }

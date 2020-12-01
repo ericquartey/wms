@@ -228,6 +228,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasBayExternal => this.MachineService.HasBayExternal;
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public bool HasStepCallUnit => this.currentStep is DepositAndPickUpStep.CallUnit;
 
         public bool HasStepCloseShutter => this.currentStep is DepositAndPickUpStep.CloseShutter;
@@ -271,8 +273,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
         public bool IsMovingTest => this.MachineService?.MachineStatus?.IsDepositAndPickUpRunning ?? true;
-
-        public bool HasShutter => this.MachineService.HasShutter;
 
         public bool IsNewErrorValueVisible
         {
@@ -540,7 +540,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.GetParameterValuesAsync();
 
-                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
+                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving ||
+                    this.MachineService.MachineMode == MachineMode.Test ||
+                    this.MachineService.MachineMode == MachineMode.Test2 ||
+                    this.MachineService.MachineMode == MachineMode.Test3;
 
                 //if (this.RequiredCycles == null || this.CumulativePerformedCycles == null)
                 //{

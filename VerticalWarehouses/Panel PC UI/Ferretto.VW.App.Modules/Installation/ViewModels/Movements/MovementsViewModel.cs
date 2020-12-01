@@ -49,9 +49,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineService machineService;
 
-        private readonly IMachineShuttersWebService shuttersWebService;
-
         private readonly ISessionService sessionService;
+
+        private readonly IMachineShuttersWebService shuttersWebService;
 
         private SubscriptionToken cellsToken;
 
@@ -384,7 +384,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnMachineModeChangedAsync(e);
 
             if (e.MachineMode == MachineMode.SwitchingToAutomatic
-                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations)
+                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations
+                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations2
+                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations3)
             {
                 this.GoToMovementsExecuteCommand(true);
                 this.goToMovementsManualCommand?.RaiseCanExecuteChanged();

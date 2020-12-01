@@ -14,7 +14,15 @@
 
         LoadUnitOperations,
 
+        LoadUnitOperations2,
+
+        LoadUnitOperations3,
+
         Test,
+
+        Test2,
+
+        Test3,
 
         Compact,
 
@@ -43,6 +51,10 @@
         SwitchingToManual3,
 
         SwitchingToLoadUnitOperations,
+
+        SwitchingToLoadUnitOperations2,
+
+        SwitchingToLoadUnitOperations3,
 
         SwitchingToCompact,
 

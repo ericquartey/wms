@@ -6419,53 +6419,65 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitOperations = 5,
     
-        Test = 6,
+        LoadUnitOperations2 = 6,
     
-        Compact = 7,
+        LoadUnitOperations3 = 7,
     
-        Compact2 = 8,
+        Test = 8,
     
-        Compact3 = 9,
+        Test2 = 9,
     
-        FullTest = 10,
+        Test3 = 10,
     
-        FullTest2 = 11,
+        Compact = 11,
     
-        FullTest3 = 12,
+        Compact2 = 12,
     
-        FirstTest = 13,
+        Compact3 = 13,
     
-        FirstTest2 = 14,
+        FullTest = 14,
     
-        FirstTest3 = 15,
+        FullTest2 = 15,
     
-        SwitchingToAutomatic = 16,
+        FullTest3 = 16,
     
-        SwitchingToManual = 17,
+        FirstTest = 17,
     
-        SwitchingToManual2 = 18,
+        FirstTest2 = 18,
     
-        SwitchingToManual3 = 19,
+        FirstTest3 = 19,
     
-        SwitchingToLoadUnitOperations = 20,
+        SwitchingToAutomatic = 20,
     
-        SwitchingToCompact = 21,
+        SwitchingToManual = 21,
     
-        SwitchingToCompact2 = 22,
+        SwitchingToManual2 = 22,
     
-        SwitchingToCompact3 = 23,
+        SwitchingToManual3 = 23,
     
-        SwitchingToFullTest = 24,
+        SwitchingToLoadUnitOperations = 24,
     
-        SwitchingToFullTest2 = 25,
+        SwitchingToLoadUnitOperations2 = 25,
     
-        SwitchingToFullTest3 = 26,
+        SwitchingToLoadUnitOperations3 = 26,
     
-        SwitchingToFirstTest = 27,
+        SwitchingToCompact = 27,
     
-        SwitchingToFirstTest2 = 28,
+        SwitchingToCompact2 = 28,
     
-        SwitchingToFirstTest3 = 29,
+        SwitchingToCompact3 = 29,
+    
+        SwitchingToFullTest = 30,
+    
+        SwitchingToFullTest2 = 31,
+    
+        SwitchingToFullTest3 = 32,
+    
+        SwitchingToFirstTest = 33,
+    
+        SwitchingToFirstTest2 = 34,
+    
+        SwitchingToFirstTest3 = 35,
     
     }
     

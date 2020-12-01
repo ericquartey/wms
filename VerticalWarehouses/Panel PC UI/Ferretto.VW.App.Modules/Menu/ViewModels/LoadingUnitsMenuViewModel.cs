@@ -71,7 +71,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.ExtractionLoadingUnits),
                 () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
                       (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
-                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
+                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) ||
+                      (this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations2 || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations3)) &&
                       this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand InsertionLoadingUnitsCommand =>
@@ -81,7 +82,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.InsertionLoadingUnits),
                 () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
                       (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
-                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
+                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) ||
+                      (this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations2 || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations3)) &&
                       this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand LoadingUnitsBayToBayCommand =>
@@ -91,7 +93,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.LoadingUnitsBayToBay),
                 () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
                       (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
-                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
+                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) ||
+                      (this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations2 || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations3)) &&
                       this.VerticalOriginCalibration.IsCompleted));
 
         public ICommand LoadingUnitsCommand =>
@@ -108,7 +111,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.MoveLoadingUnits),
                 () => this.MachineModeService.MachinePower == MachinePowerState.Powered &&
                       (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
-                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
+                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) ||
+                      (this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations2 || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations3)) &&
                       this.VerticalOriginCalibration.IsCompleted));
 
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
@@ -119,8 +123,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.testCompleteCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestComplete),
                 () => this.CanExecuteCommand() &&
-                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) || this.MachineModeService.MachineMode == MachineMode.Test) &&
-                      this.MachineService.IsHoming));
+                      ((this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) ||
+                      (this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Test3) &&
+                      this.MachineService.IsHoming)));
 
         private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
 

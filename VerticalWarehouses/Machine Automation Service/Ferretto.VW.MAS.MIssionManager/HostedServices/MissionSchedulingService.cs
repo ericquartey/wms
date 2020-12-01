@@ -724,6 +724,8 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 case MachineMode.SwitchingToAutomatic:
                 case MachineMode.SwitchingToLoadUnitOperations:
+                case MachineMode.SwitchingToLoadUnitOperations2:
+                case MachineMode.SwitchingToLoadUnitOperations3:
                 case MachineMode.SwitchingToCompact:
                 case MachineMode.SwitchingToFirstTest:
                 case MachineMode.SwitchingToFullTest:
@@ -824,7 +826,25 @@ namespace Ferretto.VW.MAS.MissionManager
                                 }
                                 else if (activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation))
                                 {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
+                                    switch (activeMissions.FirstOrDefault(m => m.MissionType == MissionType.LoadUnitOperation).TargetBay)
+                                    {
+                                        case BayNumber.BayOne:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
+                                            break;
+
+                                        case BayNumber.BayTwo:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations2;
+                                            break;
+
+                                        case BayNumber.BayThree:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations3;
+                                            break;
+
+                                        default:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
+                                            break;
+                                    }
+
                                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 }
                             }
@@ -906,6 +926,18 @@ namespace Ferretto.VW.MAS.MissionManager
                                     )
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations2
+                                    || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations2;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations3
+                                    || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations3;
                                 }
                                 else
                                 {
@@ -1258,8 +1290,17 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
                     {
-                        //this.machineVolatileDataProvider.Mode = MachineMode.Manual; // MachineMode.LoadUnitOperations;
-                        this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(message.TargetBay);
+                        this.machineVolatileDataProvider.Mode = MachineMode.Manual; // MachineMode.LoadUnitOperations;
+                        this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    }
+                    else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations2)
+                    {
+                        this.machineVolatileDataProvider.Mode = MachineMode.Manual2; // MachineMode.LoadUnitOperations;
+                        this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    }
+                    else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations3)
+                    {
+                        this.machineVolatileDataProvider.Mode = MachineMode.Manual3; // MachineMode.LoadUnitOperations;
                         this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     }
                 }

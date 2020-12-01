@@ -54,7 +54,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult SetLoadUnitOperations()
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.LoadUnitOperations);
+            switch (this.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.LoadUnitOperations);
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.LoadUnitOperations2);
+                    break;
+
+                case BayNumber.BayThree:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.LoadUnitOperations3);
+                    break;
+
+                default:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.LoadUnitOperations);
+                    break;
+            }
 
             return this.Accepted();
         }

@@ -222,8 +222,27 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData, this.Logger));
                     return;
                 }
-                this.machineVolatileDataProvider.Mode = MachineMode.Test;
-                this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
+
+                switch (this.machineData.TargetBay)
+                {
+                    case BayNumber.BayOne:
+                        this.machineVolatileDataProvider.Mode = MachineMode.Test;
+                        break;
+
+                    case BayNumber.BayTwo:
+                        this.machineVolatileDataProvider.Mode = MachineMode.Test2;
+                        break;
+
+                    case BayNumber.BayThree:
+                        this.machineVolatileDataProvider.Mode = MachineMode.Test3;
+                        break;
+
+                    default:
+                        this.machineVolatileDataProvider.Mode = MachineMode.Test;
+                        break;
+                }
+
+                this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
 
                 // first move the shutter in Open position
                 messageData = new ShutterPositioningFieldMessageData(

@@ -62,7 +62,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuComunicationWMSCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.ComunicationWms),
-                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Test3 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
                       (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MenuDateTimeCommand =>
@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuDateTimeCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.DateTime),
-                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Test3 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
                       (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MenuParameterInverterCommand =>
@@ -78,7 +78,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuParameterInverterCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.ParameterInverter),
-                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Test3 || this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Test3 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
                       (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MenuParametersCommand =>
@@ -86,7 +86,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuParametersCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.Parameters),
-                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Test3 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
                       (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
 
         public ICommand MenuUsersCommand =>

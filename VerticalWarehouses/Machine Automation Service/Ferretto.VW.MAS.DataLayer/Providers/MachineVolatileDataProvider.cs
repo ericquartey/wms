@@ -176,7 +176,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     case MachineMode.Manual2:
                     case MachineMode.Manual3:
                     case MachineMode.LoadUnitOperations:
+                    case MachineMode.LoadUnitOperations2:
+                    case MachineMode.LoadUnitOperations3:
                     case MachineMode.Test:
+                    case MachineMode.Test2:
+                    case MachineMode.Test3:
                     case MachineMode.Compact:
                     case MachineMode.Compact2:
                     case MachineMode.Compact3:
@@ -184,11 +188,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     case MachineMode.FullTest:
                     case MachineMode.FirstTest:
+                        return MachineMode.Test;
+
                     case MachineMode.FullTest2:
                     case MachineMode.FirstTest2:
+                        return MachineMode.Test2;
+
                     case MachineMode.FullTest3:
                     case MachineMode.FirstTest3:
-                        return MachineMode.Test;
+                        return MachineMode.Test3;
 
                     case MachineMode.SwitchingToAutomatic:
                     case MachineMode.SwitchingToManual:
@@ -202,13 +210,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     case MachineMode.SwitchingToFirstTest:
                         return MachineMode.SwitchingToManual;
 
-                    //case MachineMode.SwitchingToLoadUnitOperations:
+                    case MachineMode.SwitchingToLoadUnitOperations2:
                     case MachineMode.SwitchingToCompact2:
                     case MachineMode.SwitchingToFullTest2:
                     case MachineMode.SwitchingToFirstTest2:
                         return MachineMode.SwitchingToManual2;
 
-                    //case MachineMode.SwitchingToLoadUnitOperations:
+                    case MachineMode.SwitchingToLoadUnitOperations3:
                     case MachineMode.SwitchingToCompact3:
                     case MachineMode.SwitchingToFullTest3:
                     case MachineMode.SwitchingToFirstTest3:
