@@ -102,11 +102,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task UpdateWeightingScaleDeviceInfoAsync(DeviceInformation deviceInformation, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string portName);
+        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string portName, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -2643,7 +2643,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class WeightingScale : SerialPortAccessory
+    public partial class WeightingScale : TcpIpAccessory
     {
         public string ToJson() 
         {

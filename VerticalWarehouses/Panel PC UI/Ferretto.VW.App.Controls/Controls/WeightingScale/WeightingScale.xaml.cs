@@ -150,20 +150,23 @@ namespace Ferretto.VW.App.Controls
         {
             this.weightingScaleService.WeighAcquired += this.WeightingScaleService_WeighAcquired;
 
-            this.logger.Debug("Loaded weighting scale component. Starting service ...");
-            try
+            if (this.IsWeightingScaleEnabled)
             {
-                await this.weightingScaleService.StartAsync();
-                await this.weightingScaleService.ClearMessageAsync();
-                await this.weightingScaleService.ResetAverageUnitaryWeightAsync();
+                this.logger.Debug("Loaded weighting scale component. Starting service ...");
+                try
+                {
+                    await this.weightingScaleService.StartAsync();
+                    await this.weightingScaleService.ClearMessageAsync();
+                    await this.weightingScaleService.ResetAverageUnitaryWeightAsync();
 
-                this.weightingScaleService.StartWeightAcquisition();
+                    this.weightingScaleService.StartWeightAcquisition();
 
-                this.logger.Debug("Weighting scale component initialized.");
-            }
-            catch (Exception ex)
-            {
-                this.logger.Error(ex);
+                    this.logger.Debug("Weighting scale component initialized.");
+                }
+                catch (Exception ex)
+                {
+                    this.logger.Error(ex);
+                }
             }
         }
 
