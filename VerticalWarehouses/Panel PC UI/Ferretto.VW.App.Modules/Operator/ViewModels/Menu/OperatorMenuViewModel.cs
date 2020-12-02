@@ -80,7 +80,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand
             ??
             (this.drawerActivityButtonCommand = new DelegateCommand(
-                this.operatorNavigationService.NavigateToDrawerViewBase,
+                this.operatorNavigationService.NavigateToDrawerView,
                 this.CanShowItemOperations));
 
         public override EnableMask EnableMask => EnableMask.Any;

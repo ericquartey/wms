@@ -333,6 +333,40 @@ namespace Ferretto.VW.MAS.DataLayer
             return UnitGoBay;
         }
 
+        public List<int> GetAllActiveUnitGoBay(BayNumber bayNumber)
+        {
+            var UnitGoBay = new List<int>();
+
+            lock (this.dataContext)
+            {
+                //var missions = this.dataContext.Missions
+                //.AsNoTracking()
+                //.Where(x => x.Status != MissionStatus.Completed
+                //        && x.Status != MissionStatus.Aborted
+                //        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
+                //.OrderBy(o => o.Priority)
+                //.ThenBy(o => o.CreationDate)
+                //.ToList();
+
+                var missions = this.dataContext.Missions
+                .AsNoTracking()
+                .Where(x => x.Status != MissionStatus.Completed
+                        && x.Status != MissionStatus.Aborted
+                        && x.TargetBay == bayNumber
+                        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate)
+                .ToList();
+
+                foreach (var unit in missions)
+                {
+                    UnitGoBay.Add(unit.LoadUnitId);
+                }
+            }
+
+            return UnitGoBay;
+        }
+
         public List<int> GetAllActiveUnitGoCell()
         {
             var UnitGoBay = new List<int>();
@@ -351,6 +385,39 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AsNoTracking()
                 .Where(x => x.Status != MissionStatus.Completed
                         && x.Status != MissionStatus.Aborted
+                        && (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS))
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate)
+                .ToList();
+
+                foreach (var unit in missions)
+                {
+                    UnitGoBay.Add(unit.LoadUnitId);
+                }
+            }
+
+            return UnitGoBay;
+        }
+
+        public List<int> GetAllActiveUnitGoCell(BayNumber bayNumber)
+        {
+            var UnitGoBay = new List<int>();
+
+            lock (this.dataContext)
+            {
+                //var missions = this.dataContext.Missions
+                //.AsNoTracking()
+                //.Where(x => x.Status != MissionStatus.Completed
+                //        && x.Status != MissionStatus.Aborted)
+                //.OrderBy(o => o.Priority)
+                //.ThenBy(o => o.CreationDate)
+                //.ToList();
+
+                var missions = this.dataContext.Missions
+                .AsNoTracking()
+                .Where(x => x.Status != MissionStatus.Completed
+                        && x.Status != MissionStatus.Aborted
+                        && x.TargetBay == bayNumber
                         && (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS))
                 .OrderBy(o => o.Priority)
                 .ThenBy(o => o.CreationDate)

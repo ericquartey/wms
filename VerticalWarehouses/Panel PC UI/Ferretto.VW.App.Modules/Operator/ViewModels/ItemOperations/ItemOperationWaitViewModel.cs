@@ -137,7 +137,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.count = 0;
 
                 this.loadingUnits.Clear();
-                this.moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync();
+                this.moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync(this.machineService.BayNumber);
 
                 if (this.moveUnitId != null)
                 {
@@ -150,7 +150,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 this.moveUnits.Clear();
-                this.moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
+                this.moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAllAsync();
 
                 if (this.moveUnitIdToCell != null)
                 {
@@ -249,8 +249,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var missions = await this.machineMissionsWebService.GetAllAsync();
                 this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
                 this.LoadingUnitsInfo = this.ComputeLoadingUnitInfo();
-
-                await this.ManualUnit(missions);
             }
             catch (Exception)
             {
@@ -259,41 +257,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string ComputeLoadingUnitInfo()
         {
-            if (this.loadingUnitsMovements == 0)
+            if (this.moveUnitId.Count() == 0)
             {
                 return Localized.Get("OperatorApp.NoLoadingUnitsToMove");
             }
-            else if (this.loadingUnitsMovements == 1)
+            else if (this.moveUnitId.Count() >= 1)
             {
                 return Localized.Get("OperatorApp.LoadingUnitSendToBay");
             }
 
             return string.Format(Localized.Get("OperatorApp.LoadingUnitsSendToBay"), this.loadingUnitsMovements);
-        }
-
-        private async Task ManualUnit(IEnumerable<Mission> missions)
-        {
-            var loadingUnitInBay = this.machineService.Loadunits.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay);
-
-            if (missions != null && loadingUnitInBay != null)
-            {
-                if (!missions.Where(s => s.LoadUnitId == loadingUnitInBay.Id).Any())
-                {
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
-                        loadingUnitInBay.Id,
-                        trackCurrentView: false);
-                }
-            }
-            else if (missions == null && loadingUnitInBay != null)
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
-                    loadingUnitInBay.Id,
-                    trackCurrentView: false);
-            }
         }
 
         #endregion
