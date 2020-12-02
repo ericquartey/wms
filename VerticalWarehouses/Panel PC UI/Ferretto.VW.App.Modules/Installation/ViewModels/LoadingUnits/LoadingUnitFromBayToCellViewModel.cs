@@ -75,12 +75,40 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 !this.MachineService.Bay.IsDouble &&
                 !this.MachineService.BayFirstPositionIsUpper;
 
-            return base.CanStart() &&
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return base.CanStart() &&
                    !this.IsMoving &&
-                   (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual &&
                    (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
+
+                case BayNumber.BayTwo:
+                    return base.CanStart() &&
+                   !this.IsMoving &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
+                   this.LoadingUnitId.HasValue &&
+                   !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
+
+                case BayNumber.BayThree:
+                    return base.CanStart() &&
+                   !this.IsMoving &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
+                   this.LoadingUnitId.HasValue &&
+                   !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
+
+                default:
+                    return base.CanStart() &&
+                   !this.IsMoving &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
+                   this.LoadingUnitId.HasValue &&
+                   !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
+            }
         }
 
         public async Task GetLoadingUnits()

@@ -454,11 +454,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanBaseExecute()
         {
-            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
+            switch (this.machineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    !this.IsKeyboardOpened &&
                    !this.IsExecutingProcedure &&
                    !this.IsMoving;
+
+                case BayNumber.BayTwo:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   !this.IsKeyboardOpened &&
+                   !this.IsExecutingProcedure &&
+                   !this.IsMoving;
+
+                case BayNumber.BayThree:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   !this.IsKeyboardOpened &&
+                   !this.IsExecutingProcedure &&
+                   !this.IsMoving;
+
+                default:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   !this.IsKeyboardOpened &&
+                   !this.IsExecutingProcedure &&
+                   !this.IsMoving;
+            }
         }
 
         private bool CanEmbark()
@@ -475,16 +500,50 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsGuidedExecuteCommand()
         {
-            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
+            switch (this.machineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return (this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ;
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
+
+                case BayNumber.BayTwo:
+                    return (this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
+
+                case BayNumber.BayThree:
+                    return (this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
+
+                default:
+                    return (this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
+            }
         }
 
         private bool CanGoToMovementsManualExecuteCommand()
         {
-            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
+            switch (this.machineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+                case BayNumber.BayTwo:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+                case BayNumber.BayThree:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+                default:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+            }
         }
 
         private bool CanResetCommand()

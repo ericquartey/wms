@@ -212,12 +212,42 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 await this.machineModeWebService.SetManualAsync();
             }
+            else if (this.machineService.BayNumber == BayNumber.BayTwo &&
+                (this.MachineModeService.MachineMode == MachineMode.Manual2 ||
+                this.machineMode is MachineMode.Test2))
+            {
+                if (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage(Resources.Localized.Get("General.ConfirmMachineModeSwitchAutomatic"), Resources.Localized.Get("General.Automatic"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineModeWebService.SetAutomaticAsync();
+                    }
+                }
+                else
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage("Completare tutte le procedure di setup e calibrazione prima di entrare in modalità automatica.", Resources.Localized.Get("General.MachineRun"), DialogType.Information, DialogButtons.OK);
+                }
+            }
+            else if (this.machineService.BayNumber == BayNumber.BayThree &&
+                (this.MachineModeService.MachineMode == MachineMode.Manual3 ||
+                this.machineMode is MachineMode.Test3))
+            {
+                if (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage(Resources.Localized.Get("General.ConfirmMachineModeSwitchAutomatic"), Resources.Localized.Get("General.Automatic"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineModeWebService.SetAutomaticAsync();
+                    }
+                }
+                else
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage("Completare tutte le procedure di setup e calibrazione prima di entrare in modalità automatica.", Resources.Localized.Get("General.MachineRun"), DialogType.Information, DialogButtons.OK);
+                }
+            }
             else if (this.MachineModeService.MachineMode == MachineMode.Manual ||
-                this.MachineModeService.MachineMode == MachineMode.Manual2 ||
-                this.MachineModeService.MachineMode == MachineMode.Manual3 ||
-                this.machineMode is MachineMode.Test ||
-                this.machineMode is MachineMode.Test2 ||
-                this.machineMode is MachineMode.Test3)
+                this.machineMode is MachineMode.Test)
             {
                 if (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 {
@@ -261,30 +291,31 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 case MAS.AutomationService.Contracts.BayNumber.BayOne:
                     return res &&
-                        (this.MachineModeService.MachineMode == MachineMode.Manual ? true : false ||
+                        (this.MachineModeService.MachineMode == MachineMode.Manual ||
                         this.MachineModeService.MachineMode == MachineMode.Automatic ||
                         this.MachineModeService.MachineMode == MachineMode.Test ||
                         this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations);
 
                 case MAS.AutomationService.Contracts.BayNumber.BayTwo:
                     return res &&
-                        (this.MachineModeService.MachineMode == MachineMode.Manual2 ? true : false ||
+                        (this.MachineModeService.MachineMode == MachineMode.Manual2 ||
                         this.MachineModeService.MachineMode == MachineMode.Automatic ||
                         this.MachineModeService.MachineMode == MachineMode.Test2 ||
                         this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations2);
 
                 case MAS.AutomationService.Contracts.BayNumber.BayThree:
                     return res &&
-                        (this.MachineModeService.MachineMode == MachineMode.Manual3 ? true : false ||
+                        (this.MachineModeService.MachineMode == MachineMode.Manual3 ||
                         this.MachineModeService.MachineMode == MachineMode.Automatic ||
                         this.MachineModeService.MachineMode == MachineMode.Test3 ||
                         this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations3);
 
                 default:
-                    return res ||
+                    return res &&
+                        (this.MachineModeService.MachineMode == MachineMode.Manual ||
                         this.MachineModeService.MachineMode == MachineMode.Automatic ||
                         this.MachineModeService.MachineMode == MachineMode.Test ||
-                        this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations;
+                        this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations);
             }
         }
 

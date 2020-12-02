@@ -268,16 +268,35 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         internal virtual bool CanExecuteCommand()
         {
-            return (
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return (
                 this.MachineModeService.MachineMode == MachineMode.Manual
                 ||
+                this.MachineModeService.MachineMode == MachineMode.Test)
+                &&
+                this.MachineModeService.MachinePower == MachinePowerState.Powered
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayTwo:
+                    return (
                 this.MachineModeService.MachineMode == MachineMode.Manual2
                 ||
+                this.MachineModeService.MachineMode == MachineMode.Test2)
+                &&
+                this.MachineModeService.MachinePower == MachinePowerState.Powered
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayThree:
+                    return (
                 this.MachineModeService.MachineMode == MachineMode.Manual3
-                ||
-                this.MachineModeService.MachineMode == MachineMode.Test
-                ||
-                this.MachineModeService.MachineMode == MachineMode.Test2
                 ||
                 this.MachineModeService.MachineMode == MachineMode.Test3)
                 &&
@@ -286,6 +305,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
                 ||
                 this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                default:
+                    return (
+                this.MachineModeService.MachineMode == MachineMode.Manual
+                ||
+                this.MachineModeService.MachineMode == MachineMode.Test)
+                &&
+                this.MachineModeService.MachinePower == MachinePowerState.Powered
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+            }
         }
 
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
@@ -321,9 +353,48 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool CanExecuteMovementsCommand()
         {
-            return (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3) &&
-                   this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                   (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return
+                this.MachineModeService.MachineMode == MachineMode.Manual
+                &&
+                this.MachineModeService.MachinePower == MachinePowerState.Powered
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayTwo:
+                    return
+                this.MachineModeService.MachineMode == MachineMode.Manual2
+                &&
+                this.MachineModeService.MachinePower == MachinePowerState.Powered
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayThree:
+                    return
+                this.MachineModeService.MachineMode == MachineMode.Manual3
+                &&
+                this.MachineModeService.MachinePower == MachinePowerState.Powered
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                default:
+                    return
+                this.MachineModeService.MachineMode == MachineMode.Manual
+                &&
+                this.MachineModeService.MachinePower == MachinePowerState.Powered
+                &&
+                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                ||
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+            }
         }
 
         private void MenuCommand(Menu menu)

@@ -34,8 +34,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override bool CanStart()
         {
-            return base.CanStart() &&
-                   (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Manual2 || this.MachineModeService.MachineMode == MachineMode.Manual3);
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return base.CanStart() &&
+                        this.MachineModeService.MachineMode == MachineMode.Manual;
+
+                case BayNumber.BayTwo:
+                    return base.CanStart() &&
+                        this.MachineModeService.MachineMode == MachineMode.Manual2;
+
+                case BayNumber.BayThree:
+                    return base.CanStart() &&
+                        this.MachineModeService.MachineMode == MachineMode.Manual3;
+
+                default:
+                    return base.CanStart() &&
+                        this.MachineModeService.MachineMode == MachineMode.Manual;
+            }
         }
 
         public override async Task OnAppearedAsync()
