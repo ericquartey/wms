@@ -37,8 +37,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string loadingUnitsInfo;
 
-        private int loadingUnitsMovements;
-
         private IEnumerable<int> moveUnitId;
 
         private IEnumerable<int> moveUnitIdToCell;
@@ -175,23 +173,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                if (this.moveUnits.Count > 0)
-                {
-                    this.moveVisible = true;
-                }
-                else
-                {
-                    this.moveVisible = false;
-                }
+                this.moveVisible = this.moveUnits.Count > 0 ? true : false;
 
-                if (this.loadingUnits.Count > 0)
-                {
-                    this.isGridVisible = true;
-                }
-                else
-                {
-                    this.isGridVisible = false;
-                }
+                this.isGridVisible = this.loadingUnits.Count > 0 ? true : false;
 
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
 
@@ -207,8 +191,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            //this.operatorNavigationService.NavigateToDrawerViewUnit();
-
             this.RaisePropertyChanged(nameof(this.MoveVisible));
 
             this.RaisePropertyChanged(nameof(this.IsGridVisible));
@@ -220,8 +202,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 do
                 {
                     await Task.Delay(800);
-                    await this.CheckForNewOperationCount();
                     await this.GetLoadingUnitsAsync();
+
+                    this.LoadingUnitsInfo = this.ComputeLoadingUnitInfo();
                 }
                 while (this.IsVisible);
             });
@@ -235,19 +218,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 await this.GetLoadingUnitsAsync();
 
-                await this.CheckForNewOperationCount();
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        private async Task CheckForNewOperationCount()
-        {
-            try
-            {
-                var missions = await this.machineMissionsWebService.GetAllAsync();
-                this.loadingUnitsMovements = missions.Count(m => m.MissionType == MissionType.OUT || m.MissionType == MissionType.WMS);
                 this.LoadingUnitsInfo = this.ComputeLoadingUnitInfo();
             }
             catch (Exception)
@@ -259,14 +229,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.moveUnitId.Count() == 0)
             {
-                return Localized.Get("OperatorApp.NoLoadingUnitsToMove");
+                return string.Format(Localized.Get("OperatorApp.NoLoadingUnitsToMove"), (int)this.MachineService.BayNumber);
             }
-            else if (this.moveUnitId.Count() >= 1)
+            else if (this.moveUnitId.Count() == 1)
             {
-                return Localized.Get("OperatorApp.LoadingUnitSendToBay");
+                return string.Format(Localized.Get("OperatorApp.LoadingUnitSendToBay"), (int)this.MachineService.BayNumber);
             }
 
-            return string.Format(Localized.Get("OperatorApp.LoadingUnitsSendToBay"), this.loadingUnitsMovements);
+            return string.Format(Localized.Get("OperatorApp.LoadingUnitsSendToBay"), this.moveUnitId.Count(), (int)this.MachineService.BayNumber);
         }
 
         #endregion

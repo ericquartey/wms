@@ -856,13 +856,13 @@
     <value>Vorgang bestätigt.</value>
   </data>
   <data name="NoLoadingUnitsToMove" xml:space="preserve">
-    <value>Es gibt keine Kästen zu bewegen</value>
+    <value>Es gibt keine Kästen zu bewegen in Bucht {0}</value>
   </data>
   <data name="LoadingUnitsSendToBay" xml:space="preserve">
-    <value>{0} Kästen in Bucht zu bringen</value>
+    <value>{0} Kästen in Bucht {1} zu bringen</value>
   </data>
   <data name="LoadingUnitSendToBay" xml:space="preserve">
-    <value>Ein Kasten ist in Bucht zu bringen</value>
+    <value>Ein Kasten ist in Bucht {0} zu bringen</value>
   </data>
   <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
     <value>Alle ggf. ausgegebenen Artikel aus der Abt. entfernen.</value>
