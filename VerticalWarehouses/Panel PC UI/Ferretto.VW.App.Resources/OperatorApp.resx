@@ -1993,4 +1993,7 @@
   <data name="MissionStateWaitDepositBay" xml:space="preserve">
     <value>Wait deposit bay</value>
   </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Invalid notes field operation not confirmed</value>
+  </data>
 </root>

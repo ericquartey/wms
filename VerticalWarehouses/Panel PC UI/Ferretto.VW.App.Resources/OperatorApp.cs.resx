@@ -1635,4 +1635,7 @@
   <data name="Note" xml:space="preserve">
     <value>Pozn</value>
   </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Neplatná operace s polem s poznámkami nebyla potvrzena</value>
+  </data>
 </root>

@@ -433,6 +433,14 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.dataContext.Database.BeginTransaction();
         }
 
+        public bool IsEnabeNoteRules()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().EnabeNoteRules;
+            }
+        }
+
         public bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId)
         {
             lock (this.dataContext)

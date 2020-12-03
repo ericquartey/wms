@@ -592,6 +592,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enabe note rules.
+        /// </summary>
+        public static string EnabeNoteRules {
+            get {
+                return ResourceManager.GetString("EnabeNoteRules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay {0} External.
         /// </summary>
         public static string ExternalBay {

@@ -89,6 +89,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(await missionsWmsWebService.GetDetailsByIdAsync(id));
         }
 
+        [HttpGet("enabe/note/rules")]
+        public ActionResult<bool> IsEnabeNoteRules()
+        {
+            var result = this.missionsDataProvider.IsEnabeNoteRules();
+            return this.Ok(result);
+        }
+
         [HttpPost("reset-machine")]
         public ActionResult ResetMachine()
         {

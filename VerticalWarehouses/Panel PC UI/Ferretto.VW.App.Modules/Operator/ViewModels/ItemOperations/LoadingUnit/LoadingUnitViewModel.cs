@@ -708,12 +708,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (this.IsAdjustmentVisible)
                 {
-                    await this.compartmentsWebService.UpdateItemStockAsync(
-                        this.SelectedItemCompartment.Id,
-                        this.SelectedItemCompartment.ItemId.Value,
-                        this.InputQuantity.Value,
-                        this.reasonId,
-                        this.reasonNotes);
+                    var noteEnabled = await this.machineMissionsWebService.IsEnabeNoteRulesAsync();
+
+                    if (noteEnabled)
+                    {
+                        if (!string.IsNullOrEmpty(this.reasonNotes) &&
+                           this.reasonNotes.Except(" ").Any())
+                        {
+                            await this.compartmentsWebService.UpdateItemStockAsync(
+                            this.SelectedItemCompartment.Id,
+                            this.SelectedItemCompartment.ItemId.Value,
+                            this.InputQuantity.Value,
+                            this.reasonId,
+                            this.reasonNotes);
+
+                            this.ShowNotification(Localized.Get("InstallationApp.SuccessfullChange"), Services.Models.NotificationSeverity.Success);
+                        }
+                        else
+                        {
+                            this.ShowNotification(Localized.Get("OperatorApp.NoteNotValid"), Services.Models.NotificationSeverity.Error);
+                        }
+                    }
+                    else
+                    {
+                        await this.compartmentsWebService.UpdateItemStockAsync(
+                            this.SelectedItemCompartment.Id,
+                            this.SelectedItemCompartment.ItemId.Value,
+                            this.InputQuantity.Value,
+                            this.reasonId,
+                            this.reasonNotes);
+                    }
 
                     await this.OnDataRefreshAsync();
                     this.IsBusyConfirmingOperation = false;
