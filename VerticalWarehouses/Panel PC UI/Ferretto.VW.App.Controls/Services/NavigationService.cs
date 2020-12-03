@@ -185,7 +185,8 @@ namespace Ferretto.VW.App.Controls
                                              s.IsTrackable).All(ns => ns.IsTrackable = false);
                 }
 
-                this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName, (int?)data));
+                var id = (int?)(data is int ? data : null);
+                this.navigationStack.Push(new NavigationHistoryRecord(moduleName, viewName, viewModelName, id));
 
                 this.eventAggregator
                     .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()

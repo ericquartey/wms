@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        public ItemWeightChangedMessage lastItemQuantityMessage;
+
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IEventAggregator eventAggregator;
@@ -91,8 +93,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isOperationCanceled;
 
         private SubscriptionToken itemWeightToken;
-
-        private ItemWeightChangedMessage lastItemQuantityMessage;
 
         private double loadingUnitDepth;
 
@@ -701,7 +701,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
-
+                this.lastItemQuantityMessage = null;
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
             }
@@ -732,6 +732,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
             }
@@ -788,6 +789,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
 
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
@@ -800,6 +802,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.missionToken = null;
 
             base.Disappear();
+        }
+
+        public void InitializeInputQuantity()
+        {
+            if (this.lastItemQuantityMessage != null)
+            {
+                if (this.lastItemQuantityMessage.MeasureadQuantity.HasValue)
+                {
+                    this.InputQuantity = this.lastItemQuantityMessage.MeasureadQuantity;
+                }
+                else if (this.lastItemQuantityMessage.RequestedQuantity.HasValue)
+                {
+                    this.InputQuantity = this.lastItemQuantityMessage.RequestedQuantity;
+                }
+
+                //this.lastItemQuantityMessage = null;
+            }
         }
 
         public override async Task OnAppearedAsync()
@@ -878,6 +897,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsOperationCanceled = true;
             this.CanInputQuantity = false;
             this.IsWaitingForResponse = false;
+            this.lastItemQuantityMessage = null;
             this.IsBusyConfirmingOperation = false;
             this.IsBusyConfirmingPartialOperation = false;
             this.IsOperationConfirmed = false;
@@ -981,6 +1001,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
 
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
@@ -1066,32 +1087,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private void InitializeInputQuantity()
-        {
-            if (this.lastItemQuantityMessage is null)
-            {
-                this.InputQuantity = null;
-            }
-            else
-            {
-                if (this.lastItemQuantityMessage.MeasureadQuantity.HasValue)
-                {
-                    this.InputQuantity = this.lastItemQuantityMessage.MeasureadQuantity;
-                    return;
-                }
-
-                if (this.lastItemQuantityMessage.RequestedQuantity.HasValue)
-                {
-                    this.InputQuantity = this.lastItemQuantityMessage.RequestedQuantity;
-                }
-
-                this.lastItemQuantityMessage = null;
-            }
-        }
-
         private void OnItemWeightChangedAsync(ItemWeightChangedMessage itemWeightChanged)
         {
             this.lastItemQuantityMessage = itemWeightChanged;
+            this.InitializeInputQuantity();
         }
 
         private async Task OnMissionChangedAsync()

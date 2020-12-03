@@ -168,6 +168,7 @@ namespace Ferretto.VW.Devices.WeightingScale
         private async Task<string> SendCommandAsync(string command)
         {
             this.logger.Debug($"sending command '{command}'.");
+            this.ClearConcurrentQueue(this.messagesToBeSendQueue);
             this.messagesToBeSendQueue.Enqueue(command);
             this.ClearConcurrentQueue(this.messagesReceivedQueue);
             this.ClearConcurrentQueue(this.errorsQueue);
@@ -181,50 +182,50 @@ namespace Ferretto.VW.Devices.WeightingScale
             {
                 try
                 {
-                    while (!this.messagesToBeSendQueue.IsEmpty)
+                    //while (!this.messagesToBeSendQueue.IsEmpty)
+                    //{
+                    if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
                     {
-                        if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
+                        var data = Encoding.ASCII.GetBytes($"{sendMessage}{NEW_LINE}");
+                        this.stream = this.client.GetStream();
+                        this.stream.ReadTimeout = this.tcpTimeout;
+                        this.stream.WriteTimeout = this.tcpTimeout;
+                        this.stream.Write(data, 0, data.Length);
+                        this.logger.Debug($"SendCommandAsync();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+
+                        data = new byte[this.client.ReceiveBufferSize];
+                        var bytes = this.stream.Read(data, 0, data.Length);
+                        var response = Encoding.ASCII.GetString(data, 0, bytes);
+
+                        this.logger.Debug($"SendCommandAsync();Received: {response.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+
+                        //switch (response)
+                        //{
+                        //    case "ERR01": throw new Exception($"The string '{command}' is a valid command but it is followed by unexpected characters.");
+                        //    case "ERR02": throw new Exception($"The command '{command}' contains invalid data.");
+                        //    case "ERR03": throw new Exception($"The command '{command}' is not valid in the current context.");
+                        //    case "ERR04": throw new Exception($"The string '{command}' is not a valid command.");
+                        //    default: return response;
+                        //}
+
+                        if (!response.Contains("ERR01") &&
+                           !response.Contains("ERR02") &&
+                           !response.Contains("ERR03") &&
+                           !response.Contains("ERR04")
+                            )
                         {
-                            var data = Encoding.ASCII.GetBytes($"{sendMessage}{NEW_LINE}");
-                            this.stream = this.client.GetStream();
-                            this.stream.ReadTimeout = this.tcpTimeout;
-                            this.stream.WriteTimeout = this.tcpTimeout;
-                            this.stream.Write(data, 0, data.Length);
-                            this.logger.Debug($"SendCommandAsync();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-
-                            data = new byte[this.client.ReceiveBufferSize];
-                            var bytes = this.stream.Read(data, 0, data.Length);
-                            var response = Encoding.ASCII.GetString(data, 0, bytes);
-
-                            this.logger.Debug($"SendCommandAsync();Received: {response.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-
-                            //switch (response)
-                            //{
-                            //    case "ERR01": throw new Exception($"The string '{command}' is a valid command but it is followed by unexpected characters.");
-                            //    case "ERR02": throw new Exception($"The command '{command}' contains invalid data.");
-                            //    case "ERR03": throw new Exception($"The command '{command}' is not valid in the current context.");
-                            //    case "ERR04": throw new Exception($"The string '{command}' is not a valid command.");
-                            //    default: return response;
-                            //}
-
-                            if (!response.Contains("ERR01") &&
-                               !response.Contains("ERR02") &&
-                               !response.Contains("ERR03") &&
-                               !response.Contains("ERR04")
-                                )
-                            {
-                                this.messagesReceivedQueue.Enqueue(response);
-                            }
-                            else
-                            {
-                                this.messagesReceivedQueue.Enqueue("");
-                                this.errorsQueue.Enqueue(response);
-                            }
+                            this.messagesReceivedQueue.Enqueue(response);
                         }
                         else
                         {
-                            System.Threading.Thread.Sleep(100);
+                            this.messagesReceivedQueue.Enqueue("");
+                            this.errorsQueue.Enqueue(response);
                         }
+                        //}
+                        //else
+                        //{
+                        //    System.Threading.Thread.Sleep(100);
+                        //}
                     }
                 }
                 catch (Exception e)

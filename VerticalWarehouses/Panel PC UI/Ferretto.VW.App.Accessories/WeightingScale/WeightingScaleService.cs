@@ -189,8 +189,9 @@ namespace Ferretto.VW.App.Accessories
                 this.isDeviceEnabled = accessories.WeightingScale?.IsEnabledNew == true;
                 if (!this.isDeviceEnabled)
                 {
-                    this.logger.Debug("The weighting scale is not configured to be enabled.");
-                    return;
+                    this.isStarted = false;
+                    throw new InvalidOperationException(
+                        "Cannot perform the operation because the weighting scale service is not enabled.");
                 }
 
                 await this.deviceDriver.ConnectAsync(accessories.WeightingScale.IpAddress, accessories.WeightingScale.TcpPort);
@@ -235,6 +236,10 @@ namespace Ferretto.VW.App.Accessories
 
             this.logger.Debug("Starting continuous weight acquisition ...");
 
+            for (var scaleId = 0; scaleId < this.lastWeightSampleByScaleNumber.Count; scaleId++)
+            {
+                this.lastWeightSampleByScaleNumber[scaleId] = null;
+            }
             this.weightPollTimer.Change(0, WeightPollInterval);
         }
 
@@ -334,19 +339,21 @@ namespace Ferretto.VW.App.Accessories
                     }
 
                     var hasSampleChanged = true;
-                    if (this.lastWeightSampleByScaleNumber.TryGetValue(weightSample.ScaleNumber, out var lastWeightSample))
-                    {
-                        hasSampleChanged =
-                            weightSample.Weight != lastWeightSample.Weight
-                            ||
-                            weightSample.Quality != lastWeightSample.Quality
-                            ||
-                            weightSample.Tare != lastWeightSample.Tare
-                            ||
-                            weightSample.UnitOfMeasure != lastWeightSample.UnitOfMeasure
-                            ||
-                            weightSample.AverageUnitWeight != lastWeightSample.AverageUnitWeight;
-                    }
+                    //if (this.lastWeightSampleByScaleNumber.TryGetValue(weightSample.ScaleNumber, out var lastWeightSample))
+                    //{
+                    //    hasSampleChanged =
+                    //        lastWeightSample is null
+                    //        ||
+                    //        weightSample.Weight != lastWeightSample.Weight
+                    //        ||
+                    //        weightSample.Quality != lastWeightSample.Quality
+                    //        ||
+                    //        weightSample.Tare != lastWeightSample.Tare
+                    //        ||
+                    //        weightSample.UnitOfMeasure != lastWeightSample.UnitOfMeasure
+                    //        ||
+                    //        weightSample.AverageUnitWeight != lastWeightSample.AverageUnitWeight;
+                    //}
 
                     this.lastWeightSampleByScaleNumber[weightSample.ScaleNumber] = weightSample;
 

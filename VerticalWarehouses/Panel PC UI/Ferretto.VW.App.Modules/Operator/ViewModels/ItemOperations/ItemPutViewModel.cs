@@ -241,6 +241,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
 
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
@@ -376,6 +377,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
             }
         }
 
@@ -428,6 +430,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
             }
         }
 

@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public int? MeasuredQuantity
         {
             get => this.measuredQuantity;
-            set => this.SetProperty(ref this.measuredQuantity, value);
+            set => this.SetProperty(ref this.measuredQuantity, value, this.RaiseCanExecuteChanged);
         }
 
         public double RequestedQuantity
@@ -119,7 +119,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public float Weight
         {
             get => this.weight;
-            set => this.SetProperty(ref this.weight, value, this.RaiseCanExecuteChanged);
+            set
+            {
+                this.MeasuredQuantity = (int?)((this.averageWeight != 0) ? this.weight / this.averageWeight : 0);
+                if(this.MeasuredQuantity<0)
+                {
+                    this.MeasuredQuantity = 0;
+                }
+                this.SetProperty(ref this.weight, value, this.RaiseCanExecuteChanged);
+            }
         }
 
         #endregion
