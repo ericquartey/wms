@@ -49,6 +49,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IDbContextTransaction GetContextTransaction();
 
+        bool IsEnabeNoteRules();
+
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 
         int PurgeMissions();

@@ -1640,4 +1640,7 @@
   <data name="MissionStateWaitDepositBay" xml:space="preserve">
     <value>Attesa deposito baia</value>
   </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Campo note non valido operazione non confermata</value>
+  </data>
 </root>

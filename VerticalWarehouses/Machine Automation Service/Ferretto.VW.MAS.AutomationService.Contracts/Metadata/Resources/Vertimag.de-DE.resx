@@ -529,4 +529,7 @@
   <data name="Box" xml:space="preserve">
     <value>Container</value>
   </data>
+  <data name="EnabeNoteRules" xml:space="preserve">
+    <value>Aktivieren Sie bekannte Regeln</value>
+  </data>
 </root>
