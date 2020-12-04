@@ -2304,4 +2304,7 @@
   <data name="LoadFromBay" xml:space="preserve">
     <value>Laden</value>
   </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Aufzugskalibrierung</value>
+  </data>
 </root>
