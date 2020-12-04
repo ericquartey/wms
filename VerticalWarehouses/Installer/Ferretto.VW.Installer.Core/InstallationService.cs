@@ -434,9 +434,11 @@ namespace Ferretto.VW.Installer.Core
 
         private void UpdateMachineRole()
         {
-            this.MachineRole = this.masUrl?.Host?.Equals(this.ppcIpAddress) == true
+            this.MachineRole = this.masUrl?.Host?.Equals(this.ppcIpAddress?.ToString(), StringComparison.InvariantCultureIgnoreCase) == true
                 ? MachineRole.Master
                 : MachineRole.Slave;
+
+            this.logger.Debug($"MachineRole is now '{this.MachineRole}'. masUrl {this.masUrl}, ppcIpAddress {this.ppcIpAddress}");
         }
 
         #endregion
