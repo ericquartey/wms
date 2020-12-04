@@ -26,7 +26,7 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         private readonly ConcurrentQueue<string> messagesToBeSendQueue = new ConcurrentQueue<string>();
 
-        private readonly int tcpTimeout = 2000;
+        private readonly int tcpTimeout = 1200;
 
         private TcpClient client;
 

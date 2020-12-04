@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly Devices.DeviceInformation deviceInformation = new Devices.DeviceInformation();
 
-        private readonly Dictionary<int, IWeightSample> lastWeightSampleByScaleNumber = new Dictionary<int, IWeightSample>();
-
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineItemsWebService machineItemsWebService;
@@ -236,10 +234,6 @@ namespace Ferretto.VW.App.Accessories
 
             this.logger.Debug("Starting continuous weight acquisition ...");
 
-            for (var scaleId = 0; scaleId < this.lastWeightSampleByScaleNumber.Count; scaleId++)
-            {
-                this.lastWeightSampleByScaleNumber[scaleId] = null;
-            }
             this.weightPollTimer.Change(0, WeightPollInterval);
         }
 
@@ -338,33 +332,11 @@ namespace Ferretto.VW.App.Accessories
                         return;
                     }
 
-                    var hasSampleChanged = true;
-                    //if (this.lastWeightSampleByScaleNumber.TryGetValue(weightSample.ScaleNumber, out var lastWeightSample))
-                    //{
-                    //    hasSampleChanged =
-                    //        lastWeightSample is null
-                    //        ||
-                    //        weightSample.Weight != lastWeightSample.Weight
-                    //        ||
-                    //        weightSample.Quality != lastWeightSample.Quality
-                    //        ||
-                    //        weightSample.Tare != lastWeightSample.Tare
-                    //        ||
-                    //        weightSample.UnitOfMeasure != lastWeightSample.UnitOfMeasure
-                    //        ||
-                    //        weightSample.AverageUnitWeight != lastWeightSample.AverageUnitWeight;
-                    //}
+                    this.logger.Debug($"Weighting scale #{weightSample.ScaleNumber} detected a weight of {weightSample.Weight}{weightSample.UnitOfMeasure} ({weightSample.Quality}).");
 
-                    this.lastWeightSampleByScaleNumber[weightSample.ScaleNumber] = weightSample;
-
-                    if (hasSampleChanged)
-                    {
-                        this.logger.Debug($"Weighting scale #{weightSample.ScaleNumber} detected a weight of {weightSample.Weight}{weightSample.UnitOfMeasure} ({weightSample.Quality}).");
-
-                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                            this.WeighAcquired?.Invoke(this, new WeightAcquiredEventArgs(weightSample))
-                        );
-                    }
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                        this.WeighAcquired?.Invoke(this, new WeightAcquiredEventArgs(weightSample))
+                    );
                 }
                 catch (Exception ex)
                 {
