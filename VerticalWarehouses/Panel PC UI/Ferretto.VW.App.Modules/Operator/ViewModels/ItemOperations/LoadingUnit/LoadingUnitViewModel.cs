@@ -554,6 +554,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void CancelReason()
         {
             this.Reasons = null;
+            this.IsBusyConfirmingOperation = false;
+            this.IsWaitingForResponse = false;
         }
 
         private bool CanConfirmOperation()
