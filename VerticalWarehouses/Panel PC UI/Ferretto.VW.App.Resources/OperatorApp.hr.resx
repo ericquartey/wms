@@ -1635,4 +1635,7 @@
   <data name="MissionStateWaitDepositBay" xml:space="preserve">
     <value>Čekanje odlag. zaljev</value>
   </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Nevažeća operacija polja bilješki nije potvrđena</value>
+  </data>
 </root>

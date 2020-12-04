@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.Devices.WeightingScale
 {
@@ -8,7 +9,7 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         Task ClearMessageAsync();
 
-        void Connect(SerialPortOptions options);
+        Task ConnectAsync(IPAddress ipAddress, int port);
 
         void Disconnect();
 

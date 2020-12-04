@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -20,6 +21,10 @@ namespace Ferretto.VW.Installer.ViewModels
         private const string AutomationServiceUrlKey = "AutomationService:Url";
 
         private const string BayNumberKey = "BayNumber";
+
+        private const string StepsDefinitionFileName = "steps.json";
+
+        private const string StepsSnapshotFileName = "steps-snapshot.json";
 
         private const string TelemetryServiceHubsKey = "TelemetryService:Hubs:Path";
 
@@ -131,6 +136,8 @@ namespace Ferretto.VW.Installer.ViewModels
                 this.SaveInstallerAppConfig();
                 this.SavePanelPcAppConfig();
 
+                await this.ReloadInstallationSteps();
+
                 var viewModel = new StepsViewModel(
                     Container.GetInstallationService(),
                     NotificationService.GetInstance());
@@ -173,6 +180,42 @@ namespace Ferretto.VW.Installer.ViewModels
         private void RaiseCanExecuteChanged()
         {
             this.navigateToNextPageCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task ReloadInstallationSteps()
+        {
+            var stepsFileFound = false;
+            var snapshotFileFound = false;
+            var sourceFileName = StepsSnapshotFileName;
+
+            if (File.Exists(StepsSnapshotFileName))
+            {
+                stepsFileFound = true;
+                snapshotFileFound = true;
+            }
+            else if (File.Exists(StepsDefinitionFileName))
+            {
+                sourceFileName = StepsDefinitionFileName;
+                stepsFileFound = true;
+            }
+
+            if (!stepsFileFound)
+            {
+                this.notificationService.SetErrorMessage($"Steps file not found in current directory '{Directory.GetCurrentDirectory()}'.");
+                return;
+            }
+
+            try
+            {
+                if (!snapshotFileFound)
+                {
+                    await this.installationService.DeserializeAsync(sourceFileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.notificationService.SetErrorMessage($"Unable to initialize installation.{Environment.NewLine}{ex.Message}");
+            }
         }
 
         private void SaveInstallerAppConfig()

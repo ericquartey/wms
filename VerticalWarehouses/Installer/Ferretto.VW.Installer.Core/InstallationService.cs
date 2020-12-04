@@ -253,7 +253,7 @@ namespace Ferretto.VW.Installer.Core
             {
                 this.logger.Error(ex, $"Error loading steps from file.");
                 throw new InvalidOperationException(
-                    $"Impossibile continuare, errore durante il caricmento degli steps da \"{Directory.GetCurrentDirectory()}\"");
+                    $"Impossibile continuare, errore durante il caricamento degli steps da \"{Directory.GetCurrentDirectory()}\"");
             }
         }
 

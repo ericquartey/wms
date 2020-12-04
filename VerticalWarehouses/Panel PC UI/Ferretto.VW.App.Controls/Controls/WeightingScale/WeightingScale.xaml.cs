@@ -161,6 +161,10 @@ namespace Ferretto.VW.App.Controls
 
                 this.logger.Debug("Weighting scale component initialized.");
             }
+            catch(InvalidOperationException ex)
+            {
+                this.logger.Warn(ex.Message);
+            }
             catch (Exception ex)
             {
                 this.logger.Error(ex);

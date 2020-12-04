@@ -13,15 +13,13 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Fields
 
-        private const int WeightPollInterval = 500;
+        private const int WeightPollInterval = 800;
 
         private readonly IMachineAccessoriesWebService accessoriesWebService;
 
         private readonly IWeightingScaleDriver deviceDriver;
 
         private readonly Devices.DeviceInformation deviceInformation = new Devices.DeviceInformation();
-
-        private readonly Dictionary<int, IWeightSample> lastWeightSampleByScaleNumber = new Dictionary<int, IWeightSample>();
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
@@ -72,10 +70,10 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isStarted)
+            if (!this.isDeviceEnabled)
             {
                 throw new InvalidOperationException(
-                    "Cannot perform the operation because the weighting scale service is not started.");
+                    "Cannot perform the operation because the weighting scale service is not enabled.");
             }
 
             await this.deviceDriver.ClearMessageAsync();
@@ -88,10 +86,10 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isStarted)
+            if (!this.isDeviceEnabled)
             {
                 throw new InvalidOperationException(
-                    "Cannot perform the operation because the weighting scale service is not started.");
+                    "Cannot perform the operation because the weighting scale service is not enabled.");
             }
 
             await this.deviceDriver.DisplayMessageAsync(message);
@@ -104,10 +102,10 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isStarted)
+            if (!this.isDeviceEnabled)
             {
                 throw new InvalidOperationException(
-                    "Cannot perform the operation because the weighting scale service is not started.");
+                    "Cannot perform the operation because the weighting scale service is not enabled.");
             }
 
             await this.deviceDriver.DisplayMessageAsync(message, duration);
@@ -120,10 +118,10 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isStarted)
+            if (!this.isDeviceEnabled)
             {
                 throw new InvalidOperationException(
-                    "Cannot perform the operation because the weighting scale service is not started.");
+                    "Cannot perform the operation because the weighting scale service is not enabled.");
             }
 
             if (this.weightPollTimer != null)
@@ -141,10 +139,10 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isStarted)
+            if (!this.isDeviceEnabled)
             {
                 throw new InvalidOperationException(
-                    "Cannot perform the operation because the weighting scale service is not started.");
+                    "Cannot perform the operation because the weighting scale service is not enabled.");
             }
 
             await this.deviceDriver.ResetAverageUnitaryWeightAsync();
@@ -157,10 +155,10 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isStarted)
+            if (!this.isDeviceEnabled)
             {
                 throw new InvalidOperationException(
-                    "Cannot perform the operation because the weighting scale service is not started.");
+                    "Cannot perform the operation because the weighting scale service is not enabled.");
             }
 
             await this.deviceDriver.SetAverageUnitaryWeightAsync(weight);
@@ -189,14 +187,12 @@ namespace Ferretto.VW.App.Accessories
                 this.isDeviceEnabled = accessories.WeightingScale?.IsEnabledNew == true;
                 if (!this.isDeviceEnabled)
                 {
-                    this.logger.Debug("The weighting scale is not configured to be enabled.");
-                    return;
+                    this.isStarted = false;
+                    throw new InvalidOperationException(
+                        "Cannot perform the operation because the weighting scale service is not enabled.");
                 }
 
-                this.deviceDriver.Connect(new ScaleSerialPortOptions
-                {
-                    PortName = accessories.WeightingScale.PortName
-                });
+                await this.deviceDriver.ConnectAsync(accessories.WeightingScale.IpAddress, accessories.WeightingScale.TcpPort);
 
                 this.deviceInformation.FirmwareVersion = await this.deviceDriver.RetrieveVersionAsync();
 
@@ -213,6 +209,7 @@ namespace Ferretto.VW.App.Accessories
                 }
 
                 this.logger.Debug("The weighting scale service has started.");
+                this.isStarted = false;
             }
             catch (Exception ex)
             {
@@ -229,10 +226,10 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isStarted)
+            if (!this.isDeviceEnabled)
             {
                 throw new InvalidOperationException(
-                   "Cannot perform the operation because the weighting scale service is not started.");
+                   "Cannot perform the operation because the weighting scale service is not enabled.");
             }
 
             this.logger.Debug("Starting continuous weight acquisition ...");
@@ -247,11 +244,11 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isStarted)
-            {
-                this.logger.Debug("The weighting scale service is already stopped.");
-                return Task.CompletedTask;
-            }
+            //if (!this.isStarted)
+            //{
+            //    this.logger.Debug("The weighting scale service is already stopped.");
+            //    return Task.CompletedTask;
+            //}
 
             this.logger.Debug("Stopping the weighting scale service ...");
 
@@ -278,16 +275,16 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isStarted)
+            if (!this.isDeviceEnabled)
             {
                 throw new InvalidOperationException(
-                    "Cannot perform the operation because the weighting scale service is not started.");
+                    "Cannot perform the operation because the weighting scale service is not enabled.");
             }
 
             await this.machineItemsWebService.UpdateAverageWeightAsync(itemId, averageWeight ?? 0);
         }
 
-        public async Task UpdateSettingsAsync(bool isEnabled, string portName)
+        public async Task UpdateSettingsAsync(bool isEnabled, string ipAddress, int port)
         {
             if (this.isDisposed)
             {
@@ -296,7 +293,7 @@ namespace Ferretto.VW.App.Accessories
 
             this.logger.Debug("Updating the weighting scale settings on MAS ...");
 
-            await this.accessoriesWebService.UpdateWeightingScaleSettingsAsync(isEnabled, portName);
+            await this.accessoriesWebService.UpdateWeightingScaleSettingsAsync(isEnabled, ipAddress, port);
 
             this.logger.Debug("The weighting scale settings were updated.");
 
@@ -313,7 +310,7 @@ namespace Ferretto.VW.App.Accessories
 
         private async Task OnWeightPollTimerTickAsync()
         {
-            if (this.isDisposed || !this.isStarted)
+            if (this.isDisposed || !this.isDeviceEnabled)
             {
                 return;
             }
@@ -335,31 +332,11 @@ namespace Ferretto.VW.App.Accessories
                         return;
                     }
 
-                    var hasSampleChanged = true;
-                    if (this.lastWeightSampleByScaleNumber.TryGetValue(weightSample.ScaleNumber, out var lastWeightSample))
-                    {
-                        hasSampleChanged =
-                            weightSample.Weight != lastWeightSample.Weight
-                            ||
-                            weightSample.Quality != lastWeightSample.Quality
-                            ||
-                            weightSample.Tare != lastWeightSample.Tare
-                            ||
-                            weightSample.UnitOfMeasure != lastWeightSample.UnitOfMeasure
-                            ||
-                            weightSample.AverageUnitWeight != lastWeightSample.AverageUnitWeight;
-                    }
+                    this.logger.Debug($"Weighting scale #{weightSample.ScaleNumber} detected a weight of {weightSample.Weight}{weightSample.UnitOfMeasure} ({weightSample.Quality}).");
 
-                    this.lastWeightSampleByScaleNumber[weightSample.ScaleNumber] = weightSample;
-
-                    if (hasSampleChanged)
-                    {
-                        this.logger.Debug($"Weighting scale #{weightSample.ScaleNumber} detected a weight of {weightSample.Weight}{weightSample.UnitOfMeasure} ({weightSample.Quality}).");
-
-                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                            this.WeighAcquired?.Invoke(this, new WeightAcquiredEventArgs(weightSample))
-                        );
-                    }
+                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                        this.WeighAcquired?.Invoke(this, new WeightAcquiredEventArgs(weightSample))
+                    );
                 }
                 catch (Exception ex)
                 {

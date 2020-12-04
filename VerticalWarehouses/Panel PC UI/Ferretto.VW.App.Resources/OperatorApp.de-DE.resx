@@ -1635,4 +1635,7 @@
   <data name="MissionStateWaitDepositBay" xml:space="preserve">
     <value>Warten Ablage bucht</value>
   </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Feldoperation für ungültige Notizen nicht bestätigt</value>
+  </data>
 </root>

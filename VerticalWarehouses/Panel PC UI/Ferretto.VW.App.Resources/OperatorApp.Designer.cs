@@ -3472,6 +3472,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid notes field operation not confirmed.
+        /// </summary>
+        public static string NoteNotValid {
+            get {
+                return ResourceManager.GetString("NoteNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Occurrence date.
         /// </summary>
         public static string OccurrenceDate {
