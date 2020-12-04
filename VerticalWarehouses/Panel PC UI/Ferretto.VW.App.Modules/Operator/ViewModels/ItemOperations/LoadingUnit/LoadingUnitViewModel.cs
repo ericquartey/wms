@@ -554,6 +554,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void CancelReason()
         {
             this.Reasons = null;
+            this.IsBusyConfirmingOperation = false;
+            this.IsWaitingForResponse = false;
         }
 
         private bool CanConfirmOperation()
@@ -682,6 +684,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ExecuteOperationAsync(string barcode = null, int operation = 0)
         {
+            bool noteError = false;
             try
             {
                 this.IsBusyConfirmingOperation = true;
@@ -726,6 +729,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
                         else
                         {
+                            noteError = true;
                             this.ShowNotification(Localized.Get("OperatorApp.NoteNotValid"), Services.Models.NotificationSeverity.Error);
                         }
                     }
@@ -739,8 +743,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.reasonNotes);
                     }
 
-                    await this.OnDataRefreshAsync();
-                    this.IsBusyConfirmingOperation = false;
+                    if (!noteError)
+                    {
+                        await this.OnDataRefreshAsync();
+                        this.IsBusyConfirmingOperation = false;
+                    }
                 }
                 else if (this.IsBoxOperationVisible)
                 {
@@ -757,7 +764,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsBusyConfirmingOperation = false;
                 }
 
-                this.HideOperation();
+                if (!noteError)
+                {
+                    this.HideOperation();
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -766,9 +776,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                this.IsWaitingForResponse = false;
-                this.Reasons = null;
-                this.RaiseCanExecuteChanged();
+                if (!noteError)
+                {
+                    this.IsWaitingForResponse = false;
+                    this.Reasons = null;
+                    this.RaiseCanExecuteChanged();
+                }
             }
         }
 

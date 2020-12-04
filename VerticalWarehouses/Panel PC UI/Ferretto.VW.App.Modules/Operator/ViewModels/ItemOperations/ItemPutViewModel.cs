@@ -277,6 +277,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.CanPutBox = false;
             }
             this.InputQuantity = this.MissionRequestedQuantity;
+            base.InitializeInputQuantity();
         }
 
         protected override void RaiseCanExecuteChanged()
