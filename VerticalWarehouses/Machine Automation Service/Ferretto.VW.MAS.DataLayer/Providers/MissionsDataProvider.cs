@@ -467,6 +467,17 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.dataContext.Missions.Remove(mission);
 
+                    var bays = this.dataContext.Bays.Include(b => b.CurrentMission).Where(b => b.CurrentMission.Id == mission.Id);
+                    if (bays.Any())
+                    {
+                        foreach (var bay in bays)
+                        {
+                            bay.CurrentMission = null;
+                            this.dataContext.Bays.Update(bay);
+                            this.logger.LogDebug($"Cleared bay mission {mission.Id}, Bay {bay.Number}.");
+                        }
+                    }
+
                     this.logger.LogInformation($"Deleted MAS mission {mission.Id}, Wms Id {mission.WmsId}.");
                     count++;
                 }
