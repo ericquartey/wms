@@ -59,11 +59,13 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 // no duplicate of LU
                 returnValue = !this.dataContext.Missions.Any(m => m.LoadUnitId == loadingUnitId
-                    && (m.Status == MissionStatus.Executing || m.Status == MissionStatus.New)
+                    && (m.Status == MissionStatus.Executing
+                        || (m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
+                        )
                     );
                 if (!returnValue)
                 {
-                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, targetBay);
+                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, targetBay, $"LU {loadingUnitId}");
                 }
                 else
                 {
@@ -145,13 +147,13 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (this.dataContext.Missions.Any(m => m.LoadUnitId == loadingUnitId
                          && m.TargetBay == bayNumber
-                         && (m.Status == MissionStatus.New
+                         && ((m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
                             || m.Status == MissionStatus.Executing
                             || (missionType == MissionType.OUT && m.Status == MissionStatus.Waiting))
                         )
                     )
                 {
-                    this.logger.LogError($"Another mission is active for load unit {loadingUnitId} on bay {bayNumber}");
+                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, bayNumber, $"LU {loadingUnitId}");
                     throw new InvalidOperationException(string.Format(Resources.Missions.ResourceManager.GetString("ActiveMissionForLoadingUnit", CommonUtils.Culture.Actual), loadingUnitId, (int)bayNumber));
                 }
                 var entry = this.dataContext.Missions
