@@ -127,8 +127,29 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
             if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
             {
-                this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
-                this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                //this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
+                //this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+
+                switch (this.machineData.TargetBay)
+                {
+                    case BayNumber.BayOne:
+                        this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
+                        break;
+
+                    case BayNumber.BayTwo:
+                        this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual2;
+                        break;
+
+                    case BayNumber.BayThree:
+                        this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual3;
+                        break;
+
+                    default:
+                        this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
+                        break;
+                }
+
+                this.Logger.LogInformation($"Machine status switched to {this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode}");
             }
         }
 

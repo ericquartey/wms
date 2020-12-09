@@ -89,6 +89,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (loadingUnitId.HasValue
                 && !measure
                 && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest
+                && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest2
+                && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest3
                 && fastDeposit
                 )
             {

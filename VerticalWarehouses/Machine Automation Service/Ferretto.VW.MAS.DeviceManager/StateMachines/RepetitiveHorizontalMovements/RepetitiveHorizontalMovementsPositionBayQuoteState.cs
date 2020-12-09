@@ -415,6 +415,8 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             if (loadingUnitId.HasValue
                 && !measure
                 && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest
+                && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest2
+                && this.machineVolatileDataProvider.Mode != MachineMode.FirstTest3
                 )
             {
                 var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);

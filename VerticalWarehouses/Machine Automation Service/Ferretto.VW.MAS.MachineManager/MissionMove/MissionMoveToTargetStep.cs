@@ -294,7 +294,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 newStep.OnEnter(null);
             }
-            if (this.MachineVolatileDataProvider.Mode != MachineMode.Manual
+            if ((this.MachineVolatileDataProvider.Mode != MachineMode.Manual ||
+                this.MachineVolatileDataProvider.Mode != MachineMode.Manual2 ||
+                this.MachineVolatileDataProvider.Mode != MachineMode.Manual3)
                 && (this.Mission.CloseShutterBayNumber == BayNumber.None
                     || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                 && this.isWaitingMissionOnThisBay(inError: true)
@@ -306,7 +308,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             m.Id != this.Mission.Id &&
                             (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick) &&
                             m.ErrorCode != MachineErrorCode.NoError);
-                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(errorMission.TargetBay);
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                 this.ErrorsProvider.RecordNew(errorMission.ErrorCode, this.Mission.TargetBay);
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
