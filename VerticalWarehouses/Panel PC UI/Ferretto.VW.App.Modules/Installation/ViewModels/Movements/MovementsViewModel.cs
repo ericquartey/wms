@@ -53,6 +53,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
+        private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
+
         private SubscriptionToken cellsToken;
 
         private SubscriptionToken elevatorPositionChangedToken;
@@ -98,6 +100,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public MovementsViewModel(
+            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
             ISessionService sessionService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineCellsWebService machineCellsWebService,
@@ -113,6 +116,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineExternalBayWebService machineExternalBayWebService)
             : base(PresentationMode.Installer)
         {
+            this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
