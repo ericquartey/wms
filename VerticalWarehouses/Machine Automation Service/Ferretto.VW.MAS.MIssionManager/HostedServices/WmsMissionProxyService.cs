@@ -88,6 +88,14 @@ namespace Ferretto.VW.MAS.MissionManager
                     return;
                 }
 
+                var machinemachineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                if (machinemachineVolatileDataProvider.Mode != MachineMode.Automatic
+                    && machinemachineVolatileDataProvider.Mode != MachineMode.SwitchingToAutomatic
+                    )
+                {
+                    return;
+                }
+
                 this.Logger.LogDebug("Checking for new WMS missions ...");
 
                 var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
