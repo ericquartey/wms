@@ -227,7 +227,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 .FirstOrDefault(m => m.LoadUnitId == mission.LoadUnitId
                     && m.Id != mission.Id
                     && ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
-                        || m.Status == MissionStatus.New)
+                        || m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
                 );
             if (waitMission != null)
             {

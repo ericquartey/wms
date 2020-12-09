@@ -239,7 +239,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemCode = item.Code;
                 this.AverageWeight = item.AverageWeight;
 
-                if (this.AverageWeight.HasValue)
+                if (this.AverageWeight.HasValue && this.AverageWeight > 0)
                 {
                     await this.weightingScaleService.SetAverageUnitaryWeightAsync(this.AverageWeight.Value);
                 }

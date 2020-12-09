@@ -265,9 +265,10 @@
                        Margin="0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Top"
-                       Style="{DynamicResource VWAPP_CardSensor_Data}"
-                       Text="{Binding MaxSolidSpaceFront}" />
-            <!--  Text="{Binding LowerBound}"  -->
+                       Style="{DynamicResource VWAPP_CardSensor_Data}">
+                         <Run Text="{Binding MaxSolidSpaceFront}" /><Run Text="mm" />
+                        </TextBlock>
+                        <!--  Text="{Binding LowerBound}"  -->
             <Border Grid.RowSpan="2"
                     Grid.Column="1"
                     Margin="0,25"
@@ -301,9 +302,10 @@
                        Margin="0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Top"
-                       Style="{DynamicResource VWAPP_CardSensor_Data}"
-                       Text="{Binding MaxSolidSpaceBack}" />
-          </Grid>
+                       Style="{DynamicResource VWAPP_CardSensor_Data}">
+                         <Run Text="{Binding MaxSolidSpaceBack}" /><Run Text="mm" />
+                        </TextBlock>
+                    </Grid>
 
         </Grid>
       </Border>
