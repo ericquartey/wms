@@ -675,7 +675,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanSelectBayPosition()
         {
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay || !this.HasShutter) &&
-                   this.CanBaseExecute();
+               this.CanBaseExecute()
+               &&
+               this.moveToBayPositionPolicy?.IsAllowed == true;
         }
 
         private bool CanVerticalCalibration()
@@ -1154,16 +1156,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void SelectBayPositionDown()
+        private async void SelectBayPositionDown()
         {
             this.IsPositionDownSelected = true;
             this.RaiseCanExecuteChanged();
+
+            await this.MoveToBayPositionAsync();
         }
 
-        private void SelectBayPositionUp()
+        private async void SelectBayPositionUp()
         {
             this.IsPositionUpSelected = true;
             this.RaiseCanExecuteChanged();
+
+            await this.MoveToBayPositionAsync();
         }
 
         private async Task TuneExtBayAsync()
