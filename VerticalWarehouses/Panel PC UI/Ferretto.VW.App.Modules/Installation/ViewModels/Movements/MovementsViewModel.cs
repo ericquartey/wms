@@ -352,6 +352,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsPositionUpSelected = true;
                 }
 
+                if(this.MachineStatus.BayPositionUpper is null)
+                {
+                    this.IsPositionDownEnabled = this.IsPositionUpEnabled = true;
+                }
+                else
+                {
+                    this.IsPositionDownEnabled = this.MachineStatus.BayPositionUpper.Value ||
+                            this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
+
+                    this.IsPositionUpEnabled = !this.MachineStatus.BayPositionUpper.Value;
+                }
+
                 this.InputCellIdPropertyChanged();
 
                 this.lastActiveCommand = "";
@@ -652,6 +664,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
+                        if (this.MachineStatus.BayPositionUpper is null)
+                        {
+                            this.IsPositionDownEnabled = this.IsPositionUpEnabled = true;
+                        }
+                        else
+                        {
+                            this.IsPositionDownEnabled = this.MachineStatus.BayPositionUpper.Value ||
+                                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
+
+                            this.IsPositionUpEnabled = !this.MachineStatus.BayPositionUpper.Value;
+                        }
+
                         this.StopMoving();
                         break;
                     }
