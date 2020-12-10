@@ -1504,7 +1504,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var feedRate = homingDone ? manualParameters.FeedRateAfterZero : manualParameters.FeedRate;
-            if (this.machineVolatileDataProvider.Mode == MachineMode.FirstTest)
+            if (this.machineVolatileDataProvider.Mode == MachineMode.FirstTest || this.machineVolatileDataProvider.Mode == MachineMode.FirstTest2 || this.machineVolatileDataProvider.Mode == MachineMode.FirstTest3)
             {
                 // during first load unit test the feedrate is fixed to half speed
                 feedRate /= 2;

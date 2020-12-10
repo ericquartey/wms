@@ -69,7 +69,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.bayControlCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayControl),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
                       (this.BayControl.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand BayHeightCommand =>
@@ -78,7 +77,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.bayHeightCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayHeight),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
                       (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         private SetupStepStatus CarouselCalibration => this.BaySetupStatus?.CarouselCalibration ?? new SetupStepStatus();
@@ -89,7 +87,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.carouselCalibrationCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CarouselCalibration),
                 () => this.CanExecuteCommand() &&
-               //this.MachineModeService.MachineMode == MachineMode.Manual &&
                (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
@@ -103,7 +100,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.externalBayCalibrationCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.ExternalBayCalibration),
                 () => this.CanExecuteCommand() &&
-               //this.MachineModeService.MachineMode == MachineMode.Manual &&
                (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
@@ -141,7 +137,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.testShutterCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.TestShutter),
                 () => this.CanExecuteCommand() &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual /*|| this.MachineModeService.MachineMode == MachineMode.Test*/) &&
                       (this.BayShutter.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();

@@ -261,7 +261,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             await this.SensorsService.RefreshAsync(true);
 
-            this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
+            this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving ||
+                this.MachineService.MachineMode == MachineMode.Test ||
+                this.MachineService.MachineMode == MachineMode.Test2 ||
+                this.MachineService.MachineMode == MachineMode.Test3;
 
             if (this.RequiredCycles == null || this.PerformedCyclesThisSession == null || this.totalCycles == null)
             {
@@ -276,7 +279,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await base.OnMachineStatusChangedAsync(e);
 
-            this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
+            this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving ||
+                this.MachineService.MachineMode == MachineMode.Test ||
+                this.MachineService.MachineMode == MachineMode.Test2 ||
+                this.MachineService.MachineMode == MachineMode.Test3;
         }
 
         protected override void RaiseCanExecuteChanged()

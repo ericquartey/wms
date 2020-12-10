@@ -25,10 +25,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         // TODO: Move this to parameters
         private const int positionOffset = 500; //mm
 
-        private bool isCarouselCalibration = false;
-
-        private bool isBeltBurnishing = false;
-
         private readonly IMachineBeltBurnishingProcedureWebService beltBurnishingWebService;
 
         private readonly Services.IDialogService dialogService;
@@ -56,6 +52,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private int? inputRequiredCycles;
 
         private double? inputUpperBound;
+
+        private bool isBeltBurnishing = false;
+
+        private bool isCarouselCalibration = false;
 
         //private bool isCompleted;
 
@@ -365,7 +365,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            if (this.MachineService.MachineMode == MachineMode.Test)
+            if (this.MachineService.MachineMode == MachineMode.Test ||
+                this.MachineService.MachineMode == MachineMode.Test2 ||
+                this.MachineService.MachineMode == MachineMode.Test3)
             {
                 this.IsExecutingProcedure = true;
                 this.PerformedCyclesThisSession = 0;
@@ -388,7 +390,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.GetParameterValuesAsync();
 
-                this.IsExecutingProcedure = (this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test);
+                this.IsExecutingProcedure = (this.MachineService.MachineStatus.IsMoving ||
+                    this.MachineService.MachineMode == MachineMode.Test ||
+                    this.MachineService.MachineMode == MachineMode.Test2 ||
+                    this.MachineService.MachineMode == MachineMode.Test3);
 
                 this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }
@@ -440,7 +445,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanStartTest()
         {
             return
-                (!this.MachineService.MachineStatus.IsMoving ||this.isCarouselCalibration)
+                (!this.MachineService.MachineStatus.IsMoving || this.isCarouselCalibration)
                 &&
                 (this.SensorsService.ShutterSensors.Closed || !this.MachineService.HasShutter)
                 //&&

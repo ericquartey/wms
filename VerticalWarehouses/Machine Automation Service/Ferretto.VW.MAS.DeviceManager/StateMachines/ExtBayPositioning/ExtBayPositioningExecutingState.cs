@@ -525,10 +525,30 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         }
 
                         var machineModeProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
-                        if (machineModeProvider.Mode != MachineMode.Test)
+                        if (machineModeProvider.Mode != MachineMode.Test &&
+                            machineModeProvider.Mode != MachineMode.Test2 &&
+                            machineModeProvider.Mode != MachineMode.Test3)
                         {
-                            machineModeProvider.Mode = MachineMode.Test;
-                            this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
+                            switch (this.machineData.TargetBay)
+                            {
+                                case BayNumber.BayOne:
+                                    machineModeProvider.Mode = MachineMode.Test;
+                                    break;
+
+                                case BayNumber.BayTwo:
+                                    machineModeProvider.Mode = MachineMode.Test2;
+                                    break;
+
+                                case BayNumber.BayThree:
+                                    machineModeProvider.Mode = MachineMode.Test3;
+                                    break;
+
+                                default:
+                                    machineModeProvider.Mode = MachineMode.Test;
+                                    break;
+                            }
+
+                            this.Logger.LogInformation($"Machine status switched to {machineModeProvider.Mode}");
                         }
 
                         // Update the setup procedure data

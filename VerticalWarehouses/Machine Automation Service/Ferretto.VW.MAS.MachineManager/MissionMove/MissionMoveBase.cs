@@ -409,7 +409,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         Math.Round(loadUnit.Height),
                         this.Mission.WmsId ?? 0));
 
-                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                 this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
@@ -431,7 +432,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         Math.Round(loadUnit.Height),
                         mission.WmsId ?? 0));
 
-                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                 this.BaysDataProvider.Light(mission.TargetBay, true);
                 this.BaysDataProvider.CheckIntrusion(mission.TargetBay, true);

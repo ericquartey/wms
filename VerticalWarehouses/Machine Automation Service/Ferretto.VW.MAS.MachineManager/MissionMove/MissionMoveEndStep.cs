@@ -66,7 +66,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.MissionType == MissionType.LoadUnitOperation)
             {
-                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
             }
 

@@ -394,7 +394,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 var count = 0;
 
-                var moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync();
+                var moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAllAsync();
 
                 if (moveUnitId != null)
                 {
@@ -404,7 +404,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                var moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
+                var moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAllAsync();
 
                 if (moveUnitIdToCell != null)
                 {

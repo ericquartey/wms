@@ -73,8 +73,11 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 this.Logger.LogDebug("FSM Repetitive Horizontal Movements Stopped");
 
                 // Restore the machine manual mode
-                this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                //this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+
+                this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(this.machineData.TargetBay);
+                this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
             }
         }
 
@@ -113,8 +116,11 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
                 this.Logger.LogDebug("FSM Repetitive Horizontal Movements End");
 
                 // Restore the machine manual mode
-                this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                //this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+
+                this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(this.machineData.RequestingBay);
+                this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
             }
         }
 
