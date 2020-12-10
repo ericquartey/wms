@@ -40,7 +40,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(int loadunit)
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FirstTest, this.BayNumber, new List<int>() { loadunit });
+            switch (this.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FirstTest, this.BayNumber, new List<int>() { loadunit });
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FirstTest2, this.BayNumber, new List<int>() { loadunit });
+                    break;
+
+                case BayNumber.BayThree:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FirstTest3, this.BayNumber, new List<int>() { loadunit });
+                    break;
+
+                default:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FirstTest, this.BayNumber, new List<int>() { loadunit });
+                    break;
+            }
+
             return this.Accepted();
         }
 
@@ -49,7 +67,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
+            switch (this.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual2);
+                    break;
+
+                case BayNumber.BayThree:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual3);
+                    break;
+
+                default:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
+                    break;
+            }
+
             return this.Accepted();
         }
 

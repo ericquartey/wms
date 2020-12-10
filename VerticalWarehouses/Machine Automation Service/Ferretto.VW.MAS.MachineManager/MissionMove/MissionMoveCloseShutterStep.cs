@@ -147,7 +147,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && !this.isWaitingMissionOnThisBay(bay)
                 )
             {
-                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                 this.Logger.LogInformation($"Display error for Mission.Id={this.Mission.Id}, ErrorCode={this.Mission.ErrorCode}");
                 this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);

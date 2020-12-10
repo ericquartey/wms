@@ -6,11 +6,7 @@
 
         void NavigateToDrawerView();
 
-        void NavigateToDrawerViewBase();
-
         void NavigateToDrawerViewConfirmPresent();
-
-        void NavigateToDrawerViewUnit();
 
         void NavigateToOperatorMenu();
 

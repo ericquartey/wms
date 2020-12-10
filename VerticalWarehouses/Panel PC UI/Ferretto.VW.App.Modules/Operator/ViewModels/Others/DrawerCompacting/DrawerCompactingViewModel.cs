@@ -217,11 +217,41 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanCompactingStart()
         {
-            var result = !this.IsWaitingForResponse &&
+            bool result = false;
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    result = !this.IsWaitingForResponse &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
                    (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
                    !this.IsMachineMoving;
+                    break;
+
+                case BayNumber.BayTwo:
+                    result = !this.IsWaitingForResponse &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   this.MachineService.MachinePower == MachinePowerState.Powered &&
+                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
+                   !this.IsMachineMoving;
+                    break;
+
+                case BayNumber.BayThree:
+                    result = !this.IsWaitingForResponse &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   this.MachineService.MachinePower == MachinePowerState.Powered &&
+                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
+                   !this.IsMachineMoving;
+                    break;
+
+                default:
+                    result = !this.IsWaitingForResponse &&
+                   this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineService.MachinePower == MachinePowerState.Powered &&
+                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
+                   !this.IsMachineMoving;
+                    break;
+            }
 
             if (result)
             {

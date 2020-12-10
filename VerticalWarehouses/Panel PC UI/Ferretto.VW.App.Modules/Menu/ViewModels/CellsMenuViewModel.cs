@@ -67,7 +67,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.bayFirstLoadingUnitCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BayFirstLoadingUnit),
                 () => this.CanExecuteCommand() &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual || this.MachineModeService.MachineMode == MachineMode.Test) &&
                       (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public BaySetupStatus BaysSetupStatus { get; private set; }
@@ -80,7 +79,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.cellPanelsCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellPanelsCheck),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
                       (this.CellPanelsCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand CellsBlockTuningCommand =>
@@ -89,7 +87,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.cellsBlockTuningCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsBlockTuning),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
                       (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand CellsCommand =>
@@ -108,7 +105,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.cellsHeightCheckCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
                 () => this.CanExecuteCommand() &&
-                      this.MachineModeService.MachineMode == MachineMode.Manual &&
                       (this.CellsHeightCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus()) &&
                       false));
 

@@ -26,6 +26,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
+        private bool isStopPressed;
+
         private int? loadunitId = 1;
 
         private SubscriptionToken moveTestToken;
@@ -39,8 +41,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand stopCommand;
 
         private int totalStep;
-
-        private bool isStopPressed;
 
         #endregion
 
@@ -59,16 +59,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public bool IsExecutingProcedure
         {
             get => this.isExecutingProcedure;
             set => this.SetProperty(ref this.isExecutingProcedure, value);
-        }
-
-        public bool IsStopPressed
-        {
-            get => this.isStopPressed;
-            set => this.SetProperty(ref this.isStopPressed, value);
         }
 
         public bool IsLoadunitIdValid
@@ -79,7 +75,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool HasShutter => this.MachineService.HasShutter;
+        public bool IsStopPressed
+        {
+            get => this.isStopPressed;
+            set => this.SetProperty(ref this.isStopPressed, value);
+        }
 
         public int? LoadUnitId
         {
@@ -114,10 +114,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsExecutingProcedure = true;
                     }
                 },
-                () => !this.IsMoving && this.MachineModeService.MachineMode == MachineMode.Manual &&
-                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
-                    (!this.MachineService.HasCarousel && this.SensorsService.IsLoadingUnitInMiddleBottomBay && (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
-                   this.LoadUnitId.HasValue));
+                () => this.CanStart()));
 
         public int Step
         {
@@ -165,13 +162,45 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        public bool CanStart()
         {
-            await base.OnMachineStatusChangedAsync(e);
-
-            if (!this.IsMachineMoving)
+            switch (this.MachineService.BayNumber)
             {
-                this.IsStopPressed = false;
+                case BayNumber.BayOne:
+                    return !this.IsMoving &&
+                        this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
+                    (!this.MachineService.HasCarousel &&
+                    this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
+                    (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                   this.LoadUnitId.HasValue;
+
+                case BayNumber.BayTwo:
+                    return !this.IsMoving &&
+                        this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
+                    (!this.MachineService.HasCarousel &&
+                    this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
+                    (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                   this.LoadUnitId.HasValue;
+
+                case BayNumber.BayThree:
+                    return !this.IsMoving &&
+                        this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
+                    (!this.MachineService.HasCarousel &&
+                    this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
+                    (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                   this.LoadUnitId.HasValue;
+
+                default:
+                    return !this.IsMoving &&
+                        this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
+                    (!this.MachineService.HasCarousel &&
+                    this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
+                    (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
+                   this.LoadUnitId.HasValue;
             }
         }
 
@@ -202,6 +231,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsExecutingProcedure = false;
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
+
+            if (!this.IsMachineMoving)
+            {
+                this.IsStopPressed = false;
             }
         }
 

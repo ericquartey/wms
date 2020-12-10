@@ -80,6 +80,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double? unitWeight;
 
+        private DelegateCommand weightCommand;
+
         #endregion
 
         #region Constructors
@@ -306,9 +308,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.unitWeight, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand WeightCommand =>
+                                                                                                                                                                                                                                                                                                                                                                                    this.weightCommand
+            ??
+            (this.weightCommand = new DelegateCommand(
+                () => this.Weight(),
+                this.CanOpenWeightPage));
+
         #endregion
 
         #region Methods
+
+        public bool CanOpenWeightPage()
+        {
+            return this.MachineService.Bay.Accessories.WeightingScale is null ? false : this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew &&
+                this.MissionOperationsService.ActiveWmsOperation != null;
+        }
 
         public async Task<bool> CheckReasonsAsync()
         {
@@ -379,7 +394,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 var count = 0;
 
-                var moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync();
+                var moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAllAsync();
 
                 if (moveUnitId != null)
                 {
@@ -389,7 +404,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                var moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
+                var moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAllAsync();
 
                 if (moveUnitIdToCell != null)
                 {
@@ -522,6 +537,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.weightCommand?.RaiseCanExecuteChanged();
             this.operationCommand?.RaiseCanExecuteChanged();
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
@@ -891,6 +907,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsListModeEnabled = previousIsListModeEnabled;
             }
+        }
+
+        private void Weight()
+        {
+            var mission = this.MissionOperationsService.ActiveWmsOperation;
+            mission.ItemId = this.SelectedItemCompartment.ItemId.Value;
+            mission.RequestedQuantity = this.inputQuantity.Value;
+
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.WEIGHT,
+                mission);
         }
 
         #endregion
