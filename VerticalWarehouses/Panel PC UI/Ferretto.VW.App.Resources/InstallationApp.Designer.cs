@@ -6325,6 +6325,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elevator calibration.
+        /// </summary>
+        public static string VerticalCalibration {
+            get {
+                return ResourceManager.GetString("VerticalCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical Homing Error ({0} of {1}).
         /// </summary>
         public static string VerticalHomingError {

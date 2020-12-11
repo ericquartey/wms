@@ -233,13 +233,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateWeightingScaleSettings(BayNumber bayNumber, bool isEnabled, string portName)
+        public void UpdateWeightingScaleSettings(BayNumber bayNumber, bool isEnabled, string ipAddress, int port)
         {
-            if (portName is null)
-            {
-                throw new ArgumentNullException(nameof(portName));
-            }
-
             lock (this.dataContext)
             {
                 var bay = this.dataContext.Bays
@@ -247,16 +242,18 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(a => a.WeightingScale)
                     .Single(b => b.Number == bayNumber);
 
-                if(bay.Accessories.WeightingScale is null)
+                if (bay.Accessories.WeightingScale is null)
                 {
                     bay.Accessories.WeightingScale = new WeightingScale();
                     bay.Accessories.WeightingScale.IsEnabledNew = isEnabled;
-                    bay.Accessories.WeightingScale.PortName = portName;
+                    bay.Accessories.WeightingScale.IpAddress = IPAddress.Parse(ipAddress);
+                    bay.Accessories.WeightingScale.TcpPort = port;
                 }
                 else
                 {
                     bay.Accessories.WeightingScale.IsEnabledNew = isEnabled;
-                    bay.Accessories.WeightingScale.PortName = portName;
+                    bay.Accessories.WeightingScale.IpAddress = IPAddress.Parse(ipAddress);
+                    bay.Accessories.WeightingScale.TcpPort = port;
                 }
 
                 this.dataContext.Accessories.Update(bay.Accessories.WeightingScale);

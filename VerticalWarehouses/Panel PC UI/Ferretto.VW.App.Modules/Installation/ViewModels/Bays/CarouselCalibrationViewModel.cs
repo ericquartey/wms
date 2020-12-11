@@ -176,15 +176,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this[nameof(this.CurrentResolution)],
             this[nameof(this.NewErrorValue)]);
 
+        public bool HasCarousel => this.MachineService.HasCarousel;
+
+        public bool HasShutter => this.MachineService.HasShutter;
+
         public bool HasStepConfirmAdjustment => this.currentStep is CarouselCalibrationStep.ConfirmAdjustment;
 
         public bool HasStepRunningCalibration => this.currentStep is CarouselCalibrationStep.RunningCalibration;
 
         public bool HasStepStartCalibration => this.currentStep is CarouselCalibrationStep.StartCalibration;
-
-        public bool HasShutter => this.MachineService.HasShutter;
-
-        public bool HasCarousel => this.MachineService.HasCarousel;
 
         public bool IsCalibrationCompletedOrStopped
         {
@@ -480,7 +480,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
 
-                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving || this.MachineService.MachineMode == MachineMode.Test;
+                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving ||
+                    this.MachineService.MachineMode == MachineMode.Test ||
+                    this.MachineService.MachineMode == MachineMode.Test2 ||
+                    this.MachineService.MachineMode == MachineMode.Test3;
 
                 this.UpdateView();
             }

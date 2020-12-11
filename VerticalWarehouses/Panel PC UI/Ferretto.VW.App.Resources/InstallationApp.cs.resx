@@ -2304,4 +2304,7 @@
   <data name="LoadFromBay" xml:space="preserve">
     <value>Nalož</value>
   </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Kalibrace výtahu</value>
+  </data>
 </root>

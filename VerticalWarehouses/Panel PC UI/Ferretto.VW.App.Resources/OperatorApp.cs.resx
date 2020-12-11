@@ -856,13 +856,13 @@
     <value>Operace potvrzena.</value>
   </data>
   <data name="NoLoadingUnitsToMove" xml:space="preserve">
-    <value>Nejsou žádné zásuvky k přesunutí</value>
+    <value>Nejsou žádné zásuvky k přesunutí do stan {0}</value>
   </data>
   <data name="LoadingUnitsSendToBay" xml:space="preserve">
-    <value>Je třeba přesunout {0} zásuvek do stan</value>
+    <value>Je třeba přesunout {0} zásuvek do stan {1}</value>
   </data>
   <data name="LoadingUnitSendToBay" xml:space="preserve">
-    <value>Je třeba přesun jednu zás do stan</value>
+    <value>Je třeba přesun jednu zás do stan {0}</value>
   </data>
   <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
     <value>Z oddělení odstraňte případné vložené položky.</value>
@@ -1634,5 +1634,8 @@
   </data>
   <data name="Note" xml:space="preserve">
     <value>Pozn</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Neplatná operace s polem s poznámkami nebyla potvrzena</value>
   </data>
 </root>

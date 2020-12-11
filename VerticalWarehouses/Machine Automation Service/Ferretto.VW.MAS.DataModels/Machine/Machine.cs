@@ -24,6 +24,11 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public Elevator Elevator { get; set; }
 
+        /// <summary>
+        /// Enabe note in LU operation
+        /// </summary>
+        public bool EnabeNoteRules { get; set; }
+
         public int ExpireCountPrecent { get; set; } = 10;
 
         public int ExpireDays { get; set; } = 14;

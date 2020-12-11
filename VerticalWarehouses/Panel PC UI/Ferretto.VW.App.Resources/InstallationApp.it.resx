@@ -2310,4 +2310,7 @@
   <data name="LoadFromBay" xml:space="preserve">
     <value>Carica</value>
   </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Taratura elevatore</value>
+  </data>
 </root>

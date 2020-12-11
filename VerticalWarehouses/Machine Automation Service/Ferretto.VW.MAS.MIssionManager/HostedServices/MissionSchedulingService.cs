@@ -724,15 +724,25 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 case MachineMode.SwitchingToAutomatic:
                 case MachineMode.SwitchingToLoadUnitOperations:
+                case MachineMode.SwitchingToLoadUnitOperations2:
+                case MachineMode.SwitchingToLoadUnitOperations3:
                 case MachineMode.SwitchingToCompact:
                 case MachineMode.SwitchingToFirstTest:
                 case MachineMode.SwitchingToFullTest:
+                case MachineMode.SwitchingToCompact2:
+                case MachineMode.SwitchingToFirstTest2:
+                case MachineMode.SwitchingToFullTest2:
+                case MachineMode.SwitchingToCompact3:
+                case MachineMode.SwitchingToFirstTest3:
+                case MachineMode.SwitchingToFullTest3:
                     {
                         var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
                         if (errorsProvider.GetCurrent() != null)
                         {
-                            this.Logger.LogError($"Scheduling Machine status switched to {MachineMode.Manual} from {this.machineVolatileDataProvider.Mode}: no error is allowed!");
-                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            //this.Logger.LogError($"Scheduling Machine status switched to {MachineMode.Manual} from {this.machineVolatileDataProvider.Mode}: no error is allowed!");
+                            this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(errorsProvider.GetCurrent().BayNumber);
+                            this.Logger.LogError($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode} from {this.machineVolatileDataProvider.Mode}: no error is allowed!");
                             break;
                         }
                         // in this machine mode we generate homing for elevator and bays, but only if there are no missions to restore.
@@ -747,22 +757,94 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 if (activeMissions.Any(m => m.MissionType == MissionType.Compact))
                                 {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                                    switch (activeMissions.FirstOrDefault(m => m.MissionType == MissionType.Compact).TargetBay)
+                                    {
+                                        case BayNumber.BayOne:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                                            break;
+
+                                        case BayNumber.BayTwo:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact2;
+                                            break;
+
+                                        case BayNumber.BayThree:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact3;
+                                            break;
+
+                                        default:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                                            break;
+                                    }
+
                                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 }
                                 else if (activeMissions.Any(m => m.MissionType == MissionType.FirstTest))
                                 {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
+                                    switch (activeMissions.FirstOrDefault(m => m.MissionType == MissionType.FirstTest).TargetBay)
+                                    {
+                                        case BayNumber.BayOne:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
+                                            break;
+
+                                        case BayNumber.BayTwo:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest2;
+                                            break;
+
+                                        case BayNumber.BayThree:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest3;
+                                            break;
+
+                                        default:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
+                                            break;
+                                    }
+
                                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 }
                                 else if (activeMissions.Any(m => m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT))
                                 {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
+                                    switch (activeMissions.FirstOrDefault(m => m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT).TargetBay)
+                                    {
+                                        case BayNumber.BayOne:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
+                                            break;
+
+                                        case BayNumber.BayTwo:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest2;
+                                            break;
+
+                                        case BayNumber.BayThree:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest3;
+                                            break;
+
+                                        default:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
+                                            break;
+                                    }
+
                                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 }
                                 else if (activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation))
                                 {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
+                                    switch (activeMissions.FirstOrDefault(m => m.MissionType == MissionType.LoadUnitOperation).TargetBay)
+                                    {
+                                        case BayNumber.BayOne:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations;
+                                            break;
+
+                                        case BayNumber.BayTwo:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations2;
+                                            break;
+
+                                        case BayNumber.BayThree:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToLoadUnitOperations3;
+                                            break;
+
+                                        default:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
+                                            break;
+                                    }
+
                                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 }
                             }
@@ -785,11 +867,35 @@ namespace Ferretto.VW.MAS.MissionManager
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.Compact;
                                 }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact2
+                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.Compact2;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact3
+                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.Compact3;
+                                }
                                 else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFirstTest
                                     || activeMissions.Any(m => m.MissionType == MissionType.FirstTest && m.Status == MissionStatus.Executing)
                                     )
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.FirstTest;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFirstTest2
+                                    || activeMissions.Any(m => m.MissionType == MissionType.FirstTest && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.FirstTest2;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFirstTest3
+                                    || activeMissions.Any(m => m.MissionType == MissionType.FirstTest && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.FirstTest3;
                                 }
                                 else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest
                                     || activeMissions.Any(m => (m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT)
@@ -799,11 +905,39 @@ namespace Ferretto.VW.MAS.MissionManager
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.FullTest;
                                 }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest2
+                                    || activeMissions.Any(m => (m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT)
+                                        && m.Status == MissionStatus.Executing
+                                        )
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.FullTest2;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest3
+                                    || activeMissions.Any(m => (m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT)
+                                        && m.Status == MissionStatus.Executing
+                                        )
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.FullTest3;
+                                }
                                 else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
                                     || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation && m.Status == MissionStatus.Executing)
                                     )
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations2
+                                    || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations2;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations3
+                                    || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations3;
                                 }
                                 else
                                 {
@@ -850,6 +984,26 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     break;
 
+                case MachineMode.Compact2:
+                    {
+                        if (!ScheduleCompactingMissions(serviceProvider))
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual2;
+                            this.Logger.LogInformation($"Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.Compact3:
+                    {
+                        if (!ScheduleCompactingMissions(serviceProvider))
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual3;
+                            this.Logger.LogInformation($"Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
                 case MachineMode.FirstTest:
                     {
                         var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
@@ -859,6 +1013,34 @@ namespace Ferretto.VW.MAS.MissionManager
                             )
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"First test terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.FirstTest2:
+                    {
+                        var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+                        if (!this.CloseShutter(bayProvider, machineResourcesProvider, shutterProvider)
+                            && !this.GenerateHoming(bayProvider, machineResourcesProvider)
+                            && !this.ScheduleFirstTestMissions(serviceProvider)
+                            )
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual2;
+                            this.Logger.LogInformation($"First test terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.FirstTest3:
+                    {
+                        var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+                        if (!this.CloseShutter(bayProvider, machineResourcesProvider, shutterProvider)
+                            && !this.GenerateHoming(bayProvider, machineResourcesProvider)
+                            && !this.ScheduleFirstTestMissions(serviceProvider)
+                            )
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual3;
                             this.Logger.LogInformation($"First test terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
                     }
@@ -874,6 +1056,26 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     break;
 
+                case MachineMode.FullTest2:
+                    {
+                        if (!this.ScheduleFullTestMissions(serviceProvider))
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual2;
+                            this.Logger.LogInformation($"Full test terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.FullTest3:
+                    {
+                        if (!this.ScheduleFullTestMissions(serviceProvider))
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual3;
+                            this.Logger.LogInformation($"Full test terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
                 case MachineMode.SwitchingToManual:
                     {
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
@@ -882,6 +1084,32 @@ namespace Ferretto.VW.MAS.MissionManager
                             )
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.SwitchingToManual2:
+                    {
+                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                        if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
+                            && m.Step > MissionStep.New)
+                            )
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual2;
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.SwitchingToManual3:
+                    {
+                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                        if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
+                            && m.Step > MissionStep.New)
+                            )
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual3;
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
                     }
@@ -909,7 +1137,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnElevator);
 
-                    this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                    //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                    this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(errorsProvider.GetCurrent().BayNumber);
                     this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     return true;
                 }
@@ -945,7 +1174,8 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
 
-                                this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);
                                 this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                                 return true;
                             }
@@ -964,7 +1194,8 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
 
-                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);
                             this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                             return true;
                         }
@@ -1053,12 +1284,23 @@ namespace Ferretto.VW.MAS.MissionManager
 
                     if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
                     {
-                        this.machineVolatileDataProvider.Mode = MachineMode.Manual; //MachineMode.Automatic;
+                        //this.machineVolatileDataProvider.Mode = MachineMode.Manual; //MachineMode.Automatic;
+                        this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(message.TargetBay); //MachineMode.Automatic;
                         this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     }
                     else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations)
                     {
                         this.machineVolatileDataProvider.Mode = MachineMode.Manual; // MachineMode.LoadUnitOperations;
+                        this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    }
+                    else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations2)
+                    {
+                        this.machineVolatileDataProvider.Mode = MachineMode.Manual2; // MachineMode.LoadUnitOperations;
+                        this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    }
+                    else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations3)
+                    {
+                        this.machineVolatileDataProvider.Mode = MachineMode.Manual3; // MachineMode.LoadUnitOperations;
                         this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     }
                 }

@@ -479,7 +479,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.ErrorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, bay.Number);
 
-            this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+            //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+            this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
             this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
             this.BaysDataProvider.Light(this.Mission.TargetBay, true);
 

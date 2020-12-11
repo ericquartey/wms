@@ -11,145 +11,149 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="15">
+  <Grid Margin="15">
 
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <TextBlock Grid.ColumnSpan="3"
+               VerticalAlignment="Top"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{resources:Loc OperatorApp.MeasureWeightAndCount}" />
+
+    <Border Grid.Row="1"
+            Grid.ColumnSpan="4"
+            Margin="0,0,0,30"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2">
+      <Grid Margin="50">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+          <RowDefinition />
+          <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition Width="300" />
+          <ColumnDefinition />
+          <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.ColumnSpan="3"
+        <controls:PpcLabeledText Grid.Row="0"
+                                 Grid.Column="0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding RequestedQuantity}"
+                                 LabelText="{resources:Loc OperatorApp.RequestedQuantity}" />
+
+
+        <controls:PpcLabeledText Grid.Row="0"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding AverageWeight, StringFormat={}{0:F1}}"
+                                 LabelText="{resources:Loc OperatorApp.UnitWeight}" />
+
+        <controls:PpcLabeledText Grid.Row="0"
+                                 Grid.Column="3"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding ItemCode}"
+                                 LabelText="{resources:Loc OperatorApp.ItemCode}" />
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MeasuredQuantity, TargetNullValue={x:Static resources:General.TargetNullValue}}"
+                                 LabelText="{resources:Loc OperatorApp.MeasuredQuantity}" />
+
+        <TextBlock Grid.Row="1"
+                   Margin="100,13,0,0"
+                   HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{resources:Loc OperatorApp.MeasureWeightAndCount}" />
+                   Visibility="{Binding TotalMeasuredQuantity, Converter={StaticResource RTVC}}">
+          <Run Text="{Binding TotalMeasuredQuantity, TargetNullValue={x:Static resources:General.TargetNullValue}, StringFormat={} + {0}}" />
+        </TextBlock>
 
-        <Border Grid.Row="1"
-                Grid.ColumnSpan="4"
-                Margin="0,0,0,30"
-                BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="{DynamicResource PpcBorderThickness}"
-                CornerRadius="2">
-            <Grid Margin="50">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="300" />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <controls:PpcLabeledText Grid.Row="0"
-                                         Grid.Column="0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding RequestedQuantity}"
-                                         LabelText="{resources:Loc OperatorApp.RequestedQuantity}" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    Orientation="Vertical">
+          <controls:PpcButton x:Name="AddBt"
+                              Margin="5,0,0,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Command="{Binding AddCommand}"
+                              Content="{resources:Loc General.Add}"
+                              IsBusy="{Binding IsWaitingForResponse}"
+                              Visibility="Hidden" />
 
-
-                <controls:PpcLabeledText Grid.Row="0"
-                                         Grid.Column="2"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding AverageWeight, StringFormat={}{0:F1}}"
-                                         LabelText="{resources:Loc OperatorApp.UnitWeight}" />
-
-                <controls:PpcLabeledText Grid.Row="0"
-                                         Grid.Column="3"
-                                         HorizontalAlignment="Center"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding ItemCode}"
-                                         LabelText="{resources:Loc OperatorApp.ItemCode}" />
-
-                <controls:PpcLabeledText Grid.Row="1"
-                                         Grid.Column="0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding MeasuredQuantity, TargetNullValue={x:Static resources:General.TargetNullValue}}"
-                                         LabelText="{resources:Loc OperatorApp.MeasuredQuantity}" />
-
-                <TextBlock Grid.Row="1"
-                           Margin="100,13,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Visibility="{Binding TotalMeasuredQuantity, Converter={StaticResource RTVC}}">
-                    <Run Text="{Binding TotalMeasuredQuantity, TargetNullValue={x:Static resources:General.TargetNullValue}, StringFormat={} + {0}}" />
-                </TextBlock>
-
-                <StackPanel Grid.Row="1"
-                            Grid.Column="1"
-                            HorizontalAlignment="Center"
-                            Orientation="Vertical">
-                    <controls:PpcButton x:Name="AddBt"
-                                        Margin="5,0,0,0"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding AddCommand}"
-                                        Content="{resources:Loc General.Add}"
-                                        IsBusy="{Binding IsWaitingForResponse}" />
-
-                    <controls:PpcButton x:Name="ResetBt"
-                                        Margin="5,5,0,0"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Command="{Binding ResetCommand}"
-                                        Content="{resources:Loc OperatorApp.Reset}"
-                                        IsBusy="{Binding IsWaitingForResponse}" />
-                </StackPanel>
-
-                <ctrls:WeightingScale Grid.Row="1"
-                                      Grid.Column="2"
-                                      Grid.ColumnSpan="3"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top"
-                                      Quality="{Binding MeasuredQuality, Mode=OneWayToSource}"
-                                      UnitsCount="{Binding MeasuredQuantity, Mode=TwoWay}"
-                                      Weight="{Binding Weight, Mode=TwoWay}" />
-            </Grid>
-        </Border>
-
-
-        <controls:PpcButton Grid.Row="2"
-                            Grid.Column="0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Command="{Binding UpdateAverageWeightCommand}"
-                            Content="{resources:Loc OperatorApp.UpdateAverageWeight}"
-                            Visibility="{Binding ItemHasPieces, Converter={StaticResource BTVC}}" />
-
-        <StackPanel Grid.Row="2"
-                    Grid.Column="2"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-
-            <controls:PpcButton Grid.Row="2"
-                                Grid.Column="2"
-                                Margin="0,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding ConfirmMeasuredQtyCommand}"
-                                Content="{resources:Loc OperatorApp.ConfirmMeasuredQty}"
-                                IsBusy="{Binding IsWaitingForResponse}" />
-
-            <controls:PpcButton Grid.Row="2"
-                                Grid.Column="3"
-                                Margin="20,0,0,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding ConfirmRequestedQtyCommand}"
-                                Content="{resources:Loc OperatorApp.ConfirmRequestedQty}"
-                                IsBusy="{Binding IsWaitingForResponse}" />
+          <controls:PpcButton x:Name="ResetBt"
+                              Margin="5,5,0,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Command="{Binding ResetCommand}"
+                              Content="{resources:Loc OperatorApp.Reset}"
+                              IsBusy="{Binding IsWaitingForResponse}"
+                              Visibility="Hidden" />
         </StackPanel>
 
+        <ctrls:WeightingScale Grid.Row="1"
+                              Grid.Column="2"
+                              Grid.ColumnSpan="3"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Top"
+                              Quality="{Binding MeasuredQuality, Mode=OneWayToSource}"
+                              UnitsCount="{Binding MeasuredQuantity, Mode=TwoWay}"
+                              Weight="{Binding Weight, Mode=TwoWay}" />
+      </Grid>
+    </Border>
 
-    </Grid>
+
+    <controls:PpcButton Grid.Row="2"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Command="{Binding UpdateAverageWeightCommand}"
+                        Content="{resources:Loc OperatorApp.UpdateAverageWeight}"
+                        Visibility="Hidden" />
+    <!--  Visibility="{Binding ItemHasPieces, Converter={StaticResource BTVC}}"  -->
+
+    <StackPanel Grid.Row="2"
+                Grid.Column="2"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+
+      <controls:PpcButton Grid.Row="2"
+                          Grid.Column="2"
+                          Margin="0,0,0,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding ConfirmMeasuredQtyCommand}"
+                          Content="{resources:Loc OperatorApp.ConfirmMeasuredQty}"
+                          IsBusy="{Binding IsWaitingForResponse}" />
+
+      <controls:PpcButton Grid.Row="2"
+                          Grid.Column="3"
+                          Margin="20,0,0,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding ConfirmRequestedQtyCommand}"
+                          Content="{resources:Loc OperatorApp.ConfirmRequestedQty}"
+                          IsBusy="{Binding IsWaitingForResponse}"
+                          Visibility="Collapsed" />
+    </StackPanel>
+
+
+  </Grid>
 </ctrls:View>

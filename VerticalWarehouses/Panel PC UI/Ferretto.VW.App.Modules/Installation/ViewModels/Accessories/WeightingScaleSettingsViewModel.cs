@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -20,17 +21,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ISerialPortsService serialPortsService;
-
         private readonly IWeightingScaleService weightingScaleService;
 
         private SubscriptionToken barcodeSubscriptionToken;
 
         private DelegateCommand configureDeviceCommand;
 
-        private string portName;
+        private IPAddress ipAddress;
 
-        private bool systemPortsAvailable;
+        private int port;
 
         #endregion
 
@@ -38,15 +37,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public WeightingScaleSettingsViewModel(
             IWeightingScaleService weightingScaleService,
-            ISerialPortsService serialPortsService,
             IEventAggregator eventAggregator)
         {
             this.weightingScaleService = weightingScaleService;
             this.eventAggregator = eventAggregator;
-            this.serialPortsService = serialPortsService;
-
-            this.serialPortsService.PortNames.CollectionChanged += this.OnPortNamesChanged;
-            this.SystemPortsAvailable = this.serialPortsService.PortNames.Any();
         }
 
         #endregion
@@ -60,18 +54,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ConfigureDevice,
                 this.CanConfigureDevice));
 
-        public string PortName
+        public IPAddress IpAddress
         {
-            get => this.portName;
-            set => this.SetProperty(ref this.portName, value, () => this.AreSettingsChanged = true);
+            get => this.ipAddress;
+            set
+            {
+                if (this.SetProperty(ref this.ipAddress, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
-        public IEnumerable<string> PortNames => this.serialPortsService.PortNames;
-
-        public bool SystemPortsAvailable
+        public int Port
         {
-            get => this.systemPortsAvailable;
-            set => this.SetProperty(ref this.systemPortsAvailable, value);
+            get => this.port;
+            set
+            {
+                if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                }
+
+                if (this.SetProperty(ref this.port, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         #endregion
@@ -115,7 +126,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     bayAccessories.WeightingScale != null)
                 {
                     this.IsAccessoryEnabled = bayAccessories.WeightingScale.IsEnabledNew;
-                    this.PortName = bayAccessories.WeightingScale.PortName;
+                    this.IpAddress = bayAccessories.WeightingScale.IpAddress;
+                    this.Port = bayAccessories.WeightingScale.TcpPort;
 
                     this.SetDeviceInformation(bayAccessories.WeightingScale.DeviceInformation);
                 }
@@ -145,7 +157,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Logger.Debug("Saving Weighting Scale settings ...");
                 this.ClearNotifications();
                 this.IsWaitingForResponse = true;
-                await this.weightingScaleService.UpdateSettingsAsync(this.IsAccessoryEnabled, this.PortName);
+                await this.weightingScaleService.UpdateSettingsAsync(this.IsAccessoryEnabled, this.IpAddress.ToString(), this.Port);
 
                 this.Logger.Debug("Weighting Scale settings saved.");
 
@@ -175,11 +187,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Accessories.BarcodeReaderConfig);
-        }
-
-        private void OnPortNamesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            this.SystemPortsAvailable = this.serialPortsService.PortNames.Any();
         }
 
         #endregion

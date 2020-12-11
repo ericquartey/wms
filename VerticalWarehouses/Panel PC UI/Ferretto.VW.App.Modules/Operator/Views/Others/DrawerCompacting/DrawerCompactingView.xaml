@@ -72,7 +72,8 @@
     <Border Grid.Row="3"
             Grid.ColumnSpan="4"
             Margin="0,15,15,0"
-            Background="{DynamicResource PpcBackground}">
+            Background="{DynamicResource PpcBackground}"
+            Visibility="Collapsed">
       <Border BorderBrush="{DynamicResource PpcBorderBrush}"
               BorderThickness="{DynamicResource PpcBorderThickness}">
         <Grid>
@@ -227,7 +228,7 @@
         </Grid>
       </Border>
     </Border>
-    
+
     <Border Grid.Row="4"
             Grid.ColumnSpan="4"
             Margin="0,15,15,0"
@@ -265,8 +266,9 @@
                        Margin="0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Top"
-                       Style="{DynamicResource VWAPP_CardSensor_Data}"
-                       Text="{Binding MaxSolidSpaceFront}" />
+                       Style="{DynamicResource VWAPP_CardSensor_Data}">
+              <Run Text="{Binding MaxSolidSpaceFront}" /><Run Text="mm" />
+            </TextBlock>
             <!--  Text="{Binding LowerBound}"  -->
             <Border Grid.RowSpan="2"
                     Grid.Column="1"
@@ -301,8 +303,9 @@
                        Margin="0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Top"
-                       Style="{DynamicResource VWAPP_CardSensor_Data}"
-                       Text="{Binding MaxSolidSpaceBack}" />
+                       Style="{DynamicResource VWAPP_CardSensor_Data}">
+              <Run Text="{Binding MaxSolidSpaceBack}" /><Run Text="mm" />
+            </TextBlock>
           </Grid>
 
         </Grid>

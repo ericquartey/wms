@@ -650,13 +650,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.CanInputHeight = this.CanBaseExecute();
 
+            var IsCorrectManual = false;
+
+            switch (this.MachineService.BayNumber)
+            {
+                case MAS.AutomationService.Contracts.BayNumber.BayOne:
+                    IsCorrectManual = this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Manual;
+                    break;
+
+                case MAS.AutomationService.Contracts.BayNumber.BayTwo:
+                    IsCorrectManual = this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Manual2;
+                    break;
+
+                case MAS.AutomationService.Contracts.BayNumber.BayThree:
+                    IsCorrectManual = this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Manual3;
+                    break;
+
+                default:
+                    IsCorrectManual = this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Manual;
+                    break;
+            }
+
             this.CanShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false) &&
                                            !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
                                              ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                            !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                            !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                       this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                            IsCorrectManual;
 
             this.CanShutterMoveUpCommand = this.CanShutterMoveUpCommand || this.isPolicyBypassed;
 
@@ -666,7 +687,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                              !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                              !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                       this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                       IsCorrectManual;
 
             this.CanShutterMoveDownCommand = this.CanShutterMoveDownCommand || this.isPolicyBypassed;
 
@@ -675,13 +696,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                            !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                            !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                            this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                            IsCorrectManual;
+
             this.CanMoveElevatorForwards = !this.IsMovingElevatorBackwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
                                            !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                            !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                            !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                            this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                           IsCorrectManual;
 
             this.CanMoveElevatorBackwards = this.CanMoveElevatorBackwards || this.isPolicyBypassed;
             this.CanMoveElevatorForwards = this.CanMoveElevatorForwards || this.isPolicyBypassed;
@@ -694,7 +716,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                      !(this.SensorsService.IsExtraVertical && !this.SensorsService.IsZeroVertical) && // overrun
                                      !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                      this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                     this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                     IsCorrectManual;
 
             this.CanMoveElevatorUp = this.CanMoveElevatorUp || this.isPolicyBypassed;
 
@@ -706,7 +728,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                        !(this.SensorsService.IsExtraVertical && this.SensorsService.IsZeroVertical) && // underrun
                                        !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                        this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                       this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                      IsCorrectManual;
 
             this.CanMoveElevatorDown = this.CanMoveElevatorDown || this.isPolicyBypassed;
 
@@ -715,7 +737,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                                !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                                !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                       this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                       IsCorrectManual;
 
             this.CanMoveCarouselCloseCommand = this.CanMoveCarouselCloseCommand || this.isPolicyBypassed;
 
@@ -724,7 +746,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                               !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                               !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                       this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                       IsCorrectManual;
 
             this.CanMoveCarouselOpenCommand = this.CanMoveCarouselOpenCommand || this.isPolicyBypassed;
 
@@ -733,7 +755,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                                                  !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                                                  !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                       this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                       IsCorrectManual;
 
             this.CanMoveManualExternalBayTowardOperatorCommand = this.CanMoveManualExternalBayTowardOperatorCommand || this.isPolicyBypassed;
 
@@ -742,7 +764,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                                                 !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
                                                                 !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                                       this.MachineModeService?.MachineMode == MachineMode.Manual;
+                                       IsCorrectManual;
+
             this.CanMoveManualExternalBayTowardMachineCommand = this.CanMoveManualExternalBayTowardMachineCommand || this.isPolicyBypassed;
         }
 
@@ -899,6 +922,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsTuningChain = false;
             this.IsTuningExtBay = false;
             this.IsBusyLoadingFromBay = false;
+            this.IsVerticalCalibration = false;
             this.IsBusyLoadingFromCell = false;
             this.IsBusyUnloadingToBay = false;
             this.IsBusyUnloadingToCell = false;

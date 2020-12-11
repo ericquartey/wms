@@ -856,13 +856,13 @@
     <value>Operacija potvrđena.</value>
   </data>
   <data name="NoLoadingUnitsToMove" xml:space="preserve">
-    <value>Nema pretinaca za pomicanje</value>
+    <value>Nema pretinaca za pomicanje za uvalu {0}</value>
   </data>
   <data name="LoadingUnitsSendToBay" xml:space="preserve">
-    <value>Prisutni su {0} pretinci za uvalu</value>
+    <value>Prisutni su {0} pretinci za uvalu {1}</value>
   </data>
   <data name="LoadingUnitSendToBay" xml:space="preserve">
-    <value>Prisutan je pretinac za uvalu</value>
+    <value>Prisutan je pretinac za uvalu {0}</value>
   </data>
   <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
     <value>Uklonite iz odjeljenja moguće položene artikle.</value>
@@ -1634,5 +1634,8 @@
   </data>
   <data name="MissionStateWaitDepositBay" xml:space="preserve">
     <value>Čekanje odlag. zaljev</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Nevažeća operacija polja bilješki nije potvrđena</value>
   </data>
 </root>

@@ -58,10 +58,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(missions);
         }
 
+        [HttpGet("active/unit/by/bay")]
+        public ActionResult<List<int>> GetAllUnitGoBay(BayNumber bayNumber)
+        {
+            var missions = this.missionsDataProvider.GetAllActiveUnitGoBay(bayNumber);
+            return this.Ok(missions);
+        }
+
         [HttpGet("active/unit/cell")]
         public ActionResult<List<int>> GetAllUnitGoCell()
         {
             var missions = this.missionsDataProvider.GetAllActiveUnitGoCell();
+            return this.Ok(missions);
+        }
+
+        [HttpGet("active/unit/cell/by/bay")]
+        public ActionResult<List<int>> GetAllUnitGoCell(BayNumber bayNumber)
+        {
+            var missions = this.missionsDataProvider.GetAllActiveUnitGoCell(bayNumber);
             return this.Ok(missions);
         }
 
@@ -87,6 +101,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             return this.Ok(await missionsWmsWebService.GetDetailsByIdAsync(id));
+        }
+
+        [HttpGet("enabe/note/rules")]
+        public ActionResult<bool> IsEnabeNoteRules()
+        {
+            var result = this.missionsDataProvider.IsEnabeNoteRules();
+            return this.Ok(result);
         }
 
         [HttpPost("reset-machine")]

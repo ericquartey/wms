@@ -558,4 +558,7 @@
   <data name="Machine_IsHeartBeat" xml:space="preserve">
     <value>HeartBeat in inverter communication </value>
   </data>
+  <data name="EnabeNoteRules" xml:space="preserve">
+    <value>Enabe note rules</value>
+  </data>
 </root>

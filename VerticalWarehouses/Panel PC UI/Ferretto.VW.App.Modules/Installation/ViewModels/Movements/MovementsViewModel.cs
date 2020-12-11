@@ -49,9 +49,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineService machineService;
 
+        private readonly ISessionService sessionService;
+
         private readonly IMachineShuttersWebService shuttersWebService;
 
-        private readonly ISessionService sessionService;
+        private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
 
         private SubscriptionToken cellsToken;
 
@@ -98,6 +100,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public MovementsViewModel(
+            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
             ISessionService sessionService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineCellsWebService machineCellsWebService,
@@ -113,6 +116,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineExternalBayWebService machineExternalBayWebService)
             : base(PresentationMode.Installer)
         {
+            this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
@@ -348,6 +352,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsPositionUpSelected = true;
                 }
 
+                if(this.MachineStatus.BayPositionUpper is null)
+                {
+                    this.IsPositionDownEnabled = this.IsPositionUpEnabled = true;
+                }
+                else
+                {
+                    this.IsPositionDownEnabled = this.MachineStatus.BayPositionUpper.Value ||
+                            this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
+
+                    this.IsPositionUpEnabled = !this.MachineStatus.BayPositionUpper.Value;
+                }
+
                 this.InputCellIdPropertyChanged();
 
                 this.lastActiveCommand = "";
@@ -384,7 +400,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnMachineModeChangedAsync(e);
 
             if (e.MachineMode == MachineMode.SwitchingToAutomatic
-                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations)
+                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations
+                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations2
+                || e.MachineMode == MachineMode.SwitchingToLoadUnitOperations3)
             {
                 this.GoToMovementsExecuteCommand(true);
                 this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
@@ -452,11 +470,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanBaseExecute()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+            switch (this.machineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    !this.IsKeyboardOpened &&
                    !this.IsExecutingProcedure &&
                    !this.IsMoving;
+
+                case BayNumber.BayTwo:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   !this.IsKeyboardOpened &&
+                   !this.IsExecutingProcedure &&
+                   !this.IsMoving;
+
+                case BayNumber.BayThree:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   !this.IsKeyboardOpened &&
+                   !this.IsExecutingProcedure &&
+                   !this.IsMoving;
+
+                default:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   !this.IsKeyboardOpened &&
+                   !this.IsExecutingProcedure &&
+                   !this.IsMoving;
+            }
         }
 
         private bool CanEmbark()
@@ -473,16 +516,50 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsGuidedExecuteCommand()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+            switch (this.machineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return (this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
-                ;
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
+
+                case BayNumber.BayTwo:
+                    return (this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
+
+                case BayNumber.BayThree:
+                    return (this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
+
+                default:
+                    return (this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
+            }
         }
 
         private bool CanGoToMovementsManualExecuteCommand()
         {
-            return this.MachineModeService?.MachineMode == MachineMode.Manual &&
+            switch (this.machineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+                case BayNumber.BayTwo:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+                case BayNumber.BayThree:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+
+                default:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered;
+            }
         }
 
         private bool CanResetCommand()
@@ -587,6 +664,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
+                        if (this.MachineStatus.BayPositionUpper is null)
+                        {
+                            this.IsPositionDownEnabled = this.IsPositionUpEnabled = true;
+                        }
+                        else
+                        {
+                            this.IsPositionDownEnabled = this.MachineStatus.BayPositionUpper.Value ||
+                                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Cell;
+
+                            this.IsPositionUpEnabled = !this.MachineStatus.BayPositionUpper.Value;
+                        }
+
                         this.StopMoving();
                         break;
                     }

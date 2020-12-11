@@ -45,6 +45,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isPositionUpSelected;
 
+        private bool isPositionDownEnabled;
+
+        private bool isPositionUpEnabled;
+
         private bool isShutterMoving;
 
         private bool isTuningExtBay;
@@ -53,6 +57,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isTuningChain;
 
+        private bool isVerticalCalibration;
+
         private bool isUseWeightControl;
 
         private string labelMoveToLoadunit;
@@ -60,6 +66,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand loadFromBayCommand;
 
         private DelegateCommand loadFromCellCommand;
+
+        private DelegateCommand verticalCalibrationCommand;
 
         private LoadingUnit loadingUnitInCell;
 
@@ -172,6 +180,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.ClosedShutterAsync(),
                 this.CanCloseShutter));
 
+        public ICommand VerticalCalibrationCommand =>
+            this.verticalCalibrationCommand
+            ??
+            (this.verticalCalibrationCommand = new DelegateCommand(
+                async () => await this.VerticalCalibrationAsync(),
+                this.CanVerticalCalibration));
+
         public int? InputLoadingUnitId
         {
             get => this.inputLoadingUnitId;
@@ -257,6 +272,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsPositionDownEnabled
+        {
+            get => this.isPositionDownEnabled;
+            set => this.SetProperty(ref this.isPositionDownEnabled, value);
+        }
+
+        public bool IsPositionUpEnabled
+        {
+            get => this.isPositionUpEnabled;
+            set => this.SetProperty(ref this.isPositionUpEnabled, value);
+        }
+
         public bool IsShutterMoving
         {
             get => this.isShutterMoving;
@@ -279,6 +306,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.isTuningChain;
             private set => this.SetProperty(ref this.isTuningChain, value);
+        }
+
+        public bool IsVerticalCalibration
+        {
+            get => this.isVerticalCalibration;
+            private set => this.SetProperty(ref this.isVerticalCalibration, value);
         }
 
         public bool IsUseWeightControl
@@ -466,6 +499,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
                 this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+
+                this.verticalCalibrationCommand?.RaiseCanExecuteChanged();
 
                 this.moveExtBayTowardOperatorCommand?.RaiseCanExecuteChanged();
                 this.moveExtBayTowardMachineCommand?.RaiseCanExecuteChanged();
@@ -656,7 +691,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanSelectBayPosition()
         {
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay || !this.HasShutter) &&
-                   this.CanBaseExecute();
+               this.CanBaseExecute()
+               &&
+               this.moveToBayPositionPolicy?.IsAllowed == true;
+        }
+
+        private bool CanVerticalCalibration()
+        {
+            return this.CanBaseExecute() &&
+                   !this.IsVerticalCalibration &&
+                   !this.MachineService.MachineStatus.IsMoving &&
+                   !this.MachineService.MachineStatus.IsMovingLoadingUnit &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanTuneExtBay()
@@ -762,6 +809,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 // Uso la proprietà per scatenare action sulla proprietà
                 //this.RaisePropertyChanged(nameof(this.InputCellId));
+            }
+        }
+
+        private async Task VerticalCalibrationAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.verticalOriginProcedureWebService.StartAsync();
+
+                this.IsVerticalCalibration = true;
+
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
@@ -1103,16 +1172,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void SelectBayPositionDown()
+        private async void SelectBayPositionDown()
         {
             this.IsPositionDownSelected = true;
             this.RaiseCanExecuteChanged();
+
+            await this.MoveToBayPositionAsync();
         }
 
-        private void SelectBayPositionUp()
+        private async void SelectBayPositionUp()
         {
             this.IsPositionUpSelected = true;
             this.RaiseCanExecuteChanged();
+
+            await this.MoveToBayPositionAsync();
         }
 
         private async Task TuneExtBayAsync()

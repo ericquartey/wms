@@ -1100,15 +1100,15 @@
     <comment>Information Message</comment>
   </data>
   <data name="NoLoadingUnitsToMove" xml:space="preserve">
-    <value>No loading units to move</value>
+    <value>No loading units to move in bay {0}</value>
     <comment>Information Message</comment>
   </data>
   <data name="LoadingUnitsSendToBay" xml:space="preserve">
-    <value>There are {0} loading units send to bay</value>
+    <value>There are {0} loading units send to bay {1}</value>
     <comment>Information Message</comment>
   </data>
   <data name="LoadingUnitSendToBay" xml:space="preserve">
-    <value>There is 1 loading unit send to bay</value>
+    <value>There is 1 loading unit send to bay {0}</value>
     <comment>Information Message</comment>
   </data>
   <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
@@ -1992,5 +1992,8 @@
   </data>
   <data name="MissionStateWaitDepositBay" xml:space="preserve">
     <value>Wait deposit bay</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Invalid notes field operation not confirmed</value>
   </data>
 </root>

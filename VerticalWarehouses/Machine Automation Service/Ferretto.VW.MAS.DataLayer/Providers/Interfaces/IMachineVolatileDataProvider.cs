@@ -56,6 +56,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double GetBayEncoderPosition(BayNumber bayNumber);
 
+        MachineMode GetMachineModeManualByBayNumber(BayNumber bayNumber);
+
         void SetBayEncoderPosition(BayNumber bayNumber, double position);
 
         #endregion

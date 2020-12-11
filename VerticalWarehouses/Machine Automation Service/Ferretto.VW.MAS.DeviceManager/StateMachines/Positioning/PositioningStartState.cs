@@ -179,8 +179,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         .GetBeltBurnishingTest()
                         .PerformedCycles;
 
-                    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
-                    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
+                    switch (this.machineData.TargetBay)
+                    {
+                        case BayNumber.BayOne:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                            break;
+
+                        case BayNumber.BayTwo:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test2;
+                            break;
+
+                        case BayNumber.BayThree:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test3;
+                            break;
+
+                        default:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                            break;
+                    }
+
+                    this.Logger.LogInformation($"Machine status switched to {this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode}");
                 }
                 else if (this.machineData.MessageData.MovementMode == MovementMode.BayTest)
                 {
@@ -189,8 +207,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         .GetBayCarouselCalibration(this.machineData.RequestingBay)
                         .PerformedCycles;
 
-                    this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
-                    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
+                    switch (this.machineData.TargetBay)
+                    {
+                        case BayNumber.BayOne:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                            break;
+
+                        case BayNumber.BayTwo:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test2;
+                            break;
+
+                        case BayNumber.BayThree:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test3;
+                            break;
+
+                        default:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                            break;
+                    }
+
+                    this.Logger.LogInformation($"Machine status switched to {this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode}");
                 }
             }
 

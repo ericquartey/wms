@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Microsoft.EntityFrameworkCore;
@@ -147,8 +148,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(c => c.Panel)
                     .Where(x => x.Cell != null
                         && !this.dataContext.Missions.Any(m => m.LoadUnitId == x.Id
-                            && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Aborted
-                            && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed)
+                            && (m.Status == MissionStatus.Executing
+                                || (m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
+                                )
+                            )
                         )
                     .ToArray();
             }

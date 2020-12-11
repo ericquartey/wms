@@ -253,7 +253,7 @@ namespace Ferretto.VW.Installer.Core
             {
                 this.logger.Error(ex, $"Error loading steps from file.");
                 throw new InvalidOperationException(
-                    $"Impossibile continuare, errore durante il caricmento degli steps da \"{Directory.GetCurrentDirectory()}\"");
+                    $"Impossibile continuare, errore durante il caricamento degli steps da \"{Directory.GetCurrentDirectory()}\"");
             }
         }
 
@@ -434,9 +434,11 @@ namespace Ferretto.VW.Installer.Core
 
         private void UpdateMachineRole()
         {
-            this.MachineRole = this.masUrl?.Host?.Equals(this.ppcIpAddress) == true
+            this.MachineRole = this.masUrl?.Host?.Equals(this.ppcIpAddress?.ToString(), StringComparison.InvariantCultureIgnoreCase) == true
                 ? MachineRole.Master
                 : MachineRole.Slave;
+
+            this.logger.Debug($"MachineRole is now '{this.MachineRole}'. masUrl {this.masUrl}, ppcIpAddress {this.ppcIpAddress}");
         }
 
         #endregion

@@ -90,8 +90,11 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             // Change the machine mode
-            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-            this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+            //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+            //this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+
+            this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(this.machineData.TargetBay);
+            this.Logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
         }
 
         public override void Stop(StopRequestReason reason)

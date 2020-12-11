@@ -2482,7 +2482,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is 1 loading unit send to bay.
+        ///   Looks up a localized string similar to There is 1 loading unit send to bay {0}.
         /// </summary>
         public static string LoadingUnitSendToBay {
             get {
@@ -2491,7 +2491,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are {0} loading units send to bay.
+        ///   Looks up a localized string similar to There are {0} loading units send to bay {1}.
         /// </summary>
         public static string LoadingUnitsSendToBay {
             get {
@@ -3445,7 +3445,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No loading units to move.
+        ///   Looks up a localized string similar to No loading units to move in bay {0}.
         /// </summary>
         public static string NoLoadingUnitsToMove {
             get {
@@ -3468,6 +3468,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Note {
             get {
                 return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid notes field operation not confirmed.
+        /// </summary>
+        public static string NoteNotValid {
+            get {
+                return ResourceManager.GetString("NoteNotValid", resourceCulture);
             }
         }
         

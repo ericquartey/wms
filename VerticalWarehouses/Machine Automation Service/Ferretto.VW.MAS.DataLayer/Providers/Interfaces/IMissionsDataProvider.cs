@@ -35,7 +35,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         List<int> GetAllActiveUnitGoBay();
 
+        List<int> GetAllActiveUnitGoBay(BayNumber bayNumber);
+
         List<int> GetAllActiveUnitGoCell();
+
+        List<int> GetAllActiveUnitGoCell(BayNumber bayNumber);
 
         IEnumerable<Mission> GetAllExecutingMissions();
 
@@ -48,6 +52,8 @@ namespace Ferretto.VW.MAS.DataLayer
         Mission GetByWmsId(int id);
 
         IDbContextTransaction GetContextTransaction();
+
+        bool IsEnabeNoteRules();
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 

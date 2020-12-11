@@ -33,6 +33,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public Elevator Elevator { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.EnabeNoteRules))]
+            [Id(22)]
+            public bool EnabeNoteRules { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ExpireCountPrecent))]
             [Id(11)]
             public double ExpireCountPrecent { get; set; }

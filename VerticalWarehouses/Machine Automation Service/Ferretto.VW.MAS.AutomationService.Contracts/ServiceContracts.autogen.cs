@@ -102,11 +102,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task UpdateWeightingScaleDeviceInfoAsync(DeviceInformation deviceInformation, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string portName);
+        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string portName, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1542,18 +1542,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Mission>> GetAllAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoBayAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoBayAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoBayAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoBayAllAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoCellAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoBayAsync(BayNumber bayNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoCellAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoBayAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoCellAllAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoCellAllAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoCellAsync(BayNumber bayNumber);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<int>> GetAllUnitGoCellAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MissionInfo> GetByWmsIdAsync(int id);
@@ -1568,6 +1582,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MissionWithLoadingUnitDetails> GetWmsDetailsByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsEnabeNoteRulesAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsEnabeNoteRulesAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> ResetMachineAsync();
@@ -2643,7 +2664,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class WeightingScale : SerialPortAccessory
+    public partial class WeightingScale : TcpIpAccessory
     {
         public string ToJson() 
         {
@@ -4233,6 +4254,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("Elevator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Elevator Elevator { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("EnabeNoteRules", Required = Newtonsoft.Json.Required.Always)]
+        public bool EnabeNoteRules { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ExpireCountPrecent", Required = Newtonsoft.Json.Required.Always)]
         public int ExpireCountPrecent { get; set; }
@@ -6413,27 +6437,71 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Manual = 2,
     
-        LoadUnitOperations = 3,
+        Manual2 = 3,
     
-        Test = 4,
+        Manual3 = 4,
     
-        Compact = 5,
+        LoadUnitOperations = 5,
     
-        FullTest = 6,
+        LoadUnitOperations2 = 6,
     
-        FirstTest = 7,
+        LoadUnitOperations3 = 7,
     
-        SwitchingToAutomatic = 8,
+        Test = 8,
     
-        SwitchingToManual = 9,
+        Test2 = 9,
     
-        SwitchingToLoadUnitOperations = 10,
+        Test3 = 10,
     
-        SwitchingToCompact = 11,
+        Compact = 11,
     
-        SwitchingToFullTest = 12,
+        Compact2 = 12,
     
-        SwitchingToFirstTest = 13,
+        Compact3 = 13,
+    
+        FullTest = 14,
+    
+        FullTest2 = 15,
+    
+        FullTest3 = 16,
+    
+        FirstTest = 17,
+    
+        FirstTest2 = 18,
+    
+        FirstTest3 = 19,
+    
+        SwitchingToAutomatic = 20,
+    
+        SwitchingToManual = 21,
+    
+        SwitchingToManual2 = 22,
+    
+        SwitchingToManual3 = 23,
+    
+        SwitchingToLoadUnitOperations = 24,
+    
+        SwitchingToLoadUnitOperations2 = 25,
+    
+        SwitchingToLoadUnitOperations3 = 26,
+    
+        SwitchingToCompact = 27,
+    
+        SwitchingToCompact2 = 28,
+    
+        SwitchingToCompact3 = 29,
+    
+        SwitchingToFullTest = 30,
+    
+        SwitchingToFullTest2 = 31,
+    
+        SwitchingToFullTest3 = 32,
+    
+        SwitchingToFirstTest = 33,
+    
+        SwitchingToFirstTest2 = 34,
+    
+        SwitchingToFirstTest3 = 35,
     
     }
     

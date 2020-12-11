@@ -59,11 +59,13 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 // no duplicate of LU
                 returnValue = !this.dataContext.Missions.Any(m => m.LoadUnitId == loadingUnitId
-                    && (m.Status == MissionStatus.Executing || m.Status == MissionStatus.New)
+                    && (m.Status == MissionStatus.Executing
+                        || (m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
+                        )
                     );
                 if (!returnValue)
                 {
-                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, targetBay);
+                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, targetBay, $"LU {loadingUnitId}");
                 }
                 else
                 {
@@ -145,13 +147,13 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (this.dataContext.Missions.Any(m => m.LoadUnitId == loadingUnitId
                          && m.TargetBay == bayNumber
-                         && (m.Status == MissionStatus.New
+                         && ((m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
                             || m.Status == MissionStatus.Executing
                             || (missionType == MissionType.OUT && m.Status == MissionStatus.Waiting))
                         )
                     )
                 {
-                    this.logger.LogError($"Another mission is active for load unit {loadingUnitId} on bay {bayNumber}");
+                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, bayNumber, $"LU {loadingUnitId}");
                     throw new InvalidOperationException(string.Format(Resources.Missions.ResourceManager.GetString("ActiveMissionForLoadingUnit", CommonUtils.Culture.Actual), loadingUnitId, (int)bayNumber));
                 }
                 var entry = this.dataContext.Missions
@@ -333,6 +335,40 @@ namespace Ferretto.VW.MAS.DataLayer
             return UnitGoBay;
         }
 
+        public List<int> GetAllActiveUnitGoBay(BayNumber bayNumber)
+        {
+            var UnitGoBay = new List<int>();
+
+            lock (this.dataContext)
+            {
+                //var missions = this.dataContext.Missions
+                //.AsNoTracking()
+                //.Where(x => x.Status != MissionStatus.Completed
+                //        && x.Status != MissionStatus.Aborted
+                //        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
+                //.OrderBy(o => o.Priority)
+                //.ThenBy(o => o.CreationDate)
+                //.ToList();
+
+                var missions = this.dataContext.Missions
+                .AsNoTracking()
+                .Where(x => x.Status != MissionStatus.Completed
+                        && x.Status != MissionStatus.Aborted
+                        && x.TargetBay == bayNumber
+                        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate)
+                .ToList();
+
+                foreach (var unit in missions)
+                {
+                    UnitGoBay.Add(unit.LoadUnitId);
+                }
+            }
+
+            return UnitGoBay;
+        }
+
         public List<int> GetAllActiveUnitGoCell()
         {
             var UnitGoBay = new List<int>();
@@ -351,6 +387,39 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AsNoTracking()
                 .Where(x => x.Status != MissionStatus.Completed
                         && x.Status != MissionStatus.Aborted
+                        && (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS))
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate)
+                .ToList();
+
+                foreach (var unit in missions)
+                {
+                    UnitGoBay.Add(unit.LoadUnitId);
+                }
+            }
+
+            return UnitGoBay;
+        }
+
+        public List<int> GetAllActiveUnitGoCell(BayNumber bayNumber)
+        {
+            var UnitGoBay = new List<int>();
+
+            lock (this.dataContext)
+            {
+                //var missions = this.dataContext.Missions
+                //.AsNoTracking()
+                //.Where(x => x.Status != MissionStatus.Completed
+                //        && x.Status != MissionStatus.Aborted)
+                //.OrderBy(o => o.Priority)
+                //.ThenBy(o => o.CreationDate)
+                //.ToList();
+
+                var missions = this.dataContext.Missions
+                .AsNoTracking()
+                .Where(x => x.Status != MissionStatus.Completed
+                        && x.Status != MissionStatus.Aborted
+                        && x.TargetBay == bayNumber
                         && (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS))
                 .OrderBy(o => o.Priority)
                 .ThenBy(o => o.CreationDate)
@@ -433,6 +502,14 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.dataContext.Database.BeginTransaction();
         }
 
+        public bool IsEnabeNoteRules()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().EnabeNoteRules;
+            }
+        }
+
         public bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId)
         {
             lock (this.dataContext)
@@ -458,6 +535,17 @@ namespace Ferretto.VW.MAS.DataLayer
                     )
                 {
                     this.dataContext.Missions.Remove(mission);
+
+                    var bays = this.dataContext.Bays.Include(b => b.CurrentMission).Where(b => b.CurrentMission.Id == mission.Id);
+                    if (bays.Any())
+                    {
+                        foreach (var bay in bays)
+                        {
+                            bay.CurrentMission = null;
+                            this.dataContext.Bays.Update(bay);
+                            this.logger.LogDebug($"Cleared bay mission {mission.Id}, Bay {bay.Number}.");
+                        }
+                    }
 
                     this.logger.LogInformation($"Deleted MAS mission {mission.Id}, Wms Id {mission.WmsId}.");
                     count++;

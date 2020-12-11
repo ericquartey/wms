@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateWeightingScaleDeviceInfo(BayNumber bayNumber, DeviceInformation deviceInformation);
 
-        void UpdateWeightingScaleSettings(BayNumber bayNumber, bool isEnabled, string portName);
+        void UpdateWeightingScaleSettings(BayNumber bayNumber, bool isEnabled, string ipAddress, int port);
 
         #endregion
     }
