@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        public ItemWeightChangedMessage lastItemQuantityMessage;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
@@ -59,6 +61,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool itemSerialNumberVisibility;
 
         private DelegateCommand itemUpCommand;
+
+        private SubscriptionToken itemWeightToken;
 
         private double loadingUnitDepth;
 
@@ -391,6 +395,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Reset();
             }
 
+            this.itemWeightToken = this.itemWeightToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<ItemWeightChangedMessage>>()
+                    .Subscribe(
+                        (e) => this.OnItemWeightChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
             await base.OnAppearedAsync();
 
             this.NoteEnabled = true;
@@ -549,6 +562,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.IsListModeEnabled = !this.IsListModeEnabled;
+        }
+
+        private void OnItemWeightChangedAsync(ItemWeightChangedMessage itemWeightChanged)
+        {
+            this.lastItemQuantityMessage = itemWeightChanged;
+            if (this.lastItemQuantityMessage != null)
+            {
+            }
         }
 
         private void OnMissionChanged(MissionChangedEventArgs e)

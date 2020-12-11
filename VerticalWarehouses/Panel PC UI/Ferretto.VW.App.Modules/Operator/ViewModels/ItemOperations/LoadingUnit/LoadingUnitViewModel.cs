@@ -873,7 +873,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (operationType == OperatorApp.Adjustment)
                 {
-                    this.InputQuantity = this.SelectedItemCompartment.Stock;
+                    if (this.lastItemQuantityMessage != null)
+                    {
+                        this.InputQuantity = this.lastItemQuantityMessage.MeasureadQuantity;
+                    }
+                    else
+                    {
+                        this.InputQuantity = this.SelectedItemCompartment.Stock;
+                    }
+
                     this.IsAdjustmentVisible = !this.IsAdjustmentVisible;
                     this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.AdjustmentQuantity"), this.MeasureUnit);
                 }
