@@ -177,7 +177,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 (this.machineService.IsTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus());
 
                 case Menu.Installation:
-                    if (this.MachineModeService.MachineMode == MachineMode.Automatic)
+                    if (this.MachineModeService.MachineMode == MachineMode.Automatic ||
+                        this.MachineModeService.MachineMode == MachineMode.NotSpecified ||
+                        this.MachineModeService.MachinePower == MachinePowerState.NotSpecified)
                     {
                         return true;
                     }
