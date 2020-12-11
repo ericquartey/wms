@@ -101,6 +101,24 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
             }
         }
 
+        public async Task SendRawDatabaseContentAsync(byte[] rawDatabaseContent)
+        {
+            if (!this.IsConnected)
+            {
+                return;
+            }
+
+            try
+            {
+                //x await this.SendRawDatabaseContentAsync(rawDatabaseContent);
+                await this.SendAsync("SendRawDatabaseContent", rawDatabaseContent);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error($"Error sending raw database content to telemetry service {ex.Message}");
+            }
+        }
+
         public async Task SendScreenCastAsync(int bayNumber, byte[] screenshot, DateTimeOffset timeStamp)
         {
             if (!this.IsConnected)

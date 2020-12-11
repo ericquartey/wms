@@ -62,6 +62,11 @@ namespace Ferretto.VW.TelemetryService
             await this.TrySendMissionLogAsync(serialNumber, missionLog, persistOnSendFailure: true);
         }
 
+        public async Task SendRawDatabaseContentAsync(string serialNumber, byte[] rawDatabaseContent)
+        {
+            await this.TrySendRawDatabaseContentAsync(serialNumber, rawDatabaseContent, persistOnSendFailure: true);
+        }
+
         public async Task SendScreenCastAsync(int bayNumber, string serialNumber, DateTimeOffset timeStamp, byte[] screenshot)
         {
             if (this.IsConnected)
@@ -185,6 +190,14 @@ namespace Ferretto.VW.TelemetryService
 
             var ioLogProvider = scope.ServiceProvider.GetRequiredService<Providers.IIOLogProvider>();
             return ioLogProvider.GetByTimeStamp(serialNumber, start, end);
+        }
+
+        private void SaveEntry(byte[] rawDatabaseContent)
+        {
+            var scope = this.serviceScopeFactory.CreateScope();
+
+            var machineProvider = scope.ServiceProvider.GetRequiredService<Providers.IMachineProvider>();
+            machineProvider.SaveRawDatabaseContent(rawDatabaseContent);
         }
 
         private async Task SaveEntryAsync(string serialNumber, IErrorLog errorLog)
@@ -318,6 +331,32 @@ namespace Ferretto.VW.TelemetryService
             if (!messageSent && persistOnSendFailure)
             {
                 await this.SaveEntryAsync(serialNumber, missionLog);
+            }
+
+            return messageSent;
+        }
+
+        private async Task<bool> TrySendRawDatabaseContentAsync(string serialNumber, byte[] rawDatabaseContent, bool persistOnSendFailure)
+        {
+            var messageSent = false;
+
+            if (this.IsConnected)
+            {
+                try
+                {
+                    //await this.SendAsync(nameof(ITelemetryHub.SendRawDatabaseContent), serialNumber, rawDatabaseContent);
+
+                    //messageSent = true;
+                }
+                catch
+                {
+                }
+            }
+
+            if (!messageSent && persistOnSendFailure)
+            {
+                //x await this.SaveEntryAsync(rawDatabaseContent);
+                this.SaveEntry(rawDatabaseContent);
             }
 
             return messageSent;

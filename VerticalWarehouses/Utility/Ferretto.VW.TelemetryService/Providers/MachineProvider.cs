@@ -91,6 +91,31 @@ namespace Ferretto.VW.TelemetryService.Providers
             }
         }
 
+        public Task SaveRawDatabaseContent(byte[] rawDatabaseContent)
+        {
+            var machineInDatabase = this.realm.All<Models.Machine>().SingleOrDefault();
+
+            if (machineInDatabase != null)
+            {
+                // It will perform an update to entity inside the database
+                var machineRecord = new Models.Machine
+                {
+                    Id = machineInDatabase.Id, // Set the Id mandatory (as Primary Key)
+                    ModelName = machineInDatabase.ModelName,
+                    SerialNumber = machineInDatabase.SerialNumber,
+                    Version = machineInDatabase.Version,
+                    RawDatabaseContent = rawDatabaseContent // Update the raw database content
+                };
+
+                this.realm.Write(() =>
+                {
+                    this.realm.Add(machineRecord, update: true);
+                });
+            }
+
+            return Task.CompletedTask;
+        }
+
         #endregion
     }
 }

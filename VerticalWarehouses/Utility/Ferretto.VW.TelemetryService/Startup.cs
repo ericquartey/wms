@@ -90,7 +90,20 @@ namespace Ferretto.VW.TelemetryService
             var schemaVersion = Convert.ToUInt64(this.Configuration.GetConnectionString(SchemaVersionName));
 
             var config = new RealmConfiguration(connectionString) { SchemaVersion = schemaVersion };
-            services.AddTransient(s => Realm.GetInstance(config));
+            try
+            {
+                services.AddTransient(s => Realm.GetInstance(config));
+            }
+            catch (Realms.Exceptions.RealmFileAccessErrorException exc)
+            {
+                System.Diagnostics.Debug.WriteLine($"Realm File access error exception. Reason: {exc}");
+                return;
+            }
+            catch (Exception)
+            {
+                System.Diagnostics.Debug.WriteLine($"Invalid exception for Realm database");
+                return;
+            }
             //services.AddTransient(s => Realm.GetInstance(new RealmConfiguration(s.GetRequiredService<IConfiguration>().GetConnectionString(ConnectionStringName))));
 
             services.AddHostedService<DatabaseCleanupService>();

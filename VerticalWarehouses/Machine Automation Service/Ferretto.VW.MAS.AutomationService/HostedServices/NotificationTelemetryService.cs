@@ -6,6 +6,7 @@ using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -20,9 +21,13 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+
         private readonly IMachineProvider machineProvider;
 
         private readonly ITelemetryHubClient telemetryHub;
+
+        private bool enableConnectionFlag;
 
         #endregion
 
@@ -38,7 +43,9 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             this.telemetryHub = telemetryHub ?? throw new ArgumentNullException(nameof(telemetryHub));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+
             this.telemetryHub.MachineReceivedChanged += async (s, e) => await this.TelemetryHub_MachineReceivedChangedAsync(s, e);
+            this.telemetryHub.ConnectionStatusChanged += async (s, e) => await this.OnTelemetryHubConnectionStatusChanged(e);
         }
 
         #endregion
@@ -49,6 +56,7 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             await base.StartAsync(cancellationToken);
 
+            this.enableConnectionFlag = false;
             await this.telemetryHub.ConnectAsync();
         }
 
@@ -90,6 +98,32 @@ namespace Ferretto.VW.MAS.AutomationService
             if (e.IsConnected)
             {
                 // To Do
+            }
+        }
+
+        private async Task OnTelemetryHubConnectionStatusChanged(Common.Hubs.ConnectionStatusChangedEventArgs e)
+        {
+            await this._semaphore.WaitAsync();
+
+            try
+            {
+                this.Logger.LogDebug("Connection to Telemetry hub changed (connected={isConnected})", e.IsConnected);
+
+                // When connection to hub client is established, then retrieve the database content
+                if (e.IsConnected && !this.enableConnectionFlag)
+                {
+                    // Retrieve the (raw) database content
+                    var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
+                    var rawDatabaseContent = dataLayer.GetRawDatabaseContent();
+
+                    await this.SendRawDatabaseContentAsync(rawDatabaseContent);
+                }
+
+                this.enableConnectionFlag = e.IsConnected;
+            }
+            finally
+            {
+                this._semaphore.Release();
             }
         }
 

@@ -4,6 +4,7 @@ using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -145,7 +146,24 @@ namespace Ferretto.VW.MAS.AutomationService
                 }
             }
 
+            // Send mission log
             await this.SendMissionLogAsync(missionLog);
+
+            if (messageData.MissionId.HasValue)
+            {
+                // Only if mission is of type IN and current Step is the MissionStep.End
+                if (messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.IN &&
+                    messageData.MissionStep == CommonUtils.Messages.Enumerations.MissionStep.End &&
+                    messageData.StopReason == CommonUtils.Messages.Enumerations.StopRequestReason.NoReason)
+                {
+                    // Retrieve the (raw) database content
+                    var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
+                    var rawDatabaseContent = dataLayer.GetRawDatabaseContent();
+
+                    // Send raw database content
+                    await this.SendRawDatabaseContentAsync(rawDatabaseContent);
+                }
+            }
         }
 
         private async Task OnSensorsChanged(NotificationMessage receivedMessage, SensorsChangedMessageData messageData)
@@ -219,6 +237,25 @@ namespace Ferretto.VW.MAS.AutomationService
             catch (Exception ex)
             {
                 this.Logger.LogWarning(ex, "Unable to send mission log to telemetry service.");
+            }
+        }
+
+        private async Task SendRawDatabaseContentAsync(byte[] rawDatabaseContent)
+        {
+            if (!this.telemetryHub.IsConnected)
+            {
+                this.Logger.LogWarning("Unable to send raw database content to telemetry service because the hub is not connected.");
+
+                return;
+            }
+
+            try
+            {
+                await this.telemetryHub.SendRawDatabaseContentAsync(rawDatabaseContent);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogWarning(ex, "Unable to send raw database content to telemetry service.");
             }
         }
 
