@@ -45,9 +45,9 @@ steps:
 
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: inverter'
+  displayName: 'Publish Artifact: installer'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)/VerticalWarehouses/Installer/Ferretto.VW.Installer/bin/${{ parameters.BuildConfiguration }}/${{ parameters.TargetFramework }}/${{ parameters.RuntimeIdentifier }}/publish'
-    ArtifactName: 'inverter'
+    ArtifactName: 'installer'
 
 
