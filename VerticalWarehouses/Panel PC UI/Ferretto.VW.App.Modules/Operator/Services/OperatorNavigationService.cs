@@ -214,19 +214,19 @@ namespace Ferretto.VW.App.Modules.Operator
                     loadingUnitInBay != null &&
                     (this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnitInBay.Id ||
                     this.machineService.MachineStatus.LoadingUnitPositionDownInBay?.Id == loadingUnitInBay.Id) &&
-                    !missions.Where(s => s.LoadUnitId == loadingUnitInBay.Id).Any())
+                    missions.Any(s => s.LoadUnitId == loadingUnitInBay.Id))
                 {
                     this.lastActiveUnitId = loadingUnitInBay.Id;
                     this.NavigateToLoadingUnitDetails(loadingUnitInBay.Id);
                 }
-                else if (missions == null &&
-                    loadingUnitInBay != null &&
-                    (this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnitInBay.Id ||
-                    this.machineService.MachineStatus.LoadingUnitPositionDownInBay?.Id == loadingUnitInBay.Id))
-                {
-                    this.lastActiveUnitId = loadingUnitInBay.Id;
-                    this.NavigateToLoadingUnitDetails(loadingUnitInBay.Id);
-                }
+                //else if (missions == null &&
+                //    loadingUnitInBay != null &&
+                //    (this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnitInBay.Id ||
+                //    this.machineService.MachineStatus.LoadingUnitPositionDownInBay?.Id == loadingUnitInBay.Id))
+                //{
+                //    this.lastActiveUnitId = loadingUnitInBay.Id;
+                //    this.NavigateToLoadingUnitDetails(loadingUnitInBay.Id);
+                //}
                 else if (
                     activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
                     &&
