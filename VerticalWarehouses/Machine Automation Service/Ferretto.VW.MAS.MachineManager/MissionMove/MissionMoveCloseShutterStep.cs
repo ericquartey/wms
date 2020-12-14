@@ -44,6 +44,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
+            // ----------------
+            // Add bay light
+            var lightOn = this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(BayNumber.BayOne) && this.MachineVolatileDataProvider.IsBayLightOn[BayNumber.BayOne];
+            //this.Logger.LogDebug($" ====> BayLight: {lightOn}");
+            // ----------------
+
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             if (bay is null)
             {
@@ -153,6 +159,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Logger.LogInformation($"Display error for Mission.Id={this.Mission.Id}, ErrorCode={this.Mission.ErrorCode}");
                 this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+                // -----------
+                //this.Logger.LogDebug($"{this.GetType().Name} :: Ligth ON!!!! (1)");
+                // -----------
             }
             IMissionMoveBase newStep;
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
@@ -167,6 +177,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     || this.Mission.MissionType == MissionType.ScaleCalibration)
                 {
                     this.BaysDataProvider.Light(bay.Number, true);
+
+                    // -----------
+                    //this.Logger.LogDebug($"{this.GetType().Name} :: Ligth ON!!!! (2)");
+                    // -----------
 
                     if (bay.External != null)
                     {

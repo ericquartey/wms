@@ -54,6 +54,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
+            // ----------------
+            // Add bay light
+            var lightOn = this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(BayNumber.BayOne) && this.MachineVolatileDataProvider.IsBayLightOn[BayNumber.BayOne];
+            //this.Logger.LogDebug($" ====> BayLight: {lightOn}");
+            // ----------------
+
             if (measure)
             {
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
@@ -313,6 +319,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                 this.ErrorsProvider.RecordNew(errorMission.ErrorCode, this.Mission.TargetBay);
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+                // -----------
+                //this.Logger.LogDebug($"{this.GetType().Name} :: Ligth ON!!!!");
+                // -----------
             }
         }
 

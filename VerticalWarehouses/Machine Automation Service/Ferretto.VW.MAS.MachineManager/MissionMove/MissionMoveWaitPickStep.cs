@@ -48,6 +48,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
+            // ----------------
+            // Add bay light
+            var lightOn = this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(BayNumber.BayOne) && this.MachineVolatileDataProvider.IsBayLightOn[BayNumber.BayOne];
+            //this.Logger.LogDebug($" ====> BayLight: {lightOn}");
+            // ----------------
+
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
 
             if (this.Mission.WmsId.HasValue)
@@ -69,6 +75,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
             this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
             this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+            // -----------
+            //this.Logger.LogDebug($"{this.GetType().Name} :: Ligth ON!!!! (1)");
+            // -----------
+
             this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
 
             return true;
@@ -146,6 +157,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
                             this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
                             this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+                            // -----------
+                            //this.Logger.LogDebug($"{this.GetType().Name} :: Ligth ON!!!! (2)");
+                            // -----------
 
                             // End (forced) the current mission
                             var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);

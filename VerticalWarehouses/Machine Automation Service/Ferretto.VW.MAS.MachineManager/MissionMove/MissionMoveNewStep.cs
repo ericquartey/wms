@@ -94,6 +94,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.MissionsDataProvider.Update(this.Mission);
                 this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
+                // ----------------
+                // Add bay light
+                var lightOn = this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(BayNumber.BayOne) && this.MachineVolatileDataProvider.IsBayLightOn[BayNumber.BayOne];
+                //this.Logger.LogDebug($" ====> BayLight: {lightOn}");
+                // ----------------
+
                 var startState = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 returnValue = startState.OnEnter(null);
             }

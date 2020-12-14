@@ -50,6 +50,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
+            // ----------------
+            // Add bay light
+            var lightOn = this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(BayNumber.BayOne) && this.MachineVolatileDataProvider.IsBayLightOn[BayNumber.BayOne];
+            //this.Logger.LogDebug($" ====> BayLight: {lightOn}");
+            // ----------------
+
             var disableIntrusion = false;
 
             if (this.Mission.LoadUnitSource is LoadingUnitLocation.Elevator)
@@ -179,6 +185,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         )
                     {
                         this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+
+                        // -----------
+                        //this.Logger.LogDebug($"{this.GetType().Name} :: Ligth OFF!!!!");
+                        // -----------
+
                         if (this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, false))
                         {
                             this.Logger.LogInformation($"Disable intrusion Mission:Id={this.Mission.Id}");
