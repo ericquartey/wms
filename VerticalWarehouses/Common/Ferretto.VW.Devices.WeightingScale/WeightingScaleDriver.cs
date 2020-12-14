@@ -85,9 +85,16 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         public void Disconnect()
         {
-            this.stream?.Close();
-            this.client?.Close();
-            this.client = null;
+            try
+            {
+                this.stream?.Close();
+                this.client?.Close();
+                this.client = null;
+            }
+            catch (Exception e)
+            {
+                this.logger.Error(e);
+            }
         }
 
         public async Task DisplayMessageAsync(string message)
