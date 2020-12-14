@@ -37,10 +37,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private int? lastActiveUnitId;
 
-        private int lastLu = 0;
-
-        private LoadingUnit loadingUnitInBay;
-
         private string previousModuleName;
 
         #endregion
@@ -99,32 +95,29 @@ namespace Ferretto.VW.App.Modules.Operator
             this.NavigateToDrawerView(goToWaitViewIfBayIsEmpty: true);
         }
 
-        public void NavigateToDrawerViewBase()
-        {
-            this.NavigateToDrawerViewBase(goToWaitViewIfBayIsEmpty: true);
-        }
-
         public void NavigateToDrawerViewConfirmPresent()
         {
             this.NavigateToDrawerViewConfirmPresent(goToWaitViewIfBayIsEmpty: true);
         }
 
-        public void NavigateToDrawerViewUnit()
-        {
-            this.NavigateToDrawerViewUnit(goToWaitViewIfBayIsEmpty: true);
-        }
-
         public void NavigateToOperatorMenu()
         {
-            if (this.missionOperationsService.ActiveWmsOperation != null)
+            if (this.missionOperationsService.ActiveWmsOperation != null &&
+                this.missionOperationsService.ActiveWmsMission != null &&
+                this.missionOperationsService.ActiveWmsMission.Id == this.missionOperationsService.ActiveWmsOperation.MissionId &&
+                 this.missionOperationsService.ActiveWmsMission.BayId == this.machineService.Bay.Id)
             {
                 this.NavigateToOperationDetails(this.missionOperationsService.ActiveWmsOperation.Type);
             }
             else
             {
                 var currentMission = this.missionOperationsService.ActiveMachineMission;
-                if (this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId) is LoadingUnit loadingUnit)
+                var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
+
+                if (loadingUnit != null &&
+                    this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnit.Id)
                 {
+                    this.lastActiveUnitId = loadingUnit.Id;
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
                 }
                 else
@@ -188,7 +181,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 activeViewModelName != Utils.Modules.Operator.ItemOperations.INVENTORY;
         }
 
-        private void NavigateToDrawerView(bool goToWaitViewIfBayIsEmpty)
+        private async void NavigateToDrawerView(bool goToWaitViewIfBayIsEmpty)
         {
             var activeViewModelName = this.GetActiveViewModelName();
             if (!this.IsOperatorViewModel(activeViewModelName))
@@ -196,105 +189,43 @@ namespace Ferretto.VW.App.Modules.Operator
                 return;
             }
 
-            if (this.missionOperationsService.ActiveWmsOperation != null)
+            if (this.missionOperationsService.ActiveWmsOperation != null &&
+                this.missionOperationsService.ActiveWmsMission != null &&
+                this.missionOperationsService.ActiveWmsMission.Id == this.missionOperationsService.ActiveWmsOperation.MissionId &&
+                 this.missionOperationsService.ActiveWmsMission.BayId == this.machineService.Bay.Id)
             {
                 this.NavigateToOperationDetails(this.missionOperationsService.ActiveWmsOperation.Type);
             }
             else
             {
+                var missions = await this.machineMissionsWebService.GetAllAsync();
+                var loadingUnitInBay = this.machineService.Loadunits.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay);
+
                 var currentMission = this.missionOperationsService.ActiveMachineMission;
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
-                if (loadingUnit != null)
+
+                if (loadingUnit != null &&
+                    this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnit.Id)
                 {
                     this.lastActiveUnitId = loadingUnit.Id;
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
                 }
-                else if (
-                    activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
-                    &&
-                    goToWaitViewIfBayIsEmpty)
+                else if (missions != null &&
+                    loadingUnitInBay != null &&
+                    (this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnitInBay.Id ||
+                    this.machineService.MachineStatus.LoadingUnitPositionDownInBay?.Id == loadingUnitInBay.Id) &&
+                    !missions.Where(s => s.LoadUnitId == loadingUnitInBay.Id).Any())
                 {
-                    this.logger.Trace("No WMS operation and no loading unit in bay, navigation to wait view.");
-
-                    if (this.IsOperationOrLoadingUnitViewModel(activeViewModelName))
-                    {
-                        this.navigationService.GoBackTo(
-                           nameof(Utils.Modules.Operator),
-                           Utils.Modules.Operator.ItemOperations.WAIT);
-                    }
-                    else
-                    {
-                        this.navigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.ItemOperations.WAIT,
-                            null,
-                            trackCurrentView: true);
-                    }
+                    this.lastActiveUnitId = loadingUnitInBay.Id;
+                    this.NavigateToLoadingUnitDetails(loadingUnitInBay.Id);
                 }
-            }
-        }
-
-        private void NavigateToDrawerViewBase(bool goToWaitViewIfBayIsEmpty)
-        {
-            var activeViewModelName = this.GetActiveViewModelName();
-            if (!this.IsOperatorViewModel(activeViewModelName))
-            {
-                return;
-            }
-
-            if (this.missionOperationsService.ActiveWmsOperation != null)
-            {
-                this.NavigateToOperationDetails(this.missionOperationsService.ActiveWmsOperation.Type);
-            }
-            else
-            {
-                var currentMission = this.missionOperationsService.ActiveMachineMission;
-                var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
-                this.loadingUnitInBay = this.machineService.Loadunits.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay);
-                var recallUnitId = this.missionOperationsService.RecallLoadingUnitId();
-                var isRecallUnit = this.missionOperationsService.IsRecallLoadingUnitId();
-
-                if (loadingUnit != null || this.loadingUnitInBay != null)
+                else if (missions == null &&
+                    loadingUnitInBay != null &&
+                    (this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnitInBay.Id ||
+                    this.machineService.MachineStatus.LoadingUnitPositionDownInBay?.Id == loadingUnitInBay.Id))
                 {
-                    if (this.lastLu == recallUnitId)
-                    {
-                        this.lastLu = 0;
-                    }
-
-                    if (loadingUnit != null)
-                    {
-                        this.lastActiveUnitId = loadingUnit.Id;
-                        this.NavigateToLoadingUnitDetails(loadingUnit.Id);
-                    }
-                    else if ((this.lastLu != this.loadingUnitInBay.Id) && isRecallUnit == false)
-                    {
-                        this.lastActiveUnitId = this.loadingUnitInBay.Id;
-                        this.NavigateToLoadingUnitDetails(this.loadingUnitInBay.Id);
-
-                        if (recallUnitId != 0)
-                        {
-                            this.lastLu = this.loadingUnitInBay.Id;
-                        }
-                    }
-                    else
-                    {
-                        this.logger.Trace("No WMS operation and no loading unit in bay, navigation to wait view.");
-
-                        if (this.IsOperationOrLoadingUnitViewModel(activeViewModelName))
-                        {
-                            this.navigationService.GoBackTo(
-                               nameof(Utils.Modules.Operator),
-                               Utils.Modules.Operator.ItemOperations.WAIT);
-                        }
-                        else
-                        {
-                            this.navigationService.Appear(
-                                nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.ItemOperations.WAIT,
-                                null,
-                                trackCurrentView: true);
-                        }
-                    }
+                    this.lastActiveUnitId = loadingUnitInBay.Id;
+                    this.NavigateToLoadingUnitDetails(loadingUnitInBay.Id);
                 }
                 else if (
                     activeViewModelName != Utils.Modules.Operator.ItemOperations.WAIT
@@ -349,57 +280,6 @@ namespace Ferretto.VW.App.Modules.Operator
                             Utils.Modules.Operator.ItemOperations.WAIT,
                             null,
                             trackCurrentView: true);
-                }
-            }
-        }
-
-        private void NavigateToDrawerViewUnit(bool goToWaitViewIfBayIsEmpty)
-        {
-            var activeViewModelName = this.GetActiveViewModelName();
-
-            if (NavigationItemSearch.OnItemSearchMainView)
-            {
-                NavigationItemSearch.OnItemSearchMainView = false;
-                if (!this.IsOperatorViewModel(activeViewModelName))
-                {
-                    return;
-                }
-
-                if (this.missionOperationsService.ActiveWmsOperation != null)
-                {
-                    this.NavigateToOperationDetails(this.missionOperationsService.ActiveWmsOperation.Type);
-                }
-                else
-                {
-                    var currentMission = this.missionOperationsService.ActiveMachineMission;
-                    var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
-                    this.loadingUnitInBay = this.machineService.Loadunits.FirstOrDefault(l => l.Status == LoadingUnitStatus.InBay);
-                    var recallUnitId = this.missionOperationsService.RecallLoadingUnitId();
-                    var isRecallUnit = this.missionOperationsService.IsRecallLoadingUnitId();
-
-                    if (loadingUnit != null || this.loadingUnitInBay != null)
-                    {
-                        if (this.lastLu == recallUnitId)
-                        {
-                            this.lastLu = 0;
-                        }
-
-                        if (loadingUnit != null)
-                        {
-                            this.lastActiveUnitId = loadingUnit.Id;
-                            this.NavigateToLoadingUnitDetails(loadingUnit.Id);
-                        }
-                        else if ((this.lastLu != this.loadingUnitInBay.Id) && isRecallUnit == false)
-                        {
-                            this.lastActiveUnitId = this.loadingUnitInBay.Id;
-                            this.NavigateToLoadingUnitDetails(this.loadingUnitInBay.Id);
-
-                            if (recallUnitId != 0)
-                            {
-                                this.lastLu = this.loadingUnitInBay.Id;
-                            }
-                        }
-                    }
                 }
             }
         }

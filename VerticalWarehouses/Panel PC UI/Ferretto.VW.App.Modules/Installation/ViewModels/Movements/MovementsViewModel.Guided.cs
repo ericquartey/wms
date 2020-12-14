@@ -45,6 +45,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isPositionUpSelected;
 
+        private bool isPositionDownEnabled;
+
+        private bool isPositionUpEnabled;
+
         private bool isShutterMoving;
 
         private bool isTuningExtBay;
@@ -266,6 +270,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsPositionDownSelected = !this.IsPositionUpSelected;
                 }
             }
+        }
+
+        public bool IsPositionDownEnabled
+        {
+            get => this.isPositionDownEnabled;
+            set => this.SetProperty(ref this.isPositionDownEnabled, value);
+        }
+
+        public bool IsPositionUpEnabled
+        {
+            get => this.isPositionUpEnabled;
+            set => this.SetProperty(ref this.isPositionUpEnabled, value);
         }
 
         public bool IsShutterMoving

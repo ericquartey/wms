@@ -61,8 +61,24 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual;
                     break;
 
+                case MachineMode.Manual2:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual2;
+                    break;
+
+                case MachineMode.Manual3:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToManual3;
+                    break;
+
                 case MachineMode.Compact:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                    break;
+
+                case MachineMode.Compact2:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact2;
+                    break;
+
+                case MachineMode.Compact3:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact3;
                     break;
 
                 case MachineMode.FullTest:
@@ -79,11 +95,55 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.machineVolatileDataProvider.StopTest = false;
                     break;
 
+                case MachineMode.FullTest2:
+                    this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                    this.machineVolatileDataProvider.RequiredCycles = cycles;
+                    this.machineVolatileDataProvider.BayTestNumber = bayNumber;
+                    this.machineVolatileDataProvider.ExecutedCycles = 0;
+                    this.machineVolatileDataProvider.LoadUnitsExecutedCycles = loadUnits.ToDictionary(key => key, value => 0);
+
+                    var procedureParameters2 = this.setupProceduresDataProvider.GetFullTest(bayNumber);
+                    this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters2);
+
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest2;
+                    this.machineVolatileDataProvider.StopTest = false;
+                    break;
+
+                case MachineMode.FullTest3:
+                    this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                    this.machineVolatileDataProvider.RequiredCycles = cycles;
+                    this.machineVolatileDataProvider.BayTestNumber = bayNumber;
+                    this.machineVolatileDataProvider.ExecutedCycles = 0;
+                    this.machineVolatileDataProvider.LoadUnitsExecutedCycles = loadUnits.ToDictionary(key => key, value => 0);
+
+                    var procedureParameters3 = this.setupProceduresDataProvider.GetFullTest(bayNumber);
+                    this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters3);
+
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest3;
+                    this.machineVolatileDataProvider.StopTest = false;
+                    break;
+
                 case MachineMode.FirstTest:
                     this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
                     this.machineVolatileDataProvider.BayTestNumber = bayNumber;
                     this.machineVolatileDataProvider.ExecutedCycles = 0;
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest;
+                    this.machineVolatileDataProvider.StopTest = false;
+                    break;
+
+                case MachineMode.FirstTest2:
+                    this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                    this.machineVolatileDataProvider.BayTestNumber = bayNumber;
+                    this.machineVolatileDataProvider.ExecutedCycles = 0;
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest2;
+                    this.machineVolatileDataProvider.StopTest = false;
+                    break;
+
+                case MachineMode.FirstTest3:
+                    this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
+                    this.machineVolatileDataProvider.BayTestNumber = bayNumber;
+                    this.machineVolatileDataProvider.ExecutedCycles = 0;
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFirstTest3;
                     this.machineVolatileDataProvider.StopTest = false;
                     break;
 

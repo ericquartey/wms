@@ -56,6 +56,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isPutVisible;
 
+        private SubscriptionToken itemWeightToken;
+
+        private ItemWeightChangedMessage lastItemQuantityMessage;
+
         private string measureUnit;
 
         private DelegateCommand<string> operationCommand;
@@ -79,6 +83,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private int? unitNumber;
 
         private double? unitWeight;
+
+        private DelegateCommand weightCommand;
+
+        private MissionOperation weightMission;
 
         #endregion
 
@@ -306,9 +314,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.unitWeight, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand WeightCommand =>
+                                                                                                                                                                                                                                                                                                                                                                                    this.weightCommand
+            ??
+            (this.weightCommand = new DelegateCommand(
+                () => this.Weight(),
+                this.CanOpenWeightPage));
+
         #endregion
 
         #region Methods
+
+        public bool CanOpenWeightPage()
+        {
+            return this.MachineService.Bay.Accessories.WeightingScale is null ? false : this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew &&
+                this.MissionOperationsService.ActiveWmsOperation != null;
+        }
 
         public async Task<bool> CheckReasonsAsync()
         {
@@ -379,7 +400,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 var count = 0;
 
-                var moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync();
+                var moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAllAsync();
 
                 if (moveUnitId != null)
                 {
@@ -389,7 +410,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                var moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync();
+                var moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAllAsync();
 
                 if (moveUnitIdToCell != null)
                 {
@@ -439,6 +460,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
+            this.itemWeightToken = this.itemWeightToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<ItemWeightChangedMessage>>()
+                    .Subscribe(
+                        (e) => this.OnItemWeightChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
             this.Reasons = null;
 
             Task.Run(async () =>
@@ -450,6 +480,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 while (this.IsVisible);
             });
+
+            if (this.lastItemQuantityMessage != null)
+            {
+                await this.ToggleOperation(OperatorApp.Adjustment);
+            }
         }
 
         public override void RaisePropertyChanged()
@@ -522,6 +557,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.weightCommand?.RaiseCanExecuteChanged();
             this.operationCommand?.RaiseCanExecuteChanged();
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.recallLoadingUnitCommand?.RaiseCanExecuteChanged();
@@ -821,6 +857,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsOperationVisible = false;
         }
 
+        private async Task OnItemWeightChangedAsync(ItemWeightChangedMessage itemWeightChanged)
+        {
+            this.lastItemQuantityMessage = itemWeightChanged;
+        }
+
         private async Task ToggleOperation(string operationType)
         {
             if (operationType is null)
@@ -830,6 +871,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (operationType == OperatorApp.Adjustment)
             {
+                if (this.lastItemQuantityMessage != null)
+                {
+                    this.SelectedItemCompartment.ItemId = this.weightMission.ItemId;
+                }
+
                 if (!this.SelectedItemCompartment.ItemId.HasValue)
                 {
                     return;
@@ -857,7 +903,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (operationType == OperatorApp.Adjustment)
                 {
-                    this.InputQuantity = this.SelectedItemCompartment.Stock;
+                    if (this.lastItemQuantityMessage != null)
+                    {
+                        this.InputQuantity = this.lastItemQuantityMessage.MeasureadQuantity;
+                        this.lastItemQuantityMessage = null;
+                        this.weightMission = null;
+                    }
+                    else
+                    {
+                        this.InputQuantity = this.SelectedItemCompartment.Stock;
+                    }
+
                     this.IsAdjustmentVisible = !this.IsAdjustmentVisible;
                     this.InputQuantityInfo = string.Format(Localized.Get("OperatorApp.AdjustmentQuantity"), this.MeasureUnit);
                 }
@@ -891,6 +947,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsListModeEnabled = previousIsListModeEnabled;
             }
+        }
+
+        private void Weight()
+        {
+            this.weightMission = this.MissionOperationsService.ActiveWmsOperation;
+            this.weightMission.ItemId = this.SelectedItemCompartment.ItemId.Value;
+            this.weightMission.RequestedQuantity = this.inputQuantity.Value;
+
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.WEIGHT,
+                this.weightMission);
         }
 
         #endregion

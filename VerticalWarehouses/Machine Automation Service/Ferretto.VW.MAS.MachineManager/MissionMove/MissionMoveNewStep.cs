@@ -641,22 +641,40 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionType.Manual:
                 case MissionType.ScaleCalibration:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Manual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.Manual2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.Manual3
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual3
                         );
                     break;
 
                 case MissionType.LoadUnitOperation:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.LoadUnitOperations
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.LoadUnitOperations2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.LoadUnitOperations3
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations3
                         || this.MachineVolatileDataProvider.Mode == MachineMode.Manual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.Manual2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.Manual3
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual3
                         );
                     break;
 
                 case MissionType.Compact:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.Compact
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.Compact2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.Compact3
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact3
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual3
                         );
                     break;
 
@@ -672,14 +690,26 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionType.FullTestOUT:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.FullTest
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.FullTest2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.FullTest3
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest3
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual3
                         );
                     break;
 
                 case MissionType.FirstTest:
                     returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.FirstTest
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.FirstTest2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.FirstTest3
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFirstTest
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFirstTest2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFirstTest3
                         || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual3
                         );
                     break;
 

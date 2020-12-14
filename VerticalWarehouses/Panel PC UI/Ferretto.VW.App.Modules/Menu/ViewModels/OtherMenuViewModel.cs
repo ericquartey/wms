@@ -62,32 +62,28 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuComunicationWMSCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.ComunicationWms),
-                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
+                this.CanExecute));
 
         public ICommand MenuDateTimeCommand =>
             this.menuDateTimeCommand
             ??
             (this.menuDateTimeCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.DateTime),
-                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
+                this.CanExecute));
 
         public ICommand MenuParameterInverterCommand =>
             this.menuParameterInverterCommand
             ??
             (this.menuParameterInverterCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.ParameterInverter),
-                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
+                this.CanExecute));
 
         public ICommand MenuParametersCommand =>
             this.menuParametersCommand
             ??
             (this.menuParametersCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.Parameters),
-                () => !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)));
+                this.CanExecute));
 
         public ICommand MenuUsersCommand =>
             this.menuUsersCommand
@@ -108,6 +104,28 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuParametersCommand?.RaiseCanExecuteChanged();
             this.menuDateTimeCommand?.RaiseCanExecuteChanged();
             this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanExecute()
+        {
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayTwo:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayThree:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test3 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                default:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+            }
         }
 
         private void MenuCommandOther(MenuOther menu)

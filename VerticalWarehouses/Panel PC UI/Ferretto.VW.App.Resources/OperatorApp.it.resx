@@ -844,13 +844,13 @@
     <value>Operazione confermata.</value>
   </data>
   <data name="NoLoadingUnitsToMove" xml:space="preserve">
-    <value>Non ci sono cassetti da movimentare</value>
+    <value>Non ci sono cassetti da movimentare in baia {0}</value>
   </data>
   <data name="LoadingUnitsSendToBay" xml:space="preserve">
-    <value>Ci sono {0} cassetti da portare in baia</value>
+    <value>Ci sono {0} cassetti da portare in baia {1}</value>
   </data>
   <data name="LoadingUnitSendToBay" xml:space="preserve">
-    <value>C'è un cassetto da portare in baia</value>
+    <value>C'è un cassetto da portare in baia {0}</value>
   </data>
   <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
     <value>Rimuovere dallo scomparto gli eventuali articoli versati.</value>

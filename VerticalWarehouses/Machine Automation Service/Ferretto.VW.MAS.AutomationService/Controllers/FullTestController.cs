@@ -53,7 +53,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Start(List<int> loadunits, int cycles)
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest, this.BayNumber, loadunits, cycles);
+            switch (this.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest, this.BayNumber, loadunits, cycles);
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest2, this.BayNumber, loadunits, cycles);
+                    break;
+
+                case BayNumber.BayThree:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest3, this.BayNumber, loadunits, cycles);
+                    break;
+
+                default:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest, this.BayNumber, loadunits, cycles);
+                    break;
+            }
+
             return this.Accepted();
         }
 

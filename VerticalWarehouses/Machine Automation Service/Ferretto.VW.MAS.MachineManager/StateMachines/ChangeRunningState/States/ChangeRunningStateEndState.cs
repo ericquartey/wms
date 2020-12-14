@@ -92,7 +92,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 {
                     this.IsCompleted = true;
 
-                    this.machineModeDataProvider.Mode = MachineMode.Manual;
+                    //this.machineModeDataProvider.Mode = MachineMode.Manual;
+                    this.machineModeDataProvider.Mode = this.machineModeDataProvider.GetMachineModeManualByBayNumber(commandMessage.TargetBay);
                     this.Logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}; Running state {runningState.Enable}");
 
                     if (this.missionsDataProvider.GetAllExecutingMissions().Any(m => m.TargetBay == commandMessage.RequestingBay && m.Status == MissionStatus.Waiting))

@@ -245,7 +245,25 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.MissionType == MissionType.LoadUnitOperation)
             {
-                this.MachineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                switch (this.Mission.TargetBay)
+                {
+                    case BayNumber.BayOne:
+                        this.MachineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                        break;
+
+                    case BayNumber.BayTwo:
+                        this.MachineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations2;
+                        break;
+
+                    case BayNumber.BayThree:
+                        this.MachineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations3;
+                        break;
+
+                    default:
+                        this.MachineVolatileDataProvider.Mode = MachineMode.LoadUnitOperations;
+                        break;
+                }
+
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
             }
             return true;

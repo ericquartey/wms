@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        public readonly IEventAggregator eventAggregator;
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 

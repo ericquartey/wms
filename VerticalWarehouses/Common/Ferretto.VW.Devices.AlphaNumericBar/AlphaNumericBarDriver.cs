@@ -191,7 +191,15 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             if (!bayIsExternal)         // for BIG, BIS and BID bay (no external), the first 8 leds are hide
             {
-                this.ledHideOnLeftSide = 8;
+                if (size == AlphaNumericBarSize.ExtraSmall)  // for XS width, all led are available
+                {
+                    this.ledHideOnLeftSide = 0;
+                }
+                else
+                {
+                    this.ledHideOnLeftSide = 8;
+                }
+
                 this.ledHideOnRightSide = 0;
             }
         }

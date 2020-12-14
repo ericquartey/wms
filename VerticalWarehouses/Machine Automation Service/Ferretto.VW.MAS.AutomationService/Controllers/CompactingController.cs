@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.MachineManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompactingController : ControllerBase
+    public class CompactingController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -24,6 +25,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
+
+        #endregion
+
         #region Methods
 
         [HttpPost("compacting")]
@@ -32,7 +39,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Compacting()
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact);
+            switch (this.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact);
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact2);
+                    break;
+
+                case BayNumber.BayThree:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact3);
+                    break;
+
+                default:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact);
+                    break;
+            }
+
             return this.Accepted();
         }
 
@@ -41,7 +66,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
+            switch (this.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual2);
+                    break;
+
+                case BayNumber.BayThree:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual3);
+                    break;
+
+                default:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
+                    break;
+            }
+
             return this.Accepted();
         }
 

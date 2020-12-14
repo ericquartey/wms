@@ -253,6 +253,7 @@
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
+          "HorizontalCalibrateSpeed": 1.5,
           "Id": 2,
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
@@ -5990,8 +5991,8 @@
     "Bay1ProfileCheck": {
       "FeedRate": 1.0,
       "Id": 0,
-      "IsBypassed": false,
-      "IsCompleted": false,
+      "IsBypassed": true,
+      "IsCompleted": true,
       "ProfileCorrectDistance": 150.0,
       "ProfileDegrees": 5.0,
       "ProfileTotalDistance": 265.0
