@@ -2313,4 +2313,7 @@
   <data name="VerticalCalibration" xml:space="preserve">
     <value>Taratura elevatore</value>
   </data>
+  <data name="SoftwareUpdateDescription" xml:space="preserve">
+    <value>Inserire chiavetta USB</value>
+  </data>
 </root>

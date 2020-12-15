@@ -1633,7 +1633,7 @@
     <value>Unit in low position</value>
   </data>
   <data name="SoftwareUpdate" xml:space="preserve">
-    <value>Software Update</value>
+    <value>Software Update.</value>
   </data>
   <data name="UserManagement" xml:space="preserve">
     <value>User Management</value>
@@ -2366,5 +2366,8 @@
   </data>
   <data name="VerticalCalibration" xml:space="preserve">
     <value>Elevator calibration</value>
+  </data>
+  <data name="SoftwareUpdateDescription" xml:space="preserve">
+    <value>Please insert USB stick</value>
   </data>
 </root>
