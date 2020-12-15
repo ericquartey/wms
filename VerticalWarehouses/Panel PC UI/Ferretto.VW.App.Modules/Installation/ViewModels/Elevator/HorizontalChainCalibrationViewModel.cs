@@ -686,7 +686,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToGoToBay()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                (this.SensorsService.ShutterSensors.Closed || !this.HasShutter);
         }
 
         private bool CanMoveToStartCalibration()
