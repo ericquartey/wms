@@ -24,19 +24,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private const string RESETDATA = "reset";
 
-        private readonly DelegateCommand goToImport;
-
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
-        private readonly DelegateCommand setInvertersParamertersCommand;
-
-        private readonly DelegateCommand<InverterParametersData> showInverterParamertersCommand;
+        private readonly ISessionService sessionService;
 
         private readonly IUsbWatcherService usbWatcher;
 
         private IEnumerable<DriveInfo> exportableDrives = Array.Empty<DriveInfo>();
+
+        private DelegateCommand goToImport;
 
         private IEnumerable<FileInfo> importableFiles = Array.Empty<FileInfo>();
 
@@ -48,6 +46,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private InverterParametersData selectedInverter;
 
+        private DelegateCommand setInvertersParamertersCommand;
+
+        private DelegateCommand<InverterParametersData> showInverterParamertersCommand;
+
         private VertimagConfiguration vertimagConfiguration;
 
         #endregion
@@ -55,17 +57,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ParameterInverterViewModel(
+            ISessionService sessionService,
             IMachineDevicesWebService machineDevicesWebService,
             IMachineConfigurationWebService machineConfigurationWebService,
             IUsbWatcherService usbWatcher)
         {
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.usbWatcher = usbWatcher;
-
-            this.goToImport = new DelegateCommand(this.ShowImport, this.CanShowImport);
-            this.setInvertersParamertersCommand = new DelegateCommand(async () => await this.SaveAllParametersAsync(), this.CanSave);
-            this.showInverterParamertersCommand = new DelegateCommand<InverterParametersData>(this.ShowInverterParameters);
         }
 
         #endregion
@@ -74,7 +74,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<DriveInfo> AvailableDrives => this.exportableDrives;
 
-        public ICommand GoToImport => this.goToImport;
+        public ICommand GoToImport =>
+               this.goToImport
+               ??
+               (this.goToImport = new DelegateCommand(
+                () => this.ShowImport(), this.CanShowImport));
 
         public IEnumerable<FileInfo> ImportableFiles => this.importableFiles;
 
@@ -98,9 +102,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.selectedInverter, value);
         }
 
-        public ICommand SetInvertersParamertersCommand => this.setInvertersParamertersCommand;
+        public ICommand SetInvertersParamertersCommand =>
+                   this.setInvertersParamertersCommand
+               ??
+               (this.setInvertersParamertersCommand = new DelegateCommand(
+                async () => await this.SaveAllParametersAsync(), this.CanSave));
 
-        public ICommand ShowInverterParamertersCommand => this.showInverterParamertersCommand;
+        public ICommand ShowInverterParamertersCommand =>
+                   this.showInverterParamertersCommand
+               ??
+               (this.showInverterParamertersCommand = new DelegateCommand<InverterParametersData>(
+                   this.ShowInverterParameters));
 
         public VertimagConfiguration VertimagConfiguration
         {
@@ -196,16 +208,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
             this.setInvertersParamertersCommand?.RaiseCanExecuteChanged();
+            this.showInverterParamertersCommand?.RaiseCanExecuteChanged();
+            this.goToImport?.RaiseCanExecuteChanged();
         }
 
         private bool CanSave()
         {
-            return !this.IsBusy;
+            return !this.IsBusy &&
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 
         private bool CanShowImport()
         {
-            return this.ImportableFiles.Any();
+            return this.usbWatcher.Drives.Writable().Any();
         }
 
         private IEnumerable<InverterParametersData> GetInvertersParameters(VertimagConfiguration vertimagConfiguration)
