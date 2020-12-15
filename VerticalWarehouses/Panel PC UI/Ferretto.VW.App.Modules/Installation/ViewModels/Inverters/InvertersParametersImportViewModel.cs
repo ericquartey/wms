@@ -20,21 +20,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private readonly DelegateCommand importCommand = null;
-
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly IUsbWatcherService usbWatcher;
 
         private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
 
-        private bool isBusy = false;
+        private DelegateCommand importCommand;
+
+        private bool isBusy;
 
         private ISetVertimagConfiguration parentConfiguration;
 
-        private VertimagConfiguration selectedConfiguration = null;
+        private VertimagConfiguration selectedConfiguration;
 
-        private FileInfo selectedFile = null;
+        private FileInfo selectedFile;
 
         #endregion
 
@@ -47,8 +47,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.usbWatcher = usbWatcher;
-
-            this.importCommand = new DelegateCommand(async () => await this.ImportAsync(), this.CanImport);
         }
 
         #endregion
@@ -59,7 +57,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public ICommand ImportCommand => this.importCommand;
+        public ICommand ImportCommand =>
+                   this.importCommand
+               ??
+               (this.importCommand = new DelegateCommand(
+                async () => await this.ImportAsync(), this.CanImport));
 
         public bool IsBusy
         {
@@ -135,7 +137,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (!this.configurationFiles.Any())
             {
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
-                this.NavigationService.GoBackSafelyAsync();
+                //this.NavigationService.GoBackSafelyAsync();
             }
 
             this.IsBusy = false;
