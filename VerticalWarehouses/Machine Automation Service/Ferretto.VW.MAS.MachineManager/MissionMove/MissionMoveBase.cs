@@ -334,7 +334,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 // Detect the error condition and add it to the errors list
                                 if (!this.CheckMissionShowError())
                                 {
+                                    // Set the light bay to ON
                                     this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
                                     if (this.Mission.MissionType != MissionType.Manual || this.Mission.MissionType != MissionType.ScaleCalibration)
                                     {
                                         this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);

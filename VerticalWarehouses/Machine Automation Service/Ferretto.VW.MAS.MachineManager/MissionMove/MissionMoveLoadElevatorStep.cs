@@ -132,7 +132,31 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 || bay.Positions.FirstOrDefault(p => p.IsUpper)?.LoadingUnit is null)
                             )
                         {
-                            this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                            // Light bay set to OFF. Exceptional case handling for an internal double bay
+                            if (bay.IsDouble &&
+                                bay.Carousel == null &&
+                                !bay.IsExternal)
+                            {
+                                // Only for BID
+                                if (bay.Positions.Any(p => p.LoadingUnit != null))
+                                {
+                                    // The light must be ON, because there is a loading unit into bay
+                                    this.Logger.LogDebug($"Light bay {bay.Number} is {this.MachineVolatileDataProvider.IsBayLightOn[bay.Number]}");
+                                }
+                                else
+                                {
+                                    // The bay light is OFF
+                                    this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                                    this.Logger.LogDebug($"Light bay {bay.Number} is false");
+                                }
+                            }
+                            else
+                            {
+                                // All others bay configuration
+                                this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                                this.Logger.LogDebug($"Light bay {bay.Number} is false");
+                            }
+
                             if (this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, false))
                             {
                                 this.Logger.LogInformation($"Disable intrusion Mission:Id={this.Mission.Id}");

@@ -68,7 +68,40 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
             this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
-            this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+
+            // Set the light ON for the target bay. Handle exceptional case, if exist already a waiting mission in the current internal double bay
+            if (bay.IsDouble &&
+                bay.Carousel == null &&
+                !bay.IsExternal)
+            {
+                // Handle only for BID
+                var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                    .Where(
+                        m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                        m.Id != this.Mission.Id &&
+                        m.Status == MissionStatus.Waiting &&
+                        m.Step == MissionStep.WaitPick &&
+                        bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)
+                    );
+
+                if (waitMissions.Any())
+                {
+                    // There is another waiting mission in the bay, so the light is set to Off
+                    this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                    this.Logger.LogDebug($"Light bay {bay.Number} is false");
+                }
+                else
+                {
+                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                    this.Logger.LogDebug($"Light bay {bay.Number} is true");
+                }
+            }
+            else
+            {
+                // All others bay configuration
+                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+            }
+
             this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
 
             return true;
@@ -138,7 +171,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (this.Mission.ErrorCode != MachineErrorCode.NoError)
                         {
-                            this.Logger.LogInformation($"Mission:Id={this.Mission.Id}, ErrorCode={this.Mission.ErrorCode} > Prompt to display the error condition view");
+                            this.Logger.LogInformation($"Mission:Id={this.Mission.Id}, ErrorCode={this.Mission.ErrorCode}. Prompt to display the error condition view...");
 
                             // Handle error condition for the given mission, if exists
                             //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;

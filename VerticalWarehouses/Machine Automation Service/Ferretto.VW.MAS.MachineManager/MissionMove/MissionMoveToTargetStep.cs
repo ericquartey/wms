@@ -190,6 +190,33 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 if (notification.Type == MessageType.ShutterPositioning)
                                 {
+                                    // Light ON, if a loading unit is waiting into bay for a internal double bay
+                                    if (measure)
+                                    {
+                                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+
+                                        if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(this.Mission.TargetBay) &&
+                                            bay.IsDouble &&
+                                            bay.Carousel == null &&
+                                            !bay.IsExternal)
+                                        {
+                                            // Handle only for BID
+                                            var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                                                .Where(
+                                                    m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                                                    m.Id != this.Mission.Id &&
+                                                    m.Status == MissionStatus.Waiting &&
+                                                    m.Step == MissionStep.WaitPick &&
+                                                    bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)
+                                                );
+
+                                            if (waitMissions.Any())
+                                            {
+                                                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                            }
+                                        }
+                                    }
+
                                     this.Mission.CloseShutterBayNumber = BayNumber.None;
                                     if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
                                     {

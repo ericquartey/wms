@@ -178,6 +178,33 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
                             if (shutterPosition == this.Mission.OpenShutterPosition)
                             {
+                                // Light OFF, if a loading unit is waiting into bay for a internal double bay
+                                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+
+                                if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(this.Mission.TargetBay) &&
+                                    bay.IsDouble &&
+                                    bay.Carousel == null &&
+                                    !bay.IsExternal)
+                                {
+                                    // Handle only for BID
+                                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                                        .Where(
+                                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                                            m.Id != this.Mission.Id &&
+                                            m.Status == MissionStatus.Waiting &&
+                                            m.Step == MissionStep.WaitPick &&
+                                            bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)
+                                        );
+
+                                    if (waitMissions.Any())
+                                    {
+                                        if (this.MachineVolatileDataProvider.IsBayLightOn[this.Mission.TargetBay])
+                                        {
+                                            this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                                        }
+                                    }
+                                }
+
                                 if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
                                 {
                                     this.Logger.LogInformation($"Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
