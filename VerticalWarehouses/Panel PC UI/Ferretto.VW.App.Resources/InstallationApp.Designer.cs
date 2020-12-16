@@ -5434,11 +5434,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Software Update.
+        ///   Looks up a localized string similar to Software Update..
         /// </summary>
         public static string SoftwareUpdate {
             get {
                 return ResourceManager.GetString("SoftwareUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please insert USB stick.
+        /// </summary>
+        public static string SoftwareUpdateDescription {
+            get {
+                return ResourceManager.GetString("SoftwareUpdateDescription", resourceCulture);
             }
         }
         

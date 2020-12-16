@@ -395,7 +395,7 @@ namespace Ferretto.VW.Installer.Core
                     }
                     else
                     {
-                        this.ActiveStep = this.Steps.FirstOrDefault(s => s.Execution.Status == StepStatus.ToDo);
+                        this.ActiveStep = this.Steps.FirstOrDefault(s => s.Execution.Status == StepStatus.ToDo || s.Execution.Status == StepStatus.Failed || s.Execution.Status == StepStatus.RolledBack);
                         this.ActiveStep.Execution.Status = StepStatus.Start;
                         this.Dump();
 
@@ -408,9 +408,11 @@ namespace Ferretto.VW.Installer.Core
                         {
                             if (!this.ActiveStep.SkipRollback)
                             {
-                                this.IsRollbackInProgress = true;
+                                //this.IsRollbackInProgress = true;
                                 await this.RollbackStep(this.ActiveStep);
                             }
+                            this.logger.Debug("Installation interrupted.");
+                            return;
                         }
                     }
 

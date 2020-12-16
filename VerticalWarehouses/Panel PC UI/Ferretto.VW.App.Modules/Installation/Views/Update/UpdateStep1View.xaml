@@ -27,6 +27,7 @@
 
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
@@ -37,8 +38,14 @@
                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                Text="{res:Loc InstallationApp.SoftwareUpdate}" />
 
+        <TextBlock Grid.Row="1"
+            Margin="15"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}"
+               Text="{res:Loc InstallationApp.SoftwareUpdateDescription}" />
 
-    <Border Grid.Row="1"
+        <Border Grid.Row="2"
             Grid.ColumnSpan="2"
             Width="900"
             Padding="15,20,15,0"
@@ -126,7 +133,7 @@
       </Grid>
     </Border>
 
-    <Grid Grid.Row="1"
+    <Grid Grid.Row="2"
           Grid.ColumnSpan="2"
           HorizontalAlignment="Center"
           VerticalAlignment="Center"
@@ -143,8 +150,8 @@
       </StackPanel>
     </Grid>
 
-    <StackPanel Grid.Row="2"
-                Grid.Column="1"
+    <StackPanel Grid.Row="3"
+                Grid.ColumnSpan="2"
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
 
@@ -159,9 +166,7 @@
                           Command="{Binding RestoreCommand}"
                           Content="{res:Loc InstallationApp.Restoration}" />
 
-      <controls:PpcButton Grid.Row="2"
-                          Grid.Column="1"
-                          Margin="15,0,0,0"
+      <controls:PpcButton Margin="15,0,0,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           Command="{Binding NextCommand}"

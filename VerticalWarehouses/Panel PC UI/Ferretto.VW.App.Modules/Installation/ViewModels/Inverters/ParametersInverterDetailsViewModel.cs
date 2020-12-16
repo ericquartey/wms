@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Interface;
 using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -17,9 +18,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
+        private readonly ISessionService sessionService;
+
         private InverterParametersData inverterParameters;
 
         private ISetVertimagConfiguration parentConfiguration;
+
+        private object selectedParameter;
 
         private DelegateCommand setInverterParamertersCommand;
 
@@ -27,9 +32,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public ParametersInverterDetailsViewModel(IMachineDevicesWebService machineDevicesWebService)
+        public ParametersInverterDetailsViewModel(
+            ISessionService sessionService,
+            IMachineDevicesWebService machineDevicesWebService)
             : base()
         {
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
         }
 
@@ -43,8 +51,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.inverterParameters, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+
+        public object SelectedParameter
+        {
+            get => this.selectedParameter;
+            set => this.SetProperty(ref this.selectedParameter, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand SetInvertersParamertersCommand =>
-                   this.setInverterParamertersCommand
+                           this.setInverterParamertersCommand
                ??
                (this.setInverterParamertersCommand = new DelegateCommand(
                 async () => await this.SaveParametersAsync(), this.CanSave));
@@ -61,17 +77,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = true;
-
             await base.OnAppearedAsync();
 
-            if (this.Data is ISetVertimagConfiguration mainConfiguration)
-            {
-                this.parentConfiguration = mainConfiguration;
-                this.InverterParameters = mainConfiguration.SelectedInverter;
-            }
-
-            this.IsWaitingForResponse = false;
+            this.LoadData();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -79,17 +87,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.setInverterParamertersCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.IsAdmin));
         }
 
         private bool CanSave()
         {
-            return !this.IsBusy;
+            return !this.IsBusy &&
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+        }
+
+        private void LoadData()
+        {
+            this.IsWaitingForResponse = true;
+
+            if (this.Data is ISetVertimagConfiguration mainConfiguration)
+            {
+                this.parentConfiguration = mainConfiguration;
+                this.InverterParameters = mainConfiguration.SelectedInverter;
+            }
+
+            this.RaisePropertyChanged(nameof(this.InverterParameters));
+
+            this.IsWaitingForResponse = false;
         }
 
         private async Task SaveParametersAsync()
         {
             try
             {
+                ////fix selected item changed
+                //var formattedParameters = this.inverterParameters.Parameters as List<InverterParameter>;
+
+                //if (formattedParameters.Where(s => s.Code == this.selectedParameter.Code).Select(s => s.StringValue).FirstOrDefault() != this.selectedParameter.StringValue)
+                //{
+                //    formattedParameters.Where(s => s.Code == this.selectedParameter.Code).FirstOrDefault().StringValue = this.selectedParameter.StringValue;
+                //}
+
                 this.ClearNotifications();
                 this.IsBusy = true;
 

@@ -90,6 +90,33 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || notification.TargetBay == BayNumber.ElevatorBay
                         )
                     {
+                        // Light ON, if a loading unit is waiting into bay for a internal double bay
+                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+
+                        if (this.MachineVolatileDataProvider.IsBayLightOn.ContainsKey(this.Mission.TargetBay) &&
+                            bay.IsDouble &&
+                            bay.Carousel == null &&
+                            !bay.IsExternal)
+                        {
+                            // Handle only for BID
+                            var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                                .Where(
+                                    m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                                    m.Id != this.Mission.Id &&
+                                    m.Status == MissionStatus.Waiting &&
+                                    m.Step == MissionStep.WaitPick &&
+                                    bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)
+                                );
+
+                            if (waitMissions.Any())
+                            {
+                                if (!this.MachineVolatileDataProvider.IsBayLightOn[this.Mission.TargetBay])
+                                {
+                                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                }
+                            }
+                        }
+
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
