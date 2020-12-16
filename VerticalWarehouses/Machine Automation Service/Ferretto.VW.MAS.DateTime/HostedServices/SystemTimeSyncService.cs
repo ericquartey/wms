@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -115,6 +116,40 @@ namespace Ferretto.VW.MAS.TimeManagement
             Task.Run(this.ExecutePollingAsync);
         }
 
+        private void ExecuteBackupScript()
+        {
+            var backupScript = "f:\\database\\remote_backup.cmd";
+            var info = new FileInfo(backupScript);
+            if (info.Exists)
+            {
+                var script = File.ReadAllText(backupScript);
+                if (!string.IsNullOrEmpty(script))
+                {
+                    var process = new System.Diagnostics.Process();
+                    process.StartInfo.FileName = "cmd.exe";
+                    process.StartInfo.Arguments = $"/C {script}";
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.ErrorDialog = false;
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.RedirectStandardError = true;
+                    try
+                    {
+                        process.Start();
+                        process.WaitForExit();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(ex.Message);
+                    }
+                    finally
+                    {
+                        process.Close();
+                    }
+                }
+            }
+        }
+
         private async Task ExecutePollingAsync()
         {
             this.cancellationTokenSource = new CancellationTokenSource();
@@ -154,10 +189,12 @@ namespace Ferretto.VW.MAS.TimeManagement
                                     var systemTimeProvider = scope.ServiceProvider.GetRequiredService<IInternalSystemTimeProvider>();
                                     systemTimeProvider.SetUtcTime(remoteUtcTime.UtcDateTime);
 
-                                    this.logger.LogDebug("Time synced successfully.");
+                                    this.logger.LogDebug("Time synced successfully. from time '{machine}' to time '{remote}'", machineUtcTime.LocalDateTime, remoteUtcTime.LocalDateTime);
                                 }
 
                                 wmsSettingsProvider.LastWmsSyncTime = DateTimeOffset.UtcNow;
+
+                                this.ExecuteBackupScript();
                             }
                         }
                         catch (Exception ex)

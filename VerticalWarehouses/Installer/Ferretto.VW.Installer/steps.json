@@ -13,7 +13,7 @@
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 2,
       "title": "Imposta avvio admin",
-      "description": "Imposta uente avvio administrator.",
+      "description": "Imposta utente avvio administrator.",
       "script": "scripts/set_auto_logon_admin.ps1",
       "skipOnResume": "true",
       "setupMode": "UpdateAndRestore"
