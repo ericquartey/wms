@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -125,28 +126,24 @@ namespace Ferretto.VW.MAS.TimeManagement
                 var script = File.ReadAllText(backupScript);
                 if (!string.IsNullOrEmpty(script))
                 {
-                    var process = new System.Diagnostics.Process();
-                    process.StartInfo.FileName = "cmd.exe";
-                    process.StartInfo.Arguments = $"/C {script}";
-                    process.StartInfo.CreateNoWindow = true;
-                    process.StartInfo.ErrorDialog = false;
-                    process.StartInfo.UseShellExecute = false;
-                    process.StartInfo.RedirectStandardOutput = true;
-                    process.StartInfo.RedirectStandardError = true;
                     try
                     {
-                        process.Start();
-                        process.WaitForExit();
+                        Process.Start(backupScript);
+                        this.logger.LogInformation($"Database Backup executed");
                     }
                     catch (Exception ex)
                     {
                         this.logger.LogError(ex.Message);
                     }
-                    finally
-                    {
-                        process.Close();
-                    }
                 }
+                else
+                {
+                    this.logger.LogDebug($"file {backupScript} empty");
+                }
+            }
+            else
+            {
+                this.logger.LogTrace($"file {backupScript} not found");
             }
         }
 
