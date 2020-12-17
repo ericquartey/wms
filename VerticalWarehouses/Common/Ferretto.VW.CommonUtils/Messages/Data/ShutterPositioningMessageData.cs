@@ -30,6 +30,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             double? highSpeedHalfDurationOpen,
             double? highSpeedHalfDurationClose,
             double lowerSpeed,
+            bool waitContinue = false,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.ShutterPosition = shutterPosition;
@@ -44,6 +45,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.HighSpeedHalfDurationOpen = highSpeedHalfDurationOpen;
             this.HighSpeedHalfDurationClose = highSpeedHalfDurationClose;
             this.LowerSpeed = lowerSpeed;
+            this.WaitContinue = waitContinue;
             this.Verbosity = verbosity;
         }
 
@@ -68,6 +70,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.LowerSpeed = shutterPositioningMessageData.LowerSpeed;
             this.Verbosity = shutterPositioningMessageData.Verbosity;
             this.PerformedCycles = shutterPositioningMessageData.PerformedCycles;
+            this.WaitContinue = shutterPositioningMessageData.WaitContinue;
         }
 
         #endregion
@@ -115,6 +118,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         }
 
         public MessageVerbosity Verbosity { get; set; }
+
+        public bool WaitContinue { get; set; }
 
         #endregion
 

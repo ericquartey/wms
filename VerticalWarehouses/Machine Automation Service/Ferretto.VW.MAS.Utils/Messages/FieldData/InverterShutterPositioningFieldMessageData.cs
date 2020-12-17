@@ -27,6 +27,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.HighSpeedHalfDurationOpen = (int?)shutterPositioningFieldMessageData.HighSpeedHalfDurationOpen;
             this.HighSpeedHalfDurationClose = (int?)shutterPositioningFieldMessageData.HighSpeedHalfDurationClose;
             this.LowerSpeed = (int)shutterPositioningFieldMessageData.LowerSpeed;
+            this.WaitContinue = shutterPositioningFieldMessageData.WaitContinue;
         }
 
         #endregion
@@ -54,6 +55,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public ShutterType ShutterType { get; }
 
         public int SpeedRate { get; set; }
+
+        public bool WaitContinue { get; set; }
 
         #endregion
 

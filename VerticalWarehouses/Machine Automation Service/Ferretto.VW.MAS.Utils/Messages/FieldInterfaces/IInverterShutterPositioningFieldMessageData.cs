@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int SpeedRate { get; set; }
 
+        bool WaitContinue { get; set; }
+
         #endregion
     }
 }

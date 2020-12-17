@@ -199,6 +199,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.elevatorProvider.ContinuePositioning(requestingBay, sender);
         }
 
+        public void ContinueShutter(MessageActor sender, BayNumber requestingBay)
+        {
+            this.shutterProvider.ContinuePositioning(requestingBay, sender);
+        }
+
         public MessageStatus ExternalBayStatus(NotificationMessage message)
         {
             if (message.Type == MessageType.Positioning

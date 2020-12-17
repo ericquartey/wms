@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         double SpeedRate { get; set; }
 
+        bool WaitContinue { get; set; }
+
         #endregion
     }
 }

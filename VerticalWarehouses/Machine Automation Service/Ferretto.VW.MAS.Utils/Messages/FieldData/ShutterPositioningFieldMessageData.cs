@@ -19,6 +19,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             double? highSpeedHalfDurationClose,
             double lowerSpeed,
             MovementType movementType,
+            bool waitContinue = false,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
@@ -32,6 +33,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.HighSpeedHalfDurationClose = highSpeedHalfDurationClose;
             this.LowerSpeed = lowerSpeed;
             this.MovementType = movementType;
+            this.WaitContinue = waitContinue;
         }
 
         public ShutterPositioningFieldMessageData(
@@ -54,6 +56,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.HighSpeedHalfDurationClose = messageData.HighSpeedHalfDurationClose;
             this.LowerSpeed = messageData.LowerSpeed;
             this.MovementType = messageData.MovementType;
+            this.WaitContinue = messageData.WaitContinue;
         }
 
         #endregion
@@ -79,6 +82,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public ShutterType ShutterType { get; }
 
         public double SpeedRate { get; set; }
+
+        public bool WaitContinue { get; set; }
 
         #endregion
 
