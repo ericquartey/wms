@@ -337,12 +337,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
             else
             {
-                this.ParentStateMachine.ChangeState(
-                    new PositioningTableWaitState(
-                        this.ParentStateMachine,
-                        this.data,
-                        this.InverterStatus as IPositioningInverterStatus,
-                        this.Logger));
+                this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus as IPositioningInverterStatus, this.Logger));
             }
         }
 

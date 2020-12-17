@@ -109,12 +109,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                     //case InverterParameterId.PositionDeceleration:
                     case InverterParameterId.BlockWrite:
-                        this.ParentStateMachine.ChangeState(
-                            new PositioningWaitState(
-                                this.ParentStateMachine,
-                                this.data,
-                                this.InverterStatus as IPositioningInverterStatus,
-                                this.Logger));
+                        this.ParentStateMachine.ChangeState(new PositioningEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus as IPositioningInverterStatus, this.Logger));
                         break;
                 }
             }
