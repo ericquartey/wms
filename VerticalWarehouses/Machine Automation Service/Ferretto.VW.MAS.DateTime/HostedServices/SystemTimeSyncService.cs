@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.TimeManagement
             }
             else
             {
-                this.logger.LogTrace($"file {backupScript} not found");
+                this.logger.LogDebug($"file {backupScript} not found");
             }
         }
 
@@ -186,7 +186,7 @@ namespace Ferretto.VW.MAS.TimeManagement
                                     var systemTimeProvider = scope.ServiceProvider.GetRequiredService<IInternalSystemTimeProvider>();
                                     systemTimeProvider.SetUtcTime(remoteUtcTime.UtcDateTime);
 
-                                    this.logger.LogDebug("Time synced successfully. from time '{machine}' to time '{remote}'", machineUtcTime.LocalDateTime, remoteUtcTime.LocalDateTime);
+                                    this.logger.LogInformation("Time synced successfully. from time '{machine}' to time '{remote}'", machineUtcTime.LocalDateTime, remoteUtcTime.LocalDateTime);
                                 }
 
                                 wmsSettingsProvider.LastWmsSyncTime = DateTimeOffset.UtcNow;
@@ -229,13 +229,13 @@ namespace Ferretto.VW.MAS.TimeManagement
 
                 if (wmsSettingsProvider.IsTimeSyncEnabled && wmsSettingsProvider.IsEnabled)
                 {
-                    this.logger.LogDebug("Starting WMS time sync service.");
+                    this.logger.LogInformation("Starting WMS time sync service.");
 
                     this.Enable();
                 }
                 else
                 {
-                    this.logger.LogDebug("Stopping WMS time sync service.");
+                    this.logger.LogInformation("Stopping WMS time sync service.");
 
                     this.Disable();
                 }
