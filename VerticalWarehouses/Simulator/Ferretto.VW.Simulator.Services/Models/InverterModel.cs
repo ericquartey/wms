@@ -1011,7 +1011,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 return;
             }
 
-            var increment = 50d;
+            var increment = 150d;
             if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) < 1)
             {
                 increment = 0.1;
@@ -1020,7 +1020,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 increment = 1;
             }
-            else if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 50)
+            else if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 150)
             {
                 increment = 10;
             }
