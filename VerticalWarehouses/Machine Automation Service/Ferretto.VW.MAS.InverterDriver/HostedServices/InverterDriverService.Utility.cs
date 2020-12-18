@@ -223,8 +223,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 //{
                 //    this.Logger.LogTrace("3:Validate Command Response True");
                 //}
-
-                currentStateMachine?.ValidateCommandResponse(message);
             }
             else if (message.ParameterId == InverterParameterId.DigitalInputsOutputs)
             {
@@ -318,9 +316,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     //this.Logger.LogTrace($"4.5");
                     this.forceStatusPublish[(int)inverter.SystemIndex] = false;
                 }
-                //this.Logger.LogTrace($"4.6");
-                currentStateMachine?.ValidateCommandResponse(message);
-                //this.Logger.LogTrace($"4.7");
             }
             else if (message.ParameterId == InverterParameterId.ActualPositionShaft)
             {
@@ -382,12 +377,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         this.forceStatusPublish[(int)message.SystemIndex] = false;
                     }
-                    currentStateMachine?.ValidateCommandResponse(message);
                 }
-            }
-            else if (message.ParameterId == InverterParameterId.TorqueCurrent)
-            {
-                currentStateMachine?.ValidateCommandResponse(message);
             }
             else if (message.ParameterId == InverterParameterId.ProfileInput)
             {
@@ -427,18 +417,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                 }
             }
-            else if (message.ParameterId == InverterParameterId.BlockRead)
-            {
-                currentStateMachine?.ValidateCommandResponse(message);
-            }
-            else if (message.ParameterId == InverterParameterId.AxisChanged)
-            {
-                currentStateMachine?.ValidateCommandResponse(message);
-            }
-            else if (message.ParameterId == InverterParameterId.ActiveDataset)
-            {
-                currentStateMachine?.ValidateCommandResponse(message);
-            }
+            currentStateMachine?.ValidateCommandResponse(message);
         }
 
         private void EvaluateWriteMessage(
