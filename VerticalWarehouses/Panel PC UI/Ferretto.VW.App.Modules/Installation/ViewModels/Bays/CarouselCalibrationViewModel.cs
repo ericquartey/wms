@@ -536,6 +536,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.UpdateView();
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.applyCommand?.RaiseCanExecuteChanged();
+            this.completeCommand?.RaiseCanExecuteChanged();
+            this.repeatCalibrationCommand?.RaiseCanExecuteChanged();
+            this.startCalibrationCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
+            this.stopInPhaseCommand?.RaiseCanExecuteChanged();
+            this.tuningBayCommand?.RaiseCanExecuteChanged();
+        }
+
         private async Task ApplyCorrectionAsync()
         {
             this.IsWaitingForResponse = true;
@@ -733,16 +746,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (message.Data.IsTestStopped)
                 {
                     this.ShowNotification(Localized.Get("InstallationApp.TestStopped"), Services.Models.NotificationSeverity.Success);
+
+                    this.IsNewErrorValueVisible = false;
+
+                    this.IsCalibrationNotCompleted = true;
                 }
                 else
                 {
                     this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
+
+                    this.IsNewErrorValueVisible = true;
+
+                    this.IsCalibrationNotCompleted = false;
                 }
 
-                this.IsCalibrationNotCompleted = false;
-
                 this.IsChainOffsetVisible = false;
-                this.IsNewErrorValueVisible = true;
 
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;

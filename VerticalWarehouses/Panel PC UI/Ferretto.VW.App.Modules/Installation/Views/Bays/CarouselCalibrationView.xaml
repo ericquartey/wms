@@ -261,7 +261,7 @@
 
         <TextBlock Grid.Row="5"
                    Grid.ColumnSpan="2"
-                   Margin="0,20,0,0"
+                   Margin="0,15,0,0"
                    Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
                    Text="{res:Loc InstallationApp.RepeatProcedure}"
                    Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />

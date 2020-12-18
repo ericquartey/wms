@@ -60,7 +60,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var inverterParametersData = this.GetInvertersParameters(vertimagConfiguration);
 
-            var inverterParameters = inverterParametersData.Where(i => i.InverterIndex == inverterIndex);
+            var inverterParameters = inverterParametersData.Where(i => i.InverterIndex == inverterIndex).ToList();
+
             if (inverterParameters is null)
             {
                 throw new ArgumentException($"No Inverter found");
