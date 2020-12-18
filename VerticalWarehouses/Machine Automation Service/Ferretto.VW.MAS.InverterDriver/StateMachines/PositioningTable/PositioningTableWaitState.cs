@@ -3,7 +3,6 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningTableWaitState : InverterStateBase
@@ -78,7 +77,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (!this.data.WaitContinue)
                 {
-                    this.ParentStateMachine.ChangeState(new PositioningTableEnableOperationState(this.ParentStateMachine, this.data, this.InverterStatus as IPositioningInverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new PositioningTableStartMovingState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
                 else
                 {

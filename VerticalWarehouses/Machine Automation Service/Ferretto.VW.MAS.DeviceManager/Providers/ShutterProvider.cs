@@ -42,6 +42,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
+        public void ContinuePositioning(BayNumber requestingBay, MessageActor sender)
+        {
+            this.PublishCommand(
+                null,
+                $"Continue Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.ContinueMovement,
+                requestingBay,
+                requestingBay);
+        }
+
         /// <summary>
         /// Moves shutter in slow speed. Used for manual movements.
         /// It stops when top or bottom sensors are detected or when operator sends a stop command.

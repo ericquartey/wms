@@ -29,9 +29,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string DEFAULTMANIFESTFILENODEVERSION = "version";
 
-        private const string InstallPackageExeExtension = "*.exe";
+        private const string InstallPackageExeExtension = "VMag*.exe";
 
-        private const string InstallPackageZipExtension = "*.zip";
+        private const string InstallPackageZipExtension = "VMag*.zip";
 
         private readonly EventHandler<DrivesChangedEventArgs> drivesChangeEventHandler;
 

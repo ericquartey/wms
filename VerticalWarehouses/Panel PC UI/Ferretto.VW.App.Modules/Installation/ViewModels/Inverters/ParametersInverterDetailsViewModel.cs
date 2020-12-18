@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Interface;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -24,9 +27,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ISetVertimagConfiguration parentConfiguration;
 
-        private object selectedParameter;
+        private InverterParameter selectedParameter;
 
         private DelegateCommand setInverterParamertersCommand;
+
+        private DelegateCommand setParamerterCommand;
 
         #endregion
 
@@ -53,17 +58,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
-        public object SelectedParameter
+        public InverterParameter SelectedParameter
         {
             get => this.selectedParameter;
             set => this.SetProperty(ref this.selectedParameter, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand SetInvertersParamertersCommand =>
-                           this.setInverterParamertersCommand
+               this.setInverterParamertersCommand
                ??
                (this.setInverterParamertersCommand = new DelegateCommand(
                 async () => await this.SaveParametersAsync(), this.CanSave));
+
+        public ICommand SetParamerterCommand =>
+               this.setParamerterCommand
+               ??
+               (this.setParamerterCommand = new DelegateCommand(
+                async () => await this.SaveParameterAsync(), this.CanSaveParameter));
 
         #endregion
 
@@ -87,6 +98,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.setInverterParamertersCommand?.RaiseCanExecuteChanged();
+            this.setParamerterCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsAdmin));
         }
@@ -94,7 +106,84 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanSave()
         {
             return !this.IsBusy &&
-                this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin &&
+                this.InverterParameters != null &&
+                this.InverterParameters.Parameters.Any();
+        }
+
+        private bool CanSaveParameter()
+        {
+            return !this.IsBusy &&
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin &&
+                this.selectedParameter != null &&
+                !this.selectedParameter.IsReadOnly;
+        }
+
+        private string GetInverterVersion(VertimagConfiguration vertimagConfiguration, byte inverterIndex)
+        {
+            foreach (var axe in vertimagConfiguration.Machine.Elevator.Axes)
+            {
+                if (!(axe.Inverter?.Parameters is null))
+                {
+                    var inverter = axe.Inverter;
+
+                    if (inverterIndex == (byte)inverter.Index &&
+                        inverter.Parameters.Any())
+                    {
+                        return inverter.Parameters.Single(s => s.Code == (short)InverterParameterId.SoftwareVersion).StringValue;
+                    }
+                }
+            }
+
+            foreach (var bay in vertimagConfiguration.Machine.Bays)
+            {
+                if (!(bay.Inverter?.Parameters is null))
+                {
+                    var inverter = bay.Inverter;
+
+                    if (inverterIndex == (byte)inverter.Index &&
+                        inverter.Parameters.Any())
+                    {
+                        return inverter.Parameters.Single(s => s.Code == (short)InverterParameterId.SoftwareVersion).StringValue;
+                    }
+                    if (!(bay.Shutter?.Inverter?.Parameters is null))
+                    {
+                        var inverterShutter = bay.Shutter.Inverter;
+
+                        if (inverterIndex == (byte)inverter.Index &&
+                            inverterShutter.Parameters.Any())
+                        {
+                            return inverter.Parameters.Single(s => s.Code == (short)InverterParameterId.SoftwareVersion).StringValue;
+                        }
+                    }
+                }
+            }
+
+            return "";
+        }
+
+        private VertimagConfiguration GetUpdateConfiguration(VertimagConfiguration vertimagConfiguration, byte index, IEnumerable<InverterParameter> inverterParameters)
+        {
+            if (vertimagConfiguration.Machine.Elevator.Axes.Any(s => index == (byte)s.Inverter.Index))
+            {
+                var axe = vertimagConfiguration.Machine.Elevator.Axes.FirstOrDefault(s => index == (byte)s.Inverter.Index);
+                axe.Inverter.Parameters = inverterParameters;
+                //do
+            }
+
+            if (vertimagConfiguration.Machine.Bays.Any(s => index == (byte)s.Inverter.Index))
+            {
+                var bay = vertimagConfiguration.Machine.Bays.FirstOrDefault(s => index == (byte)s.Inverter.Index);
+                bay.Inverter.Parameters = inverterParameters;
+            }
+
+            if (vertimagConfiguration.Machine.Bays.Any(s => index == (byte)s.Shutter.Inverter.Index))
+            {
+                var bay = vertimagConfiguration.Machine.Bays.FirstOrDefault(s => index == (byte)s.Shutter.Inverter.Index);
+                bay.Shutter.Inverter.Parameters = inverterParameters;
+            }
+
+            return vertimagConfiguration;
         }
 
         private void LoadData()
@@ -112,18 +201,55 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = false;
         }
 
+        private async Task SaveParameterAsync()
+        {
+            try
+            {
+                this.ClearNotifications();
+                this.IsBusy = true;
+
+                await this.parentConfiguration.BackupVertimagConfigurationParameters();
+
+                var parameterToList = new List<InverterParameter>();
+
+                parameterToList.Add(this.SelectedParameter);
+
+                var version = this.GetInverterVersion(this.parentConfiguration.VertimagConfiguration, this.inverterParameters.InverterIndex);
+
+                var versionInverterParameter = new InverterParameter
+                {
+                    Code = (short)InverterParameterId.SoftwareVersion,
+                    DataSet = 0,
+                    Type = "String",
+                    StringValue = version
+                };
+
+                parameterToList.Add(versionInverterParameter);
+
+                var parameter = this.inverterParameters;
+
+                parameter.Parameters = parameterToList;
+
+                var config = this.GetUpdateConfiguration(this.parentConfiguration.VertimagConfiguration, this.inverterParameters.InverterIndex, parameterToList);
+
+                await this.machineDevicesWebService.ProgramInverterAsync((byte)this.inverterParameters.InverterIndex, config);
+
+                this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
+
         private async Task SaveParametersAsync()
         {
             try
             {
-                ////fix selected item changed
-                //var formattedParameters = this.inverterParameters.Parameters as List<InverterParameter>;
-
-                //if (formattedParameters.Where(s => s.Code == this.selectedParameter.Code).Select(s => s.StringValue).FirstOrDefault() != this.selectedParameter.StringValue)
-                //{
-                //    formattedParameters.Where(s => s.Code == this.selectedParameter.Code).FirstOrDefault().StringValue = this.selectedParameter.StringValue;
-                //}
-
                 this.ClearNotifications();
                 this.IsBusy = true;
 
