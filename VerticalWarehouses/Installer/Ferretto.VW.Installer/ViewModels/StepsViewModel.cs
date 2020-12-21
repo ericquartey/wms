@@ -179,8 +179,7 @@ namespace Ferretto.VW.Installer.ViewModels
         {
             return this.isStarted
                 && this.IsFinished
-                && !this.installationService.IsRollbackInProgress
-                && !this.AbortRequested;
+                && !this.installationService.IsRollbackInProgress;
         }
 
         private void Close()

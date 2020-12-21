@@ -26,6 +26,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public bool CheckInverterParametersValidity(InverterIndex index)
+        {
+            lock (this.dataContext)
+            {
+                if (this.dataContext.Inverters.Where(s => s.Index == index).Any())
+                {
+                    return !(this.dataContext.Inverters.Where(s => s.Index == index).FirstOrDefault().Parameters is null) &&
+                        this.dataContext.Inverters.Where(s => s.Index == index).FirstOrDefault().Parameters.Any();
+                }
+
+                return false;
+            }
+        }
+
         public IEnumerable<Inverter> GetAllInverters()
         {
             lock (this.dataContext)

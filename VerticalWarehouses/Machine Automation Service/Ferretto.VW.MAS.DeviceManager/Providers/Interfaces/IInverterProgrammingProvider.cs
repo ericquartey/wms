@@ -12,9 +12,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         IEnumerable<InverterParametersData> GetInvertersParametersData(IEnumerable<Inverter> inverters);
 
-        void Start(VertimagConfiguration vertimagConfiguration, BayNumber requestingBay, MessageActor sender);
+        void Read(IEnumerable<Inverter> inverters, BayNumber requestingBay, MessageActor sender);
 
-        void Start(VertimagConfiguration vertimagConfiguration, byte inverterIndex, BayNumber requestingBay, MessageActor sender);
+        void Read(Inverter inverter, BayNumber requestingBay, MessageActor sender);
+
+        void Start(Inverter inverter, BayNumber requestingBay, MessageActor sender);
+
+        void Start(IEnumerable<Inverter> inverters, BayNumber requestingBay, MessageActor sender);
 
         void Stop(BayNumber requestingBay, MessageActor sender);
 

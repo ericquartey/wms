@@ -1,13 +1,13 @@
 ﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.ParameterInverterView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            xmlns:prism="http://prismlibrary.com/"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
             d:DataContext="{d:DesignInstance Type=viewmodels:ParameterInverterViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
@@ -15,143 +15,151 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <ctrls:View.Resources>
-        <Style TargetType="{x:Type ListView}">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="ScrollViewer.PanningMode" Value="None" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
-    </ctrls:View.Resources>
-    
+  <ctrls:View.Resources>
+    <Style TargetType="{x:Type ListView}">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="ScrollViewer.PanningMode" Value="None" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+  </ctrls:View.Resources>
+
+  <Grid Grid.Column="0"
+        Margin="0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
     <Grid Grid.Column="0"
-              Margin="0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+          Margin="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0"
-              Margin="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+      <Grid Grid.Row="0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <controls:PpcButton Grid.Row="0"
+                            Margin="15,0,15,0"
+                            Padding="-2,1,0,0"
+                            Abbrevation="Imp"
+                            BorderBrush="{DynamicResource FerrettoRed}"
+                            Command="{Binding GoToImport}"
+                            Content="{res:Loc InstallationApp.Import}"
+                            Kind="Magnify"
+                            Style="{DynamicResource PpcButtonMenuStyle}"
+                            Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
 
-                <controls:PpcButton Grid.Row="0"
-                                    Margin="15,0,15,0"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="Imp"
-                                    BorderBrush="{DynamicResource FerrettoRed}"
-                                    Command="{Binding GoToImport}"
-                                    Content="{res:Loc InstallationApp.Import}"
-                                    Kind="Magnify"
-                                    Style="{DynamicResource PpcButtonMenuStyle}"
-                                    Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
-
-
-            </Grid>
-        </Grid>
-
-        <Grid Grid.Column="1"
-              Margin="15,0"
-              Name="layoutroot">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <StackPanel Grid.Column="1"
-                        Orientation="Horizontal">
-                <TextBlock Margin="0,10,15,10"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="4.7.4" />
-                <TextBlock Grid.ColumnSpan="2"
-                           Margin="0,10,15,10"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{res:Loc InstallationApp.InverterParameterizationMenuTitle}" />
-            </StackPanel>
-
-            <TextBlock Margin="0,10,15,10"
-                           VerticalAlignment="Top"
-                           Grid.Row="1"
-                           TextWrapping="WrapWithOverflow"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVIC}}"
-                           Text="{x:Static res:InstallationApp.DefaultConfigurationLoaded}"/>
-            
-            <TextBlock Margin="0,10,15,10"
-                           VerticalAlignment="Top"
-                           Grid.Row="1"
-                           TextWrapping="WrapWithOverflow"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVC}}"
-                           Text="{Binding SelectedFileConfiguration.FullName}"/>
+        <controls:PpcButton Grid.Row="1"
+                            Margin="15,15,15,0"
+                            Padding="-2,1,0,0"
+                            Abbrevation="Exp"
+                            BorderBrush="{DynamicResource FerrettoRed}"
+                            Command="{Binding GoToExport}"
+                            Content="{res:Loc InstallationApp.Export}"
+                            Kind="Magnify"
+                            Style="{DynamicResource PpcButtonMenuStyle}"
+                            Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
 
 
-            <ListView Grid.Row="2"
-                          ItemsSource="{Binding InvertersParameters}"
-                          SelectedItem="{Binding SelectedInverter, Mode=TwoWay}"
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          ScrollViewer.VerticalScrollBarVisibility="Disabled"                        
-                          HorizontalAlignment="Stretch">
-                <ItemsControl.Resources>
+      </Grid>
+    </Grid>
 
-                </ItemsControl.Resources>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate >
-                        <WrapPanel IsItemsHost="True"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:PpcButton
-                                        Title="{Binding Description}"                                                                                
-                                        Margin="0,30,30,0"                                        
-                                        Abbrevation="{Binding InverterIndex}"
-                                        BorderBrush="{DynamicResource FerrettoRed}"
-                                        Command="{Binding ElementName=layoutroot, Path=DataContext.ShowInverterParamertersCommand}"
-                                        CommandParameter="{Binding}"
-                                        Content=""
-                                        Kind="Check"
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+    <Grid Name="layoutroot"
+          Grid.Column="1"
+          Margin="15,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
 
-            <controls:PpcButton Grid.Row="2"                            
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding SetInvertersParamertersCommand}"
-                            Content="{res:Loc InstallationApp.SaveParameters}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
+      <StackPanel Grid.Column="1"
+                  Orientation="Horizontal">
+        <TextBlock Margin="0,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="4.7.4" />
+        <TextBlock Grid.ColumnSpan="2"
+                   Margin="0,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.InverterParameterizationMenuTitle}" />
+      </StackPanel>
 
-        </Grid>
+      <TextBlock Grid.Row="1"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{x:Static res:InstallationApp.DefaultConfigurationLoaded}"
+                 TextWrapping="WrapWithOverflow"
+                 Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVIC}}" />
+
+      <TextBlock Grid.Row="1"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{Binding SelectedFileConfiguration.FullName}"
+                 TextWrapping="WrapWithOverflow"
+                 Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVC}}" />
+
+
+      <ListView Grid.Row="2"
+                HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Inverters}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedInverter, Mode=TwoWay}">
+        <ItemsControl.Resources />
+        <ListView.ItemContainerStyle>
+          <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                  <ContentPresenter />
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+          </Style>
+        </ListView.ItemContainerStyle>
+        <ListView.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel IsItemsHost="True" />
+          </ItemsPanelTemplate>
+        </ListView.ItemsPanel>
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <controls:PpcButton Title="{Binding Type}"
+                                Margin="0,30,30,0"
+                                Abbrevation="{Binding Index, Converter={StaticResource IITIC}}"
+                                BorderBrush="{DynamicResource FerrettoRed}"
+                                Command="{Binding ElementName=layoutroot, Path=DataContext.ShowInverterParamertersCommand}"
+                                CommandParameter="{Binding}"
+                                Content=""
+                                Kind="Check"
+                                Style="{DynamicResource PpcButtonMenuCardStyle}" />
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </ListView>
+
+      <controls:PpcButton Grid.Row="2"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding SetInvertersParamertersCommand}"
+                          Content="{res:Loc InstallationApp.SaveParameters}"
+                          IsBusy="{Binding IsWaitingForResponse}" />
 
     </Grid>
+
+  </Grid>
 
 </ctrls:View>
