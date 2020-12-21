@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DataModels
         ConditionsNotMetForPositioning,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForRunning), 0)]
-        [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
+        //[ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         ConditionsNotMetForRunning,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForHoming), 0)]

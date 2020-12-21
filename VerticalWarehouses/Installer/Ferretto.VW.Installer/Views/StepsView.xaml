@@ -140,21 +140,21 @@
                      VerticalScrollBarVisibility="Auto" />
 
             <Button Grid.Column="1"
-                    Margin="0,10,0,0"
+                    Margin="10,10,0,0"
                     HorizontalAlignment="Right"
                     Command="{Binding AbortCommand}"
                     Content="Annulla"
                     Visibility="{Binding IsFinished, Converter={StaticResource BTVIC}}" />
 
             <Button Grid.Column="1"
-                    Margin="0,10,0,0"
+                    Margin="10,10,0,0"
                     HorizontalAlignment="Right"
                     Command="{Binding CloseCommand}"
                     Content="Chiudi"
                     Visibility="{Binding IsFinished, Converter={StaticResource BTVC}}" />
             
             <Button Grid.Column="2"
-                    Margin="0,10,0,0"
+                    Margin="10,10,0,0"
                     HorizontalAlignment="Right"
                     Command="{Binding RetryCommand}"
                     Content="Riprova"/>

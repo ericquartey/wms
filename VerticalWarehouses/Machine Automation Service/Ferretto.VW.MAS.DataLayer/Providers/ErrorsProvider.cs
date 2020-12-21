@@ -199,9 +199,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     //    }
                     //}
 
-                    // discard all subsequent errors
-                    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another error is already active.");
-                    return newError;
+                    if (newError.Severity < 2)
+                    {
+                        // discard all subsequent errors
+                        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another error is already active.");
+                        return newError;
+                    }
                 };
 
                 this.dataContext.Errors.Add(newError);
