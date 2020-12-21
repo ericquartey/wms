@@ -1,77 +1,123 @@
 ﻿<UserControl x:Class="Ferretto.VW.InvertersParametersGenerator.Views.ExportConfigurationView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Properties"
              d:DesignHeight="700"
-            d:DesignWidth="1024"            
-            mc:Ignorable="d">
+             d:DesignWidth="1024"
+             mc:Ignorable="d">
 
-    <Grid x:Name="Root">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+  <Grid x:Name="Root">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <TextBlock x:Name="Title"                   
+    <TextBlock x:Name="Title"
+               VerticalAlignment="Top"
+               FontSize="36"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{x:Static res:Resources.EsportConfiguration}" />
+
+    <Grid Grid.Row="1"
+          Grid.Column="1"
+          Margin="10,20,10,0"
+          HorizontalAlignment="Stretch">
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <StackPanel Orientation="Vertical">
+        <TextBlock Grid.Row="2"
+                   Margin="0,20"
+                   HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                   FontSize="36"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:Resources.EsportConfiguration}" />
+                   Text="{x:Static res:Resources.VertimagConfigurationFile}" />
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Grid.Row="0"
+                     Margin="0,25"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     FontSize="{DynamicResource FontSize_Normal}"
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{Binding VertimagConfigurationFilePath}"
+                     TextWrapping="Wrap" />
 
-        <Grid Grid.Row="1"
-                     Grid.Column="1"                   
-                     Margin="10,20,10,0"
-                     HorizontalAlignment="Stretch">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Grid.Row="2"
-                               Margin="0,20"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"                               
-                               Text="{x:Static res:Resources.VertimagConfigurationFile}" />
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0"
-                               Margin="0,25"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               TextWrapping="Wrap"
-                               FontSize="{DynamicResource FontSize_Normal}"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Text="{Binding VertimagConfigurationFilePath}" />
-
-                    <Button Margin="20 0 20 0"
-                                Grid.Column="1"
-                                Width="120"
-                                Height="60"
-                                FontSize="18"
-                                Content="{x:Static res:Resources.ExportFile}"
-                                Style="{StaticResource ButtonStyle}"
-                                Command="{Binding ExportCommand}">
-                    </Button>
-                    <TextBlock
-                               Grid.Row="1"
-                               Grid.ColumnSpan="2"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               TextWrapping="Wrap"
-                               FontSize="{DynamicResource FontSize_Normal}"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                               Foreground="Red"
-                               Text="{Binding ResultVertimagConfiguration}" />
-                </Grid>
-            </StackPanel>
+          <Button Grid.Column="1"
+                  Width="120"
+                  Height="60"
+                  Margin="20,0,20,0"
+                  Command="{Binding ExportCommand}"
+                  Content="{x:Static res:Resources.ExportFile}"
+                  FontSize="18"
+                  Style="{StaticResource ButtonStyle}" />
+          <TextBlock Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     FontSize="{DynamicResource FontSize_Normal}"
+                     Foreground="Red"
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{Binding ResultVertimagConfiguration}"
+                     TextWrapping="Wrap" />
         </Grid>
-    </Grid>
+      </StackPanel>
+      <StackPanel Grid.Row="1"
+                  Orientation="Vertical">
+        <TextBlock Grid.Row="2"
+                   Margin="0,20"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:Resources.VertimagInverterConfigurationFile}" />
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Grid.Row="0"
+                     Margin="0,25"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     FontSize="{DynamicResource FontSize_Normal}"
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{Binding VertimagInverterConfigurationFilePath}"
+                     TextWrapping="Wrap" />
 
+          <Button Grid.Column="1"
+                  Width="120"
+                  Height="60"
+                  Margin="20,0,20,0"
+                  Command="{Binding ExportInverterCommand}"
+                  Content="{x:Static res:Resources.ExportFile}"
+                  FontSize="18"
+                  Style="{StaticResource ButtonStyle}" />
+          <TextBlock Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     FontSize="{DynamicResource FontSize_Normal}"
+                     Foreground="Red"
+                     Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{Binding ResultVertimagInverterConfiguration}"
+                     TextWrapping="Wrap" />
+        </Grid>
+      </StackPanel>
+    </Grid>
+  </Grid>
 </UserControl>

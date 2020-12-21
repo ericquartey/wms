@@ -390,6 +390,7 @@ namespace Ferretto.VW.Installer.Core
                         {
                             this.logger.Debug("Installation rollback completed.");
                             this.IsRollbackInProgress = false;
+                            this.Dump();
                             return;
                         }
                     }
@@ -413,6 +414,7 @@ namespace Ferretto.VW.Installer.Core
                             }
                             this.logger.Debug("Installation interrupted.");
                             this.IsRollbackInProgress = false;
+                            this.Dump();
                             return;
                         }
                     }

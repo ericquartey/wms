@@ -216,4 +216,7 @@
   <data name="SearchPattern" xml:space="preserve">
     <value>Mod. datoteka</value>
   </data>
+  <data name="VertimagInverterConfigurationFile" xml:space="preserve">
+    <value>Datoteke za konfig. Vertimag-a pretvarač</value>
+  </data>
 </root>
