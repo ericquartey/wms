@@ -27,9 +27,13 @@ namespace Ferretto.VW.Installer.ViewModels
 
         private readonly INotificationService notificationService;
 
+        private readonly Command retryCommand;
+
         private bool abortRequested;
 
         private bool isFinished;
+
+        private bool isStarted;
 
         private bool isSuccessful;
 
@@ -62,6 +66,7 @@ namespace Ferretto.VW.Installer.ViewModels
 
             this.abortCommand = new Command(this.Abort, this.CanAbort);
             this.closeCommand = new Command(this.Close, this.CanClose);
+            this.retryCommand = new Command(this.Retry, this.CanRetry);
         }
 
         #endregion
@@ -89,6 +94,8 @@ namespace Ferretto.VW.Installer.ViewModels
             get => this.isSuccessful;
             set => this.SetProperty(ref this.isSuccessful, value);
         }
+
+        public ICommand RetryCommand => this.retryCommand;
 
         public Step? SelectedStep
         {
@@ -135,6 +142,7 @@ namespace Ferretto.VW.Installer.ViewModels
                 this.IsSuccessful = false;
                 this.AbortRequested = false;
                 this.SelectedStep = null;
+                this.isStarted = true;
 
                 this.installationService.Run();
             }
@@ -165,6 +173,14 @@ namespace Ferretto.VW.Installer.ViewModels
         private bool CanClose()
         {
             return this.IsFinished;
+        }
+
+        private bool CanRetry()
+        {
+            return this.isStarted
+                && this.IsFinished
+                && !this.installationService.IsRollbackInProgress
+                && !this.AbortRequested;
         }
 
         private void Close()
@@ -206,6 +222,15 @@ namespace Ferretto.VW.Installer.ViewModels
         {
             this.closeCommand.RaiseCanExecuteChanged();
             this.abortCommand.RaiseCanExecuteChanged();
+            this.retryCommand.RaiseCanExecuteChanged();
+        }
+
+        private void Retry()
+        {
+            this.logger.Info("Retry installation");
+            this.notificationService.ClearMessage();
+
+            this.StartInstallation();
         }
 
         #endregion
