@@ -272,19 +272,19 @@ namespace Ferretto.VW.Installer.Core
 
             if (this.Steps.Any(s => s.Execution.Status == StepStatus.RollbackFailed))
             {
-                this.IsRollbackInProgress = true;
+                //this.IsRollbackInProgress = true;
                 throw new InvalidOperationException("Unable to continue with setup because rollback failed.");
             }
 
             if (this.Steps.Any(s => s.Execution.Status == StepStatus.InProgress))
             {
-                this.IsRollbackInProgress = true;
+                //this.IsRollbackInProgress = true;
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was in progress.");
             }
 
             if (this.Steps.Any(s => s.Execution.Status == StepStatus.RollingBack))
             {
-                this.IsRollbackInProgress = true;
+                //this.IsRollbackInProgress = true;
                 throw new InvalidOperationException("Unable to continue with setup because execution was interrupted while one step was being rolled back.");
             }
 
@@ -412,6 +412,7 @@ namespace Ferretto.VW.Installer.Core
                                 await this.RollbackStep(this.ActiveStep);
                             }
                             this.logger.Debug("Installation interrupted.");
+                            this.IsRollbackInProgress = false;
                             return;
                         }
                     }
