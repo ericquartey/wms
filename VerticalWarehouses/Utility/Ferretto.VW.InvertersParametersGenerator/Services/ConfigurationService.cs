@@ -23,7 +23,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
 
         private WizardMode wizardMode;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
             this.invertersNodeService = new InvertersNodeService();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
             set => this.SetProperty(ref this.wizardMode, value);
         }
 
-        #endregion
+        #endregion Properties
 
         #region Methods
 
@@ -98,6 +98,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.Services
             this.WizardMode = WizardMode.ImportConfiguration;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

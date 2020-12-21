@@ -216,4 +216,8 @@
   <data name="SearchPattern" xml:space="preserve">
     <value>Pattern files</value>
   </data>
+  <data name="VertimagInverterConfigurationFile" xml:space="preserve">
+    <value>Vertimag wandler
+ Konfigurationsdateien</value>
+  </data>
 </root>
