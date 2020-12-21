@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             foreach (var inverter in inverters)
             {
                 var result = this.digitalDevicesDataProvider.CheckInverterParametersValidity(inverter.Index);
-                if (result)
+                if (!result)
                 {
                     throw new ArgumentException($"No Inverters parameters found");
                 }
