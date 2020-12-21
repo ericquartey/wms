@@ -201,7 +201,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         private void Inistialize()
         {
             this.vertimagConfigurationPath = this.VertimagConfigurationFilePath = ConfigurationManager.AppSettings.GetVertimagConfigurationRootPath();
-            this.InvertersParametersFolder = ConfigurationManager.AppSettings.GetInvertersParametersRootPath();
+            //this.InvertersParametersFolder = ConfigurationManager.AppSettings.GetInvertersParametersRootPath();
+            this.InvertersParametersFolder = Environment.CurrentDirectory + "\\Parameters";
             this.EvaluateCanNext();
         }
 

@@ -8,9 +8,9 @@
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
-  <ItemGroup>    
-    <PackageReference Include="EPPlus" Version="4.5.3.3" />    
-    <PackageReference Include="FileHelpers" Version="3.4.1" />    
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.3.3" />
+    <PackageReference Include="FileHelpers" Version="3.4.1" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="3.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
@@ -72,6 +72,9 @@
     <None Update="Parameters\AGL_serranda_3posizioni_INV20200303.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Parameters\AGL_serranda_800kg.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Parameters\ANG_vert_oriz_800kg_INV20200303.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -88,6 +91,4 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-
 </Project>
