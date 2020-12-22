@@ -140,6 +140,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
             }
             else
             {
+                //check payload
                 return new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.StringValue, (InverterDataset)parameter.DataSet);
             }
         }

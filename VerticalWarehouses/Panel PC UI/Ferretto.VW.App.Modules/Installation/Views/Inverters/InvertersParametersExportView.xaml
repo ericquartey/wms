@@ -1,9 +1,11 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Installation.Views.InvertersParametersImportView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Installation.Views.InvertersParametersExportView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:converters="clr-namespace:Ferretto.VW.App.Modules.Installation.Converters"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -11,8 +13,9 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-  
+
   <ctrls:View.Resources>
+    <converters:DriveToVertimagFilenameConverter x:Key="DriveToVertimagFilenameConverter" />
 
     <Style x:Key="CellBorderStyle"
            TargetType="Border">
@@ -36,15 +39,17 @@
       <Setter Property="ToolTip" Value="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
     </Style>
 
-    <Style TargetType="{x:Type GridViewColumnHeader}">
+    <Style x:Key="GridViewColumnHeaderStyle"
+           TargetType="{x:Type GridViewColumnHeader}">
       <Setter Property="Background" Value="{x:Null}" />
-      <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+      <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
       <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
       <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
       <Setter Property="BorderThickness" Value="0,0,0,1" />
       <Setter Property="Padding" Value="10,5" />
       <Setter Property="Margin" Value="-2,0" />
       <Setter Property="Height" Value="32" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
@@ -54,7 +59,7 @@
               <TextBlock x:Name="ContentHeader"
                          Width="{TemplateBinding Width}"
                          Padding="{TemplateBinding Padding}"
-                         VerticalAlignment="Center"
+                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                          Foreground="{TemplateBinding Foreground}"
                          Text="{TemplateBinding Content}"
                          TextAlignment="Center" />
@@ -82,7 +87,7 @@
           <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Margin" Value="0" />
             <Setter Property="Height" Value="54" />
-            <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+            <Setter Property="Foreground" Value="{DynamicResource ScaffolderTextEnabled}" />
             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
             <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -128,8 +133,8 @@
                   <Condition Property="IsSelected" Value="True" />
                   <!--<Condition Property="Selector.IsSelectionActive" Value="true" />-->
                 </MultiTrigger.Conditions>
-                <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-                <Setter Property="Background" Value="{DynamicResource FerrettoMediumGray}" />
+                <Setter Property="Foreground" Value="{DynamicResource ScaffolderIsSelectedForeground}" />
+                <Setter Property="Background" Value="{DynamicResource ScaffolderIsSelectedBackground}" />
               </MultiTrigger>
               <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
@@ -185,38 +190,79 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
     <TextBlock Grid.ColumnSpan="2"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-               Text="{res:Loc InstallationApp.ImportConfigurationFile}" />
+               Text="{res:Loc InstallationApp.Export}" />
+
 
     <ListView Grid.Row="1"
-              ItemsSource="{Binding ConfigurationFiles}"
-              SelectedValue="{Binding SelectedFile, Mode=TwoWay}">
+              Grid.Column="0"
+              ItemsSource="{Binding AvailableDrives}"
+              SelectedValue="{Binding SelectedDrive, Mode=TwoWay}">
       <ListView.View>
         <GridView>
-          <GridViewColumn Width="400"
+          <GridViewColumn Width="990"
                           Header="File">
+            <GridViewColumn.HeaderContainerStyle>
+              <Style BasedOn="{StaticResource GridViewColumnHeaderStyle}"
+                     TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+              </Style>
+            </GridViewColumn.HeaderContainerStyle>
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <Border Style="{StaticResource FirstCellBorderStyle}">
-                  <TextBlock Style="{StaticResource CellTextBlockStyle}"
-                             Text="{Binding Path=Name}" />
-                </Border>
-              </DataTemplate>
-            </GridViewColumn.CellTemplate>
-          </GridViewColumn>
-          <GridViewColumn Width="550"
-                          Header="{res:Loc General.FilePath}">
-            <GridViewColumn.CellTemplate>
-              <DataTemplate>
-                <Border Style="{StaticResource CellBorderStyle}">
-                  <TextBlock FontStyle="Italic"
-                             Style="{StaticResource CellTextBlockStyle}"
-                             Text="{Binding Path=FullName}" />
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="24"
+                            Height="24"
+                            Margin="0,0,10,0"
+                            Background="{DynamicResource FerrettoRed}"
+                            CornerRadius="12">
+                      <icons:PackIconFontAwesome HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="{DynamicResource FerrettoPureWhite}"
+                                                 Kind="ExclamationSolid" />
+                      <Border.Visibility>
+                        <MultiBinding Converter="{StaticResource MBTUI}">
+                          <Binding Path="IsSelected"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=ListViewItem}" />
+                          <Binding Path="DataContext.OverwriteTargetFile"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=UserControl}" />
+                          <Binding Path="DataContext.HasFilenameConflict"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=UserControl}" />
+                        </MultiBinding>
+                      </Border.Visibility>
+                    </Border>
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource CellTextBlockStyle}">
+                      <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource DriveToVertimagFilenameConverter}">
+                          <Binding Path="." />
+                          <Binding Path="DataContext.Data"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=UserControl}" />
+                          <Binding Path="DataContext.OverwriteTargetFile"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=UserControl}" />
+                          <Binding Path="IsSelected"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=ListViewItem}" />
+                        </MultiBinding>
+                      </TextBlock.Text>
+                    </TextBlock>
+                  </Grid>
                 </Border>
               </DataTemplate>
             </GridViewColumn.CellTemplate>
@@ -225,14 +271,19 @@
       </ListView.View>
     </ListView>
 
+    <CheckBox Grid.Row="2"
+              Margin="0,15,0,0"
+              HorizontalAlignment="Left"
+              Content="Overwrite target file"
+              IsChecked="{Binding OverwriteTargetFile, Mode=TwoWay}"
+              Style="{StaticResource PpcCheckBoxStyle}"
+              Visibility="{Binding HasFilenameConflict, Converter={StaticResource TTUI}}" />
+
     <controls:PpcButton Grid.Row="2"
-                        Grid.Column="1"
                         Margin="15,15,0,0"
                         HorizontalAlignment="Right"
-                        Command="{Binding ImportCommand}"
-                        Content="{res:Loc InstallationApp.LoadFile}"
+                        Command="{Binding ExportCommand}"
+                        Content="{res:Loc InstallationApp.SaveRestoreConfigSaveButton}"
                         IsBusy="{Binding IsBusy}" />
-
-
   </Grid>
 </ctrls:View>

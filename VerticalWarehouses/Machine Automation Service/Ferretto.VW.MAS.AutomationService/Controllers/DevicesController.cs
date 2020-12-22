@@ -62,6 +62,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(result);
         }
 
+        [HttpGet("inverters")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        public ActionResult<IEnumerable<Inverter>> GetInverters()
+        {
+            return this.Ok(this.inverterProvider.GetAllParameters());
+        }
+
         [HttpGet("inverters/parameters")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -74,28 +83,36 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("inverters/program")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult ProgramAllInverters(VertimagConfiguration vertimagConfiguration = null)
+        public IActionResult ProgramAllInverters(IEnumerable<Inverter> inverters)
         {
-            if (vertimagConfiguration?.Machine is null)
-            {
-                vertimagConfiguration = this.configurationProvider.ConfigurationGet();
-            }
-
-            this.inverterStateProvider.Start(vertimagConfiguration, this.BayNumber, MessageActor.AutomationService);
+            this.inverterStateProvider.Start(inverters, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
-        [HttpPost("inverters/{index}/program")]
+        [HttpPost("inverter/program")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult ProgramInverter(byte index, VertimagConfiguration vertimagConfiguration)
+        public IActionResult ProgramInverter(Inverter inverter)
         {
-            if (vertimagConfiguration?.Machine is null)
-            {
-                vertimagConfiguration = this.configurationProvider.ConfigurationGet();
-            }
+            this.inverterStateProvider.Start(inverter, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
 
-            this.inverterStateProvider.Start(vertimagConfiguration, index, this.BayNumber, MessageActor.AutomationService);
+        [HttpPost("inverters/read")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ReadAllInverters(IEnumerable<Inverter> inverters)
+        {
+            this.inverterStateProvider.Read(inverters, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
+        [HttpPost("inverter/read")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ReadInverter(Inverter inverter)
+        {
+            this.inverterStateProvider.Read(inverter, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
