@@ -105,6 +105,7 @@ namespace Ferretto.VW.App.Services
                     this.AccessLevel = UserAccessLevel.NoAccess;
                     break;
             }
+            userClaims.AccessLevel = this.AccessLevel;
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userClaims.Name, this.AccessLevel));
 
             await this.TelemetryLoginLogoutAsync("Login", bearerToken);
