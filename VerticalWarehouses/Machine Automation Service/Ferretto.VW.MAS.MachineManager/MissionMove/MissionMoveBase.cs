@@ -535,6 +535,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.MoveBackToBay();
                     return;
                 }
+                try
+                {
+                    this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId, isCellTest: (this.Mission.MissionType == MissionType.FirstTest));
+                    this.Logger.LogDebug($"Found cell {this.Mission.DestinationCellId} for LU {this.Mission.LoadUnitId}");
+                }
+                catch (InvalidOperationException)
+                {
+                    // cell not found: go back to bay
+                    this.Mission.ErrorCode = MachineErrorCode.WarehouseIsFull;
+                    this.MoveBackToBay();
+                    return;
+                }
             }
 
             this.SendPositionNotification($"Load Unit {this.Mission.LoadUnitId} position changed");

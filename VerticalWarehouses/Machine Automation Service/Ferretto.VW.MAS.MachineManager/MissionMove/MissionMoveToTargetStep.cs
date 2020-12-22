@@ -267,20 +267,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var check = this.LoadingUnitsDataProvider.CheckWeight(this.Mission.LoadUnitId);
 
                         //check = MachineErrorCode.LoadUnitWeightExceeded;    // TEST
-                        if (check == MachineErrorCode.NoError && this.Mission.MissionType != MissionType.ScaleCalibration)
-                        {
-                            try
-                            {
-                                this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId, isCellTest: (this.Mission.MissionType == MissionType.FirstTest));
-                                this.MissionsDataProvider.Update(this.Mission);
-                                this.Logger.LogDebug($"Found cell {this.Mission.DestinationCellId} for LU {this.Mission.LoadUnitId}");
-                            }
-                            catch (InvalidOperationException)
-                            {
-                                // cell not found: go back to bay
-                                check = MachineErrorCode.WarehouseIsFull;
-                            }
-                        }
+                        //if (check == MachineErrorCode.NoError && this.Mission.MissionType != MissionType.ScaleCalibration)
+                        //{
+                        //    try
+                        //    {
+                        //        this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId, isCellTest: (this.Mission.MissionType == MissionType.FirstTest));
+                        //        this.MissionsDataProvider.Update(this.Mission);
+                        //        this.Logger.LogDebug($"Found cell {this.Mission.DestinationCellId} for LU {this.Mission.LoadUnitId}");
+                        //    }
+                        //    catch (InvalidOperationException)
+                        //    {
+                        //        // cell not found: go back to bay
+                        //        check = MachineErrorCode.WarehouseIsFull;
+                        //    }
+                        //}
 
                         if (check != MachineErrorCode.NoError || this.Mission.MissionType == MissionType.ScaleCalibration)
                         {
