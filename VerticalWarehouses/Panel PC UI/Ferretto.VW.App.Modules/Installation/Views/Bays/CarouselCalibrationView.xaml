@@ -250,12 +250,22 @@
         </RadioButton>
 
         <controls:PpcButton Grid.Row="4"
-                            Grid.ColumnSpan="2"
+                            Grid.Column="1"
                             Margin="0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding ApplyCommand}"
                             Content="{res:Loc InstallationApp.ApplyCorrection}"
+                            Style="{DynamicResource WizardIntoButton}"
+                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="0"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding CompleteCommand}"
+                            Content="{res:Loc InstallationApp.ConfirmProcedure}"
                             Style="{DynamicResource WizardIntoButton}"
                             Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
 
