@@ -2307,4 +2307,16 @@
   <data name="VerticalCalibration" xml:space="preserve">
     <value>Aufzugskalibrierung</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Wechselrichterablesung erfolgreich abgeschlossen</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Wechselrichterablesung mit Fehlern abgeschlossen</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Wechselrichterablesung gestoppt</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Beginn der nächsten Wechselrichtermessung</value>
+  </data>
 </root>

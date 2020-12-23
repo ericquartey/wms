@@ -466,18 +466,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task ProgramInverterAsync(Inverter inverter, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ReadAllInvertersAsync(System.Collections.Generic.IEnumerable<Inverter> inverters);
+        System.Threading.Tasks.Task ReadAllInvertersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ReadAllInvertersAsync(System.Collections.Generic.IEnumerable<Inverter> inverters, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ReadAllInvertersAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ReadInverterAsync(Inverter inverter);
+        System.Threading.Tasks.Task ReadInverterAsync(InverterIndex inverterIndex);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ReadInverterAsync(Inverter inverter, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ReadInverterAsync(InverterIndex inverterIndex, System.Threading.CancellationToken cancellationToken);
     
     }
     

@@ -2370,4 +2370,16 @@
   <data name="SoftwareUpdateDescription" xml:space="preserve">
     <value>Please insert USB stick</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Inverter reading completed successfully</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Inverter reading ended with errors</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Inverter reading stopped</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Start of next inverter reading</value>
+  </data>
 </root>

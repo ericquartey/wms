@@ -2307,4 +2307,16 @@
   <data name="VerticalCalibration" xml:space="preserve">
     <value>Kalibrace výtahu</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Čtení střídače bylo úspěšně dokončeno</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Čtení střídače skončilo chybami</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Čtení střídače se zastavilo</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Začátek dalšího čtení měniče</value>
+  </data>
 </root>

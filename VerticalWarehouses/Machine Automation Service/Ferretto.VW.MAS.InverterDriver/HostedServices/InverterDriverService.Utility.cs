@@ -16,6 +16,7 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn;
@@ -651,6 +652,43 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 var ex = new Exception();
                 this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.ShutterPositioning);
+            }
+        }
+
+        private void ProcessInverterReadingMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
+        {
+            var currentInverter = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+
+            if (receivedMessage.Data is IInverterReadingFieldMessageData inverterProgrammingData)
+            {
+                this.Logger.LogTrace("1:Parse Message Data");
+
+                if (!inverter.IsStarted)
+                {
+                    this.Logger.LogTrace("4:Starting InverterReading FSM");
+
+                    this.Logger.LogTrace("Start the timer for update status word");
+                    this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
+
+                    var inverterReadingFieldMessageData = new InverterReadingFieldMessageData(inverterProgrammingData.Parameters, inverterProgrammingData.IsCheckInverterVersion);
+                    var currentStateMachine = new InverterReadingState(
+                        inverter,
+                        inverterReadingFieldMessageData,
+                        this.eventAggregator,
+                        this.inverterCommandQueue,
+                        this.ServiceScopeFactory,
+                        this.Logger);
+
+                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                    currentStateMachine.Start();
+                }
+            }
+            else
+            {
+                this.Logger.LogError("5:Wrong message Data data type");
+
+                var ex = new Exception();
+                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.InverterReading);
             }
         }
 

@@ -241,6 +241,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                         this.ProcessInvertersProgramming(command, serviceProvider);
                         break;
 
+                    case MessageType.InverterReading:
+                        this.ProcessInvertersReading(command, serviceProvider);
+                        break;
+
                     case MessageType.CheckIntrusion:
                         this.ProcessCheckIntrusion(command);
                         break;
@@ -293,6 +297,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.InverterFaultReset:
                             case MessageType.ResetSecurity:
                             case MessageType.InverterProgramming:
+                            case MessageType.InverterReading:
                             case MessageType.InverterPowerEnable:
                             case MessageType.CheckIntrusion:
                                 this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
@@ -906,6 +911,23 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     MessageActor.Any,
                                     MessageActor.DeviceManager,
                                     MessageType.InverterProgramming,
+                                    bayNumber,
+                                    bayNumber,
+                                    receivedMessage.Status));
+
+                        break;
+
+                    case FieldMessageType.InverterReading when receivedMessage.Source is FieldMessageActor.InverterDriver:
+
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(
+                                new NotificationMessage(
+                                    null,
+                                    receivedMessage.Description,
+                                    MessageActor.Any,
+                                    MessageActor.DeviceManager,
+                                    MessageType.InverterReading,
                                     bayNumber,
                                     bayNumber,
                                     receivedMessage.Status));

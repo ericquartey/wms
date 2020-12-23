@@ -2316,4 +2316,16 @@
   <data name="SoftwareUpdateDescription" xml:space="preserve">
     <value>Inserire chiavetta USB</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Lettura inverter terminata con successo</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Lettura inverter terminata con errori</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Lettura inverter fermata</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Inizio lettura inverter successivo</value>
+  </data>
 </root>

@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Interface;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Newtonsoft.Json;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -41,6 +43,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private IEnumerable<FileInfo> importableFiles = Array.Empty<FileInfo>();
 
         private string importFolderPath;
+
+        private SubscriptionToken inverterReadingMessageReceivedToken;
 
         private IEnumerable<Inverter> inverters;
 
@@ -162,6 +166,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.usbWatcher.DrivesChanged -= this.UsbWatcher_DrivesChange;
             this.usbWatcher.Disable();
 
+            if (this.inverterReadingMessageReceivedToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<InverterReadingMessageData>>().Unsubscribe(this.inverterReadingMessageReceivedToken);
+                this.inverterReadingMessageReceivedToken?.Dispose();
+                this.inverterReadingMessageReceivedToken = null;
+            }
+
             base.Disappear();
         }
 
@@ -178,6 +189,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
             this.usbWatcher.Enable();
+
+            this.inverterReadingMessageReceivedToken = this.inverterReadingMessageReceivedToken
+               ?? this.EventAggregator
+                   .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
+                   .Subscribe(
+                       (m) => this.OnInverterReadingMessageReceived(m),
+                       ThreadOption.UIThread,
+                       false);
 
             await base.OnAppearedAsync();
 
@@ -201,7 +220,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedFileConfiguration = null;
                     this.inverters = await this.machineDevicesWebService.GetInvertersAsync();
 
-                    await this.machineDevicesWebService.ReadAllInvertersAsync(this.inverters);
+                    await this.machineDevicesWebService.ReadAllInvertersAsync();
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -233,6 +252,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanShowImport()
         {
             return this.usbWatcher.Drives.Writable().Any();
+        }
+
+        private async void OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    this.IsBusy = false;
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingSuccessfullyEnded"), Services.Models.NotificationSeverity.Success);
+                    this.inverters = await this.machineDevicesWebService.GetInvertersAsync();
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                    this.IsBusy = false;
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingEndedErrors"), Services.Models.NotificationSeverity.Error);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    this.IsBusy = false;
+                    this.ShowNotification(Localized.Get("InstallationApp.InvertersReadingStopped"), Services.Models.NotificationSeverity.Warning);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStepEnd:
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingNext"), Services.Models.NotificationSeverity.Info);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private async Task SaveAllParametersAsync()

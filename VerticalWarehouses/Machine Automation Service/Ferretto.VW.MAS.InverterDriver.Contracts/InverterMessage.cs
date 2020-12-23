@@ -107,6 +107,21 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.heartbeatMessage = false;
         }
 
+        public InverterMessage(short systemIndex, short parameterId, InverterDataset dataSetIndex = InverterDataset.ActualDataset)
+        {
+            if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
+            {
+                throw new ArgumentException($"8:Invalid system index {systemIndex}", nameof(systemIndex));
+            }
+
+            this.responseMessage = false;
+            this.SystemIndex = inverterIndex;
+            this.DataSetIndex = (byte)dataSetIndex;
+            this.parameterId = (short)parameterId;
+            this.IsWriteMessage = false;
+            this.heartbeatMessage = false;
+        }
+
         public InverterMessage(byte systemIndex, short parameterId, object payload, byte dataSetIndex, int sendDelay = 0)
         {
             this.BuildWriteMessage(systemIndex, parameterId, payload, dataSetIndex, sendDelay);

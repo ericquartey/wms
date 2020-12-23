@@ -91,10 +91,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         //        requestingBay);
         //}
 
-        public void Read(IEnumerable<Inverter> inverters, BayNumber requestingBay, MessageActor sender)
+        public void Read(BayNumber requestingBay, MessageActor sender)
         {
+            var invetersFormDb = this.digitalDevicesDataProvider.GetAllInverters();
+
             //check inverters
-            foreach (var inverter in inverters)
+            foreach (var inverter in invetersFormDb)
             {
                 var result = this.digitalDevicesDataProvider.CheckInverterParametersValidity(inverter.Index);
                 if (!result)
@@ -103,19 +105,68 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
             }
 
+            var inverterParametersCheckVersionData = new List<InverterParametersData>();
+            var inverterParametersWriteData = new List<InverterParametersData>();
+
+            foreach (var inverter in invetersFormDb)
+            {
+                var newInverterParametersData = this.GetInverterParameters(inverter);
+                inverterParametersCheckVersionData.Add(newInverterParametersData.inverterParametersCheckVersionData);
+                inverterParametersWriteData.Add(newInverterParametersData.inverterParametersWriteData);
+            }
+
+            var inverterParametersData = new List<InverterParametersData>();
+            inverterParametersData.AddRange(inverterParametersCheckVersionData);
+            inverterParametersData.AddRange(inverterParametersWriteData.OrderBy(i => i.InverterIndex).ToList());
+
+            if (!inverterParametersData.Any())
+            {
+                throw new ArgumentException($"No Inverters found");
+            }
+
             //send command
+
+            this.PublishCommand(
+                new InverterReadingMessageData(inverterParametersData, CommonUtils.CommandAction.Start),
+                $"Bay {requestingBay} requested Inverter programming runnning State",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.InverterReading,
+                requestingBay,
+                requestingBay);
         }
 
-        public void Read(Inverter inverter, BayNumber requestingBay, MessageActor sender)
+        public void Read(InverterIndex inverterIndex, BayNumber requestingBay, MessageActor sender)
         {
-            //check inverter
-            var result = this.digitalDevicesDataProvider.CheckInverterParametersValidity(inverter.Index);
+            var inveterFormDb = this.digitalDevicesDataProvider.GetInverterByIndex(inverterIndex);
+
+            //check inverters
+            var result = this.digitalDevicesDataProvider.CheckInverterParametersValidity(inverterIndex);
             if (result)
             {
                 throw new ArgumentException($"No Inverter parameters found");
             }
+            var newInverterParametersData = this.GetInverterParameters(inveterFormDb);
+
+            var inverterParametersData = new List<InverterParametersData>();
+            inverterParametersData.Add(newInverterParametersData.inverterParametersCheckVersionData);
+            inverterParametersData.Add(newInverterParametersData.inverterParametersWriteData);
+
+            if (!inverterParametersData.Any())
+            {
+                throw new ArgumentException($"No Inverters found");
+            }
 
             //send command
+
+            this.PublishCommand(
+                new InverterReadingMessageData(inverterParametersData, CommonUtils.CommandAction.Start),
+                $"Bay {requestingBay} requested Inverter programming runnning State",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.InverterReading,
+                requestingBay,
+                requestingBay);
         }
 
         public void Start(IEnumerable<Inverter> inverters, BayNumber requestingBay, MessageActor sender)

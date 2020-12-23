@@ -2307,4 +2307,16 @@
   <data name="VerticalCalibration" xml:space="preserve">
     <value>Kalibracija dizala</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Čitanje pretvarača uspješno dovršeno</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Očitavanje pretvarača dovršeno s pogreškama</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Čitanje pretvarača je zaustavljeno</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Početak sljedećeg očitavanja pretvarača</value>
+  </data>
 </root>

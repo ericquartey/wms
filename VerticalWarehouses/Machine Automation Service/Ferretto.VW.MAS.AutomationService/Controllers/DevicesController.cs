@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     public class DevicesController : ControllerBase, IRequestingBayController
     {
         #region Fields
-
-        private readonly IConfigurationProvider configurationProvider;
 
         private readonly IInverterProvider inverterProvider;
 
@@ -29,12 +28,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public DevicesController(
-            IConfigurationProvider configurationProvider,
             IInverterProvider inverterProvider,
             IIoDeviceProvider ioDeviceProvider,
             IInverterProgrammingProvider inverterStateProvider)
         {
-            this.configurationProvider = configurationProvider ?? throw new ArgumentNullException(nameof(configurationProvider));
             this.inverterProvider = inverterProvider;
             this.ioDeviceProvider = ioDeviceProvider;
             this.inverterStateProvider = inverterStateProvider;
@@ -101,18 +98,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("inverters/read")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult ReadAllInverters(IEnumerable<Inverter> inverters)
+        public IActionResult ReadAllInverters()
         {
-            this.inverterStateProvider.Read(inverters, this.BayNumber, MessageActor.AutomationService);
+            this.inverterStateProvider.Read(this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
         [HttpPost("inverter/read")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult ReadInverter(Inverter inverter)
+        public IActionResult ReadInverter(InverterIndex inverterIndex)
         {
-            this.inverterStateProvider.Read(inverter, this.BayNumber, MessageActor.AutomationService);
+            this.inverterStateProvider.Read(inverterIndex, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 

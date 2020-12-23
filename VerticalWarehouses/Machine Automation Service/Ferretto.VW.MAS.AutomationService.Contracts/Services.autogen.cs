@@ -5095,18 +5095,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ReadAllInvertersAsync(System.Collections.Generic.IEnumerable<Inverter> inverters)
+        public System.Threading.Tasks.Task ReadAllInvertersAsync()
         {
-            return ReadAllInvertersAsync(inverters, System.Threading.CancellationToken.None);
+            return ReadAllInvertersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ReadAllInvertersAsync(System.Collections.Generic.IEnumerable<Inverter> inverters, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ReadAllInvertersAsync(System.Threading.CancellationToken cancellationToken)
         {
-            if (inverters == null)
-                throw new System.ArgumentNullException("inverters");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/devices/inverters/read");
     
@@ -5115,9 +5112,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(inverters, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
     
                     PrepareRequest(client_, request_, urlBuilder_);
@@ -5161,29 +5156,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ReadInverterAsync(Inverter inverter)
+        public System.Threading.Tasks.Task ReadInverterAsync(InverterIndex inverterIndex)
         {
-            return ReadInverterAsync(inverter, System.Threading.CancellationToken.None);
+            return ReadInverterAsync(inverterIndex, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ReadInverterAsync(Inverter inverter, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ReadInverterAsync(InverterIndex inverterIndex, System.Threading.CancellationToken cancellationToken)
         {
-            if (inverter == null)
-                throw new System.ArgumentNullException("inverter");
+            if (inverterIndex == null)
+                throw new System.ArgumentNullException("inverterIndex");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/devices/inverter/read");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/devices/inverter/read?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("inverterIndex") + "=").Append(System.Uri.EscapeDataString(ConvertToString(inverterIndex, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(inverter, _settings.Value));
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
-                    request_.Content = content_;
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
     
                     PrepareRequest(client_, request_, urlBuilder_);

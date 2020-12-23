@@ -3319,6 +3319,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter reading ended with errors.
+        /// </summary>
+        public static string InverterReadingEndedErrors {
+            get {
+                return ResourceManager.GetString("InverterReadingEndedErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start of next inverter reading.
+        /// </summary>
+        public static string InverterReadingNext {
+            get {
+                return ResourceManager.GetString("InverterReadingNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter reading completed successfully.
+        /// </summary>
+        public static string InverterReadingSuccessfullyEnded {
+            get {
+                return ResourceManager.GetString("InverterReadingSuccessfullyEnded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverters programming started.
         /// </summary>
         public static string InvertersProgrammingStarted {
@@ -3333,6 +3360,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InvertersProgrammingStopped {
             get {
                 return ResourceManager.GetString("InvertersProgrammingStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter reading stopped.
+        /// </summary>
+        public static string InvertersReadingStopped {
+            get {
+                return ResourceManager.GetString("InvertersReadingStopped", resourceCulture);
             }
         }
         

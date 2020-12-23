@@ -140,6 +140,8 @@
         /// <summary>
         /// use light curtain to check intrusion
         /// </summary>
-        CheckIntrusion
+        CheckIntrusion,
+
+        InverterReading
     }
 }

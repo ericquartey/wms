@@ -63,8 +63,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.EventAggregator.GetEvent<NotificationEventUI<InverterProgrammingMessageData>>().Unsubscribe(this.inverterProgrammingMessageReceivedToken);
-            this.inverterProgrammingMessageReceivedToken = null;
+            if (this.inverterProgrammingMessageReceivedToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<InverterReadingMessageData>>().Unsubscribe(this.inverterProgrammingMessageReceivedToken);
+                this.inverterProgrammingMessageReceivedToken?.Dispose();
+                this.inverterProgrammingMessageReceivedToken = null;
+            }
 
             base.Disappear();
         }
@@ -121,7 +125,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStepEnd:
-                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingNext"), Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingNext"), Services.Models.NotificationSeverity.Info);
                     break;
 
                 default:
