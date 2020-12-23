@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DataModels
         ConditionsNotMetForPositioning,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForRunning), 0)]
-        [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
+        //[ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         ConditionsNotMetForRunning,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForHoming), 0)]
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.DataModels
         ConditionsNotMetForHoming,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityWasTriggered), 2)]
-        [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
+        //[ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         SecurityWasTriggered,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityButtonWasTriggered), 2)]

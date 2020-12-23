@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
@@ -25,7 +26,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         /// CHecks if all security sensors are set to allow running state
         /// </summary>
         /// <returns></returns>
-        bool IsMachineSecureForRun(out string errorText);
+        bool IsMachineSecureForRun(out string errorText, out MachineErrorCode errorCode, out BayNumber bayNumber);
 
         #endregion
     }

@@ -358,7 +358,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorBaseCode {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorCannotWriteParameterWhileRunning {
             get {
@@ -376,7 +376,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorDatasetValuesAreDifferent {
             get {
@@ -385,7 +385,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorEepromChecksumError {
             get {
@@ -394,7 +394,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorEepromReadError {
             get {
@@ -403,7 +403,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorEepromWriteError {
             get {
@@ -412,7 +412,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorInvalidDataset {
             get {
@@ -421,7 +421,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorInvalidParameter {
             get {
@@ -430,7 +430,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorNodeNotAvailable {
             get {
@@ -439,7 +439,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorParameterIsReadOnly {
             get {
@@ -448,7 +448,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorParameterIsWriteOnly {
             get {
@@ -457,7 +457,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorSyntaxError {
             get {
@@ -466,7 +466,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorUnknownParameter {
             get {
@@ -475,7 +475,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterErrorWrongPayloadLength {
             get {
@@ -484,7 +484,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch the machine off and on again. If the problem persists, contact support..
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
         public static string InverterFaultStateDetected {
             get {
