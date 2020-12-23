@@ -1,24 +1,25 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Installation.Interface
 {
-    public interface ISetVertimagConfiguration
+    public interface ISetVertimagInverterConfiguration
     {
         #region Properties
 
         FileInfo SelectedFileConfiguration { get; set; }
 
-        InverterParametersData SelectedInverter { get; }
+        Inverter SelectedInverter { get; }
 
-        VertimagConfiguration VertimagConfiguration { get; set; }
+        IEnumerable<Inverter> VertimagInverterConfiguration { get; set; }
 
         #endregion
 
         #region Methods
 
-        Task BackupVertimagConfigurationParameters();
+        void BackupVertimagInverterConfigurationParameters();
 
         #endregion
     }

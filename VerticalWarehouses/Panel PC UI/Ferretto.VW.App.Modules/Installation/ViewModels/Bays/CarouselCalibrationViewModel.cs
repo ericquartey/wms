@@ -655,21 +655,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmCalibrationProcedure"), Localized.Get("InstallationApp.CarouselCalibration"), DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
-                {
-                    this.IsExecutingStopInPhase = false;
-                    this.IsExecutingProcedure = false;
+                this.IsExecutingStopInPhase = false;
+                this.IsExecutingProcedure = false;
 
-                    await this.machineCarouselWebService.SetCalibrationCompletedAsync();
+                await this.machineCarouselWebService.SetCalibrationCompletedAsync();
 
-                    //this.ShowNotification(
-                    //        VW.App.Resources.InstallationApp.InformationSuccessfullyUpdated,
-                    //        Services.Models.NotificationSeverity.Success);
-                    this.ShowNotification(
-                        VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"),
-                        Services.Models.NotificationSeverity.Success);
-                }
+                this.ShowNotification(
+                    VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"),
+                    Services.Models.NotificationSeverity.Success);
 
                 this.NavigationService.GoBack();
             }

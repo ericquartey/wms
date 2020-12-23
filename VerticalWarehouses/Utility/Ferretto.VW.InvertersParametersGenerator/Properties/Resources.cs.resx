@@ -216,4 +216,7 @@
   <data name="SearchPattern" xml:space="preserve">
     <value>Soubor šablon</value>
   </data>
+  <data name="VertimagInverterConfigurationFile" xml:space="preserve">
+    <value>Konfigurační soubor Vertimag střídač</value>
+  </data>
 </root>

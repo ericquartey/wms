@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Installation.ViewModels;
 using Ferretto.VW.App.Modules.Installation.Interface;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -16,7 +17,7 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    public class InvertersParametersImportViewModel : BaseMainViewModel
+    public class InvertersParametersImportViewModel : BaseParameterInverterViewModel
     {
         #region Fields
 
@@ -30,9 +31,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isBusy;
 
-        private ISetVertimagConfiguration parentConfiguration;
+        private ISetVertimagInverterConfiguration parentConfiguration;
 
-        private VertimagConfiguration selectedConfiguration;
+        private IEnumerable<Inverter> selectedConfiguration;
 
         private FileInfo selectedFile;
 
@@ -41,9 +42,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public InvertersParametersImportViewModel(
+            IMachineIdentityWebService identityService,
             IMachineConfigurationWebService machineConfigurationWebService,
             IUsbWatcherService usbWatcher)
-            : base(PresentationMode.Installer)
+            : base(identityService)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.usbWatcher = usbWatcher;
@@ -76,7 +78,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        public VertimagConfiguration SelectedConfiguration
+        public IEnumerable<Inverter> SelectedConfiguration
         {
             get => this.selectedConfiguration;
             set => this.SetProperty(ref this.selectedConfiguration, value);
@@ -111,7 +113,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.SelectedFile = null;
 
-            if (this.Data is ISetVertimagConfiguration configuration)
+            if (this.Data is ISetVertimagInverterConfiguration configuration)
             {
                 this.parentConfiguration = configuration;
             }
@@ -149,14 +151,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsBusy = true;
 
-                var source = await this.machineConfigurationWebService.GetAsync();
+                //var source = await this.machineConfigurationWebService.GetAsync();
 
-                // merge and save
-                var result = source.ExtendWith(this.selectedConfiguration);
-                var vertimagConfiguration = VertimagConfiguration.FromJson(result.ToString());
+                //// merge and save
+                //var result = source.ExtendWith(this.selectedConfiguration);
+                //var vertimagConfiguration = VertimagInverterConfiguration.FromJson(this.selectedConfiguration.ToString());
 
                 this.parentConfiguration.SelectedFileConfiguration = this.selectedFile;
-                this.parentConfiguration.VertimagConfiguration = vertimagConfiguration;
+                this.parentConfiguration.VertimagInverterConfiguration = this.selectedConfiguration;
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.ImportSuccessful"), Services.Models.NotificationSeverity.Success);
                 this.NavigationService.GoBack();
             }
@@ -172,19 +174,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private void OnSelectedFileChanged(FileInfo _, FileInfo file)
         {
-            VertimagConfiguration config = null;
+            IEnumerable<Inverter> config = null;
             this.ClearNotifications();
             if (file != null)
             {
                 try
                 {
                     var json = File.ReadAllText(file.FullName);
-                    var source = new VertimagConfiguration
-                    {
-                        Machine = new Machine(),
-                    }.ExtendWith(JObject.Parse(json));
+                    //var source = new IEnumerable<Inverter>
+                    //{
+                    //    //Machine = new Machine(),
+                    //}.ExtendWith(JObject.Parse(json));
 
-                    config = Newtonsoft.Json.JsonConvert.DeserializeObject<VertimagConfiguration>(source.ToString(),
+                    config = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Inverter>>(json.ToString(),
                         new Newtonsoft.Json.JsonConverter[]
                         {
                             new CommonUtils.Converters.IPAddressConverter(),

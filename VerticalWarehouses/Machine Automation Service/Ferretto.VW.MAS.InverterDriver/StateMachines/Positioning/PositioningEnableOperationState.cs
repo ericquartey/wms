@@ -123,51 +123,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     {
                         if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime)
                         {
-                            if (this.data.IsTorqueCurrentSamplingEnabled)
-                            {
-                                this.ParentStateMachine.ChangeState(
-                                    new PositioningStartSamplingWhileMovingState(
-                                        this.data,
-                                        this.ParentStateMachine,
-                                        this.Inverter,
-                                        this.Logger));
-                            }
-                            else if (this.data.IsWeightMeasure && !this.data.IsWeightMeasureDone)
-                            {
-                                this.ParentStateMachine.ChangeState(
-                                    new PositioningMeasureStartMovingState(
-                                        this.data,
-                                        this.ParentStateMachine,
-                                        this.Inverter,
-                                        this.Logger));
-                            }
-                            else if (this.data.IsProfileCalibrate && !this.data.IsProfileCalibrateDone)
-                            {
-                                this.ParentStateMachine.ChangeState(
-                                    new PositioningProfileStartMovingState(
-                                        this.ParentStateMachine,
-                                        this.data,
-                                        this.Inverter,
-                                        this.Logger));
-                            }
-                            else if (this.data.IsHorizontalCalibrate)
-                            {
-                                this.ParentStateMachine.ChangeState(
-                                    new PositioningHorizontalCalibrateStartMovingState(
-                                        this.ParentStateMachine,
-                                        this.data,
-                                        this.Inverter,
-                                        this.Logger));
-                            }
-                            else
-                            {
-                                this.ParentStateMachine.ChangeState(
-                                    new PositioningStartMovingState(
-                                        this.ParentStateMachine,
-                                        this.data,
-                                        this.Inverter,
-                                        this.Logger));
-                            }
+                            this.ParentStateMachine.ChangeState(
+                                new PositioningWaitState(
+                                    this.ParentStateMachine,
+                                    this.data,
+                                    this.InverterStatus as IPositioningInverterStatus,
+                                    this.Logger));
 
                             returnValue = true;
                         }

@@ -517,7 +517,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.LoadUnitChangePosition();
             }
 
-            // in bay-to-cell movements the profile may have changed so we have to find a new empty cell
             if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell
                 && this.Mission.LoadUnitId > 0
@@ -539,6 +538,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 try
                 {
                     this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId, isCellTest: (this.Mission.MissionType == MissionType.FirstTest));
+                    this.Logger.LogDebug($"Found cell {this.Mission.DestinationCellId} for LU {this.Mission.LoadUnitId}");
                 }
                 catch (InvalidOperationException)
                 {
@@ -564,6 +564,43 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
+            //else if (this.Mission.LoadUnitSource != LoadingUnitLocation.Cell && this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
+            //{
+            //    // optimizing movements: try to bypass a mission step
+            //    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+            //    if (bay != null)
+            //    {
+            //        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
+            //        throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
+            //    }
+            //    var loadUnitInBay = bay.Positions.FirstOrDefault(p => p.Location == this.Mission.LoadUnitSource)?.LoadingUnit;
+            //    if (this.SensorsProvider.IsLoadingUnitInLocation(this.Mission.LoadUnitSource)
+            //        && (loadUnitInBay is null
+            //            || loadUnitInBay.Id == this.Mission.LoadUnitId
+            //            )
+            //        )
+            //    {
+            //        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
+            //        throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
+            //    }
+
+            //    var lowerUnit = bay.Positions.FirstOrDefault(p => !p.IsUpper && p.LoadingUnit != null)?.LoadingUnit;
+            //    if (bay.Carousel != null
+            //        && (
+            //            lowerUnit is null
+            //            || this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.LoadUnitId == lowerUnit.Id) is null
+            //            )
+            //        )
+            //    {
+            //        var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            //        newStep.OnEnter(null);
+            //    }
+            //    else
+            //    {
+            //        var newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            //        newStep.OnEnter(null);
+            //    }
+            //}
             else
             {
                 var newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);

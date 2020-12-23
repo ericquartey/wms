@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
+        void ContinuePositioning(BayNumber requestingBay, MessageActor sender);
+
         void Move(ShutterMovementDirection direction, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
 
         bool MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender);

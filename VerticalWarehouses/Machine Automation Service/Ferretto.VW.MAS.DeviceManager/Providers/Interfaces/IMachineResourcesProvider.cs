@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         event EventHandler<StatusUpdateEventArgs> RunningStateChanged;
 
+        event EventHandler<StatusUpdateEventArgs> SecurityStateChanged;
+
         #endregion
 
         #region Properties

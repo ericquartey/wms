@@ -37,6 +37,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #region Methods
 
+        public override void Continue(double? targetPosition)
+        {
+            this.shutterPositionData.WaitContinue = false;
+            this.Logger.LogDebug($"Continue command received for inverter {this.inverterStatus.SystemIndex}");
+        }
+
         /// <inheritdoc/>
         public override void Start()
         {

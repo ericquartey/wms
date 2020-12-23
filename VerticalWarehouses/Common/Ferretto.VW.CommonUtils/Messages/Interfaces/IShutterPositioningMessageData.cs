@@ -34,6 +34,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         double SpeedRate { get; }
 
+        bool WaitContinue { get; set; }
+
         #endregion
     }
 }

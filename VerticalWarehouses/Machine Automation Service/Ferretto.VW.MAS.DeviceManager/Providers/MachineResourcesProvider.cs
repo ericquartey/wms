@@ -59,6 +59,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public event EventHandler<StatusUpdateEventArgs> RunningStateChanged;
 
+        public event EventHandler<StatusUpdateEventArgs> SecurityStateChanged;
+
         #endregion
 
         #region Properties
@@ -289,20 +291,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return returnValue;
         }
 
-        public bool IsMachineSecureForRun(out string errorText)
+        public bool IsMachineSecureForRun(out string errorText, out MachineErrorCode errorCode, out BayNumber bayNumber)
         {
             var isMarchPossible = true;
             var reason = new StringBuilder();
+            errorCode = MachineErrorCode.NoError;
+            bayNumber = BayNumber.None;
 
             if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide])
             {
                 isMarchPossible = false;
                 reason.Append("Micro Carter Active Bay1 Left; ");
+                errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
             }
             if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide])
             {
                 isMarchPossible = false;
                 reason.Append("Micro Carter Active Bay1 Right; ");
+                errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
             }
 
             using (var scope = this.serviceScopeFactory.CreateScope())
@@ -317,6 +323,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             {
                                 isMarchPossible = false;
                                 reason.Append("Emergency Active Bay1; ");
+                                errorCode = MachineErrorCode.SecurityButtonWasTriggered;
+                                bayNumber = bay.Number;
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay1])
                             {
@@ -331,6 +339,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             {
                                 isMarchPossible = false;
                                 reason.Append("Emergency Active Bay2; ");
+                                errorCode = MachineErrorCode.SecurityButtonWasTriggered;
+                                bayNumber = bay.Number;
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay2])
                             {
@@ -345,6 +355,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             {
                                 isMarchPossible = false;
                                 reason.Append("Emergency Active Bay3; ");
+                                errorCode = MachineErrorCode.SecurityButtonWasTriggered;
+                                bayNumber = bay.Number;
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay3])
                             {
@@ -428,21 +440,42 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 return false;
                             }
 
+                            var ioSecurityChange = false;
+                            var ioRunningStateChange = false;
+                            var ioInverterFaultChange = false;
                             for (var index = 0; index < REMOTEIO_INPUTS; index++)
                             {
                                 if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
                                 {
                                     requiredUpdate = true;
-                                    break;
+                                    if (index == (int)IOMachineSensors.RunningState)
+                                    {
+                                        ioRunningStateChange = true;
+                                    }
+                                    if (index == (int)IOMachineSensors.InverterInFault1)
+                                    {
+                                        ioInverterFaultChange = true;
+                                    }
+
+                                    if (index == (int)IOMachineSensors.MushroomEmergencyButtonBay1
+                                        || index == (int)IOMachineSensors.MicroCarterLeftSide
+                                        || index == (int)IOMachineSensors.MicroCarterRightSide
+                                        || index == (int)IOMachineSensors.AntiIntrusionBarrierBay1)
+                                    {
+                                        ioSecurityChange = true;
+                                    }
                                 }
                             }
 
                             if (requiredUpdate)
                             {
-                                if (ioIndex == 0 && this.enableNotificatons)
+                                Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
+
+                                if (ioIndex == 0)
                                 {
-                                    if (this.sensorStatus[(int)IOMachineSensors.RunningState] !=
-                                        newSensorStatus[(int)IOMachineSensors.RunningState])
+                                    if (this.enableNotificatons
+                                        && ioRunningStateChange
+                                        )
                                     {
                                         //During Fault Handling running status will be set off. This prevents double firing the power off procedure
                                         if (!this.IsInverterInFault)
@@ -453,8 +486,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                         }
                                     }
 
-                                    if (this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
-                                        newSensorStatus[(int)IOMachineSensors.InverterInFault1])
+                                    if (this.enableNotificatons
+                                        && ioInverterFaultChange
+                                        )
                                     {
                                         var args = new StatusUpdateEventArgs();
                                         args.NewState = newSensorStatus[(int)IOMachineSensors.InverterInFault1];
@@ -462,7 +496,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     }
                                 }
 
-                                Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
+                                if (!newSensorStatus[(int)IOMachineSensors.RunningState]
+                                    && ioSecurityChange
+                                    )
+                                {
+                                    var args = new StatusUpdateEventArgs();
+                                    args.NewState = true;
+                                    this.OnSecurityStateChanged(args);
+                                }
+
                                 updateDone = true;
                             }
 
@@ -526,6 +568,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         protected virtual void OnRunningStateChanged(StatusUpdateEventArgs e)
         {
             var handler = this.RunningStateChanged;
+            handler?.Invoke(this, e);
+        }
+
+        protected virtual void OnSecurityStateChanged(StatusUpdateEventArgs e)
+        {
+            var handler = this.SecurityStateChanged;
             handler?.Invoke(this, e);
         }
 

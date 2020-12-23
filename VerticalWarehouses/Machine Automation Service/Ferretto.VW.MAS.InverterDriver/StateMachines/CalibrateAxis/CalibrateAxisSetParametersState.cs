@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private const int FAST_SPEED_ELEVATOR_HORIZ_DEFAULT = 25;
 
-        private const int FAST_SPEED_ELEVATOR_VERT_DEFAULT = 25;
+        private const int FAST_SPEED_ELEVATOR_VERT_DEFAULT = 40;
 
         private const int FAST_SPEED_EXTERNALBAY_DEFAULT = 22;     // [mm/s]
 
@@ -361,7 +361,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             {
                 var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
 
-                if (axisParameters.HomingFastSpeed >= 2 * FAST_SPEED_ELEVATOR_VERT_DEFAULT)
+                if (axisParameters.HomingFastSpeed >= 10 * FAST_SPEED_ELEVATOR_VERT_DEFAULT)
                 {
                     isCommandToSend = false;
                     this.Logger.LogError($"Homing Fast Speed parameter={axisParameters.HomingFastSpeed} mm/s is too high! for Axis={this.axisToCalibrate}");

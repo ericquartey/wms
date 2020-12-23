@@ -38,4 +38,10 @@
     <ProjectReference Include="..\Menu\Ferretto.VW.App.Modules.Menu.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Views\Inverters\InvertersParametersExportView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>

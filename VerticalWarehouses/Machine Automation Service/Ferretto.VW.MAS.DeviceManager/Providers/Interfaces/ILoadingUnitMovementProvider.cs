@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void ContinuePositioning(MessageActor sender, BayNumber requestingBay);
 
+        void ContinueShutter(MessageActor sender, BayNumber requestingBay);
+
         MessageStatus ExternalBayStatus(NotificationMessage message);
 
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);

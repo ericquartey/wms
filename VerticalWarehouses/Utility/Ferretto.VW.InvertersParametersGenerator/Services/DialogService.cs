@@ -13,7 +13,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Service
 
         private const string DefaultFilter = "All Files|*.*";
 
-        #endregion
+        #endregion Fields
 
         #region Methods
 
@@ -49,23 +49,30 @@ namespace Ferretto.VW.InvertersParametersGenerator.Service
             string initialDirectory,
             bool multiselect = false)
         {
-            var dialog = new OpenFileDialog()
+            try
             {
-                Title = title,
-                CheckFileExists = true,
-                CheckPathExists = true,
-                InitialDirectory = initialDirectory,
-                Multiselect = multiselect,
-            };
+                var dialog = new OpenFileDialog()
+                {
+                    Title = title,
+                    CheckFileExists = true,
+                    CheckPathExists = true,
+                    InitialDirectory = initialDirectory,
+                    Multiselect = multiselect,
+                };
 
-            SetDialogProperties(dialog, defaultExtension, defaultFileName, extFilters);
+                SetDialogProperties(dialog, defaultExtension, defaultFileName, extFilters);
 
-            if (dialog.ShowDialog().GetValueOrDefault() == true)
-            {
-                return dialog.FileNames;
+                if (dialog.ShowDialog().GetValueOrDefault() == true)
+                {
+                    return dialog.FileNames;
+                }
+
+                return null;
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public static string BrowseFolder(string title, string path = null)
@@ -187,7 +194,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Service
             }
         }
 
-        #endregion
+        #endregion Methods
     }
 
     public class Filters<T1, T2> : List<Tuple<T1, T2>>
@@ -199,6 +206,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.Service
             base.Add(new Tuple<T1, T2>(item1, item2));
         }
 
-        #endregion
+        #endregion Methods
     }
 }

@@ -528,54 +528,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (!e.NewState)
             {
                 this.Logger.LogError($"Running State signal fall detected! Begin Stop machine procedure.");
-                using (var scope = this.ServiceScopeFactory.CreateScope())
-                {
-                    this.Logger.LogDebug($"Emergency button status are [1:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay1}, 2:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay2}, 3:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay3}]");
-                    this.Logger.LogDebug($"Anti intrusion barrier status are [1:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay1}, 2:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay2}, 3:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay3}]");
-                    this.Logger.LogDebug($"Micro carter status are [Left:{this.machineResourcesProvider.IsMicroCarterLeftSide}, Right:{this.machineResourcesProvider.IsMicroCarterRightSide}]");
-
-                    var errorCode = MachineErrorCode.SecurityWasTriggered;
-                    if (this.machineResourcesProvider.IsMushroomEmergencyButtonBay1
-                        || this.machineResourcesProvider.IsMushroomEmergencyButtonBay2
-                        || this.machineResourcesProvider.IsMushroomEmergencyButtonBay3
-                        )
-                    {
-                        errorCode = MachineErrorCode.SecurityButtonWasTriggered;
-                        scope.ServiceProvider
-                            .GetRequiredService<IErrorsProvider>()
-                            .RecordNew(errorCode);
-                    }
-                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay1
-                        || this.machineResourcesProvider.IsAntiIntrusionBarrierBay2
-                        || this.machineResourcesProvider.IsAntiIntrusionBarrierBay3
-                        )
-                    {
-                        errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
-                        scope.ServiceProvider
-                            .GetRequiredService<IErrorsProvider>()
-                            .RecordNew(errorCode);
-                    }
-                    if (this.machineResourcesProvider.IsMicroCarterLeftSide)
-                    {
-                        errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
-                        scope.ServiceProvider
-                            .GetRequiredService<IErrorsProvider>()
-                            .RecordNew(errorCode);
-                    }
-                    if (this.machineResourcesProvider.IsMicroCarterRightSide)
-                    {
-                        errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
-                        scope.ServiceProvider
-                            .GetRequiredService<IErrorsProvider>()
-                            .RecordNew(errorCode);
-                    }
-                    if (errorCode == MachineErrorCode.SecurityWasTriggered)
-                    {
-                        scope.ServiceProvider
-                            .GetRequiredService<IErrorsProvider>()
-                            .RecordNew(errorCode);
-                    }
-                }
+                SecurityErrorDetect();
             }
 
             var messageData = new StateChangedMessageData(e.NewState);
@@ -587,6 +540,11 @@ namespace Ferretto.VW.MAS.DeviceManager
                 MessageType.RunningStateChanged,
                 BayNumber.None);
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        private void MachineSensorsStatusOnSecurityStateChanged(object sender, StatusUpdateEventArgs e)
+        {
+            SecurityErrorDetect();
         }
 
         private void OnFieldNotificationReceived(FieldNotificationMessage receivedMessage, IServiceProvider serviceProvider)
@@ -933,6 +891,81 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             this.machineResourcesProvider.RunningStateChanged += this.MachineSensorsStatusOnRunningStateChanged;
             this.machineResourcesProvider.FaultStateChanged += this.MachineSensorsStatusOnFaultStateChanged;
+            this.machineResourcesProvider.SecurityStateChanged += this.MachineSensorsStatusOnSecurityStateChanged;
+        }
+
+        private void SecurityErrorDetect()
+        {
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                this.Logger.LogDebug($"Emergency button status are [1:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay1}, 2:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay2}, 3:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay3}]");
+                this.Logger.LogDebug($"Anti intrusion barrier status are [1:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay1}, 2:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay2}, 3:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay3}]");
+                this.Logger.LogDebug($"Micro carter status are [Left:{this.machineResourcesProvider.IsMicroCarterLeftSide}, Right:{this.machineResourcesProvider.IsMicroCarterRightSide}]");
+
+                var errorCode = MachineErrorCode.SecurityWasTriggered;
+                if (this.machineResourcesProvider.IsMushroomEmergencyButtonBay1)
+                {
+                    errorCode = MachineErrorCode.SecurityButtonWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayOne);
+                }
+                if (this.machineResourcesProvider.IsMushroomEmergencyButtonBay2)
+                {
+                    errorCode = MachineErrorCode.SecurityButtonWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayTwo);
+                }
+                if (this.machineResourcesProvider.IsMushroomEmergencyButtonBay3)
+                {
+                    errorCode = MachineErrorCode.SecurityButtonWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayThree);
+                }
+                if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay1)
+                {
+                    errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayOne);
+                }
+                if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay2)
+                {
+                    errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayTwo);
+                }
+                if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay3)
+                {
+                    errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayThree);
+                }
+                if (this.machineResourcesProvider.IsMicroCarterLeftSide)
+                {
+                    errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode);
+                }
+                if (this.machineResourcesProvider.IsMicroCarterRightSide)
+                {
+                    errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode);
+                }
+                if (errorCode == MachineErrorCode.SecurityWasTriggered)
+                {
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode);
+                }
+            }
         }
 
         private void SendCleanDebug()

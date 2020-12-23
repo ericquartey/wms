@@ -14,7 +14,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
 {
     internal class ChangeRunningStateStateMachine : FiniteStateMachine<IChangeRunningStateStartState, IChangeRunningStateStartState>, IChangeRunningStateStateMachine
@@ -107,16 +106,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
 
         protected override bool OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
         {
-            var returnValue = false;
-
-            if (this.CheckStartConditions(commandMessage))
-            {
-                returnValue = true;
-            }
-            else
-            {
-                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
-            }
+            var returnValue = this.CheckStartConditions(commandMessage);
 
             return returnValue;
         }
@@ -129,10 +119,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
                 if (messageData.Enable)
                 {
                     this.errorsProvider.ResolveAll(force: true);
-                    returnValue = this.sensorsProvider.IsMachineSecureForRun(out var errorText);
+                    returnValue = this.sensorsProvider.IsMachineSecureForRun(out var errorText, out var errorCode, out var bayNumber);
                     if (!returnValue)
                     {
                         this.Logger.LogError(errorText);
+                        // we are setting only one error...
+                        this.errorsProvider.RecordNew(errorCode, bayNumber);
                     }
                 }
                 else

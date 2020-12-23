@@ -23,9 +23,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ISessionService sessionService;
 
-        private InverterParametersData inverterParameters;
+        private Inverter inverterParameters;
 
-        private ISetVertimagConfiguration parentConfiguration;
+        private ISetVertimagInverterConfiguration parentConfiguration;
 
         private InverterParameter selectedParameter;
 
@@ -38,9 +38,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ParametersInverterDetailsViewModel(
+            IMachineIdentityWebService identityService,
             ISessionService sessionService,
             IMachineDevicesWebService machineDevicesWebService)
-            : base()
+            : base(identityService)
         {
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
@@ -50,7 +51,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public InverterParametersData InverterParameters
+        public Inverter InverterParameters
         {
             get => this.inverterParameters;
             set => this.SetProperty(ref this.inverterParameters, value, this.RaiseCanExecuteChanged);
@@ -119,78 +120,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.selectedParameter.IsReadOnly;
         }
 
-        private string GetInverterVersion(VertimagConfiguration vertimagConfiguration, byte inverterIndex)
-        {
-            foreach (var axe in vertimagConfiguration.Machine.Elevator.Axes)
-            {
-                if (!(axe.Inverter?.Parameters is null))
-                {
-                    var inverter = axe.Inverter;
-
-                    if (inverterIndex == (byte)inverter.Index &&
-                        inverter.Parameters.Any())
-                    {
-                        return inverter.Parameters.Single(s => s.Code == (short)InverterParameterId.SoftwareVersion).StringValue;
-                    }
-                }
-            }
-
-            foreach (var bay in vertimagConfiguration.Machine.Bays)
-            {
-                if (!(bay.Inverter?.Parameters is null))
-                {
-                    var inverter = bay.Inverter;
-
-                    if (inverterIndex == (byte)inverter.Index &&
-                        inverter.Parameters.Any())
-                    {
-                        return inverter.Parameters.Single(s => s.Code == (short)InverterParameterId.SoftwareVersion).StringValue;
-                    }
-                    if (!(bay.Shutter?.Inverter?.Parameters is null))
-                    {
-                        var inverterShutter = bay.Shutter.Inverter;
-
-                        if (inverterIndex == (byte)inverter.Index &&
-                            inverterShutter.Parameters.Any())
-                        {
-                            return inverter.Parameters.Single(s => s.Code == (short)InverterParameterId.SoftwareVersion).StringValue;
-                        }
-                    }
-                }
-            }
-
-            return "";
-        }
-
-        private VertimagConfiguration GetUpdateConfiguration(VertimagConfiguration vertimagConfiguration, byte index, IEnumerable<InverterParameter> inverterParameters)
-        {
-            if (vertimagConfiguration.Machine.Elevator.Axes.Any(s => index == (byte)s.Inverter.Index))
-            {
-                var axe = vertimagConfiguration.Machine.Elevator.Axes.FirstOrDefault(s => index == (byte)s.Inverter.Index);
-                axe.Inverter.Parameters = inverterParameters;
-                //do
-            }
-
-            if (vertimagConfiguration.Machine.Bays.Any(s => index == (byte)s.Inverter.Index))
-            {
-                var bay = vertimagConfiguration.Machine.Bays.FirstOrDefault(s => index == (byte)s.Inverter.Index);
-                bay.Inverter.Parameters = inverterParameters;
-            }
-
-            if (vertimagConfiguration.Machine.Bays.Any(s => index == (byte)s.Shutter.Inverter.Index))
-            {
-                var bay = vertimagConfiguration.Machine.Bays.FirstOrDefault(s => index == (byte)s.Shutter.Inverter.Index);
-                bay.Shutter.Inverter.Parameters = inverterParameters;
-            }
-
-            return vertimagConfiguration;
-        }
-
         private void LoadData()
         {
             this.IsWaitingForResponse = true;
 
-            if (this.Data is ISetVertimagConfiguration mainConfiguration)
+            if (this.Data is ISetVertimagInverterConfiguration mainConfiguration)
             {
                 this.parentConfiguration = mainConfiguration;
                 this.InverterParameters = mainConfiguration.SelectedInverter;
@@ -208,31 +142,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ClearNotifications();
                 this.IsBusy = true;
 
-                await this.parentConfiguration.BackupVertimagConfigurationParameters();
+                this.parentConfiguration.BackupVertimagInverterConfigurationParameters();
 
                 var parameterToList = new List<InverterParameter>();
 
                 parameterToList.Add(this.SelectedParameter);
-
-                var version = this.GetInverterVersion(this.parentConfiguration.VertimagConfiguration, this.inverterParameters.InverterIndex);
 
                 var versionInverterParameter = new InverterParameter
                 {
                     Code = (short)InverterParameterId.SoftwareVersion,
                     DataSet = 0,
                     Type = "String",
-                    StringValue = version
+                    StringValue = this.inverterParameters.Parameters.Single(s => s.Code == (short)InverterParameterId.SoftwareVersion).StringValue
                 };
 
                 parameterToList.Add(versionInverterParameter);
 
                 var parameter = this.inverterParameters;
 
-                parameter.Parameters = parameterToList;
+                Inverter inverter = new Inverter
+                {
+                    Id = this.inverterParameters.Id,
+                    Index = this.inverterParameters.Index,
+                    IpAddress = this.inverterParameters.IpAddress,
+                    Parameters = parameterToList,
+                    TcpPort = this.inverterParameters.TcpPort,
+                    Type = this.inverterParameters.Type
+                };
 
-                var config = this.GetUpdateConfiguration(this.parentConfiguration.VertimagConfiguration, this.inverterParameters.InverterIndex, parameterToList);
-
-                await this.machineDevicesWebService.ProgramInverterAsync((byte)this.inverterParameters.InverterIndex, config);
+                await this.machineDevicesWebService.ProgramInverterAsync(inverter);
 
                 this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
             }
@@ -253,9 +191,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ClearNotifications();
                 this.IsBusy = true;
 
-                await this.parentConfiguration.BackupVertimagConfigurationParameters();
+                this.parentConfiguration.BackupVertimagInverterConfigurationParameters();
 
-                await this.machineDevicesWebService.ProgramInverterAsync((byte)this.inverterParameters.InverterIndex, this.parentConfiguration.VertimagConfiguration);
+                await this.machineDevicesWebService.ProgramInverterAsync(this.inverterParameters);
 
                 this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
             }

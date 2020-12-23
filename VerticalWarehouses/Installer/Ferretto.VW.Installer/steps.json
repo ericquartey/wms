@@ -308,17 +308,8 @@
       "machineRole": "master"
     },
     {
-      "$type": "Ferretto.VW.Installer.Core.MasHealthCheckStep, Ferretto.VW.Installer.Core",
-      "number": 37,
-      "title": "Verifica stato del MAS",
-      "description": "Verifica che il servizio di automazione dichiari di essere operativo.",
-      "url": "$(MAS:BaseUrl)/health/live",
-      "timeout": 10000,
-      "machineRole": "master"
-    },
-    {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 38,
+      "number": 37,
       "title": "Cancella backup precedente",
       "description": "Elimina, se esiste, l'archivio contenente il backup della versione precedente a quella installata prima dell'aggiornamento.",
       "script": "if(Test-Path $(Backup:Root:Path)\\Backup.zip -PathType Leaf) { Remove-Item $(Backup:Root:Path)\\Backup.zip -ErrorAction SilentlyContinue }",
@@ -327,7 +318,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 39,
+      "number": 38,
       "title": "Rinomina backup corrente",
       "description": "Rinomina lo zip della versione corrente.",
       "script": "Rename-Item $(Backup:Root:Path)\\Current_Version_Backup.zip $(Backup:Root:Path)\\Backup.zip",
@@ -336,7 +327,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 40,
+      "number": 39,
       "title": "Crea utente Ferretto",
       "description": "Crea utente Ferretto.",
       "script": "scripts/create_user_ferretto.ps1",
@@ -344,14 +335,14 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 41,
+      "number": 40,
       "title": "Imposta auto-logon",
       "description": "Crea utente Ferretto e imposta l'utente per il logon automatico.",
       "script": "scripts/set_auto_logon_ferretto.ps1"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 42,
+      "number": 41,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
       "script": "scripts/restart_windows.ps1",
@@ -360,7 +351,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 43,
+      "number": 42,
       "title": "Imposta shell utente",
       "description": "Imposta la shell di default per utente Ferretto a PanelPc.",
       "script": "scripts/set_default_shell.ps1",
@@ -368,7 +359,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 44,
+      "number": 43,
       "title": "Abilita UWF",
       "description": "Abilita la protezione del disco fisso per sigillare il PanelPC.",
       "script": "uwfmgr.exe filter enable",
@@ -377,7 +368,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 45,
+      "number": 44,
       "title": "Cancella file temporanei",
       "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
       "script": "scripts/delete_temp_folder.ps1",
@@ -386,7 +377,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 46,
+      "number": 45,
       "title": "Rimuove auto avvia installatore",
       "description": "Dal registro viene eliminata la chiave di auto avvio installer.",
       "script": "scripts/remove_app_autostart.ps1",
@@ -394,7 +385,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 47,
+      "number": 46,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
       "script": "scripts/restart_windows.ps1",

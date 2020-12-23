@@ -61,7 +61,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private string totalParameters;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -73,7 +73,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.InitializeData();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
@@ -133,7 +133,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             set => this.SetProperty(ref this.totalParameters, value);
         }
 
-        #endregion
+        #endregion Properties
 
         #region Methods
 
@@ -290,7 +290,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 return inverterBay;
             }
 
-            if (vertimagConfiguration.Machine.Bays.SingleOrDefault(a => (a.Shutter.Inverter != null && (byte)a.Shutter.Inverter.Index == inverterIndex))?.Inverter is Inverter inverterShutter)
+            if (vertimagConfiguration.Machine.Bays.SingleOrDefault(a => (a.Shutter.Inverter != null && (byte)a.Shutter.Inverter.Index == inverterIndex))?.Shutter?.Inverter is Inverter inverterShutter)
             {
                 return inverterShutter;
             }
@@ -433,6 +433,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             inverter.Parameters = this.InverterParameters;
         }
 
-        #endregion
+        #endregion Methods
     }
 }

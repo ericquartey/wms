@@ -356,5 +356,14 @@ namespace Ferretto.VW.InvertersParametersGenerator.Properties {
                 return ResourceManager.GetString("VertimagConfigurationFile", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertimag inverter configuration file.
+        /// </summary>
+        public static string VertimagInverterConfigurationFile {
+            get {
+                return ResourceManager.GetString("VertimagInverterConfigurationFile", resourceCulture);
+            }
+        }
     }
 }
