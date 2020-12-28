@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -83,6 +84,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.removeMissionWithErrorConditionExceededWeightOnBID();
 
                 this.Mission.Status = MissionStatus.New;
+                this.Mission.ErrorCode = MachineErrorCode.NoError;
 
                 if (command != null
                     && command.Data is IMoveLoadingUnitMessageData messageData
@@ -94,7 +96,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.MissionsDataProvider.Update(this.Mission);
                 this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
-                var startState = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                IMissionMoveBase startState;
+                if (this.IsLowerBayChainSource())
+                {
+                    startState = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
+                else
+                {
+                    startState = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
                 returnValue = startState.OnEnter(null);
             }
             else if (showErrors)
@@ -113,6 +123,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
 
             return returnValue;
+        }
+
+        private bool IsLowerBayChainSource()
+        {
+            if (this.Mission.MissionType == MissionType.IN
+                && this.Mission.IsSourceBayLower()
+                )
+            {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                if (bay != null
+                    && bay.Carousel != null
+                    && bay.Positions.Any(p => p.IsUpper && !p.IsBlocked))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public override void OnNotification(NotificationMessage message)
