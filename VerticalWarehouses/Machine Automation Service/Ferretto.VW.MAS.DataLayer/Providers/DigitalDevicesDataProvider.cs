@@ -26,6 +26,29 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value)
+        {
+            lock (this.dataContext)
+            {
+                var inverter = this.dataContext.Inverters.SingleOrDefault(i => i.Index == inverterIndex);
+                if (inverter is null)
+                {
+                    throw new EntityNotFoundException((int)inverterIndex);
+                }
+
+                var inverterParameter = new InverterParameter();
+
+                inverterParameter.Code = code;
+                inverterParameter.DataSet = dataset;
+                inverterParameter.IsReadOnly = isReadOnly;
+                inverterParameter.Type = type;
+                inverterParameter.StringValue = value;
+
+                this.dataContext.InverterParameter.Add(inverterParameter);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public bool CheckInverterParametersValidity(InverterIndex index)
         {
             lock (this.dataContext)
@@ -37,6 +60,25 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 return false;
+            }
+        }
+
+        public bool ExistInverterParameter(InverterIndex inverterIndex, short code)
+        {
+            lock (this.dataContext)
+            {
+                var inverter = this.dataContext.Inverters.SingleOrDefault(i => i.Index == inverterIndex);
+                if (inverter is null)
+                {
+                    throw new EntityNotFoundException((int)inverterIndex);
+                }
+
+                if (inverter.Parameters is null)
+                {
+                    return false;
+                }
+
+                return inverter.Parameters.Any(p => p.Code == code);
             }
         }
 

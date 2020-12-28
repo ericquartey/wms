@@ -107,7 +107,22 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.heartbeatMessage = false;
         }
 
-        public InverterMessage(short systemIndex, short parameterId, InverterDataset dataSetIndex = InverterDataset.ActualDataset)
+        public InverterMessage(short systemIndex, InverterParameterId parameterId, int dataSetIndex)
+        {
+            if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
+            {
+                throw new ArgumentException($"8:Invalid system index {systemIndex}", nameof(systemIndex));
+            }
+
+            this.responseMessage = false;
+            this.SystemIndex = inverterIndex;
+            this.DataSetIndex = (byte)dataSetIndex;
+            this.parameterId = (short)parameterId;
+            this.IsWriteMessage = false;
+            this.heartbeatMessage = false;
+        }
+
+        public InverterMessage(short systemIndex, short parameterId, int dataSetIndex)
         {
             if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
             {
@@ -132,7 +147,17 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.BuildWriteMessage(systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
         }
 
+        public InverterMessage(byte systemIndex, short parameterId, object payload, int dataSetIndex, int sendDelay = 0)
+        {
+            this.BuildWriteMessage(systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
+        }
+
         public InverterMessage(InverterIndex systemIndex, short parameterId, object payload, InverterDataset dataSetIndex = InverterDataset.ActualDataset, int sendDelay = 0)
+        {
+            this.BuildWriteMessage((byte)systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
+        }
+
+        public InverterMessage(InverterIndex systemIndex, short parameterId, object payload, int dataSetIndex, int sendDelay = 0)
         {
             this.BuildWriteMessage((byte)systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
         }

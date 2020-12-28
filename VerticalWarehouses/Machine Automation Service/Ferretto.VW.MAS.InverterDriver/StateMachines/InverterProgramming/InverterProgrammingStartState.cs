@@ -101,18 +101,37 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
             }
             else
             {
-                this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameter(message.SystemIndex, message.ShortParameterId, message.StringPayload);
+                //check Id
+                var currentParameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
+
+                if (currentParameter.Code != message.ShortParameterId)
+                {
+                    return true;
+                }
+
                 if (this.inverterProgrammingFieldMessageData.IsCheckInverterVersion)
                 {
-                    var currentParameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
                     if (currentParameter.StringValue != message.StringPayload)
                     {
-                        this.Logger.LogError($"1:Inverter Programming StartState, message={message}, version check error, found '{message.StringPayload}' should be '{currentParameter.StringValue}'");
-                        this.ParentStateMachine.ChangeState(
-                             new InverterProgrammingErrorState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
-                        return true;
+                        //il parametro arriva sempre null
+
+                        //this.Logger.LogError($"1:Inverter Programming StartState, message={message}, version check error, found '{message.StringPayload}' should be '{currentParameter.StringValue}'");
+                        //this.ParentStateMachine.ChangeState(
+                        //     new InverterProgrammingErrorState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
+                        //return true;
                     }
                 }
+
+                //check parameter in db
+                if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId))
+                {
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameter(message.SystemIndex, message.ShortParameterId, message.StringPayload);
+                }
+                else
+                {
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, message.StringPayload);
+                }
+
                 if (this.currentParametersPosition == (this.inverterProgrammingFieldMessageData.Parameters.Count() - 1))
                 {
                     this.ParentStateMachine.ChangeState(
@@ -136,12 +155,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
         {
             if (this.inverterProgrammingFieldMessageData.IsCheckInverterVersion)
             {
-                return new InverterMessage((byte)this.InverterStatus.SystemIndex, InverterParameterId.SoftwareVersion);
+                return new InverterMessage((byte)this.InverterStatus.SystemIndex, InverterParameterId.SoftwareVersion, parameter.DataSet);
+            }
+            else if (parameter.IsReadOnly)
+            {
+                return new InverterMessage((byte)this.InverterStatus.SystemIndex, parameter.Code, parameter.DataSet);
             }
             else
             {
-                //check payload
-                return new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.StringValue, (InverterDataset)parameter.DataSet);
+                return new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.StringValue, parameter.DataSet);
             }
         }
 

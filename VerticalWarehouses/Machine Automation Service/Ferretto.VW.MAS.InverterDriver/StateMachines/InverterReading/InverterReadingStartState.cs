@@ -101,18 +101,31 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
             }
             else
             {
-                this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameter(message.SystemIndex, message.ShortParameterId, message.StringPayload);
+                //check Id
+                var currentParameter = (InverterParameter)this.inverterReadingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
+
+                if (currentParameter.Code != message.ShortParameterId)
+                {
+                    return true;
+                }
+
                 if (this.inverterReadingFieldMessageData.IsCheckInverterVersion)
                 {
-                    var currentParameter = (InverterParameter)this.inverterReadingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
-                    if (currentParameter.StringValue != message.StringPayload)
-                    {
-                        this.Logger.LogError($"1:Inverter Reading StartState, message={message}, version check error, found '{message.StringPayload}' should be '{currentParameter.StringValue}'");
-                        this.ParentStateMachine.ChangeState(
-                             new InverterReadingErrorState(this.ParentStateMachine, this.inverterReadingFieldMessageData, this.InverterStatus, this.Logger));
-                        return true;
-                    }
+                    //if (currentParameter.StringValue != message.StringPayload)
+                    //{
+                    //    this.Logger.LogError($"1:Inverter Reading StartState, message={message}, version check error, found '{message.StringPayload}' should be '{currentParameter.StringValue}'");
+                    //    this.ParentStateMachine.ChangeState(
+                    //         new InverterReadingErrorState(this.ParentStateMachine, this.inverterReadingFieldMessageData, this.InverterStatus, this.Logger));
+                    //    return true;
+                    //}
                 }
+
+                //check parameter in db
+                if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId))
+                {
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameter(message.SystemIndex, message.ShortParameterId, message.StringPayload);
+                }
+
                 if (this.currentParametersPosition == (this.inverterReadingFieldMessageData.Parameters.Count() - 1))
                 {
                     this.ParentStateMachine.ChangeState(
@@ -136,11 +149,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
         {
             if (this.inverterReadingFieldMessageData.IsCheckInverterVersion)
             {
-                return new InverterMessage((byte)this.InverterStatus.SystemIndex, InverterParameterId.SoftwareVersion);
+                return new InverterMessage((byte)this.InverterStatus.SystemIndex, InverterParameterId.SoftwareVersion, parameter.DataSet);
             }
             else
             {
-                return new InverterMessage((byte)this.InverterStatus.SystemIndex, parameter.Code);
+                return new InverterMessage((byte)this.InverterStatus.SystemIndex, parameter.Code, parameter.DataSet);
             }
         }
 

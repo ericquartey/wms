@@ -242,10 +242,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private (InverterParametersData inverterParametersCheckVersionData, InverterParametersData inverterParametersWriteData) GetInverterParameters(Inverter inverter)
         {
+            //var inverterParametersWriteData = new InverterParametersData((byte)inverter.Index,
+            //                                this.GetShortInverterDescription(inverter.Type,
+            //                                inverter.IpAddress, inverter.TcpPort),
+            //                                this.GetWritableParameters(inverter.Parameters));
             var inverterParametersWriteData = new InverterParametersData((byte)inverter.Index,
                                             this.GetShortInverterDescription(inverter.Type,
                                             inverter.IpAddress, inverter.TcpPort),
-                                            this.GetWritableParameters(inverter.Parameters));
+                                            inverter.Parameters);
 
             var inverterParametersCheckVersionData = this.InverterVersionParameterData(inverter);
 

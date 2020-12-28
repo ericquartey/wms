@@ -5,24 +5,28 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-  public interface IDigitalDevicesDataProvider
-  {
-    #region Methods
+    public interface IDigitalDevicesDataProvider
+    {
+        #region Methods
 
-    bool CheckInverterParametersValidity(InverterIndex index);
+        void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value);
 
-    IEnumerable<Inverter> GetAllInverters();
+        bool CheckInverterParametersValidity(InverterIndex index);
 
-    IEnumerable<Inverter> GetAllInvertersByBay(BayNumber bayNumber);
+        bool ExistInverterParameter(InverterIndex inverterIndex, short code);
 
-    IEnumerable<IoDevice> GetAllIoDevices();
+        IEnumerable<Inverter> GetAllInverters();
 
-    IEnumerable<Inverter> GetAllParameters();
+        IEnumerable<Inverter> GetAllInvertersByBay(BayNumber bayNumber);
 
-    Inverter GetInverterByIndex(InverterIndex mainInverter);
+        IEnumerable<IoDevice> GetAllIoDevices();
 
-    void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value);
+        IEnumerable<Inverter> GetAllParameters();
 
-    #endregion
-  }
+        Inverter GetInverterByIndex(InverterIndex mainInverter);
+
+        void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value);
+
+        #endregion
+    }
 }
