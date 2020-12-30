@@ -41,7 +41,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand loadingUnitsMissionsCommand;
 
-         private int maxLoadingUnitId;
+        private int maxLoadingUnitId;
 
         private int minLoadingUnitId;
 
@@ -165,6 +165,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task CallLoadingUnitAsync()
         {
+            this.Logger.Debug($"CallLoadingUnitAsync: loadingUnitId {this.loadingUnitId} ");
+
             if (!this.loadingUnitId.HasValue)
             {
                 this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
@@ -179,7 +181,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.SelectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex) //when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -262,14 +264,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanCallLoadingUnit()
         {
-            return
-                this.SelectedLoadingUnit != null
-                &&
-                this.LoadingUnitId.HasValue
-                &&
-                !this.IsWaitingForResponse
-                &&
-                this.loadingUnits.Any(l => l.Id == this.loadingUnitId);
+            return true;
+            //return this.SelectedLoadingUnit != null
+            //&&
+            //this.LoadingUnitId.HasValue
+            //&&
+            //!this.IsWaitingForResponse
+            //&&
+            //this.loadingUnits.Any(l => l.Id == this.loadingUnitId);
         }
 
         private bool CanSelectNextItem()
@@ -290,6 +292,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void CheckToSelectLoadingUnit()
         {
+            this.Logger.Debug($"CheckToSelectLoadingUnit: loadingUnitId {this.loadingUnitId} ");
             if (this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound)
             {
                 if (this.selectedUnitUnit != null && loadingUnitfound.Id == this.selectedUnitUnit.Id)
