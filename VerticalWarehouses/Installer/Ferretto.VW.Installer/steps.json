@@ -345,7 +345,7 @@
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 41,
       "title": "Imposta auto-logon",
-      "description": "Crea utente Ferretto e imposta l'utente per il logon automatico.",
+      "description": "Imposta l'utente Ferretto per il logon automatico.",
       "script": "scripts/set_auto_logon_ferretto.ps1"
     },
     {
@@ -354,14 +354,16 @@
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
       "script": "scripts/restart_windows.ps1",
-      "skipRollback": true
+      "skipRollback": true,
+      "setupMode": "install"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 43,
       "title": "Imposta shell utente",
       "description": "Imposta la shell di default per utente Ferretto a PanelPc.",
-      "script": "scripts/set_default_shell.ps1"
+      "script": "scripts/set_default_shell.ps1",
+      "setupMode": "install"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",

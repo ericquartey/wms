@@ -164,7 +164,8 @@
                           HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           Command="{Binding RestoreCommand}"
-                          Content="{res:Loc InstallationApp.Restoration}" />
+                          Content="{res:Loc InstallationApp.Restoration}"
+                          Visibility="Hidden"/>
 
       <controls:PpcButton Margin="15,0,0,0"
                           HorizontalAlignment="Right"
