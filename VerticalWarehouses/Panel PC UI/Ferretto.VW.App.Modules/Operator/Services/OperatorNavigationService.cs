@@ -102,6 +102,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void NavigateToOperatorMenu()
         {
+            this.logger.Debug($"Navigate 2 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, machineMission {this.missionOperationsService.ActiveMachineMission?.Id}, LU {this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id}");
             if (this.missionOperationsService.ActiveWmsOperation != null &&
                 this.missionOperationsService.ActiveWmsMission != null &&
                 this.missionOperationsService.ActiveWmsMission.Id == this.missionOperationsService.ActiveWmsOperation.MissionId &&
@@ -115,6 +116,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
 
                 if (loadingUnit != null &&
+                    currentMission != null &&
                     this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnit.Id)
                 {
                     this.lastActiveUnitId = loadingUnit.Id;
@@ -189,6 +191,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 return;
             }
 
+            this.logger.Debug($"Navigate 3 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, machineMission {this.missionOperationsService.ActiveMachineMission?.Id}, LU {this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id}");
             if (this.missionOperationsService.ActiveWmsOperation != null &&
                 this.missionOperationsService.ActiveWmsMission != null &&
                 this.missionOperationsService.ActiveWmsMission.Id == this.missionOperationsService.ActiveWmsOperation.MissionId &&
@@ -205,6 +208,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
 
                 if (loadingUnit != null &&
+                    currentMission != null &&
                     this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnit.Id)
                 {
                     this.lastActiveUnitId = loadingUnit.Id;
@@ -212,6 +216,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 }
                 else if (missions != null &&
                     loadingUnitInBay != null &&
+                    currentMission != null &&
                     (this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnitInBay.Id ||
                     this.machineService.MachineStatus.LoadingUnitPositionDownInBay?.Id == loadingUnitInBay.Id) &&
                     missions.Any(s => s.LoadUnitId == loadingUnitInBay.Id))
@@ -259,7 +264,7 @@ namespace Ferretto.VW.App.Modules.Operator
             {
                 return;
             }
-
+            this.logger.Debug($"Navigate 1 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, machineMission {this.missionOperationsService.ActiveMachineMission?.Id}");
             if (this.missionOperationsService.ActiveWmsOperation != null)
             {
                 this.NavigateToOperationDetails(this.missionOperationsService.ActiveWmsOperation.Type);
@@ -268,7 +273,9 @@ namespace Ferretto.VW.App.Modules.Operator
             {
                 var currentMission = this.missionOperationsService.ActiveMachineMission;
                 var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
-                if (loadingUnit != null)
+                if (loadingUnit != null &&
+                    currentMission != null
+                    )
                 {
                     this.lastActiveUnitId = loadingUnit.Id;
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
@@ -290,7 +297,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             var activeViewModelName = this.GetActiveViewModelName();
 
-            this.logger.Debug($"Auto-navigating to '{Utils.Modules.Operator.ItemOperations.LOADING_UNIT}' with loading unit '{loadingUnitId}'.");
+            this.logger.Debug($"Auto-navigating LU to '{Utils.Modules.Operator.ItemOperations.LOADING_UNIT}' with loading unit '{loadingUnitId}'.");
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemOperations.LOADING_UNIT,
@@ -327,7 +334,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.lastActiveMissionId = this.missionOperationsService.ActiveWmsMission?.Id;
 
             var loadingUnitId = this.missionOperationsService.ActiveWmsMission?.LoadingUnit?.Id;
-            this.logger.Debug($"Auto-navigating to '{viewModelName}' with loading unit '{loadingUnitId}'.");
+            this.logger.Debug($"Auto-navigating OP to '{viewModelName}' with loading unit '{loadingUnitId}'.");
 
             this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
