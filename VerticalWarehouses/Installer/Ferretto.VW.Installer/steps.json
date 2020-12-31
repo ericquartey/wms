@@ -389,7 +389,6 @@
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
       "script": "scripts/restart_windows.ps1",
-      "setupMode": "UpdateAndRestore",
       "skipRollback": true
     },
     {
