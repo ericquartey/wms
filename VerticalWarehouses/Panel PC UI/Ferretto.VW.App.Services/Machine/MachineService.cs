@@ -954,7 +954,7 @@ namespace Ferretto.VW.App.Services
 
                     case MessageStatus.OperationUpdateData:
                         {
-                            this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
+                            this.logger.Trace($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
 
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                             this.Cells = await this.machineCellsWebService.GetAllAsync();
@@ -1062,7 +1062,7 @@ namespace Ferretto.VW.App.Services
                                     this.ClearNotifications();
                                 }
 
-                                if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
+                                if (this.Bay.IsDouble || this.BayFirstPositionIsUpper || this.Bay.Carousel != null)
                                 {
                                     if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                                     {
@@ -1074,7 +1074,7 @@ namespace Ferretto.VW.App.Services
                                     }
                                 }
 
-                                if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
+                                if (this.Bay.IsDouble || (!this.BayFirstPositionIsUpper))
                                 {
                                     if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                                     {
@@ -1381,24 +1381,24 @@ namespace Ferretto.VW.App.Services
 
                 this.MachineStatus.BayChainPosition = bayChainPosition;
 
-                if (this.Bay.IsDouble || this.BayFirstPositionIsUpper)
+                if (this.Bay.IsDouble || this.BayFirstPositionIsUpper || this.bay.Carousel != null)
                 {
                     if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                     {
                         this.MachineStatus.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                        if (bayPositionUp.LoadingUnit != null)
+                        if (bayPositionUp.LoadingUnit != null && !this.BayFirstPositionIsUpper)
                         {
                             this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
                         }
                     }
                 }
 
-                if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)
+                if (this.Bay.IsDouble || !this.BayFirstPositionIsUpper || this.bay.Carousel != null)
                 {
                     if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                     {
                         this.MachineStatus.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                        if (bayPositionDown.LoadingUnit != null)
+                        if (bayPositionDown.LoadingUnit != null && this.BayFirstPositionIsUpper)
                         {
                             this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
                         }

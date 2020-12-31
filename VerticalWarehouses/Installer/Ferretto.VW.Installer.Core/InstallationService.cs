@@ -407,11 +407,11 @@ namespace Ferretto.VW.Installer.Core
 
                         if (this.ActiveStep.Execution.Status is StepStatus.Failed || this.IsRollbackInProgress)
                         {
-                            if (!this.ActiveStep.SkipRollback)
-                            {
-                                //this.IsRollbackInProgress = true;
-                                await this.RollbackStep(this.ActiveStep);
-                            }
+                            //if (!this.ActiveStep.SkipRollback)
+                            //{
+                            //    this.IsRollbackInProgress = true;
+                            //    await this.RollbackStep(this.ActiveStep);
+                            //}
                             this.logger.Debug("Installation interrupted.");
                             this.IsRollbackInProgress = false;
                             this.Dump();

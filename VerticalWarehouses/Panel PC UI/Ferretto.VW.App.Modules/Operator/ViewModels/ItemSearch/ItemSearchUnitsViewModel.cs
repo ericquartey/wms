@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.itemUnits, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand LoadingUnitCallCommand =>
+        public ICommand LoadUnitCallCommand =>
             this.callLoadingUnitCommand
             ??
             (this.callLoadingUnitCommand = new DelegateCommand(
@@ -88,6 +88,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task CallLoadingUnitAsync()
         {
+            this.Logger.Debug($"CallLoadingUnitAsync: LoadingUnitId {this.SelectedItemUnits?.LoadingUnitId} ");
             if (this.SelectedItemUnits?.LoadingUnitId == null)
             {
                 this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
