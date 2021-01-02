@@ -1,8 +1,8 @@
 ﻿Set-ItemProperty "$(PPC:Registry:Path)" -Name "$(PPC:Registry:Key)" -Value "$(Update:Temp:Path)\$(Installer:DirName)\$(Installer:FileName)";
 
 #set default shell
-$winLogonPath = "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
-Set-ItemProperty -Path $winLogonPath -Name "Shell" -Value "explorer.exe" -Force
+#$winLogonPath = "HKCU:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+#Set-ItemProperty -Path $winLogonPath -Name "Shell" -Value "explorer.exe" -Force
 
 #hide taskbar
 $key_path = 'HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3'

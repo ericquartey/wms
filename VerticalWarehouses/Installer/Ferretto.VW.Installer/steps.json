@@ -384,24 +384,16 @@
       "skipRollback": true
     },
     {
-      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 46,
-      "title": "Riavvia il sistema",
-      "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
-      "script": "scripts/restart_windows.ps1",
-      "skipRollback": true
-    },
-    {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 47,
-      "title": "Auto avvia panelpc_app",
-      "description": "Dal registro viene impostata la chiave di auto avvio panelpc_app.",
-      "script": "scripts/set_app_autostart.ps1",
+      "number": 46,
+      "title": "Rimuove auto avvia installatore",
+      "description": "Dal registro viene eliminata la chiave di auto avvio installer.",
+      "script": "scripts/remove_app_autostart.ps1",
       "skipRollback": true
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 48,
+      "number": 47,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
       "script": "scripts/restart_windows.ps1",
