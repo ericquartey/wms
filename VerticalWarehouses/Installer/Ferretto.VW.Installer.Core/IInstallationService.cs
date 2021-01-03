@@ -41,6 +41,8 @@ namespace Ferretto.VW.Installer.Core
 
         bool CanStart();
 
+        void CleanSnapshot();
+
         Task DeserializeAsync(string sourceFileName);
 
         void Run();

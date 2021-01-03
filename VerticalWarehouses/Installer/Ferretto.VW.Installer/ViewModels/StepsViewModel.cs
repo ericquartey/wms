@@ -209,6 +209,7 @@ namespace Ferretto.VW.Installer.ViewModels
                 if (this.IsSuccessful)
                 {
                     this.notificationService.SetMessage("Installation complete.");
+                    //this.installationService.CleanSnapshot();
                 }
                 else
                 {
