@@ -157,6 +157,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         {
             if (type == STRINGTYPE)
             {
+                if (value.Last() == '(')
+                {
+                    var trim = value.Trim(new char[] { ' ', '(' });
+                    return trim;
+                }
                 return value;
             }
 
@@ -169,7 +174,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             {
                 var engine = new FileHelperEngine<InverterParameterField>();
                 engine.ErrorManager.ErrorMode = ErrorMode.IgnoreAndContinue;
-                return engine.ReadFileAsList(filename);
+                var element = engine.ReadFileAsList(filename);
+                return element;
             }
             catch (Exception ex)
             {
@@ -375,24 +381,25 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     {
                         continue;
                     }
-                    else
-                    {
-                        if (parameterInfo.IsReadOnly)
-                        {
-                            throw new ArgumentException($"Parameter code '{code}' is writable but on parameters list is Not writable, case inverter type {this.currentInverterParameters.Type}");
-                        }
-                    }
+                    //else
+                    //{
+                    //    if (parameterInfo.IsReadOnly)
+                    //    {
+                    //        throw new ArgumentException($"Parameter code '{code}' is writable but on parameters list is Not writable, case inverter type {this.currentInverterParameters.Type}");
+                    //    }
+                    //}
 
-                    if (parameterInfo.IsReadOnly)
-                    {
-                        continue;
-                    }
+                    //if (parameterInfo.IsReadOnly)
+                    //{
+                    //    continue;
+                    //}
 
                     var inverterParameter = new InverterParameter
                     {
                         Code = code,
                         DataSet = this.GetDatasetIndex(parameter),
                         StringValue = this.ExtractValue(parameterInfo.Type, parameter.Value),
+                        IsReadOnly = parameterInfo.IsReadOnly,
                         Type = parameterInfo.Type
                     };
 

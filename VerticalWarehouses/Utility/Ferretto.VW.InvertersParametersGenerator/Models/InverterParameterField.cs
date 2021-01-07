@@ -14,12 +14,12 @@ namespace Ferretto.VW.InvertersParametersGenerator.Models
         public string Code;
 
         [FieldOrder(4)]
-        [FieldFixedLength(3)]
+        [FieldFixedLength(2)]
         [FieldTrim(TrimMode.Both)]
         public string Comparable;
 
         [FieldOrder(3)]
-        [FieldFixedLength(3)]
+        [FieldFixedLength(4)]
         [FieldTrim(TrimMode.Both)]
         public string Dataset;
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Models
         public string Description;
 
         [FieldOrder(5)]
-        [FieldFixedLength(43)]
+        [FieldFixedLength(44)]
         [FieldTrim(TrimMode.Both)]
         public string Value;
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.Models
         [FieldOptional]
         public string Writable;
 
-        #endregion
+        #endregion Fields
     }
 
 #pragma warning restore CA1051 // Do not declare visible instance fields
