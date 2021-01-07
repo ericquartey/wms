@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.InverterProgramming.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable.Interfaces;
@@ -50,7 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
         {
             this.Logger.LogDebug($"Start {this.GetType().Name}");
             var notificationMessage = new NotificationMessage(
-                null,
+                new InverterProgrammingMessageData(this.machineData.InverterParametersData),
                 $"Inverter Programming  stopped due to an error. Filed message: {this.stateData.FieldMessage?.Description ?? string.Empty}",
                 MessageActor.DeviceManager,
                 MessageActor.DeviceManager,

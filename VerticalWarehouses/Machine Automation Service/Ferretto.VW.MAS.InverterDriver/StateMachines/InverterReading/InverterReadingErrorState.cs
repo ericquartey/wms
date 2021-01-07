@@ -36,9 +36,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
         public override void Start()
         {
             this.Logger.LogError($"Inverter Reading Error state. Inverter {this.InverterStatus.SystemIndex}");
-            var notificationMessageData = new InverterReadingFieldMessageData(this.inverterReadingFieldMessageData.Parameters, this.inverterReadingFieldMessageData.IsCheckInverterVersion);
+            //var notificationMessageData = new InverterReadingFieldMessageData(this.inverterReadingFieldMessageData.Parameters, this.inverterReadingFieldMessageData.IsCheckInverterVersion);
             var notificationMessage = new FieldNotificationMessage(
-                notificationMessageData,
+                this.inverterReadingFieldMessageData,
                 "Inverter Reading Start error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,

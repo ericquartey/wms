@@ -152,6 +152,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     Code = (short)InverterParameterId.SoftwareVersion,
                     DataSet = 0,
+                    IsReadOnly = true,
                     Type = "String",
                     StringValue = this.inverterParameters.Parameters.Single(s => s.Code == (short)InverterParameterId.SoftwareVersion).StringValue
                 };
@@ -171,8 +172,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 };
 
                 await this.machineDevicesWebService.ProgramInverterAsync(inverter);
-
-                this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -194,8 +193,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.parentConfiguration.BackupVertimagInverterConfigurationParameters();
 
                 await this.machineDevicesWebService.ProgramInverterAsync(this.inverterParameters);
-
-                this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

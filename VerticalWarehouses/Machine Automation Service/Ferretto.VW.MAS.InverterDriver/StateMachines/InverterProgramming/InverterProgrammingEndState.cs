@@ -36,9 +36,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
 
         public override void Start()
         {
-            var notificationMessageData = new InverterProgrammingFieldMessageData(this.inverterProgrammingFieldMessageData.Parameters, this.inverterProgrammingFieldMessageData.IsCheckInverterVersion);
+            //var notificationMessageData = new InverterProgrammingFieldMessageData(this.inverterProgrammingFieldMessageData.Parameters, this.inverterProgrammingFieldMessageData.IsCheckInverterVersion);
             var notificationMessage = new FieldNotificationMessage(
-                notificationMessageData,
+                this.inverterProgrammingFieldMessageData,
                 "Inverter programming End completed",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,

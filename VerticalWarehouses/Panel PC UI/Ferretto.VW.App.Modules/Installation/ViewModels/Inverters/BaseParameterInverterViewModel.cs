@@ -109,6 +109,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             switch (message.Status)
             {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    this.isBusy = true;
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
+                    break;
+
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     this.isBusy = false;
                     this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingSuccessfullyEnded"), Services.Models.NotificationSeverity.Success);

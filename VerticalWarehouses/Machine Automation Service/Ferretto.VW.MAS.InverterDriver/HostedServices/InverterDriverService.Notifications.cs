@@ -9,6 +9,8 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn;
@@ -260,6 +262,29 @@ namespace Ferretto.VW.MAS.InverterDriver
                             {
                                 this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(1000, 10000);
                             }
+                            this.currentStateMachines.Remove(inverterIndex);
+
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
+                        }
+                        else
+                        {
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType().Name} Handling {receivedMessage.Type}");
+                        }
+                    }
+
+                    break;
+
+                case FieldMessageType.InverterProgramming:
+                case FieldMessageType.InverterReading:
+
+                    if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                            receivedMessage.Status == MessageStatus.OperationError ||
+                            receivedMessage.Status == MessageStatus.OperationStop)
+                    {
+                        if (messageCurrentStateMachine is InverterProgrammigState ||
+                            messageCurrentStateMachine is InverterReadingState)
+                        {
                             this.currentStateMachines.Remove(inverterIndex);
 
                             this.Logger.LogTrace("Stop the timer for update status word");

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
 using Ferretto.VW.MAS.Utils;
@@ -572,6 +571,38 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageActor.Any,
                         FieldMessageActor.InverterDriver,
                         FieldMessageType.InverterSetTimer,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterReading:
+                    if (messageData is InverterExceptionFieldMessageData inverterReadingData)
+                    {
+                        var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+                        inverterReadingData,
+                        "Error during reading inverter parameter",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterReading,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterProgramming:
+                    if (messageData is InverterExceptionFieldMessageData inverterProgrammingData)
+                    {
+                        var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+                        inverterProgrammingData,
+                        "Error during writing inverter parameter",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterProgramming,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
                         ErrorLevel.Error);

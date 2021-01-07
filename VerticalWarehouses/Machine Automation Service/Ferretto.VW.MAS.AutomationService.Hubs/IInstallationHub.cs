@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task InverterProgrammingChanged(IBaseNotificationMessageUI message);
 
+        Task InverterReadingChanged(IBaseNotificationMessageUI message);
+
         Task InverterStatusWordChanged(IBaseNotificationMessageUI message);
 
         Task MachineModeChanged(CommonUtils.Messages.MachineMode machineMode);

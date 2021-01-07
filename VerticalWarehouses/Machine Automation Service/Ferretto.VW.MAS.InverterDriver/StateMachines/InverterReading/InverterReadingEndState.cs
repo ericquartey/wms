@@ -36,9 +36,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
 
         public override void Start()
         {
-            var notificationMessageData = new InverterReadingFieldMessageData(this.inverterReadingFieldMessageData.Parameters, this.inverterReadingFieldMessageData.IsCheckInverterVersion);
+            //var notificationMessageData = new InverterReadingFieldMessageData(this.inverterReadingFieldMessageData.Parameters, this.inverterReadingFieldMessageData.IsCheckInverterVersion);
             var notificationMessage = new FieldNotificationMessage(
-                notificationMessageData,
+                this.inverterReadingFieldMessageData,
                 "Inverter Reading End completed",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,

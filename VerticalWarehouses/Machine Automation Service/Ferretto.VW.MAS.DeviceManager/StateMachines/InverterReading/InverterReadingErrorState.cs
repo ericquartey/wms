@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.InverterReading.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable.Interfaces;
@@ -50,7 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
         {
             this.Logger.LogDebug($"Start {this.GetType().Name}");
             var notificationMessage = new NotificationMessage(
-                null,
+                new InverterReadingMessageData(this.machineData.InverterParametersData),
                 $"Inverter Reading  stopped due to an error. Filed message: {this.stateData.FieldMessage?.Description ?? string.Empty}",
                 MessageActor.DeviceManager,
                 MessageActor.DeviceManager,

@@ -117,6 +117,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<InverterProgrammingMessageData>>(
                 nameof(IInstallationHub.InverterProgrammingChanged), this.OnInverterProgramming);
 
+            connection.On<NotificationMessageUI<InverterReadingMessageData>>(
+                nameof(IInstallationHub.InverterReadingChanged), this.OnInverterReading);
+
             connection.On<NotificationMessageUI<CombinedMovementsMessageData>>(
                 nameof(IInstallationHub.CombinedMovementsNotify), this.OnCombinedMovementsNotify);
         }
@@ -164,6 +167,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnInverterProgramming(NotificationMessageUI<InverterProgrammingMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnInverterReading(NotificationMessageUI<InverterReadingMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool CheckInverterParametersValidity(InverterIndex index);
 
-        bool ExistInverterParameter(InverterIndex inverterIndex, short code);
+        bool ExistInverterParameter(InverterIndex inverterIndex, short code, int dataset);
 
         IEnumerable<Inverter> GetAllInverters();
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Inverter GetInverterByIndex(InverterIndex mainInverter);
 
-        void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value);
+        void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value, int dataset);
 
         #endregion
     }

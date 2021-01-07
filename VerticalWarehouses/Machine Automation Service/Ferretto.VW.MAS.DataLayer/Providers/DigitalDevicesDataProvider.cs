@@ -44,7 +44,22 @@ namespace Ferretto.VW.MAS.DataLayer
                 inverterParameter.Type = type;
                 inverterParameter.StringValue = value;
 
-                this.dataContext.InverterParameter.Add(inverterParameter);
+                var parameters = new List<InverterParameter>();
+
+                if (!(inverter.Parameters is null) &&
+                    inverter.Parameters.Any())
+                {
+                    parameters.AddRange(inverter.Parameters);
+                    parameters.Add(inverterParameter);
+                }
+                else
+                {
+                    parameters.Add(inverterParameter);
+                }
+
+                inverter.Parameters = parameters;
+
+                this.dataContext.Inverters.Update(inverter);
                 this.dataContext.SaveChanges();
             }
         }
@@ -53,21 +68,22 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                if (this.dataContext.Inverters.Where(s => s.Index == index).Any())
+                var inverter = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == index);
+                if (inverter is null)
                 {
-                    return !(this.dataContext.Inverters.Where(s => s.Index == index).FirstOrDefault().Parameters is null) &&
-                        this.dataContext.Inverters.Where(s => s.Index == index).FirstOrDefault().Parameters.Any();
+                    throw new EntityNotFoundException((int)index);
                 }
 
-                return false;
+                return !(inverter.Parameters is null) &&
+                    inverter.Parameters.Any();
             }
         }
 
-        public bool ExistInverterParameter(InverterIndex inverterIndex, short code)
+        public bool ExistInverterParameter(InverterIndex inverterIndex, short code, int dataset)
         {
             lock (this.dataContext)
             {
-                var inverter = this.dataContext.Inverters.SingleOrDefault(i => i.Index == inverterIndex);
+                var inverter = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == inverterIndex);
                 if (inverter is null)
                 {
                     throw new EntityNotFoundException((int)inverterIndex);
@@ -78,7 +94,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     return false;
                 }
 
-                return inverter.Parameters.Any(p => p.Code == code);
+                return inverter.Parameters.Any(p => p.Code == code && p.DataSet == dataset);
             }
         }
 
@@ -171,17 +187,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value)
+        public void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value, int dataset)
         {
             lock (this.dataContext)
             {
-                var inverter = this.dataContext.Inverters.SingleOrDefault(i => i.Index == inverterIndex);
+                var inverter = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == inverterIndex);
                 if (inverter is null)
                 {
                     throw new EntityNotFoundException((int)inverterIndex);
                 }
 
-                var inverterParameter = inverter.Parameters.SingleOrDefault(p => p.Code == code);
+                var inverterParameter = inverter.Parameters.SingleOrDefault(p => p.Code == code && p.DataSet == dataset);
                 if (inverterParameter is null)
                 {
                     throw new EntityNotFoundException(code);

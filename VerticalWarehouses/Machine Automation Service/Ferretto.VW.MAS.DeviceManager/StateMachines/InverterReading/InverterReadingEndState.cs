@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.InverterReading.Interfaces;
@@ -12,7 +13,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
     {
         #region Fields
 
-        private readonly IInverterPowerEnableMachineData machineData;
+        private readonly IInverterReadingMachineData machineData;
 
         private readonly IInverterReadingStateData stateData;
 
@@ -24,7 +25,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
             : base(stateData?.ParentMachine, logger)
         {
             this.stateData = stateData;
-            this.machineData = stateData?.MachineData as IInverterPowerEnableMachineData;
+            this.machineData = stateData?.MachineData as IInverterReadingMachineData;
         }
 
         #endregion
@@ -48,7 +49,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
             this.Logger.LogDebug($"1:Starting {this.GetType().Name} with {this.stateData.StopRequestReason} Bay: {this.machineData.TargetBay}");
 
             var notificationMessage = new NotificationMessage(
-                null,
+                new InverterReadingMessageData(this.machineData.InverterParametersData),
                 $"Inverter Reading completed for Bay {this.machineData.TargetBay}",
                 MessageActor.DeviceManager,
                 MessageActor.DeviceManager,

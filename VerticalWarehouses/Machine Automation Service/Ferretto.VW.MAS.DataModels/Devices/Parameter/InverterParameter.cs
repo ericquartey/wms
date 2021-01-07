@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.DataModels
         {
             get
             {
+                //differtence type between inverter and c#
                 try
                 {
                     if (this.Type == "String")
@@ -24,15 +25,15 @@ namespace Ferretto.VW.MAS.DataModels
                     }
                     else if (this.Type == "Int")
                     {
-                        return int.Parse(this.StringValue);
+                        return short.Parse(this.StringValue);
                     }
                     else if (this.Type == "uInt")
                     {
-                        return uint.Parse(this.StringValue);
+                        return ushort.Parse(this.StringValue);
                     }
                     else if (this.Type == "Long")
                     {
-                        return long.Parse(this.StringValue);
+                        return int.Parse(this.StringValue);
                     }
                 }
                 catch (Exception ex)

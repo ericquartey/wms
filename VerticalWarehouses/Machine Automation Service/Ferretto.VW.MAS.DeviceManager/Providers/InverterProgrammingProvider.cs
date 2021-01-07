@@ -46,51 +46,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return invertersParametersData;
         }
 
-        //public void Start(VertimagConfiguration vertimagConfiguration, BayNumber requestingBay, MessageActor sender)
-        //{
-        //    var inverterParametersData = this.GetInvertersParameters(vertimagConfiguration);
-
-        //    if (inverterParametersData.Count() == 0)
-        //    {
-        //        throw new ArgumentException($"No Inverters found");
-        //    }
-
-        //    this.PublishCommand(
-        //        new InverterProgrammingMessageData(inverterParametersData, CommonUtils.CommandAction.Start),
-        //        $"Bay {requestingBay} requested Inverter programming runnning State",
-        //        MessageActor.DeviceManager,
-        //        sender,
-        //        MessageType.InverterProgramming,
-        //        requestingBay,
-        //        requestingBay);
-        //}
-
-        //public void Start(VertimagConfiguration vertimagConfiguration, byte inverterIndex, BayNumber requestingBay, MessageActor sender)
-        //{
-        //    var inverterParametersData = this.GetInvertersParameters(vertimagConfiguration);
-
-        //    var inverterParameters = inverterParametersData.Where(i => i.InverterIndex == inverterIndex).ToList();
-
-        //    if (inverterParameters is null)
-        //    {
-        //        throw new ArgumentException($"No Inverter found");
-        //    }
-
-        //    if (inverterParameters.Skip(1).FirstOrDefault()?.Parameters?.Count() == 0)
-        //    {
-        //        throw new ArgumentException($"No Inverter Parameters found for {inverterIndex}");
-        //    }
-
-        //    this.PublishCommand(
-        //        new InverterProgrammingMessageData(inverterParameters, CommonUtils.CommandAction.Start),
-        //        $"Bay {requestingBay} requested Inverter programming runnning State",
-        //        MessageActor.DeviceManager,
-        //        sender,
-        //        MessageType.InverterProgramming,
-        //        requestingBay,
-        //        requestingBay);
-        //}
-
         public void Read(BayNumber requestingBay, MessageActor sender)
         {
             var invetersFormDb = this.digitalDevicesDataProvider.GetAllInverters();
@@ -127,7 +82,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //send command
 
             this.PublishCommand(
-                new InverterReadingMessageData(inverterParametersData, CommonUtils.CommandAction.Start),
+                new InverterReadingMessageData(inverterParametersData),
                 $"Bay {requestingBay} requested Inverter programming runnning State",
                 MessageActor.DeviceManager,
                 sender,
@@ -160,7 +115,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //send command
 
             this.PublishCommand(
-                new InverterReadingMessageData(inverterParametersData, CommonUtils.CommandAction.Start),
+                new InverterReadingMessageData(inverterParametersData),
                 $"Bay {requestingBay} requested Inverter programming runnning State",
                 MessageActor.DeviceManager,
                 sender,
@@ -191,7 +146,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             this.PublishCommand(
-                new InverterProgrammingMessageData(inverterParametersData, CommonUtils.CommandAction.Start),
+                new InverterProgrammingMessageData(inverterParametersData),
                 $"Bay {requestingBay} requested Inverter programming runnning State",
                 MessageActor.DeviceManager,
                 sender,
@@ -219,7 +174,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             this.PublishCommand(
-                new InverterProgrammingMessageData(inverterParametersData, CommonUtils.CommandAction.Start),
+                new InverterProgrammingMessageData(inverterParametersData),
                 $"Bay {requestingBay} requested Inverter programming runnning State",
                 MessageActor.DeviceManager,
                 sender,
@@ -231,7 +186,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public void Stop(BayNumber requestingBay, MessageActor sender)
         {
             this.PublishCommand(
-                new InverterProgrammingMessageData(null, CommonUtils.CommandAction.Stop),
+                new InverterProgrammingMessageData(null),
                 $"Bay {requestingBay} requested to stop Inverter programming Running State",
                 MessageActor.DeviceManager,
                 sender,

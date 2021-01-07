@@ -7,7 +7,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Properties
 
-        IEnumerable<InverterParametersData> InverterParametersData { get; }
+        IEnumerable<InverterParametersData> InverterParametersData { get; set; }
 
         #endregion
     }

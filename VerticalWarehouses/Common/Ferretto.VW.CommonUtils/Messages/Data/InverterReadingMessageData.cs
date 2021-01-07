@@ -11,10 +11,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public InverterReadingMessageData(IEnumerable<InverterParametersData> inverterParametersData, CommandAction commandAction = CommandAction.Start, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public InverterReadingMessageData(IEnumerable<InverterParametersData> inverterParametersData, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.InverterParametersData = inverterParametersData;
-            this.CommandAction = commandAction;
             this.Verbosity = verbosity;
         }
 
@@ -22,11 +21,18 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public CommandAction CommandAction { get; }
+        public IEnumerable<InverterParametersData> InverterParametersData { get; set; }
 
-        public IEnumerable<InverterParametersData> InverterParametersData { get; }
+        public MessageVerbosity Verbosity { get; set; }
 
-        public MessageVerbosity Verbosity { get; }
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"Parameters:{this.InverterParametersData} Verbosity:{this.Verbosity}";
+        }
 
         #endregion
     }
