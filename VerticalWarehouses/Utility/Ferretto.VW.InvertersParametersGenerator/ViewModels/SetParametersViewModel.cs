@@ -23,21 +23,17 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
     {
         #region Fields
 
-        private const string ACCESSREADONLY = "r_only";
+        private const string STRINGTYPE = "string";
 
-        private const string DATASETZERO = "[*]";
+        private const string INTTYPE = "int";
 
-        private const short MASTERINVERTERCODE = 924;
+        private const string SHORTTYPE = "short";
 
-        private const short SLAVEINVERTERCODE = 925;
-
-        private const string STRINGTYPE = "String";
+        private const string USHORTTYPE = "ushort";
 
         private readonly ConfigurationService configurationService;
 
         private readonly IParentActionChanged parentActionChanged;
-
-        private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
 
         private InverterParametersDataInfo currentInverterParameters;
 
@@ -49,15 +45,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private bool isParametersSet;
 
-        private DelegateCommand loadFileCommand = null;
-
         private string pattern;
 
         private Regex regexDataSet;
 
         private Regex regexDigit;
-
-        private FileInfo selectedFile = null;
 
         private string totalParameters;
 
@@ -69,7 +61,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         {
             this.configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
             this.parentActionChanged = parentActionChanged;
-            this.SelectedFile = null;
             this.InitializeData();
         }
 
@@ -80,8 +71,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         public bool CanNext => this.isParametersSet;
 
         public bool CanPrevious => true;
-
-        public IEnumerable<FileInfo> ConfigurationFiles => this.configurationFiles;
 
         public InverterParametersDataInfo CurrentInverterParameters => this.currentInverterParameters;
 
@@ -101,28 +90,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             set => this.SetProperty(ref this.isParametersSet, value);
         }
 
-        public ICommand LoadFileCommand =>
-            this.loadFileCommand
-            ??
-            (this.loadFileCommand = new DelegateCommand(
-            this.LoadParameters, this.CanImport));
-
         public string Pattern
         {
             get => this.pattern;
             set => this.SetProperty(ref this.pattern, value);
-        }
-
-        public FileInfo SelectedFile
-        {
-            get => this.selectedFile;
-            set
-            {
-                if (this.SetProperty(ref this.selectedFile, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
         }
 
         public string Title => string.Format(Resources.InverterTypeParametersConfiguration, this.currentInverterParameters.InverterIndex, this.currentInverterParameters.Type.ToString());
@@ -157,32 +128,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         {
             if (type == STRINGTYPE)
             {
-                if (value.Last() == '(')
-                {
-                    var trim = value.Trim(new char[] { ' ', '(' });
-                    return trim;
-                }
                 return value;
             }
 
             return this.ExtractDigit(value);
-        }
-
-        public IEnumerable<InverterParameterField> GetParametersFromFile(string filename)
-        {
-            try
-            {
-                var engine = new FileHelperEngine<InverterParameterField>();
-                engine.ErrorManager.ErrorMode = ErrorMode.IgnoreAndContinue;
-                var element = engine.ReadFileAsList(filename);
-                return element;
-            }
-            catch (Exception ex)
-            {
-                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
-            }
-
-            return null;
         }
 
         public bool Next()
@@ -201,86 +150,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         public void Previous()
         {
             this.configurationService.SetWizard(WizardMode.Inverters);
-        }
-
-        private static IEnumerable<ParameterInfo> LoadParametersList(InverterType inverterType)
-        {
-            var parameters = new List<ParameterInfo>();
-
-            var inverterFileName = $"Para_list_{inverterType.ToString().ToUpper(CultureInfo.InvariantCulture)}.xlsx";
-            var parmsDir = $"{Environment.CurrentDirectory}\\Parameters\\{inverterFileName}";
-            var fileInfo = new FileInfo(parmsDir);
-
-            using (var package = new ExcelPackage(fileInfo))
-            {
-                var workbook = package.Workbook;
-                var worksheet = workbook.Worksheets.First();
-
-                var start = worksheet.Dimension.Start;
-                var end = worksheet.Dimension.End;
-
-                for (var row = start.Row + 3; row <= end.Row; row++)
-                {
-                    var code = worksheet.Cells[row, 1].Text;
-                    var description = worksheet.Cells[row, 3].Text;
-                    var type = worksheet.Cells[row, 4].Text;
-                    var access = worksheet.Cells[row, 8].Text;
-                    parameters.Add(new ParameterInfo(short.Parse(code), description, type, access == ACCESSREADONLY));
-                }
-            }
-
-            return parameters;
-        }
-
-        private bool CanImport()
-        {
-            return this.selectedFile != null;
-        }
-
-        private int GetDatasetIndex(InverterParameterField parameter)
-        {
-            if (string.IsNullOrEmpty(parameter.Dataset)
-                ||
-                parameter.Dataset.Trim().ToLowerInvariant().Equals(DATASETZERO))
-            {
-                return 0;
-            }
-
-            var match = this.regexDataSet.Match(parameter.Dataset);
-            if (match.Success)
-            {
-                if (int.TryParse(match.Value, out var dataset))
-                {
-                    return dataset;
-                }
-            }
-
-            throw new ArgumentException($"Invalid dataset '{parameter.Dataset}' for parameter code '{parameter.Code}'");
-        }
-
-        private void GetInverterParametersFiles()
-        {
-            this.IsBusy = true;
-            try
-            {
-                var sufix = this.configurationService.VertimagConfiguration.Machine.LoadUnitMaxNetWeight;
-                this.Pattern = $"{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}*{sufix}*.txt";
-                var di = new DirectoryInfo(this.configurationService.InvertersParametersFolder);
-                this.configurationFiles = di.EnumerateFiles(this.Pattern);
-
-                this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
-                if (!this.configurationFiles.Any())
-                {
-                    this.parentActionChanged.Notify(Resources.NoParametersFilesFound, NotificationSeverity.Warning);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
-                this.configurationFiles = null;
-            }
-
-            this.IsBusy = false;
         }
 
         private Inverter GetVertimagConfigurationByInverterId(byte inverterIndex)
@@ -315,7 +184,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.currentInverterParameters = this.inverters[indexOf + 1];
             this.IsParametersSet = false;
             this.RaisePropertyChanged(nameof(this.Title));
-            this.GetInverterParametersFiles();
+            this.LoadParameters();
             this.RaiseCanExecuteChanged();
 
             return true;
@@ -328,7 +197,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.inverters = this.configurationService.InvertersParameters.ToList();
             this.currentInverterParameters = this.inverters.First();
             this.RaisePropertyChanged(nameof(this.Title));
-            this.GetInverterParametersFiles();
+            this.LoadParameters();
             this.RaiseCanExecuteChanged();
         }
 
@@ -337,74 +206,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.IsBusy = true;
             try
             {
-                var inverterParameters = new List<InverterParameter>();
+                var inverterParameters = this.GetParameter(this.currentInverterParameters.Type);
                 this.RaisePropertyChanged(nameof(this.InverterParameters));
                 short lastParameterCode = 0;
-                var parametersInfo = LoadParametersList(this.currentInverterParameters.Type);
-                var parameters = this.GetParametersFromFile(this.selectedFile.FullName);
 
-                var inverterNodeParameters = this.configurationService.GetInverterNode(this.currentInverterParameters.InverterIndex).Parameters;
-
-                var softwareVersionCode = $"0{(short)InverterParameterId.SoftwareVersion}";
-                var softwareVersionParameter = parameters.SingleOrDefault(p => p.Code == softwareVersionCode);
-                var inverterVersionParameter = new InverterParameter
-                {
-                    Code = (short)InverterParameterId.SoftwareVersion,
-                    StringValue = softwareVersionParameter.Value,
-                    Type = STRINGTYPE,
-                    IsReadOnly = true
-                };
-                inverterParameters.Add(inverterVersionParameter);
-
-                foreach (var parameter in parameters)
-                {
-                    short code;
-                    if (string.IsNullOrEmpty(parameter.Code))
-                    {
-                        code = lastParameterCode;
-                    }
-                    else
-                    {
-                        code = short.Parse(parameter.Code);
-                        lastParameterCode = short.Parse(parameter.Code);
-                    }
-
-                    var parameterInfo = parametersInfo.SingleOrDefault(pi => pi.Code == code);
-                    if (parameterInfo is null)
-                    {
-                        throw new ArgumentNullException($"Parameter code '{code}' not found on parameters list for inverter type {this.currentInverterParameters.Type}");
-                    }
-
-                    if (!inverterNodeParameters.Any(np => np.Code == code)
-                        &&
-                        string.IsNullOrEmpty(parameter.Writable))
-                    {
-                        continue;
-                    }
-                    //else
-                    //{
-                    //    if (parameterInfo.IsReadOnly)
-                    //    {
-                    //        throw new ArgumentException($"Parameter code '{code}' is writable but on parameters list is Not writable, case inverter type {this.currentInverterParameters.Type}");
-                    //    }
-                    //}
-
-                    //if (parameterInfo.IsReadOnly)
-                    //{
-                    //    continue;
-                    //}
-
-                    var inverterParameter = new InverterParameter
-                    {
-                        Code = code,
-                        DataSet = this.GetDatasetIndex(parameter),
-                        StringValue = this.ExtractValue(parameterInfo.Type, parameter.Value),
-                        IsReadOnly = parameterInfo.IsReadOnly,
-                        Type = parameterInfo.Type
-                    };
-
-                    inverterParameters.Add(inverterParameter);
-                }
+                //var inverterNodeParameters = this.configurationService.GetInverterNode(this.currentInverterParameters.InverterIndex).Parameters;
 
                 this.inverterParameters = inverterParameters.OrderBy(i => i.Code).ToList();
 
@@ -419,7 +225,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             catch (Exception ex)
             {
                 this.IsParametersSet = false;
-                this.SelectedFile = null;
                 this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
 
@@ -428,9 +233,242 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
+        private List<InverterParameter> GetParameter(InverterType inverterType)
+        {
+            var inverterFileName = $"{inverterType.ToString().ToUpper(CultureInfo.InvariantCulture)}.vcb";
+            var parmsDir = $"{Environment.CurrentDirectory}\\Parameters\\{inverterFileName}";
+
+            StreamReader file = new StreamReader(parmsDir);
+
+            string line;
+
+            var parameters = new List<InverterParameter>();
+            var parametersInfo = new List<ParameterInfo>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                if (line.Contains("Parameter = "))
+                {
+                    var clean = line.Remove(0, 13);
+                    clean = clean.Remove(clean.Length - 1, 1);
+                    var split = clean.Split(';');
+
+                    var code = default(short);
+
+                    if (char.IsLetter(split[0].FirstOrDefault()))
+                    {
+                        var hex = short.Parse(split[0].Substring(0, 1), System.Globalization.NumberStyles.HexNumber).ToString();
+                        code = short.Parse(hex + split[0].Substring(1, 2));
+                    }
+                    else
+                    {
+                        code = short.Parse(split[0].Substring(0, 3));
+                    }
+
+                    var desc = split[1];
+
+                    //var byte1 = split[0].Substring(3, 8);
+                    //var byte2 = split[0].Substring(11, 8);
+                    //var byte3 = split[0].Substring(19, 8);
+
+                    var type0 = default(int);//0 dword, 1 word, 2 read, 3 write
+                    if (char.IsLetter(Convert.ToChar(split[0].Substring(27, 1))))
+                    {
+                        type0 = int.Parse(split[0].Substring(27, 1), System.Globalization.NumberStyles.HexNumber);
+                    }
+                    else
+                    {
+                        type0 = int.Parse(split[0].Substring(27, 1));
+                    }
+
+                    var data = this.ConvertBit0(type0);
+
+                    var type1 = default(int);//0 special, 1 dataset, 2 unsigned, 3 string
+                    if (char.IsLetter(Convert.ToChar(split[0].Substring(28, 1))))
+                    {
+                        type1 = int.Parse(split[0].Substring(28, 1), System.Globalization.NumberStyles.HexNumber);
+                    }
+                    else
+                    {
+                        type1 = int.Parse(split[0].Substring(28, 1));
+                    }
+
+                    var type = ConvertBit1(type1);
+
+                    var type2 = default(int);//3 index
+                    if (char.IsLetter(Convert.ToChar(split[0].Substring(27, 1))))
+                    {
+                        type2 = int.Parse(split[0].Substring(29, 1), System.Globalization.NumberStyles.HexNumber);
+                    }
+                    else
+                    {
+                        type2 = int.Parse(split[0].Substring(29, 1));
+                    }
+
+                    if (type2 == 4)
+                    {
+                        //internal use
+                        continue;
+                    }
+
+                    var type3 = int.Parse(split[0].Substring(30, 1));//unused
+
+                    if (!string.IsNullOrEmpty(data.type) &&
+                        string.IsNullOrEmpty(type))
+                    {
+                        type = data.type;
+                    }
+
+                    var inverterVersionParameter = new ParameterInfo(code, desc, type, data.isReadonly);
+
+                    parametersInfo.Add(inverterVersionParameter);
+                }
+                if (line.Contains("Value = "))
+                {
+                    var clean = line.Remove(0, 8);
+                    var split = clean.Split(',');
+
+                    var code = default(short);
+
+                    if (char.IsLetter(split[0].FirstOrDefault()))
+                    {
+                        var hex = short.Parse(split[0].Substring(0, 1), System.Globalization.NumberStyles.HexNumber).ToString();
+                        code = short.Parse(hex + split[0].Substring(1, 2));
+                    }
+                    else
+                    {
+                        code = short.Parse(split[0]);
+                    }
+
+                    if (!parametersInfo.Any(s => s.Code == code))
+                    {
+                        continue;
+                    }
+
+                    var dataset = default(int);
+                    var match = this.regexDataSet.Match(split[1]);
+                    if (match.Success)
+                    {
+                        dataset = int.Parse(match.Value);
+                    }
+
+                    var value = default(string);
+                    if (split[2].Contains('"'))
+                    {
+                        value = split[2].Remove(0, 2);
+                        value = value.Remove(value.Length - 1, 1);
+                    }
+                    else
+                    {
+                        value = split[2].Remove(0, 1);
+                    }
+
+                    var parameter = parametersInfo.Single(s => s.Code == code);
+                    var newPara = new InverterParameter
+                    {
+                        Code = parameter.Code,
+                        IsReadOnly = parameter.IsReadOnly,
+                        Description = parameter.Description,
+                        Type = parameter.Type,
+                        StringValue = this.ExtractValue(parameter.Type, value),
+                        DataSet = dataset,
+                    };
+
+                    parameters.Add(newPara);
+                }
+            }
+
+            return parameters;
+        }
+
+        private (bool isReadonly, string type) ConvertBit0(int bit0)
+        {
+            switch (bit0)
+            {
+                case 4:
+                    //read
+                    return (true, string.Empty);
+
+                case 5:
+                    //read, dword
+                    return (true, INTTYPE);
+
+                case 6:
+                    //read, word
+                    return (true, SHORTTYPE);
+
+                case 12:
+                    //write, read
+                    return (false, string.Empty);
+
+                case 13:
+                    //read, write, dword
+                    return (false, INTTYPE);
+
+                case 14:
+                    //read, write, word
+                    return (false, SHORTTYPE);
+
+                default:
+                    //error
+                    return (false, string.Empty);
+            }
+        }
+
+        private static string ConvertBit1(int bit1)
+        {
+            switch (bit1)
+            {
+                case 0:
+                    //none
+                    break;
+
+                case 1:
+                    //special
+                    break;
+
+                case 2:
+                    //dataset
+                    break;
+
+                case 3:
+                    //special, dataset
+                    break;
+
+                case 4:
+                    //unsigned
+                    return USHORTTYPE;
+
+                case 5:
+                    //unsigned, special
+                    return USHORTTYPE;
+
+                case 6:
+                    //unsigned, dataset
+                    return USHORTTYPE;
+
+                case 7:
+                    //unsigned, dataset, special
+                    return USHORTTYPE;
+
+                case 8:
+                    //string
+                    return STRINGTYPE;
+
+                case 10:
+                    //string, dataset
+                    return STRINGTYPE;
+
+                default:
+                    //error
+                    break;
+            }
+
+            return string.Empty;
+        }
+
         private void RaiseCanExecuteChanged()
         {
-            this.loadFileCommand?.RaiseCanExecuteChanged();
             this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
