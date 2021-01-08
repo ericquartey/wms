@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value)
+        public void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value, string description, int writecode, int readcode)
         {
             lock (this.dataContext)
             {
@@ -43,6 +43,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 inverterParameter.IsReadOnly = isReadOnly;
                 inverterParameter.Type = type;
                 inverterParameter.StringValue = value;
+                inverterParameter.Description = description;
+                inverterParameter.ReadCode = readcode;
+                inverterParameter.WriteCode = writecode;
 
                 var parameters = new List<InverterParameter>();
 

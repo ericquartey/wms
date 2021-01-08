@@ -10,28 +10,29 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int DataSet { get; set; }
 
+        public string Description { get; set; }
+
         public bool IsReadOnly { get; set; }
 
         public object Payload
         {
             get
             {
-                //differtence type between inverter and c#
                 try
                 {
-                    if (this.Type == "String")
+                    if (this.Type == "string")
                     {
                         return this.StringValue;
                     }
-                    else if (this.Type == "Int")
+                    else if (this.Type == "short")
                     {
                         return short.Parse(this.StringValue);
                     }
-                    else if (this.Type == "uInt")
+                    else if (this.Type == "ushort")
                     {
                         return ushort.Parse(this.StringValue);
                     }
-                    else if (this.Type == "Long")
+                    else if (this.Type == "int")
                     {
                         return int.Parse(this.StringValue);
                     }
@@ -44,11 +45,13 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        public int ReadCode { get; set; }
+
         public string StringValue { get; set; }
 
         public string Type { get; set; }
 
-        public int Value { get; set; }
+        public int WriteCode { get; set; }
 
         #endregion
     }

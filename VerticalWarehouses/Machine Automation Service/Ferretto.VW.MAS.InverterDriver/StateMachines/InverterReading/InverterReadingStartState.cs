@@ -109,19 +109,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 string result = default(string);
                 switch (currentParameter.Type)
                 {
-                    case "Int":
+                    case "short":
                         result = message.ShortPayload.ToString();
                         break;
 
-                    case "uInt":
+                    case "ushort":
                         result = message.UShortPayload.ToString();
                         break;
 
-                    case "Long":
+                    case "int":
                         result = message.IntPayload.ToString();
                         break;
 
-                    case "String":
+                    case "string":
                         result = message.StringPayload;
                         break;
                 }
@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 }
                 else
                 {
-                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result);
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.ReadCode, currentParameter.WriteCode);
                 }
 
                 if (this.currentParametersPosition == (this.inverterReadingFieldMessageData.Parameters.Count() - 1) ||

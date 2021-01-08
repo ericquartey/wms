@@ -117,8 +117,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
                                this.requestingBay,
                                this.targetBay,
                                MessageStatus.OperationStepEnd);
-
                         this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
                         if (this.NextInverterParameters is InverterParametersData nextInverterParametersData &&
                             nextInverterParametersData != null)
                         {
@@ -135,7 +135,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
                         }
                         else
                         {
-                            this.ParentStateMachine.ChangeState(new InverterReadingEndState(this.stateData, this.Logger));
                             var notificationEndMessage = new NotificationMessage(
                                new InverterReadingMessageData(this.machineData.InverterParametersData),
                                       $"Starting inverter Reading state on inverters",
@@ -146,13 +145,13 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
                                       this.targetBay,
                                       MessageStatus.OperationEnd);
                             this.ParentStateMachine.PublishNotificationMessage(notificationEndMessage);
+
+                            this.ParentStateMachine.ChangeState(new InverterReadingEndState(this.stateData, this.Logger));
                         }
 
                         break;
 
                     case MessageStatus.OperationError:
-                        this.stateData.FieldMessage = message;
-                        this.ParentStateMachine.ChangeState(new InverterReadingErrorState(this.stateData, this.Logger));
 
                         var notificationErrorMessage = new NotificationMessage(
                                new InverterReadingMessageData(this.machineData.InverterParametersData),
@@ -164,15 +163,15 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
                                       this.targetBay,
                                       MessageStatus.OperationError);
                         this.ParentStateMachine.PublishNotificationMessage(notificationErrorMessage);
+
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new InverterReadingErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
 
             if (message.Type == FieldMessageType.IoDriverException)
             {
-                this.stateData.FieldMessage = message;
-                this.ParentStateMachine.ChangeState(new InverterReadingErrorState(this.stateData, this.Logger));
-
                 var notificationErrorMessage = new NotificationMessage(
                        new InverterReadingMessageData(this.machineData.InverterParametersData),
                               $"Starting inverter Reading state on inverters",
@@ -183,6 +182,9 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
                               this.targetBay,
                               MessageStatus.OperationError);
                 this.ParentStateMachine.PublishNotificationMessage(notificationErrorMessage);
+
+                this.stateData.FieldMessage = message;
+                this.ParentStateMachine.ChangeState(new InverterReadingErrorState(this.stateData, this.Logger));
             }
         }
 
@@ -192,6 +194,17 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
 
         public override void Start()
         {
+            var notificationMessage = new NotificationMessage(
+                   new InverterReadingMessageData(this.machineData.InverterParametersData),
+                   $"Starting inverter Reading state on inverters",
+                   MessageActor.Any,
+                   MessageActor.DeviceManager,
+                   MessageType.InverterReading,
+                   this.requestingBay,
+                   this.targetBay,
+                   MessageStatus.OperationStart);
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
             var mainInverter = this.machineData.InverterParametersData.Where(s => s.InverterIndex == (byte)InverterIndex.MainInverter).FirstOrDefault();
             var commandMessageData = new InverterReadingFieldMessageData(mainInverter.Parameters, mainInverter.IsCheckInverterVersion);
             var commandMessage = new FieldCommandMessage(
@@ -205,26 +218,11 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
             this.isCheckedVersion = true;
 
             this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
-            var notificationMessage = new NotificationMessage(
-                   new InverterReadingMessageData(this.machineData.InverterParametersData),
-                   $"Starting inverter Reading state on inverters",
-                   MessageActor.Any,
-                   MessageActor.DeviceManager,
-                   MessageType.InverterReading,
-                   this.requestingBay,
-                   this.targetBay,
-                   MessageStatus.OperationStart);
-
-            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogDebug($"Stop with reason: {reason}");
-
-            this.stateData.StopRequestReason = reason;
-            this.ParentStateMachine.ChangeState(new InverterReadingEndState(this.stateData, this.Logger));
 
             var notificationErrorMessage = new NotificationMessage(
                                new InverterReadingMessageData(this.machineData.InverterParametersData),
@@ -236,6 +234,9 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
                                       this.targetBay,
                                       MessageStatus.OperationStop);
             this.ParentStateMachine.PublishNotificationMessage(notificationErrorMessage);
+
+            this.stateData.StopRequestReason = reason;
+            this.ParentStateMachine.ChangeState(new InverterReadingEndState(this.stateData, this.Logger));
         }
 
         #endregion

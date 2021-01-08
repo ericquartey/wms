@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value);
+        void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value, string description, int writecode, int readcode);
 
         bool CheckInverterParametersValidity(InverterIndex index);
 

@@ -3645,11 +3645,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("DataSet", Required = Newtonsoft.Json.Required.Always)]
         public int DataSet { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsReadOnly", Required = Newtonsoft.Json.Required.Always)]
         public bool IsReadOnly { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Payload", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public object Payload { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ReadCode", Required = Newtonsoft.Json.Required.Always)]
+        public int ReadCode { get; set; }
     
         [Newtonsoft.Json.JsonProperty("StringValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string StringValue { get; set; }
@@ -3657,8 +3663,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Type { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("Value", Required = Newtonsoft.Json.Required.Always)]
-        public int Value { get; set; }
+        [Newtonsoft.Json.JsonProperty("WriteCode", Required = Newtonsoft.Json.Required.Always)]
+        public int WriteCode { get; set; }
     
         public string ToJson() 
         {
