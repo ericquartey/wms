@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Ferretto.VW.TelemetryService.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -88,12 +89,22 @@ namespace Ferretto.VW.TelemetryService
 
             var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
             var schemaVersion = Convert.ToUInt64(this.Configuration.GetConnectionString(SchemaVersionName));
+            this.CheckDatabaseDirectory(connectionString);
 
             var config = new RealmConfiguration(connectionString) { SchemaVersion = schemaVersion };
             services.AddTransient(s => Realm.GetInstance(config));
             //services.AddTransient(s => Realm.GetInstance(new RealmConfiguration(s.GetRequiredService<IConfiguration>().GetConnectionString(ConnectionStringName))));
 
             services.AddHostedService<DatabaseCleanupService>();
+        }
+
+        private void CheckDatabaseDirectory(string connectionString)
+        {
+            var dirName = Path.GetDirectoryName(connectionString);
+            if (!File.Exists(dirName))
+            {
+                Directory.CreateDirectory(dirName);
+            }
         }
 
         #endregion
