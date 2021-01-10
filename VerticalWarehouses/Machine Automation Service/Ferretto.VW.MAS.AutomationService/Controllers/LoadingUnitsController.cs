@@ -397,9 +397,48 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult SaveLoadUnit(DataModels.LoadingUnit loadingUnit)
+        public IActionResult SaveLoadUnit(DataModels.LoadingUnit loadingUnit,
+            [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
+            [FromServices] IWmsSettingsProvider wmsSettingsProvider)
         {
+            if (loadingUnit is null)
+            {
+                throw new ArgumentNullException(nameof(loadingUnit));
+            }
+
             this.loadingUnitsDataProvider.Save(loadingUnit);
+
+            if (wmsSettingsProvider is null)
+            {
+                throw new ArgumentNullException(nameof(wmsSettingsProvider));
+            }
+
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                if (loadingUnitsWmsWebService is null)
+                {
+                    throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
+                }
+                var loadUnitDetail = new LoadingUnitDetails();
+                loadUnitDetail.Id = loadingUnit.Id;
+                loadUnitDetail.Height = loadingUnit.Height;
+                loadUnitDetail.CellId = loadingUnit.CellId;
+                loadUnitDetail.Weight = (int)loadingUnit.GrossWeight;
+                loadUnitDetail.EmptyWeight = loadingUnit.Tare;
+
+                try
+                {
+                    //var ret = loadingUnitsWmsWebService.UpdateAsync(loadUnitDetail, loadingUnit.Id); // non va
+                    //loadingUnitsWmsWebService.UpdateOperationalInfoAsync(new LoadingUnitOperationalInfoUpdate()); // non va
+                    //loadingUnitsWmsWebService.CreateAsync(loadUnitDetail); // non va
+                    loadingUnitsWmsWebService.SaveAsync(loadingUnit.Id, loadUnitDetail); // non va
+                }
+                catch (Exception ex)
+                {
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
+                }
+            }
+
             return this.Accepted();
         }
 
@@ -412,18 +451,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.logger.LogInformation($"Move load unit {loadingUnitId} to destination {destination} bay {this.BayNumber}");
             var missionType = (destination == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.LoadUnitOperation;
             this.moveLoadingUnitProvider.MoveLoadUnitToBay(missionType, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
-
-            return this.Accepted();
-        }
-
-        [HttpPost("start-scale-calibration")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        public IActionResult StartScaleCalibration(int loadingUnitId)
-        {
-            this.logger.LogInformation($"Move load unit {loadingUnitId} to destination {LoadingUnitLocation.Elevator} bay {this.BayNumber}");
-            this.moveLoadingUnitProvider.MoveLoadUnitToBay(MissionType.ScaleCalibration, loadingUnitId, LoadingUnitLocation.Elevator, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -462,6 +489,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 this.moveLoadingUnitProvider.MoveFromBayToCell(MissionType.Manual, source, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
+
+            return this.Accepted();
+        }
+
+        [HttpPost("start-scale-calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult StartScaleCalibration(int loadingUnitId)
+        {
+            this.logger.LogInformation($"Move load unit {loadingUnitId} to destination {LoadingUnitLocation.Elevator} bay {this.BayNumber}");
+            this.moveLoadingUnitProvider.MoveLoadUnitToBay(MissionType.ScaleCalibration, loadingUnitId, LoadingUnitLocation.Elevator, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
