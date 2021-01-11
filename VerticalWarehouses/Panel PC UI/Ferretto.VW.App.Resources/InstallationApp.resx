@@ -2235,7 +2235,7 @@
     <value>Removable devices count</value>
   </data>
   <data name="AvailablePackages" xml:space="preserve">
-    <value>Pacchetti disponibili</value>
+    <value>Available packages</value>
   </data>
   <data name="SaveLogs" xml:space="preserve">
     <value>Save logs</value>

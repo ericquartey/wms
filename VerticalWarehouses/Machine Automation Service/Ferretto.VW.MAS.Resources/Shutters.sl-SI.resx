@@ -117,10 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="TheDelayBetweenTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Zamik med dvema testnima cikloma mora biti strogo pozitiven.</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="TheMinSpeedIsNotValid" xml:space="preserve">
+    <value>Majhna hitrost lopute ni veljavna</value>
+  </data>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Število testnih ciklov mora biti strogo pozitivno.</value>
+  </data>
+  <data name="ThePositionIsNotValid" xml:space="preserve">
+    <value>Začetni položaj lopute ni veljaven</value>
+  </data>
+  <data name="TheShutterIsNotCompletelyOpen" xml:space="preserve">
+    <value>Loputa ni popolnoma odprta.</value>
+  </data>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>Tip lopute ni veljaven</value>
+  </data>
+  <data name="TheSpeedRateIsNotValid" xml:space="preserve">
+    <value>Velika hitrost lopute ni veljavna</value>
+  </data>
+  <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
+    <value>Loputa nakladalne police {0} ni povsem zaprta.</value>
   </data>
 </root>

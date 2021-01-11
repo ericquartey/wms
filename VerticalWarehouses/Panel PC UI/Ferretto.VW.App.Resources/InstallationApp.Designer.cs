@@ -295,7 +295,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pacchetti disponibili.
+        ///   Looks up a localized string similar to Available packages.
         /// </summary>
         public static string AvailablePackages {
             get {

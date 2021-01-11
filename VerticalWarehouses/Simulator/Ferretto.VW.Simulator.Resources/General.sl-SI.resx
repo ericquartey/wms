@@ -117,10 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="ControlWord" xml:space="preserve">
+    <value>Nadzor bes</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="Input" xml:space="preserve">
+    <value>Vhod</value>
+  </data>
+  <data name="Inputs" xml:space="preserve">
+    <value>Vhodi</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Izhod</value>
+  </data>
+  <data name="Outputs" xml:space="preserve">
+    <value>Izhodi</value>
+  </data>
+  <data name="Safety" xml:space="preserve">
+    <value>Varovala</value>
+  </data>
+  <data name="ImportConfigurationCommand" xml:space="preserve">
+    <value>Naloži konfiguracijo</value>
+  </data>
+  <data name="SimulatorStarted" xml:space="preserve">
+    <value>Simulator zagnan</value>
+  </data>
+  <data name="StartSimulatorCommand" xml:space="preserve">
+    <value>Začni simulacijo</value>
+  </data>
+  <data name="StatusWord" xml:space="preserve">
+    <value>Bes stanja</value>
+  </data>
+  <data name="StopSimulatorCommand" xml:space="preserve">
+    <value>Ustavi simulacijo</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>VW Simulator</value>
   </data>
 </root>

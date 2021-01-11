@@ -117,10 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="Compaction" xml:space="preserve">
+    <value>Optim prostor</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="CompactionAbbreviation" xml:space="preserve">
+    <value>OPT</value>
+  </data>
+  <data name="CompactionDescription" xml:space="preserve">
+    <value>Optimizacija skladiščnega prostora</value>
+  </data>
+  <data name="Expired" xml:space="preserve">
+    <value>Obstajajo zapadla vzdrž dela</value>
+  </data>
+  <data name="Expiring" xml:space="preserve">
+    <value>Dol. vzdrž. d bodo kmalu zapadla</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Vzdrževanje</value>
+  </data>
+  <data name="MaintenanceAbbreviation" xml:space="preserve">
+    <value>VZDR</value>
+  </data>
+  <data name="MaintenanceDescription" xml:space="preserve">
+    <value>Števci in vzdrževanje stroja</value>
+  </data>
+  <data name="Updating" xml:space="preserve">
+    <value>Posodabljanje</value>
+  </data>
+  <data name="UpdatingAbbreviation" xml:space="preserve">
+    <value>UPD</value>
+  </data>
+  <data name="UpdatingDescription" xml:space="preserve">
+    <value>Pos. programske opreme Vertimag</value>
   </data>
 </root>

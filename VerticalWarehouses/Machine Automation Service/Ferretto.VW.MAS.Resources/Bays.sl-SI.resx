@@ -117,10 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
+    <value>Višina nakladalne police ({0}) mora biti v območju [{1},{2}].</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
+    <value>Navedeni položaj nak police ni veljaven.</value>
+  </data>
+  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
+    <value>Navedena nak polica nima vrt dela.</value>
+  </data>
+  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
+    <value>Na nak polici je vsaj en predal.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value>Na nakladalni polici je predal v zgornjem položaju.</value>
+  </data>
+  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
+    <value>Veriga nakladalne police ni v ničelnem položaju.</value>
+  </data>
+  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
+    <value>Axis.HorizontalAndVertical ni veljavna os za metodo GetInverterIndexByMovementType ()</value>
+  </data>
+  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
+    <value>Maksimalna višina vozička ni veljavna.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>Na nakladalni polici je predal v zunanjem položaju</value>
+  </data>
+  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
+    <value>Navedena nak polica ni zun nak polica</value>
+  </data>
+  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
+    <value>Zun nak polica ne more izvesti neveljavnega premika</value>
   </data>
 </root>

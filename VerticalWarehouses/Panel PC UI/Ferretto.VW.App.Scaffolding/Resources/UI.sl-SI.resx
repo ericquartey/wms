@@ -117,10 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="All" xml:space="preserve">
+    <value>Vsi</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="AllDescription" xml:space="preserve">
+    <value>Omogoča dostop do seznama vseh parametrov ne glede na kategorijo.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Prekl</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Noben element ne ustreza navigacijskim merilom.</value>
+  </data>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Neveljav vrednost</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Stroj</value>
+  </data>
+  <data name="MachineDescription" xml:space="preserve">
+    <value>Omogoča dostop do seznama vseh parametrov ne glede na kategorijo.</value>
+  </data>
+  <data name="Root" xml:space="preserve">
+    <value>Kor</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Shran</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Iskanje:</value>
   </data>
 </root>

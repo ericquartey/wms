@@ -117,10 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Zahteva ni pravilno oblikovana.</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="InternalServerErrorTitle" xml:space="preserve">
+    <value>Notranja napaka strežnika.</value>
+  </data>
+  <data name="MaintenanceStateExpired" xml:space="preserve">
+    <value>Stanje vzdrž je poteklo</value>
+  </data>
+  <data name="MaintenanceStateExpiring" xml:space="preserve">
+    <value>Stanje vzdrževanja bo poteklo</value>
+  </data>
+  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
+    <value>Ni subjekta z določeno identifikacijo ‚{0}‘.</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>El. ni mog najti.</value>
+  </data>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Storitev se zaganja.</value>
+  </data>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Storitev je končala zagon.</value>
+  </data>
+  <data name="UnprocessableEntityTitle" xml:space="preserve">
+    <value>Glede na trenutno stanje zahteve ni mogoče obdelati.</value>
+  </data>
+  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Vrednost ne sme biti nična ali vseb. samo presledkov.</value>
   </data>
 </root>

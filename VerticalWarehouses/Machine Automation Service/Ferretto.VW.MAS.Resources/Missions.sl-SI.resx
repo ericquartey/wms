@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="ActiveMissionForLoadingUnit" xml:space="preserve">
+    <value>Za predal {0} na nakladalni polici {1} že obstaja aktivna naloga.</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="ActiveMissionForWMS" xml:space="preserve">
+    <value>Za nalogo WMS {0} že obstaja aktivna naloga.</value>
+  </data>
+  <data name="ErrorMissionDetails" xml:space="preserve">
+    <value>Predal {0}, neto teža {1}, višina {2}, WmsId {3}</value>
+  </data>
+  <data name="RecallMissionForLoadingUnit" xml:space="preserve">
+    <value>Za predal {0} že obstaja naloga za odpoklic.</value>
+  </data>
+  <data name="RemoveMaterialFromLoadUnit" xml:space="preserve">
+    <value>Odstranite vsaj {0} kg tovorne enote {1} s težo {2}</value>
   </data>
 </root>

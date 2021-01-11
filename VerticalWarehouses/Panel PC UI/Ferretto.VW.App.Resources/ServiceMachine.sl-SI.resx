@@ -117,10 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Avtomatskega ni</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>Umer nak pol ni izvedeno.</value>
+  </data>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>Umerjanja vrtljivega dela ni mogoče izvesti. \r\n Veriga nakladalne police ni v ničelnem položaju.</value>
+  </data>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Zasedena</value>
+  </data>
+  <data name="CellFree" xml:space="preserve">
+    <value>Prosta</value>
+  </data>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>Vr na izhod ni izved</value>
+  </data>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>Neskladnost senz prisotnosti predala na nak polici.</value>
+  </data>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>Neskladnost stanja obremenitve in senz.</value>
+  </data>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Neskl. senzorja zatikalnika na nič in prisotnosti predala.</value>
+  </data>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Prisotnost predala v dvigalu.</value>
+  </data>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>Predal pripravljen za postopek.</value>
+  </data>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Zahteva za predal {0} je bila uspešno zaključena</value>
+  </data>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Predal na dvigalu ima napačno višino</value>
+  </data>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>Stroj ni v ročnem ...</value>
+  </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Stroj ugasnjen</value>
+  </data>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Naloge jav napako ...</value>
+  </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Prisotne misije z Wms-ja, a Wms ni aktiven</value>
+  </data>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Poteka premik verige nak pol ...</value>
+  </data>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Poteka premikanje dvigala ...</value>
+  </data>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>Poteka vodoravno premikanje ...</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Poteka premikanje ... {0}</value>
+  </data>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Poteka premikanje ... (Naloga: {0}, Predal: {1}, Stanje: {2}, Premik: z {3} {4}, na {5} {6})</value>
+  </data>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Poteka premikanje predala ...</value>
+  </data>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Poteka premikanje lopute ...</value>
+  </data>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>Poteka navpično premikanje ...</value>
+  </data>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>Na nakladalni polici ni predalov.</value>
+  </data>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>Odsotnost senz zatikalnika na 0 ali prisotn predala</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Položaj {0}</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>Loputa odprta ali na neznanem položaju.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>Testiranje ...</value>
   </data>
 </root>
