@@ -117,97 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutomaticMissing" xml:space="preserve">
-    <value>Automatic missing</value>
+  <data name="ActiveMissionForLoadingUnit" xml:space="preserve">
+    <value>Za predal {0} na nakladalni polici {1} že obstaja aktivna naloga.</value>
   </data>
-  <data name="BayCalibrationNotPerformed" xml:space="preserve">
-    <value>Bay calibration not performed.</value>
+  <data name="ActiveMissionForWMS" xml:space="preserve">
+    <value>Za nalogo WMS {0} že obstaja aktivna naloga.</value>
   </data>
-  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
-    <value>Carousel calibration failed. \r\n The bay chain is not in the zero position.</value>
+  <data name="ErrorMissionDetails" xml:space="preserve">
+    <value>Predal {0}, neto teža {1}, višina {2}, WmsId {3}</value>
   </data>
-  <data name="CellBusy" xml:space="preserve">
-    <value>Busy</value>
+  <data name="RecallMissionForLoadingUnit" xml:space="preserve">
+    <value>Za predal {0} že obstaja naloga za odpoklic.</value>
   </data>
-  <data name="CellFree" xml:space="preserve">
-    <value>Free</value>
-  </data>
-  <data name="HomingNotPerformed" xml:space="preserve">
-    <value>Homing not performed.</value>
-  </data>
-  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
-    <value>Inconsistency of shutter presence sensors in the bay.</value>
-  </data>
-  <data name="InconsistencyStateAndSensors" xml:space="preserve">
-    <value>Load state and sensors inconsistency.</value>
-  </data>
-  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
-    <value>Zero pawl sensor inconsistency and loading unit presence.</value>
-  </data>
-  <data name="LoadingUnitOnElevator" xml:space="preserve">
-    <value>Loading unit presence on the elevator.</value>
-  </data>
-  <data name="LoadingUnitReady" xml:space="preserve">
-    <value>Load unit ready for operation.</value>
-  </data>
-  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
-    <value>Successfully requested loading unit {0}.</value>
-  </data>
-  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
-    <value>LoadUnit on  board has invalid height</value>
-  </data>
-  <data name="MachineNotManual" xml:space="preserve">
-    <value>The machine is not in manual...</value>
-  </data>
-  <data name="MachineOff" xml:space="preserve">
-    <value>Machine off</value>
-  </data>
-  <data name="MissionInError" xml:space="preserve">
-    <value>Missions in error...</value>
-  </data>
-  <data name="MissionsWmsNotActive" xml:space="preserve">
-    <value>Wms missions present but wms not active</value>
-  </data>
-  <data name="MovementBayChainInProgress" xml:space="preserve">
-    <value>Bay chain movement in progress...</value>
-  </data>
-  <data name="MovementElevatorInProgress" xml:space="preserve">
-    <value>Elevator movement in progress...</value>
-  </data>
-  <data name="MovementHorizontalInProgress" xml:space="preserve">
-    <value>Horizontal movement in progress...</value>
-  </data>
-  <data name="MovementInProgress" xml:space="preserve">
-    <value>Movement in progress... {0}</value>
-  </data>
-  <data name="MovementInProgressExtended" xml:space="preserve">
-    <value>Movement in progress... Mission: {0}, Loading unit: {1}, Status: {2}, Movement: from {3} {4}, to {5} {6})</value>
-  </data>
-  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
-    <value>Load unit movement in progress...</value>
-  </data>
-  <data name="MovementShutterInProgress" xml:space="preserve">
-    <value>Shutter movement in progress ...</value>
-  </data>
-  <data name="MovementVerticalInProgress" xml:space="preserve">
-    <value>Vertical movement in progress...</value>
-  </data>
-  <data name="NoLoadingUnitInBay" xml:space="preserve">
-    <value>No loading unit present in the bay.</value>
-  </data>
-  <data name="NoZeroPawlSensor" xml:space="preserve">
-    <value>No zero pawl sensor or loading unit presence.</value>
-  </data>
-  <data name="Position" xml:space="preserve">
-    <value>Position {0}</value>
-  </data>
-  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
-    <value>Shutter open or in unknown position.</value>
-  </data>
-  <data name="TestInProgress" xml:space="preserve">
-    <value>Test in progress...</value>
-  </data>
-  <data name="NoGear" xml:space="preserve">
-    <value></value>
+  <data name="RemoveMaterialFromLoadUnit" xml:space="preserve">
+    <value>Odstranite vsaj {0} kg tovorne enote {1} s težo {2}</value>
   </data>
 </root>

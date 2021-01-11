@@ -120,4 +120,46 @@
   <data name="InstallationAbbreviation" xml:space="preserve">
     <value>INST</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>Splošne</value>
+  </data>
+  <data name="AboutAbbreviation" xml:space="preserve">
+    <value>INFO</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>Statistika, alarmi, diagnostika</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Namestitev</value>
+  </data>
+  <data name="InstallationDescription" xml:space="preserve">
+    <value>Postopki namestitve, ročni premiki, drugo</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Vzdrževanje</value>
+  </data>
+  <data name="MaintenanceAbbreviation" xml:space="preserve">
+    <value>VZDR</value>
+  </data>
+  <data name="MaintenanceDescription" xml:space="preserve">
+    <value>Vzdrževanje, optimizacija predalov, posodabljanje</value>
+  </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Premiki</value>
+  </data>
+  <data name="MovementsAbbreviation" xml:space="preserve">
+    <value>PREM</value>
+  </data>
+  <data name="MovementsDescription" xml:space="preserve">
+    <value>Stanje senz, ponastav stroja, drugo</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Pobir</value>
+  </data>
+  <data name="OperationAbbreviation" xml:space="preserve">
+    <value>POB</value>
+  </data>
+  <data name="OperationDescription" xml:space="preserve">
+    <value>Jemanje, odlaganje, inventura</value>
+  </data>
 </root>

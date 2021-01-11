@@ -286,6 +286,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string NoGear {
+            get {
+                return ResourceManager.GetString("NoGear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No loading unit present in the bay..
         /// </summary>
         public static string NoLoadingUnitInBay {

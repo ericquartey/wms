@@ -177,4 +177,13 @@
   <data name="AutoLogoutServiceUser" xml:space="preserve">
     <value>User session 'service' expired</value>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

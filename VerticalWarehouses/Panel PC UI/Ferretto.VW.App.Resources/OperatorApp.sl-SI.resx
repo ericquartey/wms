@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,1715 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Availability" xml:space="preserve">
+    <value>Razpoložlj [enota]</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Potrdi</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Podr.</value>
+  </data>
+  <data name="DispatchedQuantity" xml:space="preserve">
+    <value>Izpolnjena kol</value>
+  </data>
+  <data name="FIFOPeriod" xml:space="preserve">
+    <value>Obdobje FIFO</value>
+  </data>
+  <data name="InstantArticle" xml:space="preserve">
+    <value>Takojšnji izdelek</value>
+  </data>
+  <data name="LIFOPeriod" xml:space="preserve">
+    <value>Obdobje LIFO</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Sezn</value>
+  </data>
+  <data name="ListDescription" xml:space="preserve">
+    <value>Opis seznama</value>
+  </data>
+  <data name="Lists" xml:space="preserve">
+    <value>Sezn</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Stroj</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>Stroji</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>Upr.</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Op.</value>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>Tip embalaže</value>
+  </data>
+  <data name="Picking" xml:space="preserve">
+    <value>Pobir</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Položaj</value>
+  </data>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>Proizvodni podatki</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Količina</value>
+  </data>
+  <data name="RequestedQuantity" xml:space="preserve">
+    <value>Zahtevana količina [{0}]</value>
+  </data>
+  <data name="SearchCode" xml:space="preserve">
+    <value>Išči po kodi</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Išči</value>
+  </data>
+  <data name="ExecutableListsRows" xml:space="preserve">
+    <value>Vrstice, izvedljive s sezn</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>Postopki na predalu</value>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>Sezn v čakalnic</value>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>Iskanje izdelka</value>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>Nastavitve</value>
+  </data>
+  <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Postopek jemanja.</value>
+  </data>
+  <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
+    <value>Zahtevana kol.</value>
+  </data>
+  <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
+    <value>Odvzeta kol.</value>
+  </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>Čakam na prihod novega predala.</value>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>Načrtovani postopki:</value>
+  </data>
+  <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
+    <value>Podrobnost izdelka na jemanju.</value>
+  </data>
+  <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Datum proizvodnje</value>
+  </data>
+  <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Ser.</value>
+  </data>
+  <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Stanje mater</value>
+  </data>
+  <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
+    <value>Tip embalaže</value>
+  </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>Seznami, ki čakajo na izv</value>
+  </data>
+  <data name="ListsInWaitNote" xml:space="preserve">
+    <value>Op.</value>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>Podr. Seznama</value>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>Izvedi sezn</value>
+  </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>Iskanje izdelka po kodi in opisu</value>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>Iskanje</value>
+  </data>
+  <data name="ItemSearchSearch" xml:space="preserve">
+    <value>Išči izdelek</value>
+  </data>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Razpoložljiva kol. [{0}]</value>
+  </data>
+  <data name="ItemSearchDetail" xml:space="preserve">
+    <value>Podrobnost izdelka</value>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>Prikliči izdel</value>
+  </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>Podrobnost izdelka</value>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>Tip upravljanja</value>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>Obdobje FIFO [dd]</value>
+  </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>Takojšnja zahteva za predal</value>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Prikliči predal</value>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>Zahtevan predal</value>
+  </data>
+  <data name="DrawerActivityPickingRowList" xml:space="preserve">
+    <value>Vrstic sez</value>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>Splošne informacije</value>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>Serijska št.</value>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>Št. predalov</value>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>Razl prog. opreme</value>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Zadnje vzdrževanje</value>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Naslednje vzdrževanje</value>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>Stanje stroja</value>
+  </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>Postopek optimizacije predalov.</value>
+  </data>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>Podatki za spred str</value>
+  </data>
+  <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
+    <value>Število drobcev</value>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>Maks. prost za obnovitev</value>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Prostor za obnovitev</value>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>Optim. spredaj</value>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>Optimiziraj zadaj</value>
+  </data>
+  <data name="OtherNavigationCompaction" xml:space="preserve">
+    <value>Optim. Prost</value>
+  </data>
+  <data name="OtherNavigationStatistics" xml:space="preserve">
+    <value>Statistika</value>
+  </data>
+  <data name="OtherNavigationMaintenance" xml:space="preserve">
+    <value>Vzdrževanje</value>
+  </data>
+  <data name="OtherNavigationErrorSimulation" xml:space="preserve">
+    <value>Simulacija napak</value>
+  </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>Statistika: splošni podat</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Nazaj</value>
+  </data>
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
+    <value>Premikani predali</value>
+  </data>
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
+    <value>Čas delovanja v urah</value>
+  </data>
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
+    <value>Zased območje</value>
+  </data>
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
+    <value>Naložena teža</value>
+  </data>
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
+    <value>Čas v avto. načinu</value>
+  </data>
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
+    <value>Koeficient uporabe</value>
+  </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>Statistika: nasičenost prostora v predalih</value>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>Sk. št. Predalo</value>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>Mere predalov (mm)</value>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>Polnjenje stroja</value>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>Anal. prostora</value>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>Statistika: analiza teže predalov.</value>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Sk. št. Predalo</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>Maks. bruto zmog. (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>Maks. neto zmog. (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>Naložena bruto teža (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>Naložena neto teža (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>Naložena neto teža (%)</value>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>Izvršljive vrstice sez</value>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>Statistika: celice.</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>Sk. št. Cel</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>Sk. št. Spred. celic</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>Sk. št. zadnjih celic</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>Skupna zasedenost celic</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>Drugo</value>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>Statistika: analiza napak.</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>Sk. št. premikanih predalov</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>Sk. št. napak</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>Predali prem. brez napak</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>Indeks zanesljivosti</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Opis napake</value>
+  </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>Vzdrževanje: Vertimag X</value>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>Zapor.</value>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>Datum namestitve</value>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>Dat. zadnjega vzdrž</value>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>Dat. naslednjega vzdrž</value>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>Stanje stroja</value>
+  </data>
+  <data name="MaintenanceDetailHeader" xml:space="preserve">
+    <value>Podrobnost vzdrževanja</value>
+  </data>
+  <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
+    <value>Skupni izvedeni cikli</value>
+  </data>
+  <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
+    <value>Cikli med dvema vzdrž.</value>
+  </data>
+  <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
+    <value>Cikli od zadnjega vzdrž</value>
+  </data>
+  <data name="MaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Stanje el.</value>
+  </data>
+  <data name="MaintenanceDetailStopRequired" xml:space="preserve">
+    <value>Zaht čas mirovanja stroja[ure]</value>
+  </data>
+  <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Dvižna ploščad</value>
+  </data>
+  <data name="MaintenanceDetailContactRequired" xml:space="preserve">
+    <value>Pošlji zahtevo za stik</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>Priklic predala</value>
+  </data>
+  <data name="StatisticsNavigationItems" xml:space="preserve">
+    <value>Statistika izdelkov</value>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>Statistika predalov</value>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>Statistika celic</value>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>Statistika napak</value>
+  </data>
+  <data name="DrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Postopek odlaganja.</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Kol. za odlaganje[{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Odložena kol. [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
+    <value>Posod. Najv. zmogljivost</value>
+  </data>
+  <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
+    <value>Vrst sez</value>
+  </data>
+  <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Zahtevana kol. [kos]</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
+    <value>Podrobnosti o postopku odlaganja.</value>
+  </data>
+  <data name="Lot" xml:space="preserve">
+    <value>Ser</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Stanje mat.</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
+    <value>Tip embalaže</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Datum proizvodnje</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
+    <value>Kol. za odlag.</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Vrst sez</value>
+  </data>
+  <data name="CommonItemCode" xml:space="preserve">
+    <value>Koda izdelka</value>
+  </data>
+  <data name="CommonItemDescription" xml:space="preserve">
+    <value>Opis izdelka</value>
+  </data>
+  <data name="CommonListCode" xml:space="preserve">
+    <value>Koda seznama</value>
+  </data>
+  <data name="CommonListDescription" xml:space="preserve">
+    <value>Opis seznama</value>
+  </data>
+  <data name="CommonPackingListCode" xml:space="preserve">
+    <value>Koda seznama za pak</value>
+  </data>
+  <data name="CommonPackingListDescription" xml:space="preserve">
+    <value>Opis seznama za pak</value>
+  </data>
+  <data name="CommonNote" xml:space="preserve">
+    <value>Op.</value>
+  </data>
+  <data name="CommonUp" xml:space="preserve">
+    <value>Gor</value>
+  </data>
+  <data name="CommonDown" xml:space="preserve">
+    <value>Dol</value>
+  </data>
+  <data name="DrawerActivityInventoryHeader" xml:space="preserve">
+    <value>Postopki za inventuro.</value>
+  </data>
+  <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Kol. na zalogi</value>
+  </data>
+  <data name="CommonCompartmentPosition" xml:space="preserve">
+    <value>Položaj</value>
+  </data>
+  <data name="CommonButtonConfirm" xml:space="preserve">
+    <value>Potrd.</value>
+  </data>
+  <data name="CommonButtonDetail" xml:space="preserve">
+    <value>Podr.</value>
+  </data>
+  <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
+    <value>Podr. o postopku za inventuro.</value>
+  </data>
+  <data name="ItemDetailCategory" xml:space="preserve">
+    <value>Kategorija, ki ji pripada</value>
+  </data>
+  <data name="ItemDetailClasse" xml:space="preserve">
+    <value>Razred A, B, C</value>
+  </data>
+  <data name="ItemDetailMeasurementUnity" xml:space="preserve">
+    <value>Merska enota</value>
+  </data>
+  <data name="ItemDetailWeight" xml:space="preserve">
+    <value>Povp. teža [gr]</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>Sk. Zad.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>% Zad.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>Sk. Pred.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>% Spr.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>Razdelki</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>Predal</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>Polnjenje</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>Poln.</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>Naloge</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>Celic</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>Predal</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>Višina</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>Str.</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>Teža</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>Napaka</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>Št.</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>Skupaj %</value>
+  </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>Sezn</value>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>Stroji</value>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>Kom</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>Zahteva</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>Stanj</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>Trenut teža</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>Predal</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>Višina</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>Maks %</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>Maks. neto</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>Tara</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>Element</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Količina</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>Izdelek</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>Stroj</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Količina</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>Vrst</value>
+  </data>
+  <data name="StatisticsItemDataGridHeaderClass" xml:space="preserve">
+    <value>Razred</value>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>Statistike stroja</value>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>Statistike stroja.</value>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>Pod. navpične osi.</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Skupaj prevoženi km</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>Skupni izvedeni cikli</value>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>Podatki loput.</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>Cikli lopute 1</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>Cikli lopute 2</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>Cikli lopute 3</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>Pod. osi verige.</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>Skupni izvedeni cikli</value>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>Pod.NakPol</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>Premikani predali nak pol 1</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>Premikani predali nak pol 2</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>Premikani predali nak pol 3</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>Izdelek</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>Opis izdelka</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>Stroji</value>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>Pod. zadnje strani.</value>
+  </data>
+  <data name="MaintenanceDetailHeaderKit" xml:space="preserve">
+    <value> 002350467 - Vozni vod dvigala</value>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>Tip sezn</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>StanjeWMS</value>
+  </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>Pokaži podrobnosti optimizacije.</value>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Predal se premika</value>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Izvorna celica</value>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Ciljna celica</value>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>Trenutna faza</value>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Višina navpične osi</value>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Položaj vodoravne osi</value>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>Preostali drobci</value>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Obnovljeni prostor mm</value>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Prostor za obnovitev mm.</value>
+  </data>
+  <data name="DrawerCompactingDetailAbort" xml:space="preserve">
+    <value>Zaključ</value>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>Zaključi optimizacijo</value>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>Trenut stanje</value>
+  </data>
+  <data name="DrawerActivityLocalCallHeader" xml:space="preserve">
+    <value>Takojšen za predal lokalno.</value>
+  </data>
+  <data name="DrawerActivityLocalCallDrawer" xml:space="preserve">
+    <value>Koda predala</value>
+  </data>
+  <data name="DrawerActivityLocalCallHeight" xml:space="preserve">
+    <value>Trenutna višina predala (mm)</value>
+  </data>
+  <data name="DrawerActivityLocalCallGrossWeight" xml:space="preserve">
+    <value>Bruto teža (kg)</value>
+  </data>
+  <data name="DrawerActivityLocalCallActualWeight" xml:space="preserve">
+    <value>Trenut teža (kg)</value>
+  </data>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>Noben</value>
+  </data>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>Neopredeljen</value>
+  </data>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>Samo prost</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>Blokiran</value>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>Nedosegljiv</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>Povez.</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Potekel</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>V poteku</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Neznan</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Veljav</value>
+  </data>
+  <data name="DrawerActivityLocalCallMaxCapacity" xml:space="preserve">
+    <value>Maks neto zmogljivost (kg)</value>
+  </data>
+  <data name="DrawerActivityLocalCallMissions" xml:space="preserve">
+    <value>Št. opravljenih nalog</value>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>Vračanje predala</value>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>Anal prostora</value>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Obseg</value>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Ni opredeljeno</value>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Inventura</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Jemanje</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Odlaganje</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>Ni opredeljeno</value>
+  </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Prekl</value>
+  </data>
+  <data name="QuantityToPick" xml:space="preserve">
+    <value>Količina za odvzem</value>
+  </data>
+  <data name="QuantityToPut" xml:space="preserve">
+    <value>Kol. za odlaganje</value>
+  </data>
+  <data name="PickedQuantity" xml:space="preserve">
+    <value>Odvzeta količina [{0}]</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Stan blaga</value>
+  </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>Postopki za inventuro.</value>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>Zaznana količina [{0}]</value>
+  </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>Zahteva za odvzem izdelka {0} (količina {1}) je bila sprejeta.</value>
+  </data>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Razpolož</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Praz</value>
+  </data>
+  <data name="Full" xml:space="preserve">
+    <value>Poln</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Vrst sez</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Id predala</value>
+  </data>
+  <data name="LoadingUnitWidth" xml:space="preserve">
+    <value>Širina</value>
+  </data>
+  <data name="LoadingUnitDepth" xml:space="preserve">
+    <value>Globina</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Predal</value>
+  </data>
+  <data name="CompleteCheck" xml:space="preserve">
+    <value>Popolna kontrola</value>
+  </data>
+  <data name="LoadingUnitCheck" xml:space="preserve">
+    <value>Kontrola predala</value>
+  </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>Potrdi na praznem</value>
+  </data>
+  <data name="ConfirmOnFull" xml:space="preserve">
+    <value>Potrdi na polnem</value>
+  </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>Razpoložlj na strojih</value>
+  </data>
+  <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
+    <value>Trenutni postopek je bil preklican na daljavo.
+Prosim, vse predmete, ki ste jih premaknili, vrnite na izvorni položaj.</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Postopek preklican</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>Postopek potrjen.</value>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>Ni predalov za premikanje</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>Na nak pol je treba prem {0} predalov</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>Na nak pol je treba prem en predal</value>
+  </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Iz razdelka odstranite morebitne odložene izdelke.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Iz razdelka odstranite morebitne odložene izdelke.</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Prekliči odlaganje</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Prekliči jemanje</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>Preklicani postopek je potrjen</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>Postopek popisa je bil preklican.</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Naloge</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Seznam nalog</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Ustvar</value>
+  </data>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Kor</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>NaPo</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>Vsi</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Nakl. pol dvig</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>NakPoTri</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>NakPoDve</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>Ni nak pol</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>Se izvaja</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>Nova</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>Čaka</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Zaključena</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>Preklic</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>V zaključevanju</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>NakPoEna</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Vrsta naloge</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Pogoj</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>NaPo</value>
+  </data>
+  <data name="MissionStateNotDefined" xml:space="preserve">
+    <value>0.Neopredeljen</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>1.Novo</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>2.Začet</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>3.Obremen dvigala</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>4.Na cilju</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>5.Odlaganje predala</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>6.Čak dejanja</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>7.Dvig nak pol</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>8.Zapiranje lopute</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>13.Kon</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>101.Napaka</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>Noben tip</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Ročno</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>Wms</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>Vhod</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Izhod</value>
+  </data>
+  <data name="MissionTypeFullTest" xml:space="preserve">
+    <value>Celovit test</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Optim. Prost</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Neopredeljen</value>
+  </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>naNaPol</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Vračanje predala</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>kosi</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Jemanje</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Odlaganje</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>Spremeni</value>
+  </data>
+  <data name="CompartmentWidth" xml:space="preserve">
+    <value>Širina</value>
+  </data>
+  <data name="CompartmentDepth" xml:space="preserve">
+    <value>Prof.</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Zaloge</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Opis izdelka</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Koda izdelka</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Razdelek</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Količina za prilagoditev [{0}]</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Kol. za odlaganje [{0}]</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Količina za odvzem [{0}]</value>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>Novi razpoložljivi postopki</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Potrditev in novi razpoložl postopki</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Zaloge</value>
+  </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>Predal prisoten</value>
+  </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Izberi nov razdelek</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
+    <value>POB</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
+    <value>Jemanje</value>
+  </data>
+  <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
+    <value>ITEM</value>
+  </data>
+  <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
+    <value>Poišče in prikliče izdelke</value>
+  </data>
+  <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
+    <value>LIST</value>
+  </data>
+  <data name="NavigationMainMenuListsDescription" xml:space="preserve">
+    <value>Izvajanje / prekinitev seznamov</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
+    <value>DRAW</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Postopki na predalu</value>
+  </data>
+  <data name="DrawerCompactingFrontFreeSpace" xml:space="preserve">
+    <value>Prosti prostor zadaj</value>
+  </data>
+  <data name="DrawerCompactingRearFreeSpace" xml:space="preserve">
+    <value>Prosti prostor spredaj</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Optim. Prost</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>Potr je test</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Koda</value>
+  </data>
+  <data name="CurrentPageDoesNotSupportBarcodeScanning" xml:space="preserve">
+    <value>Trenutna stran ne podpira optičnega branja črtne kode.</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>Ni razpoložljivega izdelka s kodo ‚{0}‘.</value>
+  </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Začni posodabljanje</value>
+  </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Alarmi</value>
+  </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Poteka optimizacija</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>Diagnostika</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Splošni</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>Splošne informacije</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Številka stroja</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Zapored</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistika</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Skupaj prevož km</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Skupna teža stroja</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Sk. št. nalog</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Sk. št. Predal</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Čaka</value>
+  </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Števci</value>
+  </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>V izbranem razdelku ni izdelkov.</value>
+  </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>Prvi test</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>Cel test IN</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>Cel test OUT</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>Postopek na predalu</value>
+  </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Ser</value>
+  </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>Seznam alarmov stroja</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Št. nak pol</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Podrobnosti kode</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>Kazalo inver</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>Dat. Dog</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Datum prenehanja</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Mat. št.</value>
+  </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Fragmentacija zadaj</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Fragmentacija spredaj</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Fragmentacija skupaj</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>Ne morem izvesti seznama.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Postopek {0} ni veljaven</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Upor</value>
+  </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>Na izhodu nak pol</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>Predal</value>
+  </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Dodatne informacije</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>Predal št.</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Višina</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Teža</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>Fragmentacija je prevelika: priporočljivo je zagnati optimizacijo.</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Poteka umerjanje vrt dela</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Poteka vodoravno umerjanje</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>Razpoložljiva Kol.</value>
+  </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Izdelki filtrirani po kodi.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>Črtna koda '{0}' ne vsebuje kode izdelka.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>Črtna koda '{0}' ne vsebuje količine izdelka.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>Črtna koda '{0}' ne vsebuje identifikacijske kode seznama.</value>
+  </data>
+  <data name="GoToCellHeight" xml:space="preserve">
+    <value>Pojdi na viš cel</value>
+  </data>
+  <data name="LowerBayPosition" xml:space="preserve">
+    <value>Spodnji položaj</value>
+  </data>
+  <data name="MaintenanceMainPageDetail" xml:space="preserve">
+    <value>Podrobn</value>
+  </data>
+  <data name="UpperBayPosition" xml:space="preserve">
+    <value>Zgornji položaj</value>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>Ni seznama z identifikacijsko kodo '{0}'.</value>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>Izvedba seznama '{0}' je bila sprejeta.</value>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>Zas celice</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>Nezas celice</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Celice, prim za podlago</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Celice kjer nez le prost</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Blokir celice</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Skupaj celic</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Predali v nakPol</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Predali v celici</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Predali v dvigalu</value>
+  </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>Potrdi storitve</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>Datum namestitve</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>Dat. zadnjega delov</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>Naslednji datum delovanja</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>Stanje delovanja</value>
+  </data>
+  <data name="TotalMission" xml:space="preserve">
+    <value>Naloge skupaj</value>
+  </data>
+  <data name="Instruction" xml:space="preserve">
+    <value>Navodila</value>
+  </data>
+  <data name="IsDone" xml:space="preserve">
+    <value>Narej</value>
+  </data>
+  <data name="IsToDo" xml:space="preserve">
+    <value>ZaNar</value>
+  </data>
+  <data name="MachineStatisticsCounter" xml:space="preserve">
+    <value>ŠtevecStatistikeStroja</value>
+  </data>
+  <data name="MaintenanceRequired" xml:space="preserve">
+    <value>Potrebno je vzdrž</value>
+  </data>
+  <data name="MaxDays" xml:space="preserve">
+    <value>MaksDni</value>
+  </data>
+  <data name="MaxRelativeCount" xml:space="preserve">
+    <value>MaksPovŠtetje</value>
+  </data>
+  <data name="MaxTotalCount" xml:space="preserve">
+    <value>MaksSkŠtetje</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>Skupni čas aktivnih nalog</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>KmNakPol1</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>KmNakPol2</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>KmNakPol3</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>Km dvigala z vodoravno osjo</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Km dvigala z navpično osjo</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>Predal na nak pol1</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>Predal na nak pol2</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>Predal na nak pol3</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(Podatki se izračunajo iz zadnjega vzdrž v primerjavi s skupno vrednostjo)</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Vzdrževanje:</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>Čas aktivnih nalog</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>NaPol1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>NaPol2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>NaPol3</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>Dvigalo z vodoravno osjo</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>Dvigalo z navpično osjo</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>Km nak polic od zadnjega vzdrž / skupaj</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>Km dvigala osi od zadnjega vzdrževanja / skupaj</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>Skupni čas aktivnih nalog od zadnjega vzdrževanja / skupaj</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>Predali na nak policah od zadnjega vzdrž / skupaj</value>
+  </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>Zahtevana količina</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Potrdi vrst</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Os</value>
+  </data>
+  <data name="BayNumberHeader" xml:space="preserve">
+    <value>ŠtNaklPol</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>Št.Števca</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Stanje vrs</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Stanje</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Izvedi vrs</value>
+  </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>Ali si prepričan, da želiš potr to storitev?</value>
+  </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Cokli dvigala od zadnjega vzdrževanja / skupaj</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Vodoravna os</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Navpična os</value>
+  </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>Delna potrditev</value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>Prisotna potrdit</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Prisotna količina</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Izdelek: </value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Predali</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Predal</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Zaključeno</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Pod težo</value>
+  </data>
+  <data name="TotalMissionsHeader" xml:space="preserve">
+    <value>Sk. naloge</value>
+  </data>
+  <data name="CloseLine" xml:space="preserve">
+    <value>Pritr vrs</value>
+  </data>
+  <data name="UpdatedValue" xml:space="preserve">
+    <value>Posodobljena vred</value>
+  </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Prekliči nalogo</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>Cilj predala</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>Izvor predala</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>Id Wms</value>
+  </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>NakPol1 vrt del niz polož</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>NakPol1 vrt del vis polo</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>NakPol2 vrt del niz polož</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>NakPol2 vrt del vis pol</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>NakPol3 vrt del niz polož</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>NakPol3 vrt del vis pol</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Cel</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Nizka</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Dvigalo</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>Nakl. pol 1 zun niz polož</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>Nakl. pol1 zun vis polož</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>Nakl. pol 2 zun niz polož</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>Nakl. pol2 zun vis polož</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>Nakl. pol 3 zun niz polož</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>Nakl. pol3 zun vis polož</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>Nakl. pol1 notr niz polož</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>Nakl pol1 notr vis polož</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>Nakl pol2 notr niz polož</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>Nakl pol2 notr vis polož</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>Nakl pol3 notr niz polož</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>Nakl pol3 notr vis polož</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>Predal</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>Brez položaja</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Neznan</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Vis</value>
+  </data>
+  <data name="Cell_Status_Free" xml:space="preserve">
+    <value>Prosta</value>
+  </data>
+  <data name="Cell_Status_Disabled" xml:space="preserve">
+    <value>Onemogočena</value>
+  </data>
+  <data name="Cell_Status_Occupied" xml:space="preserve">
+    <value>Zasedena</value>
+  </data>
+  <data name="Cell_Status_Unusable" xml:space="preserve">
+    <value>Neuporabno</value>
+  </data>
+  <data name="Complete Check" xml:space="preserve">
+    <value>Zaključi kontrolo</value>
+  </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>VrniNaNakPol</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>Napaka odlag</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>Napaka nalaganja</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>Zun nak pol</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>Čaka  verigo</value>
+  </data>
+  <data name="MissionStateWaitDeposit" xml:space="preserve">
+    <value>Čaka odlaganje</value>
+  </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>Predal na nak polici optimizacija ni dovoljena</value>
+  </data>
+  <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
+    <value>Posod. teža na enoto</value>
+  </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>Dejanska povpr. teža na enoto [g]</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Izmerjena teža[g]</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>Prvotna povpr. teža na enoto [g]</value>
+  </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>Tehta in šteje kos</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Ponastavi</value>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>Zaznana količina</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>Posodobi težo na enoto</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>Potrdi zaznano količino</value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>Potrdi zahtevano količino</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Teža na enoto [g]</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>Postopek potrjen s črtno kodo.</value>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>Nekatera polja črtne kode '{0}' ne sovpadajo s polji izdelka.</value>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>Nekatera polja črtne kode '{0}' ne sovpadajo s polji izdelka. Začni znova.</value>
+  </data>
+  <data name="BarcodeOperationValidated" xml:space="preserve">
+    <value>Izdelek potrjen s črtno kodo.</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>Pred potrditvijo navedite količino.</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Črtne kode '{0}' ni mogoče prepoznati.</value>
+  </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>Zahteva za odlaganju izdelka {0} (količina {1}) je bila sprejeta.</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Postopek jemanja na predalu št.</value>
+  </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Postopek odlaganja na predalu št.</value>
+  </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Jemanje izdelka </value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Odlaganje izdelka </value>
+  </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>Poteka nalaganje izdelkov ...</value>
+  </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>Postopk na nak pol</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Pregled</value>
+  </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>Maksimalni zaporedni prazen prostor zadaj</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>Maksimalni zaporedni prazen prostor spredaj</value>
+  </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>Označi kot razrešeno in pojdi na optim</value>
+  </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Koda vsebnika</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Odvzemi vsebnik</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Odloži vsebnik</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Vsebnik</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Vstavi vsebnik</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Odstrani vsebnik</value>
+  </data>
+  <data name="Command" xml:space="preserve">
+    <value>Ukaz</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Op.</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Izberi razlog</value>
+  </data>
 </root>

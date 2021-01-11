@@ -117,97 +117,160 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutomaticMissing" xml:space="preserve">
-    <value>Automatic missing</value>
+  <data name="AccessoriesAccessoryNotAvailable" xml:space="preserve">
+    <value>Oprema ni razpoložljiva</value>
   </data>
-  <data name="BayCalibrationNotPerformed" xml:space="preserve">
-    <value>Bay calibration not performed.</value>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in preverjanje alfanumerične vrstice</value>
   </data>
-  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
-    <value>Carousel calibration failed. \r\n The bay chain is not in the zero position.</value>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Konfiguracijski parametri</value>
   </data>
-  <data name="CellBusy" xml:space="preserve">
-    <value>Busy</value>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Test</value>
   </data>
-  <data name="CellFree" xml:space="preserve">
-    <value>Free</value>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Alfanum vrstica</value>
   </data>
-  <data name="HomingNotPerformed" xml:space="preserve">
-    <value>Homing not performed.</value>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Puščica</value>
   </data>
-  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
-    <value>Inconsistency of shutter presence sensors in the bay.</value>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Led</value>
   </data>
-  <data name="InconsistencyStateAndSensors" xml:space="preserve">
-    <value>Load state and sensors inconsistency.</value>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>Sporočilo</value>
   </data>
-  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
-    <value>Zero pawl sensor inconsistency and loading unit presence.</value>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Ferretto Group - testno sporočilo -</value>
   </data>
-  <data name="LoadingUnitOnElevator" xml:space="preserve">
-    <value>Loading unit presence on the elevator.</value>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>Položaj</value>
   </data>
-  <data name="LoadingUnitReady" xml:space="preserve">
-    <value>Load unit ready for operation.</value>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Besed</value>
   </data>
-  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
-    <value>Successfully requested loading unit {0}.</value>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in preverjanje bralnika črtne kode</value>
   </data>
-  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
-    <value>LoadUnit on  board has invalid height</value>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Bralnik črtnih kod</value>
   </data>
-  <data name="MachineNotManual" xml:space="preserve">
-    <value>The machine is not in manual...</value>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in prev bralnika značke</value>
   </data>
-  <data name="MachineOff" xml:space="preserve">
-    <value>Machine off</value>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Bralnik značk</value>
   </data>
-  <data name="MissionInError" xml:space="preserve">
-    <value>Missions in error...</value>
+  <data name="AccessoriesEnable" xml:space="preserve">
+    <value>Omogočenje</value>
   </data>
-  <data name="MissionsWmsNotActive" xml:space="preserve">
-    <value>Wms missions present but wms not active</value>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>IP naslov</value>
   </data>
-  <data name="MovementBayChainInProgress" xml:space="preserve">
-    <value>Bay chain movement in progress...</value>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in preverjanje tiskalnika etiket</value>
   </data>
-  <data name="MovementElevatorInProgress" xml:space="preserve">
-    <value>Elevator movement in progress...</value>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Tiskalnik etiket</value>
   </data>
-  <data name="MovementHorizontalInProgress" xml:space="preserve">
-    <value>Horizontal movement in progress...</value>
+  <data name="AccessoriesLaserPointerMenuDescription" xml:space="preserve">
+    <value>Upravljanje konfiguracije in test funkcionalnosti laserja</value>
   </data>
-  <data name="MovementInProgress" xml:space="preserve">
-    <value>Movement in progress... {0}</value>
+  <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
+    <value>Laserski kazaln</value>
   </data>
-  <data name="MovementInProgressExtended" xml:space="preserve">
-    <value>Movement in progress... Mission: {0}, Loading unit: {1}, Status: {2}, Movement: from {3} {4}, to {5} {6})</value>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>Odmik osi X</value>
   </data>
-  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
-    <value>Load unit movement in progress...</value>
+  <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
+    <value>Odmik osi Y</value>
   </data>
-  <data name="MovementShutterInProgress" xml:space="preserve">
-    <value>Shutter movement in progress ...</value>
+  <data name="AccessoriesLaserPointerZOffsetLowerPosition" xml:space="preserve">
+    <value>Odmik osi Z (nizk nak pol)</value>
   </data>
-  <data name="MovementVerticalInProgress" xml:space="preserve">
-    <value>Vertical movement in progress...</value>
+  <data name="AccessoriesLaserPointerZOffsetUpperPosition" xml:space="preserve">
+    <value>Odmik osi Z (vis nak pol)</value>
   </data>
-  <data name="NoLoadingUnitInBay" xml:space="preserve">
-    <value>No loading unit present in the bay.</value>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Meni Dod oprem</value>
   </data>
-  <data name="NoZeroPawlSensor" xml:space="preserve">
-    <value>No zero pawl sensor or loading unit presence.</value>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Ugasn</value>
   </data>
-  <data name="Position" xml:space="preserve">
-    <value>Position {0}</value>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Prižg</value>
   </data>
-  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
-    <value>Shutter open or in unknown position.</value>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Vrata</value>
   </data>
-  <data name="TestInProgress" xml:space="preserve">
-    <value>Test in progress...</value>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Mera</value>
   </data>
-  <data name="NoGear" xml:space="preserve">
-    <value></value>
+  <data name="AccessoriesTest" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in prev bralnika žetonov</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Bralnik žetonov</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in prev tehtnice za štetje kosov</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Teht za štetje kos</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>NaPo</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>MeniNa Po</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Meni Celic</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Potrdi testiranje</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Meni Dvigalo</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Namestitev</value>
+  </data>
+  <data name="InstallationStatus" xml:space="preserve">
+    <value>Stanje nameščanja</value>
+  </data>
+  <data name="MenuAccessories" xml:space="preserve">
+    <value>Dod oprem</value>
+  </data>
+  <data name="MenuBays" xml:space="preserve">
+    <value>NaPo</value>
+  </data>
+  <data name="MenuCells" xml:space="preserve">
+    <value>Celic</value>
+  </data>
+  <data name="MenuElevator" xml:space="preserve">
+    <value>Dvigalo</value>
+  </data>
+  <data name="MenuLoadingUnits" xml:space="preserve">
+    <value>Predali</value>
+  </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Premiki</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Nastavitve</value>
+  </data>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Meni Nastavitve</value>
+  </data>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Meni Predali</value>
+  </data>
+  <data name="NoAccessoriesInstalled" xml:space="preserve">
+    <value>Dodatna oprema ni nameščena.</value>
   </data>
 </root>

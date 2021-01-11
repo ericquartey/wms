@@ -117,97 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutomaticMissing" xml:space="preserve">
-    <value>Automatic missing</value>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Vzpost je povezava s storitvami</value>
   </data>
-  <data name="BayCalibrationNotPerformed" xml:space="preserve">
-    <value>Bay calibration not performed.</value>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Povezava s stor avtomat je prekinjena, ponovna povezava v teku ...</value>
   </data>
-  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
-    <value>Carousel calibration failed. \r\n The bay chain is not in the zero position.</value>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>Ni mog vzpostaviti povezave s stor avtomatizacije</value>
   </data>
-  <data name="CellBusy" xml:space="preserve">
-    <value>Busy</value>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Neveljavne poverilnice.</value>
   </data>
-  <data name="CellFree" xml:space="preserve">
-    <value>Free</value>
+  <data name="Login" xml:space="preserve">
+    <value>Prij</value>
   </data>
-  <data name="HomingNotPerformed" xml:space="preserve">
-    <value>Homing not performed.</value>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>Modul je naložen</value>
   </data>
-  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
-    <value>Inconsistency of shutter presence sensors in the bay.</value>
+  <data name="Password" xml:space="preserve">
+    <value>Geslo</value>
   </data>
-  <data name="InconsistencyStateAndSensors" xml:space="preserve">
-    <value>Load state and sensors inconsistency.</value>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>Vnesi geslo</value>
   </data>
-  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
-    <value>Zero pawl sensor inconsistency and loading unit presence.</value>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>Geslo je prekratko.</value>
   </data>
-  <data name="LoadingUnitOnElevator" xml:space="preserve">
-    <value>Loading unit presence on the elevator.</value>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>Navesti je treba geslo.</value>
   </data>
-  <data name="LoadingUnitReady" xml:space="preserve">
-    <value>Load unit ready for operation.</value>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>Storitve se zaganjajo</value>
   </data>
-  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
-    <value>Successfully requested loading unit {0}.</value>
+  <data name="TempKey" xml:space="preserve">
+    <value>Začasen ključ: {0}</value>
   </data>
-  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
-    <value>LoadUnit on  board has invalid height</value>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>Črtna koda ne ustreza registriranemu uporabniku.</value>
   </data>
-  <data name="MachineNotManual" xml:space="preserve">
-    <value>The machine is not in manual...</value>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Upor. ime</value>
   </data>
-  <data name="MachineOff" xml:space="preserve">
-    <value>Machine off</value>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>Navesti je treba uporabniško ime.</value>
   </data>
-  <data name="MissionInError" xml:space="preserve">
-    <value>Missions in error...</value>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>Kartica ni povezana z registriranim uporabnikom.</value>
   </data>
-  <data name="MissionsWmsNotActive" xml:space="preserve">
-    <value>Wms missions present but wms not active</value>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Prijava prek branja kartice ...</value>
   </data>
-  <data name="MovementBayChainInProgress" xml:space="preserve">
-    <value>Bay chain movement in progress...</value>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Poteka prev pristnosti upor. ...</value>
   </data>
-  <data name="MovementElevatorInProgress" xml:space="preserve">
-    <value>Elevator movement in progress...</value>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Vstavljen žeton. Poteka preverjanje ...</value>
   </data>
-  <data name="MovementHorizontalInProgress" xml:space="preserve">
-    <value>Horizontal movement in progress...</value>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Žeton odstranjen</value>
   </data>
-  <data name="MovementInProgress" xml:space="preserve">
-    <value>Movement in progress... {0}</value>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Preverjanje preko žetona ni uspelo.</value>
   </data>
-  <data name="MovementInProgressExtended" xml:space="preserve">
-    <value>Movement in progress... Mission: {0}, Loading unit: {1}, Status: {2}, Movement: from {3} {4}, to {5} {6})</value>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>Z žetonom ni bilo mogoče preveriti pristnosti, ker WMS ni dosegljiv.</value>
   </data>
-  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
-    <value>Load unit movement in progress...</value>
-  </data>
-  <data name="MovementShutterInProgress" xml:space="preserve">
-    <value>Shutter movement in progress ...</value>
-  </data>
-  <data name="MovementVerticalInProgress" xml:space="preserve">
-    <value>Vertical movement in progress...</value>
-  </data>
-  <data name="NoLoadingUnitInBay" xml:space="preserve">
-    <value>No loading unit present in the bay.</value>
-  </data>
-  <data name="NoZeroPawlSensor" xml:space="preserve">
-    <value>No zero pawl sensor or loading unit presence.</value>
-  </data>
-  <data name="Position" xml:space="preserve">
-    <value>Position {0}</value>
-  </data>
-  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
-    <value>Shutter open or in unknown position.</value>
-  </data>
-  <data name="TestInProgress" xml:space="preserve">
-    <value>Test in progress...</value>
-  </data>
-  <data name="NoGear" xml:space="preserve">
-    <value></value>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>Upor. seja 'storitve' je potekla</value>
   </data>
 </root>

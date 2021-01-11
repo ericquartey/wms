@@ -118,126 +118,241 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add" xml:space="preserve">
-    <value>Add</value>
-    <comment>Command - Add an element to current page</comment>
+    <value>Dodaj</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Back</value>
-    <comment>Command - Navigation to previous page</comment>
+    <value>Nazaj</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Spodnji</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Prekl.</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Koda</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Dat. ustvar.</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Odstr.</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Dol</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Spremeni</value>
+  </data>
+  <data name="Execute" xml:space="preserve">
+    <value>Izvedi</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>Dat.</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Sprednji</value>
+  </data>
+  <data name="LastModificationDate" xml:space="preserve">
+    <value>Dat. zadnje sprem.</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Login</value>
-    <comment>Button</comment>
+    <value>Prij.</value>
+  </data>
+  <data name="MillionsSymbol" xml:space="preserve">
+    <value>M</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Next</value>
+    <value>Naslednji</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Odpr</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Posodobi</value>
+  </data>
+  <data name="Revert" xml:space="preserve">
+    <value>Zavrzi</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Save</value>
-    <comment>Command - Save modified data on the current page</comment>
+    <value>Shran</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Išči</value>
+  </data>
+  <data name="ShowDetails" xml:space="preserve">
+    <value>Prikaži podr.</value>
   </data>
   <data name="SwitchOff" xml:space="preserve">
-    <value>Switch Off</value>
-    <comment>Button </comment>
+    <value>Ugasni</value>
+  </data>
+  <data name="ThousandsSymbol" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Zgornji</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="MeasureUnit" xml:space="preserve">
+    <value>Merska enota</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Gor</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Nalaganje</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Stanj</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Količina</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Prednost</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Podr.</value>
+  </data>
+  <data name="AdditionalInfo" xml:space="preserve">
+    <value>[{0}]</value>
+  </data>
+  <data name="CheckBoxDark" xml:space="preserve">
+    <value>Temna tema</value>
+  </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Ugasn.</value>
+  </data>
+  <data name="MachineOn" xml:space="preserve">
+    <value>Prižg.</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Error</value>
+    <value>Napaka</value>
   </data>
   <data name="Debug" xml:space="preserve">
     <value>Debug</value>
   </data>
+  <data name="NumberOnTotal" xml:space="preserve">
+    <value>{0} od {1}</value>
+  </data>
   <data name="FilePath" xml:space="preserve">
-    <value>File Path</value>
+    <value>Pot datoteke</value>
   </data>
   <data name="ConfirmMachineRun" xml:space="preserve">
-    <value>Are you sure you want to power up the machine?</value>
+    <value>Si prepričan, da želiš zagnati stroj?</value>
   </data>
   <data name="MachineRun" xml:space="preserve">
-    <value>Run</value>
+    <value>Zagon</value>
   </data>
   <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
-    <value>Are you sure you want to automatic mode the machine and restore all pending movements?</value>
+    <value>Si prepričan, da želiš stroj prestaviti v avt. nač. in ponovno vzpostaviti tekoče premike?</value>
   </data>
   <data name="Automatic" xml:space="preserve">
-    <value>Automatic</value>
+    <value>Avtomatski</value>
   </data>
   <data name="ShuttingDown" xml:space="preserve">
-    <value>Shutting down ...</value>
+    <value>Ugašanje ...</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>No</value>
+    <value>Ne</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Da</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Zapri</value>
   </data>
   <data name="ChangeTheme" xml:space="preserve">
-    <value>Theme change</value>
+    <value>Sprem temo</value>
+  </data>
+  <data name="AutomaticMode" xml:space="preserve">
+    <value>Avtomatski</value>
   </data>
   <data name="BayNumber" xml:space="preserve">
-    <value>Bay</value>
-    <comment>Information</comment>
+    <value>NkPo</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
-    <value>{0:0} days ago</value>
-    <comment>Information</comment>
+    <value>Pred {0:0} dnev</value>
+  </data>
+  <data name="EmergencyIsOn" xml:space="preserve">
+    <value>G izk v sili om</value>
+  </data>
+  <data name="EnsureEmergencyIsOff" xml:space="preserve">
+    <value>Prepričajte se, da ni prit noben od gum za izkl v sili.</value>
   </data>
   <data name="ErrorCommunicatingWithServices" xml:space="preserve">
-    <value>Error communicating with services.</value>
-    <comment>Information</comment>
+    <value>Napaka v komunikaciji s storitvami.</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>{0:0} hours ago</value>
-    <comment>Information</comment>
+    <value>Pred {0:0}ur</value>
   </data>
   <data name="ManualMode" xml:space="preserve">
-    <value>Manual</value>
-    <comment>Information</comment>
+    <value>Ročno</value>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
-    <value>{0:0} minutes ago</value>
-    <comment>Information</comment>
+    <value>Pred {0:0} min</value>
   </data>
   <data name="Now" xml:space="preserve">
-    <value>Just now</value>
-    <comment>Information</comment>
+    <value>Zdaj</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="PasswordLogin" xml:space="preserve">
+    <value>Geslo</value>
   </data>
   <data name="SerialNumber" xml:space="preserve">
-    <value>Serial Number:</value>
-    <comment>Information</comment>
+    <value>Ser. številka:</value>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Uporab. ime</value>
+  </data>
+  <data name="UserLogin_Password" xml:space="preserve">
+    <value>Geslo</value>
+  </data>
+  <data name="UserLogin_UserName" xml:space="preserve">
+    <value>Uporab. ime</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version {0}</value>
-    <comment>Information</comment>
+    <value>Različ. {0}</value>
   </data>
   <data name="WarehouseSide_Back" xml:space="preserve">
-    <value>Back</value>
+    <value>Zadnji</value>
   </data>
   <data name="WarehouseSide_Front" xml:space="preserve">
-    <value>Front</value>
+    <value>Sprednji</value>
   </data>
   <data name="Bay" xml:space="preserve">
-    <value>Bay</value>
+    <value>NkPo</value>
   </data>
   <data name="BayOneName" xml:space="preserve">
-    <value>One</value>
+    <value>Ena</value>
+  </data>
+  <data name="BayOneNumber" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="BayThreeName" xml:space="preserve">
-    <value>Three</value>
+    <value>Tri</value>
+  </data>
+  <data name="BayThreeNumber" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="BayTwoName" xml:space="preserve">
-    <value>Two</value>
+    <value>Dve</value>
+  </data>
+  <data name="BayTwoNumber" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="SwitchToAutomatic" xml:space="preserve">
-    <value>Switch to Automatic</value>
+    <value>Pojdi v avt. način</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>Začni</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
@@ -245,228 +360,82 @@
   <data name="TargetNullValue" xml:space="preserve">
     <value>-</value>
   </data>
+  <data name="LoadUnitOperations" xml:space="preserve">
+    <value>Postopki na predalu</value>
+  </data>
   <data name="Devices" xml:space="preserve">
-    <value>Devices</value>
+    <value>Naprave</value>
   </data>
   <data name="DiagnosticDetailTitle" xml:space="preserve">
     <value>DEBUG</value>
   </data>
   <data name="FiniteMachineState" xml:space="preserve">
-    <value>Finite state machine</value>
+    <value>Stroj s konč. stanji</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>Inverter</value>
   </data>
   <data name="IODrive" xml:space="preserve">
-    <value>IO Drive</value>
+    <value>V-iz pog</value>
   </data>
   <data name="StatusDebug" xml:space="preserve">
-    <value>Status:</value>
+    <value>Stanje:</value>
   </data>
   <data name="NoRows" xml:space="preserve">
-    <value>No row in the list</value>
+    <value>Na seznamu ni črt</value>
   </data>
   <data name="WmsDisabled" xml:space="preserve">
-    <value>Disabled</value>
+    <value>Onemogočen</value>
   </data>
   <data name="WmsEnabled" xml:space="preserve">
-    <value>Enabled WMS</value>
+    <value>Omogočen WMS</value>
   </data>
   <data name="DateFormatComplete" xml:space="preserve">
-    <value>{0:yyyy.MM.dd HH:mm}</value>
+    <value>{0:dd.MM.yyyy HH:mm}</value>
   </data>
   <data name="AreaMachineUnknow" xml:space="preserve">
-    <value>The area of the machine is unknown</value>
+    <value>Območje stroja je neznano</value>
   </data>
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
-    <value>Converter can only convert to value of type Visibility.</value>
+    <value>Ta pretvornik lahko pretvarja samo vrednosti tipa Visibility.</value>
   </data>
   <data name="IdLoadingUnitNotExists" xml:space="preserve">
-    <value>Id loading unit does not exists.</value>
+    <value>Identifikacija predala ne obstaja.</value>
   </data>
   <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
-    <value>The '{0}' property of the '{1}' view model shall contain a valid loading unit identifier.</value>
-  </data>
-  <data name="MarkupNameOfSyntax" xml:space="preserve">
-    <value>Syntax for NameOf is Type={x:Type className&gt;}.&lt;</value>
+    <value>Značilnost ‚{0}‘ modela pogleda ‚{1}‘ mora vsebovati veljavno identifikacijo predala.</value>
   </data>
   <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
-    <value>Parameter cannot be null or empty.</value>
+    <value>Parameter ne more biti ničeln ali prazen.</value>
   </data>
   <data name="DateFormatDayNumber" xml:space="preserve">
-    <value>{0: yyyy.MM.dd}</value>
+    <value>{0: dd.MM.yyyy}</value>
+  </data>
+  <data name="DateFormatHourMinutes" xml:space="preserve">
+    <value>{0: HH:mm}</value>
+  </data>
+  <data name="DateFormatHourMinuteSecond" xml:space="preserve">
+    <value>{0: HH:mm:ss}</value>
   </data>
   <data name="SwitchToManual" xml:space="preserve">
-    <value>Switch to Manual</value>
+    <value>Pojdi v roč. nač</value>
+  </data>
+  <data name="ErrorLogin" xml:space="preserve">
+    <value>Napaka: prijava ni uspela. Preveri ali sta upor. ime in geslo prav</value>
   </data>
   <data name="BackShutterTest" xml:space="preserve">
-    <value>Test in progress... Unable to exit the page</value>
+    <value>Poteka testiranje ... Strani ni mogoče zapustiti</value>
   </data>
   <data name="SocketLinkEnabled" xml:space="preserve">
-    <value>Enable Socket Link</value>
+    <value>Omog Socket Link</value>
   </data>
   <data name="SocketLinkPolling" xml:space="preserve">
-    <value>Polling interval</value>
-    <comment>Polling interval in seconds (0 = off)</comment>
+    <value>Obseg izpraševanja</value>
   </data>
   <data name="SocketLinkPort" xml:space="preserve">
-    <value>Port</value>
+    <value>Vrata</value>
   </data>
   <data name="SocketLinkTimeout" xml:space="preserve">
     <value>Timeout</value>
-    <comment>Timeout in seconds (0 = off)</comment>
-  </data>
-  <data name="Connectivity" xml:space="preserve">
-    <value>Connectivity</value>
-  </data>
-  <data name="Present" xml:space="preserve">
-    <value>Present</value>
-  </data>
-  <data name="NotPresent" xml:space="preserve">
-    <value>Not present</value>
-  </data>
-  <data name="TokenStatus" xml:space="preserve">
-    <value>Token status</value>
-  </data>
-  <data name="Bottom" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Code" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Down" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Execute" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="File" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Front" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Open" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Revert" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="ShowDetails" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Top" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="MeasureUnit" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Up" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Quantity" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Priority" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Details" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="AdditionalInfo" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="CheckBoxDark" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="MachineOff" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="MachineOn" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="NumberOnTotal" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="AutomaticMode" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="EmergencyIsOn" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="EnsureEmergencyIsOff" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="PasswordLogin" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="UserLogin_Password" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="UserLogin_UserName" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="BayOneNumber" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="BayThreeNumber" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="BayTwoNumber" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="LoadUnitOperations" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="DateFormatHourMinutes" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="DateFormatHourMinuteSecond" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="ErrorLogin" xml:space="preserve">
-    <value></value>
   </data>
 </root>

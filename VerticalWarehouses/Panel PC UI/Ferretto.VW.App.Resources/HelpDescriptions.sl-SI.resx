@@ -1,0 +1,1293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>Navedi vrednost zgornje višine, ki jo zahteva test. Nastavite vrednost samo, če je polje mogoče urejati.</value>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>Navedi vrednost spodnje višine, ki jo zahteva test. Nastavite vrednost samo, če je polje mogoče urejati.</value>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>Nastavite število zahtevanih ciklov.</value>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>Prikaži število ciklov, ki so trenutno zaključeni.</value>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>Prikazuje trenutni položaj osi.</value>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>Zaženi test. Test se nadaljuje, dokler ni doseženo zahtevano število ciklov ali dokler ne pritisnete gumba za zaustavitev.</value>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>Ustavi test. Cikel se ustavi na koncu trenutnega premika. S pritiskom na gumb za zagon cikla se test nadaljuje do zaključka.</value>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>Postopek omogoča izvedbo vrste ciklov premikanja navpične osi med dvema točkama, navedenima v podatkih vnosa. Ko se cikel zažene, poteka, dokler niso doseženi zahtevani cikli ali se pritisne tipko za konec.</value>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>Funkcija umerjanja ločljivosti navpične osi omogoča umerjanje pravilne vrednosti z dejanskim merjenjem in nato posodobitvijo privzete vrednosti, ki jo predlaga sistem. Postopek deluje v zaporednih korakih do uspešnega zaključka.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Če je polje mogoče urejati, nastavite zahtevano začetno višino.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>Gumb zažene postopek z izvedbo začetka osi in nato postavitvijo na prej navedeno višino.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Če je polje mog urejati, nastavite zahtevano končno višino.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>Gumb začne premikati os na končno višino, ki je bila predhodno nastavljena.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>Označuje izmerjeno pot od začetnega do končnega položaja.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>1. korak: postavi os na začetni položaj</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>2. korak: postavi os na končni položaj</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>3. korak: posodobi ločljivost na novo vrednost</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>4. korak: os vrni na mesto in zaključi postopek</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>Prikaži trenutno ločljivost osi</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Prikaži novo vrednost ločljivosti, izračunano s postopkom.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Zamenja prejšnjo vrednost ločljivosti z novo izračunano vrednostjo.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Vrni os na začetni položaj.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Naredi izvor osi in zaključi postopek.</value>
+  </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>Prikaži trenutno stanje namestitve. Že dokončani deli so označeni z zeleno, medtem ko so tisti, ki jih je treba dokončati ali narediti sivi. Nekateri postopki so možni šele po pravilnem zaključku pripravljalnih postopkov.</value>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>Sivi indikator označ. postopek, ki ga je treba še opraviti</value>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>Zeleni indikator označuje uspešno zaključen postopek.</value>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>Prikaz stanja senzorjev</value>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>Na različnih straneh si lahko ogledate stanje senzorjev, ki so prisotni v različnih delih stroja. Prikaz poteka v realnem času in se spreminja, ko se spreminja stanje različnih senzorjev.</value>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>Zelena barva prikazuje aktivno stanje senzorja.</value>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>Siva barva prikazuje neaktivno stanje senzorja.</value>
+  </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>Ročni krmilniki pri nizki hitr.</value>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>Omogoča premikanje različnih osi pri nizki hitrosti. Nastavljen je majhen prostor za premikanje v obeh smereh. Besedilo gumbov se spreminja glede na zahtevani premik. Po tovarniškem testiranju stroja bo mogoče upravljati vse različne osi pri nizki hitrosti brez blokade in na neomejenih tekih.</value>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>Označuje trenutni položaj ali stanje za tiste dele, ki imajo samo diskretne položaje.</value>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>Gumb za premikanje naprej, dvigovanje ali odpiranje glede na izbrani del</value>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>Gumb za premikanje nazaj, spuščanje ali zapiranje glede na izbrani del</value>
+  </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>Omogoča izvedbo vrste ponavljajočih se testov zapiralne lopute izbrane nakladalne police. Lahko se nastavi čakalni čas med dvema zaporednima premikoma. Postopek se zaključi, ko je doseženo nastavljeno število ciklov ali na izhodu.</value>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>Nastavite število zahtevanih ciklov.</value>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>Nastavite čas zamika med dvema zaporednima cikloma.</value>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>Navaja število ciklov, ki so trenutno zaključeni.</value>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>Stanje senzorja A pregrade.</value>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>Stanje senzorja B pregrade.</value>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>Zaženi začetek zahtevanih testov. Gumb je aktiven, če je zahtevano število ciklov večje od nič.</value>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>Ustavi cikel ob koncu trenutnega premika. Z naslednjim pritiskom na gumb za zagon se nadaljuje test od cikla, ki sledi zaustavljenemu.</value>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>Postopek omogoča, da določite izvor navpične osi, na koncu katerega je nastavljen trenutni položaj, označen z vrednostjo odmika. Postopek je pripravljalni za uresničitev drugih funkcij, ki zahtevajo premikanje osi v višino.</value>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>Spodnja meja premika.</value>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>Zgornja meja premika.</value>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>Trenutna vrednost odmika. Na koncu izvora osi je trenutna višina nastavljena na to vrednost.</value>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>Trenutna ločljivost osi.</value>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>Poročaj o končnem izidu postopka.</value>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>Zažene postopek izvora navpične osi.</value>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>Zaustavi postopek izvora navpične osi.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>Začetna vrednost tren. položaja, ki jo odčita števec.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>Končna vrednost tren. položaja, ki jo odčita števec.</value>
+  </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>Postopek omogoča preverjanje in po potrebi popravljanje višine izbrane celice. Popravek se uporablja samo za izbrano celico.</value>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>Nastavite celico, katere višino želite preveriti.</value>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>Navaja višino trenutno izbrane celice.</value>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>Vrednost spremembe višine med fazo prilagajanja.</value>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>Trenutna vrednost višine osi.</value>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>Skup vrednost popravka, ki ga je treba upor.</value>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>Postavite navpično os na izbrano celico.</value>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>Povečaj trenutno višino osi vrednosti, označene s korakom.</value>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>Zmanjšaj trenutno višino osi vrednosti, označene s korakom.</value>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>Višino izbrane celice popravi z vrednostjo, navedeno v polju, ki prikazuje skupno zahtevano vrednost.</value>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>Postopek omogoča, da preverite pravilno namestitev različnih plošč za police. Morebiten popravek se uporabi za vse celice, ki pripadajo testirani plošči.</value>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>Navaja skupno število plošč na strani, ki jo je izbrala referenčna celica.</value>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>Označuje trenutno izbrano ploščo, ki se preverja.</value>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>Izbrana celica, iz katere izhaja plošča, ki jo je treba preveriti. Neparne ali parne štev. izberejo sprednjo ali zadnjo stran.</value>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>Višina izbrane celice.</value>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>Navaja trenutni položaj osi. Spremeni se z delovanjem koračnih gumbov.</value>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>Vrednost koraka za spreminjanje višine.</value>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>Skupna vrednost popravka, ki bo uporabljen za višino izbrane celice.</value>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>Om. preh. na nasl. ploščo, ki jo je treba prever.</value>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>Postavi os na izbrano celico.</value>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>Povečaj trenutno višino osi vrednosti, označene s korakom.</value>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>Zmanjšaj trenutno višino osi vrednosti, označene s korakom.</value>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>Popravek uporabi v skupini celic na trenutno izbrani plošči.</value>
+  </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>Postopek omogoča nastavitev pregrade za zaznavanje višine predala. Signal dosežene višine je treba uporabiti tudi v fazi predhodne postavitve testnega modela.</value>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>Nastavite hitrost, ki se bo uporabljala med fazo umerjanja.</value>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>Navaja sistemsko napako, ki izhaja iz nastavljene hitrosti umerjanja in časa skeniranja sistema. Zmanjšajte hitrost, da zmanjšate napako.</value>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>Nastavi največjo dovoljeno toleranco pri merjenju. Test ne uspe, če rezultat preseže zahtevano vrednost.</value>
+  </data>
+  <data name="HelpGHCHeightReached" xml:space="preserve">
+    <value>Označuje aktiviranje žarka, ki se uporablja kot element za preverjanje višine. </value>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>Navaja trenutni položaj osi verige.</value>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>Navaja popravek, ki ga je treba uporabiti na pregradi. Znak plus zahteva dvig pregrade, znak minus pa spust za navedeno vrednost.</value>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>Navaja končni rezultat testa.</value>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>Gumb zažene postopek preverjanja.</value>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>Gumb zaustavi postopek preverjanja.</value>
+  </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>Postopek omogoča preverjanje, ali je merjenje teže znotraj predvidene tolerance. Za merjenje se uporabljajo vzorčne uteži v količini, navedeni v ustreznem polju.</value>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>Navaja tek, izveden pri nizki hitrosti, med katerim se izvajajo vzorčenja oddanega toka.</value>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>Navaja maso vzorca, vneseno za test.</value>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>Navaja toleranco, ki jo zahteva meritev.</value>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>Navaja težo, ki jo izmeri sistem.</value>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>Javlja o končnem izidu postopka. Izid bo pozitiven, če bo izmerjena teža znotraj nastavljene tolerance.</value>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>Zaženi testni postopek.</value>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>Zaustavi testni postopek.</value>
+  </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>Postopek omogoča popravljanje odmika navpične osi za prilagoditev višine različnih celic referenčnemu sistemu navpične osi.</value>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>Celica, izbrana za preverjanje.</value>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>Trenutna višina izbrane celice</value>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>Vrednost spremembe višine, ki se uporabi vsakič, ko pritisnete tipke za premikanje osi.</value>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>Trenutni položaj navpične osi.</value>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>Trenutna vrednost odmika navpične osi.</value>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>Nova vrednost odmika.</value>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>Premakne navpično os na višino izbrane celice.</value>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>Poveča trenutno višino navpične osi za nastavljeno vrednost koraka.</value>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>Zmanjša trenutno višino navpične osi za nastavljeno vrednost koraka.</value>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>Posodobi odmik navpične osi na navedeno vrednost.</value>
+  </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>Postopek omogoča spreminjanje sklopa celic med prvo in zadnjo izbrano. Izbrana stran je avtomatsko prikazana glede na začetno številko celice, glede na to ali je soda ali liha.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Nastavite številko začetne celice sklopa.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Nastavite številko končne celice sklopa.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Nastavite želeno vrednost popravka, ki bo uporabljen za izbrano skupino celic.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Navaja stran, na kateri se izvajajo spremembe. Stran je avtomatsko določena glede na številko izbrane začetne celice, glede na to ali je soda ali liha.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Popravek uporabi za izbrano skupino celic.</value>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>Navaja skupno štev. celic, ki jih je treba testirati.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>Navaja število trenutno testiranih celic.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>Štev. celice, ki se trenutno testirajo.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>Številka predala, ki se vstavlja.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>Največja zmogljivost predala med nakladanjem.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Zaženi postopek vstavljanja predala. Postopek se konča, ko se zaključijo predvideni cikli.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Pokliče predal, upor. za test. nazaj na nak polico.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>Postopek omogoča, da z izbranim predalom v ustreznem vnosnem polju preizkusite spodnje in zgornje celice stroja ter celice pod in nad sklopi celic, ki so navedene kot onemogočene. Namen postopka je preveriti, da na teh območjih ni mehanskih motenj.</value>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>Postopek omogoča, da prazne predale vstavite v stroj ob koncu postopka zagona. Predali se vstavijo v proste sklope glede na najnižjo prioriteto.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>Sk. št. Pred., ki jih je treba vstav.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>Predali so že vstavljeni v stroj.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>Številka predala, ki se vstavlja. Lahko se ustvari z ustreznim gumbom ali vnese v ustrezno polje.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>Navaja največjo dovoljeno zmogljivost predala, ki se trenutno vstavlja.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>Gumb nastavi naslednji predal, ki ga je treba vstaviti. Številka je tista, ki sledi zadnji vneseni.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Zaženi postopek vstavljanja izbranega predala.</value>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>Postopek omogoča preverjanje in po potrebi popravljanje višine različnih možnih položajev na raznih nakladalnih policah. Postopek se prilagaja vrsti nakladalne police, navedeni v dokumentu, ki opisuje konfiguracijo stroja. V primeru več položajev na isti nakladalni polici postopek dovoljuje večkratno preverjanje.</value>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>Izberite nak polico, katere višine želite preveriti.</value>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>Navaja položaj znotraj izbrane nakladalne police, katere višine želite preveriti. Nastavi se samodejno.</value>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>Prikaže višino izbranega položaja znotraj nadzorovane nakladalne police.</value>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>Vrednost koraka, ki se uporabi za trenutno višino osi ob vsakem pritisku gumba za premikanje.</value>
+  </data>
+  <data name="HelpBCTRActualHeight" xml:space="preserve">
+    <value>Trenutni položaj navpične osi.</value>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>Skupna vrednost popravka, ki bo uporabljen za višino nakladalne police-izbrani položaj. </value>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>Postavi navpično os na nakladalno polico-izbrani položaj.</value>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>Povečaj trenutno višino osi vrednosti, označene s korakom.</value>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>Zmanjšaj trenutno višino osi vrednosti, označene s korakom.</value>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>Popravi trenutno višino nak police-trenutni položaj z vrednostjo, navedeno v ustreznem polju.</value>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>Če je gumb omogočen, lahko izberete naslednji položaj na trenutno izbrani nakladalni polici. Za nov položaj je treba postopek ponoviti.</value>
+  </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>Glavni meni omogoča dostop do vseh funkcij, predvidenih za fazo zagona stroja.</value>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>Glavni meni.</value>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>Ko je vidna, navaja prisotnost napake. S pritiskom na gumb se odpre okno, namenjeno ponovni vzpostavitvi stanja.</value>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>Če je ta gumb izklopljen, označuje onemogočene premike stroja.</value>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>Če je ta gumb vklopljen, pomeni, da je se stroj lahko premika.</value>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>Navaja ime trenutno prijavljenega uporabnika. S pritiskom nanj se odjavite iz sistema.</value>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>S pritiskom nanj odprete meni za trenutno izbrano funkcijo.</value>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>Omogoča listanje navzgor po seznamu gumbov za dostop do različnih funkcij.</value>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>Seznam gumbov za dostop do namestitvenih funkcij.</value>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>Omogoča listanje navzdol po seznamu gumbov za dostop do različnih funkcij.</value>
+  </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>Postopek omogoča izvedbo vrste testov nakladanja in razkladanja predala z uporabo nakladalne police, izbrane v ustreznih vnosnih poljih. Za test je mogoče spreminjati hitrost polnjenja pospeševanja, upočasnjevanja in hitrost glede na to, kar je navedeno v ustreznem polju. Test se nadaljuje, dokler ni doseženo zahtevano število ciklov ali dokler ne pritisnete gumba za zaustavitev.</value>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>Vnesite številko nak police, na kateri želite izvesti test.</value>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>Vnesite položaj znotraj nakladalne police, na kateri želite izvesti test.</value>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>Vnesite hitrost podajanja, ki je potrebna za test. Zmanjšanje vpliva tudi na vrednosti pospeš in upočasnjevanja.</value>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>Navaja trenutni položaj osi verige kot vrednost glede na začetno višino.</value>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>Vnesite število zahtevanih testnih ciklov.</value>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>Navaja število trenutno izvedenih celotnih ciklov.</value>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>Premakne navpično os na položaj znotraj izbrane nakladalne police. Višina upošteva odmik nakladanja.</value>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>Zaženi testni postopek. Gumb je aktiven šele, ko je navpična os na položaju zahtevane nakladalne police.</value>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>Zaustavi testni cikel.</value>
+  </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>Vrne način, ki je trenutno omogočen za ročne ukaze. Način razširjenega teka se samodejno nastavi po zaključku zagona.</value>
+  </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>Shranjevanje in obnavljanje konfiguracije stroja.</value>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>Postopek omogoča shranjevanje ali obnovo konfiguracijskih datotek na zunanji napravi.</value>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>Postopek shranjevanja konfiguracije.</value>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>Prikazuje avtomatsko ustvarjeno mapo, v katero bodo shranjene konfiguracijske datoteke.</value>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>Zažene postopek za shranjevanje konfiguracijskih datotek. Morebitne datoteke, ki so že prisotne, bodo prepisane.</value>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>Potrdi postopek shranjevanja datotek.</value>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>Prekliče postopek shranjevanja datotek.</value>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>Postopek obnovitve konfiguracije.</value>
+  </data>
+  <data name="HelpSRCLoadFolder" xml:space="preserve">
+    <value>Prikazuje zaznano mapo, iz katere bodo prevzete datoteke za obnovitev.</value>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>Zažene postopek za nalaganje konfiguracijskih datotek. Morebitne datoteke, ki so že prisotne, bodo prepisane.</value>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>Potrdi postopek nalaganja datotek.</value>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>Prekliči postopek nalaganja datotek.</value>
+  </data>
+  <data name="HelpOpMainPageHeadr" xml:space="preserve">
+    <value>Začetna stran.</value>
+  </data>
+  <data name="HelpOpMainPageDescription" xml:space="preserve">
+    <value>Glavni meni omogoča, da z ustreznimi gumbi na zgornjem delu zaslona preverite stanje stroja. Na levi strani lahko z navigacijskimi gumbi dostopate do različnih funkcij.</value>
+  </data>
+  <data name="HelpOpMainManu" xml:space="preserve">
+    <value>Označuje ročno stanje. Samodejni cikel je prekinjen.</value>
+  </data>
+  <data name="HelpOpMainAuto" xml:space="preserve">
+    <value>Označuje avtomatsko stanje. Stroj upravlja ukaze, ki prihajajo iz krmilnega sistema.</value>
+  </data>
+  <data name="HelpOpMainOff" xml:space="preserve">
+    <value>Moč motorjev je onemogočena. Premiki v nobenem načinu niso mogoči.</value>
+  </data>
+  <data name="HelpOpMainOn" xml:space="preserve">
+    <value>Moč motorjev je omogočena. Stroj lahko izvaja premike.</value>
+  </data>
+  <data name="HelpOpMainServiceAdvice" xml:space="preserve">
+    <value>Sistem javlja, da se nekateri deli stroja približujejo času načrtovanega vzdrževanja.</value>
+  </data>
+  <data name="HelpOpMainServiceAllert" xml:space="preserve">
+    <value>Sistem javlja, da so nekateri deli stroja zaključili načrtovano obdobje med dvema vzdrževanjema. Potrebno je vzdrževanje!</value>
+  </data>
+  <data name="HelpOpMainError" xml:space="preserve">
+    <value>Med delovanjem stroja je prišlo do napake. S pritiskom na ta gumb se odpre stran za upravljanje postopkov obnovitve.</value>
+  </data>
+  <data name="HelpOpMainUser" xml:space="preserve">
+    <value>Navaja ime trenutno prijavljenega operaterja. S pritiskom na gumb se lahko odjavite.</value>
+  </data>
+  <data name="HelpOpMainHelp" xml:space="preserve">
+    <value>Gumb odpre stran s pomočjo za postopek, ki ga uporabljate.</value>
+  </data>
+  <data name="HelpOpMainDrawerOp" xml:space="preserve">
+    <value>Gumb odpre stran za upravljanje načrtovanih postopkov v predalu na nakladalni polici.</value>
+  </data>
+  <data name="HelpOpMainItem" xml:space="preserve">
+    <value>Gumb odpre stran, ki omogoča iskanje kode izdelka.</value>
+  </data>
+  <data name="HelpOpMainLists" xml:space="preserve">
+    <value>Gumb odpre stran s seznami, ki čakajo na izvedbo in ki jih je načrtoval WMS.</value>
+  </data>
+  <data name="HelpOpMainOther" xml:space="preserve">
+    <value>Omogoča dostop do dodatnih funkcij.</value>
+  </data>
+  <data name="HelpDrawerWaitDescription" xml:space="preserve">
+    <value>Stran kaže, da je sistem zaključil postopke, predvidene na zadnjem predalu, ki je prispel na nakladalno polico. Pričakuje prihod naslednjega predala, ki bo povzročil odprtje strani s predvidenimi postopki.</value>
+  </data>
+  <data name="HelpDrawerWaitNote" xml:space="preserve">
+    <value>Opomba poroča o trenutnem stanju sistema.</value>
+  </data>
+  <data name="HelpDrawerWaitScheduledOperations" xml:space="preserve">
+    <value>Polje navaja število trenutno načrtovanih postopkov v smeri nakladalne police,na katerem dela operater.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
+    <value>Postopek vsebuje vse podrobne informacije v zvezi z jemanjem, predvidenim v predalu, ki je na nakladalni polici, kjer dela uporabnik. Načrt, če je prisoten, prikazuje razdelitev predala, označeno območje pa predel, na katerem lahko delate. Če je prisotna, je prikazana tudi slika izdelka, ki se ga premika.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
+    <value>Prikaže se količina izdelka, ki ga je treba vzeti iz označenega predala.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
+    <value>Uporabnik lahko dejansko dvignjeno količino spremeni v primeru, da zaloga ne zadostuje. V normalnih pogojih je polje že napolnjeno z zahtevano količino.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
+    <value>Okno prikazuje vrsto dodatnih informacij poleg tistih v oknu za pobiranje. Podrobne informacije so prikazane tako za izdelek, ki ga jemljete, kot tudi za morebitni povezan pakirni seznam. Če je prisotna, se prikaže tudi slika izdelka.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
+    <value>Prikaže vrstico seznama, na katero se nanaša postopek jemanja v teku.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Naveden je datum izdelave izdelka, ki je v fazi jemanja.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Če je prisotna, je navedena serija izdelka, ki je v fazi jemanja.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Če je predvideno, je navedeno stanje materiala, ki ga je treba vzeti.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
+    <value>Če je predvideno, navaja pakirni seznam, kjer se zbirajo informacije v zvezi z različnimi izdelki v fazi jemanja.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
+    <value>Če obstaja, navaja opis pakirnega seznama, ki združuje materiale v jemanju.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
+    <value>Prikazuje navedbo vrste embalaže izdelka v fazi jemanja.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Prikaže se količina izdelka, ki ga je treba vzeti iz označenega predala.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
+    <value>Na strani so prikazane podrobnosti o postopku odlaganja, ki trenutno poteka. Več podrobnosti o postopkih, ki jih je treba izvesti, najdete na osnovni strani.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Označuje vrstico seznama, vključenega v postopek, ki poteka.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Navaja datuma izdelave izdelka.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Prikazuje materialno stanje izdelka, ki je v fazi odlaganja.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
+    <value>Prikazuje proizvodno serijo izdelka, ki je v fazi odlaganja.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
+    <value>Navaja vrsto embalaže izdelka, ki je v fazi odlaganja.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
+    <value>Količina za odlaganje v navedeni razdelek.</value>
+  </data>
+  <data name="HelpCommonList" xml:space="preserve">
+    <value>Označena je koda seznama, ki je povezan s postopkom, ki poteka.</value>
+  </data>
+  <data name="HelpCommonListDescription" xml:space="preserve">
+    <value>Prikazuje opis seznama, povezanega s postopkom, ki poteka.</value>
+  </data>
+  <data name="HelpCommonItem" xml:space="preserve">
+    <value>Navaja kodo izdelka, ki je predmet tekočega postopka.</value>
+  </data>
+  <data name="HelpCommonItemDescription" xml:space="preserve">
+    <value>Prikazan je opis izdelka, ki je predmet tekočega postopka.</value>
+  </data>
+  <data name="HelpCommonPosition" xml:space="preserve">
+    <value>Polje prikaz. položaj, v katerem se nahaja razdelek, ki je predmet tekoče operacije, ki je shranjen glede na sprejeto kodiranje.</value>
+  </data>
+  <data name="HelpCommonNote" xml:space="preserve">
+    <value>Operaterju se prikažejo vse mor. op., povez. s postopkom, ki ga je treba izvesti. </value>
+  </data>
+  <data name="HelpCommonDetail" xml:space="preserve">
+    <value>Gumb omogoča vstop na stran, ki prikazuje več podrobnosti v zvezi s postopkom v teku.</value>
+  </data>
+  <data name="HelpCommonConfirm" xml:space="preserve">
+    <value>Potrjuje, da je bil tekoči postopek zaključen.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
+    <value>Postopek omogoča ponovno polnjenje razdelka, ki vsebuje izdelek z enakimi lastnostmi kot tisti v odlaganju. Postopek omogoča posodobitev največje zmogljivosti razdelka, če je zapisana vrednost napačna.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Količina za odlaganje v izbrani razdelek.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
+    <value>Odpre stran za upravljanje posodobitve največje zmogljivosti razdelka.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Omogoča nastavitev količine, ki se dejansko vlije v izbrani razdelek.</value>
+  </data>
+  <data name="HelpCommonGridColumnHeader" xml:space="preserve">
+    <value>Opis stolpcev tabele.</value>
+  </data>
+  <data name="HelpCommonUp" xml:space="preserve">
+    <value>Premakne kazalec na prejšnji element. Z dvojnim pritiskom se premakne na začetek seznama.</value>
+  </data>
+  <data name="HelpCommonDown" xml:space="preserve">
+    <value>Premakne kazalec na naslednji element. Z dvojnim pritiskom se premakne na konec seznama.</value>
+  </data>
+  <data name="HelpListsInWaitDescription" xml:space="preserve">
+    <value>Postopek omogoča ogled vseh seznamov, ki v sistemu WMS čakajo na izvedbo. Za vsak seznam so navedeni vključeni stroji. Izvesti je mogoče samo tisti del seznamov, ki vsebujejo določen izdelek, ki ga je mogoče odvzeti, ki je prisoten v stroju, s katerega se postopek uporablja.</value>
+  </data>
+  <data name="HelpListsInWaitGridList" xml:space="preserve">
+    <value>V stolpcu mreže so kode seznamov, ki čakajo na izvedbo.</value>
+  </data>
+  <data name="HelpListsInWaitGridDescription" xml:space="preserve">
+    <value>V stolpcu mreže so opisi seznamov, ki čakajo na izvedbo.</value>
+  </data>
+  <data name="HelpListsInWaitGridMachine" xml:space="preserve">
+    <value>V stolpcu je za vsak seznam naveden seznam strojev, ki sodelujejo pri njegovi izvedbi.</value>
+  </data>
+  <data name="HelpListsInWaitListsDetail" xml:space="preserve">
+    <value>Gumb omogoča dostop do strani s podrobnostmi seznama, kjer si je mogoče ogledati seznam prisotnih izdelkov.</value>
+  </data>
+  <data name="HelpListsInWaitListsExecute" xml:space="preserve">
+    <value>Če je gumb aktiven, lahko izvedete seznam, ki je trenutno izbran za del, ki je prisoten v stroju, na kateri delate.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
+    <value>Navaja številko vrstice prikazanega seznama.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
+    <value>Navaja kodo izdelka.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
+    <value>Navaja opis izdelka.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
+    <value>Navaja zahtevano količino tega izdelka.</value>
+  </data>
+  <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
+    <value>Stran prikazuje podrobnosti izbranega seznama. Od vseh prikazanih vrstic je mogoče izvajati samo tiste, ki so označene, ker je izdelek v stroju, na katerem delate. Gumb „Izvedi seznam“ je aktiven le, če je v stroju, na katerem delate, vsaj ena izvedljiva vrstica.</value>
+  </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>Postopek omogoča iskanje izdelka s pomočjo stolpca s kodami in stolpca z opisi. Besedilo, vneseno v iskalno polje, se samodejno uporabi za iskanje zahtevanega z uporabo vsebine obeh stolpcev. Rezultat je prikazan v mreži.</value>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>Prikazuje seznam kod izdelkov, ki ustrezajo iskalnim kriterijem.</value>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>Prikazuje opis kod izdelkov, ki ustrezajo iskalnim kriterijem.</value>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>Navaja seznam strojev, ki vsebujejo izdelek, naveden v vrstici. Izdelek je lahko prisoten v enem ali več strojih.</value>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>V polje vnesite zaporedje znakov, ki jih je treba iskati v poljih s kodami in opisi izdelkov.</value>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>Navaja razpoložljivo količino izbranega izdelka v stroju, na katerem delate.</value>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>Polje je omogočeno le, če je količina, ki je razpoložljiva za izbrani izdelek, večja od nič. Vnesete lahko vrednost, ki ne presega razpoložljive količine.</value>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>Omogoča zahtevanje izbranega izdelka v zahtevani količini. Gumb je omogočen le, če je izdelek razpoložljiv v stroju na katerem delate.</value>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>Na strani so prikazani glavni podatki izbranega izdelka. Podrobnejše informacije si lahko ogledate na ravni upravljalnega WMS.</value>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>Prikazuje način upravljanja izdelka.</value>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>Označuje Fifo obdobje izdelka, izraženo v navedeni merski enoti.</value>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>Kategorija, ki ji pripada izdelek.</value>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>Razred premikanja izbranega izdelka.</value>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>Merska enota, izbrana za izdelek.</value>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>Povprečna teža na enoto, izražena v navedeni merski enoti.</value>
+  </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>Omogoča izvajanje označenih vrstic seznama. Gumb je omogočen le, če je na stroju, na katerem delate, mogoče izvesti vsaj eno vrstico izbranega seznama. </value>
+  </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>Stolpec prikazuje stroj ali stroje, na katerih je izdelek trenutno prisoten.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Postopek omogoča, da prikličete izbrani predal na nakladalno polico, na kateri dela operater. Predali z rdečim statusom niso dostopni uporabniku, ki dela, saj ga WMS blokira ali pa so povezani z določenim uporabnikom.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
+    <value>Označuje številko predala, na katerega se nanašajo podatki mreže.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
+    <value>Trenutna višina izbranega predala.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
+    <value>Navaja trenutno težo izbranega predala.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
+    <value>Navaja celico, v kateri je shranjen predal.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
+    <value>Navaja stran stroja, na kateri je shranjen predal.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
+    <value>Poroča o trenutnem stanju predala. Rdeča barva pomeni, da trenutno povezani uporabnik ne more priklicati predala.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
+    <value>Prikaže št. predala, ki ga želite priklicati.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Gumb omogoča priklic predala, ki je trenutno izbran v mreži. Gumb je aktiven, če lahko trenutni uporabnik prikliče predal.</value>
+  </data>
+  <data name="HelpDrawerCompactingDescription" xml:space="preserve">
+    <value>Postopek omogoča optimizacijo prostora, ki ga zasedajo predali, in tako odpravi izgubljene prostore. Postopek izračuna za vsako stran stroja, koliko fragmentov je trenutno izgubljenih, kar kaže, koliko prostora je mogoče obnoviti v primeru popolne optimizacije. Lahko se izbere manjši prostor za optimizacijo, v tem primeru se postopek konča, ko je dosežena zahtevana vrednost.</value>
+  </data>
+  <data name="HelpDrawerCompactingSide" xml:space="preserve">
+    <value>Navaja stran stroja, na katero se nanašajo navedeni podatki.</value>
+  </data>
+  <data name="HelpDrawerCompactingFragment" xml:space="preserve">
+    <value>Navaja število izgubljenih fragmentov na trenutni strani.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
+    <value>Prikazuje največji prostor, ki ga je mog obnoviti na trenutni strani.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Prostor za obnovitev. Privzeto je nastavljena največja vrednost obnovljivega prostora.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
+    <value>Aktivira postopek optimizacije na sprednji strani stroja. Gumb je aktiven, če je mogoče obnoviti potreben prostor.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
+    <value>Aktivira postopek optimizacije na zadnji strani stroja. Gumb je aktiven, če je mogoče obnoviti potreben prostor.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>Postopek zagotavlja podatke o prostoru, zasedenem v različnih predalih in na splošno znotraj stroja. Za vsak predal so podane dodatne informacije, vključno s številom opravljenih nalog, številom razdelkov v notranjosti in odstotkom polnjenja v grafični in številčni obliki.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>Navaja številko predala.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>Navaja število nalog v katerih je sodeloval predal.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>Navaja število označenih razdelkov v predalu ne glede na njihovo stanje.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
+    <value>V grafični obliki prikazuje stopnjo napolnjenosti predala.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
+    <value>Navaja stopnjo napolnjenosti predala v odstotkih.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>Podaja skupno število predalov, vstavljenih v stroj.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>Prikazuje velikost predalov, shranjenih v stroju.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>V grafični in številčni obliki navaja skupno stopnjo polnjenja stroja.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>Omogoča dostop do postopka statistične analize za maso v različnih predalih.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>Postopek zagotavlja podatke o teži v različnih predalih in na splošno znotraj stroja. Za vsak predal so razpoložljive dodatne informacije, vključno s trenutno višino, največjo težo, ki jo je mogoče naložiti za posamezen predal, taro, trenutno skupno težo in odstotkom trenutne teže glede na največjo možno v grafični in številčni obliki. Podan je tudi splošen prikaz, ki velja za celoten stroj.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>Navaja številko predala.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>Trenutna višina predala.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>Navaja največjo dovoljeno težo za predal.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>Navaja težo praznega predala.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>Prikazuje trenutno težo predala.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>Navaja odstotek uporabljene teže glede na največjo možno.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Navaja maksimalno število predalov, vstavljenih v stroj.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>Prikazuje največjo bruto zmogljivost stroja.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>Navaja naloženo bruto težo.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>Maks neto zmogljivost, ki jo dovoljuje stroj.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>Navaja trenutno naloženo neto težo.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>Prikazuje trenutni odstotek naložene teže glede na največjo dovoljeno težo.</value>
+  </data>
+  <data name="HelpMachineStatisticsDescription" xml:space="preserve">
+    <value>Postopek zagotavlja statistične podatke glavnih delov stroja. Navedeni podatki se nanašajo na to, kaj je naprava storila v svojem življenjskem ciklu od trenutka namestitve.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
+    <value>Navaja skupno število ciklov, ki jih je izvedla navpična os. Cikel pomeni premik med dvema točkama.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
+    <value>Prikazuje skupno število km, ki jih je navpična os prepotovala od trenutka namestitve.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
+    <value>Prikazuje skupno številu ciklov, ki jih opravila loputa na nakladalni polici št. 1. Cikel je celoten ali polovični postopek odpiranja ali zapiranja.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
+    <value>Prikazuje skupno številu ciklov, ki jih opravila loputa na nakladalni polici št. 2. Cikel je celoten ali polovični postopek odpiranja ali zapiranja.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
+    <value>Prikazuje skupno številu ciklov, ki jih opravila loputa na nakladalni polici št. 3. Cikel je celoten ali polovični postopek odpiranja ali zapiranja.</value>
+  </data>
+  <data name="HelpMachineStatisticsHorizontalCycles" xml:space="preserve">
+    <value>Polje prikazuje skupno število ciklov, ki jih je veriga na dvigalu stroja izvedla od namestitve. En cikel je en postopke nakladanja ali razkladanja.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay1" xml:space="preserve">
+    <value>Polje prikazuje skupno število predalov, ki so šli čez nakladalno polico št. 1. Število se poveča, ko se predal premakne na nakladalno polico in nato vrne v skladišče.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay2" xml:space="preserve">
+    <value>Polje prikazuje skupno število predalov, ki so šli čez nakladalno polico št. 2. Število se poveča, ko se predal premakne na nakladalno polico in nato vrne v skladišče.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay3" xml:space="preserve">
+    <value>Polje prikazuje skupno število predalov, ki so šli čez nakladalno polico št. 3. Število se poveča, ko se predal premakne na nakladalno polico in nato vrne v skladišče.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
+    <value>Postopek omogoča prikaz stanja vzdrževanja stroja. Za vsak komplet je trenutno stanje prikazano tako, da se z oranžno barvo označi približevanje potrebe po vzdrževanju komponente. Rdeča barva označuje tiste dele, ki so presegli obdobje med zaporednima vzdrževanjema.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
+    <value>Stolpec prikazuje kodo kompleta za izbrano komponento.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
+    <value>Stolpec prikazuje opis različnih kompletov.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
+    <value>Navaja trenutno stanje kompleta. Oranžna barva navaja približevanje vzdrževanja, rdeča obdobje je poteklo in je zato potrebno vzdrževanje.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
+    <value>Stolpec opozarja, da je za določeni komplet že bila poslana zahteva za poseg vzdrževalcem.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
+    <value>Kaže model stroja.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
+    <value>Prikazuje serijsko številko stroja.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
+    <value>Prikazuje datum namestitve stroja.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
+    <value>Navaja datum zadnjega vzdrževanja.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
+    <value>Navaja predvideni datum naslednjega vzdrževanja.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
+    <value>Navaja trenutno stanje kompleta. Oranžna barva navaja približevanje vzdrževanja, rdeča obdobje je poteklo in je zato potrebno vzdrževanje.</value>
+  </data>
+  <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
+    <value>Stran omogoča prikaz podatkov, na katerih temelji vzdrževanje izbranega kompleta. Prikazane so vse informacije, ki jih sistem uporablja za določanje načrtovanih vzdrževalnih del.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
+    <value>Prikazuje kodo komponente, ki jo uporablja izbrani komplet za vzdrževanje.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
+    <value>Prikazuje opis komponente, uporabljene v izbranem kompletu.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
+    <value>Navaja število kosov elementa, ki je potrebno v izbranem kompletu.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
+    <value>Skupno število zaključenih ciklov od namestitve stroja.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
+    <value>Prikazuje število izvedenih ciklov od zadnjega vzdrževanja.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
+    <value>Navaja število ciklov, ki jih je mogoče izvesti med dvema vzdrževanjema.</value>
+  </data>
+  <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Prikazuje stanje kompleta, pri čemer velja, da oranžna barva navaja približevanje vzdrževanja, rdeča pa, da je vzdrževanje poteklo.</value>
+  </data>
+  <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
+    <value>Navaja število ur, potrebnih za izvedbo zahtevanega vzdrževanja.</value>
+  </data>
+  <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Navaja, ali je za vzdrževalna dela, ki jih je treba izvesti, potrebna uporaba ploščadi za delo na višini.</value>
+  </data>
+  <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
+    <value>Omogoča, da službi za pomoč pošljete e-poštno sporočilo z zahtevo, da vas pokličemo, da se dogovorimo za vzdrževanje.</value>
+  </data>
+  <data name="HelpGeneralInfoDescription" xml:space="preserve">
+    <value>Stran prikazuje vrsto splošnih informacij o stroju, na katerem delate. Med drugimi informacijami je prikazan tudi datum naslednjega vzdrževanja. Če je zapadlih vzdrževanj več, se prikaže najnovejši datum.</value>
+  </data>
+  <data name="HelpGeneralInfoModel" xml:space="preserve">
+    <value>Prikazuje model stroja, na katerem delate.</value>
+  </data>
+  <data name="HelpGeneralInfoSerial" xml:space="preserve">
+    <value>Navaja serijsko številko stroja, na katerem delate.</value>
+  </data>
+  <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
+    <value>Prikazuje izdajo prog. Opreme trenutno namešč. na stroju.</value>
+  </data>
+  <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
+    <value>Skupno št. predalov, vstavljenih v stroj.</value>
+  </data>
+  <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
+    <value>Prikazuje datum namestitve stroja.</value>
+  </data>
+  <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Navaja datum zadnjega vzdrževanja.</value>
+  </data>
+  <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Navaja predvideni datum naslednjega vzdrževanja.</value>
+  </data>
+  <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
+    <value>Poroča o trenutnem stanju vzdrževanja naprave.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
+    <value>Stran prikazuje nekaj statističnih informacij v zvezi z uporabo površine predalov in skupno naloženo težo glede na značilnosti stroja. Prikazane so tudi informacije o uporabi stroja.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
+    <value>Skupno št. predalov, premaknjenih od začetka namestitve.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
+    <value>Navaja odstotek površine, zasedene znotraj stroja, glede na skupni razpoložljivi prostor.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
+    <value>Prikazuje skupno naloženo težo glede na največjo dovoljeno težo za stroj.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
+    <value>Prikazuje skupni čas delovanja od namestitve stroja.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
+    <value>Navaja razmerje med skupnim časom, ki je potekel v avtomatskem načinu, in časom delovanja od namestitve.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
+    <value>Koeficient izkoriščenosti prikazuje razmerje med časom delovanja v avtomatskem načinu premikanja predalov, in časom delovanja.</value>
+  </data>
+  <data name="HelpCellsStatisticsDescription" xml:space="preserve">
+    <value>Postopek prikazuje statistične podatke za celice v stroju. Poleg splošnih podatkov, ki se nanašajo na sprednjo in zadnjo stran, so prikazani podatki o številu celic v različnih stanjih, predvidenih tako za sprednjo kot za zadnjo stran.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
+    <value>Prikazuje stanje celice, na katero se nanašajo podatki vrstice.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
+    <value>Prikazuje skupno število celic, katerih stanje je navedeno v prvem stolpcu mreže, ki se nanaša na sprednjo stran.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
+    <value>Navaja odstotek celic, katerih stanje je navedeno v prvem stolpcu mreže, ki se nanaša na sprednjo stran.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
+    <value>Prikazuje skupno število celic, katerih stanje je navedeno v prvem stolpcu mreže, ki se nanaša na sprednjo stran.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
+    <value>Navaja odstotek celic, katerih stanje je navedeno v prvem stolpcu mreže, ki se nanaša na zadnjo stran.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
+    <value>Skupno število celic v stroju.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
+    <value>Skupno število celic na sprednji strani stroja.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
+    <value>Skupno število celic na sprednji zadnji stroja.</value>
+  </data>
+  <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
+    <value>Prikazuje odstotek zasedenih celic glede na skupno število prisotnih celic.</value>
+  </data>
+  <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
+    <value>Gumb omogoča dostop do postopka optimizacije prostora v skladišču.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonCellsStatistics" xml:space="preserve">
+    <value>Aktivira stran za prikaz statistike celic.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonDrawersStatistics" xml:space="preserve">
+    <value>Prikaže stran s statističnimi podatki različnih predalov v stroju.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonMachineStatistics" xml:space="preserve">
+    <value>Omogoča dostop do strani za prikaz statističnih podatkov stroja.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonErrorsStatistics" xml:space="preserve">
+    <value>Aktivira stran za prikaz statističnih podatkov za napake, ki jih je stroj ustvarila od namestitve.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonDrawerCall" xml:space="preserve">
+    <value>Prikaže stran, namenjeno takojšnjemu priklicu predala.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonCompacting" xml:space="preserve">
+    <value>Omogoča dostop do strani za upravljanje postopkov optimizacije prostora v skladišču.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonStastistics" xml:space="preserve">
+    <value>Omogoča dostop do razdelka, s statističnimi podatki o stroju, na katerem delate.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonMaintenance" xml:space="preserve">
+    <value>Odpre stran, namenjeno vzdrževalnim postopkom, predvidenim za stroj, na katerem delate.</value>
+  </data>
+  <data name="HelpErrorsStatisticsDescription" xml:space="preserve">
+    <value>Postopek omogoča dostop do strani s statistiko napak, ki se nanaša na stroj, na katerem delate. Statistika zajema celotno obdobje od trenutka namestitve do trenutka vpogleda.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridError" xml:space="preserve">
+    <value>Stolpec tabele prikazuje seznam kod napak, ki jih je ustvaril stroj, na katerem delate.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridTotal" xml:space="preserve">
+    <value>V tem stolpcu je prikazano skupno število zaznav napake.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridPercTotal" xml:space="preserve">
+    <value>Odstotek pojavnosti posamezne napake je naveden glede na skupno število preštetih napak.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersMoved" xml:space="preserve">
+    <value>Polje prikazuje skupno število predalov, ki so bili premaknjeni od začetka namestitve. Šteje se, da je predal premaknjen, ko ga premaknete iz vira na cilj.</value>
+  </data>
+  <data name="HelpErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Prikaže se celoten opis napake, izbrane v tabeli.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotaleErrors" xml:space="preserve">
+    <value>Prikaže se skupno število napak, ki jih je naprava preštela od namestitve.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersNoError" xml:space="preserve">
+    <value>Polje prikazuje stat. podatke, izračunane v sistemu, ki se nanašajo na povprečje predalov, premaknjenih brez napak.</value>
+  </data>
+  <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
+    <value>Sistem izračuna koeficient zanesljivosti stroja kot razmerje med številom preštetih napak in skupnim številom premaknjenih predalov.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
+    <value>Na tej strani so predstavljeni glavni podatki o popisu, ki ga je treba izvesti za različne izdelke, postavljene v predal na nakladalni polici. Postopek, ko je naveden razdelek, ki vsebuje zahtevani izdelek, počaka, da operater vstavi količino kosov, ki so trenutno na zalogi.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Polje prikazuje količino kosov trenutno na zalogi, ki jih je preštel operater.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
+    <value>Stran operaterju ponuja več podrobnosti o postopku popisa, ki trenutno poteka.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
+    <value>Prikazuje datum izdelave izdelka, ki je trenutno na zalogi.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
+    <value>Prikazuje materialno stanje izdelka, ki je v fazi popisovanja.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
+    <value>Prikazuje proizvodno serijo izdelka, ki je v fazi popisovanja.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
+    <value>Prikazuje tip embalaže, uporabljene za izdelek, ki je v fazi popisovanja.</value>
+  </data>
+  <data name="HelpListsInWaitGridType" xml:space="preserve">
+    <value>Navaja vrsto seznama po naslednjem kodiranju:   P: jemanje V: odlaganje I: Inventura</value>
+  </data>
+  <data name="HelpCommonListType" xml:space="preserve">
+    <value>Navaja vrsto seznama, izbranega v skladu z naslednjim kodiranjem:  P : Jemanje V: Odlaganje I: Inventura.</value>
+  </data>
+  <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
+    <value>Polje prikazuje trenutno stanje WMS-ja, če je prisoten, ki nadzoruje stroj, na katerem delate.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
+    <value>Stran prikazuje napredovanje postopka optimizacije. Naveden je predal, ki ga premikate, iz katere celice je vzet in v katero celico je namenjen. Prikazan je tudi potek postopka z navedbo drobcev in prostora, ki ga je treba obnoviti, poleg že obnovljenega prostora.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Navaja kodo predala, ki se trenutno premika.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Navaja izvorno celico, v kateri je bil shranjen predal, ki se ga premika.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Navaja številko celice, kamor se bo predal premaknil.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
+    <value>Prikazuje trenutno fazo cikla premikanja z različnih predalov.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Kaže trenutni položaj navpične osi.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Navaja trenutni položaj vodoravne osi.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
+    <value>Navaja št. fragmentov, ki jih je še treba stisniti.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Navaja skupni trenutno obnovljeni prostor.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Prikazuje prostor za obnov. Ko bo kol. dosežena, se bo postopek zaključil.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter" xml:space="preserve">
+    <value>Prikazuje skupno številu ciklov, ki jih opravila loputa na nakladalni polici. Cikel je celoten ali polovični postopek odpiranja ali zapiranja.</value>
+  </data>
+  <data name="CarouselCalibrationFunctionDescription" xml:space="preserve">
+    <value>Funkcija umerjanja vrtljivega dela omogoča umerjanje prave vrednosti z vrsto zaporednih avtomatskih premikov in nato posodobitvijo privzete vrednosti, ki jo predlaga sistem. Postopek deluje v zaporednih korakih do uspešnega zaključka.</value>
+  </data>
+  <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
+    <value>Funkcija umerjanja zunanje nakladalne police omogoča umerjanje prave vrednosti z vrsto zaporednih avtomatskih premikov in nato posodobitvijo privzete vrednosti, ki jo predlaga sistem. Postopek deluje v zaporednih korakih do uspešnega zaključka.</value>
+  </data>
+  <data name="BayOperationsDescription" xml:space="preserve">
+    <value>Postopek omogoča prikaz tipa postopkov, ki so možni na trenutni nakladalni polici </value>
+  </data>
+  <data name="BayOperationsDescriptionWarning" xml:space="preserve">
+    <value>POZOR: Če je tip postopka onemogočen, bodo seznami, ki jih pošlje WMS, zavrnjeni </value>
+  </data>
+</root>

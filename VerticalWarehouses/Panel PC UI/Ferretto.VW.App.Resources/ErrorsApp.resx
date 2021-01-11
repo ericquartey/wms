@@ -201,4 +201,19 @@
   <data name="UnitSelectIdBay" xml:space="preserve">
     <value>Select the id of the unit/s present in the bay.</value>
   </data>
+  <data name="CellSide" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DrawerReturn" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

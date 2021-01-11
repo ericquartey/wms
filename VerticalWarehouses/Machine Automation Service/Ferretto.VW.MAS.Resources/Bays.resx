@@ -150,4 +150,13 @@
   <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
     <value>The external bay cannot perform an invalid movement</value>
   </data>
+  <data name="TheBayContainsALoadingUnitInItsLowerPosition" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="TheBayNotContainsALoadingUnitInItsLowerPosition" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="TheBayNotContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
