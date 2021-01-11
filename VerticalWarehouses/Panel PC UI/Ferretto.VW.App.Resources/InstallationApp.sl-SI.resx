@@ -117,14 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ActualPosition" xml:space="preserve">
-    <value>Trenutni položaj</value>
-  </data>
   <data name="Auto" xml:space="preserve">
     <value>Avt.</value>
-  </data>
-  <data name="Backwards" xml:space="preserve">
-    <value>Nazaj</value>
   </data>
   <data name="BeltBurnishing" xml:space="preserve">
     <value>Utekanje jermena</value>
@@ -132,41 +126,17 @@
   <data name="Down" xml:space="preserve">
     <value>Dol</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Napaka</value>
-  </data>
-  <data name="FeedRate" xml:space="preserve">
-    <value>Hitr Podaj%</value>
-  </data>
   <data name="Forwards" xml:space="preserve">
     <value>Naprej</value>
-  </data>
-  <data name="Installer" xml:space="preserve">
-    <value>Monter</value>
   </data>
   <data name="LogOff" xml:space="preserve">
     <value>Odklopi</value>
   </data>
-  <data name="LowSpeedMovementsTest" xml:space="preserve">
-    <value>Premiki na majhni hitr</value>
-  </data>
   <data name="Shutter" xml:space="preserve">
     <value>Loputa</value>
   </data>
-  <data name="LSMTGateEngineTitle" xml:space="preserve">
-    <value>Premiki motorja lopute</value>
-  </data>
-  <data name="HorizontalAxis" xml:space="preserve">
-    <value>Vodoravna os</value>
-  </data>
-  <data name="LSMTHorizontalAxisTitle" xml:space="preserve">
-    <value>Premiki vodoravne osi</value>
-  </data>
   <data name="VerticalAxis" xml:space="preserve">
     <value>Dvigalo</value>
-  </data>
-  <data name="LSMTVerticalEngineTitle" xml:space="preserve">
-    <value>Premiki navpične osi</value>
   </data>
   <data name="Manual" xml:space="preserve">
     <value>Ročno</value>
@@ -174,29 +144,14 @@
   <data name="Off" xml:space="preserve">
     <value>Ugas.</value>
   </data>
-  <data name="OffsetCalibration" xml:space="preserve">
-    <value>Umerjanje odmika</value>
-  </data>
   <data name="On" xml:space="preserve">
     <value>Prižg.</value>
   </data>
   <data name="Up" xml:space="preserve">
     <value>Gor</value>
   </data>
-  <data name="VerifyCircuitIntegrity" xml:space="preserve">
-    <value>Prev celovitosti vezja</value>
-  </data>
-  <data name="VerifyPanelPosition" xml:space="preserve">
-    <value>Preverjanje položaja plošče</value>
-  </data>
-  <data name="VerifyWeightController" xml:space="preserve">
-    <value>Prev nadzora teže</value>
-  </data>
   <data name="OriginVerticalAxis" xml:space="preserve">
     <value>Izvor navpične osi</value>
-  </data>
-  <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
-    <value>Izvor navpične osi je bil pravilno izveden.</value>
   </data>
   <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
     <value>Izvor navpične osi ni bil izveden.</value>
@@ -222,29 +177,14 @@
   <data name="UpperBound" xml:space="preserve">
     <value>Zgornja meja (mm)</value>
   </data>
-  <data name="ResolutionCalibration" xml:space="preserve">
-    <value>Umerjanje odpravljanja</value>
-  </data>
-  <data name="SensorsState" xml:space="preserve">
-    <value>Stanje senz</value>
-  </data>
   <data name="Bays" xml:space="preserve">
     <value>NkPo</value>
   </data>
   <data name="Cradle" xml:space="preserve">
     <value>Ležiš</value>
   </data>
-  <data name="Gate" xml:space="preserve">
-    <value>Pregrada</value>
-  </data>
-  <data name="OtherSensors" xml:space="preserve">
-    <value>Drugi senzor</value>
-  </data>
   <data name="AntiIntrusionGate" xml:space="preserve">
     <value>Pregrada proti poseganju</value>
-  </data>
-  <data name="BrakeResistanceOvertemperature" xml:space="preserve">
-    <value>Upor zavor za prekomerno temp.</value>
   </data>
   <data name="CradleEngineSelected" xml:space="preserve">
     <value>Izbran motor ležišča</value>
@@ -255,20 +195,11 @@
   <data name="EmergencyEndRun" xml:space="preserve">
     <value>Kon stik zaust v sili</value>
   </data>
-  <data name="GateSensorA" xml:space="preserve">
-    <value>Pregradni senzor A</value>
-  </data>
-  <data name="GateSensorB" xml:space="preserve">
-    <value>Pregradni senzor B</value>
-  </data>
   <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
     <value>Prisot UDC v ležišču na str. stroja</value>
   </data>
   <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
     <value>Prisot UDC v ležišču na str. oper.</value>
-  </data>
-  <data name="LuPresentInBay" xml:space="preserve">
-    <value>Predal na nak polici</value>
   </data>
   <data name="MicroCarterLeftSide" xml:space="preserve">
     <value>Mikro ohišje na levi str.</value>
@@ -279,20 +210,8 @@
   <data name="MushroomHeadButton" xml:space="preserve">
     <value>Gumb za izk v sili</value>
   </data>
-  <data name="PawlEncoder" xml:space="preserve">
-    <value>Kodir zatikalnika</value>
-  </data>
-  <data name="ResetSecurityFunction" xml:space="preserve">
-    <value>Ponast varnostnih funkcij</value>
-  </data>
   <data name="SecurityFunctionActive" xml:space="preserve">
     <value>Aktivna varnostna funkcija</value>
-  </data>
-  <data name="ShapeControl" xml:space="preserve">
-    <value>Kontrola modela</value>
-  </data>
-  <data name="VerticalAxisBrake" xml:space="preserve">
-    <value>Zavora navpične osi</value>
   </data>
   <data name="ZeroPawlSensor" xml:space="preserve">
     <value>Senz za ničel zatikalnik </value>
@@ -312,32 +231,11 @@
   <data name="InitialPosition" xml:space="preserve">
     <value>Začetna višina (mm)</value>
   </data>
-  <data name="MeasuredLenght" xml:space="preserve">
-    <value>Izmerjeni premik (mm)</value>
-  </data>
   <data name="NewResolution" xml:space="preserve">
     <value>Novo odpravljanje (imp/mm)</value>
   </data>
-  <data name="RepositionLenght" xml:space="preserve">
-    <value>Dolžina premika (mm)</value>
-  </data>
-  <data name="ResolutionModified" xml:space="preserve">
-    <value>Ločljivost je bila uspešno sprem.</value>
-  </data>
   <data name="CurrentResolution" xml:space="preserve">
     <value>Trenutna ločljivost (imp/mm)</value>
-  </data>
-  <data name="DesiredMovement" xml:space="preserve">
-    <value>Želen premik (mm)</value>
-  </data>
-  <data name="InsertDesiredMovement" xml:space="preserve">
-    <value>Vnesite želeni premik.</value>
-  </data>
-  <data name="InsertiInitialPosition" xml:space="preserve">
-    <value>Vnesite želeni začetni položaj.</value>
-  </data>
-  <data name="InsertMeasuredMovement" xml:space="preserve">
-    <value>Vnesite izmerjeni premik.</value>
   </data>
   <data name="MeasuredMovement" xml:space="preserve">
     <value>Izmerjen tek (mm)</value>
@@ -345,14 +243,8 @@
   <data name="VerticalResolutionCalibration" xml:space="preserve">
     <value>Umerjanje resolucije navpične osi</value>
   </data>
-  <data name="VerticalAxisCalibrating" xml:space="preserve">
-    <value>Poteka umerjanje navp. osi ...</value>
-  </data>
   <data name="Closed" xml:space="preserve">
     <value>Zaprto</value>
-  </data>
-  <data name="CompletedCycles" xml:space="preserve">
-    <value>Zaključeni cikli</value>
   </data>
   <data name="PerformedCyclesThisSession" xml:space="preserve">
     <value>Zaključeni cikli (seja)</value>
@@ -363,9 +255,6 @@
   <data name="DelayBetweenCycles" xml:space="preserve">
     <value>Zamik med cikli (s)</value>
   </data>
-  <data name="Middle" xml:space="preserve">
-    <value>Vmesna</value>
-  </data>
   <data name="Open" xml:space="preserve">
     <value>Odprta</value>
   </data>
@@ -375,32 +264,14 @@
   <data name="Gate1Control" xml:space="preserve">
     <value>Test lopute nak pol1</value>
   </data>
-  <data name="Gate2Control" xml:space="preserve">
-    <value>Prev pregrade 2</value>
-  </data>
-  <data name="Gate3Control" xml:space="preserve">
-    <value>Prev pregrade 3</value>
-  </data>
-  <data name="ActiveRaysQuantity" xml:space="preserve">
-    <value>Aktivir žarki</value>
-  </data>
   <data name="CurrentHeight" xml:space="preserve">
     <value>Trenut višina (mm)</value>
-  </data>
-  <data name="GateCalibrated" xml:space="preserve">
-    <value>Umerjena pregrada.</value>
   </data>
   <data name="GateCorrection" xml:space="preserve">
     <value>Popravek pregrade (mm)</value>
   </data>
-  <data name="GateOutOfTolerance" xml:space="preserve">
-    <value>Pregrada je izven tolerance</value>
-  </data>
   <data name="Gate1HeightControl" xml:space="preserve">
     <value>Nast pregrade za merjenje viš predala na nak pol 1</value>
-  </data>
-  <data name="PanelsControl" xml:space="preserve">
-    <value>Preverjanje plošč</value>
   </data>
   <data name="SpeedMMSec" xml:space="preserve">
     <value>Hitrost (mm/s)</value>
@@ -417,15 +288,6 @@
   <data name="WeightControl" xml:space="preserve">
     <value>Prev teže</value>
   </data>
-  <data name="Gate2HeightControl" xml:space="preserve">
-    <value>Nast pregrade za merjenje viš predala na nak pol 2</value>
-  </data>
-  <data name="Gate3HeightControl" xml:space="preserve">
-    <value>Nast pregrade za merjenje viš predala na nak pol 3</value>
-  </data>
-  <data name="GateHeightControl" xml:space="preserve">
-    <value>Pregrada za merjenje viš</value>
-  </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
     <value>Zahtevana toleranca (%)</value>
   </data>
@@ -434,12 +296,6 @@
   </data>
   <data name="MeasuredWeight" xml:space="preserve">
     <value>Izmerjena teža(kg)</value>
-  </data>
-  <data name="MeasuredWeightInTolerance" xml:space="preserve">
-    <value>Izmerjena teža je znotraj tolerance.</value>
-  </data>
-  <data name="MeasuredWeightOutOfTolerance" xml:space="preserve">
-    <value>Izmerjena teža je izven tolerance.</value>
   </data>
   <data name="TestRun" xml:space="preserve">
     <value>Testni tek (mm)</value>
@@ -453,23 +309,14 @@
   <data name="DoCorrectOffset" xml:space="preserve">
     <value>Zaključi postop</value>
   </data>
-  <data name="AcceptOffset" xml:space="preserve">
-    <value>Sprejmi</value>
-  </data>
   <data name="ReferenceCellHeight" xml:space="preserve">
     <value>Višina izbrane celice (mm)</value>
-  </data>
-  <data name="CellNumber" xml:space="preserve">
-    <value>Št. celice</value>
   </data>
   <data name="StepValue" xml:space="preserve">
     <value>Vred koraka (mm)</value>
   </data>
   <data name="CellHeight" xml:space="preserve">
     <value>Viš. celice (mm)</value>
-  </data>
-  <data name="CellsPanelControl" xml:space="preserve">
-    <value>Preverjanje plošč police</value>
   </data>
   <data name="CurrentCell" xml:space="preserve">
     <value>Izbrana celica</value>
@@ -498,50 +345,11 @@
   <data name="BeltBurnishingDone" xml:space="preserve">
     <value>Utekanje jermena</value>
   </data>
-  <data name="Gate1Done" xml:space="preserve">
-    <value>Loputa nak pol1</value>
-  </data>
-  <data name="Gate2Done" xml:space="preserve">
-    <value>Loputa nak pol2</value>
-  </data>
-  <data name="Gate3Done" xml:space="preserve">
-    <value>Loputa nak pol3</value>
-  </data>
-  <data name="HorizontalAxisHomedDone" xml:space="preserve">
-    <value>Izvor vodoravne osi</value>
-  </data>
-  <data name="Laser1Done" xml:space="preserve">
-    <value>Laserski kazaln 1</value>
-  </data>
-  <data name="Laser2Done" xml:space="preserve">
-    <value>Laserski kazaln 2</value>
-  </data>
-  <data name="Laser3Done" xml:space="preserve">
-    <value>Laserski kazaln 3</value>
-  </data>
-  <data name="Shape1Done" xml:space="preserve">
-    <value>Kontrola višine nak pol1</value>
-  </data>
-  <data name="Shape2Done" xml:space="preserve">
-    <value>Kontrola višine nak pol2</value>
-  </data>
-  <data name="Shape3Done" xml:space="preserve">
-    <value>Kontrola višine nak pol3</value>
-  </data>
   <data name="VerticalAxisHomedDone" xml:space="preserve">
     <value>Izvor navpične osi</value>
   </data>
   <data name="VerticalResolutionDone" xml:space="preserve">
     <value>Resolucija navpične osi</value>
-  </data>
-  <data name="VerticalAxisCalibration" xml:space="preserve">
-    <value>Umerjanje navpične osi</value>
-  </data>
-  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
-    <value>Umerjanje osi je končano</value>
-  </data>
-  <data name="AxisNotCalibratedYet" xml:space="preserve">
-    <value>Umerjanje osi ni izvedeno</value>
   </data>
   <data name="CellsControl" xml:space="preserve">
     <value>Prev višine celic</value>
@@ -549,35 +357,14 @@
   <data name="MeasuredInitialPosition" xml:space="preserve">
     <value>Izmerjena zač. višina (mm)</value>
   </data>
-  <data name="MoveToInitialPosition" xml:space="preserve">
-    <value>Premakni os na začetni položaj</value>
-  </data>
-  <data name="InsertMeasuredInitialPosition" xml:space="preserve">
-    <value>Vnesi izmerjeni začetni položaj.</value>
-  </data>
   <data name="MoveToPosition" xml:space="preserve">
     <value>Premakni na položaj</value>
-  </data>
-  <data name="ConfirmResolution" xml:space="preserve">
-    <value>Potrdi novo resolucijo ali prekini postopek.</value>
-  </data>
-  <data name="MovingToDesiredPosition" xml:space="preserve">
-    <value>Premikanje v želeni položaj ...</value>
-  </data>
-  <data name="SettingInitialPosition" xml:space="preserve">
-    <value>Nastavljanje začetnega položaja ...</value>
   </data>
   <data name="CellCorrection" xml:space="preserve">
     <value>Popravek višine celice (mm)</value>
   </data>
   <data name="VerticalOffsetVerify" xml:space="preserve">
     <value>Prev navpičnega odmika</value>
-  </data>
-  <data name="CellPositionDone" xml:space="preserve">
-    <value>Viš. celic preverjene</value>
-  </data>
-  <data name="HeightControlCheck" xml:space="preserve">
-    <value>Kontrola višine</value>
   </data>
   <data name="ShutterSensorA" xml:space="preserve">
     <value>Senzor lopute A</value>
@@ -594,9 +381,6 @@
   <data name="CloseProcedure" xml:space="preserve">
     <value>Zaklj. postopek</value>
   </data>
-  <data name="LSMTElevator" xml:space="preserve">
-    <value>Dvigalo</value>
-  </data>
   <data name="NextPanel" xml:space="preserve">
     <value>Naslednja plošča</value>
   </data>
@@ -612,9 +396,6 @@
   <data name="VerticalAxisButton" xml:space="preserve">
     <value>Dvigalo</value>
   </data>
-  <data name="CellsSideControlButton" xml:space="preserve">
-    <value>Spremeni sklop celic</value>
-  </data>
   <data name="CellsSideControlDescription" xml:space="preserve">
     <value>Sprem. višine skupine celic</value>
   </data>
@@ -629,9 +410,6 @@
   </data>
   <data name="CellsSideControlSelectedSide" xml:space="preserve">
     <value>Izbrana stran</value>
-  </data>
-  <data name="LoadingDrawersButton" xml:space="preserve">
-    <value>Naklad predalov</value>
   </data>
   <data name="LoadingDrawersPageHeader" xml:space="preserve">
     <value>Naklad predalov.</value>
@@ -653,9 +431,6 @@
   </data>
   <data name="LoadingDrawersStartInsertion" xml:space="preserve">
     <value>Začni vstavljanje</value>
-  </data>
-  <data name="LoadFirstDrawerButton" xml:space="preserve">
-    <value>Naloži prvi predal</value>
   </data>
   <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
     <value>Nalag prv predala in test celice</value>
@@ -699,9 +474,6 @@
   <data name="BayHeightCheckNextPosition" xml:space="preserve">
     <value>Naslednji položaj</value>
   </data>
-  <data name="DrawerLoadingUnloadingTest" xml:space="preserve">
-    <value>Test nakl ali razkl</value>
-  </data>
   <data name="DLUTestHeader" xml:space="preserve">
     <value>Test nakl razkl predala na nak pol.</value>
   </data>
@@ -728,15 +500,6 @@
   </data>
   <data name="LSMTComandNote" xml:space="preserve">
     <value>Ročne kontrole trenutno omogočajo majhne premike pri nizki hitrosti brez blokade.</value>
-  </data>
-  <data name="Carousel" xml:space="preserve">
-    <value>Vrt del</value>
-  </data>
-  <data name="CarouselMovements" xml:space="preserve">
-    <value>Premik vrt dela</value>
-  </data>
-  <data name="SaveRestoreConfigButton" xml:space="preserve">
-    <value>Shrani in obnovi</value>
   </data>
   <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
     <value>Shrani konfig. datoteko.</value>
@@ -765,12 +528,6 @@
   <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
     <value>Prekliči nalaganje</value>
   </data>
-  <data name="HomingCompleted" xml:space="preserve">
-    <value>Umerjanje je bilo uspešno</value>
-  </data>
-  <data name="HomingStarted" xml:space="preserve">
-    <value>Začni umerjanje</value>
-  </data>
   <data name="HorizontalHomingCompleted" xml:space="preserve">
     <value>Umerjanje vodoravne osi je končano</value>
   </data>
@@ -785,9 +542,6 @@
   </data>
   <data name="SwitchEngineStarted" xml:space="preserve">
     <value>Menjava motorja začeta</value>
-  </data>
-  <data name="VerticalHomingCompleted" xml:space="preserve">
-    <value>Umerjanje navpične osi zaključeno</value>
   </data>
   <data name="VerticalHomingExecuting" xml:space="preserve">
     <value>Izvaja se umerjanje navpične osi ({0} od {1})</value>
@@ -804,24 +558,6 @@
   <data name="SwitchEngineError" xml:space="preserve">
     <value>Napaka izmenj osi</value>
   </data>
-  <data name="HomingError" xml:space="preserve">
-    <value>Napaka umerjanja</value>
-  </data>
-  <data name="ErrorRetrievingConfigurationData" xml:space="preserve">
-    <value>Podatki o konfiguraciji niso zbrani pravilno</value>
-  </data>
-  <data name="ValueNotValid" xml:space="preserve">
-    <value>Vnesena vrednost ni velj</value>
-  </data>
-  <data name="UpdateResolution" xml:space="preserve">
-    <value>Posodobi resolucijo</value>
-  </data>
-  <data name="ManualDrawerStoreRecallButton" xml:space="preserve">
-    <value>Naloži / prikliči predal</value>
-  </data>
-  <data name="LUPresentMiddleBottomBay" xml:space="preserve">
-    <value>Drugi predal na nakladalni polici</value>
-  </data>
   <data name="StartManualDrawerRecall" xml:space="preserve">
     <value>Prik iz cel na nak pol</value>
   </data>
@@ -833,9 +569,6 @@
   </data>
   <data name="InitializingWithEllipsis" xml:space="preserve">
     <value>Inicializacija ...</value>
-  </data>
-  <data name="Others" xml:space="preserve">
-    <value>Drugi</value>
   </data>
   <data name="Bay1" xml:space="preserve">
     <value>NaPol1</value>
@@ -864,20 +597,8 @@
   <data name="Step2" xml:space="preserve">
     <value>Korak 2</value>
   </data>
-  <data name="Step3" xml:space="preserve">
-    <value>Korak 3</value>
-  </data>
-  <data name="MeasuredFinalPosition" xml:space="preserve">
-    <value>Izmerjena končna viš (mm)</value>
-  </data>
-  <data name="MeasuredDistance" xml:space="preserve">
-    <value>Izmerjen tek (mm)</value>
-  </data>
   <data name="CellSide" xml:space="preserve">
     <value>Str. celic</value>
-  </data>
-  <data name="MoveToCellHeight" xml:space="preserve">
-    <value>Vrata na viš celice</value>
   </data>
   <data name="BayPositionDown" xml:space="preserve">
     <value>Nizki položaj</value>
@@ -890,9 +611,6 @@
   </data>
   <data name="ExternalBay" xml:space="preserve">
     <value>Zun nak pol</value>
-  </data>
-  <data name="ExternalBayManualMovements" xml:space="preserve">
-    <value>Ročni premiki zun nak police</value>
   </data>
   <data name="ApplyCorrection" xml:space="preserve">
     <value>Uporabi popravek</value>
@@ -924,23 +642,11 @@
   <data name="Cells" xml:space="preserve">
     <value>Celic</value>
   </data>
-  <data name="TrayInCell" xml:space="preserve">
-    <value>Predali v celici</value>
-  </data>
   <data name="Elevator" xml:space="preserve">
     <value>Dvigalo</value>
   </data>
-  <data name="EmbarkedTray" xml:space="preserve">
-    <value>Predal naložen</value>
-  </data>
   <data name="LoadedTray" xml:space="preserve">
     <value>Predal naložen</value>
-  </data>
-  <data name="Disembark" xml:space="preserve">
-    <value>Odst</value>
-  </data>
-  <data name="Embark" xml:space="preserve">
-    <value>Naloži</value>
   </data>
   <data name="TrayWeight" xml:space="preserve">
     <value>Teža predala (kg)</value>
@@ -948,47 +654,8 @@
   <data name="ElevatorHorizontalPosition" xml:space="preserve">
     <value>Vodoravni položaj (mm)</value>
   </data>
-  <data name="ElevatorIsInInitialPosition" xml:space="preserve">
-    <value>Dvigalo je na začetnem položaju.</value>
-  </data>
-  <data name="ElevatorIsInFinalPosition" xml:space="preserve">
-    <value>Dvigalo je na končnem položaju.</value>
-  </data>
   <data name="ProcedureWasStopped" xml:space="preserve">
     <value>Postopek je bil prekinjen.</value>
-  </data>
-  <data name="VerticalAxisResolutionUpdated" xml:space="preserve">
-    <value>Resolucija navpične osi posodobljena.</value>
-  </data>
-  <data name="SelectLowerBound" xml:space="preserve">
-    <value>Izberi spodnjo mejo (mm)</value>
-  </data>
-  <data name="SelectUpperBound" xml:space="preserve">
-    <value>Izberi zgornjo mejo (mm)</value>
-  </data>
-  <data name="TimeDelay" xml:space="preserve">
-    <value>Izberi čas čakanja</value>
-  </data>
-  <data name="SaveConfig" xml:space="preserve">
-    <value>Shrani konfiguracijo</value>
-  </data>
-  <data name="MachineNotManualModeWarning" xml:space="preserve">
-    <value>Pozor!!! Stroj mora biti v ročnem stanju</value>
-  </data>
-  <data name="MachineNotRunWarning" xml:space="preserve">
-    <value>Pozor!!! Stroj je treba zagnati</value>
-  </data>
-  <data name="PHC4ComandNote" xml:space="preserve">
-    <value>Model postavite na kratko stran predala in jo postavite tako, da je njen temelj poravnan z navpično referenčno površino (glejte sliko), nato pa, ko je ste pripravljen, pritisnite gumb naprej</value>
-  </data>
-  <data name="PHC4NoteHeader" xml:space="preserve">
-    <value>Pozor</value>
-  </data>
-  <data name="ElevatorIsCellPosition" xml:space="preserve">
-    <value>Dvigalo je na nivoju celice.</value>
-  </data>
-  <data name="SingleBay" xml:space="preserve">
-    <value>Enojna</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Ponastavi</value>
@@ -999,50 +666,6 @@
   <data name="Next" xml:space="preserve">
     <value>Nasl</value>
   </data>
-  <data name="Previous" xml:space="preserve">
-    <value>Predhodni</value>
-  </data>
-  <data name="PHC2ComandNote" xml:space="preserve">
-    <value>Preverite položaj dvigala, da je v položaju, kjer je mogoče verigo obračati, ne da bi pri tem nastala škoda, po potrebi zaprite ali odprite loputo.
-Po preverjanju nadaljujte s pritiskom gumba „Naslednji“</value>
-  </data>
-  <data name="PHC2NoteHeader" xml:space="preserve">
-    <value>Pozor</value>
-  </data>
-  <data name="PHC1ComandNote" xml:space="preserve">
-    <value>Naložite predal na nak polico</value>
-  </data>
-  <data name="PHC1NoteHeader" xml:space="preserve">
-    <value>Pozor</value>
-  </data>
-  <data name="ShutterState" xml:space="preserve">
-    <value>Stanje lopute</value>
-  </data>
-  <data name="Drawer" xml:space="preserve">
-    <value>Predal</value>
-  </data>
-  <data name="PHC3ComandNote" xml:space="preserve">
-    <value>Postavite predal na nakladalno polico za nastavljanje višine.
-Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
-  </data>
-  <data name="PHC3NoteHeader" xml:space="preserve">
-    <value>Pozor</value>
-  </data>
-  <data name="Shape" xml:space="preserve">
-    <value>Model</value>
-  </data>
-  <data name="PHC6ComandNote" xml:space="preserve">
-    <value>Postopek je zaključen, odstranite model iz predala</value>
-  </data>
-  <data name="PHC6NoteHeader" xml:space="preserve">
-    <value>Pozor</value>
-  </data>
-  <data name="Prev" xml:space="preserve">
-    <value>Pred</value>
-  </data>
-  <data name="F" xml:space="preserve">
-    <value>Preklican</value>
-  </data>
   <data name="WeightAnalysis" xml:space="preserve">
     <value>Analiza teže</value>
   </data>
@@ -1051,24 +674,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="NetWeight" xml:space="preserve">
     <value>Neto teža (kg)</value>
-  </data>
-  <data name="DisembarkBackwards" xml:space="preserve">
-    <value>Izprazni nazaj</value>
-  </data>
-  <data name="DisembarkForwards" xml:space="preserve">
-    <value>Izprazni napr</value>
-  </data>
-  <data name="EmbarkBackwards" xml:space="preserve">
-    <value>Naloži nazaj</value>
-  </data>
-  <data name="EmbarkForwards" xml:space="preserve">
-    <value>Naloži naprej</value>
-  </data>
-  <data name="LSMTEngineTitle" xml:space="preserve">
-    <value>Premiki odi</value>
-  </data>
-  <data name="ManualMovements" xml:space="preserve">
-    <value>Ročni premiki</value>
   </data>
   <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
     <value>Požarni zid je omogočen na tem terminalu.</value>
@@ -1087,9 +692,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="LoadingUnitId" xml:space="preserve">
     <value>Id predala</value>
-  </data>
-  <data name="LoadingUnitWeight" xml:space="preserve">
-    <value>Teža predala</value>
   </data>
   <data name="BayCalibration" xml:space="preserve">
     <value>Umer nak pol</value>
@@ -1121,23 +723,8 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
     <value>Prisot UDC na str. Operat</value>
   </data>
-  <data name="LowerBayPosition" xml:space="preserve">
-    <value>Spodnji položaj</value>
-  </data>
-  <data name="UpperBayPosition" xml:space="preserve">
-    <value>Zgornji položaj</value>
-  </data>
-  <data name="BayChainHorizontalPosition" xml:space="preserve">
-    <value>Vod pol. verige nak police</value>
-  </data>
-  <data name="CurrentBayChainPosition" xml:space="preserve">
-    <value>Tren pol verige nak pol</value>
-  </data>
   <data name="InformationSuccessfullyUpdated" xml:space="preserve">
     <value>Podatek je bil posodobljen.</value>
-  </data>
-  <data name="PreviousPanel" xml:space="preserve">
-    <value>Prejšnja plošča</value>
   </data>
   <data name="SaveSuccessful" xml:space="preserve">
     <value>Shranj je bilo uspešno zaključeno</value>
@@ -1159,9 +746,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
     <value>Potrdi izvlečenja predala</value>
-  </data>
-  <data name="SelectDestinationBay" xml:space="preserve">
-    <value>Izberi ciljno nak polico</value>
   </data>
   <data name="ShutterEnduranceTest" xml:space="preserve">
     <value>Test lopute</value>
@@ -1208,12 +792,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="FileReadError" xml:space="preserve">
     <value>Nap pri branju datot</value>
   </data>
-  <data name="DeviceNotFound" xml:space="preserve">
-    <value>Naprave ni mogoče najti</value>
-  </data>
-  <data name="DeviceFound" xml:space="preserve">
-    <value>Naprava najdena</value>
-  </data>
   <data name="ExportSuccessful" xml:space="preserve">
     <value>Izvažanje je bilo uspešno</value>
   </data>
@@ -1237,9 +815,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="CompletedTest" xml:space="preserve">
     <value>Test je bil uspešno zaključ</value>
-  </data>
-  <data name="TestProgress" xml:space="preserve">
-    <value>Poteka test ...</value>
   </data>
   <data name="Rear" xml:space="preserve">
     <value>Zadnji</value>
@@ -1265,9 +840,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="CellWithNumber" xml:space="preserve">
     <value>Celica{0}</value>
   </data>
-  <data name="InBay" xml:space="preserve">
-    <value>naNakPo</value>
-  </data>
   <data name="InBayWithNumber" xml:space="preserve">
     <value>na na po{0}</value>
   </data>
@@ -1286,9 +858,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="HeightReaced" xml:space="preserve">
     <value>Dosežena višina</value>
   </data>
-  <data name="Result" xml:space="preserve">
-    <value>Rezult</value>
-  </data>
   <data name="ResetMachine" xml:space="preserve">
     <value>Ponast. stroja</value>
   </data>
@@ -1300,12 +869,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="ShutterUp" xml:space="preserve">
     <value>Loputa gor</value>
-  </data>
-  <data name="BayPositionOnBotton" xml:space="preserve">
-    <value>na nizkNakPol</value>
-  </data>
-  <data name="BayPositionOnTop" xml:space="preserve">
-    <value>na visNakPol</value>
   </data>
   <data name="PositionOnBotton" xml:space="preserve">
     <value>Nizka</value>
@@ -1324,9 +887,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="Hour" xml:space="preserve">
     <value>Čas</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Dat.</value>
   </data>
   <data name="Year" xml:space="preserve">
     <value>Leto</value>
@@ -1365,7 +925,7 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
     <value>Napaka v začetni fazi posodabljanja.</value>
   </data>
   <data name="ConfigurationDetected" xml:space="preserve">
-    <value>»{0}« je konfig. Datot., ki jo je mog uvoziti.</value>
+    <value>{0} je konfig. Datot., ki jo je mog uvoziti.</value>
   </data>
   <data name="ExportableDeviceDetected" xml:space="preserve">
     <value>Razpoložljive shranjevalne enote.</value>
@@ -1379,14 +939,8 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="NoDevicesAvailableAnymore" xml:space="preserve">
     <value>Shranjevalna enota ni več razpoložljiva.</value>
   </data>
-  <data name="RestoreNotPossible" xml:space="preserve">
-    <value>Uvoz NI mogoč.</value>
-  </data>
   <data name="RestoreNotPossibleFromFile" xml:space="preserve">
     <value>Ni mogoče uvoziti iz datoteke „{0}“.</value>
-  </data>
-  <data name="RestorePossible" xml:space="preserve">
-    <value>Uvoz je mogoč.</value>
   </data>
   <data name="RestorePossibleFromFile" xml:space="preserve">
     <value>Lahko se uvozi iz datoteke „{0}“.</value>
@@ -1399,9 +953,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="ErrorExecutingInstallerApp" xml:space="preserve">
     <value>Napaka pri izvajanju namestitvene aplikacije.</value>
-  </data>
-  <data name="BoardingNotExecutedMissingDrawer" xml:space="preserve">
-    <value>Nalaganje ni izvedeno zaradi odsotn predala</value>
   </data>
   <data name="CellNotValid" xml:space="preserve">
     <value>Celica ni veljav</value>
@@ -1417,15 +968,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="InputToCellIdRequired" xml:space="preserve">
     <value>Potreben InputToCellId.</value>
-  </data>
-  <data name="LandingNotExecutedMissingDrawer" xml:space="preserve">
-    <value>Odstr. ni izved7. zaradi odsotnosti predala</value>
-  </data>
-  <data name="MoveToBayNotExecuted" xml:space="preserve">
-    <value>Pojdi na nak polico ni izved, tren stanje je {0}</value>
-  </data>
-  <data name="StateShouldBeInMode" xml:space="preserve">
-    <value>Stanje bi moralo biti v načinu {0} ali {1}</value>
   </data>
   <data name="StepMustBePositive" xml:space="preserve">
     <value>Korak mora biti pozitiven.</value>
@@ -1490,9 +1032,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="ExtractingFilesCompleted" xml:space="preserve">
     <value>Izvlečenje je bilo uspešno.</value>
   </data>
-  <data name="FieldRequired" xml:space="preserve">
-    <value>Polje potrebno.</value>
-  </data>
   <data name="GoToFreeCell" xml:space="preserve">
     <value>Pojd na prosto cel</value>
   </data>
@@ -1544,9 +1083,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="InvalidSourceChoiceType" xml:space="preserve">
     <value>Neveljavna vrsta izbire vira</value>
   </data>
-  <data name="InvalidValue" xml:space="preserve">
-    <value>Nevelj vredn</value>
-  </data>
   <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
     <value>LoadingUnitId mora biti strogo pozitiven.</value>
   </data>
@@ -1591,21 +1127,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="Compact" xml:space="preserve">
     <value>Kompakt</value>
-  </data>
-  <data name="TotalCycleMoreThanRequired" xml:space="preserve">
-    <value>Skupno zaključenih ciklov je več, kot je zahtevano.</value>
-  </data>
-  <data name="TrayTareValueMustBePositive" xml:space="preserve">
-    <value>Tara mora biti večja od 0</value>
-  </data>
-  <data name="TrayTareValueNotInserted" xml:space="preserve">
-    <value>Tara ni vnesena</value>
-  </data>
-  <data name="WeightValueMustBePositive" xml:space="preserve">
-    <value>Teža mora biti večja od 0</value>
-  </data>
-  <data name="WeightValueNotInserted" xml:space="preserve">
-    <value>Teža ni vnesena</value>
   </data>
   <data name="CarouselCalibration" xml:space="preserve">
     <value>Umerjanje vrt dela</value>
@@ -1703,9 +1224,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="ConfirmAdjustment" xml:space="preserve">
     <value>Potrdi popravek</value>
   </data>
-  <data name="CyclesPerformed" xml:space="preserve">
-    <value>Izvedeni cikli</value>
-  </data>
   <data name="ErrorInMillimiters" xml:space="preserve">
     <value>Napaka (mm)</value>
   </data>
@@ -1717,9 +1235,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="RepeatProcedure" xml:space="preserve">
     <value>Za ponovitev postopka pritisnite Ponovi.</value>
-  </data>
-  <data name="ResetCycles" xml:space="preserve">
-    <value>Ponast.Cikl</value>
   </data>
   <data name="SelectDirectionAndApply" xml:space="preserve">
     <value>Izberite +, če ste nad senzorjem ali - če ste pod njim, in uporabite popravek s pritiskom na Uporabi popravek.</value>
@@ -1856,9 +1371,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="ModifyLowerBoundDialog" xml:space="preserve">
     <value>Naslednji rezultat bo spremenil vrednost LowerBound stroja, nadaljujem?</value>
   </data>
-  <data name="PositionElevatorIndicatedHeight" xml:space="preserve">
-    <value>Dvigalo postavite na navedeno višino</value>
-  </data>
   <data name="ResetTotalCyclesNumber" xml:space="preserve">
     <value>Ali res želiš ponastaviti skupno število zaključenih ciklov?</value>
   </data>
@@ -1892,20 +1404,11 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
     <value>Napaka pri brisanju datoteke posnetka.</value>
   </data>
-  <data name="WmsSettings" xml:space="preserve">
-    <value>Nastavitve WMS</value>
-  </data>
   <data name="DrawerManagement" xml:space="preserve">
     <value>Upr. predalov</value>
   </data>
   <data name="AverageCurrent" xml:space="preserve">
     <value>Povprečni tok [A]</value>
-  </data>
-  <data name="BayDown" xml:space="preserve">
-    <value>NakPoDol</value>
-  </data>
-  <data name="BayUp" xml:space="preserve">
-    <value>NaPoGor</value>
   </data>
   <data name="CallUnit" xml:space="preserve">
     <value>Priklic predala</value>
@@ -1945,9 +1448,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="FallsUnit" xml:space="preserve">
     <value>Vrnitev predala</value>
-  </data>
-  <data name="FreeUnit" xml:space="preserve">
-    <value>Sprosti predal</value>
   </data>
   <data name="GoToCell" xml:space="preserve">
     <value>Pojdi naCel</value>
@@ -1994,9 +1494,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="DataBePositive" xml:space="preserve">
     <value>Podatek mora biti pozitiven.</value>
   </data>
-  <data name="DeviceStatus" xml:space="preserve">
-    <value>Stanje naprave </value>
-  </data>
   <data name="ElevatorInPosition" xml:space="preserve">
     <value>Dvigalo v položaju:</value>
   </data>
@@ -2005,9 +1502,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="InstallationFileFound" xml:space="preserve">
     <value>Najdenih je {0} namestit. datotek</value>
-  </data>
-  <data name="InverterParameters" xml:space="preserve">
-    <value>Param. inverterja</value>
   </data>
   <data name="Left" xml:space="preserve">
     <value>leva</value>
@@ -2102,9 +1596,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="SoftwareUpdate" xml:space="preserve">
     <value>Posodob. prog. opreme</value>
   </data>
-  <data name="Updates" xml:space="preserve">
-    <value>Posodobitve</value>
-  </data>
   <data name="UserManagement" xml:space="preserve">
     <value>Upr. Uporabnik</value>
   </data>
@@ -2113,9 +1604,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
     <value>Počakajte, da se avtomatski postopek konča.</value>
-  </data>
-  <data name="WmsCommunication" xml:space="preserve">
-    <value>Wms komunikacija</value>
   </data>
   <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
     <value>Vzorči vrednosti toka za pridobivanje teže</value>
@@ -2134,12 +1622,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="BayControlMenuTitle" xml:space="preserve">
     <value>Prev nak pol</value>
-  </data>
-  <data name="BayTestMenuDescription" xml:space="preserve">
-    <value>Omogoča izvedbo vrste ponavljajočih se testov za nak polico</value>
-  </data>
-  <data name="BayTestMenuTitle" xml:space="preserve">
-    <value>TestNaPol</value>
   </data>
   <data name="BeltBreakInMenuDescription" xml:space="preserve">
     <value>Izvede vrsto ciklov premikanja navpične osi</value>
@@ -2261,9 +1743,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
     <value>Resolucija navpične osi</value>
   </data>
-  <data name="TestExternalBay" xml:space="preserve">
-    <value>Test zun nak pol</value>
-  </data>
   <data name="UnitManageMenuTitle" xml:space="preserve">
     <value>Upr. predala</value>
   </data>
@@ -2309,20 +1788,11 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="SaveParameters" xml:space="preserve">
     <value>Shrani parametr</value>
   </data>
-  <data name="Check" xml:space="preserve">
-    <value>Preveri</value>
-  </data>
   <data name="Installation" xml:space="preserve">
     <value>Namestitev</value>
   </data>
-  <data name="IpAutomationService" xml:space="preserve">
-    <value>IP storitve za avtomatiz.</value>
-  </data>
   <data name="WmsSetting" xml:space="preserve">
     <value>Nastavitev WMS</value>
-  </data>
-  <data name="WmsState" xml:space="preserve">
-    <value>Stanje Wms / EjLog: </value>
   </data>
   <data name="WmsHostAddress" xml:space="preserve">
     <value>Naslov gostitelja</value>
@@ -2345,20 +1815,11 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="ConfirmProcedure" xml:space="preserve">
     <value>Potrdite postopek</value>
   </data>
-  <data name="Measured" xml:space="preserve">
-    <value>Izmerjen</value>
-  </data>
   <data name="MisurationDone" xml:space="preserve">
     <value>Merjenje izvedeno</value>
   </data>
   <data name="MisurationDoneDescription" xml:space="preserve">
     <value>Na stroju uporabite naslednje meritve</value>
-  </data>
-  <data name="ProfileCalibrateDistance" xml:space="preserve">
-    <value>ProfileCalibrateDistance</value>
-  </data>
-  <data name="ProfileStartDistance" xml:space="preserve">
-    <value>ProfileStartDistance</value>
   </data>
   <data name="RetryProcedure" xml:space="preserve">
     <value>Pon. izvedi postop</value>
@@ -2368,12 +1829,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="ResetTotal" xml:space="preserve">
     <value>Sk. ponast.</value>
-  </data>
-  <data name="HorizzontalChainCalibrationGateOpen" xml:space="preserve">
-    <value>Izvedite premik, ki odpre loputo</value>
-  </data>
-  <data name="HorizzontalChainCalibrationGoToBay" xml:space="preserve">
-    <value>Izvedi premik, ki dvigalo pripelje na nak poli</value>
   </data>
   <data name="StopTest" xml:space="preserve">
     <value>Ust. test</value>
@@ -2401,9 +1856,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="CycleDescription" xml:space="preserve">
     <value>Vnesi število ciklov za izvajanje</value>
-  </data>
-  <data name="Inverter" xml:space="preserve">
-    <value>Inverter</value>
   </data>
   <data name="WmsOffline" xml:space="preserve">
     <value>WMS je brez pov.</value>
@@ -2473,9 +1925,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="ConfigureDevice" xml:space="preserve">
     <value>Konfiguriraj napravo</value>
-  </data>
-  <data name="SerialPortName" xml:space="preserve">
-    <value>Zapor vrata</value>
   </data>
   <data name="SystemPorts" xml:space="preserve">
     <value>Sistemska vrata</value>
@@ -2570,23 +2019,11 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="StartProcedure" xml:space="preserve">
     <value>Pritisni ZAČNI za zagon postopka</value>
   </data>
-  <data name="NoRemovableDevicesFound" xml:space="preserve">
-    <value>Ni mog najti odstranljive naprave</value>
-  </data>
-  <data name="RemovableDevicesFound" xml:space="preserve">
-    <value>Najdene odstranljive naprave</value>
-  </data>
   <data name="SystemPathNotFound" xml:space="preserve">
     <value>Poti ‚{0}‘ ni mogoče najti</value>
   </data>
   <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
     <value>Prepoznana zaporedja (regex)</value>
-  </data>
-  <data name="Abort" xml:space="preserve">
-    <value>Prekl</value>
-  </data>
-  <data name="Bay4" xml:space="preserve">
-    <value>NaPo</value>
   </data>
   <data name="StartTest" xml:space="preserve">
     <value>Začni test</value>
@@ -2626,9 +2063,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="Weight" xml:space="preserve">
     <value>Teža</value>
-  </data>
-  <data name="CellId" xml:space="preserve">
-    <value>Celic Id</value>
   </data>
   <data name="LoadingUnitStatus_InBay" xml:space="preserve">
     <value>NaNakPo</value>
@@ -2708,9 +2142,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="Vertical" xml:space="preserve">
     <value>Navpično</value>
   </data>
-  <data name="All" xml:space="preserve">
-    <value>Vsi</value>
-  </data>
   <data name="ElevatorBay" xml:space="preserve">
     <value>Dvig na nak pol</value>
   </data>
@@ -2725,12 +2156,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   </data>
   <data name="TotalMissions" xml:space="preserve">
     <value>Sk. naloge</value>
-  </data>
-  <data name="HorizontalChainDifference" xml:space="preserve">
-    <value>Razlika</value>
-  </data>
-  <data name="HorizontalChainOriginalDistance" xml:space="preserve">
-    <value>Izvirnik</value>
   </data>
   <data name="MountCamera" xml:space="preserve">
     <value>Namest fotoaparat</value>
@@ -2753,9 +2178,6 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="HoursRefresh" xml:space="preserve">
     <value>Ure osvež</value>
   </data>
-  <data name="RepositoryPathAvailable" xml:space="preserve">
-    <value>Na voljo je pot repozitorija.</value>
-  </data>
   <data name="RemovableDevicesCount" xml:space="preserve">
     <value>Priključene odstranljive naprave</value>
   </data>
@@ -2768,20 +2190,11 @@ Nato dovolite, da nadaljuje s pritiskom gumba „Naslednji“</value>
   <data name="SaveLogsFile" xml:space="preserve">
     <value>Shr dnev</value>
   </data>
-  <data name="LogFile" xml:space="preserve">
-    <value>Dat. Dnevn</value>
-  </data>
   <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
     <value>Nalaganje dnevnikov iz telemetrije ...</value>
   </data>
   <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
     <value>Dnevniki naloženi iz telemetrije</value>
-  </data>
-  <data name="TotalCompletedCycles" xml:space="preserve">
-    <value>Sk. št. zaključ ciklov</value>
-  </data>
-  <data name="AccessoriesBarcodeLeaveOnBase" xml:space="preserve">
-    <value>Informacij o napravi ni mogoče pridobiti. Prepričajte se, da je naprava v svojem nosilcu.</value>
   </data>
   <data name="Accessories" xml:space="preserve">
     <value>Dod oprem</value>

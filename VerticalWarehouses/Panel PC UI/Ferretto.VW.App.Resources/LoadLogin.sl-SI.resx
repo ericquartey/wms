@@ -129,14 +129,8 @@
   <data name="InvalidCredentials" xml:space="preserve">
     <value>Neveljavne poverilnice.</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Prij</value>
-  </data>
   <data name="ModuleLoaded" xml:space="preserve">
     <value>Modul je naložen</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Geslo</value>
   </data>
   <data name="PasswordEnter" xml:space="preserve">
     <value>Vnesi geslo</value>
@@ -155,9 +149,6 @@
   </data>
   <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
     <value>Črtna koda ne ustreza registriranemu uporabniku.</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>Upor. ime</value>
   </data>
   <data name="UserNameMustBeSpecified" xml:space="preserve">
     <value>Navesti je treba uporabniško ime.</value>

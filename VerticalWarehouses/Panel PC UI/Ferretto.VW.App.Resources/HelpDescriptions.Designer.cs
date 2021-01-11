@@ -169,15 +169,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string HelpBCTRActualHeight {
-            get {
-                return ResourceManager.GetString("HelpBCTRActualHeight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to HelpBCTRAdjust.
         /// </summary>
         public static string HelpBCTRAdjust {
@@ -1236,24 +1227,6 @@ namespace Ferretto.VW.App.Resources {
         public static string HelpDrawerSpaceSaturationGridDrawer {
             get {
                 return ResourceManager.GetString("HelpDrawerSpaceSaturationGridDrawer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string HelpDrawerSpaceSaturationGridFilling {
-            get {
-                return ResourceManager.GetString("HelpDrawerSpaceSaturationGridFilling", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string HelpDrawerSpaceSaturationGridFillingPercent {
-            get {
-                return ResourceManager.GetString("HelpDrawerSpaceSaturationGridFillingPercent", resourceCulture);
             }
         }
         
@@ -2590,15 +2563,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string HelpMaintenanceMainPageDescription {
-            get {
-                return ResourceManager.GetString("HelpMaintenanceMainPageDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to HelpMaintenanceMainPageGridDescription.
         /// </summary>
         public static string HelpMaintenanceMainPageGridDescription {
@@ -2856,15 +2820,6 @@ namespace Ferretto.VW.App.Resources {
         public static string HelpSRCLoadConfirmButton {
             get {
                 return ResourceManager.GetString("HelpSRCLoadConfirmButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string HelpSRCLoadFolder {
-            get {
-                return ResourceManager.GetString("HelpSRCLoadFolder", resourceCulture);
             }
         }
         

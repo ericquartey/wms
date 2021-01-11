@@ -502,7 +502,7 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sensore zero culla.
+        ///   Looks up a localized string similar to Elevator chain zero sensor.
         /// </summary>
         public static string SensorElevatorChainZero {
             get {

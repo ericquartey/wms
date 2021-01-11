@@ -922,7 +922,7 @@
     <value>Anfänglicher Aktualisierungsfehler.</value>
   </data>
   <data name="ConfigurationDetected" xml:space="preserve">
-    <value>"{0}" ist importierb. Konfigurationsdatei.</value>
+    <value>{0} ist importierb. Konfigurationsdatei.</value>
   </data>
   <data name="ExportableDeviceDetected" xml:space="preserve">
     <value>Verfügbare Speicherlaufwerke.</value>

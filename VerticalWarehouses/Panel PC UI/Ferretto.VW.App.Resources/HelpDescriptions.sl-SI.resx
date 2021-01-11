@@ -510,9 +510,6 @@
   <data name="HelpBCTRStepValue" xml:space="preserve">
     <value>Vrednost koraka, ki se uporabi za trenutno višino osi ob vsakem pritisku gumba za premikanje.</value>
   </data>
-  <data name="HelpBCTRActualHeight" xml:space="preserve">
-    <value>Trenutni položaj navpične osi.</value>
-  </data>
   <data name="HelpBCTRCorrectionValue" xml:space="preserve">
     <value>Skupna vrednost popravka, ki bo uporabljen za višino nakladalne police-izbrani položaj. </value>
   </data>
@@ -617,9 +614,6 @@
   </data>
   <data name="HelpSRCLoadSide" xml:space="preserve">
     <value>Postopek obnovitve konfiguracije.</value>
-  </data>
-  <data name="HelpSRCLoadFolder" xml:space="preserve">
-    <value>Prikazuje zaznano mapo, iz katere bodo prevzete datoteke za obnovitev.</value>
   </data>
   <data name="HelpSRCLoadButton" xml:space="preserve">
     <value>Zažene postopek za nalaganje konfiguracijskih datotek. Morebitne datoteke, ki so že prisotne, bodo prepisane.</value>
@@ -930,12 +924,6 @@
   <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
     <value>Navaja število označenih razdelkov v predalu ne glede na njihovo stanje.</value>
   </data>
-  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
-    <value>V grafični obliki prikazuje stopnjo napolnjenosti predala.</value>
-  </data>
-  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
-    <value>Navaja stopnjo napolnjenosti predala v odstotkih.</value>
-  </data>
   <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
     <value>Podaja skupno število predalov, vstavljenih v stroj.</value>
   </data>
@@ -1016,9 +1004,6 @@
   </data>
   <data name="HelpMachineStatisticsBay3" xml:space="preserve">
     <value>Polje prikazuje skupno število predalov, ki so šli čez nakladalno polico št. 3. Število se poveča, ko se predal premakne na nakladalno polico in nato vrne v skladišče.</value>
-  </data>
-  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
-    <value>Postopek omogoča prikaz stanja vzdrževanja stroja. Za vsak komplet je trenutno stanje prikazano tako, da se z oranžno barvo označi približevanje potrebe po vzdrževanju komponente. Rdeča barva označuje tiste dele, ki so presegli obdobje med zaporednima vzdrževanjema.</value>
   </data>
   <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
     <value>Stolpec prikazuje kodo kompleta za izbrano komponento.</value>

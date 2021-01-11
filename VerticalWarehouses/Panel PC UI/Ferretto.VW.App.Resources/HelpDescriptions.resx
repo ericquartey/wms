@@ -1656,19 +1656,4 @@
   <data name="BayOperationsDescriptionWarning" xml:space="preserve">
     <value>ATTENTION: If a type of operation is disabled, the lists sent by the WMS will be rejected </value>
   </data>
-  <data name="HelpBCTRActualHeight" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="HelpSRCLoadFolder" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="HelpDrawerSpaceSaturationGridFilling" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="HelpDrawerSpaceSaturationGridFillingPercent" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="HelpMaintenanceMainPageDescription" xml:space="preserve">
-    <value></value>
-  </data>
 </root>

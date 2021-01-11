@@ -61,15 +61,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string AccessoriesAccessoryNotAvailable {
-            get {
-                return ResourceManager.GetString("AccessoriesAccessoryNotAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Configuration and test of the alphanumeric bar.
         /// </summary>
         public static string AccessoriesAlphaNumBarMenuDescription {
@@ -192,15 +183,6 @@ namespace Ferretto.VW.App.Resources {
         public static string AccessoriesCardReaderMenuTitle {
             get {
                 return ResourceManager.GetString("AccessoriesCardReaderMenuTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string AccessoriesEnable {
-            get {
-                return ResourceManager.GetString("AccessoriesEnable", resourceCulture);
             }
         }
         
@@ -331,15 +313,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string AccessoriesTest {
-            get {
-                return ResourceManager.GetString("AccessoriesTest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Configuration and test of the token reader.
         /// </summary>
         public static string AccessoriesTokenReaderMenuDescription {
@@ -448,15 +421,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string MenuBays {
-            get {
-                return ResourceManager.GetString("MenuBays", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cells.
         /// </summary>
         public static string MenuCells {
@@ -489,15 +453,6 @@ namespace Ferretto.VW.App.Resources {
         public static string Movements {
             get {
                 return ResourceManager.GetString("Movements", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string NoAccessoriesInstalled {
-            get {
-                return ResourceManager.GetString("NoAccessoriesInstalled", resourceCulture);
             }
         }
         

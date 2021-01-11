@@ -124,29 +124,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Login {
-            get {
-                return ResourceManager.GetString("Login", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Module Loaded..
         /// </summary>
         public static string ModuleLoaded {
             get {
                 return ResourceManager.GetString("ModuleLoaded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string Password {
-            get {
-                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
@@ -246,15 +228,6 @@ namespace Ferretto.VW.App.Resources {
         public static string UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable {
             get {
                 return ResourceManager.GetString("UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string UserLogin {
-            get {
-                return ResourceManager.GetString("UserLogin", resourceCulture);
             }
         }
         

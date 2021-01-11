@@ -207,7 +207,4 @@
   <data name="TestInProgress" xml:space="preserve">
     <value>Testiranje ...</value>
   </data>
-  <data name="NoGear" xml:space="preserve">
-    <value>Ni zagona</value>
-  </data>
 </root>

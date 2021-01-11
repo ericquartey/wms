@@ -258,19 +258,4 @@
   <data name="UnitsMenuName" xml:space="preserve">
     <value>Menu Units</value>
   </data>
-  <data name="AccessoriesAccessoryNotAvailable" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="AccessoriesEnable" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="AccessoriesTest" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="MenuBays" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="NoAccessoriesInstalled" xml:space="preserve">
-    <value></value>
-  </data>
 </root>

@@ -120,29 +120,17 @@
   <data name="CalibrationBarierError" xml:space="preserve">
     <value>Napaka ne sme biti večja od 1 mm</value>
   </data>
-  <data name="CellSide" xml:space="preserve">
-    <value>Str. celic</value>
-  </data>
   <data name="CheckUnit" xml:space="preserve">
     <value>Prev predala:</value>
   </data>
-  <data name="CurrentCell" xml:space="preserve">
-    <value>Izbrana celica</value>
-  </data>
   <data name="DetailCode" xml:space="preserve">
     <value>Podrob koda</value>
-  </data>
-  <data name="Displacement" xml:space="preserve">
-    <value>Premik (mm)</value>
   </data>
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
     <value>Ko je postopek identifikacije predala končan, preklopi na avtomatsko.</value>
   </data>
   <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
     <value>Ko je postopek identifikacije predala končan, preklopi na ročno.</value>
-  </data>
-  <data name="DrawerReturn" xml:space="preserve">
-    <value>Vrnitev predala</value>
   </data>
   <data name="DrawerSelection" xml:space="preserve">
     <value>Izbira predala</value>
@@ -170,9 +158,6 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
-  </data>
-  <data name="InitialPosition" xml:space="preserve">
-    <value>Začetna višina (mm)</value>
   </data>
   <data name="InvalidUnit" xml:space="preserve">
     <value>Predal ni veljaven, vstavite: </value>

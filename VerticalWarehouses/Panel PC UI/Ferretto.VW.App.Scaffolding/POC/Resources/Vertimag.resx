@@ -121,6 +121,6 @@
     <value>Baia {0}</value>
   </data>
   <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Baia {0}</value>
+    <value>Inverter Bay {0}</value>
   </data>
 </root>

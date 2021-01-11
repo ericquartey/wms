@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccessoriesAccessoryNotAvailable" xml:space="preserve">
-    <value>Oprema ni razpoložljiva</value>
-  </data>
   <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
     <value>Konfiguracija in preverjanje alfanumerične vrstice</value>
   </data>
@@ -161,9 +158,6 @@
   </data>
   <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
     <value>Bralnik značk</value>
-  </data>
-  <data name="AccessoriesEnable" xml:space="preserve">
-    <value>Omogočenje</value>
   </data>
   <data name="AccessoriesIpAddress" xml:space="preserve">
     <value>IP naslov</value>
@@ -207,9 +201,6 @@
   <data name="AccessoriesSize" xml:space="preserve">
     <value>Mera</value>
   </data>
-  <data name="AccessoriesTest" xml:space="preserve">
-    <value>Test</value>
-  </data>
   <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
     <value>Konfiguracija in prev bralnika žetonov</value>
   </data>
@@ -246,9 +237,6 @@
   <data name="MenuAccessories" xml:space="preserve">
     <value>Dod oprem</value>
   </data>
-  <data name="MenuBays" xml:space="preserve">
-    <value>NaPo</value>
-  </data>
   <data name="MenuCells" xml:space="preserve">
     <value>Celic</value>
   </data>
@@ -269,8 +257,5 @@
   </data>
   <data name="UnitsMenuName" xml:space="preserve">
     <value>Meni Predali</value>
-  </data>
-  <data name="NoAccessoriesInstalled" xml:space="preserve">
-    <value>Dodatna oprema ni nameščena.</value>
   </data>
 </root>
