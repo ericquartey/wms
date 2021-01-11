@@ -584,8 +584,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisplacementCommand()
         {
             return this.CanBaseExecute() &&
-                   this.StepValue != 0 &&
-                   this.MachineService.IsHoming;
+                   this.StepValue != 0;
         }
 
         private bool CanExecuteStartOriginCalibrationCommand()
