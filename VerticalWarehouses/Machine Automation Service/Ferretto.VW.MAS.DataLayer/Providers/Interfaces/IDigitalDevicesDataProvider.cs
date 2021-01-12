@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value, string description, int writecode, int readcode);
+        void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value, string description, short writecode, short readcode, int decomalCount);
 
         bool CheckInverterParametersValidity(InverterIndex index);
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<Inverter> GetAllParameters();
 
         Inverter GetInverterByIndex(InverterIndex mainInverter);
-
+        InverterParameter GetParameter(InverterIndex inverterIndex, short code, int dataset);
         void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value, int dataset);
 
         #endregion

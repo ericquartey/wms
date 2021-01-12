@@ -47,8 +47,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private string pattern;
 
-        private Regex regexDataSet;
-
         private Regex regexDigit;
 
         private string totalParameters;
@@ -192,7 +190,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private void InitializeData()
         {
-            this.regexDataSet = new Regex(@"(?<=\[).+?(?=\])", RegexOptions.Compiled);
             this.regexDigit = new Regex(@"^-?\d+(?:\,\d+)?", RegexOptions.Compiled);
             this.inverters = this.configurationService.InvertersParameters.ToList();
             this.currentInverterParameters = this.inverters.First();
@@ -281,7 +278,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         type0 = int.Parse(split[0].Substring(27, 1));
                     }
 
-                    var data = this.ConvertBit0(type0);
+                    var data = ConvertBit0(type0);
 
                     var type1 = default(int);//0 special, 1 dataset, 2 unsigned, 3 string
                     if (char.IsLetter(Convert.ToChar(split[0].Substring(28, 1))))
@@ -326,7 +323,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 if (line.Contains("Value = "))
                 {
                     var clean = line.Remove(0, 8);
-                    var split = clean.Split(',');
+                    var split = clean.Split(',', 3);
 
                     var code = default(short);
 
@@ -345,12 +342,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         continue;
                     }
 
-                    var dataset = default(int);
-                    var match = this.regexDataSet.Match(split[1]);
-                    if (match.Success)
-                    {
-                        dataset = int.Parse(match.Value);
-                    }
+                    var dataset = int.Parse(split[1]);
 
                     var value = default(string);
                     if (split[2].Contains('"'))
@@ -364,6 +356,21 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     }
 
                     var parameter = parametersInfo.Single(s => s.Code == code);
+                    var decimalCount = default(int);
+
+                    if (parameter.Type != STRINGTYPE
+                        && value.Contains(','))
+                    {
+                        var decimalSplit = value.Split(",");
+                        var result = this.ExtractValue(parameter.Type, decimalSplit[1]);
+                        if (!string.IsNullOrEmpty(result))
+                        {
+                            decimalCount = result.Length;
+                        }
+                    }
+
+                    var writeRead = GetWriteReadCode(parameter.Code);
+
                     var newPara = new InverterParameter
                     {
                         Code = parameter.Code,
@@ -372,6 +379,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         Type = parameter.Type,
                         StringValue = this.ExtractValue(parameter.Type, value),
                         DataSet = dataset,
+                        DecimalCount = decimalCount,
+                        ReadCode = writeRead.readCode,
+                        WriteCode = writeRead.writeCode
                     };
 
                     parameters.Add(newPara);
@@ -381,7 +391,56 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return parameters;
         }
 
-        private (bool isReadonly, string type) ConvertBit0(int bit0)
+        private static (short readCode, short writeCode) GetWriteReadCode(short code)
+        {
+            switch (code)
+            {
+                case 1202:
+                case 1203:
+                case 1204:
+                case 1205:
+                case 1206:
+                case 1208:
+                case 1209:
+                case 1210:
+                case 1211:
+                case 1212:
+                case 1213:
+                case 1214:
+                case 1215:
+                case 1216:
+                case 1217:
+                case 1218:
+                case 1219:
+                    return (1201, 1200);
+
+                case 1247:
+                case 1248:
+                    return (1201, 1200);
+
+                case 1252:
+                    return (1251, 1250);
+
+                case 1343:
+                case 1344:
+                case 1345:
+                case 1346:
+                case 1347:
+                case 1348:
+                case 1349:
+                case 1350:
+                case 1351:
+                    return (1342, 1341);
+
+                case 1362:
+                    return (1361, 1360);
+
+                default:
+                    return (0, 0);
+            }
+        }
+
+        private static (bool isReadonly, string type) ConvertBit0(int bit0)
         {
             switch (bit0)
             {

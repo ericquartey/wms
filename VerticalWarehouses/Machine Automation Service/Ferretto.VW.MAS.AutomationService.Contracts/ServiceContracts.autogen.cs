@@ -3645,6 +3645,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("DataSet", Required = Newtonsoft.Json.Required.Always)]
         public int DataSet { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("DecimalCount", Required = Newtonsoft.Json.Required.Always)]
+        public int DecimalCount { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     

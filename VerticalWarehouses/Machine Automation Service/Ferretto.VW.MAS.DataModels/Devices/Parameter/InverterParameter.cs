@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int DataSet { get; set; }
 
+        public int DecimalCount { get; set; }
+
         public string Description { get; set; }
 
         public bool IsReadOnly { get; set; }
@@ -45,13 +47,13 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
-        public int ReadCode { get; set; }
+        public short ReadCode { get; set; }
 
         public string StringValue { get; set; }
 
         public string Type { get; set; }
 
-        public int WriteCode { get; set; }
+        public short WriteCode { get; set; }
 
         #endregion
     }

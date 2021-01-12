@@ -126,6 +126,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                         break;
                 }
 
+                var dataset = default(int);
+                if (currentParameter.ReadCode != 0)
+                {
+                    var datasetString = this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().GetParameter(message.SystemIndex, currentParameter.ReadCode, 0).StringValue;
+                    dataset = int.Parse(datasetString);
+                }
+                else
+                {
+                    dataset = message.DataSetIndex;
+                }
+
                 //check parameter in db
                 if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex))
                 {
@@ -133,7 +144,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 }
                 else
                 {
-                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.ReadCode, currentParameter.WriteCode);
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.ReadCode, currentParameter.WriteCode, currentParameter.DecimalCount);
                 }
 
                 if (this.currentParametersPosition == (this.inverterReadingFieldMessageData.Parameters.Count() - 1) ||

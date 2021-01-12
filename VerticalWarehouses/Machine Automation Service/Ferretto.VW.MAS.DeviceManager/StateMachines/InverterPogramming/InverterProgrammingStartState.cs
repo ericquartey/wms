@@ -172,7 +172,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
                 }
             }
 
-            if (message.Type == FieldMessageType.IoDriverException)
+            if (message.Type == FieldMessageType.IoDriverException ||
+                message.Type == FieldMessageType.InverterException)
             {
                 var notificationErrorMessage = new NotificationMessage(
                     new InverterProgrammingMessageData(this.machineData.InverterParametersData),
@@ -207,7 +208,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
                    MessageStatus.OperationStart);
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            var mainInverter = this.machineData.InverterParametersData.Where(s => s.InverterIndex == (byte)InverterIndex.MainInverter).FirstOrDefault();
+            var mainInverter = this.machineData.InverterParametersData.OrderBy(s => s.InverterIndex).FirstOrDefault();
             var commandMessageData = new InverterProgrammingFieldMessageData(mainInverter.Parameters, mainInverter.IsCheckInverterVersion);
             var commandMessage = new FieldCommandMessage(
                 commandMessageData,

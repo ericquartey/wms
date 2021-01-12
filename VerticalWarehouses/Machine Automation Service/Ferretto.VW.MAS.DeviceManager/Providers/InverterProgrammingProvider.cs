@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             foreach (var inv in inverters)
             {
-                invertersParametersData.Add(new InverterParametersData((byte)inv.Index, this.GetShortInverterDescription(inv.Type, inv.IpAddress, inv.TcpPort), inv.Parameters));
+                invertersParametersData.Add(new InverterParametersData((byte)inv.Index, GetShortInverterDescription(inv.Type, inv.IpAddress, inv.TcpPort), inv.Parameters));
             }
 
             return invertersParametersData;
@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             foreach (var inverter in invetersFormDb)
             {
-                var newInverterParametersData = this.GetInverterParameters(inverter);
+                var newInverterParametersData = this.GetInverterParameters(inverter, true);
                 inverterParametersCheckVersionData.Add(newInverterParametersData.inverterParametersCheckVersionData);
                 inverterParametersWriteData.Add(newInverterParametersData.inverterParametersWriteData);
             }
@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new ArgumentException($"No Inverter parameters found");
             }
-            var newInverterParametersData = this.GetInverterParameters(inveterFormDb);
+            var newInverterParametersData = this.GetInverterParameters(inveterFormDb, true);
 
             var inverterParametersData = new List<InverterParametersData>();
             inverterParametersData.Add(newInverterParametersData.inverterParametersCheckVersionData);
@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             foreach (var inverter in inverters)
             {
-                var newInverterParametersData = this.GetInverterParameters(inverter);
+                var newInverterParametersData = this.GetInverterParameters(inverter, false);
                 inverterParametersCheckVersionData.Add(newInverterParametersData.inverterParametersCheckVersionData);
                 inverterParametersWriteData.Add(newInverterParametersData.inverterParametersWriteData);
             }
@@ -157,7 +157,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Start(Inverter inverter, BayNumber requestingBay, MessageActor sender)
         {
-            var newInverterParametersData = this.GetInverterParameters(inverter);
+            var newInverterParametersData = this.GetInverterParameters(inverter, false);
 
             var inverterParametersData = new List<InverterParametersData>();
             inverterParametersData.Add(newInverterParametersData.inverterParametersCheckVersionData);
@@ -195,23 +195,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 requestingBay);
         }
 
-        private (InverterParametersData inverterParametersCheckVersionData, InverterParametersData inverterParametersWriteData) GetInverterParameters(Inverter inverter)
-        {
-            //var inverterParametersWriteData = new InverterParametersData((byte)inverter.Index,
-            //                                this.GetShortInverterDescription(inverter.Type,
-            //                                inverter.IpAddress, inverter.TcpPort),
-            //                                this.GetWritableParameters(inverter.Parameters));
-            var inverterParametersWriteData = new InverterParametersData((byte)inverter.Index,
-                                            this.GetShortInverterDescription(inverter.Type,
-                                            inverter.IpAddress, inverter.TcpPort),
-                                            inverter.Parameters);
-
-            var inverterParametersCheckVersionData = this.InverterVersionParameterData(inverter);
-
-            return (inverterParametersCheckVersionData, inverterParametersWriteData);
-        }
-
-        private string GetShortInverterDescription(InverterType type, IPAddress ipAddress, int tcpPort)
+        private static string GetShortInverterDescription(InverterType type, IPAddress ipAddress, int tcpPort)
         {
             var port = (tcpPort == 0) ? string.Empty : tcpPort.ToString();
             var ip = (ipAddress is null) ? string.Empty : ipAddress?.ToString();
@@ -220,23 +204,126 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return $"{type.ToString()} {ipPort}";
         }
 
-        private IEnumerable<InverterParameter> GetWritableParameters(IEnumerable<InverterParameter> parameters)
+        private static IEnumerable<InverterParameter> GetWritableParameters(IEnumerable<InverterParameter> parameters)
         {
             return parameters.Where(p => !p.IsReadOnly);
         }
 
-        private InverterParametersData InverterVersionParameterData(Inverter inverter)
+        private static InverterParameter InverterRunModeParameterData(bool state)
+        {
+            return new InverterParameter
+            {
+                Code = (short)InverterParameterId.RunMode,
+                DataSet = 0,
+                Type = "short",
+                StringValue = state ? "0" : "1"
+            };
+        }
+
+        private static InverterParametersData InverterVersionParameterData(Inverter inverter)
         {
             var parameters = new List<InverterParameter>();
             var versionInverterParameter = new InverterParameter
             {
                 Code = (short)InverterParameterId.SoftwareVersion,
                 DataSet = 0,
-                Type = "String",
+                Type = "string",
                 StringValue = ((InverterParameter)inverter.Parameters.SingleOrDefault(p => ((InverterParameter)p).Code == (short)InverterParameterId.SoftwareVersion)).StringValue
             };
             parameters.Add(versionInverterParameter);
             return new InverterParametersData((byte)inverter.Index, null, parameters, true);
+        }
+
+        private List<InverterParameter> FixParameterList(IEnumerable<InverterParameter> parameters, bool read, InverterIndex inverterIndex)
+        {
+            var parametersNew = new List<InverterParameter>();
+
+            parametersNew.Add(InverterRunModeParameterData(false));
+
+            if (read)
+            {
+                foreach (var parameter in parameters)
+                {
+                    if (parameter.ReadCode != 0)
+                    {
+                        var basePara = parameters.FirstOrDefault(s => s.Code == parameter.ReadCode);
+
+                        if (basePara is null)
+                        {
+                            if (this.digitalDevicesDataProvider.ExistInverterParameter(inverterIndex, parameter.ReadCode, 0))
+                            {
+                                throw new ArgumentException($"Read parameters not found");
+                            }
+                            basePara = this.digitalDevicesDataProvider.GetParameter(inverterIndex, parameter.ReadCode, 0);
+                        }
+                        var writeParameter = new InverterParameter
+                        {
+                            Code = basePara.Code,
+                            DataSet = 0,
+                            Type = basePara.Type,
+                            StringValue = parameter.DataSet.ToString()
+                        };
+                        parametersNew.Add(writeParameter);
+                        parameter.DataSet = 0;
+                        parametersNew.Add(parameter);
+                    }
+                    else
+                    {
+                        parametersNew.Add(parameter);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var parameter in parameters)
+                {
+                    if (parameter.WriteCode != 0)
+                    {
+                        var basePara = parameters.FirstOrDefault(s => s.Code == parameter.WriteCode);
+
+                        if (basePara is null)
+                        {
+                            if (!this.digitalDevicesDataProvider.ExistInverterParameter(inverterIndex, parameter.WriteCode, 0))
+                            {
+                                throw new ArgumentException($"Write parameters not found");
+                            }
+                            basePara = this.digitalDevicesDataProvider.GetParameter(inverterIndex, parameter.WriteCode, 0);
+                        }
+                        var writeParameter = new InverterParameter
+                        {
+                            Code = basePara.Code,
+                            DataSet = 0,
+                            Type = basePara.Type,
+                            StringValue = parameter.DataSet.ToString()
+                        };
+                        parametersNew.Add(writeParameter);
+                        parameter.DataSet = 0;
+                        parametersNew.Add(parameter);
+                    }
+                    else
+                    {
+                        parametersNew.Add(parameter);
+                    }
+                }
+            }
+
+            parametersNew.Add(InverterRunModeParameterData(true));
+
+            return parametersNew;
+        }
+
+        private (InverterParametersData inverterParametersCheckVersionData, InverterParametersData inverterParametersWriteData) GetInverterParameters(Inverter inverter, bool read)
+        {
+            var fixedParameters = this.FixParameterList(inverter.Parameters, read, inverter.Index);
+
+            var inverterParametersWriteData = new InverterParametersData((byte)inverter.Index,
+                                            GetShortInverterDescription(inverter.Type,
+                                            inverter.IpAddress, inverter.TcpPort),
+                                            fixedParameters);
+
+            var inverterParametersCheckVersionData = InverterVersionParameterData(inverter);
+
+            return (inverterParametersCheckVersionData, inverterParametersWriteData);
         }
 
         #endregion

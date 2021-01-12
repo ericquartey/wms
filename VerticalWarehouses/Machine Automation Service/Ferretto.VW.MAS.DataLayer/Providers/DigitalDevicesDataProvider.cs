@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value, string description, int writecode, int readcode)
+        public void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value, string description, short writecode, short readcode, int decomalCount)
         {
             lock (this.dataContext)
             {
@@ -41,11 +41,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 inverterParameter.Code = code;
                 inverterParameter.DataSet = dataset;
                 inverterParameter.IsReadOnly = isReadOnly;
-                inverterParameter.Type = type;
+                inverterParameter.Type = type.ToLowerInvariant();
                 inverterParameter.StringValue = value;
                 inverterParameter.Description = description;
                 inverterParameter.ReadCode = readcode;
                 inverterParameter.WriteCode = writecode;
+                inverterParameter.DecimalCount = decomalCount;
 
                 var parameters = new List<InverterParameter>();
 
@@ -187,6 +188,15 @@ namespace Ferretto.VW.MAS.DataLayer
                     inverter.IpAddress = System.Net.IPAddress.Parse("127.0.0.1");
                 }
                 return inverter;
+            }
+        }
+
+        public InverterParameter GetParameter(InverterIndex inverterIndex, short code, int dataset)
+        {
+            lock (this.dataContext)
+            {
+                var inverter = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == inverterIndex);
+                return inverter.Parameters.FirstOrDefault(s => s.Code == code && s.DataSet == dataset);
             }
         }
 

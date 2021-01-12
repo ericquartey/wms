@@ -69,7 +69,7 @@
                 IsReadOnly="True"
                 IsSynchronizedWithCurrentItem="True"
                 ItemsSource="{Binding InverterParameters.Parameters}"
-                RowHeight="30"
+                RowHeight="40"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 SelectedItem="{Binding SelectedParameter}"
                 SelectionMode="Single"
@@ -78,7 +78,7 @@
 
         <DataGrid.Columns>
           <DataGridTextColumn x:Name="Column1"
-                              Width="1*"
+                              Width="0.3*"
                               Binding="{Binding Path=Code}"
                               Header="{res:Loc InstallationApp.InverterParametersId}">
             <DataGridTextColumn.CellStyle>
@@ -94,8 +94,26 @@
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
-          <DataGridTextColumn x:Name="Column2"
+          <DataGridTextColumn x:Name="Column6"
                               Width="1*"
+                              Binding="{Binding Path=Description}"
+                              Header="{res:Loc InstallationApp.Description}">
+            <DataGridTextColumn.CellStyle>
+              <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+              </Style>
+            </DataGridTextColumn.CellStyle>
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn x:Name="Column2"
+                              Width="0.3*"
                               Binding="{Binding Path=DataSet}"
                               Header="{res:Loc InstallationApp.InverterParametersDataset}">
             <DataGridTextColumn.ElementStyle>
@@ -106,7 +124,7 @@
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
           <DataGridTextColumn x:Name="Column3"
-                              Width="1*"
+                              Width="0.5*"
                               Binding="{Binding Path=Type}"
                               Header="{res:Loc InstallationApp.InverterParametersType}">
             <DataGridTextColumn.ElementStyle>
@@ -124,6 +142,7 @@
               <Style TargetType="TextBlock">
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>

@@ -121,6 +121,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                     break;
             }
 
+            var dataset = default(int);
+            if (currentParameter.WriteCode != 0)
+            {
+                var datasetString = this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().GetParameter(message.SystemIndex, currentParameter.WriteCode, 0).StringValue;
+                dataset = int.Parse(datasetString);
+            }
+            else
+            {
+                dataset = message.DataSetIndex;
+            }
+
             //check parameter in db
             if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex))
             {
@@ -128,7 +139,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
             }
             else
             {
-                this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.ReadCode, currentParameter.WriteCode);
+                this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.WriteCode, currentParameter.ReadCode, currentParameter.DecimalCount);
             }
 
             if (this.currentParametersPosition == (this.inverterProgrammingFieldMessageData.Parameters.Count() - 1) ||
@@ -169,17 +180,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
 
                 this.Logger.LogDebug($"Inverter Reading parameter={message.ParameterId}, dataset={message.DataSetIndex}");
 
-                //if (this.inverterProgrammingFieldMessageData.IsCheckInverterVersion)
-                //{
-                //    if (currentParameter.StringValue != message.StringPayload)
-                //    {
-                //        this.Logger.LogError($"1:Inverter Programming StartState, message={message}, version check error, found '{message.StringPayload}' should be '{currentParameter.StringValue}'");
-                //        this.ParentStateMachine.ChangeState(
-                //             new InverterProgrammingErrorState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
-                //        return true;
-                //    }
-                //}
-
                 //convert to string
                 string result = default(string);
                 switch (currentParameter.Type)
@@ -208,7 +208,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                 }
                 else
                 {
-                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.ReadCode, currentParameter.WriteCode);
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.WriteCode, currentParameter.ReadCode, currentParameter.DecimalCount);
                 }
 
                 if (this.currentParametersPosition == (this.inverterProgrammingFieldMessageData.Parameters.Count() - 1) ||
