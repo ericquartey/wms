@@ -151,12 +151,27 @@
         </ListView.ItemTemplate>
       </ListView>
 
-      <controls:PpcButton Grid.Row="2"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding SetInvertersParamertersCommand}"
-                          Content="{res:Loc InstallationApp.SaveParameters}"
-                          IsBusy="{Binding IsWaitingForResponse}" />
+      <StackPanel Grid.Row="2"
+                  HorizontalAlignment="Right"
+                  Orientation="Horizontal">
+        <controls:PpcButton Margin="0,0,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding ReadInvertersCommand}"
+                            Content="{res:Loc InstallationApp.ReadInverterParameter}"
+                            IsBusy="{Binding IsBusy}"
+                            Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVIC}}" />
+
+        <controls:PpcButton HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding SetInvertersParamertersCommand}"
+                            Content="{res:Loc InstallationApp.SaveParameters}"
+                            IsBusy="{Binding IsWaitingForResponse}" />
+      </StackPanel>
+
+
+
+
 
     </Grid>
 

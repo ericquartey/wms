@@ -46,6 +46,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return invertersParametersData;
         }
 
+        public void HardReset(Inverter inverter, BayNumber requestingBay, MessageActor sender)
+        {
+            //Hard Reset, tutta la memoria RAM viene resettata perché avviene un reboot della scheda di controllo. Corrisponde ad un riavvio.
+            var inverterParametersData = new List<InverterParametersData>();
+            var inverterParametersCheckVersionData = InverterVersionParameterData(inverter);
+            var reset = InverterProgramData((byte)inverter.Index, "123");
+            inverterParametersData.Add(inverterParametersCheckVersionData);
+            inverterParametersData.Add(reset);
+
+            this.PublishCommand(
+                new InverterProgrammingMessageData(inverterParametersData),
+                $"Bay {requestingBay} requested Inverter programming runnning State",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.InverterProgramming,
+                requestingBay,
+                requestingBay);
+        }
+
         public void Read(BayNumber requestingBay, MessageActor sender)
         {
             var invetersFormDb = this.digitalDevicesDataProvider.GetAllInverters();
@@ -124,6 +143,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 requestingBay);
         }
 
+        public void Reset(Inverter inverter, BayNumber requestingBay, MessageActor sender)
+        {
+            //Reset ai valori di fabbrica. Viene cancellata tutta la memoria e la parametrizzazione inverter. Gli unici parametri che non vengono riportati ai valori di fabbrica sono il P28 e il P30.
+            var inverterParametersData = new List<InverterParametersData>();
+            var inverterParametersCheckVersionData = InverterVersionParameterData(inverter);
+            var reset = InverterProgramData((byte)inverter.Index, "4444");
+            inverterParametersData.Add(inverterParametersCheckVersionData);
+            inverterParametersData.Add(reset);
+
+            this.PublishCommand(
+                new InverterProgrammingMessageData(inverterParametersData),
+                $"Bay {requestingBay} requested Inverter programming runnning State",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.InverterProgramming,
+                requestingBay,
+                requestingBay);
+        }
+
         public void Start(IEnumerable<Inverter> inverters, BayNumber requestingBay, MessageActor sender)
         {
             var inverterParametersCheckVersionData = new List<InverterParametersData>();
@@ -183,18 +221,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 requestingBay);
         }
 
-        public void Stop(BayNumber requestingBay, MessageActor sender)
-        {
-            this.PublishCommand(
-                new InverterProgrammingMessageData(null),
-                $"Bay {requestingBay} requested to stop Inverter programming Running State",
-                MessageActor.DeviceManager,
-                sender,
-                MessageType.InverterProgramming,
-                requestingBay,
-                requestingBay);
-        }
-
         private static string GetShortInverterDescription(InverterType type, IPAddress ipAddress, int tcpPort)
         {
             var port = (tcpPort == 0) ? string.Empty : tcpPort.ToString();
@@ -209,6 +235,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return parameters.Where(p => !p.IsReadOnly);
         }
 
+        private static InverterParametersData InverterProgramData(byte inverterIndex, string action)
+        {
+            var parameters = new List<InverterParameter>();
+            var versionInverterParameter = new InverterParameter
+            {
+                Code = (short)InverterParameterId.Program,
+                DataSet = 0,
+                Type = "short",
+                Description = "Program",
+                StringValue = action
+            };
+            parameters.Add(versionInverterParameter);
+            return new InverterParametersData(inverterIndex, null, parameters, false);
+        }
+
         private static InverterParameter InverterRunModeParameterData(bool state)
         {
             return new InverterParameter
@@ -216,6 +257,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 Code = (short)InverterParameterId.RunMode,
                 DataSet = 0,
                 Type = "short",
+                Description = "Run mode",
                 StringValue = state ? "0" : "1"
             };
         }
@@ -257,15 +299,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             }
                             basePara = this.digitalDevicesDataProvider.GetParameter(inverterIndex, parameter.ReadCode, 0);
                         }
-                        var writeParameter = new InverterParameter
-                        {
-                            Code = basePara.Code,
-                            DataSet = 0,
-                            Type = basePara.Type,
-                            StringValue = parameter.DataSet.ToString()
-                        };
-                        parametersNew.Add(writeParameter);
-                        parameter.DataSet = 0;
+                        basePara.DataSet = parameter.DataSet;
+                        parametersNew.Add(basePara);
                         parametersNew.Add(parameter);
                     }
                     else

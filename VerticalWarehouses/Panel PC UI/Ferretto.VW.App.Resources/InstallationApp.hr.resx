@@ -2319,4 +2319,19 @@
   <data name="InverterReadingNext" xml:space="preserve">
     <value>Početak sljedećeg očitavanja pretvarača</value>
   </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Napišite kod</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Pročitajte kod</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Decimalno brojanje</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Počelo je očitavanje pretvarača</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Očitavanje parametara pretvarača</value>
+  </data>
 </root>

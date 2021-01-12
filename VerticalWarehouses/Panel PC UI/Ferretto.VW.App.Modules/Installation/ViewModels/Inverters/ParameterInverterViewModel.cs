@@ -48,6 +48,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<Inverter> inverters;
 
+        private DelegateCommand readInvertersCommand;
+
         private FileInfo selectedFileConfiguration;
 
         private Inverter selectedInverter;
@@ -102,6 +104,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public IEnumerable<Inverter> Inverters => this.inverters;
+
+        public ICommand ReadInvertersCommand =>
+                   this.readInvertersCommand
+               ??
+               (this.readInvertersCommand = new DelegateCommand(
+                   async () => this.ReadAllInvertersAsync()));
 
         public FileInfo SelectedFileConfiguration
         {
@@ -221,9 +229,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.SelectedFileConfiguration = null;
                     this.inverters = await this.machineDevicesWebService.GetInvertersAsync();
-
-                    await this.machineDevicesWebService.ReadAllInvertersAsync();
                 }
+
+                this.inverters = this.inverters.OrderBy(s => s.Index);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -241,6 +249,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.RaiseCanExecuteChanged();
             this.setInvertersParamertersCommand?.RaiseCanExecuteChanged();
             this.showInverterParamertersCommand?.RaiseCanExecuteChanged();
+            this.readInvertersCommand?.RaiseCanExecuteChanged();
             this.goToImport?.RaiseCanExecuteChanged();
             this.goToExport?.RaiseCanExecuteChanged();
         }
@@ -264,11 +273,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsBusy = false;
                     this.ShowNotification(Localized.Get("InstallationApp.InverterReadingSuccessfullyEnded"), Services.Models.NotificationSeverity.Success);
                     this.inverters = await this.machineDevicesWebService.GetInvertersAsync();
+                    this.RaisePropertyChanged(nameof(this.inverters));
                     break;
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                     this.IsBusy = false;
                     this.ShowNotification(Localized.Get("InstallationApp.InverterReadingEndedErrors"), Services.Models.NotificationSeverity.Error);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    this.IsBusy = true;
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingStarted"), Services.Models.NotificationSeverity.Error);
                     break;
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
@@ -282,6 +297,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 default:
                     break;
+            }
+        }
+
+        private async Task ReadAllInvertersAsync()
+        {
+            try
+            {
+                this.ClearNotifications();
+
+                this.IsBusy = true;
+
+                await this.machineDevicesWebService.ReadAllInvertersAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
             }
         }
 

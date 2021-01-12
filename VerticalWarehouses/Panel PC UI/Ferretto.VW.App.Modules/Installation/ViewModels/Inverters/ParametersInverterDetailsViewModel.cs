@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly Services.IDialogService dialogService;
+
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
         private readonly ISessionService sessionService;
@@ -33,16 +35,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand setParamerterCommand;
 
+        private DelegateCommand resetCommand;
+
+        private DelegateCommand hardResetCommand;
+
         #endregion
 
         #region Constructors
 
         public ParametersInverterDetailsViewModel(
+            Services.IDialogService dialogService,
             IMachineIdentityWebService identityService,
             ISessionService sessionService,
             IMachineDevicesWebService machineDevicesWebService)
             : base(identityService)
         {
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
         }
@@ -77,6 +85,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                (this.setParamerterCommand = new DelegateCommand(
                 async () => await this.SaveParameterAsync(), this.CanSaveParameter));
 
+        public ICommand ResetCommand =>
+               this.resetCommand
+               ??
+               (this.resetCommand = new DelegateCommand(
+                async () => await this.ResetInverterAsync(), this.CanReset));
+
+        public ICommand HardResetCommand =>
+               this.hardResetCommand
+               ??
+               (this.hardResetCommand = new DelegateCommand(
+                async () => await this.HardResetInverterAsync(), this.CanReset));
+
         #endregion
 
         #region Methods
@@ -98,6 +118,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.resetCommand?.RaiseCanExecuteChanged();
+            this.hardResetCommand?.RaiseCanExecuteChanged();
             this.setInverterParamertersCommand?.RaiseCanExecuteChanged();
             this.setParamerterCommand?.RaiseCanExecuteChanged();
 
@@ -118,6 +140,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin &&
                 this.selectedParameter != null &&
                 !this.selectedParameter.IsReadOnly;
+        }
+
+        private bool CanReset()
+        {
+            return !this.IsBusy &&
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 
         private void LoadData()
@@ -194,6 +222,56 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.parentConfiguration.BackupVertimagInverterConfigurationParameters();
 
                 await this.machineDevicesWebService.ProgramInverterAsync(this.inverterParameters);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
+
+        private async Task ResetInverterAsync()
+        {
+            try
+            {
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), "Reset Inverter", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    this.ClearNotifications();
+                    this.IsBusy = true;
+
+                    this.parentConfiguration.BackupVertimagInverterConfigurationParameters();
+
+                    await this.machineDevicesWebService.InverterResetAsync(this.inverterParameters);
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
+
+        private async Task HardResetInverterAsync()
+        {
+            try
+            {
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), "Hard reset inverter", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    this.ClearNotifications();
+                    this.IsBusy = true;
+
+                    this.parentConfiguration.BackupVertimagInverterConfigurationParameters();
+
+                    await this.machineDevicesWebService.InverterHardResetAsync(this.inverterParameters);
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

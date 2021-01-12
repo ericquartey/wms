@@ -1654,6 +1654,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decimal count.
+        /// </summary>
+        public static string DecimalCount {
+            get {
+                return ResourceManager.GetString("DecimalCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default configuration loaded.
         /// </summary>
         public static string DefaultConfigurationLoaded {
@@ -3337,6 +3346,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter reading started.
+        /// </summary>
+        public static string InverterReadingStarted {
+            get {
+                return ResourceManager.GetString("InverterReadingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverter reading completed successfully.
         /// </summary>
         public static string InverterReadingSuccessfullyEnded {
@@ -4732,11 +4750,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Read code.
+        /// </summary>
+        public static string ReadCode {
+            get {
+                return ResourceManager.GetString("ReadCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ReadFinalPosition.
         /// </summary>
         public static string ReadFinalPosition {
             get {
                 return ResourceManager.GetString("ReadFinalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read inverter parameters.
+        /// </summary>
+        public static string ReadInverterParameter {
+            get {
+                return ResourceManager.GetString("ReadInverterParameter", resourceCulture);
             }
         }
         
@@ -6636,6 +6672,15 @@ namespace Ferretto.VW.App.Resources {
         public static string WmsStatusOnline {
             get {
                 return ResourceManager.GetString("WmsStatusOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write code.
+        /// </summary>
+        public static string WriteCode {
+            get {
+                return ResourceManager.GetString("WriteCode", resourceCulture);
             }
         }
         

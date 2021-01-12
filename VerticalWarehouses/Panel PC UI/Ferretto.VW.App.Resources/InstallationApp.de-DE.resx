@@ -2319,4 +2319,19 @@
   <data name="InverterReadingNext" xml:space="preserve">
     <value>Beginn der nächsten Wechselrichtermessung</value>
   </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Code schreiben</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Code lesen</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Dezimalzahl</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Wechselrichtermessung gestartet</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Wechselrichterparameter lesen</value>
+  </data>
 </root>

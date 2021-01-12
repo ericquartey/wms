@@ -77,6 +77,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.inverterStateProvider.GetInvertersParametersData(this.inverterProvider.GetAllParameters()));
         }
 
+        [HttpPost("inverter/hard/reset")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult InverterHardReset(Inverter inverter)
+        {
+            this.inverterStateProvider.HardReset(inverter, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
+        [HttpPost("inverter/reset")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult InverterReset(Inverter inverter)
+        {
+            this.inverterStateProvider.Reset(inverter, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         [HttpPost("inverters/program")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
