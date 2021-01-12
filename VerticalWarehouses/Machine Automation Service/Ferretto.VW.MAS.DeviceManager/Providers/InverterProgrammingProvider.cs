@@ -228,6 +228,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 Code = (short)InverterParameterId.SoftwareVersion,
                 DataSet = 0,
                 Type = "string",
+                Description = "Inverter Software Version",
                 StringValue = ((InverterParameter)inverter.Parameters.SingleOrDefault(p => ((InverterParameter)p).Code == (short)InverterParameterId.SoftwareVersion)).StringValue
             };
             parameters.Add(versionInverterParameter);

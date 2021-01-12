@@ -154,6 +154,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     DataSet = 0,
                     IsReadOnly = true,
                     Type = "string",
+                    Description = "Inverter Software Version",
                     StringValue = this.inverterParameters.Parameters.Single(s => s.Code == (short)InverterParameterId.SoftwareVersion).StringValue
                 };
 

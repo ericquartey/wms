@@ -137,7 +137,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public void BackupVertimagInverterConfigurationParameters()
+        public async void BackupVertimagInverterConfigurationParameters()
         {
             if (this.selectedFileConfiguration is null)
             {
@@ -155,7 +155,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 },
             };
 
-            var json = JsonConvert.SerializeObject(this.VertimagInverterConfiguration, settings);
+            var dbConfig = await this.machineDevicesWebService.GetInvertersAsync();
+
+            var json = JsonConvert.SerializeObject(dbConfig, settings);
 
             var fullPath = this.Filename(this.VertimagInverterConfiguration, new DriveInfo(this.selectedFileConfiguration.DirectoryName), true);
             File.WriteAllText(fullPath, json);
