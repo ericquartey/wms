@@ -344,9 +344,9 @@ namespace Ferretto.VW.TelemetryService
             {
                 try
                 {
-                    //await this.SendAsync(nameof(ITelemetryHub.SendRawDatabaseContent), serialNumber, rawDatabaseContent);
+                    await this.SendAsync(nameof(ITelemetryHub.SendRawDatabaseContent), serialNumber, rawDatabaseContent);
 
-                    //messageSent = true;
+                    messageSent = true;
                 }
                 catch
                 {
