@@ -163,7 +163,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private static void AddWmsServices(IServiceCollection services)
         {
-            services.AddWmsWebServices(
+            services.AddMasWmsWebServices(
                 s => s.GetRequiredService<IWmsSettingsProvider>().ServiceUrl,
                 s =>
                 {
@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         : 0;
                 });
 
-            services.AddWmsDataHub();
+            //services.AddWmsDataHub();
 
             services.AddWmsMissionManager();
 
