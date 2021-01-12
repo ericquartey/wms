@@ -184,13 +184,13 @@
         </Setter.Value>
       </Setter>
     </Style>
-
   </UserControl.Resources>
 
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
     <TextBlock HorizontalAlignment="Left"
@@ -199,9 +199,82 @@
                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                Text="{Binding Title}" />
 
+    <Grid Name="ParametersTxtFilesGrid"
+          Grid.Row="1"
+          Margin="30"
+          Visibility="{Binding IsParametersSet, Converter={StaticResource BTVIC}}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <StackPanel Orientation="Horizontal">
+        <TextBlock HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:Resources.SearchPattern}"
+                   Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}" />
+
+        <TextBlock Padding="10,0,20,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}">
+          <Run Text="'" />
+          <Run Text="{Binding Pattern}" />
+          <Run Text="'." />
+        </TextBlock>
+
+        <TextBlock HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:Resources.SelectFile}"
+                   Visibility="{Binding SelectedFile, Converter={StaticResource RTVIC}}" />
+      </StackPanel>
+
+      <TextBlock HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{Binding SelectedFile.Name}"
+                 Visibility="{Binding SelectedFile.Name, Converter={StaticResource RTVC}}" />
+
+      <ListView Grid.Row="1"
+                ItemsSource="{Binding ConfigurationFiles}"
+                SelectedValue="{Binding SelectedFile, Mode=TwoWay}">
+        <ListView.View>
+          <GridView>
+            <GridViewColumn Width="350"
+                            Header="File">
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <Border Style="{StaticResource FirstCellBorderStyle}">
+                    <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                               Text="{Binding Path=Name}" />
+                  </Border>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+            <GridViewColumn Width="550">
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <Border Style="{StaticResource CellBorderStyle}">
+                    <TextBlock FontStyle="Italic"
+                               Style="{StaticResource CellTextBlockStyle}"
+                               Text="{Binding Path=FullName}"
+                               TextWrapping="WrapWithOverflow" />
+                  </Border>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+          </GridView>
+        </ListView.View>
+      </ListView>
+    </Grid>
+
     <Grid Name="ParametersSetGrid"
           Grid.Row="1"
-          Margin="30">
+          Margin="30"
+          Visibility="{Binding IsParametersSet, Converter={StaticResource BTVC}}">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
@@ -435,5 +508,14 @@
       </DataGrid>
     </Grid>
 
+    <controls:PpcButton Grid.Row="2"
+                        Width="130"
+                        Height="60"
+                        Margin="0,0,30,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding LoadFileCommand}"
+                        Content="{x:Static res:Resources.Import}"
+                        IsBusy="{Binding IsBusy}"
+                        Visibility="{Binding IsParametersSet, Converter={StaticResource BTVIC}}" />
   </Grid>
 </UserControl>
