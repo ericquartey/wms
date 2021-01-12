@@ -829,6 +829,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     loadingUnit.IsIntoMachine = true;
                     loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
+                    this.dataContext.SaveChanges();
+                    loadingUnit = this.dataContext.LoadingUnits
+                        .SingleOrDefault(l => l.Id == loadingUnitId);
+
                     cell.LoadingUnit = loadingUnit;
 
                     var weight = loadingUnit.GrossWeight;

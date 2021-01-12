@@ -922,7 +922,7 @@
     <value>Chyba ve fázi inicializace aktualiz.</value>
   </data>
   <data name="ConfigurationDetected" xml:space="preserve">
-    <value>„{0}“ je konfig soubor s možností importu.</value>
+    <value>{0} je konfig soubor s možností importu.</value>
   </data>
   <data name="ExportableDeviceDetected" xml:space="preserve">
     <value>Dostupné archivační jednotky.</value>

@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.Xpf.Editors;
-using DevExpress.Xpf.Editors.Helpers;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;

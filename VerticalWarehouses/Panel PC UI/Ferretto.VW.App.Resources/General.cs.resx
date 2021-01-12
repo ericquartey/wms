@@ -271,7 +271,7 @@
     <value>Identifikace zásuvky neexistuje.</value>
   </data>
   <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
-    <value>Vlastnost „{0}“ modelu zobrazení „{1}“ musí obsahovat platnou identifikaci zásuvky.</value>
+    <value>Vlastnost {0} modelu zobrazení „{1}“ musí obsahovat platnou identifikaci zásuvky.</value>
   </data>
   <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
     <value>Parametr nemůže být nulový nebo prázdný.</value>

@@ -260,6 +260,13 @@ namespace Ferretto.VW.Installer.ViewModels
 
             var bayNumber = (int)this.SelectedBay.Number;
             var masUrl = this.installationService.MasUrl;
+            if (this.SelectedBay.Number == BayNumber.BayOne)
+            {
+                // health service do not reach 192.168.0.10 at startup with no ethernet connection
+                var newUri = new UriBuilder(masUrl);
+                newUri.Host = "localhost";
+                masUrl = newUri.Uri;
+            }
 
             this.PersistConfigurationKey(BayNumberKey, bayNumber.ToString(), panelPcConfigFileName);
             this.PersistConfigurationKey(AutomationServiceUrlKey, masUrl.ToString(), panelPcConfigFileName);

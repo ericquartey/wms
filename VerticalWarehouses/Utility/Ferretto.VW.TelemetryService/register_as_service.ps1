@@ -1,4 +1,4 @@
-﻿$serviceName = "Ferretto_VW_Telemetry"
+﻿$serviceName = "Ferretto_VW_TS"
 $serviceDisplayName = "Ferretto Vertimag Telemetry Service"
 
 $servicePort = 5050

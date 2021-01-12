@@ -112,6 +112,7 @@ namespace Ferretto.VW.App.Accessories
 
                 if (accessories is null)
                 {
+                    this.laserPointerDriver = null;
                     return;
                 }
 
@@ -152,6 +153,8 @@ namespace Ferretto.VW.App.Accessories
                 this.logger.Debug($"OnMissionChangeAsync");
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
+                    await this.LaserPointerConfigureAsync();
+
                     if (this.laserPointerDriver != null)
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");

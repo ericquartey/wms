@@ -926,7 +926,7 @@
     <value>Errore in fase iniziale aggiornamento.</value>
   </data>
   <data name="ConfigurationDetected" xml:space="preserve">
-    <value>"{0}" è un file di configurazione importabile.</value>
+    <value>{0} è un file di configurazione importabile.</value>
   </data>
   <data name="ExportableDeviceDetected" xml:space="preserve">
     <value>Unità di archiviazione disponibili.</value>

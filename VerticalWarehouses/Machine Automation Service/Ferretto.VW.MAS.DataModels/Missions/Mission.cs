@@ -92,6 +92,13 @@ namespace Ferretto.VW.MAS.DataModels
                 || this.MissionType is MissionType.FullTestOUT;
         }
 
+        public bool IsSourceBayLower()
+        {
+            return this.LoadUnitSource is LoadingUnitLocation.InternalBay1Down
+                || this.LoadUnitSource is LoadingUnitLocation.InternalBay2Down
+                || this.LoadUnitSource is LoadingUnitLocation.InternalBay3Down;
+        }
+
         public override string ToString()
         {
             var returnString = "Mission:" +

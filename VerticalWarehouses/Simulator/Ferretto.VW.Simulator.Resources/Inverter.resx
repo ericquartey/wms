@@ -265,7 +265,7 @@
     <value>INVERTER {0}</value>
   </data>
   <data name="SensorElevatorChainZero" xml:space="preserve">
-    <value>Sensore zero culla</value>
+    <value>Elevator chain zero sensor</value>
   </data>
   <data name="SequenceMode" xml:space="preserve">
     <value>Sequence Mode</value>

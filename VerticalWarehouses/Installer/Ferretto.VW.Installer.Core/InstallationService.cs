@@ -140,6 +140,11 @@ namespace Ferretto.VW.Installer.Core
             return true;
         }
 
+        public void CleanSnapshot()
+        {
+            File.Delete("steps-snapshot.json");
+        }
+
         public async Task DeserializeAsync(string sourceFileName)
         {
             if (this.isStarted)
@@ -402,16 +407,22 @@ namespace Ferretto.VW.Installer.Core
 
                         this.RaisePropertyChanged(nameof(this.ActiveStep));
 
+                        //if (this.ActiveStep.Number == this.Steps.LastOrDefault(s => s.Execution.Status == StepStatus.ToDo || s.Execution.Status == StepStatus.Start).Number
+                        //    && this.ActiveStep.Title.Contains("Riavvia", System.StringComparison.InvariantCultureIgnoreCase)
+                        //    )
+                        //{
+                        //    this.RaiseInstallationFinished(true);
+                        //}
                         await this.ActiveStep.ApplyAsync();
                         this.Dump();
 
                         if (this.ActiveStep.Execution.Status is StepStatus.Failed || this.IsRollbackInProgress)
                         {
-                            if (!this.ActiveStep.SkipRollback)
-                            {
-                                //this.IsRollbackInProgress = true;
-                                await this.RollbackStep(this.ActiveStep);
-                            }
+                            //if (!this.ActiveStep.SkipRollback)
+                            //{
+                            //    this.IsRollbackInProgress = true;
+                            //    await this.RollbackStep(this.ActiveStep);
+                            //}
                             this.logger.Debug("Installation interrupted.");
                             this.IsRollbackInProgress = false;
                             this.Dump();

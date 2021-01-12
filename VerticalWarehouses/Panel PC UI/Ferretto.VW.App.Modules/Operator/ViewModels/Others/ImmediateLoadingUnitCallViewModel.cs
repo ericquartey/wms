@@ -41,9 +41,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand loadingUnitsMissionsCommand;
 
-        private SubscriptionToken positioningMessageReceivedToken;
+        private int maxLoadingUnitId;
 
-        private bool pressMinus;
+        private int minLoadingUnitId;
+
+        private SubscriptionToken positioningMessageReceivedToken;
 
         private SubscriptionToken receiveHomingUpdateToken;
 
@@ -110,7 +112,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.loadingUnitId;
             set
             {
-                this.pressMinus = value < this.loadingUnitId;
                 this.SetProperty(ref this.loadingUnitId, value, this.CheckToSelectLoadingUnit);
             }
         }
@@ -122,6 +123,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
 
+        public int MaxLoadingUnitId
+        {
+            get => this.maxLoadingUnitId;
+            set => this.SetProperty(ref this.maxLoadingUnitId, value);
+        }
+
+        public int MinLoadingUnitId
+        {
+            get => this.minLoadingUnitId;
+            set => this.SetProperty(ref this.minLoadingUnitId, value);
+        }
+
         public LoadingUnit SelectedLoadingUnit
         {
             get => this.selectedUnitUnit;
@@ -129,7 +142,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.selectedUnitUnit, value))
                 {
-                    this.LoadingUnitId = this.selectedUnitUnit?.Id;
+                    if (this.selectedUnitUnit != null)
+                    {
+                        this.LoadingUnitId = this.selectedUnitUnit?.Id;
+                    }
+
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -148,6 +165,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task CallLoadingUnitAsync()
         {
+            this.Logger.Debug($"CallLoadingUnitAsync: loadingUnitId {this.loadingUnitId} ");
+
             if (!this.loadingUnitId.HasValue)
             {
                 this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
@@ -162,7 +181,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.SelectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex) //when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -179,6 +198,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.loadingUnits.Clear();
                 this.loadingUnits.AddRange(this.machineService.Loadunits);
+
+                if (this.loadingUnits != null &&
+                    this.loadingUnits.Any())
+                {
+                    this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
+
+                    this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
+                }
             }
             catch (Exception ex)
             {
@@ -237,14 +264,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanCallLoadingUnit()
         {
-            return
-                this.SelectedLoadingUnit != null
-                &&
-                this.LoadingUnitId.HasValue
-                &&
-                !this.IsWaitingForResponse
-                &&
-                this.loadingUnits.Any(l => l.Id == this.loadingUnitId);
+            return true;
+            //return this.SelectedLoadingUnit != null
+            //&&
+            //this.LoadingUnitId.HasValue
+            //&&
+            //!this.IsWaitingForResponse
+            //&&
+            //this.loadingUnits.Any(l => l.Id == this.loadingUnitId);
         }
 
         private bool CanSelectNextItem()
@@ -265,9 +292,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void CheckToSelectLoadingUnit()
         {
-            if ((this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound) && this.selectedUnitUnit != null)
+            this.Logger.Debug($"CheckToSelectLoadingUnit: loadingUnitId {this.loadingUnitId} ");
+            if (this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound)
             {
-                if (loadingUnitfound.Id == this.selectedUnitUnit.Id)
+                if (this.selectedUnitUnit != null && loadingUnitfound.Id == this.selectedUnitUnit.Id)
                 {
                     return;
                 }
@@ -275,23 +303,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.currentItemIndex = this.loadingUnits.IndexOf(loadingUnitfound);
                 this.SelectLoadingUnit();
             }
-            else if (this.currentItemIndex <= (this.loadingUnits.Count - 1))
+            else if (this.loadingUnitId > this.MaxLoadingUnitId || this.loadingUnitId < this.MinLoadingUnitId)
             {
-                if (!this.pressMinus)
-                {
-                    this.currentItemIndex = this.loadingUnits.IndexOf(this.selectedUnitUnit) + 1;
-                }
-                else
-                {
-                    this.currentItemIndex = this.loadingUnits.IndexOf(this.selectedUnitUnit) - 1;
-                }
-
                 this.SelectLoadingUnit();
             }
             else
             {
-                this.currentItemIndex = 0;
-                this.SelectLoadingUnit();
+                this.SelectedLoadingUnit = null;
             }
         }
 

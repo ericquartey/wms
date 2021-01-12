@@ -495,6 +495,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             mission.LoadUnitId,
                             bayNumber,
                             MessageActor.MissionManager);
+                        this.NotifyAssignedMissionChanged(bayNumber, mission.Id);
                     }
                 }
                 else if (mission.IsMissionWaiting())

@@ -336,13 +336,21 @@
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 40,
-      "title": "Imposta auto-logon",
-      "description": "Crea utente Ferretto e imposta l'utente per il logon automatico.",
-      "script": "scripts/set_auto_logon_ferretto.ps1"
+      "title": "Aggiorna utente Ferretto",
+      "description": "Aggiorna utente Ferretto.",
+      "script": "scripts/update_user_ferretto.ps1",
+      "setupMode": "update"
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
       "number": 41,
+      "title": "Imposta auto-logon",
+      "description": "Imposta l'utente Ferretto per il logon automatico.",
+      "script": "scripts/set_auto_logon_ferretto.ps1"
+    },
+    {
+      "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
+      "number": 42,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare l'abilitazione della protezione.",
       "script": "scripts/restart_windows.ps1",
@@ -351,7 +359,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 42,
+      "number": 43,
       "title": "Imposta shell utente",
       "description": "Imposta la shell di default per utente Ferretto a PanelPc.",
       "script": "scripts/set_default_shell.ps1",
@@ -359,7 +367,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 43,
+      "number": 44,
       "title": "Abilita UWF",
       "description": "Abilita la protezione del disco fisso per sigillare il PanelPC.",
       "script": "uwfmgr.exe filter enable",
@@ -368,7 +376,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 44,
+      "number": 45,
       "title": "Cancella file temporanei",
       "description": "Elimina i file temporanei creati durante la fase di aggiornamento.",
       "script": "scripts/delete_temp_folder.ps1",
@@ -377,7 +385,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.CommandlineStep, Ferretto.VW.Installer.Core",
-      "number": 45,
+      "number": 46,
       "title": "Rimuove auto avvia installatore",
       "description": "Dal registro viene eliminata la chiave di auto avvio installer.",
       "script": "scripts/remove_app_autostart.ps1",
@@ -385,7 +393,7 @@
     },
     {
       "$type": "Ferretto.VW.Installer.Core.PowershellStep, Ferretto.VW.Installer.Core",
-      "number": 46,
+      "number": 47,
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per l'auto avvio del software PanelPC.",
       "script": "scripts/restart_windows.ps1",

@@ -52,6 +52,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            if (bay is null
+                && this.Mission.MissionType == MissionType.IN
+                )
+            {
+                bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+            }
+
             if (bay is null)
             {
                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
@@ -63,6 +70,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
             }
+            this.Mission.LoadUnitDestination = destination.Location;
+            this.Mission.Status = MissionStatus.Executing;
             this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
             if (this.Mission.NeedHomingAxis == Axis.None)
             {
@@ -295,6 +304,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
+            else if (this.Mission.MissionType == MissionType.IN)
+            {
+                this.Mission.LoadUnitSource = this.Mission.LoadUnitDestination;
+                this.Mission.LoadUnitDestination = LoadingUnitLocation.Cell;
+                newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+            }
             else if (this.Mission.MissionType == MissionType.OUT
                 || this.Mission.MissionType == MissionType.WMS
                 || this.Mission.MissionType == MissionType.FullTestOUT
@@ -312,6 +327,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public override void OnResume(CommandMessage command)
         {
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            if (bay is null)
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
 #if CHECK_BAY_SENSOR
             var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();

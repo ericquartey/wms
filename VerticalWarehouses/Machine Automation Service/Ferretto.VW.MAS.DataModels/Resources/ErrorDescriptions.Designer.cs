@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione missione.
+        ///   Looks up a localized string similar to Mission execution error.
         /// </summary>
         public static string AnotherMissionIsActiveForThisBay {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione missione.
+        ///   Looks up a localized string similar to Mission execution error.
         /// </summary>
         public static string AnotherMissionIsActiveForThisLoadUnit {
             get {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione missione.
+        ///   Looks up a localized string similar to Mission execution error.
         /// </summary>
         public static string AnotherMissionOfThisTypeIsActive {
             get {
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione comando.
+        ///   Looks up a localized string similar to The inverter is executing another command.
         /// </summary>
         public static string BayInvertersBusy {
             get {
@@ -205,7 +205,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza sensori elevatore.
+        ///   Looks up a localized string similar to Elevator not loaded after pickup.
         /// </summary>
         public static string CradleNotCorrectlyLoadedDuringPickup {
             get {
@@ -214,7 +214,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza sensori elevatore.
+        ///   Looks up a localized string similar to Elevator not empty after deposit.
         /// </summary>
         public static string CradleNotCorrectlyUnloadedDuringDeposit {
             get {
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destinazione non valida.
+        ///   Looks up a localized string similar to Destination below lower bound.
         /// </summary>
         public static string DestinationBelowLowerBound {
             get {
@@ -241,7 +241,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destinazione non valida.
+        ///   Looks up a localized string similar to Destination over upper bound.
         /// </summary>
         public static string DestinationOverUpperBound {
             get {
@@ -331,7 +331,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Baia non valida.
+        ///   Looks up a localized string similar to Invalid bay.
         /// </summary>
         public static string InvalidBay {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Posizione baia non valida.
+        ///   Looks up a localized string similar to Invalid bay position.
         /// </summary>
         public static string InvalidPositionBay {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore generico inverter.
+        ///   Looks up a localized string similar to Inverter generic error.
         /// </summary>
         public static string InverterErrorBaseCode {
             get {
@@ -511,7 +511,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione comando.
+        ///   Looks up a localized string similar to I/O device error..
         /// </summary>
         public static string IoDeviceError {
             get {
@@ -565,7 +565,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore altezza.
+        ///   Looks up a localized string similar to Invalid movement.
         /// </summary>
         public static string LoadUnitHeightToBayExceeded {
             get {
@@ -628,7 +628,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore cassetto in posizione inattesa.
+        ///   Looks up a localized string similar to The load unit is in another bay.
         /// </summary>
         public static string LoadUnitOtherBay {
             get {
@@ -637,7 +637,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore cassetto in posizione inattesa.
+        ///   Looks up a localized string similar to The load unit is inside the warehouse.
         /// </summary>
         public static string LoadUnitPresentInCell {
             get {
@@ -655,7 +655,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore stato serranda.
+        ///   Looks up a localized string similar to Shutter closed.
         /// </summary>
         public static string LoadUnitShutterClosed {
             get {
@@ -664,7 +664,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore stato serranda.
+        ///   Looks up a localized string similar to Shutter position not valid.
         /// </summary>
         public static string LoadUnitShutterInvalid {
             get {
@@ -673,7 +673,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore stato serranda.
+        ///   Looks up a localized string similar to Shutter open.
         /// </summary>
         public static string LoadUnitShutterOpen {
             get {
@@ -745,7 +745,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore peso.
+        ///   Looks up a localized string similar to Weight too low.
         /// </summary>
         public static string LoadUnitWeightTooLow {
             get {
@@ -754,7 +754,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore missione.
+        ///   Looks up a localized string similar to Machine mode not valid.
         /// </summary>
         public static string MachineModeNotValid {
             get {
@@ -763,7 +763,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore peso.
+        ///   Looks up a localized string similar to Total machine weight exceeded.
         /// </summary>
         public static string MachineWeightExceeded {
             get {
@@ -835,7 +835,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Una barriera di sicurezza è stata interrotta.
+        ///   Looks up a localized string similar to Security barrier occupied.
         /// </summary>
         public static string SecurityBarrierWasTriggered {
             get {
@@ -844,7 +844,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Un pulsante di emergenza è stato premuto.
+        ///   Looks up a localized string similar to Please check all security buttons..
         /// </summary>
         public static string SecurityButtonWasTriggered {
             get {
@@ -880,7 +880,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore di posizionamento.
+        ///   Looks up a localized string similar to Positioning error.
         /// </summary>
         public static string SensorZeroBayNotActiveAtEnd {
             get {
@@ -889,7 +889,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza stato sensori baia.
+        ///   Looks up a localized string similar to Bay sensors mismatch.
         /// </summary>
         public static string SensorZeroBayNotActiveAtStart {
             get {
@@ -898,7 +898,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione comando di prelievo.
+        ///   Looks up a localized string similar to Top level bay empty.
         /// </summary>
         public static string TopLevelBayEmpty {
             get {
@@ -907,7 +907,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore esecuzione comando di deposito.
+        ///   Looks up a localized string similar to Top level bay occupied.
         /// </summary>
         public static string TopLevelBayOccupied {
             get {
@@ -925,7 +925,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Magazzino pieno.
+        ///   Looks up a localized string similar to Warehouse is full.
         /// </summary>
         public static string WarehouseIsFull {
             get {
@@ -952,7 +952,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
+        ///   Looks up a localized string similar to Elevator sensors mismatch.
         /// </summary>
         public static string ZeroSensorActiveWithFullElevator {
             get {
@@ -961,7 +961,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
+        ///   Looks up a localized string similar to Elevator Sensors mismatch.
         /// </summary>
         public static string ZeroSensorErrorAfterDeposit {
             get {
@@ -970,7 +970,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
+        ///   Looks up a localized string similar to Elevator sensors mismatch.
         /// </summary>
         public static string ZeroSensorErrorAfterPickup {
             get {

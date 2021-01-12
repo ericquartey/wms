@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Preverite, ali je zatikalnik na ničli oz. je predal v celoti naložen na dvigalo.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Preverite, ali so gobasti gumbi za izklop v sili in vsi varnostni senzorji onemogočeni.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Predal bi lahko bil zataknjen.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Zdi se, da predal po nakladanju ni v celoti na dvigalu.</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Zdi se, da predal po razkladanju ni povsem iz dvigala.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Senzor za zatikalnik na ničli po odlaganju ni aktiven.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Senzorji za prisotnost na dvigalu po nakladanju niso aktivni.</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Preverite, ali so gobasti gumbi za izklop v sili in vsi varnostni senzorji onemogočeni.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Preverite, ali je ciljna celica predala znotraj podatkovne baze pravilno konfigurirana</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Preverite, ali je ležišče dvigala prazno. Preverite pravilno delovanje senzorjev za prisotnost predala v ležišču.</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Preverite, ali je izvorni položaj predala znotraj podatkovne baze pravilno konfiguriran</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Prepričajte se, da je na nakladalni polici predal in da senzorji za prisotnost delujejo pravilno</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Če je bil predal odstr., preverite senzorje za prisotnost predala na nakl. polici, sicer predal odstranite z nak police.</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Preverite, ali je ciljna nakladalna polica predala dejansko prazna. Preverite, ali senzorji za prisotnost predala na nakladalni polici delujejo pravilno.</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Izbrani predal ni prisoten v podatkovni bazi. Preverite vneseno številko predala in pravilno konfiguracijo podatkovne baze.</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Izbrani predal je prisoten v podatkovni bazi, ni pa naložen v skladišče. Preverite konfiguracijo podatkovne baze.</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Prev, ali je predal dejansko prisoten na izvorni nak polici. Prev, ali senz za prisotnost predala na nak polici delujejo pravilno.</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Preverite, ali je izvorna celica predala znotraj podatkovne baze pravilno konfigurirana</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Nizki nivo nakl pol zaseden.</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Senzorji prisotnosti neveljavn</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Prisotnost na dvigalu z logično praznim dvigalom.</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Nedosledno stanje senzorjev. Senzor za zatikalnik na ničli ni aktiven.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Nedosledno stanje senzorjev. Senzor za ničlo nakladalne police ni aktiven.</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Visoki nivo nakl pol zas</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Senzor za zatikalnik na ničli je aktiven hkrati s senzorji za prisotnost na dvigalu.</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Predal izpraznite na nakladalni polici in odstranite odvečno težo.  Nato ga vrnite na avtomatsko.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Loputa ni v odprtem položaju. Preverite stanje senzorjev.</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Loputa ni v zaprtem položaju. Preverite stanje senzorjev.</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Napaka cilja osi pod najnižjim nivojem. Preverite parametre stroja.</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>Na nakladalni polici se že izvaja ukaz in ne more sprejeti drugega.</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Napaka cilja osi nad najvišjim nivojem. Preverite parametre stroja.</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Napaka pri upravljanju vhodno-izhodne naprave ali izvrševanju ukaza.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Predal je že v celici.</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Naprava ne more sprejeti zahtevane naloge zaradi neveljavnega načina stroja.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Varnostna pregrada je prekinjena. Počistite območje in poskusite znova.</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Pritisnjen je bil gumb za zaust v sili (goba). Prev stanje in posk. znova.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Predal je že na drugi nak polici</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Ni mogoče opredeliti predala na dvigalu.</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Nivo nizke nakl pol praz.</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Vis nivo nakl pol prazen</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Za to nakladalno polico se že izvaja naloga.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Za ta predal se že izvaja naloga.</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Za to vrsto naloge se že izvaja naloga.</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Napake niso zaznane.</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Teža predala manjša od pričakovane.  Nato ga vrnite na avtomatsko.</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Presežena meja skupne teže stroja. Preverite stanje nalaganja stroja in njegovih predalov.</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Skladišče je polno in za izbrani predal ni mogoče določiti proste celice.</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Prev id predala na nakl polici. Prev, ali senzorji za prisot predala na nak polici delujejo pravilno. Stroj nastavite na avtomatsko.</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Preverite id predala na dvigalu. Preverite, ali senzorji za prisotnost predala na dvigalu delujejo pravilno. Stroj nastavite na avtomatsko.</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Težava pri povezavi z inverterjem(i). Preverite stanje eternetnih povezav.</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Napaka pri povezovanju z vhodno-izhodno napravo. Preverite stanje eternetnih povezav.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Napaka povezave z laserjem. Preverite stanje eternetnih povezav.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>Pospeš {1} gibanja osi {0} ni veljavno: pospeš prazne obremenitve je nižje od pospeš polne obremenitve</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>Hitr {1} premik osi {0} ni velj: hitr prazne obrem je nižja od hitr polne obrem</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Preverite senzorje za prisotnost dvigala in nakladalne police</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Vrsta cilja ni veljavna</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Spodnji položaj naklad police ni določen</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Zgornji položaj naklad police ni določen</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Vrsta naloge ni veljavna</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Predal izpraznite na nakladalni polici in odstranite odvečno težo. Na koncu sledite navodilom alarma.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Ukaz za vrnitev s pobiranja ni veljaven</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Napaka posodabljanja arhiva celic. Ena ali več ciljnih celic je logično zasedena</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Preverite, ali je zatikalnik na ničli oz. je predal v celoti naložen na dvigalo. Preverite tudi, ali je loputa zaprta.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Znižajte višino materiala v predalu. Nato ga vrnite na avtomatsko.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Loputa ni ne v zaprtem ne v odprtem položaju. Preverite stanje senzorjev.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Ciljna nakladalna polica ni umerjena.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Test prvega predala ni uspel: niso bile preizkušene vse celice.</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Skladišče ni prazno. Test nalaganja prvega predala ni dovoljen.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Senzor za ničlo nakladalne police ni aktiven ob koncu postavljanja</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Leva stranska plošča je odprta. Preverite ali so plošče stroja pravilno nameščene in zaprte.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Desna stranska plošča je odprta. Preverite ali so plošče stroja pravilno nameščene in zaprte.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Navpični položaj dvigala se je po zagonu stroja spremenil.</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Polni test ni uspel: niso bili izvedeni vsi predvideni cikli.</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Izbrana nakl polica ni veljavna</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Izbrani položaj nakladalne police ni veljaven</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Dvigalo je doseglo senzor prevelikega hoda na vrhu</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Zun nakl polica je zased</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Zun nak polica je praz</value>
+  </data>
+  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
+    <value>Pospeš {1} gibanja osi {0} je manjše od pospeš polne obremenitve ali večje od pospeš prazne obremenitve</value>
+  </data>
+  <data name="InvalidAxisSpeedRange" xml:space="preserve">
+    <value>Hitrost {1} gibanja osi {0} je manjša od hitr polne obrem ali večja od hitr prazne obrem</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>WMS se je odzval s kodo napake</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Predal je previsok za to nak polico. Dvignite ga z drugo nak polico ali ga premaknite ročno</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Dvigalo je doseglo senzor prevelikega hoda spodaj</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>Položaj nak police je onemogn</value>
+  </data>
+</root>

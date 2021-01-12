@@ -922,7 +922,7 @@
     <value>Greška u početnoj fazi ažuriranja.</value>
   </data>
   <data name="ConfigurationDetected" xml:space="preserve">
-    <value>"{0}" je datoteka za konfig. se može uvesti.</value>
+    <value>{0} je datoteka za konfig. se može uvesti.</value>
   </data>
   <data name="ExportableDeviceDetected" xml:space="preserve">
     <value>Dostupne jedinice za arhiviranje.</value>
