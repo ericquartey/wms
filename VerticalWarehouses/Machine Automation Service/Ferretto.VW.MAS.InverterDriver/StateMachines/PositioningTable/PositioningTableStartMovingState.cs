@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     currentStatus.TableTravelControlWord.StartMotionBlock = true;
                     var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, currentStatus.TableTravelControlWord.Value);
 
-                    this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                    this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
 
                     this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                 }
@@ -134,31 +134,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         else
                         {
                             this.SignalsArrived = 0;
-                            int? position = null;
-                            if (currentStatus is AngInverterStatus angInverter)
-                            {
-                                position = angInverter.CurrentPositionAxisHorizontal;
-                            }
-                            else if (currentStatus is AcuInverterStatus acuInverter)
-                            {
-                                position = acuInverter.CurrentPosition;
-                            }
-
-                            if (position.HasValue)
-                            {
-                                this.Logger.LogTrace($"Inverter {this.InverterStatus.SystemIndex} moving towards target table position: present {position.Value}, old {this.oldPosition}");
-                                // if position doesn't change raise an alarm
-                                if (this.oldPosition.HasValue
-                                    && position.Value == this.oldPosition.Value
-                                    && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
-                                {
-                                    this.Logger.LogError($"PositioningTableStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
-                                    this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                                    return true;
-                                }
-                                this.startTime = DateTime.UtcNow;
-                                this.oldPosition = position;
-                            }
                         }
                     }
                     else if (message.ParameterId == InverterParameterId.DigitalInputsOutputs)
@@ -168,6 +143,32 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     else
                     {
                         this.Logger.LogTrace("Moving towards target position.");
+                    }
+
+                    int? position = null;
+                    if (currentStatus is AngInverterStatus angInverter)
+                    {
+                        position = angInverter.CurrentPositionAxisHorizontal;
+                    }
+                    else if (currentStatus is AcuInverterStatus acuInverter)
+                    {
+                        position = acuInverter.CurrentPosition;
+                    }
+
+                    if (position.HasValue)
+                    {
+                        this.Logger.LogTrace($"Inverter {this.InverterStatus.SystemIndex} moving towards target table position: present {position.Value}, old {this.oldPosition}");
+                        // if position doesn't change raise an alarm
+                        if (this.oldPosition.HasValue
+                            && position.Value == this.oldPosition.Value
+                            && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                        {
+                            this.Logger.LogError($"PositioningTableStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
+                            this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                            return true;
+                        }
+                        this.startTime = DateTime.UtcNow;
+                        this.oldPosition = position;
                     }
                 }
             }
