@@ -114,7 +114,7 @@ namespace Ferretto.VW.TelemetryService
         private void CheckDatabaseDirectory(string connectionString)
         {
             var dirName = Path.GetDirectoryName(connectionString);
-            if (!File.Exists(dirName))
+            if (!File.Exists(dirName) && dirName != "")
             {
                 Directory.CreateDirectory(dirName);
             }
