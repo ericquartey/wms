@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="LowerBoundPositionOutOfRange" xml:space="preserve">
+    <value>Spodnji položaj je izven najnižje meje.</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Število testnih ciklov mora biti strogo pozitivno.</value>
+  </data>
+  <data name="UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition" xml:space="preserve">
+    <value>Zgornji mejni položaj mora biti strogo večji od spodnjega mejnega položaja.</value>
+  </data>
+  <data name="UpperBoundPositionMustBeStrictlyPositive" xml:space="preserve">
+    <value>Zgornji mejni položaj mora biti strogo pozitiven.</value>
+  </data>
+  <data name="UpperBoundPositionOutOfRange" xml:space="preserve">
+    <value>Zgornji položaj je izven maksimalne meje.</value>
   </data>
 </root>

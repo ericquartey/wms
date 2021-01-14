@@ -117,10 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="Abort" xml:space="preserve">
+    <value>Prekl</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>Namest. prog. opreme Vertimag</value>
+  </data>
+  <data name="UnknownVersion" xml:space="preserve">
+    <value>Neznana</value>
+  </data>
+  <data name="VertimagSoftwareInstallation" xml:space="preserve">
+    <value>Namest. prog. opreme Vertimag</value>
+  </data>
+  <data name="ServiceVersion" xml:space="preserve">
+    <value>Različica storitve v ozadju</value>
+  </data>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>Razl uporabniškega vmesnika</value>
+  </data>
+  <data name="SelectVertimagConfigurationFile" xml:space="preserve">
+    <value>Izberi konfiguracijsko datoteko Vertimag</value>
+  </data>
+  <data name="VertimagConfigurationFiles" xml:space="preserve">
+    <value>Konfig. datoteka Vertimag</value>
+  </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Vse datoteke</value>
+  </data>
+  <data name="MasterBay" xml:space="preserve">
+    <value>Glavna nak pol</value>
+  </data>
+  <data name="SlaveBay" xml:space="preserve">
+    <value>Sekund nak pol</value>
+  </data>
+  <data name="SelectedConfigurationFile" xml:space="preserve">
+    <value>Konfig. datoteka</value>
+  </data>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>Izbrana ni nobena dat</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Izberi datotek</value>
+  </data>
+  <data name="MasterBayAddress" xml:space="preserve">
+    <value>Naslov glavne nak police</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Naloži</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Nadaljuj</value>
+  </data>
+  <data name="BaySelection" xml:space="preserve">
+    <value>Izberi nak pol</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serijska št.</value>
+  </data>
+  <data name="MaximumGrossCapacity" xml:space="preserve">
+    <value>Maks bruto zmogljivos</value>
+  </data>
+  <data name="KilogramsValueFormat" xml:space="preserve">
+    <value>{0} kg</value>
+  </data>
+  <data name="SelectNumberOfThisBay" xml:space="preserve">
+    <value>Izberi številko te nak police</value>
+  </data>
+  <data name="GoBack" xml:space="preserve">
+    <value>Pojdi nazaj</value>
   </data>
 </root>

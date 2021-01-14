@@ -117,10 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="ALoadingUnitIsAlreadyOnBoardOfTheElevator" xml:space="preserve">
+    <value>Na dvigalu je že predal.</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Na določenem mestu nakladalne police je že predal.</value>
+  </data>
+  <data name="MovementDistanceCannotBeZero" xml:space="preserve">
+    <value>Razdalja gibanja ne more biti enaka nič.</value>
+  </data>
+  <data name="NoLoadingUnitIsOnBoardOfTheElevator" xml:space="preserve">
+    <value>Na dvigalu ni predalov.</value>
+  </data>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Na navedeni nakladalni polici ni nobenega predala.</value>
+  </data>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
+    <value>V navedeni celici ni nobenega predala.</value>
+  </data>
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Noben predal ne čaka, da se ga izvleče na položaju določene nakladalne police.</value>
+  </data>
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>Odmik ({0}mm) navpične osi ni veljaven: mora biti v območju [{1}mm; {2}mm].</value>
+  </data>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
+    <value>Ciljni položaj ({0}mm) mora biti v območju [{1}mm; {2}mm].</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Dvigalo je že pred položajem določene nakladalne police.</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Dvigalo je že pred določeno celico.</value>
+  </data>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>Dvigalo ni prazno, vendar je zatikalo v ničelnem položaju.</value>
+  </data>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>Dvigalo ni polno, vendar zatikalo ni ničelnem položaju.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Dvigalo ni pred položajem določene nakladalne police.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Dvigalo ni pred določeno celico.</value>
+  </data>
+  <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
+    <value>V navedeni celici ni dovolj prostora za namestitev predala.</value>
+  </data>
+  <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
+    <value>Umerjanje navpične osi je treba izvesti pred poskusom absolutnega premika dvigala.</value>
   </data>
 </root>

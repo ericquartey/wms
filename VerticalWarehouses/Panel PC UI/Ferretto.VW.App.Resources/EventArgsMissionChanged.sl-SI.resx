@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="WmsMissionWithoutMachineMission" xml:space="preserve">
+    <value>Brez naloge stroja ni mogoče imeti naloge wms.</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="WmsOperationWithoutWmsMission" xml:space="preserve">
+    <value>Brez naloge wms ni mogoče izvesti postopka wms.</value>
   </data>
 </root>

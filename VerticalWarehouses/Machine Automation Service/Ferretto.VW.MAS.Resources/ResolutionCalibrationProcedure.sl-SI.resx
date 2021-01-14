@@ -117,10 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="ExpectedDistanceMustBeStrictlyPositive" xml:space="preserve">
+    <value>Pričakovana razdalja mora biti strogo pozitivna.</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="MeasuredDistanceMustBeStrictlyPositive" xml:space="preserve">
+    <value>Izmerjena razdalja mora biti strogo pozitivna.</value>
+  </data>
+  <data name="ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus" xml:space="preserve">
+    <value>Postopka ni mogoče začeti zaradi trenutnega stanja namestitve.</value>
   </data>
 </root>

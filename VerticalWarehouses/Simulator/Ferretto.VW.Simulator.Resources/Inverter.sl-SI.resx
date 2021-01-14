@@ -117,199 +117,202 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Yes" xml:space="preserve">
-    <value>An</value>
+  <data name="AbsoluteRelative" xml:space="preserve">
+    <value>Abs/rel</value>
   </data>
-  <data name="Add" xml:space="preserve">
-    <value>Přidat</value>
+  <data name="ChangeOnSetPoint" xml:space="preserve">
+    <value>Sprem na nast točki</value>
   </data>
-  <data name="Back" xml:space="preserve">
-    <value>Zpět</value>
+  <data name="ChangeSetImmediately" xml:space="preserve">
+    <value>Takoj spremeni</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Zrušit</value>
+  <data name="ElevatorExtraStroke" xml:space="preserve">
+    <value>Varn razd dvigala</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="ElevatorZeroPosition" xml:space="preserve">
+    <value>Ničelni položaj dvigala</value>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>Následuj</value>
+  <data name="EnableOperation" xml:space="preserve">
+    <value>Omogoči v načinu delovanja</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Ulož</value>
+  <data name="EnableVoltage" xml:space="preserve">
+    <value>Omog napetost</value>
   </data>
-  <data name="SwitchOff" xml:space="preserve">
-    <value>Vypn</value>
+  <data name="EncoderChannelA" xml:space="preserve">
+    <value>Kodirnik kanal A</value>
   </data>
-  <data name="Error" xml:space="preserve">
-    <value>Chyba</value>
+  <data name="EncoderChannelAElevatorChain" xml:space="preserve">
+    <value>Kodirnik kanal A - ležišče</value>
   </data>
-  <data name="Debug" xml:space="preserve">
-    <value>Debug</value>
+  <data name="EncoderChannelB" xml:space="preserve">
+    <value>Kodirnik kanal B</value>
   </data>
-  <data name="FilePath" xml:space="preserve">
-    <value>Cesta souboru</value>
+  <data name="EncoderChannelBElevatorChain" xml:space="preserve">
+    <value>Kodirnik kanal B - ležišče</value>
   </data>
-  <data name="ConfirmMachineRun" xml:space="preserve">
-    <value>Skutečně chcete uvést stroj do chodu?</value>
+  <data name="EncoderChannelZ" xml:space="preserve">
+    <value>Kodirnik kanal Z</value>
   </data>
-  <data name="MachineRun" xml:space="preserve">
-    <value>Chod</value>
+  <data name="EncoderChannelZElevatorChain" xml:space="preserve">
+    <value>Kodirnik kanal Z - ležišče</value>
   </data>
-  <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
-    <value>Skutečně chcete uvést stroj do automatického režimu a obnovit probíhající pohyby?</value>
+  <data name="Fault" xml:space="preserve">
+    <value>Okvara</value>
   </data>
-  <data name="Automatic" xml:space="preserve">
-    <value>Automatic</value>
+  <data name="FollowingError" xml:space="preserve">
+    <value>Napaka sledenja</value>
   </data>
-  <data name="ShuttingDown" xml:space="preserve">
-    <value>Vypínání...</value>
+  <data name="Free" xml:space="preserve">
+    <value>Prost</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>Ne</value>
+  <data name="Halt" xml:space="preserve">
+    <value>Ust</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Zavřít</value>
+  <data name="HeartBeat" xml:space="preserve">
+    <value>Utrip</value>
   </data>
-  <data name="ChangeTheme" xml:space="preserve">
-    <value>Změn motiv</value>
+  <data name="HomingAttained" xml:space="preserve">
+    <value>Vrač na izh zaklj</value>
   </data>
-  <data name="BayNumber" xml:space="preserve">
-    <value>Stan</value>
+  <data name="HomingError" xml:space="preserve">
+    <value>Vrač na izh ni</value>
   </data>
-  <data name="DaysAgo" xml:space="preserve">
-    <value>před {0:0} dny</value>
+  <data name="HomingStarted" xml:space="preserve">
+    <value>Vrač na izh zač</value>
   </data>
-  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
-    <value>Chyba komunikace se službami.</value>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Vodoravna os</value>
   </data>
-  <data name="HoursAgo" xml:space="preserve">
-    <value>před {0:0} h</value>
+  <data name="InGear" xml:space="preserve">
+    <value>Zataknjen</value>
   </data>
-  <data name="ManualMode" xml:space="preserve">
-    <value>Manuál</value>
+  <data name="InternalLimitActive" xml:space="preserve">
+    <value>Not omejitev aktivna</value>
   </data>
-  <data name="MinutesAgo" xml:space="preserve">
-    <value>před {0:0} min</value>
+  <data name="InternalLimitActive_bis" xml:space="preserve">
+    <value>NotOmejitevAktivna</value>
   </data>
-  <data name="Now" xml:space="preserve">
-    <value>Nyní</value>
+  <data name="ManufacturerSpecific" xml:space="preserve">
+    <value>Spec za proizvajalca</value>
   </data>
-  <data name="SerialNumber" xml:space="preserve">
-    <value>Výrobní číslo:</value>
+  <data name="ManufacturerSpecificWarning2" xml:space="preserve">
+    <value>Spec za proizvajalca Opozorilo 2</value>
   </data>
-  <data name="Version" xml:space="preserve">
-    <value>Verze {0}</value>
+  <data name="MaxSlippage" xml:space="preserve">
+    <value>Maksimalni zdrs</value>
   </data>
-  <data name="WarehouseSide_Back" xml:space="preserve">
-    <value>Zadní</value>
+  <data name="MotionBlockInProgress" xml:space="preserve">
+    <value>Sklop premika se izvaja</value>
   </data>
-  <data name="WarehouseSide_Front" xml:space="preserve">
-    <value>Přední</value>
+  <data name="MotionBlockSelect0" xml:space="preserve">
+    <value>IzbSklopaPremika0</value>
   </data>
-  <data name="Bay" xml:space="preserve">
-    <value>Stan</value>
+  <data name="MotionBlockSelect1" xml:space="preserve">
+    <value>IzbSklopaPremika1</value>
   </data>
-  <data name="BayOneName" xml:space="preserve">
-    <value>Jed</value>
+  <data name="MotionBlockSelect2" xml:space="preserve">
+    <value>IzbSklopaPremika2</value>
   </data>
-  <data name="BayThreeName" xml:space="preserve">
-    <value>Tři</value>
+  <data name="MotionBlockSelect3" xml:space="preserve">
+    <value>IzbSklopaPremika3</value>
   </data>
-  <data name="BayTwoName" xml:space="preserve">
-    <value>Dvě</value>
+  <data name="NewSetPoint" xml:space="preserve">
+    <value>Nova točka nast</value>
   </data>
-  <data name="SwitchToAutomatic" xml:space="preserve">
-    <value>Přejít do aut režim</value>
+  <data name="NormalFunction" xml:space="preserve">
+    <value>Običajno delovanje</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Spusti</value>
+  <data name="OperationEnabled" xml:space="preserve">
+    <value>Omogočen</value>
   </data>
-  <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+  <data name="OperationMode" xml:space="preserve">
+    <value>Način delovanja</value>
   </data>
-  <data name="TargetNullValue" xml:space="preserve">
-    <value>-</value>
+  <data name="OperationModeSpecific" xml:space="preserve">
+    <value>Poseben način delovanja</value>
   </data>
-  <data name="Devices" xml:space="preserve">
-    <value>Zaříz</value>
+  <data name="PowerOn" xml:space="preserve">
+    <value>Moč ON</value>
   </data>
-  <data name="DiagnosticDetailTitle" xml:space="preserve">
-    <value>DEBUG</value>
+  <data name="QuickStop" xml:space="preserve">
+    <value>Hitra zaust (nizko akt)</value>
   </data>
-  <data name="FiniteMachineState" xml:space="preserve">
-    <value>Dokončené stroje</value>
+  <data name="ReadyToSwitchOn" xml:space="preserve">
+    <value>Pripravljen za vžig</value>
   </data>
-  <data name="Inverter" xml:space="preserve">
-    <value>Měnič</value>
+  <data name="Remote" xml:space="preserve">
+    <value>Oddal</value>
   </data>
-  <data name="IODrive" xml:space="preserve">
-    <value>Drive IO</value>
+  <data name="ResetFault" xml:space="preserve">
+    <value>Ponast v okv</value>
   </data>
-  <data name="StatusDebug" xml:space="preserve">
-    <value>Stav:</value>
+  <data name="Resume" xml:space="preserve">
+    <value>Nadaljuj</value>
   </data>
-  <data name="NoRows" xml:space="preserve">
-    <value>V seznamu není dostup žádný řádek</value>
+  <data name="RfgEnable" xml:space="preserve">
+    <value>Omogoči Rfg</value>
   </data>
-  <data name="WmsDisabled" xml:space="preserve">
-    <value>Zakázaný</value>
+  <data name="RfgUnlock" xml:space="preserve">
+    <value>Sprosti Rfg</value>
   </data>
-  <data name="WmsEnabled" xml:space="preserve">
-    <value>Povolen WMS</value>
+  <data name="RfgUseRef" xml:space="preserve">
+    <value>Rfg up ref</value>
   </data>
-  <data name="DateFormatComplete" xml:space="preserve">
-    <value>{0:dd.MM.rrrr HH:mm}</value>
+  <data name="Role" xml:space="preserve">
+    <value>Ime inverter</value>
   </data>
-  <data name="AreaMachineUnknow" xml:space="preserve">
-    <value>Oblast stroje je neznámá</value>
+  <data name="RoleByID" xml:space="preserve">
+    <value>INVERTER {0}</value>
   </data>
-  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
-    <value>Tento převodník může převádět pouze hodnoty typu Viditelnost.</value>
+  <data name="SensorElevatorChainZero" xml:space="preserve">
+    <value>Senz za pol 0 lež</value>
   </data>
-  <data name="IdLoadingUnitNotExists" xml:space="preserve">
-    <value>Identifikace zásuvky neexistuje.</value>
+  <data name="SequenceMode" xml:space="preserve">
+    <value>Način Zaporedje</value>
   </data>
-  <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
-    <value>Vlastnost {0} modelu zobrazení „{1}“ musí obsahovat platnou identifikaci zásuvky.</value>
+  <data name="SetPointAck" xml:space="preserve">
+    <value>Privolza nast točk</value>
   </data>
-  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
-    <value>Parametr nemůže být nulový nebo prázdný.</value>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Senzor lopute (A)</value>
   </data>
-  <data name="DateFormatDayNumber" xml:space="preserve">
-    <value>{0: dd.MM.rrrr}</value>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Senzor lopute (B)</value>
   </data>
-  <data name="SwitchToManual" xml:space="preserve">
-    <value>Přejít do manuál</value>
+  <data name="StartMotionBlock" xml:space="preserve">
+    <value>Zaž sklop premika</value>
   </data>
-  <data name="BackShutterTest" xml:space="preserve">
-    <value>Probíhá test... Stránku nelze opustit</value>
+  <data name="SwitchedOn" xml:space="preserve">
+    <value>Prižg</value>
   </data>
-  <data name="SocketLinkEnabled" xml:space="preserve">
-    <value>Povolen Socket Link</value>
+  <data name="SwitchOn" xml:space="preserve">
+    <value>Prižgi</value>
   </data>
-  <data name="SocketLinkPolling" xml:space="preserve">
-    <value>Interval spojování</value>
+  <data name="SwitchOnDisabled" xml:space="preserve">
+    <value>Vžig onemogočen</value>
   </data>
-  <data name="SocketLinkPort" xml:space="preserve">
-    <value>Port</value>
+  <data name="TargetReached" xml:space="preserve">
+    <value>Cilj dosežen</value>
   </data>
-  <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>Čas lim</value>
+  <data name="Type" xml:space="preserve">
+    <value>Tip inverter</value>
   </data>
-  <data name="MarkupNameOfSyntax" xml:space="preserve">
-    <value>Syntaxe pro NameOf je Type = {x: Type&lt;className&gt; }.!</value>
+  <data name="Velocity" xml:space="preserve">
+    <value>Hitrost</value>
   </data>
-  <data name="Connectivity" xml:space="preserve">
-    <value>Připojení</value>
+  <data name="VoltageEnabled" xml:space="preserve">
+    <value>Napetost omog</value>
   </data>
-  <data name="Present" xml:space="preserve">
-    <value>Přítomné</value>
+  <data name="Warning" xml:space="preserve">
+    <value>Opozor</value>
   </data>
-  <data name="NotPresent" xml:space="preserve">
-    <value>Neexistuje</value>
+  <data name="XPosition" xml:space="preserve">
+    <value>Vodoravni položaj</value>
   </data>
-  <data name="TokenStatus" xml:space="preserve">
-    <value>Stav tokenu</value>
+  <data name="YPosition" xml:space="preserve">
+    <value>Navpični položaj</value>
+  </data>
+  <data name="ZeroPosition" xml:space="preserve">
+    <value>Ničelni položaj</value>
   </data>
 </root>

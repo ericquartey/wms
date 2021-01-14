@@ -117,10 +117,145 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in preverjanje alfanumerične vrstice</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Konfiguracijski parametri</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Alfanum vrstica</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Puščica</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Led</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>Sporočilo</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Ferretto Group - testno sporočilo -</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>Položaj</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Besed</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in preverjanje bralnika črtne kode</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Bralnik črtnih kod</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in prev bralnika značke</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Bralnik značk</value>
+  </data>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>IP naslov</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in preverjanje tiskalnika etiket</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Tiskalnik etiket</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuDescription" xml:space="preserve">
+    <value>Upravljanje konfiguracije in test funkcionalnosti laserja</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
+    <value>Laserski kazaln</value>
+  </data>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>Odmik osi X</value>
+  </data>
+  <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
+    <value>Odmik osi Y</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetLowerPosition" xml:space="preserve">
+    <value>Odmik osi Z (nizk nak pol)</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetUpperPosition" xml:space="preserve">
+    <value>Odmik osi Z (vis nak pol)</value>
+  </data>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Meni Dod oprem</value>
+  </data>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Ugasn</value>
+  </data>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Prižg</value>
+  </data>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Vrata</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Mera</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in prev bralnika žetonov</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Bralnik žetonov</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>Konfiguracija in prev tehtnice za štetje kosov</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Teht za štetje kos</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>NaPo</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>MeniNa Po</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Meni Celic</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Potrdi testiranje</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Meni Dvigalo</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Namestitev</value>
+  </data>
+  <data name="InstallationStatus" xml:space="preserve">
+    <value>Stanje nameščanja</value>
+  </data>
+  <data name="MenuAccessories" xml:space="preserve">
+    <value>Dod oprem</value>
+  </data>
+  <data name="MenuCells" xml:space="preserve">
+    <value>Celic</value>
+  </data>
+  <data name="MenuElevator" xml:space="preserve">
+    <value>Dvigalo</value>
+  </data>
+  <data name="MenuLoadingUnits" xml:space="preserve">
+    <value>Predali</value>
+  </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Premiki</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Nastavitve</value>
+  </data>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Meni Nastavitve</value>
+  </data>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Meni Predali</value>
   </data>
 </root>

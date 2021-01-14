@@ -117,10 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Vzpost je povezava s storitvami</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Povezava s stor avtomat je prekinjena, ponovna povezava v teku ...</value>
+  </data>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>Ni mog vzpostaviti povezave s stor avtomatizacije</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Neveljavne poverilnice.</value>
+  </data>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>Modul je naložen</value>
+  </data>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>Vnesi geslo</value>
+  </data>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>Geslo je prekratko.</value>
+  </data>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>Navesti je treba geslo.</value>
+  </data>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>Storitve se zaganjajo</value>
+  </data>
+  <data name="TempKey" xml:space="preserve">
+    <value>Začasen ključ: {0}</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>Črtna koda ne ustreza registriranemu uporabniku.</value>
+  </data>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>Navesti je treba uporabniško ime.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>Kartica ni povezana z registriranim uporabnikom.</value>
+  </data>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Prijava prek branja kartice ...</value>
+  </data>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Poteka prev pristnosti upor. ...</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Vstavljen žeton. Poteka preverjanje ...</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Žeton odstranjen</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Preverjanje preko žetona ni uspelo.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>Z žetonom ni bilo mogoče preveriti pristnosti, ker WMS ni dosegljiv.</value>
+  </data>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>Upor. seja 'storitve' je potekla</value>
   </data>
 </root>

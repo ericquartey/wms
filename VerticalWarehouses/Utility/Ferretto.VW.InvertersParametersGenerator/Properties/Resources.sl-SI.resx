@@ -117,10 +117,103 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="Close" xml:space="preserve">
+    <value>Zapri</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="Next" xml:space="preserve">
+    <value>Naslednji</value>
+  </data>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Odpri mapo</value>
+  </data>
+  <data name="VertimagConfigurationFile" xml:space="preserve">
+    <value>Konfig. datoteka Vertimag</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Odpri dat</value>
+  </data>
+  <data name="InvertersFolder" xml:space="preserve">
+    <value>Mapa inverterjev</value>
+  </data>
+  <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
+    <value>Dat. za generiranje parame inverterjev</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Uvozi</value>
+  </data>
+  <data name="NoParametersFilesFound" xml:space="preserve">
+    <value>Najdena ni nobena dat parametrov</value>
+  </data>
+  <data name="InverterTypeParametersConfiguration" xml:space="preserve">
+    <value>Konfig. parametrov inverterja [{0}] tipa ‚{1}‘</value>
+  </data>
+  <data name="TotalParameters" xml:space="preserve">
+    <value>skupni parametri {0}</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Nab pod</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Vredn</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Samo branje</value>
+  </data>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Izvoz konfiguracije</value>
+  </data>
+  <data name="ExportFile" xml:space="preserve">
+    <value>Izvozi dato</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Brez vrstice</value>
+  </data>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>Izvoz je bil uspešno zaključen.</value>
+  </data>
+  <data name="SaveFileConfiguration" xml:space="preserve">
+    <value>Shrani konfig. datoteko</value>
+  </data>
+  <data name="ConfigurationFile" xml:space="preserve">
+    <value>Konfig. datoteka</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Predhodni</value>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Uvoz konfiguracije</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Izberi datoteko</value>
+  </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Mapa parametrov inverterjev</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Izberi konfig. datoteko</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Konfiguracijska mapa</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Mapa ne obstaja</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>Dat. ni velj ali ni vstavljena</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>Dat. ni shranjen</value>
+  </data>
+  <data name="SearchPattern" xml:space="preserve">
+    <value>Dat z vzorci</value>
   </data>
 </root>

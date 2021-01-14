@@ -118,309 +118,303 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConditionsNotMetForPositioning" xml:space="preserve">
-    <value>Positioning conditions not met.</value>
+    <value>Pogoji za postavitev niso doseženi.</value>
   </data>
   <data name="ConditionsNotMetForRunning" xml:space="preserve">
-    <value>Start conditions not met.</value>
+    <value>Pogoji za zagon niso doseženi.</value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
-    <value>Loading unit not fully loaded.</value>
+    <value>Predal ni v celoti napolnjen.</value>
   </data>
   <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
-    <value>Elevator not loaded after pickup</value>
+    <value>Dvigalo ni polno na jemanju</value>
   </data>
   <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
-    <value>Elevator not empty after deposit</value>
+    <value>Dvigalo ni prazno na odlaganju</value>
   </data>
   <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
-    <value>Elevator Sensors mismatch</value>
+    <value>Nedosledno stanje senzorjev</value>
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
-    <value>Elevator sensors mismatch</value>
+    <value>Nedosledno stanje senzorjev</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
-    <value>Inverter generic error</value>
+    <value>Napaka invert.</value>
   </data>
   <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
-    <value>The inverter parameter could not be written during execution.</value>
+    <value>Ni mogoče zapisati parametra inverterja med izvajanjem.</value>
   </data>
   <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
-    <value>The data of the inverter dataset do not match.</value>
+    <value>Nabor podatkov inverterja ne ustreza.</value>
   </data>
   <data name="InverterErrorEepromChecksumError" xml:space="preserve">
-    <value>Inverter EEPROM checksum error.</value>
+    <value>Nap kontrolne vsote EEPROM-a inver.</value>
   </data>
   <data name="InverterErrorEepromReadError" xml:space="preserve">
-    <value>Inverter EEPROM reading error.</value>
+    <value>Napaka branja EEPROM-a inverterja.</value>
   </data>
   <data name="InverterErrorEepromWriteError" xml:space="preserve">
-    <value>Inverter EEPROM writing error.</value>
+    <value>Napaka zapisov EEPROM-a inverterja.</value>
   </data>
   <data name="InverterErrorInvalidDataset" xml:space="preserve">
-    <value>Invalid inverter dataset.</value>
+    <value>Nabor podat inver ni velj.</value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value>Invalid inverter parameter.</value>
+    <value>Param inverterja ni veljaven.</value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
-    <value>The specified node is not available.</value>
+    <value>Navedeni vozel ni razpoložljiv.</value>
   </data>
   <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
-    <value>Inverter parameter is read-only.</value>
+    <value>Param inverterja je samo za branje.</value>
   </data>
   <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
-    <value>Inverter parameter is write-only.</value>
+    <value>Param inverterja samo za zapisovanje.</value>
   </data>
   <data name="InverterErrorSyntaxError" xml:space="preserve">
-    <value>Syntax error of the message sent to the inverter.</value>
+    <value>Napaka sintakse sporočila, poslanega inverterju.</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
-    <value>Unknown parameter passed to the inverter.</value>
+    <value>Neznan parameter poslan inverterju.</value>
   </data>
   <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
-    <value>Inconsistency between the length of the message to the inverter and the data type of the message.!</value>
+    <value>Neskladnost med dolžino sporočila za inverter in vrsto podatka v sporočilu.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>An error has been detected in one of the inverters.</value>
+    <value>Zaznana napaka na enem od inverterjev.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
-    <value>Security function has triggered.</value>
+    <value>Sprožila se je varnostna funkcija.</value>
   </data>
   <data name="LoadUnitDestinationCell" xml:space="preserve">
-    <value>Not valid destination cell</value>
+    <value>Ciljna celica ni veljavna</value>
   </data>
   <data name="LoadUnitElevator" xml:space="preserve">
-    <value>Elevator cradle occupied</value>
+    <value>Ležišče dvigala zasedeno</value>
   </data>
   <data name="LoadUnitSourceDb" xml:space="preserve">
-    <value>Database source position inconsistency</value>
+    <value>Nesklad podatkovne baze izvornega položaja predala</value>
   </data>
   <data name="NoLoadUnitInSource" xml:space="preserve">
-    <value>No loading unit present in the bay indicated</value>
+    <value>Na navedeni nak polici ni nob predala</value>
   </data>
   <data name="LoadUnitNotRemoved" xml:space="preserve">
-    <value>Loading unit detected in the extraction bay</value>
+    <value>Predal zaznan na izvlečn nak polici</value>
   </data>
   <data name="LoadUnitDestinationBay" xml:space="preserve">
-    <value>Tray destination bay occupied</value>
+    <value>Ciljna nakladalna polica predala zasedena</value>
   </data>
   <data name="LoadUnitNotFound" xml:space="preserve">
-    <value>Loading unit not available</value>
+    <value>Neskladje podatk baze predala</value>
   </data>
   <data name="LoadUnitNotLoaded" xml:space="preserve">
-    <value>The selected loading unit is not loaded in the warehouse</value>
+    <value>Izbrani predal ni naložen v skladišče</value>
   </data>
   <data name="LoadUnitSourceBay" xml:space="preserve">
-    <value>Source bay of the empty loading unit</value>
+    <value>Izvor naklad pol predala je praz</value>
   </data>
   <data name="LoadUnitSourceCell" xml:space="preserve">
-    <value>Not valid source cell</value>
+    <value>izvorna celica ni veljav</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>Invalid sensors</value>
+    <value>Napaka senz naklad police</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>Inconsistenza stato sensori elevatore</value>
+    <value>Senzorji prisotnosti neveljav</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
-    <value>Inconsistenza stato sensori</value>
+    <value>Zaznan predal na dvigalu</value>
   </data>
   <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
-    <value>Inconsistenza stato sensori</value>
+    <value>Ni senzorja za ničlo pri praznem dvigalu</value>
   </data>
   <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
-    <value>Bay sensors mismatch</value>
+    <value>Nedosl stanje senz naklad police</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
-    <value>Top level bay occupied</value>
+    <value>Visoki nivo nakl police zaseden</value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
-    <value>Elevator sensors mismatch</value>
+    <value>Nedosledno stanje senzorjev</value>
   </data>
   <data name="LoadUnitWeightExceeded" xml:space="preserve">
-    <value>The maximum weight loaded on the loading unit is excessive.</value>
+    <value>Maksimalna teža, naložena na predal, je prevelika.</value>
   </data>
   <data name="LoadUnitShutterClosed" xml:space="preserve">
-    <value>Shutter closed</value>
+    <value>Loputa zaprta</value>
   </data>
   <data name="LoadUnitShutterOpen" xml:space="preserve">
-    <value>Shutter open</value>
+    <value>Loputa odprta</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
-    <value>Destination below lower bound</value>
+    <value>Cilj je manjši od spodnje meje</value>
   </data>
   <data name="BayInvertersBusy" xml:space="preserve">
-    <value>The inverter is executing another command</value>
+    <value>Inverter izvaja drug ukaz</value>
   </data>
   <data name="DestinationOverUpperBound" xml:space="preserve">
-    <value>Destination over upper bound</value>
+    <value>Cilj je večji od zgornje meje</value>
   </data>
   <data name="IoDeviceError" xml:space="preserve">
-    <value>I/O device error.</value>
+    <value>Zazn je bila napak na vhodno-izhodni npr.</value>
   </data>
   <data name="LoadUnitPresentInCell" xml:space="preserve">
-    <value>The load unit is inside the warehouse</value>
+    <value>Predal zaznan v celici</value>
   </data>
   <data name="MachineModeNotValid" xml:space="preserve">
-    <value>Machine mode not valid</value>
+    <value>Način stroja ni veljaven</value>
   </data>
   <data name="SecurityBarrierWasTriggered" xml:space="preserve">
-    <value>Security barrier occupied</value>
+    <value>Varnostna pregrada zasedena</value>
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
-    <value>Please check all security buttons.</value>
+    <value>Gumb za zaust v sili pritis</value>
   </data>
   <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
-    <value>The left side panel is open.</value>
+    <value>Leva stranska plošča je odprta.</value>
   </data>
   <data name="LoadUnitOtherBay" xml:space="preserve">
-    <value>The load unit is in another bay</value>
+    <value>Predal zaznan na drugi nakl polici</value>
   </data>
   <data name="LoadUnitSourceElevator" xml:space="preserve">
-    <value>Drawer not present on the elevator</value>
+    <value>Predala ni na dvigalu</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>Invalid sensors</value>
+    <value>Napaka senz nakl police</value>
   </data>
   <data name="TopLevelBayEmpty" xml:space="preserve">
-    <value>Top level bay empty</value>
+    <value>Viso nivo nakl police prazen</value>
   </data>
   <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
-    <value>Mission execution error</value>
+    <value>Napaka izvajanja naloge</value>
   </data>
   <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
-    <value>Mission execution error</value>
+    <value>Napaka izvajanja naloge</value>
   </data>
   <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
-    <value>Mission execution error</value>
+    <value>Napaka izvajanja naloge</value>
   </data>
   <data name="NoError" xml:space="preserve">
-    <value>NoError</value>
+    <value>Ni napak</value>
   </data>
   <data name="LoadUnitWeightTooLow" xml:space="preserve">
-    <value>Weight too low</value>
+    <value>Teža je prenizka</value>
   </data>
   <data name="MachineWeightExceeded" xml:space="preserve">
-    <value>Total machine weight exceeded</value>
+    <value>Skupna teža skladišča presežena</value>
   </data>
   <data name="WarehouseIsFull" xml:space="preserve">
-    <value>Warehouse is full</value>
+    <value>Skladiš  polno</value>
   </data>
   <data name="LoadUnitMissingOnBay" xml:space="preserve">
-    <value>Bay occupied with unknown loading unit</value>
+    <value>Nakl. polica zased z nez predalom</value>
   </data>
   <data name="LoadUnitMissingOnElevator" xml:space="preserve">
-    <value>Elevator occupied with unknown loading unit</value>
+    <value>Dvigalo zasedeno z neznanim predalom</value>
   </data>
   <data name="InverterConnectionError" xml:space="preserve">
-    <value>Errore di connessione</value>
+    <value>Napaka povezave z inverterjem</value>
   </data>
   <data name="IoDeviceConnectionError" xml:space="preserve">
-    <value>Errore di connessione</value>
+    <value>Napaka povez z vhodno-izh napravo</value>
   </data>
   <data name="LaserConnectionError" xml:space="preserve">
-    <value>Errore di connessione</value>
+    <value>Napaka povezave z laserjem</value>
   </data>
   <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
-    <value>Automatic restore of the movement is not allowed</value>
+    <value>Avtomatska ponastavitev premika ni dovoljena</value>
   </data>
   <data name="DestinationTypeNotValid" xml:space="preserve">
-    <value>The destination type is not valid</value>
+    <value>Vrsta cilja ni veljavna</value>
   </data>
   <data name="LoadUnitUndefinedBottom" xml:space="preserve">
-    <value>Undefined bay bottom position</value>
+    <value>Spodnji položaj naklad police ni določen</value>
   </data>
   <data name="LoadUnitUndefinedUpper" xml:space="preserve">
-    <value>Undefined bay upper position</value>
+    <value>Zgornji položaj naklad police ni določen</value>
   </data>
   <data name="MissionTypeNotValid" xml:space="preserve">
-    <value>The mission type is not valid</value>
+    <value>Vrsta naloge ni veljavna</value>
   </data>
   <data name="MoveBayChainNotAllowed" xml:space="preserve">
-    <value>Move Bay chain not allowed: the load unit is too heavy.</value>
+    <value>Premik verige nakladalne police ni dovoljen: predal je pretežek.</value>
   </data>
   <data name="ResumeCommandNotValid" xml:space="preserve">
-    <value>The picking confirmation command is not valid</value>
+    <value>Ukaz za vrnitev s pobiranja ni veljaven</value>
   </data>
   <data name="CellLogicallyOccupied" xml:space="preserve">
-    <value>Update database failed. One or more destination cells are logically occupied</value>
+    <value>Napaka posodabljanja arhiva celic. Ena ali več ciljnih celic je logično zasedena</value>
   </data>
   <data name="ConditionsNotMetForHoming" xml:space="preserve">
-    <value>Homing conditions not met.</value>
+    <value>Pogoji za umerjanje niso doseženi.</value>
   </data>
   <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
-    <value>Height error</value>
+    <value>Napaka višine</value>
   </data>
   <data name="LoadUnitShutterInvalid" xml:space="preserve">
-    <value>Shutter position not valid</value>
+    <value>Napaka stanja lopute</value>
   </data>
   <data name="DestinationBayNotCalibrated" xml:space="preserve">
-    <value>Destination bay needs calibration</value>
+    <value>Ciljna nakladalna polica ni umerjena.</value>
   </data>
   <data name="FirstTestFailed" xml:space="preserve">
-    <value>Test not completed</value>
+    <value>Test ni zaključen</value>
   </data>
   <data name="WarehouseNotEmpty" xml:space="preserve">
-    <value>Not empty warehouse.</value>
+    <value>Skladišče ni prazno.</value>
   </data>
   <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
-    <value>Positioning error</value>
+    <value>Napaka postav naklad pol</value>
   </data>
   <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
-    <value>The right side panel is open.</value>
+    <value>Desna stranska plošča je odprta</value>
   </data>
   <data name="VerticalPositionChanged" xml:space="preserve">
-    <value>Vertical position has changed after machine start</value>
+    <value>Napačen navpični položaj.</value>
   </data>
   <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
-    <value />
+    <value>Konfiguracija pospeševanja premika osi {0} ni veljavna: pospeševanje v prazno je manjše kot pri polni obremenitvi</value>
   </data>
   <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
-    <value />
+    <value>Konfiguracija hitrosti premika osi {0} ni veljavna: hitrost v prazno je manjša kot pri polni obremenitvi</value>
   </data>
   <data name="FullTestFailed" xml:space="preserve">
-    <value>Test not completed</value>
+    <value>Test ni zaključen</value>
   </data>
   <data name="InvalidBay" xml:space="preserve">
-    <value>Invalid bay</value>
+    <value>Nak pol ni velj</value>
   </data>
   <data name="InvalidPositionBay" xml:space="preserve">
-    <value>Invalid bay position</value>
+    <value>Položaj nakl pol ni velj</value>
   </data>
   <data name="AxisMovementAccelerationConfigurationInvalid" xml:space="preserve">
-    <value>Invalid {0} Axis movement Acceleration configuration</value>
+    <value>Konfiguracija pospeševanja premika osi {0} ni veljavna.</value>
   </data>
   <data name="AxisMovementDecelerationConfigurationInvalid" xml:space="preserve">
-    <value>Invalid {0} Axis movement Deceleration configuration</value>
+    <value>Konfiguracija upočasnjevanja premika osi {0} ni veljavna.</value>
   </data>
   <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
-    <value>Invalid {0} Axis movement Speed configuration</value>
+    <value>Konfiguracija hitrosti premika osi {0} ni veljavna.</value>
   </data>
   <data name="ElevatorOverrunDetected" xml:space="preserve">
-    <value>Positioning error at top side</value>
+    <value>Napaka postavitve na zgornji rob</value>
   </data>
   <data name="ExternalBayOccupied" xml:space="preserve">
-    <value>External bay is occupied</value>
+    <value>Zun nakl pol zasedena</value>
   </data>
   <data name="ExternalBayEmpty" xml:space="preserve">
-    <value>External bay empty</value>
+    <value>Zun nakl pol prazn</value>
   </data>
   <data name="WmsError" xml:space="preserve">
-    <value>WMS error</value>
+    <value>Napaka WMS</value>
   </data>
   <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
-    <value>Invalid movement</value>
+    <value>Premik ni veljaven</value>
   </data>
   <data name="ElevatorUnderrunDetected" xml:space="preserve">
-    <value>Positioning error at bottom side</value>
+    <value>Napaka postavitve na spodnji rob</value>
   </data>
   <data name="BayPositionDisabled" xml:space="preserve">
-    <value>Load unit non available</value>
-  </data>
-  <data name="LoadUnitNumber" xml:space="preserve">
-    <value>Load unit number</value>
-  </data>
-  <data name="MoveExtBayNotAllowed" xml:space="preserve">
-    <value>Invalid bay sensors</value>
+    <value>Predal ni razpoložljiv</value>
   </data>
 </root>

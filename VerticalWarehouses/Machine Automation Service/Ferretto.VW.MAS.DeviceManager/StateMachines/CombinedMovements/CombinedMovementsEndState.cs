@@ -160,8 +160,24 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug($"1: Retry Stop Command. Reason:{reason}");
-            this.Start();
+            // do not repeat this stop command or there will be an infinite loop
+
+            //this.Logger.LogDebug($"1: Retry Stop Command. Reason:{reason}");
+            //this.Start();
+
+            // quit fsm
+            var notificationMessage = new NotificationMessage(
+                this.machineData.MessageData,
+                "Combined Movements Stopped",
+                MessageActor.DeviceManager,
+                MessageActor.DeviceManager,
+                MessageType.CombinedMovements,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+            this.Logger.LogDebug("FSM Combined Movements Stopped");
         }
 
         #endregion

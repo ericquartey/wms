@@ -10,11 +10,11 @@ $installer="$(Install:Root:Path)\$(Installer:DirName)";
 $telemetry="$(Install:Root:Path)\$(TS:DirName)";
 
 # remove dirty staging dirs, if any
-if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};
-if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};
-if(Test-Path $stageInstaller -PathType Container) {Remove-Item $stageInstaller -Recurse -Force};
-if(Test-Path $stageTelemetry -PathType Container) {Remove-Item $stageTelemetry -Recurse -Force};
-if(Test-Path $stageDatabase -PathType Container) {Remove-Item $stageDatabase -Recurse -Force};
+#if(Test-Path $stageAs -PathType Container) {Remove-Item $stageAs -Recurse -Force};
+#if(Test-Path $stagePpc -PathType Container) {Remove-Item $stagePpc -Recurse -Force};
+#if(Test-Path $stageInstaller -PathType Container) {Remove-Item $stageInstaller -Recurse -Force};
+#if(Test-Path $stageTelemetry -PathType Container) {Remove-Item $stageTelemetry -Recurse -Force};
+#if(Test-Path $stageDatabase -PathType Container) {Remove-Item $stageDatabase -Recurse -Force};
 
 # copy current app in staging dirs
 Copy-Item $as $stageAs -Recurse;

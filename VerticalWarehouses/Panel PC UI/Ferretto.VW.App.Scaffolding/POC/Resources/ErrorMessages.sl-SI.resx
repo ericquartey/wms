@@ -117,10 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="Range" xml:space="preserve">
+    <value>Vrednost {0} mora biti med {1} in {2}</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="RangeMin" xml:space="preserve">
+    <value>Vrednost {0} ne sme biti manjša od {1}</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Polje {0} je obvezno</value>
   </data>
 </root>

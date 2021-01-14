@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compaction.
+        ///   Looks up a localized string similar to Compacting.
         /// </summary>
         public static string Compaction {
             get {

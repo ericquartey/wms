@@ -117,10 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="CalibrationBarierError" xml:space="preserve">
+    <value>Napaka ne sme biti večja od 1 mm</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="CheckUnit" xml:space="preserve">
+    <value>Prev predala:</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Podrob koda</value>
+  </data>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>Ko je postopek identifikacije predala končan, preklopi na avtomatsko.</value>
+  </data>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>Ko je postopek identifikacije predala končan, preklopi na ročno.</value>
+  </data>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Izbira predala</value>
+  </data>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Koda napake</value>
+  </data>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Opis napake</value>
+  </data>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Možni vzroki</value>
+  </data>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Odprava napake</value>
+  </data>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Viden</value>
+  </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Naprej</value>
+  </data>
+  <data name="HighPosition" xml:space="preserve">
+    <value>Visoki položaj</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>Predal ni veljaven, vstavite: </value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inverter</value>
+  </data>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Ponast. napake INVERTER FAULT</value>
+  </data>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Nizko mesto</value>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Označi kot rešeno</value>
+  </data>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>Na strani ni naložen noben izdelek.</value>
+  </data>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Izberite ID predala, ki je na dvigalu.</value>
+  </data>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Predal na dvigalu</value>
+  </data>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Izbira predala (Nakl. polica 1):</value>
+  </data>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Izbira predala (Nakl. polica 2):</value>
+  </data>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Izbira predala (Nakl. polica 3):</value>
+  </data>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Izberite ID predala(ov) na nakladalni polici.</value>
   </data>
 </root>

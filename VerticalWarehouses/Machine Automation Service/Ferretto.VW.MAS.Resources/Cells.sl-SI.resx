@@ -117,10 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="TheCellAlreadyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>Celica že vsebuje drug predal.</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="TheCellIsUnexpectedlyFree" xml:space="preserve">
+    <value>Celica je nepričakovano prazna.</value>
+  </data>
+  <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>Celica nepričakovano vsebuje drug predal.</value>
+  </data>
+  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
+    <value>Predal ne more zasesti blokirane celice.</value>
+  </data>
+  <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
+    <value>Predal je že naložen v drugo celico.</value>
+  </data>
+  <data name="TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights" xml:space="preserve">
+    <value>Navedena višina ne leži med višinami sosednjih celic.</value>
+  </data>
+  <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
+    <value>Določena višina bi povzročila prekrivanje plošče z drugo obstoječo ploščo.</value>
+  </data>
+  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
+    <value>Ciljna celica je samo prostor, ne more podpirati enotnih obremenitev.</value>
+  </data>
+  <data name="TheTargetCellIsBlocked" xml:space="preserve">
+    <value>Ciljna celica je blokirana.</value>
+  </data>
+  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Navedena celica ni v navpičnih mejah dvigala.</value>
+  </data>
+  <data name="NoEmptyCellsAvailable" xml:space="preserve">
+    <value>V skladišču ni razpoložljivih celic.</value>
+  </data>
+  <data name="TheCellIsNotFree" xml:space="preserve">
+    <value>Celica ni prosta</value>
+  </data>
+  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
+    <value>Navedena celica ne more vsebovati predala na dvigalu</value>
+  </data>
+  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Navedena višina ni v navpičnih mejah dvigala.</value>
+  </data>
+  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
+    <value>Predala ni mogoče postaviti pred onemogočeno celico.</value>
+  </data>
+  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
+    <value>Ciljna celica je onemogočena.</value>
+  </data>
+  <data name="TheTargetCellIsUnusable" xml:space="preserve">
+    <value>Ciljna celica je neuporabna.</value>
   </data>
 </root>

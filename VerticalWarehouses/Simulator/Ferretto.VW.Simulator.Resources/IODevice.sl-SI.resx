@@ -117,10 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayCategory" xml:space="preserve">
-    <value>Baia {0}</value>
+  <data name="BayLightActivation" xml:space="preserve">
+    <value>Omognje osvetlitve nak police</value>
   </data>
-  <data name="BayInverterCategory" xml:space="preserve">
-    <value>Inverter Bay {0}</value>
+  <data name="CarterSensorLeft" xml:space="preserve">
+    <value>Senzor zaščitnega ohišja L</value>
+  </data>
+  <data name="CarterSensorRight" xml:space="preserve">
+    <value>Senzor zaščitnega ohišja D</value>
+  </data>
+  <data name="EmergencyPB" xml:space="preserve">
+    <value>Gumb za izk v sili</value>
+  </data>
+  <data name="EnableRunConsole" xml:space="preserve">
+    <value>Omogočenje zagona s konzole</value>
+  </data>
+  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
+    <value>Izbira motorja ležišča (feedback)</value>
+  </data>
+  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
+    <value>Izbira motorja dvigala (feedback)</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>Prost</value>
+  </data>
+  <data name="HeightReadingActivation" xml:space="preserve">
+    <value>Omogočenje branja višine (merilna pregrada)</value>
+  </data>
+  <data name="InverterFaultSignal" xml:space="preserve">
+    <value>Kumulativni inverter v okvar</value>
+  </data>
+  <data name="IODeviceByID" xml:space="preserve">
+    <value>V-i naprava{0:00}</value>
+  </data>
+  <data name="IODeviceName" xml:space="preserve">
+    <value>Ime v-i napra</value>
+  </data>
+  <data name="LightCurtain" xml:space="preserve">
+    <value>Optična pregrada proti poseg</value>
+  </data>
+  <data name="LightCurtainCalibration" xml:space="preserve">
+    <value>Umerjanje pregrad</value>
+  </data>
+  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
+    <value>Senz za prisotnost spod predala / na vmesni nak pol</value>
+  </data>
+  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Prisotn predala na ležišču na str stroja</value>
+  </data>
+  <data name="MotorElevatorChainSelection" xml:space="preserve">
+    <value>Izbira motorja ležišča</value>
+  </data>
+  <data name="MotorElevatorSelection" xml:space="preserve">
+    <value>Izbira motorja dvigala</value>
+  </data>
+  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Prisotn predala na ležišču na str operat</value>
+  </data>
+  <data name="ResetSafetyFunction" xml:space="preserve">
+    <value>Ponast. varnostne funk (300 ms impulz)</value>
+  </data>
+  <data name="RobotEndPicking" xml:space="preserve">
+    <value>Možnost robota - gumb za konec pobir (ali konec pobir robota)</value>
+  </data>
+  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
+    <value>Možnost robota - Zaključena naloga skladišča</value>
+  </data>
+  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
+    <value>Možn robota - Sklad priprav / v okvari</value>
+  </data>
+  <data name="SafetyStatus" xml:space="preserve">
+    <value>Stanje varnos funkcije</value>
+  </data>
+  <data name="TrolleyHook" xml:space="preserve">
+    <value>Možnost vozička - priklop vozička</value>
+  </data>
+  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
+    <value>Senz za prisot predala na nak pol</value>
   </data>
 </root>
