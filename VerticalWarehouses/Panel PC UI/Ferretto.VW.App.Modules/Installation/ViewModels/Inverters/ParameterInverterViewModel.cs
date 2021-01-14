@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string importFolderPath;
 
+        private SubscriptionToken inverterProgrammingMessageReceivedToken;
+
         private SubscriptionToken inverterReadingMessageReceivedToken;
 
         private IEnumerable<Inverter> inverters;
@@ -183,6 +185,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.inverterReadingMessageReceivedToken = null;
             }
 
+            if (this.inverterProgrammingMessageReceivedToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<InverterReadingMessageData>>().Unsubscribe(this.inverterProgrammingMessageReceivedToken);
+                this.inverterProgrammingMessageReceivedToken?.Dispose();
+                this.inverterProgrammingMessageReceivedToken = null;
+            }
+
             base.Disappear();
         }
 
@@ -200,13 +209,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
             this.usbWatcher.Enable();
 
-            this.inverterReadingMessageReceivedToken = this.inverterReadingMessageReceivedToken
-               ?? this.EventAggregator
-                   .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
-                   .Subscribe(
-                       (m) => this.OnInverterReadingMessageReceived(m),
-                       ThreadOption.UIThread,
-                       false);
+            this.SubscribeEvents();
 
             await base.OnAppearedAsync();
 
@@ -265,7 +268,40 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.usbWatcher.Drives.Writable().Any();
         }
 
-        private async void OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
+        private void OnInverterProgrammingMessageReceived(NotificationMessageUI<InverterProgrammingMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    this.IsBusy = true;
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    this.IsBusy = false;
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingSuccessfullyEnded"), Services.Models.NotificationSeverity.Success);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                    this.IsBusy = false;
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingEndedErrors"), Services.Models.NotificationSeverity.Error);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    this.IsBusy = false;
+                    this.ShowNotification(Localized.Get("InstallationApp.InvertersProgrammingStopped"), Services.Models.NotificationSeverity.Warning);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStepEnd:
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingNext"), Services.Models.NotificationSeverity.Info);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private void OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
         {
             switch (message.Status)
             {
@@ -370,6 +406,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 Utils.Modules.Installation.Inverters.PARAMETERSINVERTERDETAILS,
                 data: this,
                 trackCurrentView: true);
+        }
+
+        private void SubscribeEvents()
+        {
+            this.inverterProgrammingMessageReceivedToken = this.inverterProgrammingMessageReceivedToken
+              ?? this.EventAggregator
+                  .GetEvent<NotificationEventUI<InverterProgrammingMessageData>>()
+                  .Subscribe(
+                      (m) => this.OnInverterProgrammingMessageReceived(m),
+                      ThreadOption.UIThread,
+                      false);
+
+            this.inverterReadingMessageReceivedToken = this.inverterReadingMessageReceivedToken
+               ?? this.EventAggregator
+                   .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
+                   .Subscribe(
+                       (m) => this.OnInverterReadingMessageReceived(m),
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UsbWatcher_DrivesChange(object sender, DrivesChangedEventArgs e)

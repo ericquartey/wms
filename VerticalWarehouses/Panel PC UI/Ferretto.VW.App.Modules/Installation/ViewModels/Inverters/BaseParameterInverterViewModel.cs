@@ -19,8 +19,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineIdentityWebService identityService;
 
-        private SubscriptionToken inverterProgrammingMessageReceivedToken;
-
         private bool isBusy;
 
         #endregion
@@ -63,13 +61,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
-            if (this.inverterProgrammingMessageReceivedToken != null)
-            {
-                this.EventAggregator.GetEvent<NotificationEventUI<InverterReadingMessageData>>().Unsubscribe(this.inverterProgrammingMessageReceivedToken);
-                this.inverterProgrammingMessageReceivedToken?.Dispose();
-                this.inverterProgrammingMessageReceivedToken = null;
-            }
-
             base.Disappear();
         }
 
@@ -101,52 +92,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-
-            this.SubscribeEvents();
-        }
-
-        private void OnInverterProgrammingMessageReceived(NotificationMessageUI<InverterProgrammingMessageData> message)
-        {
-            switch (message.Status)
-            {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
-                    this.isBusy = true;
-                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingStarted"), Services.Models.NotificationSeverity.Info);
-                    break;
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    this.isBusy = false;
-                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingSuccessfullyEnded"), Services.Models.NotificationSeverity.Success);
-                    break;
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
-                    this.isBusy = false;
-                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingEndedErrors"), Services.Models.NotificationSeverity.Error);
-                    break;
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
-                    this.isBusy = false;
-                    this.ShowNotification(Localized.Get("InstallationApp.InvertersProgrammingStopped"), Services.Models.NotificationSeverity.Warning);
-                    break;
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStepEnd:
-                    this.ShowNotification(Localized.Get("InstallationApp.InverterProgrammingNext"), Services.Models.NotificationSeverity.Info);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void SubscribeEvents()
-        {
-            this.inverterProgrammingMessageReceivedToken = this.inverterProgrammingMessageReceivedToken
-              ?? this.EventAggregator
-                  .GetEvent<NotificationEventUI<InverterProgrammingMessageData>>()
-                  .Subscribe(
-                      (m) => this.OnInverterProgrammingMessageReceived(m),
-                      ThreadOption.UIThread,
-                      false);
         }
 
         #endregion

@@ -32,6 +32,8 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
+using Ferretto.VW.MAS.DeviceManager.InverterReading;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
@@ -296,10 +298,15 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.PowerEnable:
                             case MessageType.InverterFaultReset:
                             case MessageType.ResetSecurity:
-                            case MessageType.InverterProgramming:
-                            case MessageType.InverterReading:
                             case MessageType.InverterPowerEnable:
                             case MessageType.CheckIntrusion:
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
+                                this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                this.SendCleanDebug();
+                                break;
+
+                            case MessageType.InverterProgramming:
+                            case MessageType.InverterReading:
                                 this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
@@ -902,11 +909,22 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     case FieldMessageType.InverterProgramming when receivedMessage.Source is FieldMessageActor.InverterDriver:
 
+                        var dataMessage = receivedMessage.Data as IInverterProgrammingFieldMessageData;
+                        var msgProgramming = new InverterProgrammingMessageData();
+
+                        if (dataMessage != null)
+                        {
+                            var parameterData = new InverterParametersData(dataMessage.InverterIndex, "", dataMessage.Parameters);
+                            var iparameterData = new List<InverterParametersData>();
+                            iparameterData.Add(parameterData);
+                            msgProgramming.InverterParametersData = iparameterData;
+                        }
+
                         this.EventAggregator
                             .GetEvent<NotificationEvent>()
                             .Publish(
                                 new NotificationMessage(
-                                    null,
+                                    msgProgramming,
                                     receivedMessage.Description,
                                     MessageActor.Any,
                                     MessageActor.DeviceManager,
@@ -919,11 +937,22 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     case FieldMessageType.InverterReading when receivedMessage.Source is FieldMessageActor.InverterDriver:
 
+                        var dataMessageRead = receivedMessage.Data as IInverterReadingFieldMessageData;
+                        var msgReading = new InverterReadingMessageData();
+
+                        if (dataMessageRead != null)
+                        {
+                            var parameterData = new InverterParametersData(dataMessageRead.InverterIndex, "", dataMessageRead.Parameters);
+                            var iparameterData = new List<InverterParametersData>();
+                            iparameterData.Add(parameterData);
+                            msgReading.InverterParametersData = iparameterData;
+                        }
+
                         this.EventAggregator
                             .GetEvent<NotificationEvent>()
                             .Publish(
                                 new NotificationMessage(
-                                    null,
+                                    msgReading,
                                     receivedMessage.Description,
                                     MessageActor.Any,
                                     MessageActor.DeviceManager,
@@ -1014,6 +1043,19 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 System.Diagnostics.Debug.Fail("Exception detected");
+
+                if (this.currentStateMachines.Any())
+                {
+                    foreach (var messageCurrentStateMachine in this.currentStateMachines)
+                    {
+                        if (messageCurrentStateMachine is InverterProgrammingStateMachine ||
+                            messageCurrentStateMachine is InverterReadingStateMachine)
+                        {
+                            this.currentStateMachines.Remove(messageCurrentStateMachine);
+                            this.SendCleanDebug();
+                        }
+                    }
+                }
             }
 
             this.EventAggregator

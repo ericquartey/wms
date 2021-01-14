@@ -31,6 +31,12 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private const string USHORTTYPE = "ushort";
 
+        private const short NODEID = 900;
+
+        private const short BAUNDRATE = 903;
+
+        private const short VABUS_BAUNDRATE = 10;
+
         private readonly ConfigurationService configurationService;
 
         private readonly IParentActionChanged parentActionChanged;
@@ -369,6 +375,14 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         string.IsNullOrEmpty(type))
                     {
                         type = data.type;
+                    }
+
+                    //force readonly
+                    if (code == NODEID ||
+                        code == BAUNDRATE ||
+                        code == VABUS_BAUNDRATE)
+                    {
+                        data.isReadonly = true;
                     }
 
                     var inverterVersionParameter = new ParameterInfo(code, desc, type, data.isReadonly);

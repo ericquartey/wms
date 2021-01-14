@@ -86,75 +86,75 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
 
                 this.ParentStateMachine.ChangeState(
                     new InverterProgrammingErrorState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
-
-                return false;
-            }
-
-            //check Id
-            var currentParameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
-
-            if (currentParameter.Code != message.ShortParameterId)
-            {
-                return true;
-            }
-
-            this.Logger.LogDebug($"Inverter Programming parameter={message.ParameterId}, dataset={message.DataSetIndex}");
-
-            //convert to string
-            string result = default(string);
-            switch (currentParameter.Type)
-            {
-                case "short":
-                    result = message.ShortPayload.ToString();
-                    break;
-
-                case "ushort":
-                    result = message.UShortPayload.ToString();
-                    break;
-
-                case "int":
-                    result = message.IntPayload.ToString();
-                    break;
-
-                case "string":
-                    result = message.StringPayload;
-                    break;
-            }
-
-            var dataset = default(int);
-            if (currentParameter.WriteCode != 0)
-            {
-                var datasetString = this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().GetParameter(message.SystemIndex, currentParameter.WriteCode, 0).StringValue;
-                dataset = int.Parse(datasetString);
             }
             else
             {
-                dataset = message.DataSetIndex;
-            }
+                //check Id
+                var currentParameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
 
-            //check parameter in db
-            if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex))
-            {
-                this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameter(message.SystemIndex, message.ShortParameterId, result, message.DataSetIndex);
-            }
-            else
-            {
-                this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.WriteCode, currentParameter.ReadCode, currentParameter.DecimalCount);
-            }
+                if (currentParameter.Code != message.ShortParameterId)
+                {
+                    return true;
+                }
 
-            if (this.currentParametersPosition == (this.inverterProgrammingFieldMessageData.Parameters.Count() - 1) ||
-                this.inverterProgrammingFieldMessageData.Parameters.Count() == 1)
-            {
-                this.ParentStateMachine.ChangeState(
-                     new InverterProgrammingEndState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
-            }
-            else
-            {
-                this.currentParametersPosition++;
-                var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
-                var data = this.GetNewInverterMessage(parameter);
+                this.Logger.LogDebug($"Inverter Programming parameter={message.ParameterId}, dataset={message.DataSetIndex}");
 
-                this.ParentStateMachine.EnqueueCommandMessage(data);
+                //convert to string
+                string result = default(string);
+                switch (currentParameter.Type)
+                {
+                    case "short":
+                        result = message.ShortPayload.ToString();
+                        break;
+
+                    case "ushort":
+                        result = message.UShortPayload.ToString();
+                        break;
+
+                    case "int":
+                        result = message.IntPayload.ToString();
+                        break;
+
+                    case "string":
+                        result = message.StringPayload;
+                        break;
+                }
+
+                var dataset = default(int);
+                if (currentParameter.WriteCode != 0)
+                {
+                    var datasetString = this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().GetParameter(message.SystemIndex, currentParameter.WriteCode, 0).StringValue;
+                    dataset = int.Parse(datasetString);
+                }
+                else
+                {
+                    dataset = message.DataSetIndex;
+                }
+
+                //check parameter in db
+                if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex))
+                {
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameter(message.SystemIndex, message.ShortParameterId, result, message.DataSetIndex);
+                }
+                else
+                {
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.WriteCode, currentParameter.ReadCode, currentParameter.DecimalCount);
+                }
+
+                if (this.currentParametersPosition == (this.inverterProgrammingFieldMessageData.Parameters.Count() - 1) ||
+                    this.inverterProgrammingFieldMessageData.Parameters.Count() == 1)
+                {
+                    this.ParentStateMachine.ChangeState(
+                         new InverterProgrammingEndState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
+                }
+                else
+                {
+                    this.currentParametersPosition++;
+                    var parameter = (InverterParameter)this.inverterProgrammingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
+                    var data = this.GetNewInverterMessage(parameter);
+
+                    this.ParentStateMachine.EnqueueCommandMessage(data);
+                }
             }
 
             return !message.IsError;
@@ -227,16 +227,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                 }
             }
 
-            return true;
+            return !message.IsError;
         }
 
         private InverterMessage GetNewInverterMessage(InverterParameter parameter)
         {
-            if (this.inverterProgrammingFieldMessageData.IsCheckInverterVersion)
-            {
-                return new InverterMessage((byte)this.InverterStatus.SystemIndex, InverterParameterId.SoftwareVersion, parameter.DataSet);
-            }
-            else if (parameter.IsReadOnly)
+            if (parameter.IsReadOnly)
             {
                 return new InverterMessage((byte)this.InverterStatus.SystemIndex, parameter.Code, parameter.DataSet);
             }

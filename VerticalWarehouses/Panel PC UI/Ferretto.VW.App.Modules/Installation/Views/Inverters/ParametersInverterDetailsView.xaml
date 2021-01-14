@@ -39,7 +39,7 @@
                         Margin="0,0,0,10"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
-                        Command="{Binding ResetCommand}"
+                        Command="{Binding HardResetCommand}"
                         Content="{res:Loc InstallationApp.Reset}"
                         IsBusy="{Binding IsWaitingForResponse}"
                         Visibility="{Binding IsAdmin, Converter={StaticResource BTVC}}" />

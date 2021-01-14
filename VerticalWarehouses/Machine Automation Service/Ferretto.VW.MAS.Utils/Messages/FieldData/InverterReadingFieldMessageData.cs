@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public InverterReadingFieldMessageData(
             IEnumerable<object> parameters,
             bool isCheckInverterVersion,
+            byte inverterIndex,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
@@ -27,6 +28,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #endregion
 
         #region Properties
+
+        public byte InverterIndex { get; }
 
         public bool IsCheckInverterVersion { get; }
 

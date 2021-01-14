@@ -87,7 +87,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            if (message.IsError)
+            //check Id
+            var currentParameter = (InverterParameter)this.inverterReadingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
+
+            if (currentParameter.Code != message.ShortParameterId)
+            {
+                return true;
+            }
+            else if (message.IsError)
             {
                 this.Logger.LogError($"1:Inverter Reading Start State, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}");
                 this.ParentStateMachine.ChangeState(
@@ -95,14 +102,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
             }
             else
             {
-                //check Id
-                var currentParameter = (InverterParameter)this.inverterReadingFieldMessageData.Parameters.ElementAt(this.currentParametersPosition);
-
-                if (currentParameter.Code != message.ShortParameterId)
-                {
-                    return true;
-                }
-
                 this.Logger.LogDebug($"Inverter Reading parameter={message.ParameterId}, dataset={message.DataSetIndex}");
 
                 //convert to string
@@ -168,14 +167,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
 
         private InverterMessage GetNewInverterMessage(InverterParameter parameter)
         {
-            if (this.inverterReadingFieldMessageData.IsCheckInverterVersion)
-            {
-                return new InverterMessage((byte)this.InverterStatus.SystemIndex, InverterParameterId.SoftwareVersion, parameter.DataSet);
-            }
-            else
-            {
-                return new InverterMessage((byte)this.InverterStatus.SystemIndex, parameter.Code, parameter.DataSet);
-            }
+            return new InverterMessage((byte)this.InverterStatus.SystemIndex, parameter.Code, parameter.DataSet);
         }
 
         #endregion

@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
 
         public override void Stop(StopRequestReason reason)
         {
-            // do nothing
+            this.Logger.LogDebug($"Stop with reason: {reason}");
         }
 
         #endregion

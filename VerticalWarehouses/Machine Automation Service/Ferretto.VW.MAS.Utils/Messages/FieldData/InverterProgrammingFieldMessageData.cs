@@ -12,6 +12,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public InverterProgrammingFieldMessageData(
             IEnumerable<object> parameters,
             bool isCheckInverterVersion,
+            byte inverterIndex,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
@@ -22,11 +23,14 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
             this.Parameters = parameters;
             this.IsCheckInverterVersion = isCheckInverterVersion;
+            this.InverterIndex = inverterIndex;
         }
 
         #endregion
 
         #region Properties
+
+        public byte InverterIndex { get; }
 
         public bool IsCheckInverterVersion { get; }
 
