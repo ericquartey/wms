@@ -145,6 +145,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverters {this.machineData.InverterParametersData.Count()}");
             var notificationMessage = new NotificationMessage(
                    new InverterProgrammingMessageData(this.machineData.InverterParametersData),
                    $"Starting inverter Programming state on inverters",

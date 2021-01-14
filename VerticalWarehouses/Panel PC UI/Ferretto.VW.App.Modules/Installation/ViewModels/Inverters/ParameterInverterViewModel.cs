@@ -301,7 +301,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
+        private async void OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
         {
             switch (message.Status)
             {
