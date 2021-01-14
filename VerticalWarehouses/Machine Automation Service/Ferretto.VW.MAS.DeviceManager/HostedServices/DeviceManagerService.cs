@@ -1044,6 +1044,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 System.Diagnostics.Debug.Fail("Exception detected");
 
+#if DEBUG
                 if (this.currentStateMachines.Any())
                 {
                     foreach (var messageCurrentStateMachine in this.currentStateMachines)
@@ -1056,6 +1057,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         }
                     }
                 }
+#endif
             }
 
             this.EventAggregator
