@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-      <ProjectReference Include="..\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
       <ProjectReference Include="..\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
       <ProjectReference Include="..\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj" />
       <ProjectReference Include="..\Ferretto.VW.MAS.MachineManager\Ferretto.VW.MAS.MachineManager.csproj" />

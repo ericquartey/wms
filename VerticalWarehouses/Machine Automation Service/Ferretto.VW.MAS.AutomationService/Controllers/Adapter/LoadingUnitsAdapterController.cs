@@ -10,11 +10,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/loading-units")]
     [ApiController]
-    public class LoadingUnitsMasWmsController : ControllerBase
+    public class LoadingUnitsAdapterController : ControllerBase
     {
         #region Constructors
 
-        public LoadingUnitsMasWmsController()
+        public LoadingUnitsAdapterController()
         {
         }
 

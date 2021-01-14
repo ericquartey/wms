@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
+        private readonly IHubContext<AdapterHub, IAdapterHub> adapterHub;
+
         private readonly IApplicationLifetime applicationLifetime;
 
         private readonly IConfiguration configuration;
@@ -47,9 +49,11 @@ namespace Ferretto.VW.MAS.AutomationService
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
             IMachineVolatileDataProvider machineVolatileDataProvider,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IHubContext<AdapterHub, IAdapterHub> adapterHub)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
+            this.adapterHub = adapterHub ?? throw new ArgumentNullException(nameof(adapterHub));
             this.installationHub = installationHub ?? throw new ArgumentNullException(nameof(installationHub));
             this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
             this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));

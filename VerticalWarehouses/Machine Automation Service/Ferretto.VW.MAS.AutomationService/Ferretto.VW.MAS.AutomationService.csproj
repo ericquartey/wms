@@ -55,6 +55,10 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="nswag.json">
+      <Generator>NSwagCodeGenerator</Generator>
+      <LastGenOutput>nswag.cs</LastGenOutput>
+    </Content>
     <None Remove="Properties\register_as_service.ps1" />
     <Content Include="register_as_service.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -67,6 +71,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.6" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.2" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
@@ -114,9 +119,21 @@
     <Folder Include="Database\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="nswag.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>nswag.json</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
   <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and $(TargetFramework.StartsWith('netcore')) ">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
-    <Exec Command="$(NSwagExe_Core22) run nswag.json /variables:Configuration=$(Configuration)" />
+    <Exec
+      ConsoleToMSBuild="true"
+      ContinueOnError="true"
+      Command="$(NSwagExe_Core22) run nswag.json /variables:Configuration=$(Configuration)" >
+    </Exec>
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
 
