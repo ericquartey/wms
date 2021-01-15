@@ -249,13 +249,21 @@ namespace Ferretto.VW.MAS.AutomationService
                 return;
             }
 
-            try
+            var scope = this.ServiceScopeFactory.CreateScope();
+            var machineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+
+            // Use a internal flag property of MachineVolatileDataProvider object to enable/disable the raw database sending to
+            // telemetry
+            if (machineVolatileDataProvider.EnableLocalDbSavingOnTelemetry)
             {
-                await this.telemetryHub.SendRawDatabaseContentAsync(rawDatabaseContent);
-            }
-            catch (Exception ex)
-            {
-                this.Logger.LogWarning(ex, "Unable to send raw database content to telemetry service.");
+                try
+                {
+                    await this.telemetryHub.SendRawDatabaseContentAsync(rawDatabaseContent);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogWarning(ex, "Unable to send raw database content to telemetry service.");
+                }
             }
         }
 
