@@ -56,6 +56,11 @@ namespace Ferretto.VW.MAS.AutomationService
             return this.digitalDevicesDataProvider.GetAllParameters();
         }
 
+        public void SaveInverterStructure(IEnumerable<Inverter> inverters)
+        {
+            this.digitalDevicesDataProvider.SaveInverterStructure(inverters);
+        }
+
         private static IEnumerable<BitInfo> GetBits(PropertyInfo[] properties, object status, int dimension, int skipCharFromName = 0)
         {
             var bits = Enumerable.Repeat(new BitInfo("NA", null, "NotUsed"), dimension).ToArray();

@@ -169,10 +169,6 @@
                             IsBusy="{Binding IsWaitingForResponse}" />
       </StackPanel>
 
-
-
-
-
     </Grid>
 
   </Grid>

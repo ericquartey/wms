@@ -8,10 +8,10 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="450"
-            d:DesignWidth="800"
+            d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-  
+
   <ctrls:View.Resources>
 
     <Style x:Key="CellBorderStyle"
@@ -180,7 +180,7 @@
 
   </ctrls:View.Resources>
 
-  <Grid Margin="15,15,15,15">
+  <Grid Margin="15,15,15,0">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
@@ -225,14 +225,21 @@
       </ListView.View>
     </ListView>
 
-    <controls:PpcButton Grid.Row="2"
-                        Grid.Column="1"
-                        Margin="15,15,0,0"
-                        HorizontalAlignment="Right"
-                        Command="{Binding ImportCommand}"
-                        Content="{res:Loc InstallationApp.LoadFile}"
-                        IsBusy="{Binding IsBusy}" />
+    <StackPanel Grid.Row="2"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
 
+      <controls:PpcButton Margin="15,15,0,0"
+                          Command="{Binding ImportStructureCommand}"
+                          Content="{res:Loc InstallationApp.ImportStructure}"
+                          IsBusy="{Binding IsBusy}" />
+
+      <controls:PpcButton Margin="15,15,0,0"
+                          Command="{Binding ImportCommand}"
+                          Content="{res:Loc InstallationApp.LoadFile}"
+                          IsBusy="{Binding IsBusy}" />
+    </StackPanel>
 
   </Grid>
 </ctrls:View>

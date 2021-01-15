@@ -2334,4 +2334,7 @@
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Přečtěte si parametry měniče</value>
   </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Struktura importu</value>
+  </data>
 </root>

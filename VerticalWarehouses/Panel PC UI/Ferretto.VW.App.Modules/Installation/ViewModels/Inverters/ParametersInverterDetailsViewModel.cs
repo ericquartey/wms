@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ISetVertimagInverterConfiguration parentConfiguration;
 
+        private DelegateCommand readInverterCommand;
+
         private DelegateCommand resetCommand;
 
         private InverterParameter selectedParameter;
@@ -73,8 +75,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
+        public ICommand ReadInverterCommand =>
+                   this.readInverterCommand
+               ??
+               (this.readInverterCommand = new DelegateCommand(
+                   async () => await this.ReadInverterAsync()));
+
         public ICommand ResetCommand =>
-               this.resetCommand
+                       this.resetCommand
                ??
                (this.resetCommand = new DelegateCommand(
                 async () => await this.ResetInverterAsync(), this.CanReset));
@@ -122,6 +130,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.hardResetCommand?.RaiseCanExecuteChanged();
             this.setInverterParamertersCommand?.RaiseCanExecuteChanged();
             this.setParamerterCommand?.RaiseCanExecuteChanged();
+            this.readInverterCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsAdmin));
         }
@@ -135,6 +144,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanSave()
         {
             return !this.IsBusy &&
+                this.MachineService.MachinePower == MachinePowerState.Unpowered &&
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin &&
                 this.InverterParameters != null &&
                 this.InverterParameters.Parameters.Any();
@@ -143,6 +153,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanSaveParameter()
         {
             return !this.IsBusy &&
+                this.MachineService.MachinePower == MachinePowerState.Unpowered &&
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin &&
                 this.selectedParameter != null &&
                 !this.selectedParameter.IsReadOnly;
@@ -181,11 +192,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.parentConfiguration = mainConfiguration;
                 this.InverterParameters = mainConfiguration.SelectedInverter;
+                this.InverterParameters.Parameters.OrderBy(s => s.Code);
             }
 
             this.RaisePropertyChanged(nameof(this.InverterParameters));
 
             this.IsWaitingForResponse = false;
+        }
+
+        private async Task ReadInverterAsync()
+        {
+            try
+            {
+                this.ClearNotifications();
+
+                this.IsBusy = true;
+
+                await this.machineDevicesWebService.ReadInverterAsync(this.inverterParameters.Index);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
         }
 
         private async Task ResetInverterAsync()

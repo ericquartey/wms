@@ -2397,4 +2397,7 @@
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Read inverter parameters</value>
   </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Import structure</value>
+  </data>
 </root>

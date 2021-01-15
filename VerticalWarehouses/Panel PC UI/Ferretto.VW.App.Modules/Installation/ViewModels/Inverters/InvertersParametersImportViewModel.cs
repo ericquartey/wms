@@ -21,13 +21,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+        private readonly IMachineDevicesWebService machineDevicesWebService;
 
         private readonly IUsbWatcherService usbWatcher;
 
         private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
 
         private DelegateCommand importCommand;
+
+        private DelegateCommand importStructureCommand;
 
         private bool isBusy;
 
@@ -43,11 +45,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public InvertersParametersImportViewModel(
             IMachineIdentityWebService identityService,
-            IMachineConfigurationWebService machineConfigurationWebService,
+            IMachineDevicesWebService machineDevicesWebService,
             IUsbWatcherService usbWatcher)
             : base(identityService)
         {
-            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
             this.usbWatcher = usbWatcher;
         }
 
@@ -65,6 +67,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                (this.importCommand = new DelegateCommand(
                 async () => await this.ImportAsync(), this.CanImport));
 
+        public ICommand ImportStructureCommand =>
+                   this.importStructureCommand
+               ??
+               (this.importStructureCommand = new DelegateCommand(
+                async () => await this.ImportStructureAsync(), this.CanImport));
+
         public bool IsBusy
         {
             get => this.isBusy;
@@ -73,6 +81,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 if (this.SetProperty(ref this.isBusy, value))
                 {
                     this.importCommand?.RaiseCanExecuteChanged();
+                    this.importStructureCommand?.RaiseCanExecuteChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
                 }
             }
@@ -127,7 +136,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanImport()
         {
-            return !this.IsBusy && !this.IsMoving && this.selectedConfiguration != null;
+            return !this.IsBusy &&
+                !this.IsMoving &&
+                this.selectedConfiguration != null;
         }
 
         private void FindConfigurationFiles()
@@ -172,6 +183,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private async Task ImportStructureAsync()
+        {
+            this.IsBusy = true;
+
+            await this.machineDevicesWebService.ImportInvertersStructureAsync(this.selectedConfiguration);
+
+            this.IsBusy = false;
+        }
+
         private void OnSelectedFileChanged(FileInfo _, FileInfo file)
         {
             IEnumerable<Inverter> config = null;
@@ -202,6 +222,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.SelectedConfiguration));
 
             this.importCommand?.RaiseCanExecuteChanged();
+            this.importStructureCommand?.RaiseCanExecuteChanged();
         }
 
         private void UsbWatcher_DrivesChange(object sender, DrivesChangedEventArgs e)

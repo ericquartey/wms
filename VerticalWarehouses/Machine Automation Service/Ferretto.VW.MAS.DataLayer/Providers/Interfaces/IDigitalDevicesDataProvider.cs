@@ -24,7 +24,11 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<Inverter> GetAllParameters();
 
         Inverter GetInverterByIndex(InverterIndex mainInverter);
+
         InverterParameter GetParameter(InverterIndex inverterIndex, short code, int dataset);
+
+        void SaveInverterStructure(IEnumerable<Inverter> inverters);
+
         void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value, int dataset);
 
         #endregion
