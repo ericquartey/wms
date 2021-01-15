@@ -37,6 +37,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Diagnostics
             { 0x0505, "Asymmetric motor current, check current and wiring." },
             { 0x0506, "Motor phase current too high, check motor and wiring." },
             { 0x0507, "Message from phase monitoring, check motor and wiring." },
+            { 0x0508, "Blocked movement. Check motor, gears and sensors." },
             // DC –Link Voltage
             { 0x0700, "DC link voltage too high, check deceleration ramps and connected brake resistor." },
             { 0x0701, "DC link voltage too low, check mains voltage." },
