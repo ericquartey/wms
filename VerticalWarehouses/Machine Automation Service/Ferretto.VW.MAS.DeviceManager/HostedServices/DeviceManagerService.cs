@@ -528,7 +528,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (!e.NewState)
             {
                 this.Logger.LogError($"Running State signal fall detected! Begin Stop machine procedure.");
-                SecurityErrorDetect();
+                this.SecurityErrorDetect();
             }
 
             var messageData = new StateChangedMessageData(e.NewState);
@@ -544,7 +544,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         private void MachineSensorsStatusOnSecurityStateChanged(object sender, StatusUpdateEventArgs e)
         {
-            SecurityErrorDetect();
+            this.SecurityErrorDetect();
         }
 
         private void OnFieldNotificationReceived(FieldNotificationMessage receivedMessage, IServiceProvider serviceProvider)
