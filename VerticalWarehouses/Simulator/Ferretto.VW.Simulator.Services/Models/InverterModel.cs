@@ -814,6 +814,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.targetTimer.Change(-1, Timeout.Infinite);
             this.targetTimerActive = false;
+
+            this.DigitalIO[(int)InverterSensors.ACU_HardwareSensorSTO].Value = false;
+            this.StatusWord = 0;
         }
 
         public int GetDigitalIO()
