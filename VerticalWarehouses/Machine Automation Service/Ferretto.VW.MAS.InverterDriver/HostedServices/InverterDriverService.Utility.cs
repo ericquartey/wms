@@ -645,13 +645,20 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.currentStateMachines.Add(currentInverter, currentStateMachine);
                     currentStateMachine.Start();
                 }
+                else
+                {
+                    this.Logger.LogError("Inverter is started");
+
+                    var ex = new Exception();
+                    this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Inverter is started", 0), FieldMessageType.InverterProgramming);
+                }
             }
             else
             {
                 this.Logger.LogError("5:Wrong message Data data type");
 
                 var ex = new Exception();
-                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.ShutterPositioning);
+                this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.InverterProgramming);
             }
         }
 
