@@ -23,11 +23,3 @@ Copy-Item $installer $stageInstaller -Recurse;
 Copy-Item $telemetry $stageTelemetry -Recurse;
 
 Copy-Item "E:\Database" $stageDatabase -Recurse;
-
-# remove current app dirs
-Remove-Item $as -Force -Recurse;
-Remove-Item $ppc -Force -Recurse;
-Remove-Item $installer -Force -Recurse
-Remove-Item $telemetry -Force -Recurse
-
-Remove-Item "F:\Database\Telemetry\*.*" -Force -Recurse
