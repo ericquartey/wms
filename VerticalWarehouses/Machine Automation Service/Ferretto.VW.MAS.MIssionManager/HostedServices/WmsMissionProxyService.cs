@@ -89,8 +89,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
 
                 var machinemachineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
-                if (machinemachineVolatileDataProvider.Mode != MachineMode.Automatic
-                    && machinemachineVolatileDataProvider.Mode != MachineMode.SwitchingToAutomatic
+                if (machinemachineVolatileDataProvider.Mode != CommonUtils.Messages.MachineMode.Automatic
+                    && machinemachineVolatileDataProvider.Mode != CommonUtils.Messages.MachineMode.SwitchingToAutomatic
                     )
                 {
                     return;
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     var newWmsMissions = wmsMissions
                         .Where(m => m.BayId.HasValue)
                         .Where(m => localMissions.All(lm => lm.WmsId != m.Id))
-                        .Where(m => m.Status == MissionStatus.New);
+                        .Where(m => m.Status == Ferretto.WMS.Data.WebAPI.Contracts.MissionStatus.New);
 
                     if (newWmsMissions.Any())
                     {
@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     var localMissionsToAbort = localMissions
                         .Where(lm => lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.New)
                         .Where(lm => wmsMissions.Any(m => m.Id == lm.WmsId
-                            && (m.Status == MissionStatus.Completed
+                            && (m.Status == Ferretto.WMS.Data.WebAPI.Contracts.MissionStatus.Completed
                                 || (m.Operations?.All(op => (int)op.Status == (int)CommonUtils.Messages.Enumerations.MissionOperationStatus.OnHold) ?? false))
                                 )
                             ).ToArray();

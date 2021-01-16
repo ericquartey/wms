@@ -73,7 +73,9 @@
       "generateBaseUrlProperty": true,
       "generateSyncMethods": false,
       "exposeJsonSerializerSettings": false,
-      "clientClassAccessModifier": "internal",
+      //      "clientClassAccessModifier": "internal",
+      // TODO: temporarily use public
+      "clientClassAccessModifier": "public",
       "typeAccessModifier": "public",
       "generateContractsOutput": true,
       "contractsNamespace": "Ferretto.VW.MAS.AutomationService.Contracts",

@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     using System = global::System;
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineAboutWebService : ServiceBase, IMachineAboutWebService
+    public partial class MachineAboutWebService : ServiceBase, IMachineAboutWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -213,7 +213,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineAccessoriesWebService : ServiceBase, IMachineAccessoriesWebService
+    public partial class MachineAccessoriesWebService : ServiceBase, IMachineAccessoriesWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -1143,7 +1143,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineLoadingUnitsAdapterWebService : ServiceBase, IMachineLoadingUnitsAdapterWebService
+    public partial class MachineLoadingUnitsAdapterWebService : ServiceBase, IMachineLoadingUnitsAdapterWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -1360,7 +1360,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineBaysWebService : ServiceBase, IMachineBaysWebService
+    public partial class MachineBaysWebService : ServiceBase, IMachineBaysWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -2320,7 +2320,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineCarouselWebService : ServiceBase, IMachineCarouselWebService
+    public partial class MachineCarouselWebService : ServiceBase, IMachineCarouselWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -3356,7 +3356,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineCellPanelsWebService : ServiceBase, IMachineCellPanelsWebService
+    public partial class MachineCellPanelsWebService : ServiceBase, IMachineCellPanelsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -3700,7 +3700,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineCellsWebService : ServiceBase, IMachineCellsWebService
+    public partial class MachineCellsWebService : ServiceBase, IMachineCellsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -4273,7 +4273,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineCompactingWebService : ServiceBase, IMachineCompactingWebService
+    public partial class MachineCompactingWebService : ServiceBase, IMachineCompactingWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -4531,7 +4531,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineConfigurationWebService : ServiceBase, IMachineConfigurationWebService
+    public partial class MachineConfigurationWebService : ServiceBase, IMachineConfigurationWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -4942,7 +4942,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineDevicesWebService : ServiceBase, IMachineDevicesWebService
+    public partial class MachineDevicesWebService : ServiceBase, IMachineDevicesWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -5540,7 +5540,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineElevatorWebService : ServiceBase, IMachineElevatorWebService
+    public partial class MachineElevatorWebService : ServiceBase, IMachineElevatorWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -8659,7 +8659,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineEnduranceTestWebService : ServiceBase, IMachineEnduranceTestWebService
+    public partial class MachineEnduranceTestWebService : ServiceBase, IMachineEnduranceTestWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -9048,7 +9048,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineErrorsWebService : ServiceBase, IMachineErrorsWebService
+    public partial class MachineErrorsWebService : ServiceBase, IMachineErrorsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -9589,7 +9589,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineExternalBayWebService : ServiceBase, IMachineExternalBayWebService
+    public partial class MachineExternalBayWebService : ServiceBase, IMachineExternalBayWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -10815,7 +10815,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineFirstTestWebService : ServiceBase, IMachineFirstTestWebService
+    public partial class MachineFirstTestWebService : ServiceBase, IMachineFirstTestWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -11078,7 +11078,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineFullTestWebService : ServiceBase, IMachineFullTestWebService
+    public partial class MachineFullTestWebService : ServiceBase, IMachineFullTestWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -11411,7 +11411,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineIdentityWebService : ServiceBase, IMachineIdentityWebService
+    public partial class MachineIdentityWebService : ServiceBase, IMachineIdentityWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -11876,7 +11876,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineLoadingUnitsWebService : ServiceBase, IMachineLoadingUnitsWebService
+    public partial class MachineLoadingUnitsWebService : ServiceBase, IMachineLoadingUnitsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -13861,7 +13861,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineBeltBurnishingProcedureWebService : ServiceBase, IMachineBeltBurnishingProcedureWebService
+    public partial class MachineBeltBurnishingProcedureWebService : ServiceBase, IMachineBeltBurnishingProcedureWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -14258,7 +14258,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineDepositAndPickupProcedureWebService : ServiceBase, IMachineDepositAndPickupProcedureWebService
+    public partial class MachineDepositAndPickupProcedureWebService : ServiceBase, IMachineDepositAndPickupProcedureWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -14521,7 +14521,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineSetupStatusWebService : ServiceBase, IMachineSetupStatusWebService
+    public partial class MachineSetupStatusWebService : ServiceBase, IMachineSetupStatusWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -15668,7 +15668,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineVerticalOffsetProcedureWebService : ServiceBase, IMachineVerticalOffsetProcedureWebService
+    public partial class MachineVerticalOffsetProcedureWebService : ServiceBase, IMachineVerticalOffsetProcedureWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -16199,7 +16199,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineVerticalOriginProcedureWebService : ServiceBase, IMachineVerticalOriginProcedureWebService
+    public partial class MachineVerticalOriginProcedureWebService : ServiceBase, IMachineVerticalOriginProcedureWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -16516,7 +16516,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineVerticalResolutionCalibrationProcedureWebService : ServiceBase, IMachineVerticalResolutionCalibrationProcedureWebService
+    public partial class MachineVerticalResolutionCalibrationProcedureWebService : ServiceBase, IMachineVerticalResolutionCalibrationProcedureWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -16788,7 +16788,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineWeightAnalysisProcedureWebService : ServiceBase, IMachineWeightAnalysisProcedureWebService
+    public partial class MachineWeightAnalysisProcedureWebService : ServiceBase, IMachineWeightAnalysisProcedureWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -17126,7 +17126,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineMissionsWebService : ServiceBase, IMachineMissionsWebService
+    public partial class MachineMissionsWebService : ServiceBase, IMachineMissionsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -17862,7 +17862,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineModeWebService : ServiceBase, IMachineModeWebService
+    public partial class MachineModeWebService : ServiceBase, IMachineModeWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -18261,7 +18261,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachinePowerWebService : ServiceBase, IMachinePowerWebService
+    public partial class MachinePowerWebService : ServiceBase, IMachinePowerWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -18728,7 +18728,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineProfileProcedureWebService : ServiceBase, IMachineProfileProcedureWebService
+    public partial class MachineProfileProcedureWebService : ServiceBase, IMachineProfileProcedureWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -19123,7 +19123,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineSensorsWebService : ServiceBase, IMachineSensorsWebService
+    public partial class MachineSensorsWebService : ServiceBase, IMachineSensorsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -19318,7 +19318,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineServicingWebService : ServiceBase, IMachineServicingWebService
+    public partial class MachineServicingWebService : ServiceBase, IMachineServicingWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -20396,7 +20396,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineShuttersWebService : ServiceBase, IMachineShuttersWebService
+    public partial class MachineShuttersWebService : ServiceBase, IMachineShuttersWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -20980,7 +20980,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineStatisticsWebService : ServiceBase, IMachineStatisticsWebService
+    public partial class MachineStatisticsWebService : ServiceBase, IMachineStatisticsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -21441,7 +21441,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineUsersWebService : ServiceBase, IMachineUsersWebService
+    public partial class MachineUsersWebService : ServiceBase, IMachineUsersWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -22125,7 +22125,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineUtcTimeWebService : ServiceBase, IMachineUtcTimeWebService
+    public partial class MachineUtcTimeWebService : ServiceBase, IMachineUtcTimeWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -22596,7 +22596,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineAreasWebService : ServiceBase, IMachineAreasWebService
+    public partial class MachineAreasWebService : ServiceBase, IMachineAreasWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -22885,7 +22885,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineBarcodesWebService : ServiceBase, IMachineBarcodesWebService
+    public partial class MachineBarcodesWebService : ServiceBase, IMachineBarcodesWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -23080,7 +23080,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineCompartmentsWebService : ServiceBase, IMachineCompartmentsWebService
+    public partial class MachineCompartmentsWebService : ServiceBase, IMachineCompartmentsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -23371,7 +23371,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineImagesWebService : ServiceBase, IMachineImagesWebService
+    public partial class MachineImagesWebService : ServiceBase, IMachineImagesWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -23570,7 +23570,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineItemListsWebService : ServiceBase, IMachineItemListsWebService
+    public partial class MachineItemListsWebService : ServiceBase, IMachineItemListsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -23916,7 +23916,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineItemsWebService : ServiceBase, IMachineItemsWebService
+    public partial class MachineItemsWebService : ServiceBase, IMachineItemsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -24482,7 +24482,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineMissionOperationsWebService : ServiceBase, IMachineMissionOperationsWebService
+    public partial class MachineMissionOperationsWebService : ServiceBase, IMachineMissionOperationsWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -25184,7 +25184,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachinePutToLightWebService : ServiceBase, IMachinePutToLightWebService
+    public partial class MachinePutToLightWebService : ServiceBase, IMachinePutToLightWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
@@ -25542,7 +25542,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
-    internal partial class MachineWmsStatusWebService : ServiceBase, IMachineWmsStatusWebService
+    public partial class MachineWmsStatusWebService : ServiceBase, IMachineWmsStatusWebService
     {
         private string _baseUrl = "";
         private System.Net.Http.HttpClient _httpClient;
