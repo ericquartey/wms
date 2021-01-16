@@ -12,6 +12,8 @@ namespace Ferretto.VW.TelemetryService.Models
 
         public string ModelName { get; set; } = string.Empty!;
 
+        public byte[]? RawDatabaseContent { get; set; }
+
         public string SerialNumber { get; set; } = string.Empty!;
 
         public string Version { get; set; } = string.Empty!;

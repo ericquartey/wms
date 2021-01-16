@@ -16,6 +16,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double ElevatorVerticalPositionOld { get; set; }
 
+        // Enable/disable the raw database saving on telemetry
+        // (TODO: use another object for this caonfiguration parameter)
+        bool EnableLocalDbSavingOnTelemetry { get; set; }
+
         int ExecutedCycles { get; set; }
 
         bool IsAutomationServiceReady { get; set; }

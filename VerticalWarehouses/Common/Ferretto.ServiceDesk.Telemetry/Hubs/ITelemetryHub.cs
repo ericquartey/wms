@@ -19,6 +19,8 @@ namespace Ferretto.ServiceDesk.Telemetry.Hubs
 
         Task SendMissionLog(MissionLog missionLog);
 
+        Task SendRawDatabaseContent(byte[] rawDatabaseContent);
+
         Task SendScreenCast(int bayNumber, DateTimeOffset timeStamp, byte[] images);
 
         Task SendScreenShot(int bayNumber, DateTimeOffset timeStamp, string viewName, byte[] screenshot);

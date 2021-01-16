@@ -23,6 +23,8 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
         Task SendMissionLogAsync(IMissionLog missionLog);
 
+        Task SendRawDatabaseContentAsync(byte[] rawDatabaseContent);
+
         Task SendScreenCastAsync(int bayNumer, byte[] screenshot, DateTimeOffset dateTime);
 
         Task SendScreenShotAsync(int bayNumber, DateTimeOffset dateTime, byte[] screenShot);

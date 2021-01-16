@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Keyboards.Converters
                     return KeyboardLayout.FromJson(json);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }
