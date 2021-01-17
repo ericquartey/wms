@@ -69,15 +69,15 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             await base.StartAsync(cancellationToken);
 
-            using (var scope = this.ServiceScopeFactory.CreateScope())
-            {
-                var dataHubClient = scope.ServiceProvider.GetRequiredService<IDataHubClient>();
+            //using (var scope = this.ServiceScopeFactory.CreateScope())
+            //{
+                //var dataHubClient = scope.ServiceProvider.GetRequiredService<IDataHubClient>();
 
-                dataHubClient.EntityChanged += async (s, e) => await this.OnWmsEntityChangedAsync(s, e);
-                dataHubClient.ConnectionStatusChanged += this.OnWmsConnectionStatusChanged;
+                //dataHubClient.EntityChanged += async (s, e) => await this.OnWmsEntityChangedAsync(s, e);
+                //dataHubClient.ConnectionStatusChanged += this.OnWmsConnectionStatusChanged;
 
-                await this.OnWmsEnableChanged(scope.ServiceProvider);
-            }
+                //await this.OnWmsEnableChanged(scope.ServiceProvider);
+            //}
         }
 
         protected override void NotifyCommandError(CommandMessage notificationData)

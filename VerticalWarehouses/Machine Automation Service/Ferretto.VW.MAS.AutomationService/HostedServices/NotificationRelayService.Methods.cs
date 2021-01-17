@@ -147,9 +147,9 @@ namespace Ferretto.VW.MAS.AutomationService
             var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
             if (wmsSettingsProvider.IsEnabled)
             {
-                var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
+                //var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
                 wmsSettingsProvider.IsConnected = false;
-                dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
+                //dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
             }
 
             this.Logger.LogTrace("OnDataLayerReady end");

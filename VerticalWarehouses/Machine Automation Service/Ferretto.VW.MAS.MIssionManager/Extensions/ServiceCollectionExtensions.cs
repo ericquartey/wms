@@ -24,8 +24,14 @@ namespace Ferretto.VW.MAS.MissionManager
                 return client;
             });
 
-            serviceCollection.AddSingleton<IMachineLoadingUnitsAdapterWebService>(
+            serviceCollection.AddScoped<IMachineLoadingUnitsAdapterWebService>(
                 s => new MachineLoadingUnitsAdapterWebService(baseUrlResolver(s).ToString(), s.GetService<HttpClient>()));
+
+            serviceCollection.AddScoped<IMachineUsersAdapterWebService>(
+                s => new MachineUsersAdapterWebService(baseUrlResolver(s).ToString(), s.GetService<HttpClient>()));
+
+            //serviceCollection.AddScoped<IMachineMachinesAdapterWebService>(
+            //    s => new MachineMachinesAdapterWebService(baseUrlResolver(s).ToString(), s.GetService<HttpClient>()));
 
             return serviceCollection;
         }

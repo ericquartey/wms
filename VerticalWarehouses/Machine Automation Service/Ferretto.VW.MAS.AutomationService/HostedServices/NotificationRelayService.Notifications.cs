@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     break;
 
                 case MessageType.WmsEnableChanged:
-                    await this.OnWmsEnableChanged(serviceProvider);
+                    //await this.OnWmsEnableChanged(serviceProvider);
                     break;
 
                 //case MessageType.SocketLinkEnableChanged:

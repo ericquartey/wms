@@ -20,8 +20,12 @@
 
   <ItemGroup>
     <Content Remove="nlog.config" />
+    <Compile Remove="Models\Adapter\**" />
     <Content Remove="Configuration\**\*.json" />
     <Content Remove="Configuration\**\*.sql" />
+    <Content Remove="Models\Adapter\**" />
+    <EmbeddedResource Remove="Models\Adapter\**" />
+    <None Remove="Models\Adapter\**" />
   </ItemGroup>
 
   <ItemGroup>    
@@ -33,7 +37,8 @@
     </None>
     <None Include="Configuration\**\*.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>    
+    </None>
+    <Compile Remove="Controllers\Adapter\MachinesAdapterController.cs" />    
       <Content Update="appsettings.*.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -129,10 +134,7 @@
 
   <Target Name="NSwag" AfterTargets="Build" Condition=" '$(Configuration)' == 'debug' and $(TargetFramework.StartsWith('netcore')) ">
     <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
-    <Exec
-      ConsoleToMSBuild="true"
-      ContinueOnError="true"
-      Command="$(NSwagExe_Core22) run nswag.json /variables:Configuration=$(Configuration)" >
+    <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Core22) run nswag.json /variables:Configuration=$(Configuration)">
     </Exec>
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
