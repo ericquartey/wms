@@ -2337,4 +2337,10 @@
   <data name="ImportStructure" xml:space="preserve">
     <value>Struktur importieren</value>
   </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Zieldatei überschreiben</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Speichern Sie die Wechselrichterkonfiguration</value>
+  </data>
 </root>

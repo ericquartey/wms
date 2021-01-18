@@ -64,6 +64,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.Disappear();
         }
 
+        public static IEnumerable<FileInfo> FilterInverterConfigurationFile(IEnumerable<FileInfo> fileInfo)
+        {
+            var fillterFiles = new List<FileInfo>();
+            foreach (var file in fileInfo)
+            {
+                try
+                {
+                    var json = File.ReadAllText(file.FullName);
+
+                    var config = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Inverter>>(json.ToString(),
+                        new Newtonsoft.Json.JsonConverter[]
+                        {
+                            new CommonUtils.Converters.IPAddressConverter(),
+                            new Newtonsoft.Json.Converters.StringEnumConverter(),
+                        });
+
+                    fillterFiles.Add(file);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return fillterFiles;
+        }
+
         public string Filename(IEnumerable<Inverter> source, DriveInfo drive, bool unique)
         {
             var model = this.identityService.GetAsync().Result;
@@ -81,6 +106,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 filename = System.IO.Path.Combine(
                   (drive ?? throw new ArgumentNullException(nameof(drive))).RootDirectory.FullName,
                   string.Format(System.Globalization.CultureInfo.InvariantCulture, "vertimag-Inverter-configuration.{0}-{1}{2}.json", name, AssemblyInfo.Version, tick));
+
+                incremental++;
+                tick = string.Concat("(", incremental, ")");
+            } while (unique && File.Exists(filename));
+
+            return filename;
+        }
+
+        public string Filename(VertimagConfiguration source, DriveInfo drive, bool unique)
+        {
+            var model = this.identityService.GetAsync().Result;
+            var serial = model.SerialNumber;
+            if (string.IsNullOrEmpty(nameof(serial)))
+            {
+                throw new ArgumentException("Cannot retrieve a serial code from the configuration.", nameof(source));
+            }
+            var name = Regex.Replace(serial, @"[^\w\.-]", string.Empty);
+            string tick = default, filename = default;
+            var incremental = 0;
+
+            do
+            {
+                filename = System.IO.Path.Combine(
+                  (drive ?? throw new ArgumentNullException(nameof(drive))).RootDirectory.FullName,
+                  string.Format(System.Globalization.CultureInfo.InvariantCulture, "vertimag-configuration.{0}-{1}{2}.json", name, AssemblyInfo.Version, tick));
 
                 incremental++;
                 tick = string.Concat("(", incremental, ")");

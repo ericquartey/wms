@@ -92,7 +92,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.ShowExport(), this.CanShowImport));
 
         public ICommand GoToImport =>
-                       this.goToImport
+               this.goToImport
                ??
                (this.goToImport = new DelegateCommand(
                 () => this.ShowImport(), this.CanShowImport));
@@ -222,8 +222,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsBusy = true;
 
-                //add read from inverter
-
                 if (!(this.VertimagInverterConfiguration is null))
                 {
                     this.inverters = this.VertimagInverterConfiguration;
@@ -235,6 +233,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 this.inverters = this.inverters.OrderBy(s => s.Index);
+
+                this.VertimagInverterConfiguration = this.inverters;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -368,8 +368,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.BackupVertimagInverterConfigurationParameters();
 
                 await this.machineDevicesWebService.ProgramAllInvertersAsync(this.vertimagInverterConfiguration);
-
-                this.RaisePropertyChanged(nameof(this.VertimagInverterConfiguration));
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -444,20 +442,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
 
             // importable files
-            var importables = drives.FindConfigurationFiles().ToList();
-            this.importableFiles = new ReadOnlyCollection<FileInfo>(importables);
+            //var importables = drives.FindConfigurationFiles().ToList();
+            //this.importableFiles = new ReadOnlyCollection<FileInfo>(importables);
+            this.importableFiles = FilterInverterConfigurationFile(this.usbWatcher.Drives.FindConfigurationFiles());
             this.RaisePropertyChanged(nameof(this.ImportableFiles));
             this.goToImport?.RaiseCanExecuteChanged();
+            this.goToExport?.RaiseCanExecuteChanged();
 
             if (e.Attached.Any())
             {
-                var count = importables.Count;
+                var count = this.importableFiles.Count();
                 var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
                 var message = string.Format(culture, Localized.Get("InstallationApp.MultipleConfigurationsDetected"), count);
                 switch (count)
                 {
                     case 1:
-                        message = string.Format(culture, Localized.Get("InstallationApp.ConfigurationDetected"), string.Concat(importables[0].Name));
+                        message = string.Format(culture, Localized.Get("InstallationApp.ConfigurationDetected"), string.Concat(this.importableFiles.ElementAt(0).Name));
                         break;
 
                     case 0:

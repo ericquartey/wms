@@ -27,6 +27,7 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="auto" />
+      <ColumnDefinition Width="auto" />
     </Grid.ColumnDefinitions>
 
     <TextBlock Margin="0,10,15,10"
@@ -35,29 +36,26 @@
       <Run Text="{res:Loc General.Inverter}" /><Run Text=":" /> <Run Text="{Binding InverterParameters.Type}" />
     </TextBlock>
 
-    <StackPanel Grid.Column="1"
-                Orientation="Horizontal">
+    <controls:PpcButton Grid.Column="1"
+                        Margin="0,0,10,10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding HardResetCommand}"
+                        Content="Hard reset"
+                        IsBusy="{Binding IsWaitingForResponse}" />
 
-      <controls:PpcButton Margin="0,0,0,10"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding HardResetCommand}"
-                          Content="Hard reset"
-                          IsBusy="{Binding IsWaitingForResponse}"
-                          Visibility="{Binding IsAdmin, Converter={StaticResource BTVC}}" />
-
-      <controls:PpcButton Margin="0,0,0,10"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding ReadInverterCommand}"
-                          Content="{res:Loc InstallationApp.ReadInverterParameter}"
-                          IsBusy="{Binding IsWaitingForResponse}" />
-    </StackPanel>
+    <controls:PpcButton Grid.Column="2"
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding ReadInverterCommand}"
+                        Content="{res:Loc InstallationApp.ReadInverterParameter}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
 
     <StackPanel Orientation="Horizontal" />
 
     <Border Grid.Row="1"
-            Grid.ColumnSpan="2"
+            Grid.ColumnSpan="3"
             Margin="0,0,0,10"
             BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
@@ -172,6 +170,7 @@
     </Border>
 
     <Border Grid.Row="2"
+            Grid.ColumnSpan="2"
             Grid.RowSpan="2"
             Margin="0,0,15,0"
             BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -254,7 +253,7 @@
     </Border>
 
     <controls:PpcButton Grid.Row="2"
-                        Grid.Column="1"
+                        Grid.Column="3"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Command="{Binding SetParamerterCommand}"
@@ -262,7 +261,7 @@
                         IsBusy="{Binding IsWaitingForResponse}" />
 
     <controls:PpcButton Grid.Row="3"
-                        Grid.Column="1"
+                        Grid.Column="3"
                         Margin="0,10,0,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"

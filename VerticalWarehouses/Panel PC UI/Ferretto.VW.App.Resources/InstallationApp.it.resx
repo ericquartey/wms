@@ -2346,4 +2346,10 @@
   <data name="ImportStructure" xml:space="preserve">
     <value>Importa struttura</value>
   </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Sovrascrivi il file di destinazione</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Salva configurazione inverter</value>
+  </data>
 </root>

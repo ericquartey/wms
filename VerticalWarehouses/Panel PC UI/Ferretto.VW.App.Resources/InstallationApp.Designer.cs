@@ -2743,6 +2743,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import structure.
+        /// </summary>
+        public static string ImportStructure {
+            get {
+                return ResourceManager.GetString("ImportStructure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import successful.
         /// </summary>
         public static string ImportSuccessful {
@@ -4507,6 +4516,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Overwrite target file.
+        /// </summary>
+        public static string OverwriteFile {
+            get {
+                return ResourceManager.GetString("OverwriteFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to At the end of the procedure the page will change automatically..
         /// </summary>
         public static string PageChangeAutomatically {
@@ -5160,6 +5178,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SaveCheckPosition {
             get {
                 return ResourceManager.GetString("SaveCheckPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save inverter configuration.
+        /// </summary>
+        public static string SaveInverterConfiguration {
+            get {
+                return ResourceManager.GetString("SaveInverterConfiguration", resourceCulture);
             }
         }
         

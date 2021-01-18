@@ -325,9 +325,9 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                     var desc = split[1];
 
-                    //var byte1 = split[0].Substring(3, 8);
-                    //var byte2 = split[0].Substring(11, 8);
-                    //var byte3 = split[0].Substring(19, 8);
+                    //var min = split[0].Substring(3, 8); //min parameter value
+                    //var max = split[0].Substring(11, 8); //max parameter value
+                    //var default = split[0].Substring(19, 8); //default parameter value
 
                     var type0 = default(int);//0 dword, 1 word, 2 read, 3 write
                     if (char.IsLetter(Convert.ToChar(split[0].Substring(27, 1))))
@@ -353,7 +353,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                     var type = ConvertBit1(type1);
 
-                    var type2 = default(int);//3 index
+                    var type2 = default(int);//3 index, 2 internal use
                     if (char.IsLetter(Convert.ToChar(split[0].Substring(27, 1))))
                     {
                         type2 = int.Parse(split[0].Substring(29, 1), System.Globalization.NumberStyles.HexNumber);
@@ -369,7 +369,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         continue;
                     }
 
-                    var type3 = int.Parse(split[0].Substring(30, 1));//unused
+                    //var type3 = int.Parse(split[0].Substring(30, 1)); //unused
 
                     if (!string.IsNullOrEmpty(data.type) &&
                         string.IsNullOrEmpty(type))
@@ -389,7 +389,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                     parametersInfo.Add(inverterVersionParameter);
                 }
-                if (line.Contains("Value = "))
+                else if (line.Contains("Value = "))
                 {
                     var clean = line.Remove(0, 8);
                     var split = clean.Split(',', 3);
@@ -398,7 +398,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                     if (char.IsLetter(split[0].FirstOrDefault()))
                     {
-                        var hex = short.Parse(split[0].Substring(0, 1), System.Globalization.NumberStyles.HexNumber).ToString();
+                        var hex = short.Parse(split[0].Substring(0, 1), NumberStyles.HexNumber).ToString();
                         code = short.Parse(hex + split[0].Substring(1, 2));
                     }
                     else
@@ -460,6 +460,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return parameters;
         }
 
+        //these data were taken from an excel file of the inverter mapping provided by Bonfiglioli
         private static (short readCode, short writeCode) GetWriteReadCode(short code)
         {
             switch (code)

@@ -138,6 +138,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanReset()
         {
             return !this.IsBusy &&
+                this.MachineService.MachinePower == MachinePowerState.Unpowered &&
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 

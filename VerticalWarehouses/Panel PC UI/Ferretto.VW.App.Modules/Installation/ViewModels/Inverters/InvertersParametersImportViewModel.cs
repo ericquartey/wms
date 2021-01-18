@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    this.importCommand
                ??
                (this.importCommand = new DelegateCommand(
-                async () => await this.ImportAsync(), this.CanImport));
+                () => this.ImportAsync(), this.CanImport));
 
         public ICommand ImportStructureCommand =>
                    this.importStructureCommand
@@ -144,7 +144,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private void FindConfigurationFiles()
         {
             this.IsBusy = true;
-            this.configurationFiles = this.usbWatcher.Drives.FindConfigurationFiles();
+            //this.configurationFiles = this.usbWatcher.Drives.FindConfigurationFiles();
+            this.configurationFiles = FilterInverterConfigurationFile(this.usbWatcher.Drives.FindConfigurationFiles());
 
             this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
             if (!this.configurationFiles.Any())
@@ -156,7 +157,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.IsBusy = false;
         }
 
-        private async Task ImportAsync()
+        private void ImportAsync()
         {
             try
             {
@@ -201,10 +202,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 try
                 {
                     var json = File.ReadAllText(file.FullName);
-                    //var source = new IEnumerable<Inverter>
-                    //{
-                    //    //Machine = new Machine(),
-                    //}.ExtendWith(JObject.Parse(json));
 
                     config = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Inverter>>(json.ToString(),
                         new Newtonsoft.Json.JsonConverter[]

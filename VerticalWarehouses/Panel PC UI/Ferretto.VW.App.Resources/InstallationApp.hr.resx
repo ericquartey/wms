@@ -2337,4 +2337,10 @@
   <data name="ImportStructure" xml:space="preserve">
     <value>Struktura uvoza</value>
   </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Prepiši ciljanu datoteku</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Spremi konfiguraciju pretvarača</value>
+  </data>
 </root>

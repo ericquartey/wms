@@ -2337,4 +2337,10 @@
   <data name="ImportStructure" xml:space="preserve">
     <value>Struktura importu</value>
   </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Přepsat cílový soubor</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Uložte konfiguraci střídače</value>
+  </data>
 </root>
