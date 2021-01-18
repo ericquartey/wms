@@ -24,19 +24,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IUsersProvider usersProvider;
 
-        #endregion
+        private readonly IMachineUsersAdapterWebService usersWmsWebService;
 
-        //private readonly IMachineUsersAdapterWebService usersWmsWebService;
+        #endregion
 
         #region Constructors
 
         public UsersController(
             IUsersProvider usersProvider,
-            //IMachineUsersAdapterWebService usersWmsWebService,
+            IMachineUsersAdapterWebService usersWmsWebService,
             ILogger<UsersController> logger)
         {
             this.usersProvider = usersProvider ?? throw new ArgumentNullException(nameof(usersProvider));
-            //this.usersWmsWebService = usersWmsWebService ?? throw new ArgumentNullException(nameof(usersWmsWebService));
+            this.usersWmsWebService = usersWmsWebService ?? throw new ArgumentNullException(nameof(usersWmsWebService));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -60,14 +60,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.logger.LogDebug($"Login requested for token '{bearerToken}' by '{this.BayNumber}'.");
 
-            //if (wmsSettingsProvider.IsEnabled)
-            //{
-            //    var claims = await this.usersWmsWebService.AuthenticateWithBearerTokenAsync(bearerToken);
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                var claims = await this.usersWmsWebService.AuthenticateWithBearerTokenAsync(bearerToken);
 
-            //    this.logger.LogInformation($"Login success for user '{claims.Name}' by '{this.BayNumber}' through WMS.");
+                this.logger.LogInformation($"Login success for user '{claims.Name}' by '{this.BayNumber}' through WMS.");
 
-            //    return this.Ok(claims);
-            //}
+                return this.Ok(claims);
+            }
 
             return this.BadRequest("The Wms is not enabled.");
         }
@@ -94,14 +94,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 {
                     this.logger.LogDebug("User '{name}': attempting login through WMS ...", userName);
 
-                    //var claims = await this.usersWmsWebService.AuthenticateWithResourceOwnerPasswordAsync(userName, password);
+                    var claims = await this.usersWmsWebService.AuthenticateWithResourceOwnerPasswordAsync(userName, password);
 
-                    //this.logger.LogInformation(
-                    //    "User '{name}': login successful on bay '{number}' trhough WMS.",
-                    //    userName,
-                    //    this.BayNumber);
+                    this.logger.LogInformation(
+                        "User '{name}': login successful on bay '{number}' trhough WMS.",
+                        userName,
+                        this.BayNumber);
 
-                    //return this.Ok(claims);
+                    return this.Ok(claims);
                 }
                 catch
                 {
@@ -175,13 +175,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<Contracts.User>>> GetAllUsers([FromServices] IWmsSettingsProvider wmsSettingsProvider)
         {
-            //if (wmsSettingsProvider.IsEnabled
-            //    && wmsSettingsProvider.IsConnected)
-            //{
-            //    var users = await this.usersWmsWebService.GetAllAsync();
+            if (wmsSettingsProvider.IsEnabled
+                && wmsSettingsProvider.IsConnected)
+            {
+                var users = await this.usersWmsWebService.GetAllAsync();
 
-            //    return this.Ok(users);
-            //}
+                return this.Ok(users);
+            }
 
             return this.BadRequest("The Wms is not enabled.");
         }

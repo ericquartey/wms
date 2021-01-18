@@ -433,9 +433,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 try
                 {
-                    //var ret = loadingUnitsWmsWebService.UpdateAsync(loadUnitDetail, loadingUnit.Id); // non va
-                    //loadingUnitsWmsWebService.BaseUrl = wmsSettingsProvider.ServiceUrl.AbsoluteUri;
-                    loadingUnitsWmsWebService.SaveAsync(loadingUnit.Id, loadUnitDetail); // OK
+                    loadingUnitsWmsWebService.UpdateAsync(loadUnitDetail, loadingUnit.Id);
                 }
                 catch (Exception ex)
                 {
