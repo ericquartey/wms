@@ -192,8 +192,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.Data is ISetVertimagInverterConfiguration mainConfiguration)
             {
                 this.parentConfiguration = mainConfiguration;
-                this.InverterParameters = mainConfiguration.SelectedInverter;
-                this.InverterParameters.Parameters.OrderBy(s => s.Code);
+                this.inverterParameters = mainConfiguration.SelectedInverter;
+                this.inverterParameters.Parameters = this.inverterParameters.Parameters.OrderBy(s => s.Code);
             }
 
             this.RaisePropertyChanged(nameof(this.InverterParameters));
