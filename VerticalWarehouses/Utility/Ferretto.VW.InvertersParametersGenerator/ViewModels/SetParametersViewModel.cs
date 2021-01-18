@@ -261,14 +261,35 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
+        private static List<InverterParameter> TakeConfigValue(IOrderedEnumerable<InverterParameter> vcbParameter, IOrderedEnumerable<InverterParameter> configurationParameter)
+        {
+            var parameters = new List<InverterParameter>();
+
+            foreach (var parameter in vcbParameter)
+            {
+                if (configurationParameter.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
+                {
+                    var parameterToAdd = configurationParameter.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet);
+                    parameters.Add(parameterToAdd);
+                }
+                else
+                {
+                    parameters.Add(parameter);
+                }
+            }
+
+            return parameters.OrderBy(s => s.Code).ToList();
+        }
+
         private void LoadParameters()
         {
             this.IsBusy = true;
             try
             {
-                var inverterParameters = this.GetParameter(this.currentInverterParameters.Type, this.selectedFile.FullName);
-                this.RaisePropertyChanged(nameof(this.InverterParameters));
-                short lastParameterCode = 0;
+                var inverterParameters = this.GetParameter(this.currentInverterParameters.Type, this.selectedFile.FullName).OrderBy(s => s.Code);
+
+                //var inverterParametersFromConfiguration = this.GetVertimagConfigurationByInverterId(this.currentInverterParameters.InverterIndex).Parameters.OrderBy(s => s.Code);
+                //this.inverterParameters = TakeConfigValue(inverterParameters, inverterParametersFromConfiguration);
 
                 this.inverterParameters = inverterParameters.OrderBy(i => i.Code).ToList();
 
