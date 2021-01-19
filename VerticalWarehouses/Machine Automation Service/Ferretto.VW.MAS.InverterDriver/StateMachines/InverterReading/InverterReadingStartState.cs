@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
             }
             else if (message.IsError)
             {
-                this.Logger.LogError($"1:Inverter Reading Start State, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}");
+                this.Logger.LogError($"Inverter Reading Error State, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}, telegramError={message.TelegramErrorText}");
                 this.ParentStateMachine.ChangeState(
                      new InverterReadingErrorState(this.ParentStateMachine, this.inverterReadingFieldMessageData, this.InverterStatus, this.Logger));
             }

@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
         {
             if (message.IsError)
             {
-                this.Logger.LogError($"1:Inverter Programming Start State, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}");
+                this.Logger.LogError($"Inverter Programming Error State, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}, telegramError={message.TelegramErrorText}");
 
                 this.ParentStateMachine.ChangeState(
                     new InverterProgrammingErrorState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
@@ -164,7 +164,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
         {
             if (message.IsError)
             {
-                this.Logger.LogError($"1:Inverter Programming StartState, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}");
+                this.Logger.LogError($"Inverter Reading Error State, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}, telegramError={message.TelegramErrorText}");
                 this.ParentStateMachine.ChangeState(
                      new InverterProgrammingErrorState(this.ParentStateMachine, this.inverterProgrammingFieldMessageData, this.InverterStatus, this.Logger));
             }
