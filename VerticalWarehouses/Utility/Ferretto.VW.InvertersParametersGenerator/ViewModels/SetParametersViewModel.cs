@@ -189,7 +189,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             {
                 //var sufix = this.configurationService.VertimagConfiguration.Machine.LoadUnitMaxNetWeight;
                 //this.Pattern = $"{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}*{sufix}*.vcb";
-                this.Pattern = $"{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}.vcb";
+                this.Pattern = $"*{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}*.vcb";
                 var di = new DirectoryInfo(this.configurationService.InvertersParametersFolder);
                 this.configurationFiles = di.EnumerateFiles(this.Pattern);
 
