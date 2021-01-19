@@ -16,6 +16,8 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
+  <ctrls:View.Resources />
+
   <Grid Margin="15,0">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
@@ -168,8 +170,8 @@
     </Border>
 
     <Border Grid.Row="2"
-            Grid.ColumnSpan="2"
             Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
             Margin="0,0,15,0"
             BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
@@ -211,12 +213,24 @@
                              IsEnabled="{Binding IsAdmin}"
                              IsReadOnly="{Binding SelectedParameter.IsReadOnly}"
                              LabelText="{res:Loc InstallationApp.InverterParametersValue}" />
-        <controls:PpcTextBox Grid.Column="4"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch"
-                             InputText="{Binding SelectedParameter.IsReadOnly, Converter={StaticResource BTSC}}"
-                             IsEnabled="False"
-                             LabelText="{res:Loc InstallationApp.IsReadOnly}" />
+        <StackPanel Grid.Column="4"
+                    Orientation="Vertical">
+          <TextBlock Margin="0,1,5,1"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     IsEnabled="{Binding IsAdmin}"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                     Text="{res:Loc InstallationApp.IsReadOnly}" />
+          <CheckBox Width="33"
+                    Height="33"
+                    Margin="0,3,5,5"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    IsChecked="{Binding SelectedParameter.IsReadOnly, Mode=TwoWay}"
+                    IsEnabled="{Binding IsAdmin}"
+                    Style="{StaticResource PpcCheckBoxStyle}" />
+        </StackPanel>
+
 
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="0"
