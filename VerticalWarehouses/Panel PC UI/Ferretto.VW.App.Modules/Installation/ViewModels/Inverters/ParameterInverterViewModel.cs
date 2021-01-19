@@ -260,7 +260,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanSave()
         {
             return !this.IsBusy &&
-                this.MachineService.MachinePower == MachinePowerState.Unpowered &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered &&
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 
