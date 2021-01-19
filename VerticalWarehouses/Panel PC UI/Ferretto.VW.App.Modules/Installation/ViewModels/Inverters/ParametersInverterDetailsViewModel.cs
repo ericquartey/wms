@@ -138,14 +138,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanReset()
         {
             return !this.IsBusy &&
-                this.MachineService.MachinePower == MachinePowerState.Unpowered &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered &&
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 
         private bool CanSave()
         {
             return !this.IsBusy &&
-                this.MachineService.MachinePower == MachinePowerState.Unpowered &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered &&
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin &&
                 this.InverterParameters != null &&
                 this.InverterParameters.Parameters.Any();
@@ -154,7 +154,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanSaveParameter()
         {
             return !this.IsBusy &&
-                this.MachineService.MachinePower == MachinePowerState.Unpowered &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered &&
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin &&
                 this.selectedParameter != null &&
                 !this.selectedParameter.IsReadOnly;

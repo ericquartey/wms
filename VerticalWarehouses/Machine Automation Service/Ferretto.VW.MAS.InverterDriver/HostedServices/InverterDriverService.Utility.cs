@@ -625,33 +625,38 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (receivedMessage.Data is IInverterProgrammingFieldMessageData inverterProgrammingData)
             {
                 this.Logger.LogTrace("1:Parse Message Data");
+                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 10000);
 
-                if (!inverter.IsStarted)
-                {
-                    this.Logger.LogTrace("4:Starting InverterProgramming FSM");
-
-                    this.Logger.LogTrace("Start the timer for update status word");
-                    this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
-
-                    var inverterProgrammingFieldMessageData = new InverterProgrammingFieldMessageData(inverterProgrammingData.Parameters, inverterProgrammingData.IsCheckInverterVersion, (byte)inverter.SystemIndex);
-                    var currentStateMachine = new InverterProgrammigState(
-                        inverter,
-                        inverterProgrammingFieldMessageData,
-                        this.eventAggregator,
-                        this.inverterCommandQueue,
-                        this.ServiceScopeFactory,
-                        this.Logger);
-
-                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                    currentStateMachine.Start();
-                }
-                else
+                if (inverter.IsStarted)
                 {
                     this.Logger.LogError("Inverter is started");
-
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Inverter is started", 0), FieldMessageType.InverterProgramming);
                 }
+                //if (!inverter.IsStarted)
+                //{
+                this.Logger.LogTrace("4:Starting InverterProgramming FSM");
+
+                this.Logger.LogTrace("Start the timer for update status word");
+                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
+
+                var inverterProgrammingFieldMessageData = new InverterProgrammingFieldMessageData(inverterProgrammingData.Parameters, inverterProgrammingData.IsCheckInverterVersion, (byte)inverter.SystemIndex);
+                var currentStateMachine = new InverterProgrammigState(
+                    inverter,
+                    inverterProgrammingFieldMessageData,
+                    this.eventAggregator,
+                    this.inverterCommandQueue,
+                    this.ServiceScopeFactory,
+                    this.Logger);
+
+                this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                currentStateMachine.Start();
+                //}
+                //else
+                //{
+                //    this.Logger.LogError("Inverter is started");
+
+                //    var ex = new Exception();
+                //    this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Inverter is started", 0), FieldMessageType.InverterProgramming);
+                //}
             }
             else
             {
@@ -670,32 +675,39 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 this.Logger.LogTrace("1:Parse Message Data");
 
-                if (!inverter.IsStarted)
-                {
-                    this.Logger.LogTrace("4:Starting InverterReading FSM");
+                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 10000);
 
-                    this.Logger.LogTrace("Start the timer for update status word");
-                    this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
-
-                    var inverterReadingFieldMessageData = new InverterReadingFieldMessageData(inverterProgrammingData.Parameters, inverterProgrammingData.IsCheckInverterVersion, inverterProgrammingData.InverterIndex);
-                    var currentStateMachine = new InverterReadingState(
-                        inverter,
-                        inverterReadingFieldMessageData,
-                        this.eventAggregator,
-                        this.inverterCommandQueue,
-                        this.ServiceScopeFactory,
-                        this.Logger);
-
-                    this.currentStateMachines.Add(currentInverter, currentStateMachine);
-                    currentStateMachine.Start();
-                }
-                else
+                if (inverter.IsStarted)
                 {
                     this.Logger.LogError("Inverter is started");
-
-                    var ex = new Exception();
-                    this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Inverter is started", 0), FieldMessageType.InverterProgramming);
                 }
+
+                //if (!inverter.IsStarted)
+                //{
+                this.Logger.LogTrace("4:Starting InverterReading FSM");
+
+                this.Logger.LogTrace("Start the timer for update status word");
+                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
+
+                var inverterReadingFieldMessageData = new InverterReadingFieldMessageData(inverterProgrammingData.Parameters, inverterProgrammingData.IsCheckInverterVersion, inverterProgrammingData.InverterIndex);
+                var currentStateMachine = new InverterReadingState(
+                    inverter,
+                    inverterReadingFieldMessageData,
+                    this.eventAggregator,
+                    this.inverterCommandQueue,
+                    this.ServiceScopeFactory,
+                    this.Logger);
+
+                this.currentStateMachines.Add(currentInverter, currentStateMachine);
+                currentStateMachine.Start();
+                //}
+                //else
+                //{
+                //    this.Logger.LogError("Inverter is started");
+
+                //    var ex = new Exception();
+                //    this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(ex, "Inverter is started", 0), FieldMessageType.InverterProgramming);
+                //}
             }
             else
             {
