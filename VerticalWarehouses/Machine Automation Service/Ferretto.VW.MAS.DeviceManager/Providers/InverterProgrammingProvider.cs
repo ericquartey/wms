@@ -159,7 +159,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             foreach (var inverter in inverters.OrderBy(s => s.Index))
             {
-                var newInverterParametersData = this.GetInverterParameters(inverter, false);
+                var newInverterParametersData = this.GetInverterParameters(inverter, false, false);
                 inverterParametersData.Add(newInverterParametersData);
             }
 
@@ -180,7 +180,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Start(Inverter inverter, BayNumber requestingBay, MessageActor sender)
         {
-            var newInverterParametersData = this.GetInverterParameters(inverter, false);
+            var newInverterParametersData = this.GetInverterParameters(inverter, false, false);
 
             var inverterParametersData = new List<InverterParametersData>();
             inverterParametersData.Add(newInverterParametersData);
@@ -316,9 +316,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return parametersNew;
         }
 
-        private InverterParametersData GetInverterParameters(Inverter inverter, bool read)
+        private InverterParametersData GetInverterParameters(Inverter inverter, bool read, bool takeReadOnly = true)
         {
             var fixedParameters = this.FixParameterList(inverter.Parameters, read, inverter.Index);
+
+            if (!takeReadOnly)
+            {
+                fixedParameters = fixedParameters.Where(s => s.IsReadOnly == false).ToList();
+            }
 
             var inverterParametersWriteData = new InverterParametersData((byte)inverter.Index,
                                             GetShortInverterDescription(inverter.Type,
