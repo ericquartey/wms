@@ -476,6 +476,72 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                     parameters.Add(newPara);
                 }
+                else if (line.Contains("IndexParam_"))
+                {
+                    var clean = line.Remove(0, 11);
+                    var split = clean.Split(new char[] { '_', '=' }, 3);
+
+                    var code = default(short);
+
+                    if (char.IsLetter(split[0].FirstOrDefault()))
+                    {
+                        var hex = short.Parse(split[0].Substring(0, 1), NumberStyles.HexNumber).ToString();
+                        code = short.Parse(hex + split[0].Substring(1, 2));
+                    }
+                    else
+                    {
+                        code = short.Parse(split[0]);
+                    }
+
+                    if (!parametersInfo.Any(s => s.Code == code))
+                    {
+                        continue;
+                    }
+
+                    var dataset = int.Parse(split[1]);
+
+                    var parameter = parameters.FirstOrDefault(s => s.Code == code);
+
+                    var value = default(string);
+
+                    if (parameter.Type == STRINGTYPE)
+                    {
+                        value = split[2];
+                    }
+                    else if (parameter.Type == INTTYPE)
+                    {
+                        var hexValue = int.Parse(split[2], System.Globalization.NumberStyles.HexNumber).ToString();
+
+                        value = hexValue.ToString();
+                    }
+                    else if (parameter.Type == USHORTTYPE)
+                    {
+                        var hexValue = ushort.Parse(split[2], System.Globalization.NumberStyles.HexNumber).ToString();
+
+                        value = hexValue.ToString();
+                    }
+                    else if (parameter.Type == SHORTTYPE)
+                    {
+                        var hexValue = short.Parse(split[2], System.Globalization.NumberStyles.HexNumber).ToString();
+
+                        value = hexValue.ToString();
+                    }
+
+                    var newPara = new InverterParameter
+                    {
+                        Code = parameter.Code,
+                        IsReadOnly = parameter.IsReadOnly,
+                        Description = parameter.Description,
+                        Type = parameter.Type,
+                        StringValue = this.ExtractValue(parameter.Type, value),
+                        DataSet = dataset,
+                        DecimalCount = parameter.DecimalCount,
+                        ReadCode = parameter.ReadCode,
+                        WriteCode = parameter.WriteCode
+                    };
+
+                    parameters.Add(newPara);
+                }
             }
 
             return parameters;
