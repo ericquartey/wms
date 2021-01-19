@@ -493,12 +493,17 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         code = short.Parse(split[0]);
                     }
 
+                    var dataset = int.Parse(split[1]);
+
                     if (!parametersInfo.Any(s => s.Code == code))
                     {
                         continue;
                     }
+                    else if(parameters.Any(s => s.Code == code && s.DataSet == dataset))
+                    {
+                        continue;
+                    }
 
-                    var dataset = int.Parse(split[1]);
 
                     var parameter = parameters.FirstOrDefault(s => s.Code == code);
 
