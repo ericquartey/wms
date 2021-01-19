@@ -245,7 +245,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var parametersNew = new List<InverterParameter>();
 
-            parametersNew.Add(InverterRunModeParameterData(false));
+            parametersNew.Add(InverterRunModeParameterData(true));
 
             if (read)
             {
@@ -311,7 +311,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
             }
 
-            parametersNew.Add(InverterRunModeParameterData(true));
+            parametersNew.Add(InverterRunModeParameterData(false));
 
             return parametersNew;
         }
