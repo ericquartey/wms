@@ -269,7 +269,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Command="{Binding SetParamerterCommand}"
-                        Content="{res:Loc InstallationApp.Save}"
+                        Content="{res:Loc InstallationApp.WriteSingle}"
                         IsBusy="{Binding IsWaitingForResponse}" />
 
     <controls:PpcButton Grid.Row="3"
@@ -278,7 +278,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Command="{Binding SetInvertersParamertersCommand}"
-                        Content="{res:Loc InstallationApp.SaveParameters}"
+                        Content="{res:Loc InstallationApp.WriteAll}"
                         IsBusy="{Binding IsWaitingForResponse}" />
 
   </Grid>

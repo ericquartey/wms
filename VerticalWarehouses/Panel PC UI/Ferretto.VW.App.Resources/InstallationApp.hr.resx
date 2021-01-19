@@ -2332,7 +2332,7 @@
     <value>Počelo je očitavanje pretvarača</value>
   </data>
   <data name="ReadInverterParameter" xml:space="preserve">
-    <value>Očitavanje parametara pretvarača</value>
+    <value>Pročitajte sve</value>
   </data>
   <data name="ImportStructure" xml:space="preserve">
     <value>Struktura uvoza</value>
@@ -2342,5 +2342,11 @@
   </data>
   <data name="SaveInverterConfiguration" xml:space="preserve">
     <value>Spremi konfiguraciju pretvarača</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Napiši pojedinačno</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Napišite sve</value>
   </data>
 </root>

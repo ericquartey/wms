@@ -2332,7 +2332,7 @@
     <value>Wechselrichtermessung gestartet</value>
   </data>
   <data name="ReadInverterParameter" xml:space="preserve">
-    <value>Wechselrichterparameter lesen</value>
+    <value>Lese alles</value>
   </data>
   <data name="ImportStructure" xml:space="preserve">
     <value>Struktur importieren</value>
@@ -2342,5 +2342,11 @@
   </data>
   <data name="SaveInverterConfiguration" xml:space="preserve">
     <value>Speichern Sie die Wechselrichterkonfiguration</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Single schreiben</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Schreibe alles</value>
   </data>
 </root>

@@ -4786,7 +4786,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Read inverter parameters.
+        ///   Looks up a localized string similar to Read all.
         /// </summary>
         public static string ReadInverterParameter {
             get {
@@ -6703,11 +6703,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Write all.
+        /// </summary>
+        public static string WriteAll {
+            get {
+                return ResourceManager.GetString("WriteAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Write code.
         /// </summary>
         public static string WriteCode {
             get {
                 return ResourceManager.GetString("WriteCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write single.
+        /// </summary>
+        public static string WriteSingle {
+            get {
+                return ResourceManager.GetString("WriteSingle", resourceCulture);
             }
         }
         

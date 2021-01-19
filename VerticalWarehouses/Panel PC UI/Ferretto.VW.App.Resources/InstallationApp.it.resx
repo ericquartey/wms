@@ -2341,7 +2341,7 @@
     <value>Lettura inverter in esecuzione</value>
   </data>
   <data name="ReadInverterParameter" xml:space="preserve">
-    <value>Leggi parametri inverter</value>
+    <value>Leggi tutto</value>
   </data>
   <data name="ImportStructure" xml:space="preserve">
     <value>Importa struttura</value>
@@ -2351,5 +2351,11 @@
   </data>
   <data name="SaveInverterConfiguration" xml:space="preserve">
     <value>Salva configurazione inverter</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Scrivi singolo</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Scrivi tutto</value>
   </data>
 </root>

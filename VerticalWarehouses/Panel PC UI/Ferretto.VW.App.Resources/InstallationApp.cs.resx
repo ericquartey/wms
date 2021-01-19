@@ -2332,7 +2332,7 @@
     <value>Bylo zahájeno čtení invertoru</value>
   </data>
   <data name="ReadInverterParameter" xml:space="preserve">
-    <value>Přečtěte si parametry měniče</value>
+    <value>Přečíst vše</value>
   </data>
   <data name="ImportStructure" xml:space="preserve">
     <value>Struktura importu</value>
@@ -2342,5 +2342,11 @@
   </data>
   <data name="SaveInverterConfiguration" xml:space="preserve">
     <value>Uložte konfiguraci střídače</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Pište svobodně</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Napsat vše</value>
   </data>
 </root>
