@@ -2446,7 +2446,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gates Control.
+        ///   Looks up a localized string similar to Shutter test.
         /// </summary>
         public static string GateControl {
             get {
@@ -2491,7 +2491,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gate test.
+        ///   Looks up a localized string similar to Shutter test.
         /// </summary>
         public static string GateTestMenuTitle {
             get {
