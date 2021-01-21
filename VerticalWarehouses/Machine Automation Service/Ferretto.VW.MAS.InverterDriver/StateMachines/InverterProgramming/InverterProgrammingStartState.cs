@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
 {
     internal class InverterProgrammingStartState : InverterStateBase
     {
         #region Fields
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IInverterProgrammingFieldMessageData inverterProgrammingFieldMessageData;
 
@@ -29,12 +35,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
         public InverterProgrammingStartState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
+            IEventAggregator eventAggregator,
             IInverterProgrammingFieldMessageData inverterProgrammingFieldMessageData,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.Logger.LogTrace("1:Method Start");
             this.startTime = DateTime.UtcNow;
+            this.eventAggregator = eventAggregator;
             this.inverterProgrammingFieldMessageData = inverterProgrammingFieldMessageData;
         }
 
@@ -131,6 +139,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                     dataset = message.DataSetIndex;
                 }
 
+                var notificationMessage = new NotificationMessage(
+                               new InverterParametersMessageData(message.ShortParameterId, dataset, result, false),
+                               $"Starting inverter Programming state on inverters",
+                               MessageActor.Any,
+                               MessageActor.DeviceManager,
+                               MessageType.InverterParameter,
+                               BayNumber.All,
+                               BayNumber.All,
+                               MessageStatus.OperationStepEnd);
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
                 //check parameter in db
                 if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex))
                 {
@@ -200,6 +219,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                         result = message.StringPayload;
                         break;
                 }
+
+                var notificationMessage = new NotificationMessage(
+                               new InverterParametersMessageData(message.ShortParameterId, currentParameter.DataSet, result, true),
+                               $"Starting inverter Reading state on inverters",
+                               MessageActor.Any,
+                               MessageActor.DeviceManager,
+                               MessageType.InverterParameter,
+                               BayNumber.All,
+                               BayNumber.All,
+                               MessageStatus.OperationStepEnd);
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
                 //check parameter in db
                 if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex))

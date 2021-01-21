@@ -200,30 +200,27 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SaveInverterStructure(IEnumerable<Inverter> inverters)
+        public void SaveInverterStructure(Inverter inverter)
         {
             lock (this.dataContext)
             {
-                foreach (var inverter in inverters)
+                var inverterDb = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == inverter.Index);
+                if (inverterDb is null)
                 {
-                    var inverterDb = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == inverter.Index);
-                    if (inverterDb is null)
+                    throw new EntityNotFoundException((int)inverter.Index);
+                }
+                else
+                {
+                    if (inverterDb.Parameters.Any())
                     {
-                        throw new EntityNotFoundException((int)inverter.Index);
-                    }
-                    else
-                    {
-                        if (inverterDb.Parameters.Any())
-                        {
-                            this.dataContext.InverterParameter.RemoveRange(inverterDb.Parameters);
-                            this.dataContext.SaveChanges();
-                        }
-
-                        inverterDb.Parameters = inverter.Parameters;
-
-                        this.dataContext.Inverters.Update(inverterDb);
+                        this.dataContext.InverterParameter.RemoveRange(inverterDb.Parameters);
                         this.dataContext.SaveChanges();
                     }
+
+                    inverterDb.Parameters = inverter.Parameters;
+
+                    this.dataContext.Inverters.Update(inverterDb);
+                    this.dataContext.SaveChanges();
                 }
             }
         }

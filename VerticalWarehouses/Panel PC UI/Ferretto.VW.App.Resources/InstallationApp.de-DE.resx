@@ -2349,4 +2349,7 @@
   <data name="WriteAll" xml:space="preserve">
     <value>Schreibe alles</value>
   </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Befehl gesendet</value>
+  </data>
 </root>

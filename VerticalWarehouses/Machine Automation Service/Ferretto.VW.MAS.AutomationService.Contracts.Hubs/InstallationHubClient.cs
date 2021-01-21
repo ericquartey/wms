@@ -72,6 +72,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<PositioningMessageData>>(
                 nameof(IInstallationHub.PositioningNotify), this.OnPositioningNotify);
 
+            connection.On<NotificationMessageUI<InverterParametersMessageData>>(
+               nameof(IInstallationHub.InverterParameterNotify), this.OnInverterParameterNotify);
+
             connection.On<NotificationMessageUI<HomingMessageData>>(
                 nameof(IInstallationHub.HomingProcedureStatusChanged), this.OnHomingProcedureStatusChanged);
 
@@ -162,6 +165,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnInverterParameterNotify(NotificationMessageUI<InverterParametersMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

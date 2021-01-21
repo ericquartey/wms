@@ -2412,4 +2412,7 @@
   <data name="WriteAll" xml:space="preserve">
     <value>Write all</value>
   </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Command sent</value>
+  </data>
 </root>

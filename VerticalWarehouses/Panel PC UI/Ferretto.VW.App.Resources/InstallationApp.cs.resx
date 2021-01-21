@@ -2349,4 +2349,7 @@
   <data name="WriteAll" xml:space="preserve">
     <value>Napsat vše</value>
   </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Velení odesláno</value>
+  </data>
 </root>

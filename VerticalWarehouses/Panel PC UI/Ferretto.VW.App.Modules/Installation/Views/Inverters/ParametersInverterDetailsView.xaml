@@ -16,8 +16,6 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-  <ctrls:View.Resources />
-
   <Grid Margin="15,0">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />

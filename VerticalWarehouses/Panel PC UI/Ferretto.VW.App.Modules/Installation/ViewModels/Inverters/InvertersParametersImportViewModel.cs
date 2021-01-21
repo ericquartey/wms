@@ -71,7 +71,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    this.importStructureCommand
                ??
                (this.importStructureCommand = new DelegateCommand(
-                async () => await this.ImportStructureAsync(), this.CanImport));
+                () =>
+                {
+                    this.ShowNotification(Resources.Localized.Get("InstallationApp.CommandSent"), Services.Models.NotificationSeverity.Info);
+                    this.machineDevicesWebService.ImportInvertersStructureAsync(this.selectedConfiguration);
+                }, this.CanImport));
 
         public bool IsBusy
         {
@@ -182,15 +186,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsBusy = false;
             }
-        }
-
-        private async Task ImportStructureAsync()
-        {
-            this.IsBusy = true;
-
-            await this.machineDevicesWebService.ImportInvertersStructureAsync(this.selectedConfiguration);
-
-            this.IsBusy = false;
         }
 
         private void OnSelectedFileChanged(FileInfo _, FileInfo file)

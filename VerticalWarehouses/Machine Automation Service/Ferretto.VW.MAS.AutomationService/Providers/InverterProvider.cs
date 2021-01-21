@@ -2,12 +2,17 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.Configuration;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -25,6 +30,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly InverterDriver.IInvertersProvider invertersProvider;
 
         #endregion
@@ -32,10 +39,12 @@ namespace Ferretto.VW.MAS.AutomationService
         #region Constructors
 
         public InverterProvider(
+            IEventAggregator eventAggregator,
             InverterDriver.IInvertersProvider invertersProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IConfiguration configuration)
         {
+            this.eventAggregator = eventAggregator;
             this.invertersProvider = invertersProvider;
             this.digitalDevicesDataProvider = digitalDevicesDataProvider;
             this.configuration = configuration;
@@ -58,7 +67,20 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public void SaveInverterStructure(IEnumerable<Inverter> inverters)
         {
-            this.digitalDevicesDataProvider.SaveInverterStructure(inverters);
+            foreach (var inverter in inverters)
+            {
+                this.digitalDevicesDataProvider.SaveInverterStructure(inverter);
+                var notificationMessage = new NotificationMessage(
+                               new InverterParametersMessageData(0, 0, $"Inverter {inverter.Index} structure updated", false),
+                               $"Starting save inverter structure",
+                               MessageActor.Any,
+                               MessageActor.DeviceManager,
+                               MessageType.InverterParameter,
+                               BayNumber.All,
+                               BayNumber.All,
+                               MessageStatus.OperationUpdateData);
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+            }
         }
 
         private static IEnumerable<BitInfo> GetBits(PropertyInfo[] properties, object status, int dimension, int skipCharFromName = 0)

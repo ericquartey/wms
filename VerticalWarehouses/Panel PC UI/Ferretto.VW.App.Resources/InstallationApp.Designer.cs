@@ -1231,6 +1231,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command sent.
+        /// </summary>
+        public static string CommandSent {
+            get {
+                return ResourceManager.GetString("CommandSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compact.
         /// </summary>
         public static string Compact {

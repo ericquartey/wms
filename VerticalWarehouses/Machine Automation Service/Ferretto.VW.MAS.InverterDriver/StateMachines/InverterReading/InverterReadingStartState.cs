@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
 {
     internal class InverterReadingStartState : InverterStateBase
     {
         #region Fields
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IInverterReadingFieldMessageData inverterReadingFieldMessageData;
 
@@ -29,12 +35,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
         public InverterReadingStartState(
             IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
+            IEventAggregator eventAggregator,
             IInverterReadingFieldMessageData inverterReadingFieldMessageData,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.Logger.LogTrace("1:Method Start");
             this.startTime = DateTime.UtcNow;
+            this.eventAggregator = eventAggregator;
             this.inverterReadingFieldMessageData = inverterReadingFieldMessageData;
         }
 
@@ -135,6 +143,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 {
                     dataset = message.DataSetIndex;
                 }
+
+                var notificationMessage = new NotificationMessage(
+                              new InverterParametersMessageData(message.ShortParameterId, dataset, result, true),
+                              $"Starting inverter Reading state on inverters",
+                              MessageActor.Any,
+                              MessageActor.DeviceManager,
+                              MessageType.InverterParameter,
+                              BayNumber.All,
+                              BayNumber.All,
+                              MessageStatus.OperationStepEnd);
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
                 //check parameter in db
                 if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex))

@@ -142,6 +142,8 @@
         /// </summary>
         CheckIntrusion,
 
-        InverterReading
+        InverterReading,
+
+        InverterParameter
     }
 }
