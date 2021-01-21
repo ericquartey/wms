@@ -914,7 +914,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                         if (dataMessage != null)
                         {
-                            var parameterData = new InverterParametersData(dataMessage.InverterIndex, "", dataMessage.Parameters);
+                            var parameterData = new InverterParametersData(dataMessage.InverterParametersData);
                             var iparameterData = new List<InverterParametersData>();
                             iparameterData.Add(parameterData);
                             msgProgramming.InverterParametersData = iparameterData;
@@ -942,7 +942,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                         if (dataMessageRead != null)
                         {
-                            var parameterData = new InverterParametersData(dataMessageRead.InverterIndex, "", dataMessageRead.Parameters);
+                            var parameterData = new InverterParametersData(dataMessageRead.InverterParametersData);
                             var iparameterData = new List<InverterParametersData>();
                             iparameterData.Add(parameterData);
                             msgReading.InverterParametersData = iparameterData;

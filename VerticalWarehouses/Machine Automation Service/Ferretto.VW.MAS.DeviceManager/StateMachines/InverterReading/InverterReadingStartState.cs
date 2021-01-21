@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
                             nextInverterParametersData != null)
                         {
                             this.currentInverterIndex = nextInverterParametersData.InverterIndex;
-                            var nextCommandMessageData = new InverterReadingFieldMessageData(nextInverterParametersData.Parameters, nextInverterParametersData.IsCheckInverterVersion, nextInverterParametersData.InverterIndex);
+                            var nextCommandMessageData = new InverterReadingFieldMessageData(nextInverterParametersData);
                             var nextCommandMessage = new FieldCommandMessage(
                                 nextCommandMessageData,
                                 $"Inverter Reading Start State Field Command",
@@ -153,7 +153,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             var mainInverter = this.machineData.InverterParametersData.OrderBy(s => s.InverterIndex).FirstOrDefault();
-            var commandMessageData = new InverterReadingFieldMessageData(mainInverter.Parameters, mainInverter.IsCheckInverterVersion, mainInverter.InverterIndex);
+            var commandMessageData = new InverterReadingFieldMessageData(mainInverter);
             var commandMessage = new FieldCommandMessage(
                 commandMessageData,
                 $"Inverter Reading Start State Field Command",

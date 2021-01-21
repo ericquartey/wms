@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Data;
 
 namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 {
@@ -6,11 +7,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
     {
         #region Properties
 
-        byte InverterIndex { get; }
-
-        bool IsCheckInverterVersion { get; }
-
-        IEnumerable<object> Parameters { get; }
+        InverterParametersData InverterParametersData { get; set; }
 
         #endregion
     }
