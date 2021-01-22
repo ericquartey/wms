@@ -203,7 +203,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (message.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationStepEnd)//read/write parameter
             {
-                this.ShowNotification(message.ToString(), Services.Models.NotificationSeverity.Info);
+                this.ShowNotification(message.Data.ToString(), Services.Models.NotificationSeverity.Info);
             }
             else if (message.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationUpdateData)//import structure command
             {
