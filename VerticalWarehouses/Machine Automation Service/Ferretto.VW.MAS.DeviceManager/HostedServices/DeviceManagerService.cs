@@ -544,7 +544,17 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         private void MachineSensorsStatusOnSecurityStateChanged(object sender, StatusUpdateEventArgs e)
         {
+            this.Logger.LogError($"Security signal fall detected! Begin Stop machine procedure.");
             this.SecurityErrorDetect();
+            var messageData = new StateChangedMessageData(e.NewState);
+            var msg = new NotificationMessage(
+                messageData,
+                "FSM Error",
+                MessageActor.Any,
+                MessageActor.DeviceManager,
+                MessageType.RunningStateChanged,
+                BayNumber.None);
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
         private void OnFieldNotificationReceived(FieldNotificationMessage receivedMessage, IServiceProvider serviceProvider)
