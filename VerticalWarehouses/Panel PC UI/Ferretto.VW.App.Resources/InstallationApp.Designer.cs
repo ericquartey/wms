@@ -4156,7 +4156,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti Guidati.
+        ///   Looks up a localized string similar to Guided movements.
         /// </summary>
         public static string MovementsGuided {
             get {
@@ -4165,7 +4165,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movimenti Manuali.
+        ///   Looks up a localized string similar to Manual movements.
         /// </summary>
         public static string MovementsManual {
             get {
@@ -6235,7 +6235,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Use weight control.
+        ///   Looks up a localized string similar to Do weighing.
         /// </summary>
         public static string UseWeightControl {
             get {

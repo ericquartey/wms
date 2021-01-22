@@ -858,7 +858,7 @@
     <value>Rear</value>
   </data>
   <data name="UseWeightControl" xml:space="preserve">
-    <value>Use weight control</value>
+    <value>Do weighing</value>
   </data>
   <data name="ExeMeasurement" xml:space="preserve">
     <value>Execute Measurement</value>
@@ -884,10 +884,10 @@
     <value>Test</value>
   </data>
   <data name="MovementsGuided" xml:space="preserve">
-    <value>Movimenti Guidati</value>
+    <value>Guided movements</value>
   </data>
   <data name="MovementsManual" xml:space="preserve">
-    <value>Movimenti Manuali</value>
+    <value>Manual movements</value>
   </data>
   <data name="Calibration" xml:space="preserve">
     <value>Calibration</value>
