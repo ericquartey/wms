@@ -68,21 +68,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public bool CheckInverterParametersValidity(InverterIndex index)
-        {
-            lock (this.dataContext)
-            {
-                var inverter = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == index);
-                if (inverter is null)
-                {
-                    throw new EntityNotFoundException((int)index);
-                }
-
-                return !(inverter.Parameters is null) &&
-                    inverter.Parameters.Any();
-            }
-        }
-
         public bool ExistInverterParameter(InverterIndex inverterIndex, short code, int dataset)
         {
             lock (this.dataContext)

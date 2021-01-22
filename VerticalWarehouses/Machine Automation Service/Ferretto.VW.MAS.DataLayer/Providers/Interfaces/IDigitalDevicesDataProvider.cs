@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value, string description, short writecode, short readcode, int decomalCount);
 
-        bool CheckInverterParametersValidity(InverterIndex index);
-
         bool ExistInverterParameter(InverterIndex inverterIndex, short code, int dataset);
 
         IEnumerable<Inverter> GetAllInverters();

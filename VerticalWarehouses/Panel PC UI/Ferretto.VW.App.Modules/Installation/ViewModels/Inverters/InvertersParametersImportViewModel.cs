@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IUsbWatcherService usbWatcher;
 
-        private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
+        private List<FileInfo> configurationFiles = new List<FileInfo>();
 
         private DelegateCommand importCommand;
 
@@ -148,8 +149,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private void FindConfigurationFiles()
         {
             this.IsBusy = true;
-            //this.configurationFiles = this.usbWatcher.Drives.FindConfigurationFiles();
-            this.configurationFiles = FilterInverterConfigurationFile(this.usbWatcher.Drives.FindConfigurationFiles());
+
+            this.configurationFiles.Clear();
+
+            var dir = ConfigurationManager.AppSettings.GetInverterParametersPath();
+            if (Directory.Exists(dir))
+            {
+                var files = Directory.GetFiles(dir, "*.json");
+                this.configurationFiles = FilterInverterConfigurationFile(files).ToList();
+            }
+
+            this.configurationFiles.AddRange(FilterInverterConfigurationFile(this.usbWatcher.Drives.FindConfigurationFiles().ToList()));
 
             this.RaisePropertyChanged(nameof(this.ConfigurationFiles));
             if (!this.configurationFiles.Any())

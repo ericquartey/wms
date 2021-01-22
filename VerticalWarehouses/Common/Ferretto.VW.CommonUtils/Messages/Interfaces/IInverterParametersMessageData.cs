@@ -1,7 +1,4 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-
-namespace Ferretto.VW.CommonUtils.Messages.Interfaces
+﻿namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IInverterParametersMessageData : IMessageData
     {

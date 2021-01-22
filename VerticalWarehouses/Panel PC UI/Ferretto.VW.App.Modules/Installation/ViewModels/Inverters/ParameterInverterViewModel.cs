@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand goToImport;
 
-        private IEnumerable<FileInfo> importableFiles = Array.Empty<FileInfo>();
+        private List<FileInfo> importableFiles = new List<FileInfo>();
 
         private string importFolderPath;
 
@@ -87,13 +88,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                this.goToExport
                ??
                (this.goToExport = new DelegateCommand(
-                () => this.ShowExport(), this.CanShowImport));
+                () => this.ShowExport()));
 
         public ICommand GoToImport =>
                this.goToImport
                ??
                (this.goToImport = new DelegateCommand(
-                () => this.ShowImport(), this.CanShowImport));
+                () => this.ShowImport()));
 
         public IEnumerable<FileInfo> ImportableFiles => this.importableFiles;
 
@@ -351,7 +352,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                ?? this.EventAggregator
                    .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
                    .Subscribe(
-                       (m) => this.OnInverterReadingMessageReceived(m),
+                       async(m) => await this.OnInverterReadingMessageReceived(m),
                        ThreadOption.UIThread,
                        false);
         }
@@ -372,16 +373,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
 
             // importable files
-            //var importables = drives.FindConfigurationFiles().ToList();
-            //this.importableFiles = new ReadOnlyCollection<FileInfo>(importables);
-            this.importableFiles = FilterInverterConfigurationFile(this.usbWatcher.Drives.FindConfigurationFiles());
+            this.importableFiles.Clear();
+
+            var dir = ConfigurationManager.AppSettings.GetInverterParametersPath();
+            if (Directory.Exists(dir))
+            {
+                var files = Directory.GetFiles(dir, "*.json");
+            }
+
+            this.importableFiles.AddRange(FilterInverterConfigurationFile(this.usbWatcher.Drives.FindConfigurationFiles().ToList()));
             this.RaisePropertyChanged(nameof(this.ImportableFiles));
             this.goToImport?.RaiseCanExecuteChanged();
             this.goToExport?.RaiseCanExecuteChanged();
 
             if (e.Attached.Any())
             {
-                var count = this.importableFiles.Count();
+                var count = this.importableFiles.Count;
                 var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
                 var message = string.Format(culture, Localized.Get("InstallationApp.MultipleConfigurationsDetected"), count);
                 switch (count)

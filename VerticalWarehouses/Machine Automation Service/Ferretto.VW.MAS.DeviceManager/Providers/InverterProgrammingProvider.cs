@@ -71,8 +71,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //check inverters
             foreach (var inverter in invetersFormDb)
             {
-                var result = this.digitalDevicesDataProvider.CheckInverterParametersValidity(inverter.Index);
-                if (!result)
+                if (inverter is null ||
+                    inverter.Parameters is null)
                 {
                     throw new ArgumentException($"No Inverters parameters found");
                 }
@@ -108,8 +108,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var inveterFormDb = this.digitalDevicesDataProvider.GetInverterByIndex(inverterIndex);
 
             //check inverters
-            var result = this.digitalDevicesDataProvider.CheckInverterParametersValidity(inverterIndex);
-            if (result)
+            if (inveterFormDb is null ||
+                    inveterFormDb.Parameters is null)
             {
                 throw new ArgumentException($"No Inverter parameters found");
             }

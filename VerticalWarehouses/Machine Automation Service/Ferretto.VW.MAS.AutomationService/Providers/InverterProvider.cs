@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
@@ -12,6 +13,7 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService
@@ -34,6 +36,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly InverterDriver.IInvertersProvider invertersProvider;
 
+        private readonly ILogger<InverterProvider> logger;
+
         #endregion
 
         #region Constructors
@@ -42,12 +46,14 @@ namespace Ferretto.VW.MAS.AutomationService
             IEventAggregator eventAggregator,
             InverterDriver.IInvertersProvider invertersProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger<InverterProvider> logger)
         {
             this.eventAggregator = eventAggregator;
             this.invertersProvider = invertersProvider;
             this.digitalDevicesDataProvider = digitalDevicesDataProvider;
             this.configuration = configuration;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -80,6 +86,7 @@ namespace Ferretto.VW.MAS.AutomationService
                                BayNumber.All,
                                MessageStatus.OperationUpdateData);
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.logger.LogDebug($"Inverter {inverter.Index} structure updated");
             }
         }
 

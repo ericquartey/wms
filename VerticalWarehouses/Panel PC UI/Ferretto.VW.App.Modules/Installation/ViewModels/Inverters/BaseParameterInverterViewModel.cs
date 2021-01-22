@@ -85,6 +85,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return fillterFiles;
         }
 
+        public static IEnumerable<FileInfo> FilterInverterConfigurationFile(IEnumerable<string> files)
+        {
+            var fillterFiles = new List<FileInfo>();
+            foreach (var file in files)
+            {
+                var fileInfo = new FileInfo(file);
+                try
+                {
+                    var json = File.ReadAllText(fileInfo.FullName);
+
+                    var config = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Inverter>>(json.ToString(),
+                        new Newtonsoft.Json.JsonConverter[]
+                        {
+                            new CommonUtils.Converters.IPAddressConverter(),
+                            new Newtonsoft.Json.Converters.StringEnumConverter(),
+                        });
+
+                    fillterFiles.Add(fileInfo);
+                }
+                catch (Exception)
+                {
+                }
+            }
+            return fillterFiles;
+        }
+
         public bool CanSave()
         {
             return !this.isBusy;
