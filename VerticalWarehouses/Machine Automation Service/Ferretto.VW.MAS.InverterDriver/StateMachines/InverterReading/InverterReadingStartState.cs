@@ -149,7 +149,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                               $"Starting inverter Reading state on inverters",
                               MessageActor.Any,
                               MessageActor.DeviceManager,
-                              MessageType.InverterParameter,
+                              MessageType.InverterParameters,
                               BayNumber.All,
                               BayNumber.All,
                               MessageStatus.OperationStepEnd);

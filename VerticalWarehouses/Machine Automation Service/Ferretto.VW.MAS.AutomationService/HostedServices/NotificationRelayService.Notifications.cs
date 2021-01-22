@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     await this.OnInverterReadingChanged(message);
                     break;
 
-                case MessageType.InverterParameter:
+                case MessageType.InverterParameters:
                     await this.OnInverterParameterChanged(message);
                     break;
             }

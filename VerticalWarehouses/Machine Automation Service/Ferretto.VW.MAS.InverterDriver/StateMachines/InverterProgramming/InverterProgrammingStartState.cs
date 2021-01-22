@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                                $"Starting inverter Programming state on inverters",
                                MessageActor.Any,
                                MessageActor.DeviceManager,
-                               MessageType.InverterParameter,
+                               MessageType.InverterParameters,
                                BayNumber.All,
                                BayNumber.All,
                                MessageStatus.OperationStepEnd);
@@ -225,7 +225,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                                $"Starting inverter Reading state on inverters",
                                MessageActor.Any,
                                MessageActor.DeviceManager,
-                               MessageType.InverterParameter,
+                               MessageType.InverterParameters,
                                BayNumber.All,
                                BayNumber.All,
                                MessageStatus.OperationStepEnd);

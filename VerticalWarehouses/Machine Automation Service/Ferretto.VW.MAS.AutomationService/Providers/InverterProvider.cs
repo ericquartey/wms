@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.AutomationService
                                $"Starting save inverter structure",
                                MessageActor.Any,
                                MessageActor.DeviceManager,
-                               MessageType.InverterParameter,
+                               MessageType.InverterParameters,
                                BayNumber.All,
                                BayNumber.All,
                                MessageStatus.OperationUpdateData);

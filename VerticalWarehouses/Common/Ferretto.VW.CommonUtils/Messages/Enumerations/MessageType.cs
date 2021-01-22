@@ -1,5 +1,7 @@
 ﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
+    // the Messages Data class name must begin with the MessageType name and end with MessageData
+    // see NotificationMessageUiFactory.FromNotificationMessage
     public enum MessageType
     {
         NotSpecified,
@@ -144,6 +146,6 @@
 
         InverterReading,
 
-        InverterParameter
+        InverterParameters
     }
 }
