@@ -42,7 +42,7 @@
                         VerticalAlignment="Bottom"
                         Command="{Binding HardResetCommand}"
                         Content="Hard reset"
-                        IsBusy="{Binding IsWaitingForResponse}" />
+                        IsBusy="{Binding IsBusy}" />
 
     <controls:PpcButton Grid.Column="2"
                         Margin="0,0,0,10"
@@ -50,7 +50,7 @@
                         VerticalAlignment="Bottom"
                         Command="{Binding ReadInverterCommand}"
                         Content="{res:Loc InstallationApp.ReadInverterParameter}"
-                        IsBusy="{Binding IsWaitingForResponse}" />
+                        IsBusy="{Binding IsBusy}" />
 
     <Border Grid.Row="1"
             Grid.ColumnSpan="3"
@@ -268,7 +268,7 @@
                         VerticalAlignment="Bottom"
                         Command="{Binding SetParamerterCommand}"
                         Content="{res:Loc InstallationApp.WriteSingle}"
-                        IsBusy="{Binding IsWaitingForResponse}" />
+                        IsBusy="{Binding IsBusy}" />
 
     <controls:PpcButton Grid.Row="3"
                         Grid.Column="3"
@@ -277,7 +277,7 @@
                         VerticalAlignment="Bottom"
                         Command="{Binding SetInvertersParamertersCommand}"
                         Content="{res:Loc InstallationApp.WriteAll}"
-                        IsBusy="{Binding IsWaitingForResponse}" />
+                        IsBusy="{Binding IsBusy}" />
 
   </Grid>
 

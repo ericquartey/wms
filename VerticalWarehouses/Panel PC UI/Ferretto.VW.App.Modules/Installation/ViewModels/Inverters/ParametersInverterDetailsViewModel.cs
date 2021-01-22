@@ -187,7 +187,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void LoadData()
         {
-            this.IsWaitingForResponse = true;
+            this.IsBusy = true;
 
             if (this.Data is ISetVertimagInverterConfiguration mainConfiguration)
             {
@@ -198,7 +198,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.InverterParameters));
 
-            this.IsWaitingForResponse = false;
+            this.IsBusy = false;
         }
 
         private async Task ReadInverterAsync()

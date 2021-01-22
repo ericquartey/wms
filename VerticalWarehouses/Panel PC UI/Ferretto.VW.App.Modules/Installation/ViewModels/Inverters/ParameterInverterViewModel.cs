@@ -189,7 +189,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = true;
+            this.IsBusy = true;
 
             if (RESETDATA.Equals(this.Data))
             {
@@ -205,7 +205,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await base.OnAppearedAsync();
 
-            this.IsWaitingForResponse = false;
+            this.IsBusy = false;
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -352,7 +352,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                ?? this.EventAggregator
                    .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
                    .Subscribe(
-                       async(m) => await this.OnInverterReadingMessageReceived(m),
+                       async (m) => await this.OnInverterReadingMessageReceived(m),
                        ThreadOption.UIThread,
                        false);
         }

@@ -166,7 +166,7 @@
                             VerticalAlignment="Bottom"
                             Command="{Binding SetInvertersParamertersCommand}"
                             Content="{res:Loc InstallationApp.WriteAll}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
+                            IsBusy="{Binding IsBusy}" />
       </StackPanel>
 
     </Grid>
