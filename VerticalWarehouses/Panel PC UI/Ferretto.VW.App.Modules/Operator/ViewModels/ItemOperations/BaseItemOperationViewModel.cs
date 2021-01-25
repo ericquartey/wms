@@ -211,9 +211,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
-                this.NavigationService.GoBackTo(
-                   nameof(Utils.Modules.Operator),
-                   Utils.Modules.Operator.ItemOperations.WAIT);
+                //this.NavigationService.GoBackTo(
+                //   nameof(Utils.Modules.Operator),
+                //   Utils.Modules.Operator.ItemOperations.WAIT);
                 this.ShowNotification(ex);
             }
         }

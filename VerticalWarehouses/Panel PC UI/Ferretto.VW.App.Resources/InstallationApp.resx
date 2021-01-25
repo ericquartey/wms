@@ -235,7 +235,7 @@
     <comment>Sensor</comment>
   </data>
   <data name="GateControl" xml:space="preserve">
-    <value>Gates Control</value>
+    <value>Shutter test</value>
   </data>
   <data name="Move" xml:space="preserve">
     <value>Move</value>
@@ -858,7 +858,7 @@
     <value>Rear</value>
   </data>
   <data name="UseWeightControl" xml:space="preserve">
-    <value>Use weight control</value>
+    <value>Do weighing</value>
   </data>
   <data name="ExeMeasurement" xml:space="preserve">
     <value>Execute Measurement</value>
@@ -884,10 +884,10 @@
     <value>Test</value>
   </data>
   <data name="MovementsGuided" xml:space="preserve">
-    <value>Movimenti Guidati</value>
+    <value>Guided movements</value>
   </data>
   <data name="MovementsManual" xml:space="preserve">
-    <value>Movimenti Manuali</value>
+    <value>Manual movements</value>
   </data>
   <data name="Calibration" xml:space="preserve">
     <value>Calibration</value>
@@ -1726,7 +1726,7 @@
     <value>It allows to carry out a series of repetitive tests for the gate</value>
   </data>
   <data name="GateTestMenuTitle" xml:space="preserve">
-    <value>Gate test</value>
+    <value>Shutter test</value>
   </data>
   <data name="InsertMenuDescription" xml:space="preserve">
     <value>New unit insertion procedure</value>

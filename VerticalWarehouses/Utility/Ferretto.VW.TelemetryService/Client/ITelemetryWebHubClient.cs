@@ -19,6 +19,8 @@ namespace Ferretto.VW.TelemetryService
 
         Task SendMissionLogAsync(string serialNumber, MissionLog missionLog);
 
+        Task SendRawDatabaseContentAsync(string serialNumber, byte[] rawDatabaseContent);
+
         Task SendScreenCastAsync(int bayNumer, string serialNumber, DateTimeOffset timeStamp, byte[] screenshot);
 
         Task SendScreenShotAsync(int bayNumber, string serialNumber, DateTimeOffset timeStamp, byte[] screenshot);

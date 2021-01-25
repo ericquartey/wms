@@ -410,7 +410,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void OnFaultStateChanged(StatusUpdateEventArgs e)
         {
-            if (e.NewState != this.IsMachineInFaultState)
+            //if (e.NewState != this.IsMachineInFaultState)
             {
                 this.sensorStatus[(int)IOMachineSensors.InverterInFault1] = e.NewState;
                 var handler = this.FaultStateChanged;
@@ -452,7 +452,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     {
                                         ioRunningStateChange = true;
                                     }
-                                    if (index == (int)IOMachineSensors.InverterInFault1)
+                                    if (index == (int)IOMachineSensors.InverterInFault1
+                                        && newSensorStatus[index]
+                                        )
                                     {
                                         ioInverterFaultChange = true;
                                     }
@@ -469,6 +471,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                             if (requiredUpdate)
                             {
+                                this.logger.LogDebug($"RunningState {ioRunningStateChange}, InverterFault {ioInverterFaultChange}, security {ioSecurityChange}, ioIndex {ioIndex}, enable {this.enableNotificatons}");
+
                                 Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
 
                                 if (ioIndex == 0)
@@ -486,12 +490,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                         }
                                     }
 
-                                    if (this.enableNotificatons
-                                        && ioInverterFaultChange
+                                    if (//this.enableNotificatons
+                                        //&&
+                                        ioInverterFaultChange
                                         )
                                     {
                                         var args = new StatusUpdateEventArgs();
-                                        args.NewState = newSensorStatus[(int)IOMachineSensors.InverterInFault1];
+                                        args.NewState = true;
                                         this.OnFaultStateChanged(args);
                                     }
                                 }
@@ -501,7 +506,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     )
                                 {
                                     var args = new StatusUpdateEventArgs();
-                                    args.NewState = true;
+                                    args.NewState = false;
                                     this.OnSecurityStateChanged(args);
                                 }
 

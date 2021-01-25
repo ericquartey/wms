@@ -71,7 +71,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             InverterCalibrationMode calibrationMode;
             if (this.axisToCalibrate == Axis.Vertical)
             {
-                calibrationMode = InverterCalibrationMode.Elevator;
+                //calibrationMode = InverterCalibrationMode.Elevator;
+                this.SetHomingSensor();
+                return;
             }
             else if (this.calibration == Calibration.FindSensor)
             {
@@ -143,15 +145,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             }
                             else
                             {
-                                var sensor = (this.axisToCalibrate == Axis.Horizontal && this.InverterStatus.SystemIndex == InverterIndex.MainInverter) ? HORIZONTAL_SENSOR : VERTICAL_SENSOR;
-                                var inverterMessage = new InverterMessage(
-                                    this.InverterStatus.SystemIndex,
-                                    (short)InverterParameterId.HomingSensor,
-                                    sensor);
-
-                                this.Logger.LogDebug($"Set Homing Sensor={sensor}, Axis={this.axisToCalibrate}");
-
-                                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                                this.SetHomingSensor();
                             }
                             break;
                         }
@@ -385,6 +379,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
                 this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
             }
+        }
+
+        private void SetHomingSensor()
+        {
+            var sensor = (this.axisToCalibrate == Axis.Horizontal && this.InverterStatus.SystemIndex == InverterIndex.MainInverter) ? HORIZONTAL_SENSOR : VERTICAL_SENSOR;
+            var inverterMessage = new InverterMessage(
+                this.InverterStatus.SystemIndex,
+                (short)InverterParameterId.HomingSensor,
+                sensor);
+
+            this.Logger.LogDebug($"Set Homing Sensor={sensor}, Axis={this.axisToCalibrate}");
+
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
         }
 
         #endregion

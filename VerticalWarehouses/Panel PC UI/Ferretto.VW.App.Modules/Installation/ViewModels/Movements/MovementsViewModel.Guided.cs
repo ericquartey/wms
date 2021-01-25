@@ -716,8 +716,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                    !this.IsTuningBay &&
-                   this.MachineStatus.LoadingUnitPositionDownInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
+                   !(this.MachineStatus.LoadingUnitPositionDownInBay != null &&
+                        this.MachineStatus.LoadingUnitPositionUpInBay != null) &&
                    this.SensorsService.Sensors.ACUBay1S3IND;
         }
 

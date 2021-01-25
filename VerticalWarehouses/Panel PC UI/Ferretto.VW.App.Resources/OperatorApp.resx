@@ -1006,7 +1006,7 @@
     <comment>Label for Enumeration</comment>
   </data>
   <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
-    <value>DrawerActivityLocalCallGoBack</value>
+    <value>Load units to cell</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">

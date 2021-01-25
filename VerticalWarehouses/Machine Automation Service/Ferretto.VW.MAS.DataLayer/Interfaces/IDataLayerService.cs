@@ -7,5 +7,11 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
         bool IsReady { get; }
 
         #endregion
+
+        #region Methods
+
+        byte[] GetRawDatabaseContent();
+
+        #endregion
     }
 }

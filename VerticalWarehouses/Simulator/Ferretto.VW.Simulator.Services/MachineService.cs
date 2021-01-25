@@ -703,19 +703,19 @@ namespace Ferretto.VW.Simulator.Services
             }
             this.isInverterConnected = true;
 
-            if (DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds > this.DELAY_HEARTBEAT)
-            {
-                var timeout = DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds;
-                Debug.WriteLine($"{DateTime.Now}: HeartBeat timeout {timeout}");
-                this.Logger.Error($"HeartBeat timeout {timeout}");
+            //if (DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds > this.DELAY_HEARTBEAT)
+            //{
+            //    var timeout = DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds;
+            //    Debug.WriteLine($"{DateTime.Now}: HeartBeat timeout {timeout}");
+            //    this.Logger.Error($"HeartBeat timeout {timeout}");
 
-                // TODO: enable heartbeat control
-                //inverter.IsFault = true;
-                //if (Debugger.IsAttached)
-                //{
-                //    Debugger.Break();
-                //}
-            }
+            //    // TODO: enable heartbeat control
+            //    //inverter.IsFault = true;
+            //    //if (Debugger.IsAttached)
+            //    //{
+            //    //    Debugger.Break();
+            //    //}
+            //}
 
             var result = 0;
             switch (message.ParameterId)

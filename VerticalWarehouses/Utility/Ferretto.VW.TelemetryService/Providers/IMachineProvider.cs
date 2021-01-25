@@ -11,6 +11,8 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         Task SaveAsync(IMachine machine);
 
+        Task SaveRawDatabaseContent(byte[] rawDatabaseContent);
+
         #endregion
     }
 }

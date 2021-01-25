@@ -6,6 +6,8 @@
 
         string ModelName { get; set; }
 
+        byte[] RawDatabaseContent { get; set; }
+
         string SerialNumber { get; set; }
 
         string Version { get; set; }

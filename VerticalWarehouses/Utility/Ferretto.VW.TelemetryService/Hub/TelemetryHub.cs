@@ -154,6 +154,26 @@ namespace Ferretto.VW.TelemetryService
             await this.telemetryWebHubClient.SendMissionLogAsync(machine.SerialNumber, missionLog);
         }
 
+        public async Task SendRawDatabaseContent(byte[] rawDatabaseContent)
+        {
+            if (rawDatabaseContent is null)
+            {
+                return;
+            }
+
+            this.logger.LogDebug($"Received raw database content from client.");
+
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+            if (machine is null)
+            {
+                this.logger.LogWarning("Trying to send a raw database content with no machine defined in the local database.");
+                return;
+            }
+
+            await this.telemetryWebHubClient.SendRawDatabaseContentAsync(machine.SerialNumber, rawDatabaseContent);
+        }
+
         public async Task SendScreenCast(int bayNumber, DateTimeOffset timeStamp, byte[] screenshot)
         {
             this.logger.LogDebug($"Received screencast image (size {screenshot.Length / 1024} Kb) from client.");
