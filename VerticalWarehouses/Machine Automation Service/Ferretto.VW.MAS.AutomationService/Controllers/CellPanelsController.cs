@@ -47,6 +47,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.setupProceduresDataProvider.GetCellPanelsCheck());
         }
 
+        [HttpPost("restart")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult RestartProcedure()
+        {
+            this.cellPanelsProvider.RestartProcedure();
+
+            return this.Accepted();
+        }
+
         [HttpPost("height")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

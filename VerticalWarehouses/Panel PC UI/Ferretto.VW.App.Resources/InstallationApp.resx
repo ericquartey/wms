@@ -1141,7 +1141,7 @@
     <value>Start checking files checksum '{0}'.</value>
   </data>
   <data name="StartExtractingFiles" xml:space="preserve">
-    <value>Start excracting files from '{0}'.</value>
+    <value>Start extracting files from '{0}'.</value>
   </data>
   <data name="StartingApplication" xml:space="preserve">
     <value>Starting application '{0}'.</value>

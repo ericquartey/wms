@@ -5497,7 +5497,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start excracting files from &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Start extracting files from &apos;{0}&apos;..
         /// </summary>
         public static string StartExtractingFiles {
             get {

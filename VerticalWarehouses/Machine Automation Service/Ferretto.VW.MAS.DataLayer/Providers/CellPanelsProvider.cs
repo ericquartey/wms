@@ -39,6 +39,20 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void RestartProcedure()
+        {
+            var allCellPanels = this.GetAll();
+
+            allCellPanels.ForEach(s =>
+               {
+                   s.IsChecked = false;
+
+                   this.dataContext.CellPanels.Update(s);
+               });
+
+            this.dataContext.SaveChanges();
+        }
+
         public CellPanel UpdateHeight(int cellPanelId, double heightDifference)
         {
             lock (this.dataContext)
@@ -92,17 +106,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (!this.dataContext.CellPanels.Where(w => w.Cells.Any(a => a.BlockLevel.Equals(BlockLevel.None))).Any(c => !c.IsChecked))
                 {
                     this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetCellPanelsCheck());
-
-                    var allCellPanels = this.GetAll();
-
-                    allCellPanels.ForEach(s =>
-                       {
-                           s.IsChecked = false;
-
-                           this.dataContext.CellPanels.Update(s);
-                       });
-
-                    this.dataContext.SaveChanges();
                 }
                 else
                 {
