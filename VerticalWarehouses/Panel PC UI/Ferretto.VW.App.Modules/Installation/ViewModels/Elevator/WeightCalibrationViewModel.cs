@@ -829,6 +829,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             foreach (var units in this.unitsWeighing)
             {
                 ParameterCalculator.AddPoints(units.Current, units.NetWeight + units.LUTare + elevatorWeight);
+                this.Logger.Debug($"Current {units.Current} net weight {units.NetWeight} total weight {units.NetWeight + units.LUTare + elevatorWeight} ");
             }
 
             this.MeasureConst0 = Math.Round(ParameterCalculator.cTerm(), 4);
@@ -836,6 +837,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.MeasureConst1 = Math.Round(ParameterCalculator.bTerm(), 4);
 
             this.MeasureConst2 = Math.Round(ParameterCalculator.aTerm(), 4);
+
+            this.Logger.Debug($"Weight parameters Const2 {this.MeasureConst2} Const1 {this.MeasureConst1} Const0 {this.MeasureConst0}");
         }
 
         private async Task StopAsync()
