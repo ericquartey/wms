@@ -1684,7 +1684,7 @@
     <value>Load first drawer and test cells</value>
   </data>
   <data name="CellTestMenuTitle" xml:space="preserve">
-    <value>Cell test</value>
+    <value>Border cells test</value>
   </data>
   <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
     <value>Apply a correction to a group of cells</value>
@@ -1693,10 +1693,10 @@
     <value>Change cell block (obsolete)</value>
   </data>
   <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
-    <value>Check the share of the cells, divided by panel, keeping track of the verification placements made</value>
+    <value>Check the vertical position  of the cells, one for each panel, marking every checked panel</value>
   </data>
   <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
-    <value>Checking cell dimensions</value>
+    <value>Check cell vertical positions</value>
   </data>
   <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
     <value>Check the quota of one or more cells</value>

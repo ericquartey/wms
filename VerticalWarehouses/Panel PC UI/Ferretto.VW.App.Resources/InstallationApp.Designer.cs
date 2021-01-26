@@ -1024,7 +1024,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell test.
+        ///   Looks up a localized string similar to Border cells test.
         /// </summary>
         public static string CellTestMenuTitle {
             get {
@@ -1105,7 +1105,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check the share of the cells, divided by panel, keeping track of the verification placements made.
+        ///   Looks up a localized string similar to Check the vertical position  of the cells, one for each panel, marking every checked panel.
         /// </summary>
         public static string CheckCellDimensionMenuDescription {
             get {
@@ -1114,7 +1114,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checking cell dimensions.
+        ///   Looks up a localized string similar to Check cell vertical positions.
         /// </summary>
         public static string CheckCellDimensionMenuTitle {
             get {
