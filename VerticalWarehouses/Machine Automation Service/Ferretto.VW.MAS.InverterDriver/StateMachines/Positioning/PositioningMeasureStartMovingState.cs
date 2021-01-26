@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly ElevatorAxis verticalParams;
 
+        private int retryCount;
+
         private DateTime? startTime;
 
         #endregion
@@ -89,6 +91,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
                 var current = message.UShortPayload / 10.0;
+
+                if (current == 0)
+                {
+                    if (this.retryCount > 3)
+                    {
+                        this.Logger.LogError($"PositioningMeasureStartMovingState zero TorqueCurrent");
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    }
+                    else
+                    {
+                        this.Logger.LogDebug($"Received zero TorqueCurrent, retry {this.retryCount}");
+                        this.RequestSample();
+                    }
+                    return true;
+                }
                 this.data.MeasuredWeight = (Math.Pow(current, 2) * this.verticalParams.WeightMeasurement.MeasureConst2)
                     + (current * this.verticalParams.WeightMeasurement.MeasureConst1)
                     + this.verticalParams.WeightMeasurement.MeasureConst0;
@@ -137,6 +154,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private void RequestSample()
         {
+            this.retryCount++;
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,

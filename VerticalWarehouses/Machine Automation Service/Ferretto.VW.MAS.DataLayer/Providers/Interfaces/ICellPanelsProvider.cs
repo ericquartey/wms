@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<CellPanel> GetAll();
 
+        void RestartProcedure();
+
         CellPanel UpdateHeight(int cellId, double newHeight);
 
         #endregion
