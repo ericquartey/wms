@@ -1,171 +1,7 @@
 {
-  "$schema": "./schemas/vertimag-configuration-schema.json",
   "LoadingUnits": [],
   "Machine": {
     "Bays": [
-      {
-        "Accessories": {
-          "AlphaNumericBar": {
-            "Id": 1,
-            "IpAddress": "192.168.0.11",
-            "IsConfiguredNew": false,
-            "IsEnabledNew": false,
-            "Size": "ExtraLarge",
-            "TcpPort": 2020
-          },
-          "BarcodeReader": {
-            "Id": 2,
-            "IsConfiguredNew": false,
-            "IsEnabledNew": false,
-            "PortName": "COM3"
-          },
-          "CardReader": {
-            "Id": 3,
-            "IsConfiguredNew": false,
-            "IsEnabledNew": false,
-            "TokenRegex": "(?<Token>.+)\\r"
-          },
-          "Id": 0,
-          "LabelPrinter": {
-            "Id": 4,
-            "IsConfiguredNew": false,
-            "IsEnabledNew": false,
-            "Name": "Microsoft Print to PDF"
-          },
-          "LaserPointer": {
-            "Id": 5,
-            "IpAddress": "192.168.0.13",
-            "IsConfiguredNew": false,
-            "IsEnabledNew": false,
-            "TcpPort": 2020,
-            "XOffset": 0.0,
-            "YOffset": 0.0,
-            "ZOffsetLowerPosition": 0.0,
-            "ZOffsetUpperPosition": 875.0
-          },
-          "WeightingScale": {
-            "Id": 6,
-            "IpAddress": "192.168.0.15",
-            "IsConfiguredNew": false,
-            "IsEnabledNew": false,
-            "TcpPort": 4001
-          }
-        },
-        "Carousel": {
-          "AssistedMovements": {
-            "FeedRate": 1.0,
-            "Id": 1
-          },
-          "ElevatorDistance": 448.238271,
-          "HomingCreepSpeed": 5.0,
-          "HomingFastSpeed": 20.0,
-          "Id": 2,
-          "LastIdealPosition": 0.0,
-          "ManualMovements": {
-            "FeedRate": 0.1,
-            "Id": 3
-          }
-        },
-        "ChainOffset": -8.0,
-        "CyclesToCalibrate": 50,
-        "EmptyLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Id": 3,
-          "Speed": 140.0
-        },
-        "FullLoadMovement": {
-          "Acceleration": 200.0,
-          "Deceleration": 150.0,
-          "Id": 6,
-          "Speed": 130.0
-        },
-        "Id": 1,
-        "Inventory": true,
-        "Inverter": {
-          "Id": 4,
-          "Index": "Slave3",
-          "Parameters": [],
-          "TcpPort": 0,
-          "Type": "Acu"
-        },
-        "IoDevice": {
-          "Id": 1,
-          "Index": "IoDevice1",
-          "IpAddress": "192.168.0.1",
-          "TcpPort": 19550
-        },
-        "IsActive": true,
-        "IsAdjustByWeight": false,
-        "IsCheckIntrusion": false,
-        "IsDouble": false,
-        "IsExternal": false,
-        "IsFastDepositToBay": false,
-        "LastCalibrationCycles": 0,
-        "Number": "BayOne",
-        "Operation": "Idle",
-        "Pick": true,
-        "Positions": [
-          {
-            "Height": 889.5,
-            "Id": 2,
-            "IsBlocked": false,
-            "IsUpper": true,
-            "Location": "InternalBay1Up",
-            "LocationUpDown": "Up",
-            "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 399.0,
-            "ProfileOffset": 25.0
-          },
-          {
-            "Height": 445.5,
-            "Id": 1,
-            "IsBlocked": false,
-            "IsUpper": false,
-            "Location": "InternalBay1Down",
-            "LocationUpDown": "Down",
-            "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 399.0,
-            "ProfileOffset": 0.0
-          }
-        ],
-        "Put": true,
-        "Resolution": 374.0607161,
-        "Shutter": {
-          "AssistedMovements": {
-            "FeedRate": 0.2,
-            "HighSpeedDurationClose": 15.0,
-            "HighSpeedDurationOpen": 15.0,
-            "HighSpeedHalfDurationClose": 8.0,
-            "HighSpeedHalfDurationOpen": 8.0,
-            "Id": 1,
-            "MaxSpeed": 40000.0,
-            "MinSpeed": 5000.0
-          },
-          "Id": 0,
-          "Inverter": {
-            "Id": 3,
-            "Index": "Slave2",
-            "TcpPort": 0,
-            "Type": "Agl"
-          },
-          "ManualMovements": {
-            "FeedRate": 0.2,
-            "HighSpeedDurationClose": 0.0,
-            "HighSpeedDurationOpen": 0.0,
-            "HighSpeedHalfDurationClose": 0.0,
-            "HighSpeedHalfDurationOpen": 0.0,
-            "Id": 3,
-            "MaxSpeed": 40000.0,
-            "MinSpeed": 5000.0
-          },
-          "Type": "ThreeSensors"
-        },
-        "Side": "Front",
-        "Status": "Idle",
-        "TotalCycles": 0,
-        "View": true
-      },
       {
         "Accessories": {
           "AlphaNumericBar": {
@@ -188,7 +24,7 @@
             "IsEnabledNew": false,
             "TokenRegex": "(?<Token>.+)\\r"
           },
-          "Id": 20,
+          "Id": 0,
           "LabelPrinter": {
             "Id": 24,
             "IsConfiguredNew": false,
@@ -217,12 +53,175 @@
         "Carousel": {
           "AssistedMovements": {
             "FeedRate": 1.0,
-            "Id": 21
+            "Id": 12
           },
           "ElevatorDistance": 448.238271,
           "HomingCreepSpeed": 5.0,
           "HomingFastSpeed": 20.0,
-          "Id": 22,
+          "Id": 11,
+          "LastIdealPosition": 0.0,
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "Id": 13
+          }
+        },
+        "ChainOffset": -8.0,
+        "CyclesToCalibrate": 50,
+        "EmptyLoadMovement": {
+          "Acceleration": 200.0,
+          "Deceleration": 150.0,
+          "Id": 11,
+          "Speed": 140.0
+        },
+        "FullLoadMovement": {
+          "Acceleration": 200.0,
+          "Deceleration": 150.0,
+          "Id": 12,
+          "Speed": 130.0
+        },
+        "Id": 1,
+        "Inventory": true,
+        "Inverter": {
+          "Id": 31,
+          "Index": "Slave3",
+          "Parameters": [],
+          "TcpPort": 0,
+          "Type": "Acu"
+        },
+        "IoDevice": {
+          "Id": 1,
+          "Index": "IoDevice1",
+          "IpAddress": "192.168.0.1",
+          "TcpPort": 19550
+        },
+        "IsActive": true,
+        "IsAdjustByWeight": false,
+        "IsCheckIntrusion": false,
+        "IsDouble": false,
+        "IsExternal": false,
+        "IsFastDepositToBay": false,
+        "LastCalibrationCycles": 0,
+        "Number": "BayOne",
+        "Operation": "Idle",
+        "Pick": true,
+        "Positions": [
+          {
+            "Height": 889.5,
+            "Id": 12,
+            "IsBlocked": false,
+            "IsUpper": true,
+            "Location": "InternalBay1Up",
+            "LocationUpDown": "Up",
+            "MaxDoubleHeight": 0.0,
+            "MaxSingleHeight": 399.0,
+            "ProfileOffset": 25.0
+          },
+          {
+            "Height": 445.5,
+            "Id": 11,
+            "IsBlocked": false,
+            "IsUpper": false,
+            "Location": "InternalBay1Down",
+            "LocationUpDown": "Down",
+            "MaxDoubleHeight": 0.0,
+            "MaxSingleHeight": 399.0,
+            "ProfileOffset": 0.0
+          }
+        ],
+        "Put": true,
+        "Resolution": 374.0607161,
+        "Shutter": {
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "HighSpeedDurationClose": 15.0,
+            "HighSpeedDurationOpen": 15.0,
+            "HighSpeedHalfDurationClose": 8.0,
+            "HighSpeedHalfDurationOpen": 8.0,
+            "Id": 11,
+            "MaxSpeed": 40000.0,
+            "MinSpeed": 5000.0
+          },
+          "Id": 0,
+          "Inverter": {
+            "Id": 3,
+            "Index": "Slave2",
+            "TcpPort": 0,
+            "Type": "Agl"
+          },
+          "ManualMovements": {
+            "FeedRate": 0.2,
+            "HighSpeedDurationClose": 0.0,
+            "HighSpeedDurationOpen": 0.0,
+            "HighSpeedHalfDurationClose": 0.0,
+            "HighSpeedHalfDurationOpen": 0.0,
+            "Id": 13,
+            "MaxSpeed": 40000.0,
+            "MinSpeed": 5000.0
+          },
+          "Type": "ThreeSensors"
+        },
+        "Side": "Front",
+        "Status": "Idle",
+        "TotalCycles": 0,
+        "View": true
+      },
+      {
+        "Accessories": {
+          "AlphaNumericBar": {
+            "Id": 41,
+            "IpAddress": "192.168.0.11",
+            "IsConfiguredNew": false,
+            "IsEnabledNew": false,
+            "Size": "ExtraLarge",
+            "TcpPort": 2020
+          },
+          "BarcodeReader": {
+            "Id": 42,
+            "IsConfiguredNew": false,
+            "IsEnabledNew": false,
+            "PortName": "COM3"
+          },
+          "CardReader": {
+            "Id": 43,
+            "IsConfiguredNew": false,
+            "IsEnabledNew": false,
+            "TokenRegex": "(?<Token>.+)\\r"
+          },
+          "Id": 0,
+          "LabelPrinter": {
+            "Id": 44,
+            "IsConfiguredNew": false,
+            "IsEnabledNew": false,
+            "Name": "Microsoft Print to PDF"
+          },
+          "LaserPointer": {
+            "Id": 45,
+            "IpAddress": "192.168.0.13",
+            "IsConfiguredNew": false,
+            "IsEnabledNew": false,
+            "TcpPort": 2020,
+            "XOffset": 0.0,
+            "YOffset": 0.0,
+            "ZOffsetLowerPosition": 0.0,
+            "ZOffsetUpperPosition": 875.0
+          },
+          "WeightingScale": {
+            "Id": 46,
+            "IpAddress": "192.168.0.15",
+            "IsConfiguredNew": false,
+            "IsEnabledNew": false,
+            "TcpPort": 4001
+          }
+        },
+        "Carousel": {
+          "AssistedMovements": {
+            "FeedRate": 1.0,
+            "Id": 22
+          },
+          "ElevatorDistance": 448.238271,
+          "HomingCreepSpeed": 5.0,
+          "HomingFastSpeed": 20.0,
+          "Id": 21,
           "LastIdealPosition": 0.0,
           "ManualMovements": {
             "FeedRate": 0.1,
@@ -234,19 +233,19 @@
         "EmptyLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 23,
+          "Id": 21,
           "Speed": 140.0
         },
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 26,
+          "Id": 22,
           "Speed": 130.0
         },
         "Id": 2,
         "Inventory": true,
         "Inverter": {
-          "Id": 6,
+          "Id": 51,
           "Index": "Slave5",
           "Parameters": [],
           "TcpPort": 0,
@@ -271,7 +270,7 @@
         "Positions": [
           {
             "Height": 889.5,
-            "Id": 4,
+            "Id": 22,
             "IsBlocked": false,
             "IsUpper": true,
             "Location": "InternalBay2Up",
@@ -282,7 +281,7 @@
           },
           {
             "Height": 445.5,
-            "Id": 3,
+            "Id": 21,
             "IsBlocked": false,
             "IsUpper": false,
             "Location": "InternalBay2Down",
@@ -305,7 +304,7 @@
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
-          "Id": 20,
+          "Id": 0,
           "Inverter": {
             "Id": 5,
             "Index": "Slave4",
@@ -337,7 +336,7 @@
           "AssistedMovements": {
             "FeedRate": 0.3,
             "FeedRateAfterZero": 0.9,
-            "Id": 21,
+            "Id": 41,
             "TargetDistance": 0.0,
             "TargetDistanceAfterZero": 0.0
           },
@@ -360,9 +359,9 @@
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 40.0,
           "HorizontalCalibrateSpeed": 0.0,
-          "Id": 1,
+          "Id": 40,
           "Inverter": {
-            "Id": 1,
+            "Id": 42,
             "Index": "MainInverter",
             "IpAddress": "192.168.0.100",
             "Parameters": [],
@@ -375,7 +374,7 @@
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.15,
-            "Id": 11,
+            "Id": 43,
             "TargetDistance": 30.0,
             "TargetDistanceAfterZero": 30.0
           },
@@ -400,7 +399,7 @@
           "AssistedMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.9,
-            "Id": 1,
+            "Id": 51,
             "TargetDistance": 0.0,
             "TargetDistanceAfterZero": 0.0
           },
@@ -411,19 +410,19 @@
           "EmptyLoadMovement": {
             "Acceleration": 2000.0,
             "Deceleration": 2000.0,
-            "Id": 11,
+            "Id": 52,
             "Speed": 600.0
           },
           "FullLoadMovement": {
             "Acceleration": 600.0,
             "Deceleration": 600.0,
-            "Id": 12,
+            "Id": 53,
             "Speed": 400.0
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
           "HorizontalCalibrateSpeed": 1.5,
-          "Id": 2,
+          "Id": 50,
           "Inverter": {
             "Id": 2,
             "Index": "Slave1",
@@ -437,7 +436,7 @@
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.3,
-            "Id": 12,
+            "Id": 54,
             "TargetDistance": 3000.0,
             "TargetDistanceAfterZero": 3000.0
           },
@@ -711,7 +710,7 @@
     "LoadUnitVeryHeavyPercent": 0.0,
     "LoadUnitWidth": 4250.0,
     "MaxGrossWeight": 70000.0,
-    "ModelName": "NEW VERTIMAG 84XL990-BIG/BIG H5861",
+    "ModelName": "VERTIMAG 84XL990-BIG/BIG H5861",
     "Panels": [
       {
         "Cells": [

@@ -55,15 +55,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-
             if (this.InverterStatus.SystemIndex == 0
                 && oldAxis != this.InverterStatus.CommonControlWord.HorizontalAxis
                 && this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsAxisChanged()
                 )
             {
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
                 // read AxisChanged parameter
                 inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
 
