@@ -5,7 +5,7 @@
       {
         "Accessories": {
           "AlphaNumericBar": {
-            "Id": 1,
+            "Id": 21,
             "IpAddress": "192.168.0.11",
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
@@ -13,26 +13,26 @@
             "TcpPort": 2020
           },
           "BarcodeReader": {
-            "Id": 2,
+            "Id": 22,
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
             "PortName": "COM3"
           },
           "CardReader": {
-            "Id": 3,
+            "Id": 23,
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
             "TokenRegex": "(?<Token>.+)\\r"
           },
           "Id": 0,
           "LabelPrinter": {
-            "Id": 4,
+            "Id": 24,
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
             "Name": "Microsoft Print to PDF"
           },
           "LaserPointer": {
-            "Id": 5,
+            "Id": 25,
             "IpAddress": "192.168.0.13",
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
@@ -43,7 +43,7 @@
             "ZOffsetUpperPosition": 875.0
           },
           "WeightingScale": {
-            "Id": 6,
+            "Id": 26,
             "IpAddress": "192.168.0.15",
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
@@ -53,16 +53,16 @@
         "Carousel": {
           "AssistedMovements": {
             "FeedRate": 1.0,
-            "Id": 1
+            "Id": 12
           },
           "ElevatorDistance": 448.238271,
           "HomingCreepSpeed": 5.0,
           "HomingFastSpeed": 20.0,
-          "Id": 2,
+          "Id": 11,
           "LastIdealPosition": 0.0,
           "ManualMovements": {
             "FeedRate": 0.1,
-            "Id": 3
+            "Id": 13
           }
         },
         "ChainOffset": -8.0,
@@ -70,19 +70,19 @@
         "EmptyLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 3,
+          "Id": 11,
           "Speed": 140.0
         },
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 6,
+          "Id": 12,
           "Speed": 130.0
         },
         "Id": 1,
         "Inventory": true,
         "Inverter": {
-          "Id": 3,
+          "Id": 31,
           "Index": "Slave3",
           "Parameters": [],
           "TcpPort": 0,
@@ -107,7 +107,7 @@
         "Positions": [
           {
             "Height": 889.5,
-            "Id": 2,
+            "Id": 12,
             "IsBlocked": false,
             "IsUpper": true,
             "Location": "InternalBay1Up",
@@ -118,7 +118,7 @@
           },
           {
             "Height": 445.5,
-            "Id": 1,
+            "Id": 11,
             "IsBlocked": false,
             "IsUpper": false,
             "Location": "InternalBay1Down",
@@ -137,13 +137,13 @@
             "HighSpeedDurationOpen": 15.0,
             "HighSpeedHalfDurationClose": 8.0,
             "HighSpeedHalfDurationOpen": 8.0,
-            "Id": 1,
+            "Id": 11,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
           "Id": 0,
           "Inverter": {
-            "Id": 2,
+            "Id": 3,
             "Index": "Slave2",
             "TcpPort": 0,
             "Type": "Agl"
@@ -154,7 +154,7 @@
             "HighSpeedDurationOpen": 0.0,
             "HighSpeedHalfDurationClose": 0.0,
             "HighSpeedHalfDurationOpen": 0.0,
-            "Id": 3,
+            "Id": 13,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
@@ -168,7 +168,7 @@
       {
         "Accessories": {
           "AlphaNumericBar": {
-            "Id": 1,
+            "Id": 41,
             "IpAddress": "192.168.0.11",
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
@@ -176,26 +176,26 @@
             "TcpPort": 2020
           },
           "BarcodeReader": {
-            "Id": 2,
+            "Id": 42,
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
             "PortName": "COM3"
           },
           "CardReader": {
-            "Id": 3,
+            "Id": 43,
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
             "TokenRegex": "(?<Token>.+)\\r"
           },
           "Id": 0,
           "LabelPrinter": {
-            "Id": 4,
+            "Id": 44,
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
             "Name": "Microsoft Print to PDF"
           },
           "LaserPointer": {
-            "Id": 5,
+            "Id": 45,
             "IpAddress": "192.168.0.13",
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
@@ -206,7 +206,7 @@
             "ZOffsetUpperPosition": 875.0
           },
           "WeightingScale": {
-            "Id": 6,
+            "Id": 46,
             "IpAddress": "192.168.0.15",
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
@@ -216,16 +216,16 @@
         "Carousel": {
           "AssistedMovements": {
             "FeedRate": 1.0,
-            "Id": 1
+            "Id": 22
           },
           "ElevatorDistance": 448.238271,
           "HomingCreepSpeed": 5.0,
           "HomingFastSpeed": 20.0,
-          "Id": 2,
+          "Id": 21,
           "LastIdealPosition": 0.0,
           "ManualMovements": {
             "FeedRate": 0.1,
-            "Id": 3
+            "Id": 23
           }
         },
         "ChainOffset": -8.0,
@@ -233,28 +233,28 @@
         "EmptyLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 3,
+          "Id": 21,
           "Speed": 140.0
         },
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 6,
+          "Id": 22,
           "Speed": 130.0
         },
         "Id": 2,
         "Inventory": true,
         "Inverter": {
-          "Id": 3,
-          "Index": "Slave3",
+          "Id": 51,
+          "Index": "Slave5",
           "Parameters": [],
           "TcpPort": 0,
           "Type": "Acu"
         },
         "IoDevice": {
-          "Id": 1,
-          "Index": "IoDevice1",
-          "IpAddress": "192.168.0.1",
+          "Id": 2,
+          "Index": "IoDevice2",
+          "IpAddress": "192.168.0.2",
           "TcpPort": 19550
         },
         "IsActive": true,
@@ -270,7 +270,7 @@
         "Positions": [
           {
             "Height": 889.5,
-            "Id": 2,
+            "Id": 22,
             "IsBlocked": false,
             "IsUpper": true,
             "Location": "InternalBay2Up",
@@ -281,7 +281,7 @@
           },
           {
             "Height": 445.5,
-            "Id": 1,
+            "Id": 21,
             "IsBlocked": false,
             "IsUpper": false,
             "Location": "InternalBay2Down",
@@ -300,13 +300,13 @@
             "HighSpeedDurationOpen": 15.0,
             "HighSpeedHalfDurationClose": 8.0,
             "HighSpeedHalfDurationOpen": 8.0,
-            "Id": 1,
+            "Id": 21,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
           "Id": 0,
           "Inverter": {
-            "Id": 4,
+            "Id": 5,
             "Index": "Slave4",
             "TcpPort": 0,
             "Type": "Agl"
@@ -317,13 +317,13 @@
             "HighSpeedDurationOpen": 0.0,
             "HighSpeedHalfDurationClose": 0.0,
             "HighSpeedHalfDurationOpen": 0.0,
-            "Id": 3,
+            "Id": 23,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
           "Type": "ThreeSensors"
         },
-        "Side": "Front",
+        "Side": "Back",
         "Status": "Idle",
         "TotalCycles": 0,
         "View": true
@@ -336,7 +336,7 @@
           "AssistedMovements": {
             "FeedRate": 0.3,
             "FeedRateAfterZero": 0.9,
-            "Id": 1,
+            "Id": 41,
             "TargetDistance": 0.0,
             "TargetDistanceAfterZero": 0.0
           },
@@ -359,9 +359,9 @@
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 40.0,
           "HorizontalCalibrateSpeed": 0.0,
-          "Id": 1,
+          "Id": 40,
           "Inverter": {
-            "Id": 0,
+            "Id": 42,
             "Index": "MainInverter",
             "IpAddress": "192.168.0.100",
             "Parameters": [],
@@ -374,7 +374,7 @@
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.15,
-            "Id": 11,
+            "Id": 43,
             "TargetDistance": 30.0,
             "TargetDistanceAfterZero": 30.0
           },
@@ -399,7 +399,7 @@
           "AssistedMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.9,
-            "Id": 1,
+            "Id": 51,
             "TargetDistance": 0.0,
             "TargetDistanceAfterZero": 0.0
           },
@@ -410,21 +410,21 @@
           "EmptyLoadMovement": {
             "Acceleration": 2000.0,
             "Deceleration": 2000.0,
-            "Id": 11,
+            "Id": 52,
             "Speed": 600.0
           },
           "FullLoadMovement": {
             "Acceleration": 600.0,
             "Deceleration": 600.0,
-            "Id": 12,
+            "Id": 53,
             "Speed": 400.0
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
           "HorizontalCalibrateSpeed": 1.5,
-          "Id": 2,
+          "Id": 50,
           "Inverter": {
-            "Id": 1,
+            "Id": 2,
             "Index": "Slave1",
             "Parameters": [],
             "TcpPort": 0,
@@ -436,7 +436,7 @@
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.3,
-            "Id": 12,
+            "Id": 54,
             "TargetDistance": 3000.0,
             "TargetDistanceAfterZero": 3000.0
           },
@@ -710,7 +710,7 @@
     "LoadUnitVeryHeavyPercent": 0.0,
     "LoadUnitWidth": 4250.0,
     "MaxGrossWeight": 70000.0,
-    "ModelName": "NEW VERTIMAG 84XL990-BIG/BIG H5861",
+    "ModelName": "VERTIMAG 84XL990-BIG/BIG H5861",
     "Panels": [
       {
         "Cells": [
@@ -806,7 +806,7 @@
           }
         ],
         "Id": 1,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -903,7 +903,7 @@
           }
         ],
         "Id": 2,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1000,7 +1000,7 @@
           }
         ],
         "Id": 3,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1097,7 +1097,7 @@
           }
         ],
         "Id": 4,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1194,7 +1194,7 @@
           }
         ],
         "Id": 5,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1291,7 +1291,7 @@
           }
         ],
         "Id": 6,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1388,7 +1388,7 @@
           }
         ],
         "Id": 7,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1485,7 +1485,7 @@
           }
         ],
         "Id": 8,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1582,7 +1582,7 @@
           }
         ],
         "Id": 9,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1679,7 +1679,7 @@
           }
         ],
         "Id": 10,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1776,7 +1776,7 @@
           }
         ],
         "Id": 11,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1873,7 +1873,7 @@
           }
         ],
         "Id": 12,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1970,7 +1970,7 @@
           }
         ],
         "Id": 13,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -2067,7 +2067,7 @@
           }
         ],
         "Id": 14,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -2146,7 +2146,7 @@
           }
         ],
         "Id": 15,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -2243,7 +2243,7 @@
           }
         ],
         "Id": 16,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2340,7 +2340,7 @@
           }
         ],
         "Id": 17,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2437,7 +2437,7 @@
           }
         ],
         "Id": 18,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2534,7 +2534,7 @@
           }
         ],
         "Id": 19,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2631,7 +2631,7 @@
           }
         ],
         "Id": 20,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2728,7 +2728,7 @@
           }
         ],
         "Id": 21,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2825,7 +2825,7 @@
           }
         ],
         "Id": 22,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2922,7 +2922,7 @@
           }
         ],
         "Id": 23,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3019,7 +3019,7 @@
           }
         ],
         "Id": 24,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3116,7 +3116,7 @@
           }
         ],
         "Id": 25,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3213,7 +3213,7 @@
           }
         ],
         "Id": 26,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3310,7 +3310,7 @@
           }
         ],
         "Id": 27,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3407,7 +3407,7 @@
           }
         ],
         "Id": 28,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3504,7 +3504,7 @@
           }
         ],
         "Id": 29,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3601,7 +3601,7 @@
           }
         ],
         "Id": 30,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3698,7 +3698,7 @@
           }
         ],
         "Id": 31,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3795,7 +3795,7 @@
           }
         ],
         "Id": 32,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3892,7 +3892,7 @@
           }
         ],
         "Id": 33,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3989,7 +3989,7 @@
           }
         ],
         "Id": 34,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -4086,7 +4086,7 @@
           }
         ],
         "Id": 35,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -4183,7 +4183,7 @@
           }
         ],
         "Id": 36,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -4244,7 +4244,7 @@
           }
         ],
         "Id": 37,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       }
     ],

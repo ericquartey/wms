@@ -745,7 +745,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 else
                 {
                     //inverter.CommonControlWord.HorizontalAxis = switchOnData.AxisToSwitchOn == Axis.Horizontal;
-                    //this.Logger.LogDebug("6:Inverter is not ready. Powering up the inverter");
+                    this.Logger.LogDebug("6:Inverter is not ready. Powering up the inverter");
 
                     this.Logger.LogTrace("Start the timer for update status word");
                     this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);

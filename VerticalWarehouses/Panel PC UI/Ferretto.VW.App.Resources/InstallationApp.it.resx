@@ -1644,7 +1644,7 @@
     <value>Carico primo cassetto e test celle</value>
   </data>
   <data name="CellTestMenuTitle" xml:space="preserve">
-    <value>Test celle</value>
+    <value>Test celle limite</value>
   </data>
   <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
     <value>Applica una correzione ad un gruppo di celle</value>
