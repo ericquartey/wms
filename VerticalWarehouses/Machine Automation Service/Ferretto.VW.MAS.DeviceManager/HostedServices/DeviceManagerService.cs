@@ -1043,21 +1043,6 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 System.Diagnostics.Debug.Fail("Exception detected");
-
-#if DEBUG
-                if (this.currentStateMachines.Any())
-                {
-                    foreach (var messageCurrentStateMachine in this.currentStateMachines)
-                    {
-                        if (messageCurrentStateMachine is InverterProgrammingStateMachine ||
-                            messageCurrentStateMachine is InverterReadingStateMachine)
-                        {
-                            this.currentStateMachines.Remove(messageCurrentStateMachine);
-                            this.SendCleanDebug();
-                        }
-                    }
-                }
-#endif
             }
 
             this.EventAggregator
