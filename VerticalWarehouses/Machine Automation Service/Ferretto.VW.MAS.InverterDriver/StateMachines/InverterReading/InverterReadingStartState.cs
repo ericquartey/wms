@@ -149,10 +149,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 if (this.currentParametersPosition == (this.inverterReadingFieldMessageData.InverterParametersData.Parameters.Count() - 1) ||
                     this.inverterReadingFieldMessageData.InverterParametersData.Parameters.Count() == 1)
                 {
-                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameters(this.localParameter, this.inverterReadingFieldMessageData.InverterParametersData.InverterIndex);
-
                     this.ParentStateMachine.ChangeState(
                          new InverterReadingEndState(this.ParentStateMachine, this.inverterReadingFieldMessageData, this.InverterStatus, this.Logger));
+
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameters(this.localParameter, this.inverterReadingFieldMessageData.InverterParametersData.InverterIndex);
                     this.localParameter.Clear();
                 }
                 else
@@ -244,11 +244,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 this.inverterReadingFieldMessageData.InverterParametersData.Parameters.Count() == 1)
                 {
                     this.localParameter.Add(currentParameter);
-                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameters(this.localParameter, this.inverterReadingFieldMessageData.InverterParametersData.InverterIndex);
 
                     this.ParentStateMachine.ChangeState(
                          new InverterReadingEndState(this.ParentStateMachine, this.inverterReadingFieldMessageData, this.InverterStatus, this.Logger));
 
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameters(this.localParameter, this.inverterReadingFieldMessageData.InverterParametersData.InverterIndex);
                     this.localParameter.Clear();
                 }
                 else
