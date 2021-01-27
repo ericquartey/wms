@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -13,13 +19,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<DigitalDevicesDataProvider> logger;
+
         #endregion
 
         #region Constructors
 
-        public DigitalDevicesDataProvider(DataLayerContext dataContext)
+        public DigitalDevicesDataProvider(
+            DataLayerContext dataContext,
+            ILogger<DigitalDevicesDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new System.ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -91,7 +102,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Inverters.ToArray();
+                return this.dataContext.Inverters.Include(i => i.Parameters).ToArray();
             }
         }
 
@@ -162,7 +173,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var inverter = this.dataContext.Inverters.SingleOrDefault(i => i.Index == index);
+                var inverter = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == index);
                 if (inverter is null)
                 {
                     throw new EntityNotFoundException((int)index);
@@ -228,6 +239,67 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 inverterParameter.StringValue = value;
                 this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateInverterParameters(List<InverterParameter> inverterParameters, byte index)
+        {
+            this.logger.LogInformation("Start save parameter");
+            lock (this.dataContext)
+            {
+                var inverter = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == (InverterIndex)index);
+                if (inverter is null)
+                {
+                    throw new EntityNotFoundException((int)index);
+                }
+
+                if (inverter.Parameters.Any())
+                {
+                    var listParameters = inverter.Parameters.ToList();
+
+                    this.dataContext.InverterParameter.RemoveRange(inverter.Parameters);
+                    this.dataContext.SaveChanges();
+
+                    foreach (var parameter in inverterParameters)
+                    {
+                        if (listParameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
+                        {
+                            var dbParameter = listParameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet);
+
+                            listParameters.Remove(dbParameter);
+                            listParameters.Add(parameter);
+                        }
+                        else
+                        {
+                            listParameters.Add(parameter);
+                        }
+                    }
+
+                    inverter.Parameters = listParameters;
+                    this.dataContext.Inverters.Update(inverter);
+                }
+                else
+                {
+                    var listParameters = new List<InverterParameter>();
+                    foreach (var parameter in inverterParameters)
+                    {
+                        if (listParameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
+                        {
+                            listParameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet).StringValue = parameter.StringValue;
+                        }
+                        else
+                        {
+                            listParameters.Add(parameter);
+                        }
+                    }
+
+                    inverter.Parameters = listParameters;
+                    this.dataContext.Inverters.Update(inverter);
+                }
+
+                this.dataContext.SaveChanges();
+
+                this.logger.LogInformation("End save parameter");
             }
         }
 

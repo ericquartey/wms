@@ -12,12 +12,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         }
 
         public InverterParametersMessageData(
+            MessageType type,
             short code,
             int dataset,
             string value,
             bool isReadMessage,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
+            this.Type = type;
             this.Code = code;
             this.Datset = dataset;
             this.Value = value;
@@ -35,6 +37,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool IsReadMessage { get; set; }
 
+        public MessageType Type { get; set; }
+
         public string Value { get; set; }
 
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
@@ -45,7 +49,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public override string ToString()
         {
-            return $"Code={this.Code}, Dataset={this.Datset}, Value={this.Value}, IsReadMessage={this.IsReadMessage}";
+            return $"{this.Type.ToString()}: Code={this.Code}, Dataset={this.Datset}, Value={this.Value}, IsReadMessage={this.IsReadMessage}";
         }
 
         #endregion

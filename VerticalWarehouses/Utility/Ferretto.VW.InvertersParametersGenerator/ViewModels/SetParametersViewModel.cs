@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -36,6 +37,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         private const short BAUNDRATE = 903;
 
         private const short VABUS_BAUNDRATE = 10;
+
+        public static readonly IList<short> parameterToIgnore = new ReadOnlyCollection<short>(new List<short> { 1202, 1203, 1204, 1206, 1261 });
 
         private readonly ConfigurationService configurationService;
 
@@ -406,6 +409,12 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         data.isReadonly = true;
                     }
 
+                    //skip parameter
+                    if (parameterToIgnore.Any(s => s == code))
+                    {
+                        continue;
+                    }
+
                     var inverterVersionParameter = new ParameterInfo(code, desc, type, data.isReadonly);
 
                     parametersInfo.Add(inverterVersionParameter);
@@ -499,11 +508,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     {
                         continue;
                     }
-                    else if(parameters.Any(s => s.Code == code && s.DataSet == dataset))
+                    else if (parameters.Any(s => s.Code == code && s.DataSet == dataset))
                     {
                         continue;
                     }
-
 
                     var parameter = parameters.FirstOrDefault(s => s.Code == code);
 

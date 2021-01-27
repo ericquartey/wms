@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.CommonUtils.Messages.Interfaces
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+
+namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
     public interface IInverterParametersMessageData : IMessageData
     {
@@ -9,6 +11,8 @@
         int Datset { get; set; }
 
         bool IsReadMessage { get; set; }
+
+        MessageType Type { get; set; }
 
         string Value { get; set; }
 

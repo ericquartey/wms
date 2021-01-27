@@ -51,6 +51,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand readInvertersCommand;
 
+        private DelegateCommand refreshCommand;
+
         private FileInfo selectedFileConfiguration;
 
         private Inverter selectedInverter;
@@ -110,7 +112,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.readInvertersCommand
                ??
                (this.readInvertersCommand = new DelegateCommand(
-                   async () => await this.ReadAllInvertersAsync()));
+                   async () => await this.ReadAllInvertersAsync(), this.CanRead));
+
+        public ICommand RefreshCommand =>
+               this.refreshCommand
+               ??
+               (this.refreshCommand = new DelegateCommand(
+                async () => await this.RefreshAsync(), this.CanRefresh));
 
         public FileInfo SelectedFileConfiguration
         {
@@ -134,7 +142,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.showInverterParamertersCommand
                ??
                (this.showInverterParamertersCommand = new DelegateCommand<Inverter>(
-                   this.ShowInverterParameters));
+                   this.ShowInverterParameters, this.CanShowInverterParameter));
 
         public IEnumerable<Inverter> VertimagInverterConfiguration
         {
@@ -247,6 +255,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.readInvertersCommand?.RaiseCanExecuteChanged();
             this.goToImport?.RaiseCanExecuteChanged();
             this.goToExport?.RaiseCanExecuteChanged();
+            this.refreshCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanRead()
+        {
+            return !this.IsBusy &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
+        }
+
+        private bool CanRefresh()
+        {
+            return !this.IsBusy &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
         }
 
         private bool CanSave()
@@ -259,6 +280,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanShowImport()
         {
             return this.usbWatcher.Drives.Writable().Any();
+        }
+
+        private bool CanShowInverterParameter(Inverter inverter)
+        {
+            return !this.IsBusy &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
         }
 
         private async Task OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
@@ -285,6 +312,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBusy = true;
 
                 await this.machineDevicesWebService.ReadAllInvertersAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
+
+        private async Task RefreshAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                var result = await this.machineDevicesWebService.GetInvertersAsync();
+                this.inverters = result.OrderBy(s => s.Index);
+
+                this.RaisePropertyChanged(nameof(this.Inverters));
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

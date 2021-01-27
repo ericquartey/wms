@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -28,6 +29,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void SaveInverterStructure(Inverter inverter);
 
         void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value, int dataset);
+
+        void UpdateInverterParameters(List<InverterParameter> inverterParameters, byte index);
 
         #endregion
     }

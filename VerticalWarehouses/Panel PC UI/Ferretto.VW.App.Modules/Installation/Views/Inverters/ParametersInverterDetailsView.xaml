@@ -36,13 +36,24 @@
       <Run Text="{res:Loc General.Inverter}" /><Run Text=":" /> <Run Text="{Binding InverterParameters.Type}" />
     </TextBlock>
 
-    <controls:PpcButton Grid.Column="1"
-                        Margin="0,0,10,10"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Command="{Binding HardResetCommand}"
-                        Content="Hard reset"
-                        IsBusy="{Binding IsBusy}" />
+    <StackPanel Grid.Column="1"
+                Orientation="Horizontal">
+      <controls:PpcButton Width="70"
+                          Margin="0,0,10,10"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          HorizontalContentAlignment="Center"
+                          Command="{Binding RefreshCommand}"
+                          IsBusy="{Binding IsBusy}"
+                          KindMaterial="Refresh" />
+
+      <controls:PpcButton Margin="0,0,10,10"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding HardResetCommand}"
+                          Content="Hard reset"
+                          IsBusy="{Binding IsBusy}" />
+    </StackPanel>
 
     <controls:PpcButton Grid.Column="2"
                         Margin="0,0,0,10"

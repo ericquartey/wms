@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -28,6 +29,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
 
         private int currentParametersPosition;
 
+        private List<InverterParameter> localParameter;
+
         #endregion
 
         #region Constructors
@@ -56,7 +59,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
 
             var parameter = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
 
-            var message = this.GetNewInverterMessage(parameter);
+            this.localParameter = new List<InverterParameter>();
+
+            var message = this.GetNewInverterMessage(parameter, false);
             this.Logger.LogTrace($"5:inverterMessage={message}");
             this.ParentStateMachine.EnqueueCommandMessage(message);
 
@@ -88,21 +93,90 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
 
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            if (message.IsError)
+            {
+                this.Logger.LogError($"Inverter Reading Error State, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}, telegramError={message.TelegramErrorText}");
 
-            return true;
+                this.ParentStateMachine.ChangeState(
+                    new InverterReadingErrorState(this.ParentStateMachine, this.inverterReadingFieldMessageData, this.InverterStatus, this.Logger));
+            }
+            else
+            {
+                //check Id
+                var currentParameter = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
+
+                if (currentParameter.Code != message.ShortParameterId)
+                {
+                    return true;
+                }
+
+                this.Logger.LogDebug($"Inverter Reading: write parameter={message.ParameterId}, dataset={message.DataSetIndex}");
+
+                //convert to string
+                string result = default(string);
+                switch (currentParameter.Type)
+                {
+                    case "short":
+                        result = message.ShortPayload.ToString();
+                        break;
+
+                    case "ushort":
+                        result = message.UShortPayload.ToString();
+                        break;
+
+                    case "int":
+                        result = message.IntPayload.ToString();
+                        break;
+
+                    case "string":
+                        result = message.StringPayload;
+                        break;
+                }
+
+                var notificationMessage = new NotificationMessage(
+                               new InverterParametersMessageData(MessageType.InverterReading, message.ShortParameterId, message.DataSetIndex, result, false),
+                               $"Starting inverter Reading state on inverters",
+                               MessageActor.Any,
+                               MessageActor.DeviceManager,
+                               MessageType.InverterParameters,
+                               BayNumber.All,
+                               BayNumber.All,
+                               MessageStatus.OperationStepEnd);
+                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+                currentParameter.StringValue = result;
+
+                if (this.currentParametersPosition == (this.inverterReadingFieldMessageData.InverterParametersData.Parameters.Count() - 1) ||
+                    this.inverterReadingFieldMessageData.InverterParametersData.Parameters.Count() == 1)
+                {
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameters(this.localParameter, this.inverterReadingFieldMessageData.InverterParametersData.InverterIndex);
+
+                    this.ParentStateMachine.ChangeState(
+                         new InverterReadingEndState(this.ParentStateMachine, this.inverterReadingFieldMessageData, this.InverterStatus, this.Logger));
+                    this.localParameter.Clear();
+                }
+                else
+                {
+                    this.currentParametersPosition++;
+                    var parameter = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
+
+                    var isWriteMessage = false;
+                    if (parameter.ReadCode == 1)
+                    {
+                        isWriteMessage = true;
+                    }
+                    var data = this.GetNewInverterMessage(parameter, isWriteMessage);
+
+                    this.ParentStateMachine.EnqueueCommandMessage(data);
+                }
+            }
+
+            return !message.IsError;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            //check Id
-            var currentParameter = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
-
-            if (currentParameter.Code != message.ShortParameterId)
-            {
-                return true;
-            }
-            else if (message.IsError)
+            if (message.IsError)
             {
                 this.Logger.LogError($"Inverter Reading Error State, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}, telegramError={message.TelegramErrorText}");
                 this.ParentStateMachine.ChangeState(
@@ -110,7 +184,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
             }
             else
             {
-                this.Logger.LogDebug($"Inverter Reading parameter={message.ParameterId}, dataset={message.DataSetIndex}");
+                //check Id
+                var currentParameter = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
+
+                if (currentParameter.Code != message.ShortParameterId)
+                {
+                    return true;
+                }
 
                 //convert to string
                 string result = default(string);
@@ -136,16 +216,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 var dataset = default(int);
                 if (currentParameter.ReadCode != 0)
                 {
-                    var datasetString = this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().GetParameter(message.SystemIndex, currentParameter.ReadCode, 0).StringValue;
-                    dataset = int.Parse(datasetString);
+                    var datasetString = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition - 1);
+                    dataset = int.Parse(datasetString.StringValue);
                 }
                 else
                 {
                     dataset = message.DataSetIndex;
                 }
 
+                currentParameter.DataSet = dataset;
+                currentParameter.StringValue = result;
+
+                this.Logger.LogDebug($"Inverter Reading parameter={message.ParameterId}, dataset={dataset}, messageDataset={message.DataSetIndex}");
+
                 var notificationMessage = new NotificationMessage(
-                              new InverterParametersMessageData(message.ShortParameterId, dataset, result, true),
+                              new InverterParametersMessageData(MessageType.InverterReading, message.ShortParameterId, dataset, result, true),
                               $"Starting inverter Reading state on inverters",
                               MessageActor.Any,
                               MessageActor.DeviceManager,
@@ -155,27 +240,34 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                               MessageStatus.OperationStepEnd);
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
-                //check parameter in db
-                if (this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().ExistInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex))
-                {
-                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameter(message.SystemIndex, message.ShortParameterId, result, message.DataSetIndex);
-                }
-                else
-                {
-                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().AddInverterParameter(message.SystemIndex, message.ShortParameterId, message.DataSetIndex, currentParameter.IsReadOnly, currentParameter.Type, result, currentParameter.Description, currentParameter.ReadCode, currentParameter.WriteCode, currentParameter.DecimalCount);
-                }
-
                 if (this.currentParametersPosition == (this.inverterReadingFieldMessageData.InverterParametersData.Parameters.Count() - 1) ||
                 this.inverterReadingFieldMessageData.InverterParametersData.Parameters.Count() == 1)
                 {
+                    this.localParameter.Add(currentParameter);
+                    this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameters(this.localParameter, this.inverterReadingFieldMessageData.InverterParametersData.InverterIndex);
+
                     this.ParentStateMachine.ChangeState(
                          new InverterReadingEndState(this.ParentStateMachine, this.inverterReadingFieldMessageData, this.InverterStatus, this.Logger));
+
+                    this.localParameter.Clear();
                 }
                 else
                 {
                     this.currentParametersPosition++;
                     var parameter = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
-                    var data = this.GetNewInverterMessage(parameter);
+
+                    var isWriteMessage = false;
+                    if (parameter.ReadCode == 1)
+                    {
+                        isWriteMessage = true;
+                    }
+                    var data = this.GetNewInverterMessage(parameter, isWriteMessage);
+
+                    if (currentParameter.Code != parameter.ReadCode ||
+                        currentParameter.Code == 0)
+                    {
+                        this.localParameter.Add(currentParameter);
+                    }
 
                     this.ParentStateMachine.EnqueueCommandMessage(data);
                 }
@@ -184,9 +276,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
             return true;
         }
 
-        private InverterMessage GetNewInverterMessage(InverterParameter parameter)
+        private InverterMessage GetNewInverterMessage(InverterParameter parameter, bool isWriteMessage)
         {
-            return new InverterMessage((byte)this.InverterStatus.SystemIndex, parameter.Code, parameter.DataSet);
+            if (!isWriteMessage)
+            {
+                //this.Logger.LogDebug($"Message read: Code={parameter.Code}, Dataset={parameter.DataSet}");
+                return new InverterMessage((byte)this.InverterStatus.SystemIndex, parameter.Code, parameter.DataSet);
+            }
+            else
+            {
+                //this.Logger.LogDebug($"Message write: Code={parameter.Code}, Dataset={parameter.DataSet}, Value={parameter.StringValue}");
+                return new InverterMessage((byte)this.InverterStatus.SystemIndex, (short)parameter.Code, parameter.Payload, parameter.DataSet);
+            }
         }
 
         #endregion

@@ -9,11 +9,14 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Installation.ViewModels;
 using Ferretto.VW.App.Modules.Installation.Interface;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Newtonsoft.Json.Linq;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -31,6 +34,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private DelegateCommand importCommand;
 
         private DelegateCommand importStructureCommand;
+
+        private SubscriptionToken inverterParameterReceivedToken;
+
+        private int inverterStructureCount;
 
         private bool isBusy;
 
@@ -74,6 +81,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                (this.importStructureCommand = new DelegateCommand(
                 () =>
                 {
+                    this.IsBusy = true;
+                    this.inverterStructureCount = this.selectedConfiguration.Count();
                     this.ShowNotification(Resources.Localized.Get("InstallationApp.CommandSent"), Services.Models.NotificationSeverity.Info);
                     this.machineDevicesWebService.ImportInvertersStructureAsync(this.selectedConfiguration);
                 }, this.CanImport));
@@ -120,6 +129,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.usbWatcher.DrivesChanged -= this.UsbWatcher_DrivesChange;
             this.usbWatcher.Disable();
 
+            if (this.inverterParameterReceivedToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<InverterParametersMessageData>>().Unsubscribe(this.inverterParameterReceivedToken);
+                this.inverterParameterReceivedToken?.Dispose();
+                this.inverterParameterReceivedToken = null;
+            }
+
             base.Disappear();
         }
 
@@ -135,6 +151,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
             this.usbWatcher.Enable();
             this.FindConfigurationFiles();
+
+            this.SubscribeEvents();
 
             return base.OnAppearedAsync();
         }
@@ -165,7 +183,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             if (!this.configurationFiles.Any())
             {
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.NoDevicesAvailableAnymore"), Services.Models.NotificationSeverity.Warning);
-                //this.NavigationService.GoBackSafelyAsync();
             }
 
             this.IsBusy = false;
@@ -176,12 +193,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.IsBusy = true;
-
-                //var source = await this.machineConfigurationWebService.GetAsync();
-
-                //// merge and save
-                //var result = source.ExtendWith(this.selectedConfiguration);
-                //var vertimagConfiguration = VertimagInverterConfiguration.FromJson(this.selectedConfiguration.ToString());
 
                 this.parentConfiguration.SelectedFileConfiguration = this.selectedFile;
                 this.parentConfiguration.VertimagInverterConfiguration = this.selectedConfiguration;
@@ -195,6 +206,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             finally
             {
                 this.IsBusy = false;
+            }
+        }
+
+        private void OnInverterParameterReceived(NotificationMessageUI<InverterParametersMessageData> message)
+        {
+            if (message.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationUpdateData)//import structure command
+            {
+                this.inverterStructureCount--;
+                if (this.inverterStructureCount == 0)
+                {
+                    this.IsBusy = false;
+                }
             }
         }
 
@@ -225,6 +248,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.importCommand?.RaiseCanExecuteChanged();
             this.importStructureCommand?.RaiseCanExecuteChanged();
+        }
+
+        private void SubscribeEvents()
+        {
+            this.inverterParameterReceivedToken = this.inverterParameterReceivedToken
+               ?? this.EventAggregator
+                   .GetEvent<NotificationEventUI<InverterParametersMessageData>>()
+                   .Subscribe(
+                       (m) => this.OnInverterParameterReceived(m),
+                       ThreadOption.UIThread,
+                       false);
         }
 
         private void UsbWatcher_DrivesChange(object sender, DrivesChangedEventArgs e)

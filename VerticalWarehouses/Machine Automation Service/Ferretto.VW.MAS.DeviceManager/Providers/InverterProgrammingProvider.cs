@@ -69,10 +69,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var invetersFormDb = this.digitalDevicesDataProvider.GetAllInverters();
 
             //check inverters
-            foreach (var inverter in invetersFormDb)
+            foreach (var inverter in invetersFormDb.OrderBy(s => s.Index))
             {
-                if (inverter is null ||
-                    inverter.Parameters is null)
+                if (inverter?.Parameters is null)
                 {
                     throw new ArgumentException($"No Inverters parameters found");
                 }
@@ -108,8 +107,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var inveterFormDb = this.digitalDevicesDataProvider.GetInverterByIndex(inverterIndex);
 
             //check inverters
-            if (inveterFormDb is null ||
-                    inveterFormDb.Parameters is null)
+            if (inveterFormDb?.Parameters is null)
             {
                 throw new ArgumentException($"No Inverter parameters found");
             }
@@ -249,14 +247,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             if (read)
             {
-                foreach (var parameter in parameters)
+                foreach (var parameter in parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet))
                 {
-                    if (parameter.Code == (short)InverterParameterId.RunMode)
+                    if (parameter.Code == (short)InverterParameterId.RunMode ||
+                        parameters.Any(s => s.ReadCode == parameter.Code))
                     {
                         continue;
                     }
-                    if (parameter.ReadCode != 0)
+                    else if (parameter.ReadCode != 0)
                     {
+                        if (parameter.DataSet == 0)
+                        {
+                            continue;
+                        }
+
                         var basePara = parameters.FirstOrDefault(s => s.Code == parameter.ReadCode);
 
                         if (basePara is null)
@@ -267,8 +271,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             }
                             basePara = this.digitalDevicesDataProvider.GetParameter(inverterIndex, parameter.ReadCode, 0);
                         }
-                        basePara.DataSet = parameter.DataSet;
-                        parametersNew.Add(basePara);
+                        var readParameter = new InverterParameter
+                        {
+                            Code = basePara.Code,
+                            DataSet = 0,
+                            Type = basePara.Type,
+                            StringValue = parameter.DataSet.ToString(),
+                            ReadCode = 1
+                        };
+                        parametersNew.Add(readParameter);
+                        parameter.DataSet = 0;
                         parametersNew.Add(parameter);
                     }
                     else
@@ -279,7 +291,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             else
             {
-                foreach (var parameter in parameters)
+                foreach (var parameter in parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet))
                 {
                     if (parameter.WriteCode != 0)
                     {
@@ -298,7 +310,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             Code = basePara.Code,
                             DataSet = 0,
                             Type = basePara.Type,
-                            StringValue = parameter.DataSet.ToString()
+                            StringValue = parameter.DataSet.ToString(),
+                            WriteCode = 1
                         };
                         parametersNew.Add(writeParameter);
                         parameter.DataSet = 0;

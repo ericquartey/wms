@@ -6,11 +6,14 @@ using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Interface;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -29,9 +32,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Inverter inverterParameters;
 
+        private SubscriptionToken inverterReadingMessageReceivedToken;
+
         private ISetVertimagInverterConfiguration parentConfiguration;
 
         private DelegateCommand readInverterCommand;
+
+        private DelegateCommand refreshCommand;
 
         private DelegateCommand resetCommand;
 
@@ -79,10 +86,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.readInverterCommand
                ??
                (this.readInverterCommand = new DelegateCommand(
-                   async () => await this.ReadInverterAsync()));
+                   async () => await this.ReadInverterAsync(), this.CanRead));
+
+        public ICommand RefreshCommand =>
+               this.refreshCommand
+               ??
+               (this.refreshCommand = new DelegateCommand(
+                async () => await this.RefreshAsync(), this.CanRefresh));
 
         public ICommand ResetCommand =>
-                       this.resetCommand
+                               this.resetCommand
                ??
                (this.resetCommand = new DelegateCommand(
                 async () => await this.ResetInverterAsync(), this.CanReset));
@@ -112,6 +125,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             this.InverterParameters = null;
+
+            if (this.inverterReadingMessageReceivedToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<InverterReadingMessageData>>().Unsubscribe(this.inverterReadingMessageReceivedToken);
+                this.inverterReadingMessageReceivedToken?.Dispose();
+                this.inverterReadingMessageReceivedToken = null;
+            }
+
             base.Disappear();
         }
 
@@ -120,6 +141,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
 
             this.LoadData();
+
+            this.SubscribeEvents();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -131,8 +154,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.setInverterParamertersCommand?.RaiseCanExecuteChanged();
             this.setParamerterCommand?.RaiseCanExecuteChanged();
             this.readInverterCommand?.RaiseCanExecuteChanged();
+            this.refreshCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsAdmin));
+        }
+
+        private bool CanRead()
+        {
+            return !this.IsBusy &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered &&
+                this.InverterParameters != null &&
+                this.InverterParameters.Parameters.Any();
+        }
+
+        private bool CanRefresh()
+        {
+            return !this.IsBusy &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
         }
 
         private bool CanReset()
@@ -193,12 +231,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.parentConfiguration = mainConfiguration;
                 this.inverterParameters = mainConfiguration.SelectedInverter;
-                this.inverterParameters.Parameters = this.inverterParameters.Parameters.OrderBy(s => s.Code);
+                this.inverterParameters.Parameters = this.inverterParameters.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
             }
 
             this.RaisePropertyChanged(nameof(this.InverterParameters));
 
             this.IsBusy = false;
+        }
+
+        private async Task OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    this.IsBusy = false;
+                    await this.RefreshAsync();
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private async Task ReadInverterAsync()
@@ -210,6 +262,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBusy = true;
 
                 await this.machineDevicesWebService.ReadInverterAsync(this.inverterParameters.Index);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
+
+        private async Task RefreshAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                var inverters = await this.machineDevicesWebService.GetInvertersAsync();
+
+                if (inverters.SingleOrDefault(s => s.Index == this.inverterParameters.Index) != null)
+                {
+                    this.inverterParameters = inverters.SingleOrDefault(s => s.Index == this.inverterParameters.Index);
+                    this.inverterParameters.Parameters = this.inverterParameters.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
+                }
+                this.RaisePropertyChanged(nameof(this.InverterParameters));
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -300,6 +377,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsBusy = false;
             }
+        }
+
+        private void SubscribeEvents()
+        {
+            this.inverterReadingMessageReceivedToken = this.inverterReadingMessageReceivedToken
+               ?? this.EventAggregator
+                   .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
+                   .Subscribe(
+                       async (m) => await this.OnInverterReadingMessageReceived(m),
+                       ThreadOption.UIThread,
+                       false);
         }
 
         #endregion
