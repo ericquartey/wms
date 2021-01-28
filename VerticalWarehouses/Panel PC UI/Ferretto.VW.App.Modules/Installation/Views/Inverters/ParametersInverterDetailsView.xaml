@@ -174,6 +174,17 @@
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
+          <DataGridTextColumn x:Name="Column7"
+                              Width="100"
+                              Binding="{Binding Path=Error, Converter={StaticResource BTSC}}"
+                              Header="{res:Loc OperatorApp.StatisticsErrorDataGridHeaderError}">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
         </DataGrid.Columns>
       </DataGrid>
     </Border>
@@ -187,11 +198,11 @@
             CornerRadius="2">
       <Grid Margin="5,0,0,0">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="2.5*" />
+          <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
           <RowDefinition />
@@ -240,7 +251,6 @@
                     Style="{StaticResource PpcCheckBoxStyle}" />
         </StackPanel>
 
-
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="0"
                              HorizontalAlignment="Stretch"
@@ -264,12 +274,29 @@
                              LabelText="{res:Loc InstallationApp.DecimalCount}" />
         <controls:PpcTextBox Grid.Row="1"
                              Grid.Column="3"
-                             Grid.ColumnSpan="2"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding SelectedParameter.Description}"
                              IsEnabled="False"
                              LabelText="{res:Loc InstallationApp.Description}" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="5"
+                    Orientation="Vertical">
+          <TextBlock Margin="0,1,5,1"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     IsEnabled="{Binding IsAdmin}"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                     Text="{res:Loc OperatorApp.StatisticsErrorDataGridHeaderError}" />
+          <CheckBox Width="33"
+                    Height="33"
+                    Margin="0,3,5,5"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    IsChecked="{Binding SelectedParameter.Error, Mode=TwoWay}"
+                    IsEnabled="{Binding IsAdmin}"
+                    Style="{StaticResource PpcCheckBoxStyle}" />
+        </StackPanel>
       </Grid>
     </Border>
 
@@ -283,6 +310,7 @@
 
     <controls:PpcButton Grid.Row="3"
                         Grid.Column="3"
+                        Grid.ColumnSpan="2"
                         Margin="0,10,0,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"

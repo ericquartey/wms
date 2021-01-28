@@ -3679,6 +3679,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Error", Required = Newtonsoft.Json.Required.Always)]
+        public bool Error { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsReadOnly", Required = Newtonsoft.Json.Required.Always)]
         public bool IsReadOnly { get; set; }
     
