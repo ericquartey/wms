@@ -117,6 +117,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             fastDeposit = false;
                         }
 #endif
+                        if (bay.Number != this.Mission.TargetBay)
+                        {
+                            this.Logger.LogInformation($"Bay number changed to {bay.Number} for Mission:Id={this.Mission.Id}");
+                            this.Mission.TargetBay = bay.Number;
+                        }
                     }
                     break;
             }
