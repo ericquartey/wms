@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Interface;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Newtonsoft.Json;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -38,11 +41,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand goToImport;
 
-        private IEnumerable<FileInfo> importableFiles = Array.Empty<FileInfo>();
+        private List<FileInfo> importableFiles = new List<FileInfo>();
 
         private string importFolderPath;
 
+        private SubscriptionToken inverterReadingMessageReceivedToken;
+
         private IEnumerable<Inverter> inverters;
+
+        private DelegateCommand readInvertersCommand;
+
+        private DelegateCommand refreshCommand;
 
         private FileInfo selectedFileConfiguration;
 
@@ -81,13 +90,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                this.goToExport
                ??
                (this.goToExport = new DelegateCommand(
-                () => this.ShowExport(), this.CanShowImport));
+                () => this.ShowExport()));
 
         public ICommand GoToImport =>
-                       this.goToImport
+               this.goToImport
                ??
                (this.goToImport = new DelegateCommand(
-                () => this.ShowImport(), this.CanShowImport));
+                () => this.ShowImport()));
 
         public IEnumerable<FileInfo> ImportableFiles => this.importableFiles;
 
@@ -98,6 +107,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public IEnumerable<Inverter> Inverters => this.inverters;
+
+        public ICommand ReadInvertersCommand =>
+                   this.readInvertersCommand
+               ??
+               (this.readInvertersCommand = new DelegateCommand(
+                   async () => await this.ReadAllInvertersAsync(), this.CanRead));
+
+        public ICommand RefreshCommand =>
+               this.refreshCommand
+               ??
+               (this.refreshCommand = new DelegateCommand(
+                async () => await this.RefreshAsync(), this.CanRefresh));
 
         public FileInfo SelectedFileConfiguration
         {
@@ -121,7 +142,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.showInverterParamertersCommand
                ??
                (this.showInverterParamertersCommand = new DelegateCommand<Inverter>(
-                   this.ShowInverterParameters));
+                   this.ShowInverterParameters, this.CanShowInverterParameter));
 
         public IEnumerable<Inverter> VertimagInverterConfiguration
         {
@@ -133,7 +154,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public void BackupVertimagInverterConfigurationParameters()
+        public async void BackupVertimagInverterConfigurationParameters()
         {
             if (this.selectedFileConfiguration is null)
             {
@@ -151,7 +172,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 },
             };
 
-            var json = JsonConvert.SerializeObject(this.VertimagInverterConfiguration, settings);
+            var dbConfig = await this.machineDevicesWebService.GetInvertersAsync();
+
+            var json = JsonConvert.SerializeObject(dbConfig, settings);
 
             var fullPath = this.Filename(this.VertimagInverterConfiguration, new DriveInfo(this.selectedFileConfiguration.DirectoryName), true);
             File.WriteAllText(fullPath, json);
@@ -162,12 +185,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.usbWatcher.DrivesChanged -= this.UsbWatcher_DrivesChange;
             this.usbWatcher.Disable();
 
+            if (this.inverterReadingMessageReceivedToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<InverterReadingMessageData>>().Unsubscribe(this.inverterReadingMessageReceivedToken);
+                this.inverterReadingMessageReceivedToken?.Dispose();
+                this.inverterReadingMessageReceivedToken = null;
+            }
+
             base.Disappear();
         }
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = true;
+            this.IsBusy = true;
 
             if (RESETDATA.Equals(this.Data))
             {
@@ -179,9 +209,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
             this.usbWatcher.Enable();
 
+            this.SubscribeEvents();
+
             await base.OnAppearedAsync();
 
-            this.IsWaitingForResponse = false;
+            this.IsBusy = false;
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -189,8 +221,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsBusy = true;
-
-                //add read from inverter
 
                 if (!(this.VertimagInverterConfiguration is null))
                 {
@@ -200,9 +230,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.SelectedFileConfiguration = null;
                     this.inverters = await this.machineDevicesWebService.GetInvertersAsync();
-
-                    await this.machineDevicesWebService.ReadAllInvertersAsync(this.inverters);
                 }
+
+                this.inverters = this.inverters.OrderBy(s => s.Index);
+
+                this.VertimagInverterConfiguration = this.inverters;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -220,19 +252,96 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.RaiseCanExecuteChanged();
             this.setInvertersParamertersCommand?.RaiseCanExecuteChanged();
             this.showInverterParamertersCommand?.RaiseCanExecuteChanged();
+            this.readInvertersCommand?.RaiseCanExecuteChanged();
             this.goToImport?.RaiseCanExecuteChanged();
             this.goToExport?.RaiseCanExecuteChanged();
+            this.refreshCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanRead()
+        {
+            return !this.IsBusy &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
+        }
+
+        private bool CanRefresh()
+        {
+            return !this.IsBusy &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
         }
 
         private bool CanSave()
         {
             return !this.IsBusy &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered &&
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 
         private bool CanShowImport()
         {
             return this.usbWatcher.Drives.Writable().Any();
+        }
+
+        private bool CanShowInverterParameter(Inverter inverter)
+        {
+            return !this.IsBusy &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
+        }
+
+        private async Task OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    this.IsBusy = false;
+                    this.inverters = await this.machineDevicesWebService.GetInvertersAsync();
+                    this.RaisePropertyChanged(nameof(this.inverters));
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private async Task ReadAllInvertersAsync()
+        {
+            try
+            {
+                this.ClearNotifications();
+
+                this.IsBusy = true;
+
+                await this.machineDevicesWebService.ReadAllInvertersAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
+
+        private async Task RefreshAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                var result = await this.machineDevicesWebService.GetInvertersAsync();
+                this.inverters = result.OrderBy(s => s.Index);
+
+                this.RaisePropertyChanged(nameof(this.Inverters));
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
         }
 
         private async Task SaveAllParametersAsync()
@@ -246,10 +355,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.BackupVertimagInverterConfigurationParameters();
 
                 await this.machineDevicesWebService.ProgramAllInvertersAsync(this.vertimagInverterConfiguration);
-
-                this.ShowNotification(Localized.Get("InstallationApp.InvertersProgrammingStarted"), Services.Models.NotificationSeverity.Info);
-
-                this.RaisePropertyChanged(nameof(this.VertimagInverterConfiguration));
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -289,6 +394,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 trackCurrentView: true);
         }
 
+        private void SubscribeEvents()
+        {
+            this.inverterReadingMessageReceivedToken = this.inverterReadingMessageReceivedToken
+               ?? this.EventAggregator
+                   .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
+                   .Subscribe(
+                       async (m) => await this.OnInverterReadingMessageReceived(m),
+                       ThreadOption.UIThread,
+                       false);
+        }
+
         private void UsbWatcher_DrivesChange(object sender, DrivesChangedEventArgs e)
         {
             // exportable drives
@@ -305,20 +421,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.AvailableDrives));
 
             // importable files
-            var importables = drives.FindConfigurationFiles().ToList();
-            this.importableFiles = new ReadOnlyCollection<FileInfo>(importables);
+            this.importableFiles.Clear();
+
+            var dir = ConfigurationManager.AppSettings.GetInverterParametersPath();
+            if (Directory.Exists(dir))
+            {
+                var files = Directory.GetFiles(dir, "*.json");
+            }
+
+            this.importableFiles.AddRange(FilterInverterConfigurationFile(this.usbWatcher.Drives.FindConfigurationFiles().ToList()));
             this.RaisePropertyChanged(nameof(this.ImportableFiles));
             this.goToImport?.RaiseCanExecuteChanged();
+            this.goToExport?.RaiseCanExecuteChanged();
 
             if (e.Attached.Any())
             {
-                var count = importables.Count;
+                var count = this.importableFiles.Count;
                 var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
                 var message = string.Format(culture, Localized.Get("InstallationApp.MultipleConfigurationsDetected"), count);
                 switch (count)
                 {
                     case 1:
-                        message = string.Format(culture, Localized.Get("InstallationApp.ConfigurationDetected"), string.Concat(importables[0].Name));
+                        message = string.Format(culture, Localized.Get("InstallationApp.ConfigurationDetected"), string.Concat(this.importableFiles.ElementAt(0).Name));
                         break;
 
                     case 0:

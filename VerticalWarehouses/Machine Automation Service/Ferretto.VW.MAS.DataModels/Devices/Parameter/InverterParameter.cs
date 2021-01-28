@@ -10,6 +10,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int DataSet { get; set; }
 
+        public int DecimalCount { get; set; }
+
+        public string Description { get; set; }
+
         public bool IsReadOnly { get; set; }
 
         public object Payload
@@ -18,21 +22,21 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 try
                 {
-                    if (this.Type == "String")
+                    if (this.Type == "string")
                     {
                         return this.StringValue;
                     }
-                    else if (this.Type == "Int")
+                    else if (this.Type == "short")
+                    {
+                        return short.Parse(this.StringValue);
+                    }
+                    else if (this.Type == "ushort")
+                    {
+                        return ushort.Parse(this.StringValue);
+                    }
+                    else if (this.Type == "int")
                     {
                         return int.Parse(this.StringValue);
-                    }
-                    else if (this.Type == "uInt")
-                    {
-                        return uint.Parse(this.StringValue);
-                    }
-                    else if (this.Type == "Long")
-                    {
-                        return long.Parse(this.StringValue);
                     }
                 }
                 catch (Exception ex)
@@ -43,11 +47,13 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        public short ReadCode { get; set; }
+
         public string StringValue { get; set; }
 
         public string Type { get; set; }
 
-        public int Value { get; set; }
+        public short WriteCode { get; set; }
 
         #endregion
     }

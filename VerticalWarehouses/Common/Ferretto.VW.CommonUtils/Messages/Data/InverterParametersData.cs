@@ -10,6 +10,14 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
+        public InverterParametersData(InverterParametersData inverterParametersData)
+        {
+            this.Description = inverterParametersData.Description;
+            this.InverterIndex = inverterParametersData.InverterIndex;
+            this.IsCheckInverterVersion = inverterParametersData.IsCheckInverterVersion;
+            this.Parameters = inverterParametersData.Parameters;
+        }
+
         public InverterParametersData(byte inverterIndex, string description)
         {
             this.InverterIndex = inverterIndex;

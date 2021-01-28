@@ -2307,4 +2307,49 @@
   <data name="VerticalCalibration" xml:space="preserve">
     <value>Kalibrace výtahu</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Čtení střídače bylo úspěšně dokončeno</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Čtení střídače skončilo chybami</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Čtení střídače se zastavilo</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Začátek dalšího čtení měniče</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Napište kód</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Přečtěte si kód</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Počet desetinných míst</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Bylo zahájeno čtení invertoru</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Přečíst vše</value>
+  </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Struktura importu</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Přepsat cílový soubor</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Uložte konfiguraci střídače</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Pište svobodně</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Napsat vše</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Velení odesláno</value>
+  </data>
 </root>

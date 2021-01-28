@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Installation.ViewModels;
@@ -18,7 +15,6 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
@@ -30,7 +26,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IUsbWatcherService usbWatcher;
 
+        private readonly IMachineDevicesWebService machineDevicesWebService;
+
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private DelegateCommand exportCommand;
+
+        private DelegateCommand exportVertimagCommand;
 
         private bool isBusy;
 
@@ -49,9 +51,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public InvertersParametersExportViewModel(
+            IMachineConfigurationWebService machineConfigurationWebService,
+            IMachineDevicesWebService machineDevicesWebService,
             IMachineIdentityWebService identityService,
             IUsbWatcherService usbWatcher) : base(identityService)
         {
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
             this.usbWatcher = usbWatcher;
         }
 
@@ -68,7 +74,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 if (this.SetProperty(ref this.drive, value))
                 {
                     this.OnSelectedDriveChanged(old, value);
-                    //this.exportCommand?.RaiseCanExecuteChanged();
+                    this.exportCommand?.RaiseCanExecuteChanged();
+                    this.exportVertimagCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -85,6 +92,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                (this.exportCommand = new DelegateCommand(
                 async () => await this.ExportAsync(), this.CanExport));
 
+        public ICommand ExportVertimagCommand =>
+                  this.exportVertimagCommand
+              ??
+              (this.exportVertimagCommand = new DelegateCommand(
+               async () => await this.ExportVertimagAsync(), this.CanExport));
+
         public bool IsBusy
         {
             get => this.isBusy;
@@ -93,6 +106,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 if (this.SetProperty(ref this.isBusy, value))
                 {
                     this.exportCommand?.RaiseCanExecuteChanged();
+                    this.exportVertimagCommand?.RaiseCanExecuteChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
                 }
             }
@@ -199,9 +213,69 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         },
                 };
 
-                var json = JsonConvert.SerializeObject(this.parentConfiguration.VertimagInverterConfiguration, settings);
+                var dbConfig = await this.machineDevicesWebService.GetInvertersAsync();
+
+                var json = JsonConvert.SerializeObject(dbConfig, settings);
 
                 var fullPath = this.Filename(this.parentConfiguration.VertimagInverterConfiguration, this.SelectedDrive, !this.OverwriteTargetFile);
+                File.WriteAllText(fullPath, json);
+
+                this.SelectedDrive = null;
+                this.ShowNotification(Localized.Get("InstallationApp.ExportSuccessful"), Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+
+                if (goback)
+                {
+                    await this.NavigationService.GoBackSafelyAsync();
+                }
+            }
+        }
+
+        private async Task ExportVertimagAsync()
+        {
+            var goback = false;
+            try
+            {
+                if (this.HasFilenameConflict && this.OverwriteTargetFile)
+                {
+                    var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                    var messageBoxResult = dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmFileOverwrite"), Localized.Get("InstallationApp.FileIsAlreadyPresent"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult != DialogResult.Yes)
+                    {
+                        return;
+                    }
+                }
+
+                this.IsBusy = true;
+                this.IsBackNavigationAllowed = false;
+
+                this.RaisePropertyChanged();
+
+                // fetch latest version
+
+                var settings = new JsonSerializerSettings()
+                {
+                    Formatting = Newtonsoft.Json.Formatting.Indented,
+                    ContractResolver = new Models.OrderedContractResolver(),
+                    Converters = new Newtonsoft.Json.JsonConverter[]
+                        {
+                        new CommonUtils.Converters.IPAddressConverter(),
+                        new Newtonsoft.Json.Converters.StringEnumConverter(),
+                        },
+                };
+
+                var configuration = await this.machineConfigurationWebService.GetAsync();
+
+                var json = JsonConvert.SerializeObject(configuration, settings);
+
+                var fullPath = this.Filename(configuration, this.SelectedDrive, !this.OverwriteTargetFile);
                 File.WriteAllText(fullPath, json);
 
                 this.SelectedDrive = null;

@@ -72,6 +72,8 @@
 
         LaserMoveAndSwitchOn,
 
-        BayLight
+        BayLight,
+
+        InverterReading
     }
 }

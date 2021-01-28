@@ -452,6 +452,27 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<InverterParametersData>> GetParametersAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ImportInvertersStructureAsync(System.Collections.Generic.IEnumerable<Inverter> inverters);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ImportInvertersStructureAsync(System.Collections.Generic.IEnumerable<Inverter> inverters, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task InverterHardResetAsync(Inverter inverter);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task InverterHardResetAsync(Inverter inverter, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task InverterResetAsync(Inverter inverter);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task InverterResetAsync(Inverter inverter, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ProgramAllInvertersAsync(System.Collections.Generic.IEnumerable<Inverter> inverters);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -466,18 +487,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task ProgramInverterAsync(Inverter inverter, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ReadAllInvertersAsync(System.Collections.Generic.IEnumerable<Inverter> inverters);
+        System.Threading.Tasks.Task ReadAllInvertersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ReadAllInvertersAsync(System.Collections.Generic.IEnumerable<Inverter> inverters, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ReadAllInvertersAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ReadInverterAsync(Inverter inverter);
+        System.Threading.Tasks.Task ReadInverterAsync(InverterIndex inverterIndex);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ReadInverterAsync(Inverter inverter, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ReadInverterAsync(InverterIndex inverterIndex, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -3645,11 +3666,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("DataSet", Required = Newtonsoft.Json.Required.Always)]
         public int DataSet { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("DecimalCount", Required = Newtonsoft.Json.Required.Always)]
+        public int DecimalCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsReadOnly", Required = Newtonsoft.Json.Required.Always)]
         public bool IsReadOnly { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Payload", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public object Payload { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ReadCode", Required = Newtonsoft.Json.Required.Always)]
+        public int ReadCode { get; set; }
     
         [Newtonsoft.Json.JsonProperty("StringValue", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string StringValue { get; set; }
@@ -3657,8 +3687,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Type { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("Value", Required = Newtonsoft.Json.Required.Always)]
-        public int Value { get; set; }
+        [Newtonsoft.Json.JsonProperty("WriteCode", Required = Newtonsoft.Json.Required.Always)]
+        public int WriteCode { get; set; }
     
         public string ToJson() 
         {

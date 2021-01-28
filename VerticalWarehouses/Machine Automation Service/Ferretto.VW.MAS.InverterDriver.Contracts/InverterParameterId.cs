@@ -77,5 +77,9 @@
         AxisChanged = 520,
 
         ActiveDataset = 249, // 1 = vertical, 2 = horizontal
+
+        RunMode = 1399,
+
+        Program = 34,
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -23,21 +24,25 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
     {
         #region Fields
 
-        private const string ACCESSREADONLY = "r_only";
+        private const string STRINGTYPE = "string";
 
-        private const string DATASETZERO = "[*]";
+        private const string INTTYPE = "int";
 
-        private const short MASTERINVERTERCODE = 924;
+        private const string SHORTTYPE = "short";
 
-        private const short SLAVEINVERTERCODE = 925;
+        private const string USHORTTYPE = "ushort";
 
-        private const string STRINGTYPE = "String";
+        private const short NODEID = 900;
+
+        private const short BAUNDRATE = 903;
+
+        private const short VABUS_BAUNDRATE = 10;
+
+        public static readonly IList<short> parameterToIgnore = new ReadOnlyCollection<short>(new List<short> { 1202, 1203, 1204, 1206, 1261 });
 
         private readonly ConfigurationService configurationService;
 
         private readonly IParentActionChanged parentActionChanged;
-
-        private IEnumerable<FileInfo> configurationFiles = Array.Empty<FileInfo>();
 
         private InverterParametersDataInfo currentInverterParameters;
 
@@ -49,17 +54,17 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private bool isParametersSet;
 
-        private DelegateCommand loadFileCommand = null;
-
         private string pattern;
-
-        private Regex regexDataSet;
 
         private Regex regexDigit;
 
-        private FileInfo selectedFile = null;
-
         private string totalParameters;
+
+        private IEnumerable<FileInfo> configurationFiles = new List<FileInfo>();
+
+        private DelegateCommand loadFileCommand;
+
+        private FileInfo selectedFile;
 
         #endregion Fields
 
@@ -69,7 +74,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         {
             this.configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
             this.parentActionChanged = parentActionChanged;
-            this.SelectedFile = null;
             this.InitializeData();
         }
 
@@ -89,29 +93,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         public IEnumerable<InverterParametersData> Inverters => this.inverters;
 
-        public bool IsBusy
-        {
-            get => this.isBusy;
-            set => this.SetProperty(ref this.isBusy, value);
-        }
-
-        public bool IsParametersSet
-        {
-            get => this.isParametersSet;
-            set => this.SetProperty(ref this.isParametersSet, value);
-        }
-
         public ICommand LoadFileCommand =>
             this.loadFileCommand
             ??
             (this.loadFileCommand = new DelegateCommand(
             this.LoadParameters, this.CanImport));
-
-        public string Pattern
-        {
-            get => this.pattern;
-            set => this.SetProperty(ref this.pattern, value);
-        }
 
         public FileInfo SelectedFile
         {
@@ -125,6 +111,24 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
         }
 
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.SetProperty(ref this.isBusy, value);
+        }
+
+        public bool IsParametersSet
+        {
+            get => this.isParametersSet;
+            set => this.SetProperty(ref this.isParametersSet, value);
+        }
+
+        public string Pattern
+        {
+            get => this.pattern;
+            set => this.SetProperty(ref this.pattern, value);
+        }
+
         public string Title => string.Format(Resources.InverterTypeParametersConfiguration, this.currentInverterParameters.InverterIndex, this.currentInverterParameters.Type.ToString());
 
         public string TotalParameters
@@ -136,6 +140,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         #endregion Properties
 
         #region Methods
+
+        private bool CanImport()
+        {
+            return this.selectedFile != null;
+        }
 
         public string ExtractDigit(string value)
         {
@@ -163,22 +172,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return this.ExtractDigit(value);
         }
 
-        public IEnumerable<InverterParameterField> GetParametersFromFile(string filename)
-        {
-            try
-            {
-                var engine = new FileHelperEngine<InverterParameterField>();
-                engine.ErrorManager.ErrorMode = ErrorMode.IgnoreAndContinue;
-                return engine.ReadFileAsList(filename);
-            }
-            catch (Exception ex)
-            {
-                this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
-            }
-
-            return null;
-        }
-
         public bool Next()
         {
             this.SaveInverterParameters();
@@ -192,73 +185,14 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return false;
         }
 
-        public void Previous()
-        {
-            this.configurationService.SetWizard(WizardMode.Inverters);
-        }
-
-        private static IEnumerable<ParameterInfo> LoadParametersList(InverterType inverterType)
-        {
-            var parameters = new List<ParameterInfo>();
-
-            var inverterFileName = $"Para_list_{inverterType.ToString().ToUpper(CultureInfo.InvariantCulture)}.xlsx";
-            var parmsDir = $"{Environment.CurrentDirectory}\\Parameters\\{inverterFileName}";
-            var fileInfo = new FileInfo(parmsDir);
-
-            using (var package = new ExcelPackage(fileInfo))
-            {
-                var workbook = package.Workbook;
-                var worksheet = workbook.Worksheets.First();
-
-                var start = worksheet.Dimension.Start;
-                var end = worksheet.Dimension.End;
-
-                for (var row = start.Row + 3; row <= end.Row; row++)
-                {
-                    var code = worksheet.Cells[row, 1].Text;
-                    var description = worksheet.Cells[row, 3].Text;
-                    var type = worksheet.Cells[row, 4].Text;
-                    var access = worksheet.Cells[row, 8].Text;
-                    parameters.Add(new ParameterInfo(short.Parse(code), description, type, access == ACCESSREADONLY));
-                }
-            }
-
-            return parameters;
-        }
-
-        private bool CanImport()
-        {
-            return this.selectedFile != null;
-        }
-
-        private int GetDatasetIndex(InverterParameterField parameter)
-        {
-            if (string.IsNullOrEmpty(parameter.Dataset)
-                ||
-                parameter.Dataset.Trim().ToLowerInvariant().Equals(DATASETZERO))
-            {
-                return 0;
-            }
-
-            var match = this.regexDataSet.Match(parameter.Dataset);
-            if (match.Success)
-            {
-                if (int.TryParse(match.Value, out var dataset))
-                {
-                    return dataset;
-                }
-            }
-
-            throw new ArgumentException($"Invalid dataset '{parameter.Dataset}' for parameter code '{parameter.Code}'");
-        }
-
         private void GetInverterParametersFiles()
         {
             this.IsBusy = true;
             try
             {
-                var sufix = this.configurationService.VertimagConfiguration.Machine.LoadUnitMaxNetWeight;
-                this.Pattern = $"{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}*{sufix}*.txt";
+                //var sufix = this.configurationService.VertimagConfiguration.Machine.LoadUnitMaxNetWeight;
+                //this.Pattern = $"{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}*{sufix}*.vcb";
+                this.Pattern = $"*{this.currentInverterParameters.Type.ToString().ToUpper(CultureInfo.InvariantCulture)}*.vcb";
                 var di = new DirectoryInfo(this.configurationService.InvertersParametersFolder);
                 this.configurationFiles = di.EnumerateFiles(this.Pattern);
 
@@ -275,6 +209,11 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             }
 
             this.IsBusy = false;
+        }
+
+        public void Previous()
+        {
+            this.configurationService.SetWizard(WizardMode.Inverters);
         }
 
         private Inverter GetVertimagConfigurationByInverterId(byte inverterIndex)
@@ -317,7 +256,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private void InitializeData()
         {
-            this.regexDataSet = new Regex(@"(?<=\[).+?(?=\])", RegexOptions.Compiled);
             this.regexDigit = new Regex(@"^-?\d+(?:\,\d+)?", RegexOptions.Compiled);
             this.inverters = this.configurationService.InvertersParameters.ToList();
             this.currentInverterParameters = this.inverters.First();
@@ -326,78 +264,35 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
+        private static List<InverterParameter> TakeConfigValue(IOrderedEnumerable<InverterParameter> vcbParameter, IOrderedEnumerable<InverterParameter> configurationParameter)
+        {
+            var parameters = new List<InverterParameter>();
+
+            foreach (var parameter in vcbParameter)
+            {
+                if (configurationParameter.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
+                {
+                    var parameterToAdd = configurationParameter.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet);
+                    parameters.Add(parameterToAdd);
+                }
+                else
+                {
+                    parameters.Add(parameter);
+                }
+            }
+
+            return parameters.OrderBy(s => s.Code).ToList();
+        }
+
         private void LoadParameters()
         {
             this.IsBusy = true;
             try
             {
-                var inverterParameters = new List<InverterParameter>();
-                this.RaisePropertyChanged(nameof(this.InverterParameters));
-                short lastParameterCode = 0;
-                var parametersInfo = LoadParametersList(this.currentInverterParameters.Type);
-                var parameters = this.GetParametersFromFile(this.selectedFile.FullName);
+                var inverterParameters = this.GetParameter(this.currentInverterParameters.Type, this.selectedFile.FullName).OrderBy(s => s.Code);
 
-                var inverterNodeParameters = this.configurationService.GetInverterNode(this.currentInverterParameters.InverterIndex).Parameters;
-
-                var softwareVersionCode = $"0{(short)InverterParameterId.SoftwareVersion}";
-                var softwareVersionParameter = parameters.SingleOrDefault(p => p.Code == softwareVersionCode);
-                var inverterVersionParameter = new InverterParameter
-                {
-                    Code = (short)InverterParameterId.SoftwareVersion,
-                    StringValue = softwareVersionParameter.Value,
-                    Type = STRINGTYPE,
-                    IsReadOnly = true
-                };
-                inverterParameters.Add(inverterVersionParameter);
-
-                foreach (var parameter in parameters)
-                {
-                    short code;
-                    if (string.IsNullOrEmpty(parameter.Code))
-                    {
-                        code = lastParameterCode;
-                    }
-                    else
-                    {
-                        code = short.Parse(parameter.Code);
-                        lastParameterCode = short.Parse(parameter.Code);
-                    }
-
-                    var parameterInfo = parametersInfo.SingleOrDefault(pi => pi.Code == code);
-                    if (parameterInfo is null)
-                    {
-                        throw new ArgumentNullException($"Parameter code '{code}' not found on parameters list for inverter type {this.currentInverterParameters.Type}");
-                    }
-
-                    if (!inverterNodeParameters.Any(np => np.Code == code)
-                        &&
-                        string.IsNullOrEmpty(parameter.Writable))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        if (parameterInfo.IsReadOnly)
-                        {
-                            throw new ArgumentException($"Parameter code '{code}' is writable but on parameters list is Not writable, case inverter type {this.currentInverterParameters.Type}");
-                        }
-                    }
-
-                    if (parameterInfo.IsReadOnly)
-                    {
-                        continue;
-                    }
-
-                    var inverterParameter = new InverterParameter
-                    {
-                        Code = code,
-                        DataSet = this.GetDatasetIndex(parameter),
-                        StringValue = this.ExtractValue(parameterInfo.Type, parameter.Value),
-                        Type = parameterInfo.Type
-                    };
-
-                    inverterParameters.Add(inverterParameter);
-                }
+                //var inverterParametersFromConfiguration = this.GetVertimagConfigurationByInverterId(this.currentInverterParameters.InverterIndex).Parameters.OrderBy(s => s.Code);
+                //this.inverterParameters = TakeConfigValue(inverterParameters, inverterParametersFromConfiguration);
 
                 this.inverterParameters = inverterParameters.OrderBy(i => i.Code).ToList();
 
@@ -412,13 +307,393 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             catch (Exception ex)
             {
                 this.IsParametersSet = false;
-                this.SelectedFile = null;
                 this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
 
             this.TotalParameters = string.Format(Resources.TotalParameters, this.inverterParameters.Count);
             this.IsBusy = false;
             this.RaiseCanExecuteChanged();
+        }
+
+        private List<InverterParameter> GetParameter(InverterType inverterType, string path)
+        {
+            //var inverterFileName = $"{inverterType.ToString().ToUpper(CultureInfo.InvariantCulture)}.vcb";
+            //var parmsDir = $"{Environment.CurrentDirectory}\\Parameters\\{inverterFileName}";
+
+            StreamReader file = new StreamReader(path);
+
+            string line;
+
+            var parameters = new List<InverterParameter>();
+            var parametersInfo = new List<ParameterInfo>();
+
+            while ((line = file.ReadLine()) != null)
+            {
+                if (line.Contains("Parameter = "))
+                {
+                    var clean = line.Remove(0, 13);
+                    clean = clean.Remove(clean.Length - 1, 1);
+                    var split = clean.Split(';');
+
+                    var code = default(short);
+
+                    if (char.IsLetter(split[0].FirstOrDefault()))
+                    {
+                        var hex = short.Parse(split[0].Substring(0, 1), System.Globalization.NumberStyles.HexNumber).ToString();
+                        code = short.Parse(hex + split[0].Substring(1, 2));
+                    }
+                    else
+                    {
+                        code = short.Parse(split[0].Substring(0, 3));
+                    }
+
+                    var desc = split[1];
+
+                    //var min = split[0].Substring(3, 8); //min parameter value
+                    //var max = split[0].Substring(11, 8); //max parameter value
+                    //var default = split[0].Substring(19, 8); //default parameter value
+
+                    var type0 = default(int);//0 dword, 1 word, 2 read, 3 write
+                    if (char.IsLetter(Convert.ToChar(split[0].Substring(27, 1))))
+                    {
+                        type0 = int.Parse(split[0].Substring(27, 1), System.Globalization.NumberStyles.HexNumber);
+                    }
+                    else
+                    {
+                        type0 = int.Parse(split[0].Substring(27, 1));
+                    }
+
+                    var data = ConvertBit0(type0);
+
+                    var type1 = default(int);//0 special, 1 dataset, 2 unsigned, 3 string
+                    if (char.IsLetter(Convert.ToChar(split[0].Substring(28, 1))))
+                    {
+                        type1 = int.Parse(split[0].Substring(28, 1), System.Globalization.NumberStyles.HexNumber);
+                    }
+                    else
+                    {
+                        type1 = int.Parse(split[0].Substring(28, 1));
+                    }
+
+                    var type = ConvertBit1(type1);
+
+                    var type2 = default(int);//3 index, 2 internal use
+                    if (char.IsLetter(Convert.ToChar(split[0].Substring(27, 1))))
+                    {
+                        type2 = int.Parse(split[0].Substring(29, 1), System.Globalization.NumberStyles.HexNumber);
+                    }
+                    else
+                    {
+                        type2 = int.Parse(split[0].Substring(29, 1));
+                    }
+
+                    if (type2 == 4)
+                    {
+                        //internal use
+                        continue;
+                    }
+
+                    //var type3 = int.Parse(split[0].Substring(30, 1)); //unused
+
+                    if (!string.IsNullOrEmpty(data.type) &&
+                        string.IsNullOrEmpty(type))
+                    {
+                        type = data.type;
+                    }
+
+                    //force readonly
+                    if (code == NODEID ||
+                        code == BAUNDRATE ||
+                        code == VABUS_BAUNDRATE)
+                    {
+                        data.isReadonly = true;
+                    }
+
+                    //skip parameter
+                    if (parameterToIgnore.Any(s => s == code))
+                    {
+                        continue;
+                    }
+
+                    var inverterVersionParameter = new ParameterInfo(code, desc, type, data.isReadonly);
+
+                    parametersInfo.Add(inverterVersionParameter);
+                }
+                else if (line.Contains("Value = "))
+                {
+                    var clean = line.Remove(0, 8);
+                    var split = clean.Split(',', 3);
+
+                    var code = default(short);
+
+                    if (char.IsLetter(split[0].FirstOrDefault()))
+                    {
+                        var hex = short.Parse(split[0].Substring(0, 1), NumberStyles.HexNumber).ToString();
+                        code = short.Parse(hex + split[0].Substring(1, 2));
+                    }
+                    else
+                    {
+                        code = short.Parse(split[0]);
+                    }
+
+                    if (!parametersInfo.Any(s => s.Code == code))
+                    {
+                        continue;
+                    }
+
+                    var dataset = int.Parse(split[1]);
+
+                    var value = default(string);
+                    if (split[2].Contains('"'))
+                    {
+                        value = split[2].Remove(0, 2);
+                        value = value.Remove(value.Length - 1, 1);
+                    }
+                    else
+                    {
+                        value = split[2].Remove(0, 1);
+                    }
+
+                    var parameter = parametersInfo.Single(s => s.Code == code);
+                    var decimalCount = default(int);
+
+                    if (parameter.Type != STRINGTYPE
+                        && value.Contains(','))
+                    {
+                        var decimalSplit = value.Split(",");
+                        var result = this.ExtractValue(parameter.Type, decimalSplit[1]);
+                        if (!string.IsNullOrEmpty(result))
+                        {
+                            decimalCount = result.Length;
+                        }
+                    }
+
+                    var writeRead = GetWriteReadCode(parameter.Code);
+
+                    var newPara = new InverterParameter
+                    {
+                        Code = parameter.Code,
+                        IsReadOnly = parameter.IsReadOnly,
+                        Description = parameter.Description,
+                        Type = parameter.Type,
+                        StringValue = this.ExtractValue(parameter.Type, value),
+                        DataSet = dataset,
+                        DecimalCount = decimalCount,
+                        ReadCode = writeRead.readCode,
+                        WriteCode = writeRead.writeCode
+                    };
+
+                    parameters.Add(newPara);
+                }
+                else if (line.Contains("IndexParam_"))
+                {
+                    var clean = line.Remove(0, 11);
+                    var split = clean.Split(new char[] { '_', '=' }, 3);
+
+                    var code = default(short);
+
+                    if (char.IsLetter(split[0].FirstOrDefault()))
+                    {
+                        var hex = short.Parse(split[0].Substring(0, 1), NumberStyles.HexNumber).ToString();
+                        code = short.Parse(hex + split[0].Substring(1, 2));
+                    }
+                    else
+                    {
+                        code = short.Parse(split[0]);
+                    }
+
+                    var dataset = int.Parse(split[1]);
+
+                    if (!parametersInfo.Any(s => s.Code == code))
+                    {
+                        continue;
+                    }
+                    else if (parameters.Any(s => s.Code == code && s.DataSet == dataset))
+                    {
+                        continue;
+                    }
+
+                    var parameter = parameters.FirstOrDefault(s => s.Code == code);
+
+                    var value = default(string);
+
+                    if (parameter.Type == STRINGTYPE)
+                    {
+                        value = split[2];
+                    }
+                    else if (parameter.Type == INTTYPE)
+                    {
+                        var hexValue = int.Parse(split[2], System.Globalization.NumberStyles.HexNumber).ToString();
+
+                        value = hexValue.ToString();
+                    }
+                    else if (parameter.Type == USHORTTYPE)
+                    {
+                        var hexValue = ushort.Parse(split[2], System.Globalization.NumberStyles.HexNumber).ToString();
+
+                        value = hexValue.ToString();
+                    }
+                    else if (parameter.Type == SHORTTYPE)
+                    {
+                        var hexValue = short.Parse(split[2], System.Globalization.NumberStyles.HexNumber).ToString();
+
+                        value = hexValue.ToString();
+                    }
+
+                    var newPara = new InverterParameter
+                    {
+                        Code = parameter.Code,
+                        IsReadOnly = parameter.IsReadOnly,
+                        Description = parameter.Description,
+                        Type = parameter.Type,
+                        StringValue = this.ExtractValue(parameter.Type, value),
+                        DataSet = dataset,
+                        DecimalCount = parameter.DecimalCount,
+                        ReadCode = parameter.ReadCode,
+                        WriteCode = parameter.WriteCode
+                    };
+
+                    parameters.Add(newPara);
+                }
+            }
+
+            return parameters;
+        }
+
+        //these data were taken from an excel file of the inverter mapping provided by Bonfiglioli
+        private static (short readCode, short writeCode) GetWriteReadCode(short code)
+        {
+            switch (code)
+            {
+                case 1202:
+                case 1203:
+                case 1204:
+                case 1205:
+                case 1206:
+                case 1208:
+                case 1209:
+                case 1210:
+                case 1211:
+                case 1212:
+                case 1213:
+                case 1214:
+                case 1215:
+                case 1216:
+                case 1217:
+                case 1218:
+                case 1219:
+                    return (1201, 1200);
+
+                case 1247:
+                case 1248:
+                    return (1201, 1200);
+
+                case 1252:
+                    return (1251, 1250);
+
+                case 1343:
+                case 1344:
+                case 1345:
+                case 1346:
+                case 1347:
+                case 1348:
+                case 1349:
+                case 1350:
+                case 1351:
+                    return (1342, 1341);
+
+                case 1362:
+                    return (1361, 1360);
+
+                default:
+                    return (0, 0);
+            }
+        }
+
+        private static (bool isReadonly, string type) ConvertBit0(int bit0)
+        {
+            switch (bit0)
+            {
+                case 4:
+                    //read
+                    return (true, string.Empty);
+
+                case 5:
+                    //read, dword
+                    return (true, INTTYPE);
+
+                case 6:
+                    //read, word
+                    return (true, SHORTTYPE);
+
+                case 12:
+                    //write, read
+                    return (false, string.Empty);
+
+                case 13:
+                    //read, write, dword
+                    return (false, INTTYPE);
+
+                case 14:
+                    //read, write, word
+                    return (false, SHORTTYPE);
+
+                default:
+                    //error
+                    return (false, string.Empty);
+            }
+        }
+
+        private static string ConvertBit1(int bit1)
+        {
+            switch (bit1)
+            {
+                case 0:
+                    //none
+                    break;
+
+                case 1:
+                    //special
+                    break;
+
+                case 2:
+                    //dataset
+                    break;
+
+                case 3:
+                    //special, dataset
+                    break;
+
+                case 4:
+                    //unsigned
+                    return USHORTTYPE;
+
+                case 5:
+                    //unsigned, special
+                    return USHORTTYPE;
+
+                case 6:
+                    //unsigned, dataset
+                    return USHORTTYPE;
+
+                case 7:
+                    //unsigned, dataset, special
+                    return USHORTTYPE;
+
+                case 8:
+                    //string
+                    return STRINGTYPE;
+
+                case 10:
+                    //string, dataset
+                    return STRINGTYPE;
+
+                default:
+                    //error
+                    break;
+            }
+
+            return string.Empty;
         }
 
         private void RaiseCanExecuteChanged()

@@ -1076,15 +1076,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("DataSet");
 
+                    b.Property<int>("DecimalCount");
+
+                    b.Property<string>("Description");
+
                     b.Property<int?>("InverterId");
 
                     b.Property<bool>("IsReadOnly");
+
+                    b.Property<short>("ReadCode");
 
                     b.Property<string>("StringValue");
 
                     b.Property<string>("Type");
 
-                    b.Property<int>("Value");
+                    b.Property<short>("WriteCode");
 
                     b.HasKey("Id");
 

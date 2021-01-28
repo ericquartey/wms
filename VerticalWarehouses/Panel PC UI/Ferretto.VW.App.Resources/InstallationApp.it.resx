@@ -2316,4 +2316,49 @@
   <data name="SoftwareUpdateDescription" xml:space="preserve">
     <value>Inserire chiavetta USB</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Lettura inverter terminata con successo</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Lettura inverter terminata con errori</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Lettura inverter fermata</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Inizio lettura inverter successivo</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Codice scrittura</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Codice lettura</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Numero decimali</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Lettura inverter in esecuzione</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Leggi tutto</value>
+  </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Importa struttura</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Sovrascrivi il file di destinazione</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Salva configurazione inverter</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Scrivi singolo</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Scrivi tutto</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Comando inviato</value>
+  </data>
 </root>

@@ -107,6 +107,36 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.heartbeatMessage = false;
         }
 
+        public InverterMessage(short systemIndex, InverterParameterId parameterId, int dataSetIndex)
+        {
+            if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
+            {
+                throw new ArgumentException($"8:Invalid system index {systemIndex}", nameof(systemIndex));
+            }
+
+            this.responseMessage = false;
+            this.SystemIndex = inverterIndex;
+            this.DataSetIndex = (byte)dataSetIndex;
+            this.parameterId = (short)parameterId;
+            this.IsWriteMessage = false;
+            this.heartbeatMessage = false;
+        }
+
+        public InverterMessage(short systemIndex, short parameterId, int dataSetIndex)
+        {
+            if (!Enum.TryParse(systemIndex.ToString(), out InverterIndex inverterIndex))
+            {
+                throw new ArgumentException($"8:Invalid system index {systemIndex}", nameof(systemIndex));
+            }
+
+            this.responseMessage = false;
+            this.SystemIndex = inverterIndex;
+            this.DataSetIndex = (byte)dataSetIndex;
+            this.parameterId = (short)parameterId;
+            this.IsWriteMessage = false;
+            this.heartbeatMessage = false;
+        }
+
         public InverterMessage(byte systemIndex, short parameterId, object payload, byte dataSetIndex, int sendDelay = 0)
         {
             this.BuildWriteMessage(systemIndex, parameterId, payload, dataSetIndex, sendDelay);
@@ -117,7 +147,17 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.BuildWriteMessage(systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
         }
 
+        public InverterMessage(byte systemIndex, short parameterId, object payload, int dataSetIndex, int sendDelay = 0)
+        {
+            this.BuildWriteMessage(systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
+        }
+
         public InverterMessage(InverterIndex systemIndex, short parameterId, object payload, InverterDataset dataSetIndex = InverterDataset.ActualDataset, int sendDelay = 0)
+        {
+            this.BuildWriteMessage((byte)systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
+        }
+
+        public InverterMessage(InverterIndex systemIndex, short parameterId, object payload, int dataSetIndex, int sendDelay = 0)
         {
             this.BuildWriteMessage((byte)systemIndex, parameterId, payload, (byte)dataSetIndex, sendDelay);
         }
@@ -158,6 +198,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public short ShortParameterId => this.parameterId;
 
+        public short ShortPayload => this.ConvertPayloadToShort();
+
         public string StringPayload => this.ConvertPayloadToString();
 
         public InverterIndex SystemIndex
@@ -174,6 +216,43 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         #endregion
 
         #region Methods
+
+        public static object ByteArrayToObject(byte[] arrBytes)
+        {
+            try
+            {
+                object result = default(object);
+                var payloadType = arrBytes.GetType();
+
+                switch (payloadType.Name)
+                {
+                    case "Int16":
+                        result = BitConverter.ToInt16(arrBytes, 0);
+                        break;
+
+                    case "UInt16":
+                        result = BitConverter.ToUInt16(arrBytes, 0);
+                        break;
+
+                    case "Int32":
+                        result = BitConverter.ToInt32(arrBytes, 0);
+                        break;
+
+                    case "Double":
+                        result = BitConverter.ToDouble(arrBytes, 0);
+                        break;
+
+                    case "String":
+                        result = Encoding.ASCII.GetString(arrBytes);
+                        break;
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return default(object);
+            }
+        }
 
         public static string FormatBlockWrite(object[] blockValues)
         {
@@ -525,6 +604,10 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.BlockDefinition:
                     returnValue = this.ConvertPayloadToBlockDefinitions();
                     break;
+
+                default:
+                    returnValue = ByteArrayToObject(this.payload);
+                    break;
             }
 
             return returnValue;
@@ -576,6 +659,53 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     }
 
                     break;
+
+                default:
+                    if (!(this.payload is null) &&
+                        this.payloadLength == 4)
+                    {
+                        returnValue = BitConverter.ToInt32(this.payload, 0);
+                    }
+                    break;
+            }
+
+            return returnValue;
+        }
+
+        private short ConvertPayloadToShort()
+        {
+            var returnValue = default(short);
+
+            switch ((InverterParameterId)this.parameterId)
+            {
+                case InverterParameterId.ControlWord:
+                case InverterParameterId.StatusWord:
+                case InverterParameterId.SetOperatingMode:
+                case InverterParameterId.StatusDigitalSignals:
+                case InverterParameterId.TorqueCurrent:
+                case InverterParameterId.TableTravelTableIndex:
+                case InverterParameterId.TableTravelDirection:
+                case InverterParameterId.ShutterTargetPosition:
+                case InverterParameterId.HomingCalibration:
+                case InverterParameterId.ProfileInput:
+                case InverterParameterId.CurrentError:
+                case InverterParameterId.AxisChanged:
+                case InverterParameterId.ActiveDataset:
+                    if (this.payloadLength == 2)
+                    {
+                        returnValue = BitConverter.ToInt16(this.payload, 0);
+                    }
+
+                    break;
+
+                default:
+                    //returnValue = default;
+                    if (!(this.payload is null) &&
+                        this.payloadLength == 2)
+                    {
+                        returnValue = BitConverter.ToInt16(this.payload, 0);
+                    }
+                    break;
             }
 
             return returnValue;
@@ -589,6 +719,13 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             {
                 case InverterParameterId.DigitalInputsOutputs:
                     returnValue = Encoding.ASCII.GetString(this.payload);
+                    break;
+
+                default:
+                    if (!(this.payload is null))
+                    {
+                        returnValue = Encoding.ASCII.GetString(this.payload);
+                    }
                     break;
             }
 
@@ -632,7 +769,12 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     break;
 
                 default:
-                    returnValue = default;
+                    //returnValue = default;
+                    if (!(this.payload is null) &&
+                        this.payloadLength == 2)
+                    {
+                        returnValue = BitConverter.ToUInt16(this.payload, 0);
+                    }
                     break;
             }
 

@@ -25,7 +25,11 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task HomingProcedureStatusChanged(IBaseNotificationMessageUI message);
 
+        Task InverterParameterNotify(IBaseNotificationMessageUI message);
+
         Task InverterProgrammingChanged(IBaseNotificationMessageUI message);
+
+        Task InverterReadingChanged(IBaseNotificationMessageUI message);
 
         Task InverterStatusWordChanged(IBaseNotificationMessageUI message);
 

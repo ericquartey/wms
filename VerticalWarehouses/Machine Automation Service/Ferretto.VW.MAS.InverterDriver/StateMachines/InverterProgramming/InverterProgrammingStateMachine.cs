@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.CurrentState = new InverterProgrammingStartState(this, this.inverterStatus, this.inverterProgrammingFieldMessageData, this.Logger);
+            this.CurrentState = new InverterProgrammingStartState(this, this.inverterStatus, this.EventAggregator, this.inverterProgrammingFieldMessageData, this.Logger);
             this.CurrentState?.Start();
         }
 

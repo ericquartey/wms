@@ -199,22 +199,19 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
             foreach (var bay in vertimagConfiguration.Machine.Bays)
             {
-                if (!(bay.Inverter?.Parameters is null))
+                var inverter = bay.Inverter;
+
+                if (!(bay.Inverter is null))
                 {
-                    var inverter = bay.Inverter;
+                    inverters.Add(inverter);
+                }
+                if (!(bay.Shutter?.Inverter?.Parameters is null))
+                {
+                    var inverterShutter = bay.Shutter.Inverter;
 
-                    if (!(bay.Inverter is null))
+                    if (!(bay.Shutter.Inverter is null))
                     {
-                        inverters.Add(inverter);
-                    }
-                    if (!(bay.Shutter?.Inverter?.Parameters is null))
-                    {
-                        var inverterShutter = bay.Shutter.Inverter;
-
-                        if (!(bay.Shutter.Inverter is null))
-                        {
-                            inverters.Add(inverterShutter);
-                        }
+                        inverters.Add(inverterShutter);
                     }
                 }
             }
