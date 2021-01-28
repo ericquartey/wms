@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.AutomationService
             await base.StartAsync(cancellationToken);
 
             this.enableConnectionFlag = false;
-            await this.telemetryHub.ConnectAsync();
+            //await this.telemetryHub.ConnectAsync();
         }
 
         protected override void NotifyCommandError(CommandMessage notificationData)
@@ -86,10 +86,10 @@ namespace Ferretto.VW.MAS.AutomationService
         private static string GetVersion()
         {
             return Assembly
-            .GetEntryAssembly()
-            .GetName()
-            .Version
-            .ToString();
+                .GetEntryAssembly()
+                .GetName()
+                .Version
+                .ToString();
         }
 
         private void OnHubConnectionStatusChanged1(object sender, Common.Hubs.ConnectionStatusChangedEventArgs e)
@@ -112,11 +112,17 @@ namespace Ferretto.VW.MAS.AutomationService
                 // When connection to hub client is established, then retrieve the database content
                 if (e.IsConnected && !this.enableConnectionFlag)
                 {
-                    // Retrieve the (raw) database content
-                    var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
-                    var rawDatabaseContent = dataLayer.GetRawDatabaseContent();
+                    var scope = this.ServiceScopeFactory.CreateScope();
+                    var machineDataProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
 
-                    await this.SendRawDatabaseContentAsync(rawDatabaseContent);
+                    if (machineDataProvider.IsDbSaveOnTelemetry())
+                    {
+                        // Retrieve the (raw) database content
+                        var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
+                        var rawDatabaseContent = dataLayer.GetRawDatabaseContent();
+
+                        await this.SendRawDatabaseContentAsync(rawDatabaseContent);
+                    }
                 }
 
                 this.enableConnectionFlag = e.IsConnected;

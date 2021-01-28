@@ -73,6 +73,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsAxisChanged { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsDbSaveOnTelemetry))]
+            [Id(22)]
+            public bool IsDbSaveOnTelemetry { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsHeartBeat))]
             [Id(20)]
             public bool IsHeartBeat { get; set; }

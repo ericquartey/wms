@@ -880,6 +880,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DB Save on Telemetry.
+        /// </summary>
+        public static string Machine_IsDbSaveOnTelemetry {
+            get {
+                return ResourceManager.GetString("Machine_IsDbSaveOnTelemetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HeartBeat in inverter communication .
         /// </summary>
         public static string Machine_IsHeartBeat {

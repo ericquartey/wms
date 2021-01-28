@@ -152,16 +152,26 @@ namespace Ferretto.VW.MAS.AutomationService
             if (messageData.MissionId.HasValue)
             {
                 // Only if mission is of type IN and current Step is the MissionStep.End
-                if (messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.IN &&
+                if ((messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.IN
+                    || messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.FullTestIN
+                    || messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.Compact
+                    || messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.LoadUnitOperation
+                    ) &&
                     messageData.MissionStep == CommonUtils.Messages.Enumerations.MissionStep.End &&
                     messageData.StopReason == CommonUtils.Messages.Enumerations.StopRequestReason.NoReason)
                 {
-                    // Retrieve the (raw) database content
-                    var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
-                    var rawDatabaseContent = dataLayer.GetRawDatabaseContent();
+                    var scope = this.ServiceScopeFactory.CreateScope();
+                    var machineDataProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
 
-                    // Send raw database content
-                    await this.SendRawDatabaseContentAsync(rawDatabaseContent);
+                    if (machineDataProvider.IsDbSaveOnTelemetry())
+                    {
+                        // Retrieve the (raw) database content
+                        var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
+                        var rawDatabaseContent = dataLayer.GetRawDatabaseContent();
+
+                        // Send raw database content
+                        await this.SendRawDatabaseContentAsync(rawDatabaseContent);
+                    }
                 }
             }
         }
@@ -249,21 +259,13 @@ namespace Ferretto.VW.MAS.AutomationService
                 return;
             }
 
-            var scope = this.ServiceScopeFactory.CreateScope();
-            var machineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
-
-            // Use a internal flag property of MachineVolatileDataProvider object to enable/disable the raw database sending to
-            // telemetry
-            if (machineVolatileDataProvider.EnableLocalDbSavingOnTelemetry)
+            try
             {
-                try
-                {
-                    await this.telemetryHub.SendRawDatabaseContentAsync(rawDatabaseContent);
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.LogWarning(ex, "Unable to send raw database content to telemetry service.");
-                }
+                await this.telemetryHub.SendRawDatabaseContentAsync(rawDatabaseContent);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogWarning(ex, "Unable to send raw database content to telemetry service.");
             }
         }
 
