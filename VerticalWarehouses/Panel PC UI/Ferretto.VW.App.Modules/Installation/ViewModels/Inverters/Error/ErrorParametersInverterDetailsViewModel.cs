@@ -19,15 +19,37 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    public struct InverterParameters
+    {
+        #region Properties
+
+        public short Code { get; set; }
+
+        public string DataSet0 { get; set; }
+
+        public string DataSet1 { get; set; }
+
+        public string DataSet2 { get; set; }
+
+        public string DataSet3 { get; set; }
+
+        public string DataSet4 { get; set; }
+
+        public string Description { get; set; }
+
+        #endregion
+    }
+
     [Warning(WarningsArea.Installation)]
     internal sealed class ErrorParametersInverterDetailsViewModel : BaseMainViewModel
     {
         #region Fields
 
-        public static readonly IList<short> ang = new ReadOnlyCollection<short>(new List<short> { 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 362, 363, 330, 331, 332, 333, 334, 335, 336,
-                                                                                                  337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 403,
-                                                                                                  259, 269, 273, 1247, 275, 249, 244, 245, 222, 223, 255, 256, 250, 243, 277, 251, 253, 228, 282, 283, 229, 254, 257, 266, 242, 237,
-                                                                                                  231, 232, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 301, 302, 1121, 29, 0, 1, 12, 16});
+        public static readonly IList<short> angActualValues = new ReadOnlyCollection<short>(new List<short> { 259, 269, 273, 1247, 275, 249, 244, 245, 222, 223, 255, 256, 250, 243, 277, 251, 253, 228, 282, 283, 229, 254,
+                                                                                                              257, 266, 242, 237, 231, 232, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 301, 302, 1121, 29, 0, 1, 12, 16});
+
+        public static readonly IList<short> angError = new ReadOnlyCollection<short>(new List<short> { 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 362, 363, 330, 331, 332, 333, 334, 335, 336,
+                                                                                                       337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 403});
 
         private readonly Services.IDialogService dialogService;
 
@@ -35,19 +57,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ISessionService sessionService;
 
+        private DelegateCommand actualValueCommand;
+
+        private List<InverterParameter> actualValueParameters = new List<InverterParameter>();
+
+        private DelegateCommand errorCommand;
+
+        private List<InverterParameter> errorParameters = new List<InverterParameter>();
+
         private SubscriptionToken inverterParameterReceivedToken;
 
         private Inverter inverterParameters;
 
         private SubscriptionToken inverterReadingMessageReceivedToken;
 
+        private bool isActualValue;
+
         private bool isBusy;
+
+        private bool isError;
 
         private DelegateCommand readInverterCommand;
 
         private DelegateCommand refreshCommand;
 
-        private InverterParameter selectedParameter;
+        private InverterType type;
 
         #endregion
 
@@ -68,12 +102,44 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public ICommand ActualValueCommand =>
+               this.actualValueCommand
+               ??
+               (this.actualValueCommand = new DelegateCommand(
+                    () =>
+                    {
+                        this.IsActualValue = true;
+                        this.IsError = false;
+                    }, this.CanExecuteActualValue));
+
+        public List<InverterParameter> ActualValueParameters
+        {
+            get => this.actualValueParameters;
+            set => this.SetProperty(ref this.actualValueParameters, value, this.RaiseCanExecuteChanged);
+        }
+
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public Inverter InverterParameters
+        public ICommand ErrorCommand =>
+               this.errorCommand
+               ??
+               (this.errorCommand = new DelegateCommand(
+                    () =>
+                    {
+                        this.IsActualValue = false;
+                        this.IsError = true;
+                    }, this.CanExecuteError));
+
+        public List<InverterParameter> ErrorParameters
         {
-            get => this.inverterParameters;
-            set => this.SetProperty(ref this.inverterParameters, value, this.RaiseCanExecuteChanged);
+            get => this.errorParameters;
+            set => this.SetProperty(ref this.errorParameters, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsActualValue
+        {
+            get => this.isActualValue;
+            set => this.SetProperty(ref this.isActualValue, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
@@ -84,8 +150,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isBusy, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsError
+        {
+            get => this.isError;
+            set => this.SetProperty(ref this.isError, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand ReadInverterCommand =>
-                           this.readInverterCommand
+                                   this.readInverterCommand
                ??
                (this.readInverterCommand = new DelegateCommand(
                    async () => await this.ReadInverterAsync(), this.CanRead));
@@ -96,10 +168,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                (this.refreshCommand = new DelegateCommand(
                 async () => await this.RefreshAsync(), this.CanRefresh));
 
-        public InverterParameter SelectedParameter
+        public InverterType Type
         {
-            get => this.selectedParameter;
-            set => this.SetProperty(ref this.selectedParameter, value, this.RaiseCanExecuteChanged);
+            get => this.type;
+            set => this.SetProperty(ref this.type, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -108,7 +180,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.InverterParameters = null;
+            this.inverterParameters = null;
+            this.errorParameters.Clear();
+            this.actualValueParameters.Clear();
 
             if (this.inverterReadingMessageReceivedToken != null)
             {
@@ -129,11 +203,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            this.IsError = true;
+
+            if (this.Data is Inverter mainConfiguration)
+            {
+                this.inverterParameters = mainConfiguration;
+                this.inverterParameters.Parameters = this.inverterParameters.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
+                this.Type = this.inverterParameters.Type;
+            }
 
             this.LoadData();
 
             this.SubscribeEvents();
+
+            await base.OnAppearedAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -142,16 +225,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.readInverterCommand?.RaiseCanExecuteChanged();
             this.refreshCommand?.RaiseCanExecuteChanged();
+            this.errorCommand?.RaiseCanExecuteChanged();
+            this.actualValueCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsAdmin));
+        }
+
+        private bool CanExecuteActualValue()
+        {
+            return !this.IsBusy &&
+                this.IsError &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
+        }
+
+        private bool CanExecuteError()
+        {
+            return !this.IsBusy &&
+                !this.IsError &&
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
         }
 
         private bool CanRead()
         {
             return !this.IsBusy &&
                 this.MachineService.MachinePower <= MachinePowerState.Unpowered &&
-                this.InverterParameters != null &&
-                this.InverterParameters.Parameters.Any();
+                this.inverterParameters != null &&
+                this.inverterParameters.Parameters.Any();
         }
 
         private bool CanRefresh()
@@ -164,32 +263,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsBusy = true;
 
-            if (this.Data is Inverter mainConfiguration)
+            if (this.inverterParameters.Type == InverterType.Ang)
             {
-                this.inverterParameters = mainConfiguration;
-                var errorParameter = new List<InverterParameter>();
-
-                if (this.inverterParameters.Type == InverterType.Ang)
+                foreach (var parameter in this.inverterParameters.Parameters)
                 {
-                    foreach (var parameter in this.inverterParameters.Parameters)
+                    if (angError.Any(s => s == parameter.Code))
                     {
-                        if (ang.Any(s => s == parameter.Code))
+                        if (parameter.DecimalCount > 0)
                         {
-                            errorParameter.Add(parameter);
+                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                         }
+
+                        parameter.StringValue += " " + parameter.Um;
+                        this.errorParameters.Add(parameter);
+                    }
+                    else if (angActualValues.Any(s => s == parameter.Code))
+                    {
+                        if (parameter.DecimalCount > 0)
+                        {
+                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                        }
+
+                        parameter.StringValue += " " + parameter.Um;
+                        this.actualValueParameters.Add(parameter);
                     }
                 }
-                else if (this.inverterParameters.Type == InverterType.Agl)
-                {
-                }
-                else if (this.inverterParameters.Type == InverterType.Acu)
-                {
-                }
-
-                this.inverterParameters.Parameters = errorParameter.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
+            }
+            else if (this.inverterParameters.Type == InverterType.Agl)
+            {
+            }
+            else if (this.inverterParameters.Type == InverterType.Acu)
+            {
             }
 
-            this.RaisePropertyChanged(nameof(this.InverterParameters));
+            this.RaisePropertyChanged(nameof(this.ActualValueParameters));
+            this.RaisePropertyChanged(nameof(this.ErrorParameters));
 
             this.IsBusy = false;
         }
@@ -243,6 +351,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsBusy = true;
 
+                var parameters = this.errorParameters;
+                parameters.AddRange(this.actualValueParameters);
+
+                this.inverterParameters.Parameters = parameters;
+
                 await this.machineDevicesWebService.ReadInverterParameterAsync(this.inverterParameters);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -266,28 +379,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (inverters.SingleOrDefault(s => s.Index == this.inverterParameters.Index) != null)
                 {
                     this.inverterParameters = inverters.SingleOrDefault(s => s.Index == this.inverterParameters.Index);
-                    var errorParameter = new List<InverterParameter>();
+                    this.inverterParameters.Parameters = this.inverterParameters.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
 
-                    if (this.inverterParameters.Type == InverterType.Ang)
-                    {
-                        foreach (var parameter in this.inverterParameters.Parameters)
-                        {
-                            if (ang.Any(s => s == parameter.Code))
-                            {
-                                errorParameter.Add(parameter);
-                            }
-                        }
-                    }
-                    else if (this.inverterParameters.Type == InverterType.Agl)
-                    {
-                    }
-                    else if (this.inverterParameters.Type == InverterType.Acu)
-                    {
-                    }
-
-                    this.inverterParameters.Parameters = errorParameter.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
+                    this.LoadData();
                 }
-                this.RaisePropertyChanged(nameof(this.InverterParameters));
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

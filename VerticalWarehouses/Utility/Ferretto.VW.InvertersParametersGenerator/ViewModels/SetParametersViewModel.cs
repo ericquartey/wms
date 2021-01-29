@@ -346,6 +346,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                     var desc = split[1];
 
+                    var um = split[2];
+
                     //var min = split[0].Substring(3, 8); //min parameter value
                     //var max = split[0].Substring(11, 8); //max parameter value
                     //var default = split[0].Substring(19, 8); //default parameter value
@@ -412,7 +414,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         continue;
                     }
 
-                    var inverterVersionParameter = new ParameterInfo(code, desc, type, data.isReadonly);
+                    var inverterVersionParameter = new ParameterInfo(code, desc, type, um, data.isReadonly);
 
                     parametersInfo.Add(inverterVersionParameter);
                 }
@@ -495,7 +497,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         DataSet = dataset,
                         DecimalCount = decimalCount,
                         ReadCode = readCode,
-                        WriteCode = writeCode
+                        WriteCode = writeCode,
+                        Um = parameter.Um
                     };
 
                     parameters.Add(newPara);
@@ -562,7 +565,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         DataSet = dataset,
                         DecimalCount = parameter.DecimalCount,
                         ReadCode = parameter.ReadCode,
-                        WriteCode = parameter.WriteCode
+                        WriteCode = parameter.WriteCode,
+                        Um = parameter.Um
                     };
 
                     parameters.Add(newPara);

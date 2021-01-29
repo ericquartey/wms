@@ -3704,6 +3704,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Type { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Um", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Um { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("WriteCode", Required = Newtonsoft.Json.Required.Always)]
         public int WriteCode { get; set; }
     
