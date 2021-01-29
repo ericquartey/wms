@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Description { get; set; }
 
+        public bool Error { get; set; }
+
         public bool IsReadOnly { get; set; }
 
         public object Payload

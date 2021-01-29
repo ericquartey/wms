@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuUsersCommand;
 
+        private DelegateCommand errorInverterParametersCommand;
+
         #endregion
 
         #region Constructors
@@ -49,6 +51,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ComunicationWms,
 
             DateTime,
+
+            ErrorInverterParameters,
         }
 
         #endregion
@@ -92,6 +96,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommandOther(MenuOther.Users),
                 this.CanExecuteCommand));
 
+        public ICommand ErrorInverterParametersCommand =>
+            this.errorInverterParametersCommand
+            ??
+            (this.errorInverterParametersCommand = new DelegateCommand(
+                () => this.MenuCommandOther(MenuOther.ErrorInverterParameters),
+                this.CanExecute));
+
         #endregion
 
         #region Methods
@@ -104,6 +115,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuParametersCommand?.RaiseCanExecuteChanged();
             this.menuDateTimeCommand?.RaiseCanExecuteChanged();
             this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
+            this.errorInverterParametersCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecute()
@@ -177,6 +189,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.Inverters.PARAMETERINVERTER,
                             data: "reset",
+                            trackCurrentView: true);
+                        break;
+
+                    case MenuOther.ErrorInverterParameters:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.Inverters.ERRORPARAMETERINVERTER,
+                            data: null,
                             trackCurrentView: true);
                         break;
 

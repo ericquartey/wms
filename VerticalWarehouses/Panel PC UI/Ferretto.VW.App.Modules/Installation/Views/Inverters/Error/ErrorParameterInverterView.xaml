@@ -1,0 +1,113 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.ErrorParameterInverterView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:ErrorParameterInverterViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+  <ctrls:View.Resources>
+    <Style TargetType="{x:Type ListView}">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="ScrollViewer.PanningMode" Value="None" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+  </ctrls:View.Resources>
+
+  <Grid Name="layoutroot"
+        Margin="40,0,15,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Column="1"
+                Orientation="Horizontal">
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="4.7.7" />
+      <TextBlock Grid.ColumnSpan="2"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="Inverter parameter error" />
+    </StackPanel>
+
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="auto" />
+      </Grid.ColumnDefinitions>
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{x:Static res:InstallationApp.DefaultConfigurationLoaded}"
+                 TextWrapping="WrapWithOverflow" />
+
+      <controls:PpcButton Grid.Column="1"
+                          Width="70"
+                          Margin="0,0,0,10"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          HorizontalContentAlignment="Center"
+                          Command="{Binding RefreshCommand}"
+                          IsBusy="{Binding IsBusy}"
+                          KindMaterial="Refresh" />
+    </Grid>
+
+    <ListView Grid.Row="2"
+              HorizontalAlignment="Stretch"
+              ItemsSource="{Binding Inverters}"
+              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+              ScrollViewer.VerticalScrollBarVisibility="Disabled"
+              SelectedItem="{Binding SelectedInverter, Mode=TwoWay}">
+      <ItemsControl.Resources />
+      <ListView.ItemContainerStyle>
+        <Style TargetType="{x:Type ListViewItem}">
+          <Setter Property="Background" Value="Transparent" />
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="{x:Type ListViewItem}">
+                <ContentPresenter />
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+      </ListView.ItemContainerStyle>
+      <ListView.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel IsItemsHost="True" />
+        </ItemsPanelTemplate>
+      </ListView.ItemsPanel>
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <controls:PpcButton Title="{Binding Type}"
+                              Margin="0,30,30,0"
+                              Abbrevation="{Binding Index, Converter={StaticResource IITIC}}"
+                              BorderBrush="{DynamicResource FerrettoRed}"
+                              Command="{Binding ElementName=layoutroot, Path=DataContext.ShowInverterParamertersCommand}"
+                              CommandParameter="{Binding}"
+                              Content=""
+                              IsBusy="{Binding IsBusy}"
+                              Kind="Check"
+                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+
+  </Grid>
+
+</ctrls:View>

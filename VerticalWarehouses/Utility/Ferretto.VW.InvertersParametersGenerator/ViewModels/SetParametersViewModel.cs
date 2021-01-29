@@ -38,7 +38,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private const short VABUS_BAUNDRATE = 10;
 
-        public static readonly IList<short> parameterToIgnore = new ReadOnlyCollection<short>(new List<short> { 1202, 1203, 1204, 1206, 1261 });
+        public static readonly IList<short> parameterToIgnore = new ReadOnlyCollection<short>(new List<short> { 1202, 1203, 1204, 1206, 1352, 1399 });
 
         private readonly ConfigurationService configurationService;
 
@@ -317,10 +317,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private List<InverterParameter> GetParameter(InverterType inverterType, string path)
         {
-            //var inverterFileName = $"{inverterType.ToString().ToUpper(CultureInfo.InvariantCulture)}.vcb";
-            //var parmsDir = $"{Environment.CurrentDirectory}\\Parameters\\{inverterFileName}";
-
-            StreamReader file = new StreamReader(path);
+            var file = new StreamReader(path);
 
             string line;
 
@@ -465,10 +462,28 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         if (!string.IsNullOrEmpty(result))
                         {
                             decimalCount = result.Length;
+                            value = FixDecimalValue(this.ExtractValue(parameter.Type, value), decimalCount);
                         }
                     }
 
-                    var writeRead = GetWriteReadCode(parameter.Code);
+                    short writeCode = default(short);
+                    short readCode = default(short);
+
+                    if (this.currentInverterParameters.Type == InverterType.Ang)
+                    {
+                        writeCode = GetANGWriteReadCode(parameter.Code).writeCode;
+                        readCode = GetANGWriteReadCode(parameter.Code).readCode;
+                    }
+                    else if (this.currentInverterParameters.Type == InverterType.Agl)
+                    {
+                        writeCode = GetANGWriteReadCode(parameter.Code).writeCode;
+                        readCode = GetANGWriteReadCode(parameter.Code).readCode;
+                    }
+                    else if (this.currentInverterParameters.Type == InverterType.Acu)
+                    {
+                        writeCode = GetANGWriteReadCode(parameter.Code).writeCode;
+                        readCode = GetANGWriteReadCode(parameter.Code).readCode;
+                    }
 
                     var newPara = new InverterParameter
                     {
@@ -479,8 +494,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         StringValue = this.ExtractValue(parameter.Type, value),
                         DataSet = dataset,
                         DecimalCount = decimalCount,
-                        ReadCode = writeRead.readCode,
-                        WriteCode = writeRead.writeCode
+                        ReadCode = readCode,
+                        WriteCode = writeCode
                     };
 
                     parameters.Add(newPara);
@@ -524,20 +539,17 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     else if (parameter.Type == INTTYPE)
                     {
                         var hexValue = int.Parse(split[2], System.Globalization.NumberStyles.HexNumber).ToString();
-
-                        value = hexValue.ToString();
+                        value = FixDecimalValue(hexValue, parameter.DecimalCount);
                     }
                     else if (parameter.Type == USHORTTYPE)
                     {
                         var hexValue = ushort.Parse(split[2], System.Globalization.NumberStyles.HexNumber).ToString();
-
-                        value = hexValue.ToString();
+                        value = FixDecimalValue(hexValue, parameter.DecimalCount);
                     }
                     else if (parameter.Type == SHORTTYPE)
                     {
                         var hexValue = short.Parse(split[2], System.Globalization.NumberStyles.HexNumber).ToString();
-
-                        value = hexValue.ToString();
+                        value = FixDecimalValue(hexValue, parameter.DecimalCount);
                     }
 
                     var newPara = new InverterParameter
@@ -554,6 +566,13 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     };
 
                     parameters.Add(newPara);
+
+                    if (parameters.Any(s => s.Code == parameter.Code && s.DataSet == 0) &&
+                        dataset != 0)
+                    {
+                        var parameterToRemove = parameters.SingleOrDefault(s => s.Code == code && s.DataSet == 0);
+                        parameters.Remove(parameterToRemove);
+                    }
                 }
             }
 
@@ -561,7 +580,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         }
 
         //these data were taken from an excel file of the inverter mapping provided by Bonfiglioli
-        private static (short readCode, short writeCode) GetWriteReadCode(short code)
+        private static (short readCode, short writeCode) GetANGWriteReadCode(short code)
         {
             switch (code)
             {
@@ -570,6 +589,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 case 1204:
                 case 1205:
                 case 1206:
+                case 1207:
                 case 1208:
                 case 1209:
                 case 1210:
@@ -589,7 +609,16 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     return (1201, 1200);
 
                 case 1252:
+                case 1253:
                     return (1251, 1250);
+
+                case 1260:
+                case 1261:
+                case 1262:
+                case 1263:
+                case 1264:
+                case 1265:
+                    return (1201, 1200);
 
                 case 1343:
                 case 1344:
@@ -600,10 +629,39 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 case 1349:
                 case 1350:
                 case 1351:
+                case 1352:
                     return (1342, 1341);
 
                 case 1362:
                     return (1361, 1360);
+
+                case 1379:
+                case 1380:
+                case 1381:
+                case 1382:
+                case 1383:
+                case 1384:
+                case 1385:
+                case 1386:
+                case 1387:
+                case 1388:
+                case 1389:
+                case 1390:
+                case 1391:
+                case 1392:
+                case 1393:
+                case 1394:
+                case 1395:
+                case 1396:
+                case 1397:
+                    return (1378, 1377);
+
+                case 1422:
+                    return (1421, 1420);
+
+                case 1429:
+                case 1430:
+                    return (1428, 1427);
 
                 default:
                     return (0, 0);
@@ -706,6 +764,23 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
         {
             var inverter = this.GetVertimagConfigurationByInverterId(this.currentInverterParameters.InverterIndex);
             inverter.Parameters = this.InverterParameters;
+        }
+
+        private static string FixDecimalValue(string value, int decimalCount)
+        {
+            if (decimalCount > value.Length)
+            {
+                if (decimalCount == 1)
+                {
+                    value = "0" + value;
+                }
+                else if (decimalCount == 2)
+                {
+                    value = "00" + value;
+                }
+            }
+
+            return value;
         }
 
         #endregion Methods
