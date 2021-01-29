@@ -50,15 +50,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
-            var loadingUnitLocation = (this.Mission.LoadUnitDestination is LoadingUnitLocation.Elevator || this.Mission.LoadUnitDestination is LoadingUnitLocation.Cell) ?
-                this.Mission.LoadUnitSource :
-                this.Mission.LoadUnitDestination;
-
-            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(loadingUnitLocation);
+            var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
             if (bay is null)
             {
-                this.ErrorsProvider.RecordNew((loadingUnitLocation == this.Mission.LoadUnitDestination) ? MachineErrorCode.LoadUnitDestinationBay : MachineErrorCode.LoadUnitSourceBay /*MachineErrorCode.LoadUnitDestinationBay*/, this.Mission.TargetBay);
-                throw new StateMachineException((loadingUnitLocation == this.Mission.LoadUnitDestination) ? ErrorDescriptions.LoadUnitDestinationBay : ErrorDescriptions.LoadUnitSourceBay /*ErrorDescriptions.LoadUnitDestinationBay*/, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 
             var destination = bay.Positions.FirstOrDefault();
@@ -66,25 +62,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             // Detect if homing operation is required
             this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
 
-            //if (this.Mission.RestoreConditions &&
-            //    // this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
-            //    Math.Abs(this.BaysDataProvider.GetChainPosition(bay.Number) - bay.External.LastIdealPosition) > Math.Abs(bay.ChainOffset) + 1)
-            //{
-            //    this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, bay.Number);
-            //    throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, bay.Number, MessageActor.MachineManager);
-            //}
-
-            var position = bay.Positions.FirstOrDefault();
-
             if (this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id))
             {
                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, bay.Number, MessageActor.MachineManager);
             }
 
-            var isLoadUnitDestinationInBay = (bay.Number == BayNumber.BayOne && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up) ||
-                (bay.Number == BayNumber.BayTwo && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up) ||
-                (bay.Number == BayNumber.BayThree && this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up);
+            var isLoadUnitDestinationInBay = (destination.Location == this.Mission.LoadUnitDestination);
 
             if (this.Mission.NeedHomingAxis == Axis.BayChain)
             {
@@ -119,7 +103,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.ExternalBayChainEnd();
                             return true;
                         }
-                        this.Mission.LoadUnitDestination = destination.Location;
 
                         this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
                         var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
@@ -177,7 +160,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.ErrorCode == MachineErrorCode.MoveExtBayNotAllowed)
             {
-                this.SetErrorMoveExtBayChain(bay, position);
+                this.SetErrorMoveExtBayChain(bay, destination);
                 return true;
             }
             this.Mission.Status = MissionStatus.Executing;
@@ -195,12 +178,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             var notificationStatus = this.LoadingUnitMovementProvider.ExternalBayStatus(notification);
 
-            var loadingUnitLocation = (this.Mission.LoadUnitDestination is LoadingUnitLocation.Elevator || this.Mission.LoadUnitDestination is LoadingUnitLocation.Cell) ?
-                this.Mission.LoadUnitSource :
-                this.Mission.LoadUnitDestination;
-
-            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(loadingUnitLocation);
+            var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
             var destination = bay.Positions.FirstOrDefault();
+            var isLoadUnitDestinationInBay = (destination.Location == this.Mission.LoadUnitDestination);
 
             switch (notificationStatus)
             {
@@ -211,10 +191,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         )
                     {
-                        var isLoadUnitDestinationInBay = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up ||
-                            this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
-                            this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up;
-
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
@@ -340,10 +316,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                     )
             {
-                var isLoadUnitDestinationInBay = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up ||
-                    this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
-                    this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up;
-
                 if (this.Mission.NeedHomingAxis == Axis.BayChain &&
                     !this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Homing))
                 {
@@ -406,14 +378,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             //}
             else
             {
-                var loadingUnitLocation = (this.Mission.LoadUnitDestination is LoadingUnitLocation.Elevator || this.Mission.LoadUnitDestination is LoadingUnitLocation.Cell) ?
-                    this.Mission.LoadUnitSource :
-                    this.Mission.LoadUnitDestination;
-
-                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(loadingUnitLocation);
-                var isLoadUnitDestinationInBay = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up ||
-                    this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
-                    this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up;
+                var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                var destination = bay.Positions.FirstOrDefault();
+                var isLoadUnitDestinationInBay = (destination.Location == this.Mission.LoadUnitDestination);
 
                 if (isLoadUnitDestinationInBay)
                 {
@@ -451,7 +418,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Logger.LogDebug($"3. Go to MissionMoveLoadElevatorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
                         this.BaysDataProvider.IncrementCycles(bay.Number);
-                        bay = this.BaysDataProvider.GetByLoadingUnitLocation(loadingUnitLocation);
                         if (this.Mission.NeedHomingAxis == Axis.None
                             && bay.TotalCycles - bay.LastCalibrationCycles >= bay.CyclesToCalibrate
                             )

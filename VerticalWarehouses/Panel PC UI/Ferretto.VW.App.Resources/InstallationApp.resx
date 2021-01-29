@@ -2271,7 +2271,7 @@
     <value>Extra movement toward operator</value>
   </data>
   <data name="ExtBayMovementForInsertion" xml:space="preserve">
-    <value>Extra movement for drawer insertion</value>
+    <value>Extra movement toward elevator</value>
   </data>
   <data name="InverterInFault" xml:space="preserve">
     <value>Inverters fault</value>
@@ -2369,5 +2369,53 @@
   </data>
   <data name="SoftwareUpdateDescription" xml:space="preserve">
     <value>Please insert USB stick</value>
+  </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Inverter reading completed successfully</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Inverter reading ended with errors</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Inverter reading stopped</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Start of next inverter reading</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Write code</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Read code</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Decimal count</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Inverter reading started</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Read all</value>
+  </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Import structure</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Overwrite target file</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Save inverter configuration</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Write single</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Write all</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Command sent</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Errors &amp; Actual values</value>
   </data>
 </root>

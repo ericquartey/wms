@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.InverterProgramming.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.InverterProgramming.Models;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable.Models;

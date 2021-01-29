@@ -180,6 +180,18 @@ namespace Ferretto.VW.App.Services
                         .Publish(fsm);
                     break;
 
+                case NotificationMessageUI<InverterReadingMessageData> ir:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
+                        .Publish(ir);
+                    break;
+
+                case NotificationMessageUI<InverterParametersMessageData> ipmd:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<InverterParametersMessageData>>()
+                        .Publish(ipmd);
+                    break;
+
                 case NotificationMessageUI<ProfileCalibrationMessageData> pcmd:
                     this.eventAggregator
                         .GetEvent<NotificationEventUI<ProfileCalibrationMessageData>>()

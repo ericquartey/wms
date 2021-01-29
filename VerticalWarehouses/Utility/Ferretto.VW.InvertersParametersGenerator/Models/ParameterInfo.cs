@@ -8,26 +8,29 @@ namespace Ferretto.VW.InvertersParametersGenerator.Models
     {
         #region Constructors
 
-        public ParameterInfo(short code, string description, string type, bool isReadOnly)
+        public ParameterInfo(short code, string description, string type, string um, bool isReadOnly)
         {
             this.Code = code;
-            this.Description = description;
             this.Type = type;
             this.IsReadOnly = isReadOnly;
+            this.Description = description;
+            this.Um = um;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
         public short Code { get; }
 
-        public string Description { get; }
-
         public bool IsReadOnly { get; }
 
         public string Type { get; }
 
-        #endregion
+        public string Description { get; }
+
+        public string Um { get; }
+
+        #endregion Properties
     }
 }

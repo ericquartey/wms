@@ -1,0 +1,256 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.ErrorParametersInverterDetailsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters;assembly=Ferretto.VW.App.Scaffolding"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:ErrorParametersInverterDetailsViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+  <Grid Margin="15,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <TextBlock Margin="0,10,15,10"
+               VerticalAlignment="Center"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+      <Run Text="{res:Loc General.Inverter}" /><Run Text=":" /> <Run Text="{Binding Type}" />
+    </TextBlock>
+
+    <StackPanel Grid.Column="1"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+      <controls:PpcButton Margin="0,0,10,10"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ActualValueCommand}"
+                          Content="Actual values"
+                          IsBusy="{Binding IsBusy}" />
+
+      <controls:PpcButton Margin="0,0,0,10"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ErrorCommand}"
+                          Content="Errors"
+                          IsBusy="{Binding IsBusy}" />
+    </StackPanel>
+
+    <StackPanel Grid.Column="2"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+      <controls:PpcButton Width="60"
+                          Height="60"
+                          Margin="0,0,10,10"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          HorizontalContentAlignment="Center"
+                          Command="{Binding RefreshCommand}"
+                          IsBusy="{Binding IsBusy}"
+                          KindMaterial="Refresh" />
+
+      <controls:PpcButton Margin="0,0,0,10"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ReadInverterCommand}"
+                          Content="{res:Loc InstallationApp.ReadInverterParameter}"
+                          IsBusy="{Binding IsBusy}" />
+    </StackPanel>
+
+    <Border Grid.Row="1"
+            Grid.ColumnSpan="3"
+            Margin="0,0,0,10"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2"
+            Visibility="{Binding IsActualValue, Converter={StaticResource BTVC}}">
+
+      <DataGrid Width="auto"
+                Height="auto"
+                AutoGenerateColumns="False"
+                Background="{DynamicResource VWAPP_BACKGROUND}"
+                BorderThickness="0"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserSortColumns="True"
+                FontSize="{StaticResource FontSize_High}"
+                HeadersVisibility="Column"
+                HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                IsReadOnly="True"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding ActualValueParameters}"
+                RowHeight="40"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedParameter}"
+                SelectionMode="Single"
+                VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                VerticalScrollBarVisibility="Auto">
+
+        <DataGrid.Columns>
+          <DataGridTextColumn Width="0.3*"
+                              Binding="{Binding Path=Code}"
+                              Header="{res:Loc InstallationApp.InverterParametersId}">
+            <DataGridTextColumn.CellStyle>
+              <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+              </Style>
+            </DataGridTextColumn.CellStyle>
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn Width="1*"
+                              Binding="{Binding Path=Description}"
+                              Header="{res:Loc InstallationApp.Description}">
+            <DataGridTextColumn.CellStyle>
+              <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+              </Style>
+            </DataGridTextColumn.CellStyle>
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn Width="0.3*"
+                              Binding="{Binding Path=DataSet}"
+                              Header="{res:Loc InstallationApp.InverterParametersDataset}">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn Width="2.5*"
+                              Binding="{Binding Path=StringValue}"
+                              Header="{res:Loc InstallationApp.InverterParametersValue}">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+    </Border>
+
+    <Border Grid.Row="1"
+            Grid.ColumnSpan="3"
+            Margin="0,0,0,10"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2"
+            Visibility="{Binding IsError, Converter={StaticResource BTVC}}">
+
+      <DataGrid Width="auto"
+                Height="auto"
+                AutoGenerateColumns="False"
+                Background="{DynamicResource VWAPP_BACKGROUND}"
+                BorderThickness="0"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserSortColumns="True"
+                FontSize="{StaticResource FontSize_High}"
+                HeadersVisibility="Column"
+                HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                IsReadOnly="True"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding ErrorParameters}"
+                RowHeight="40"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedParameter}"
+                SelectionMode="Single"
+                VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                VerticalScrollBarVisibility="Auto">
+
+        <DataGrid.Columns>
+          <DataGridTextColumn Width="0.3*"
+                              Binding="{Binding Path=Code}"
+                              Header="{res:Loc InstallationApp.InverterParametersId}">
+            <DataGridTextColumn.CellStyle>
+              <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+              </Style>
+            </DataGridTextColumn.CellStyle>
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn Width="1*"
+                              Binding="{Binding Path=Description}"
+                              Header="{res:Loc InstallationApp.Description}">
+            <DataGridTextColumn.CellStyle>
+              <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+              </Style>
+            </DataGridTextColumn.CellStyle>
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn Width="0.3*"
+                              Binding="{Binding Path=DataSet}"
+                              Header="{res:Loc InstallationApp.InverterParametersDataset}">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn Width="2.5*"
+                              Binding="{Binding Path=StringValue}"
+                              Header="{res:Loc InstallationApp.InverterParametersValue}">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+    </Border>
+
+  </Grid>
+
+</ctrls:View>

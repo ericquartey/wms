@@ -1,0 +1,15 @@
+﻿// set Language to c# program and Connection to our server fg-csdbsrv01.database.windows.net
+void Main()
+{
+    var context = this;
+    var serialNumber = "MV20-P003";
+    var fileName = $"c:/temp/MachineAutomationService.{serialNumber}.Primary.db";
+    var query =
+        from ci in context.Machines
+        where ci.SerialNumber == serialNumber
+        select ci.RawDatabaseContent
+    ;
+    byte[] result = query.Single().ToArray();
+    File.WriteAllBytes(fileName, result);
+    Console.WriteLine("Done");
+}

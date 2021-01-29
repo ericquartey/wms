@@ -36,9 +36,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
         public override void Start()
         {
             this.Logger.LogError($"Inverter Programming Error state. Inverter {this.InverterStatus.SystemIndex}");
-            var notificationMessageData = new InverterProgrammingFieldMessageData(this.inverterProgrammingFieldMessageData.Parameters, this.inverterProgrammingFieldMessageData.IsCheckInverterVersion);
+
             var notificationMessage = new FieldNotificationMessage(
-                notificationMessageData,
+                this.inverterProgrammingFieldMessageData,
                 "Inverter programming Start error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
@@ -47,7 +47,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                 this.InverterStatus.SystemIndex,
                 ErrorLevel.Error);
 
-            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }
@@ -55,7 +54,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
         }
 
         /// <inheritdoc />

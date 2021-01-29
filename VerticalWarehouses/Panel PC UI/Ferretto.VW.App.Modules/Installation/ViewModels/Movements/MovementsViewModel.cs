@@ -352,7 +352,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsPositionUpSelected = true;
                 }
 
-                if(this.MachineStatus.BayPositionUpper is null)
+                if (this.MachineStatus.BayPositionUpper is null)
                 {
                     this.IsPositionDownEnabled = this.IsPositionUpEnabled = true;
                 }
@@ -473,6 +473,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (this.machineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    !this.IsKeyboardOpened &&
@@ -488,13 +489,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case BayNumber.BayThree:
                     return this.MachineModeService.MachineMode == MachineMode.Manual3 &&
-                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                   !this.IsKeyboardOpened &&
-                   !this.IsExecutingProcedure &&
-                   !this.IsMoving;
-
-                default:
-                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    !this.IsKeyboardOpened &&
                    !this.IsExecutingProcedure &&
@@ -519,6 +513,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (this.machineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     return (this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
@@ -532,11 +527,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     return (this.MachineModeService.MachineMode == MachineMode.Manual3 &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                    (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
-
-                default:
-                    return (this.MachineModeService.MachineMode == MachineMode.Manual &&
-                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
-                   (this.machineService.IsAxisTuningCompleted || ConfigurationManager.AppSettings.GetOverrideSetupStatus()));
             }
         }
 
@@ -545,6 +535,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (this.machineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered;
 
@@ -554,10 +545,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case BayNumber.BayThree:
                     return this.MachineModeService.MachineMode == MachineMode.Manual3 &&
-                   this.MachineModeService?.MachinePower == MachinePowerState.Powered;
-
-                default:
-                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineModeService?.MachinePower == MachinePowerState.Powered;
             }
         }

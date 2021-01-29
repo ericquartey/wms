@@ -100,9 +100,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.ProcessInverterSetTimerMessage(receivedMessage, inverter);
                         break;
 
-                    case FieldMessageType.InverterSwitchOff:
-                        this.ProcessInverterSwitchOffMessage(inverter);
-                        break;
+                        // not used
+                    //case FieldMessageType.InverterSwitchOff:
+                    //    this.ProcessInverterSwitchOffMessage(inverter);
+                    //    break;
 
                     case FieldMessageType.InverterSwitchOn:
                         this.ProcessInverterSwitchOnMessage(receivedMessage, inverter);
@@ -116,9 +117,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.ProcessFaultResetMessage(inverter);
                         break;
 
-                    case FieldMessageType.InverterDisable:
-                        this.ProcessDisableMessage(inverter);
-                        break;
+                        // not used
+                    //case FieldMessageType.InverterDisable:
+                    //    this.ProcessDisableMessage(inverter);
+                    //    break;
 
                     case FieldMessageType.MeasureProfile:
                         this.ProcessMeasureProfileMessage(inverter);
@@ -130,6 +132,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     case FieldMessageType.InverterProgramming:
                         this.ProcessInverterProgrammingMessage(receivedMessage, inverter);
+                        break;
+
+                    case FieldMessageType.InverterReading:
+                        this.ProcessInverterReadingMessage(receivedMessage, inverter);
                         break;
                 }
             }

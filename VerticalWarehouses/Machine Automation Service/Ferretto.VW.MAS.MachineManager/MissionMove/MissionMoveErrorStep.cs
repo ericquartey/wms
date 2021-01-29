@@ -342,14 +342,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             IMissionMoveBase newStep;
             this.Mission.StopReason = StopRequestReason.NoReason;
-            var loadingUnitLocation = (this.Mission.LoadUnitDestination is LoadingUnitLocation.Elevator || this.Mission.LoadUnitDestination is LoadingUnitLocation.Cell) ?
-                this.Mission.LoadUnitSource :
-                this.Mission.LoadUnitDestination;
-
-            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(loadingUnitLocation);
-            var isLoadUnitDestinationInBay = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up ||
-                this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
-                this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up;
+            var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+            var destination = bay.Positions.FirstOrDefault();
 
             var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
@@ -362,7 +356,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.RestoreConditions = true;
                 this.Mission.OpenShutterPosition = ShutterPosition.Opened;
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
-                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, destination.Location);
                 this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
                 this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
                 this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;

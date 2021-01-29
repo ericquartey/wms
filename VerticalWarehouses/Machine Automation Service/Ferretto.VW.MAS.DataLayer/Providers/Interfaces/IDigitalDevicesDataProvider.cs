@@ -1,28 +1,37 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-  public interface IDigitalDevicesDataProvider
-  {
-    #region Methods
+    public interface IDigitalDevicesDataProvider
+    {
+        #region Methods
 
-    bool CheckInverterParametersValidity(InverterIndex index);
+        void AddInverterParameter(InverterIndex inverterIndex, short code, int dataset, bool isReadOnly, string type, string value, string description, short writecode, short readcode, int decomalCount);
 
-    IEnumerable<Inverter> GetAllInverters();
+        bool ExistInverterParameter(InverterIndex inverterIndex, short code, int dataset);
 
-    IEnumerable<Inverter> GetAllInvertersByBay(BayNumber bayNumber);
+        IEnumerable<Inverter> GetAllInverters();
 
-    IEnumerable<IoDevice> GetAllIoDevices();
+        IEnumerable<Inverter> GetAllInvertersByBay(BayNumber bayNumber);
 
-    IEnumerable<Inverter> GetAllParameters();
+        IEnumerable<IoDevice> GetAllIoDevices();
 
-    Inverter GetInverterByIndex(InverterIndex mainInverter);
+        IEnumerable<Inverter> GetAllParameters();
 
-    void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value);
+        Inverter GetInverterByIndex(InverterIndex mainInverter);
 
-    #endregion
-  }
+        InverterParameter GetParameter(InverterIndex inverterIndex, short code, int dataset);
+
+        void SaveInverterStructure(Inverter inverter);
+
+        void UpdateInverterParameter(InverterIndex inverterIndex, short code, string value, int dataset);
+
+        void UpdateInverterParameters(List<InverterParameter> inverterParameters, byte index);
+
+        #endregion
+    }
 }

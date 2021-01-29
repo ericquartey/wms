@@ -501,7 +501,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     }
                                 }
 
-                                if (!newSensorStatus[(int)IOMachineSensors.RunningState]
+                                if (!this.sensorStatus[(int)IOMachineSensors.RunningState]
                                     && ioSecurityChange
                                     )
                                 {

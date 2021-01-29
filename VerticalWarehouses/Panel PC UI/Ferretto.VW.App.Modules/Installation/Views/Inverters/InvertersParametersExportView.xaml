@@ -10,7 +10,7 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="450"
-            d:DesignWidth="800"
+            d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
@@ -185,7 +185,7 @@
 
   </ctrls:View.Resources>
 
-  <Grid Margin="15,15,15,15">
+  <Grid Margin="15,15,15,0">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
@@ -274,16 +274,24 @@
     <CheckBox Grid.Row="2"
               Margin="0,15,0,0"
               HorizontalAlignment="Left"
-              Content="Overwrite target file"
+              Content="{res:Loc InstallationApp.OverwriteFile}"
               IsChecked="{Binding OverwriteTargetFile, Mode=TwoWay}"
               Style="{StaticResource PpcCheckBoxStyle}"
               Visibility="{Binding HasFilenameConflict, Converter={StaticResource TTUI}}" />
 
-    <controls:PpcButton Grid.Row="2"
-                        Margin="15,15,0,0"
-                        HorizontalAlignment="Right"
-                        Command="{Binding ExportCommand}"
-                        Content="{res:Loc InstallationApp.SaveRestoreConfigSaveButton}"
-                        IsBusy="{Binding IsBusy}" />
+    <StackPanel Grid.Row="2"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+      <controls:PpcButton Margin="15,15,0,0"
+                          Command="{Binding ExportCommand}"
+                          Content="{res:Loc InstallationApp.SaveInverterConfiguration}"
+                          IsBusy="{Binding IsBusy}" />
+
+      <controls:PpcButton Margin="15,15,0,0"
+                          Command="{Binding ExportVertimagCommand}"
+                          Content="{res:Loc InstallationApp.SaveRestoreConfigSaveButton}"
+                          IsBusy="{Binding IsBusy}" />
+    </StackPanel>
+
   </Grid>
 </ctrls:View>

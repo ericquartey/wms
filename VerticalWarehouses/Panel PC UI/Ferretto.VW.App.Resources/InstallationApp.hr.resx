@@ -2307,4 +2307,52 @@
   <data name="VerticalCalibration" xml:space="preserve">
     <value>Kalibracija dizala</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Čitanje pretvarača uspješno dovršeno</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Očitavanje pretvarača dovršeno s pogreškama</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Čitanje pretvarača je zaustavljeno</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Početak sljedećeg očitavanja pretvarača</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Napišite kod</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Pročitajte kod</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Decimalno brojanje</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Počelo je očitavanje pretvarača</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Pročitajte sve</value>
+  </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Struktura uvoza</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Prepiši ciljanu datoteku</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Spremi konfiguraciju pretvarača</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Napiši pojedinačno</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Napišite sve</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Naredba poslana</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Pogreške i stvarne vrijednosti </value>
+  </data>
 </root>

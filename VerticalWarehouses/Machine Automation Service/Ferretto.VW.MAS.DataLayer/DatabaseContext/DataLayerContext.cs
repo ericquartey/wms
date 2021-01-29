@@ -72,6 +72,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<Instruction> Instructions { get; set; }
 
+        public DbSet<InverterParameter> InverterParameter { get; set; }
+
         public DbSet<Inverter> Inverters { get; set; }
 
         public DbSet<IoDevice> IoDevices { get; set; }

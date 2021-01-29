@@ -167,6 +167,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (this.MachineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     return !this.IsMoving &&
                         this.MachineModeService.MachineMode == MachineMode.Manual &&
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
@@ -187,15 +188,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case BayNumber.BayThree:
                     return !this.IsMoving &&
                         this.MachineModeService.MachineMode == MachineMode.Manual3 &&
-                   ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
-                    (!this.MachineService.HasCarousel &&
-                    this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
-                    (this.MachineService.Bay.IsDouble || !this.MachineService.BayFirstPositionIsUpper))) &&
-                   this.LoadUnitId.HasValue;
-
-                default:
-                    return !this.IsMoving &&
-                        this.MachineModeService.MachineMode == MachineMode.Manual &&
                    ((this.SensorsService.IsLoadingUnitInBay && (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)) ||
                     (!this.MachineService.HasCarousel &&
                     this.SensorsService.IsLoadingUnitInMiddleBottomBay &&

@@ -1231,6 +1231,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Command sent.
+        /// </summary>
+        public static string CommandSent {
+            get {
+                return ResourceManager.GetString("CommandSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compact.
         /// </summary>
         public static string Compact {
@@ -1654,6 +1663,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decimal count.
+        /// </summary>
+        public static string DecimalCount {
+            get {
+                return ResourceManager.GetString("DecimalCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default configuration loaded.
         /// </summary>
         public static string DefaultConfigurationLoaded {
@@ -2019,6 +2037,15 @@ namespace Ferretto.VW.App.Resources {
         public static string EmptyUnitWeighing {
             get {
                 return ResourceManager.GetString("EmptyUnitWeighing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors &amp; Actual values.
+        /// </summary>
+        public static string ErrorAndActualValue {
+            get {
+                return ResourceManager.GetString("ErrorAndActualValue", resourceCulture);
             }
         }
         
@@ -2734,6 +2761,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import structure.
+        /// </summary>
+        public static string ImportStructure {
+            get {
+                return ResourceManager.GetString("ImportStructure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import successful.
         /// </summary>
         public static string ImportSuccessful {
@@ -3319,6 +3355,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter reading ended with errors.
+        /// </summary>
+        public static string InverterReadingEndedErrors {
+            get {
+                return ResourceManager.GetString("InverterReadingEndedErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start of next inverter reading.
+        /// </summary>
+        public static string InverterReadingNext {
+            get {
+                return ResourceManager.GetString("InverterReadingNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter reading started.
+        /// </summary>
+        public static string InverterReadingStarted {
+            get {
+                return ResourceManager.GetString("InverterReadingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter reading completed successfully.
+        /// </summary>
+        public static string InverterReadingSuccessfullyEnded {
+            get {
+                return ResourceManager.GetString("InverterReadingSuccessfullyEnded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inverters programming started.
         /// </summary>
         public static string InvertersProgrammingStarted {
@@ -3333,6 +3405,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InvertersProgrammingStopped {
             get {
                 return ResourceManager.GetString("InvertersProgrammingStopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inverter reading stopped.
+        /// </summary>
+        public static string InvertersReadingStopped {
+            get {
+                return ResourceManager.GetString("InvertersReadingStopped", resourceCulture);
             }
         }
         
@@ -4453,6 +4534,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Overwrite target file.
+        /// </summary>
+        public static string OverwriteFile {
+            get {
+                return ResourceManager.GetString("OverwriteFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to At the end of the procedure the page will change automatically..
         /// </summary>
         public static string PageChangeAutomatically {
@@ -4696,11 +4786,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Read code.
+        /// </summary>
+        public static string ReadCode {
+            get {
+                return ResourceManager.GetString("ReadCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ReadFinalPosition.
         /// </summary>
         public static string ReadFinalPosition {
             get {
                 return ResourceManager.GetString("ReadFinalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read all.
+        /// </summary>
+        public static string ReadInverterParameter {
+            get {
+                return ResourceManager.GetString("ReadInverterParameter", resourceCulture);
             }
         }
         
@@ -5088,6 +5196,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SaveCheckPosition {
             get {
                 return ResourceManager.GetString("SaveCheckPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save inverter configuration.
+        /// </summary>
+        public static string SaveInverterConfiguration {
+            get {
+                return ResourceManager.GetString("SaveInverterConfiguration", resourceCulture);
             }
         }
         
@@ -6600,6 +6717,33 @@ namespace Ferretto.VW.App.Resources {
         public static string WmsStatusOnline {
             get {
                 return ResourceManager.GetString("WmsStatusOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write all.
+        /// </summary>
+        public static string WriteAll {
+            get {
+                return ResourceManager.GetString("WriteAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write code.
+        /// </summary>
+        public static string WriteCode {
+            get {
+                return ResourceManager.GetString("WriteCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write single.
+        /// </summary>
+        public static string WriteSingle {
+            get {
+                return ResourceManager.GetString("WriteSingle", resourceCulture);
             }
         }
         

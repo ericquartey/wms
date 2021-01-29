@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.extractionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.ExtractionLoadingUnits),
-                () => CanExecuteOperation(Menu.ExtractionLoadingUnits)));
+                () => this.CanExecuteOperation(Menu.ExtractionLoadingUnits)));
 
         public ICommand InsertionLoadingUnitsCommand =>
             this.insertionLoadingUnitsCommand
@@ -142,32 +142,26 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     switch (this.MachineService.BayNumber)
                     {
                         case BayNumber.BayOne:
+                        default:
                             return this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual ||
-                      this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
-                      this.VerticalOriginCalibration.IsCompleted;
+                              (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
+                              (this.MachineModeService.MachineMode == MachineMode.Manual ||
+                              this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
+                              this.VerticalOriginCalibration.IsCompleted;
 
                         case BayNumber.BayTwo:
                             return this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual2 ||
-                      this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations2) &&
-                      this.VerticalOriginCalibration.IsCompleted;
+                              (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
+                              (this.MachineModeService.MachineMode == MachineMode.Manual2 ||
+                              this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations2) &&
+                              this.VerticalOriginCalibration.IsCompleted;
 
                         case BayNumber.BayThree:
                             return this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual3 ||
-                      this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations3) &&
-                      this.VerticalOriginCalibration.IsCompleted;
-
-                        default:
-                            return this.MachineModeService.MachinePower == MachinePowerState.Powered &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
-                      (this.MachineModeService.MachineMode == MachineMode.Manual ||
-                      this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations) &&
-                      this.VerticalOriginCalibration.IsCompleted;
+                              (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded) &&
+                              (this.MachineModeService.MachineMode == MachineMode.Manual3 ||
+                              this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations3) &&
+                              this.VerticalOriginCalibration.IsCompleted;
                     }
 
                 case Menu.TestComplete:
