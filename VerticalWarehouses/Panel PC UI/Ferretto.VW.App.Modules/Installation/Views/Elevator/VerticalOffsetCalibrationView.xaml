@@ -55,7 +55,8 @@
                             VerticalAlignment="Center"
                             Command="{Binding MoveToStartPositionCommand}"
                             Content="{res:Loc InstallationApp.MoveToQuote}"
-                            Style="{DynamicResource WizardIntoButton}" />
+                            Style="{DynamicResource WizardIntoButton}"
+                            Visibility="Hidden"/>
 
         <ctrls:PpcSpinEdit Grid.Row="1"
                            Width="250"
@@ -66,7 +67,8 @@
                            IsEnabled="{Binding IsCanStartPosition}"
                            LabelText="{res:Loc InstallationApp.StartQuote}"
                            MaxValue="{Binding AxisUpperBound}"
-                           MinValue="{Binding AxisLowerBound}" />
+                           MinValue="{Binding AxisLowerBound}"
+                           Visibility="Hidden" />
 
         <TextBlock Grid.Row="2"
                    Grid.ColumnSpan="2"
