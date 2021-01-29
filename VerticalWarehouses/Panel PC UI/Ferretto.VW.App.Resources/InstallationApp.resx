@@ -2370,4 +2370,20 @@
   <data name="SoftwareUpdateDescription" xml:space="preserve">
     <value>Please insert USB stick</value>
   </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Machine database backup</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Internal copy</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>On server</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>On telemetry</value>
+    <comment>DatabaseBackup</comment>
+  </data>
 </root>

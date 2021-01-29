@@ -2307,4 +2307,16 @@
   <data name="VerticalCalibration" xml:space="preserve">
     <value>Kalibracija dizala</value>
   </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Machine database backup</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Internal copy</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>On server</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>On telemetry</value>
+  </data>
 </root>

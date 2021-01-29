@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuComunicationWMSCommand;
 
+        private DelegateCommand menuDatabaseBackupCommand;
+
         private DelegateCommand menuDateTimeCommand;
 
         private DelegateCommand menuParameterInverterCommand;
@@ -49,6 +51,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ComunicationWms,
 
             DateTime,
+
+            DatabaseBackup,
         }
 
         #endregion
@@ -64,8 +68,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommandOther(MenuOther.ComunicationWms),
                 this.CanExecute));
 
+        public ICommand MenuDatabaseBackupCommand =>
+            this.menuDatabaseBackupCommand
+            ??
+            (this.menuDatabaseBackupCommand = new DelegateCommand(
+                () => this.MenuCommandOther(MenuOther.DatabaseBackup),
+                this.CanExecute));
+
         public ICommand MenuDateTimeCommand =>
-            this.menuDateTimeCommand
+                    this.menuDateTimeCommand
             ??
             (this.menuDateTimeCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.DateTime),
@@ -104,6 +115,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuParametersCommand?.RaiseCanExecuteChanged();
             this.menuDateTimeCommand?.RaiseCanExecuteChanged();
             this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
+            this.menuDatabaseBackupCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecute()
@@ -177,6 +189,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.Inverters.PARAMETERINVERTER,
                             data: "reset",
+                            trackCurrentView: true);
+                        break;
+
+                    case MenuOther.DatabaseBackup:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.DATABASEBACKUP,
+                            data: null,
                             trackCurrentView: true);
                         break;
 

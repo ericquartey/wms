@@ -2316,4 +2316,16 @@
   <data name="SoftwareUpdateDescription" xml:space="preserve">
     <value>Inserire chiavetta USB</value>
   </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Backup database di macchina</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Copia interna</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>Su server</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>Su telemetria</value>
+  </data>
 </root>

@@ -87,7 +87,7 @@
                                     Abbrevation="4.7.4"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuParameterInverterCommand}"
-                                    Content="{res:Loc InstallationApp.InverterParameterizationMenuDescription}"                                    
+                                    Content="{res:Loc InstallationApp.InverterParameterizationMenuDescription}"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -98,6 +98,16 @@
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuDateTimeCommand}"
                                     Content="{res:Loc InstallationApp.DateTimeMenuDescription}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="Database backup"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.6"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuDatabaseBackupCommand}"
+                                    Content="Database backup settings"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 

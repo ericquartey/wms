@@ -117,36 +117,6 @@ namespace Ferretto.VW.MAS.TimeManagement
             Task.Run(this.ExecutePollingAsync);
         }
 
-        private void ExecuteBackupScript()
-        {
-            var backupScript = "f:\\database\\remote_backup.cmd";
-            var info = new FileInfo(backupScript);
-            if (info.Exists)
-            {
-                var script = File.ReadAllText(backupScript);
-                if (!string.IsNullOrEmpty(script))
-                {
-                    try
-                    {
-                        Process.Start(backupScript);
-                        this.logger.LogInformation($"Database Backup executed");
-                    }
-                    catch (Exception ex)
-                    {
-                        this.logger.LogError(ex.Message);
-                    }
-                }
-                else
-                {
-                    this.logger.LogDebug($"file {backupScript} empty");
-                }
-            }
-            else
-            {
-                this.logger.LogDebug($"file {backupScript} not found");
-            }
-        }
-
         private async Task ExecutePollingAsync()
         {
             this.cancellationTokenSource = new CancellationTokenSource();
@@ -190,8 +160,6 @@ namespace Ferretto.VW.MAS.TimeManagement
                                 }
 
                                 wmsSettingsProvider.LastWmsSyncTime = DateTimeOffset.UtcNow;
-
-                                this.ExecuteBackupScript();
                             }
                         }
                         catch (Exception ex)
