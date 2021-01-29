@@ -161,7 +161,7 @@ namespace Ferretto.VW.TelemetryService
                 return;
             }
 
-            this.logger.LogDebug($"Received raw database content from client.");
+            this.logger.LogDebug($"Received raw database content from client, size {rawDatabaseContent.Length / 1024} Kb.");
 
             using var scope = this.serviceScopeFactory.CreateScope();
             var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();

@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsAxisChanged();
 
+        bool IsDbSaveOnTelemetry();
+
         bool IsHeartBeat();
 
         bool IsOneTonMachine();

@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </returns>
         public byte[] GetRawDatabaseContent()
         {
-            const int NUMBER_OF_RETRIES = 3;
+            const int NUMBER_OF_RETRIES = 5;
 
             using var scope = this.ServiceScopeFactory.CreateScope();
             var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
@@ -56,8 +56,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 catch (IOException ioExc) when (i < NUMBER_OF_RETRIES)
                 {
-                    this.Logger.LogError($"Try: #{i + 1}. Error reason: {ioExc.Message}");
-                    Thread.Sleep(350);
+                    this.Logger.LogDebug($"Try: #{i + 1}. Error reason: {ioExc.Message}");
+                    Thread.Sleep(500);
                 }
             }
 
