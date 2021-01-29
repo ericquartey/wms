@@ -187,13 +187,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     switch (this.machineService?.BayNumber)
                     {
                         case MAS.AutomationService.Contracts.BayNumber.BayOne:
-                            return this.MachineModeService.MachineMode == MachineMode.Manual;
+                            return this.MachineModeService.MachineMode == MachineMode.Manual
+                                || this.MachineModeService.MachineMode == MachineMode.Test
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToAutomatic;
 
                         case MAS.AutomationService.Contracts.BayNumber.BayTwo:
-                            return this.MachineModeService.MachineMode == MachineMode.Manual2;
+                            return this.MachineModeService.MachineMode == MachineMode.Manual2
+                                || this.MachineModeService.MachineMode == MachineMode.Test2
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToAutomatic;
 
                         case MAS.AutomationService.Contracts.BayNumber.BayThree:
-                            return this.MachineModeService.MachineMode == MachineMode.Manual3;
+                            return this.MachineModeService.MachineMode == MachineMode.Manual3
+                                || this.MachineModeService.MachineMode == MachineMode.Test3
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToAutomatic;
 
                         default:
                             return true;

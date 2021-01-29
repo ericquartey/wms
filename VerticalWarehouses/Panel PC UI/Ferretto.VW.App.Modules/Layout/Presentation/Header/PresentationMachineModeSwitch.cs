@@ -290,6 +290,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             switch (this.machineService?.BayNumber)
             {
                 case MAS.AutomationService.Contracts.BayNumber.BayOne:
+                default:
                     return res &&
                         (this.MachineModeService.MachineMode == MachineMode.Manual ||
                         this.MachineModeService.MachineMode == MachineMode.Automatic ||
@@ -309,13 +310,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                         this.MachineModeService.MachineMode == MachineMode.Automatic ||
                         this.MachineModeService.MachineMode == MachineMode.Test3 ||
                         this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations3);
-
-                default:
-                    return res &&
-                        (this.MachineModeService.MachineMode == MachineMode.Manual ||
-                        this.MachineModeService.MachineMode == MachineMode.Automatic ||
-                        this.MachineModeService.MachineMode == MachineMode.Test ||
-                        this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations);
             }
         }
 
