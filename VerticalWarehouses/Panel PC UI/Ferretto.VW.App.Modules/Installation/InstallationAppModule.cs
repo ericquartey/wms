@@ -103,6 +103,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<UsersView>();
             containerRegistry.RegisterForNavigation<ParameterInverterView>();
             containerRegistry.RegisterForNavigation<ParametersInverterDetailsView>();
+            containerRegistry.RegisterForNavigation<ErrorParametersInverterDetailsView>();
             containerRegistry.RegisterForNavigation<ErrorParameterInverterView>();
             containerRegistry.RegisterForNavigation<InvertersParametersImportView>();
             containerRegistry.RegisterForNavigation<InvertersParametersExportView>();

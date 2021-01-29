@@ -2361,4 +2361,7 @@
   <data name="CommandSent" xml:space="preserve">
     <value>Comando inviato</value>
   </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Errori &amp; Valori attuali</value>
+  </data>
 </root>

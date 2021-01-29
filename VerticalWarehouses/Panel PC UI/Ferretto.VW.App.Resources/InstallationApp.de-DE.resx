@@ -2352,4 +2352,7 @@
   <data name="CommandSent" xml:space="preserve">
     <value>Befehl gesendet</value>
   </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Fehler &amp; Istwerte</value>
+  </data>
 </root>

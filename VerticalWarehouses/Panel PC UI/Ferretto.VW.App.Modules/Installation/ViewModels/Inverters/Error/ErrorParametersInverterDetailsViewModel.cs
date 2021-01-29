@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -23,11 +24,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        public static readonly IList<short> ang = new ReadOnlyCollection<short>(new List<short> { 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 362, 363, 330, 331, 332, 333, 334, 335, 336,
+                                                                                                  337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 403,
+                                                                                                  259, 269, 273, 1247, 275, 249, 244, 245, 222, 223, 255, 256, 250, 243, 277, 251, 253, 228, 282, 283, 229, 254, 257, 266, 242, 237,
+                                                                                                  231, 232, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 301, 302, 1121, 29, 0, 1, 12, 16});
+
         private readonly Services.IDialogService dialogService;
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
         private readonly ISessionService sessionService;
+
+        private SubscriptionToken inverterParameterReceivedToken;
 
         private Inverter inverterParameters;
 
@@ -47,7 +55,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ErrorParametersInverterDetailsViewModel(
             Services.IDialogService dialogService,
-            IMachineIdentityWebService identityService,
             ISessionService sessionService,
             IMachineDevicesWebService machineDevicesWebService)
             : base(PresentationMode.Installer)
@@ -60,6 +67,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public Inverter InverterParameters
         {
@@ -108,6 +117,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.inverterReadingMessageReceivedToken = null;
             }
 
+            if (this.inverterParameterReceivedToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<InverterParametersMessageData>>().Unsubscribe(this.inverterParameterReceivedToken);
+                this.inverterParameterReceivedToken?.Dispose();
+                this.inverterParameterReceivedToken = null;
+            }
+
             base.Disappear();
         }
 
@@ -148,10 +164,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsBusy = true;
 
-            if (this.Data is ISetVertimagInverterConfiguration mainConfiguration)
+            if (this.Data is Inverter mainConfiguration)
             {
-                this.inverterParameters = mainConfiguration.SelectedInverter;
-                this.inverterParameters.Parameters = this.inverterParameters.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
+                this.inverterParameters = mainConfiguration;
+                var errorParameter = new List<InverterParameter>();
+
+                if (this.inverterParameters.Type == InverterType.Ang)
+                {
+                    foreach (var parameter in this.inverterParameters.Parameters)
+                    {
+                        if (ang.Any(s => s == parameter.Code))
+                        {
+                            errorParameter.Add(parameter);
+                        }
+                    }
+                }
+                else if (this.inverterParameters.Type == InverterType.Agl)
+                {
+                }
+                else if (this.inverterParameters.Type == InverterType.Acu)
+                {
+                }
+
+                this.inverterParameters.Parameters = errorParameter.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
             }
 
             this.RaisePropertyChanged(nameof(this.InverterParameters));
@@ -159,13 +194,40 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBusy = false;
         }
 
-        private async Task OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
+        private void OnInverterParameterReceived(NotificationMessageUI<InverterParametersMessageData> message)
+        {
+            if (message.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationStepEnd)
+            {
+                this.ShowNotification(message.Data.ToString(), Services.Models.NotificationSeverity.Info);
+            }
+        }
+
+        private void OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
         {
             switch (message.Status)
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     this.IsBusy = false;
-                    await this.RefreshAsync();
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingSuccessfullyEnded"), Services.Models.NotificationSeverity.Success);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                    this.IsBusy = false;
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingEndedErrors"), Services.Models.NotificationSeverity.Error);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    this.IsBusy = true;
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingStarted"), Services.Models.NotificationSeverity.Info);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    this.IsBusy = false;
+                    this.ShowNotification(Localized.Get("InstallationApp.InvertersReadingStopped"), Services.Models.NotificationSeverity.Warning);
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStepEnd:
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingNext"), Services.Models.NotificationSeverity.Info);
                     break;
 
                 default:
@@ -181,7 +243,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsBusy = true;
 
-                await this.machineDevicesWebService.ReadInverterAsync(this.inverterParameters.Index);
+                await this.machineDevicesWebService.ReadInverterParameterAsync(this.inverterParameters);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -204,7 +266,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (inverters.SingleOrDefault(s => s.Index == this.inverterParameters.Index) != null)
                 {
                     this.inverterParameters = inverters.SingleOrDefault(s => s.Index == this.inverterParameters.Index);
-                    this.inverterParameters.Parameters = this.inverterParameters.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
+                    var errorParameter = new List<InverterParameter>();
+
+                    if (this.inverterParameters.Type == InverterType.Ang)
+                    {
+                        foreach (var parameter in this.inverterParameters.Parameters)
+                        {
+                            if (ang.Any(s => s == parameter.Code))
+                            {
+                                errorParameter.Add(parameter);
+                            }
+                        }
+                    }
+                    else if (this.inverterParameters.Type == InverterType.Agl)
+                    {
+                    }
+                    else if (this.inverterParameters.Type == InverterType.Acu)
+                    {
+                    }
+
+                    this.inverterParameters.Parameters = errorParameter.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
                 }
                 this.RaisePropertyChanged(nameof(this.InverterParameters));
             }
@@ -224,9 +305,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                ?? this.EventAggregator
                    .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
                    .Subscribe(
-                       async (m) => await this.OnInverterReadingMessageReceived(m),
+                       (m) => this.OnInverterReadingMessageReceived(m),
                        ThreadOption.UIThread,
                        false);
+
+            this.inverterParameterReceivedToken = this.inverterParameterReceivedToken
+                ?? this.EventAggregator
+                    .GetEvent<NotificationEventUI<InverterParametersMessageData>>()
+                    .Subscribe(
+                        (m) => this.OnInverterParameterReceived(m),
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion

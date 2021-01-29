@@ -35,7 +35,8 @@
     </TextBlock>
 
     <controls:PpcButton Grid.Column="1"
-                        Width="70"
+                        Width="60"
+                        Height="60"
                         Margin="0,0,10,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Bottom"
@@ -141,7 +142,7 @@
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
           <DataGridTextColumn x:Name="Column4"
-                              Width="1*"
+                              Width="2.5*"
                               Binding="{Binding Path=StringValue}"
                               Header="{res:Loc InstallationApp.InverterParametersValue}">
             <DataGridTextColumn.ElementStyle>
@@ -149,28 +150,6 @@
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="TextWrapping" Value="Wrap" />
-              </Style>
-            </DataGridTextColumn.ElementStyle>
-          </DataGridTextColumn>
-          <DataGridTextColumn x:Name="Column5"
-                              Width="100"
-                              Binding="{Binding Path=IsReadOnly, Converter={StaticResource BTSC}}"
-                              Header="{res:Loc InstallationApp.IsReadOnly}">
-            <DataGridTextColumn.ElementStyle>
-              <Style TargetType="TextBlock">
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-              </Style>
-            </DataGridTextColumn.ElementStyle>
-          </DataGridTextColumn>
-          <DataGridTextColumn x:Name="Column7"
-                              Width="100"
-                              Binding="{Binding Path=Error, Converter={StaticResource BTSC}}"
-                              Header="{res:Loc OperatorApp.StatisticsErrorDataGridHeaderError}">
-            <DataGridTextColumn.ElementStyle>
-              <Style TargetType="TextBlock">
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="VerticalAlignment" Value="Center" />
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>

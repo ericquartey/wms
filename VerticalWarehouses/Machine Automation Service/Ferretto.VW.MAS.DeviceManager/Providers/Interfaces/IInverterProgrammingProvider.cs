@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void Read(InverterIndex inverterIndex, BayNumber requestingBay, MessageActor sender);
 
+        void Read(Inverter inverter, BayNumber requestingBay, MessageActor sender);
+
         void Reset(Inverter inverter, BayNumber requestingBay, MessageActor sender);
 
         void Start(Inverter inverter, BayNumber requestingBay, MessageActor sender);

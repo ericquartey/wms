@@ -2352,4 +2352,7 @@
   <data name="CommandSent" xml:space="preserve">
     <value>Velení odesláno</value>
   </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Chyby a skutečné hodnoty </value>
+  </data>
 </root>
