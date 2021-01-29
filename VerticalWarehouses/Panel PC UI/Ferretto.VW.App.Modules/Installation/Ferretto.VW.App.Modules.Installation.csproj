@@ -39,6 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Inverters\Error\ErrorParameterInverterView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\Inverters\Error\ErrorParametersInverterDetailsView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\Inverters\InvertersParametersExportView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
