@@ -37,6 +37,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             switch (this.MachineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     return base.CanStart() &&
                         this.MachineModeService.MachineMode == MachineMode.Manual;
 
@@ -47,10 +48,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 case BayNumber.BayThree:
                     return base.CanStart() &&
                         this.MachineModeService.MachineMode == MachineMode.Manual3;
-
-                default:
-                    return base.CanStart() &&
-                        this.MachineModeService.MachineMode == MachineMode.Manual;
             }
         }
 

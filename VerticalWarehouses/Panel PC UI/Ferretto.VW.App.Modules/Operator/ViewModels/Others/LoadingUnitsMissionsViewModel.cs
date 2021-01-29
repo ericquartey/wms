@@ -151,20 +151,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             switch (this.MachineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     return this.selectedMission != null
-                && this.MachineModeService.MachineMode == MachineMode.Manual;
+                        && this.MachineModeService.MachineMode == MachineMode.Manual;
 
                 case BayNumber.BayTwo:
                     return this.selectedMission != null
-                && this.MachineModeService.MachineMode == MachineMode.Manual2;
+                        && this.MachineModeService.MachineMode == MachineMode.Manual2;
 
                 case BayNumber.BayThree:
                     return this.selectedMission != null
-                && this.MachineModeService.MachineMode == MachineMode.Manual3;
-
-                default:
-                    return this.selectedMission != null
-                && this.MachineModeService.MachineMode == MachineMode.Manual;
+                        && this.MachineModeService.MachineMode == MachineMode.Manual3;
             }
         }
 

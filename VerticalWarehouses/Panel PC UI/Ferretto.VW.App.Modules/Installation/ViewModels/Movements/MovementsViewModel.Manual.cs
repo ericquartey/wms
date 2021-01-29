@@ -655,6 +655,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (this.MachineService.BayNumber)
             {
                 case MAS.AutomationService.Contracts.BayNumber.BayOne:
+                default:
                     IsCorrectManual = this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Manual;
                     break;
 
@@ -664,10 +665,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case MAS.AutomationService.Contracts.BayNumber.BayThree:
                     IsCorrectManual = this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Manual3;
-                    break;
-
-                default:
-                    IsCorrectManual = this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Manual;
                     break;
             }
 

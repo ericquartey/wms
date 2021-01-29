@@ -271,52 +271,41 @@ namespace Ferretto.VW.App.Menu.ViewModels
             switch (this.MachineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     return (
-                this.MachineModeService.MachineMode == MachineMode.Manual
-                ||
-                this.MachineModeService.MachineMode == MachineMode.Test)
-                &&
-                this.MachineModeService.MachinePower == MachinePowerState.Powered
-                &&
-                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
-                ||
-                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+                        this.MachineModeService.MachineMode == MachineMode.Manual
+                        ||
+                        this.MachineModeService.MachineMode == MachineMode.Test)
+                        &&
+                        this.MachineModeService.MachinePower == MachinePowerState.Powered
+                        &&
+                        (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                        ||
+                        this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
 
                 case BayNumber.BayTwo:
                     return (
-                this.MachineModeService.MachineMode == MachineMode.Manual2
-                ||
-                this.MachineModeService.MachineMode == MachineMode.Test2)
-                &&
-                this.MachineModeService.MachinePower == MachinePowerState.Powered
-                &&
-                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
-                ||
-                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+                        this.MachineModeService.MachineMode == MachineMode.Manual2
+                        ||
+                        this.MachineModeService.MachineMode == MachineMode.Test2)
+                        &&
+                        this.MachineModeService.MachinePower == MachinePowerState.Powered
+                        &&
+                        (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                        ||
+                        this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
 
                 case BayNumber.BayThree:
                     return (
-                this.MachineModeService.MachineMode == MachineMode.Manual3
-                ||
-                this.MachineModeService.MachineMode == MachineMode.Test3)
-                &&
-                this.MachineModeService.MachinePower == MachinePowerState.Powered
-                &&
-                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
-                ||
-                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
-
-                default:
-                    return (
-                this.MachineModeService.MachineMode == MachineMode.Manual
-                ||
-                this.MachineModeService.MachineMode == MachineMode.Test)
-                &&
-                this.MachineModeService.MachinePower == MachinePowerState.Powered
-                &&
-                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
-                ||
-                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+                        this.MachineModeService.MachineMode == MachineMode.Manual3
+                        ||
+                        this.MachineModeService.MachineMode == MachineMode.Test3)
+                        &&
+                        this.MachineModeService.MachinePower == MachinePowerState.Powered
+                        &&
+                        (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                        ||
+                        this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
             }
         }
 
