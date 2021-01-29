@@ -2041,6 +2041,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errors &amp; Actual values.
+        /// </summary>
+        public static string ErrorAndActualValue {
+            get {
+                return ResourceManager.GetString("ErrorAndActualValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error on checking file {0}.
         /// </summary>
         public static string ErrorCheckFile {

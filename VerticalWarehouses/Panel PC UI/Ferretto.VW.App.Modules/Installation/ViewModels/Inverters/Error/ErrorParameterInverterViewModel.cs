@@ -32,8 +32,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ISessionService sessionService;
 
-        private SubscriptionToken inverterReadingMessageReceivedToken;
-
         private IEnumerable<Inverter> inverters;
 
         private bool isBusy;
@@ -63,6 +61,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public IEnumerable<Inverter> Inverters => this.inverters;
 
@@ -96,44 +96,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
-            if (this.inverterReadingMessageReceivedToken != null)
-            {
-                this.EventAggregator.GetEvent<NotificationEventUI<InverterReadingMessageData>>().Unsubscribe(this.inverterReadingMessageReceivedToken);
-                this.inverterReadingMessageReceivedToken?.Dispose();
-                this.inverterReadingMessageReceivedToken = null;
-            }
-
             base.Disappear();
         }
 
         public override async Task OnAppearedAsync()
         {
-            this.SubscribeEvents();
-
             await this.ReadData();
 
             await base.OnAppearedAsync();
-        }
-
-        private async Task ReadData()
-        {
-            try
-            {
-                this.IsBusy = true;
-
-                this.inverters = await this.machineDevicesWebService.GetInvertersAsync();
-
-                this.inverters = this.inverters.OrderBy(s => s.Index);
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.RaisePropertyChanged(nameof(this.Inverters));
-                this.IsBusy = false;
-            }
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -155,21 +125,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.MachineService.MachinePower <= MachinePowerState.Unpowered;
         }
 
-        private async Task OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
-        {
-            switch (message.Status)
-            {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    this.IsBusy = false;
-                    this.inverters = await this.machineDevicesWebService.GetInvertersAsync();
-                    this.RaisePropertyChanged(nameof(this.inverters));
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
         private async Task ReadAllInvertersAsync()
         {
             try
@@ -186,6 +141,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
+                this.IsBusy = false;
+            }
+        }
+
+        private async Task ReadData()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                this.inverters = await this.machineDevicesWebService.GetInvertersAsync();
+
+                this.inverters = this.inverters.OrderBy(s => s.Index);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.RaisePropertyChanged(nameof(this.Inverters));
                 this.IsBusy = false;
             }
         }
@@ -217,19 +193,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.Inverters.ERRORPARAMETERSINVERTERDETAILS,
-                data: this,
+                data: this.selectedInverter,
                 trackCurrentView: true);
-        }
-
-        private void SubscribeEvents()
-        {
-            this.inverterReadingMessageReceivedToken = this.inverterReadingMessageReceivedToken
-               ?? this.EventAggregator
-                   .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
-                   .Subscribe(
-                       async (m) => await this.OnInverterReadingMessageReceived(m),
-                       ThreadOption.UIThread,
-                       false);
         }
 
         #endregion

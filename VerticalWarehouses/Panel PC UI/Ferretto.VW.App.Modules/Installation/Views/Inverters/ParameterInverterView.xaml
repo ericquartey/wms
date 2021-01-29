@@ -115,8 +115,9 @@
                    Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVC}}" />
 
         <controls:PpcButton Grid.Column="1"
-                            Width="70"
-                            Margin="0,0,10,10"
+                            Width="60"
+                            Height="60"
+                            Margin="0,0,0,10"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             HorizontalContentAlignment="Center"
@@ -124,7 +125,7 @@
                             IsBusy="{Binding IsBusy}"
                             KindMaterial="Refresh" />
       </Grid>
-      
+
       <ListView Grid.Row="2"
                 HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Inverters}"

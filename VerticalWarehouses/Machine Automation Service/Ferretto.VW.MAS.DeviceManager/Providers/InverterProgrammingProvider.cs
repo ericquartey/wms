@@ -133,6 +133,35 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 requestingBay);
         }
 
+        public void Read(Inverter inverter, BayNumber requestingBay, MessageActor sender)
+        {
+            //check inverters
+            if (inverter?.Parameters is null)
+            {
+                throw new ArgumentException($"No Inverter parameters found");
+            }
+
+            var newInverterParametersData = this.GetInverterParameters(inverter, true);
+
+            var inverterParametersData = new List<InverterParametersData>();
+            inverterParametersData.Add(newInverterParametersData);
+
+            if (!inverterParametersData.Any())
+            {
+                throw new ArgumentException($"No Inverters found");
+            }
+
+            //send command
+            this.PublishCommand(
+                new InverterReadingMessageData(inverterParametersData),
+                $"Bay {requestingBay} requested Inverter programming runnning State",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.InverterReading,
+                requestingBay,
+                requestingBay);
+        }
+
         public void Reset(Inverter inverter, BayNumber requestingBay, MessageActor sender)
         {
             //Reset ai valori di fabbrica. Viene cancellata tutta la memoria e la parametrizzazione inverter. Gli unici parametri che non vengono riportati ai valori di fabbrica sono il P28 e il P30.
@@ -265,7 +294,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                         if (basePara is null)
                         {
-                            if (this.digitalDevicesDataProvider.ExistInverterParameter(inverterIndex, parameter.ReadCode, 0))
+                            if (!this.digitalDevicesDataProvider.ExistInverterParameter(inverterIndex, parameter.ReadCode, 0))
                             {
                                 throw new ArgumentException($"Read parameters not found");
                             }

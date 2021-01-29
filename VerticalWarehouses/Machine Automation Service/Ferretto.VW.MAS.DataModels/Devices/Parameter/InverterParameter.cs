@@ -55,6 +55,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Type { get; set; }
 
+        public string Um { get; set; }
+
         public short WriteCode { get; set; }
 
         #endregion

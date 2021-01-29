@@ -29,46 +29,38 @@
         Margin="40,0,15,0">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="auto" />
+    </Grid.ColumnDefinitions>
 
-    <StackPanel Grid.Column="1"
-                Orientation="Horizontal">
+    <StackPanel Orientation="Horizontal">
       <TextBlock Margin="0,10,15,10"
-                 VerticalAlignment="Top"
+                 VerticalAlignment="Center"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                  Text="4.7.7" />
       <TextBlock Grid.ColumnSpan="2"
                  Margin="0,10,15,10"
-                 VerticalAlignment="Top"
+                 VerticalAlignment="Center"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="Inverter parameter error" />
+                 Text="{res:Loc InstallationApp.ErrorAndActualValue}" />
     </StackPanel>
 
-    <Grid Grid.Row="1">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="auto" />
-      </Grid.ColumnDefinitions>
-      <TextBlock Margin="0,10,15,10"
-                 VerticalAlignment="Top"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{x:Static res:InstallationApp.DefaultConfigurationLoaded}"
-                 TextWrapping="WrapWithOverflow" />
+    <controls:PpcButton Grid.Column="1"
+                        Width="60"
+                        Height="60"
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding RefreshCommand}"
+                        IsBusy="{Binding IsBusy}"
+                        KindMaterial="Refresh" />
 
-      <controls:PpcButton Grid.Column="1"
-                          Width="70"
-                          Margin="0,0,0,10"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom"
-                          HorizontalContentAlignment="Center"
-                          Command="{Binding RefreshCommand}"
-                          IsBusy="{Binding IsBusy}"
-                          KindMaterial="Refresh" />
-    </Grid>
-
-    <ListView Grid.Row="2"
+    <ListView Grid.Row="1"
+              Grid.ColumnSpan="2"
               HorizontalAlignment="Stretch"
               ItemsSource="{Binding Inverters}"
               ScrollViewer.HorizontalScrollBarVisibility="Disabled"

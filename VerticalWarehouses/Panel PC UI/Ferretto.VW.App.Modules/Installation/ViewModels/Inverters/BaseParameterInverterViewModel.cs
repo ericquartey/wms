@@ -260,7 +260,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
                     this.IsBusy = true;
-                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingStarted"), Services.Models.NotificationSeverity.Error);
+                    this.ShowNotification(Localized.Get("InstallationApp.InverterReadingStarted"), Services.Models.NotificationSeverity.Info);
                     break;
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:

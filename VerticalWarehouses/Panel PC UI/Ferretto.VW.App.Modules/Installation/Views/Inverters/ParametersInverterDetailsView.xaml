@@ -38,7 +38,8 @@
 
     <StackPanel Grid.Column="1"
                 Orientation="Horizontal">
-      <controls:PpcButton Width="70"
+      <controls:PpcButton Width="60"
+                          Height="60"
                           Margin="0,0,10,10"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Bottom"
@@ -294,7 +295,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     IsChecked="{Binding SelectedParameter.Error, Mode=TwoWay}"
-                    IsEnabled="{Binding IsAdmin}"
+                    IsEnabled="False"
                     Style="{StaticResource PpcCheckBoxStyle}" />
         </StackPanel>
       </Grid>

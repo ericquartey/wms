@@ -2352,4 +2352,7 @@
   <data name="CommandSent" xml:space="preserve">
     <value>Naredba poslana</value>
   </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Pogreške i stvarne vrijednosti </value>
+  </data>
 </root>

@@ -140,6 +140,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("inverter/read/parameter")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ReadInverterParameter(Inverter inverter)
+        {
+            this.inverterStateProvider.Read(inverter, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         #endregion
     }
 }
