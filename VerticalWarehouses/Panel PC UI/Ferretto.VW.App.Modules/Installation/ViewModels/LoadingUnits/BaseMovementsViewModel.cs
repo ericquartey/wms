@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
+        private readonly IMachineExternalBayWebService machineExternalBayWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineModeWebService machineModeWebService;
@@ -32,15 +34,27 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
+        private bool isExternalBayMoving;
+
         private bool isPositionDownSelected;
 
         private bool isPositionUpSelected;
+
+        private bool isStopping;
 
         private int? loadingUnitId;
 
         private DelegateCommand loadingUnitsCommand;
 
+        private DelegateCommand moveExtBayMovementForExtractionCommand;
+
+        private DelegateCommand moveExtBayMovementForInsertionCommand;
+
+        private DelegateCommand moveExtBayTowardOperatorCommand;
+
         private SubscriptionToken moveLoadingUnitToken;
+
+        private SubscriptionToken positioningToken;
 
         private DelegateCommand selectBayPositionDownCommand;
 
@@ -50,8 +64,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
-        private bool isStopping;
-
         #endregion
 
         #region Constructors
@@ -59,12 +71,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public BaseMovementsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineModeWebService machineModeWebService,
-            IBayManager bayManagerService)
+            IBayManager bayManagerService,
+            IMachineExternalBayWebService machineExternalBayWebService)
             : base(PresentationMode.Installer)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
+            this.machineExternalBayWebService = machineExternalBayWebService ?? throw new ArgumentNullException(nameof(machineExternalBayWebService));
         }
 
         #endregion
@@ -72,6 +86,27 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Properties
 
         public int? CurrentMissionId { get; private set; }
+
+        public ICommand ExtBayMovementForExtractionCommand =>
+            this.moveExtBayMovementForExtractionCommand
+            ??
+            (this.moveExtBayMovementForExtractionCommand = new DelegateCommand(
+                async () => await this.MoveExtBayForExtractionAsync(),
+                this.CanMoveExtBayForExtraction));
+
+        public ICommand ExtBayMovementForInsertionCommand =>
+            this.moveExtBayMovementForInsertionCommand
+            ??
+            (this.moveExtBayMovementForInsertionCommand = new DelegateCommand(
+                async () => await this.MoveExtBayForInsertionAsync(),
+                this.CanMoveExtBayForInsertion));
+
+        public ICommand ExtBayTowardOperatorCommand =>
+                            this.moveExtBayTowardOperatorCommand
+            ??
+            (this.moveExtBayTowardOperatorCommand = new DelegateCommand(
+                async () => await this.MoveExtBayTowardOperatorAsync(),
+                this.CanMoveExtBayTowardOperator));
 
         public bool HasShutter => this.MachineService.HasShutter;
 
@@ -85,6 +120,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public bool IsExternalBayMoving
+        {
+            get => this.isExternalBayMoving;
+            private set => this.SetProperty(ref this.isExternalBayMoving, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsLoadingUnitIdValid
@@ -124,6 +165,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        public bool IsStopping
+        {
+            get => this.isStopping;
+            set => this.SetProperty(ref this.isStopping, value);
+        }
+
         public override bool KeepAlive => true;
 
         public int? LoadingUnitCellId
@@ -149,12 +196,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
-        }
-
-        public bool IsStopping
-        {
-            get => this.isStopping;
-            set => this.SetProperty(ref this.isStopping, value);
         }
 
         public ICommand LoadingUnitsCommand =>
@@ -400,6 +441,33 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+            this.moveExtBayMovementForExtractionCommand?.RaiseCanExecuteChanged();
+            this.moveExtBayMovementForInsertionCommand?.RaiseCanExecuteChanged();
+            this.moveExtBayTowardOperatorCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanMoveExtBayForExtraction()
+        {
+            return
+                !this.IsExecutingProcedure &&
+                !this.SensorsService.BayZeroChain &&
+                !this.IsExternalBayMoving;
+        }
+
+        private bool CanMoveExtBayForInsertion()
+        {
+            return
+                !this.IsExecutingProcedure &&
+                !this.SensorsService.BayZeroChain &&
+                !this.IsExternalBayMoving;
+        }
+
+        private bool CanMoveExtBayTowardOperator()
+        {
+            return
+                !this.IsExecutingProcedure &&
+                this.SensorsService.BayZeroChain &&
+                !this.IsExternalBayMoving;
         }
 
         private bool CanStop()
@@ -408,6 +476,63 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse;
+        }
+
+        private async Task MoveExtBayForExtractionAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineExternalBayWebService.MovementForExtractionAsync();
+                this.IsExternalBayMoving = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveExtBayForInsertionAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineExternalBayWebService.MovementForInsertionAsync();
+                this.IsExternalBayMoving = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveExtBayTowardOperatorAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardOperator);
+                this.IsExternalBayMoving = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private void OnFsmException(NotificationMessageUI<FsmExceptionMessageData> message)
@@ -458,9 +583,35 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private void OnPositioningChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.ExtBayChain
+                            || message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.ExtBayChainManual
+                            )
+                        {
+                            this.IsExternalBayMoving = false;
+                        }
+
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        this.IsExternalBayMoving = false;
+                        break;
+                    }
+            }
+        }
+
         private void RestoreStates()
         {
             this.IsExecutingProcedure = false;
+            this.IsExternalBayMoving = false;
 
             this.RaiseCanExecuteChanged();
         }
@@ -482,6 +633,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
                     .Subscribe(
                         this.OnMoveLoadingUnitChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.positioningToken = this.positioningToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnPositioningChanged,
                         ThreadOption.UIThread,
                         false);
 

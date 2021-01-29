@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.extractionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.ExtractionLoadingUnits),
-                () => CanExecuteOperation(Menu.ExtractionLoadingUnits)));
+                () => this.CanExecuteOperation(Menu.ExtractionLoadingUnits)));
 
         public ICommand InsertionLoadingUnitsCommand =>
             this.insertionLoadingUnitsCommand

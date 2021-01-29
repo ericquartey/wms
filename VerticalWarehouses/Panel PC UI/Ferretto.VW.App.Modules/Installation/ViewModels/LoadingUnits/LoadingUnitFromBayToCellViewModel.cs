@@ -28,13 +28,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             IMachineModeWebService machineModeWebService,
             IMachineCellsWebService machineCellsWebService,
             ISensorsService sensorsService,
-            IBayManager bayManagerService)
+            IBayManager bayManagerService,
+            IMachineExternalBayWebService machineExternalBayWebService)
             : base(
                 machineLoadingUnitsWebService,
                 machineCellsWebService,
                 machineModeWebService,
                 sensorsService,
-                bayManagerService)
+                bayManagerService,
+                machineExternalBayWebService)
         {
         }
 

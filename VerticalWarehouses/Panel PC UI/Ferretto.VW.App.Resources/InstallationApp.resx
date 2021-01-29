@@ -2271,7 +2271,7 @@
     <value>Extra movement toward operator</value>
   </data>
   <data name="ExtBayMovementForInsertion" xml:space="preserve">
-    <value>Extra movement for drawer insertion</value>
+    <value>Extra movement toward elevator</value>
   </data>
   <data name="InverterInFault" xml:space="preserve">
     <value>Inverters fault</value>
