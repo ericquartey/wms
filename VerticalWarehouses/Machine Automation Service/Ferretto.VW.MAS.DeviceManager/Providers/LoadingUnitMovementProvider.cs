@@ -662,6 +662,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
                 //throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, requestingBay, MessageActor.MachineManager);
                 stopRequest = StopRequestReason.Abort;
+                return false;
             }
 
             // Vertical
