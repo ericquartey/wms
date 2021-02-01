@@ -297,9 +297,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.NeedMovingBackward = true;
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal back positioning start Mission:Id={this.Mission.Id}");
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBackward(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBackward(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay, out var stopReason))
                 {
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveBackward;
+                }
+                else if (stopReason == StopRequestReason.Abort)
+                {
+                    this.Mission.StopReason = stopReason;
+                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    this.Mission.StepTime = DateTime.UtcNow;
+                    newStep.OnEnter(null);
+                    return;
                 }
                 else
                 {
@@ -347,7 +355,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             if (this.Mission.NeedMovingBackward)
             {
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBackward(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay))
+                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBackward(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay, out var stopReason))
                 {
                     this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal back positioning start Mission:Id={this.Mission.Id}");
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveBackward;

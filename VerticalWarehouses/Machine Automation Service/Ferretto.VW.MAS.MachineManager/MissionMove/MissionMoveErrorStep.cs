@@ -234,7 +234,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
                     {
-                        this.Mission.StopReason = StopRequestReason.NoReason;
+                        this.Mission.StopReason = StopRequestReason.Abort;
                         var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         this.Mission.StepTime = DateTime.UtcNow;
                         newStep.OnEnter(null);

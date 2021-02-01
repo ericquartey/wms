@@ -645,8 +645,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
-        public bool MoveManualLoadingUnitBackward(HorizontalMovementDirection direction, int? loadUnitId, MessageActor sender, BayNumber requestingBay)
+        public bool MoveManualLoadingUnitBackward(HorizontalMovementDirection direction, int? loadUnitId, MessageActor sender, BayNumber requestingBay, out StopRequestReason stopRequest)
         {
+            stopRequest = StopRequestReason.NoReason;
             // Horizontal
             var horizontalAxis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var distance = Math.Abs(this.elevatorDataProvider.HorizontalPosition - horizontalAxis.LastIdealPosition);
@@ -659,7 +660,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.logger.LogError($"Invalid horizontal distance={distance} mm value [current HorizontalPosition={this.elevatorDataProvider.HorizontalPosition} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition} mm");
 
                 this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
-                throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, requestingBay, MessageActor.MachineManager);
+                //throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, requestingBay, MessageActor.MachineManager);
+                stopRequest = StopRequestReason.Abort;
             }
 
             // Vertical
