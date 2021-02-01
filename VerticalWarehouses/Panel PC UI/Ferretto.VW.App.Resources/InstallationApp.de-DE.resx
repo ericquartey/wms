@@ -2355,4 +2355,10 @@
   <data name="ErrorAndActualValue" xml:space="preserve">
     <value>Fehler &amp; Istwerte</value>
   </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Istwerte</value>
+  </data>
 </root>

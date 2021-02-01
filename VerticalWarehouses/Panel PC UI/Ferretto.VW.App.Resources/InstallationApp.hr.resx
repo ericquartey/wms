@@ -2355,4 +2355,10 @@
   <data name="ErrorAndActualValue" xml:space="preserve">
     <value>Pogreške i stvarne vrijednosti </value>
   </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Pogreške </value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Stvarne vrijednosti</value>
+  </data>
 </root>
