@@ -243,8 +243,8 @@
                               VerticalAlignment="Top"
                               BorderBrush="{StaticResource FerrettoBlue}"
                               Command="{Binding OperationCommand}"
-                              CommandParameter="{res:Loc OperatorApp.Box}"
-                              Content="{x:Static res:OperatorApp.Box}"
+                              CommandParameter="{x:Static res:OperatorApp.Box}"
+                              Content="{res:Loc OperatorApp.Box}"
                               IsActive="{Binding IsBoxOperationVisible}"
                               Style="{DynamicResource PpcButtonMarkStyle}"
                               Visibility="{Binding IsBoxEnabled, Converter={StaticResource BTVC}}" />
@@ -254,8 +254,8 @@
                               VerticalAlignment="Top"
                               BorderBrush="{StaticResource FerrettoBlue}"
                               Command="{Binding OperationCommand}"
-                              CommandParameter="{res:Loc OperatorApp.Adjustment}"
-                              Content="{x:Static res:OperatorApp.Adjustment}"
+                              CommandParameter="{x:Static res:OperatorApp.Adjustment}"
+                              Content="{res:Loc OperatorApp.Adjustment}"
                               IsActive="{Binding IsAdjustmentVisible}"
                               Style="{DynamicResource PpcButtonMarkStyle}" />
 
@@ -264,8 +264,8 @@
                               VerticalAlignment="Top"
                               BorderBrush="{StaticResource FerrettoBlue}"
                               Command="{Binding OperationCommand}"
-                              CommandParameter="{res:Loc OperatorApp.Pick}"
-                              Content="{x:Static res:OperatorApp.Pick}"
+                              CommandParameter="{x:Static res:OperatorApp.Pick}"
+                              Content="{res:Loc OperatorApp.Pick}"
                               IsActive="{Binding IsPickVisible}"
                               Style="{DynamicResource PpcButtonMarkStyle}"
                               Visibility="Collapsed" />
@@ -275,8 +275,8 @@
                               VerticalAlignment="Top"
                               BorderBrush="{StaticResource FerrettoBlue}"
                               Command="{Binding OperationCommand}"
-                              CommandParameter="{res:Loc OperatorApp.Put}"
-                              Content="{x:Static res:OperatorApp.Put}"
+                              CommandParameter="{x:Static res:OperatorApp.Put}"
+                              Content="{res:Loc OperatorApp.Put}"
                               IsActive="{Binding IsPutVisible}"
                               Style="{DynamicResource PpcButtonMarkStyle}"
                               Visibility="Collapsed" />
