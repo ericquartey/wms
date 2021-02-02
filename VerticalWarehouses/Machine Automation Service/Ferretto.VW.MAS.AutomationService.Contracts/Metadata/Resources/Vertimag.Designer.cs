@@ -1294,6 +1294,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max speed.
+        /// </summary>
+        public static string ShutterMaxSpeed {
+            get {
+                return ResourceManager.GetString("ShutterMaxSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min speed.
+        /// </summary>
+        public static string ShutterMinSpeed {
+            get {
+                return ResourceManager.GetString("ShutterMinSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Specified.
         /// </summary>
         public static string ShutterType_NotSpecified {

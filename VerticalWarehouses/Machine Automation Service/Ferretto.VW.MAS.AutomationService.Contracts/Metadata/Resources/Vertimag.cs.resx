@@ -552,4 +552,10 @@
   <data name="EnabeNoteRules" xml:space="preserve">
     <value>Povolit známá pravidla</value>
   </data>
+  <data name="ShutterMaxSpeed" xml:space="preserve">
+    <value>Maximální rychlost</value>
+  </data>
+  <data name="ShutterMinSpeed" xml:space="preserve">
+    <value>Minimální rychlost </value>
+  </data>
 </root>

@@ -564,4 +564,10 @@
   <data name="Machine_IsDbSaveOnTelemetry" xml:space="preserve">
     <value>DB Save on Telemetry</value>
   </data>
+  <data name="ShutterMaxSpeed" xml:space="preserve">
+    <value>Max speed</value>
+  </data>
+  <data name="ShutterMinSpeed" xml:space="preserve">
+    <value>Min speed</value>
+  </data>
 </root>

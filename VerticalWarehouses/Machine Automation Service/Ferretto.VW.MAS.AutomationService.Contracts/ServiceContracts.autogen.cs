@@ -3984,6 +3984,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("ManualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ShutterManualParameters ManualMovements { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("MaxSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double MaxSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("MinSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double MinSpeed { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Type", Required = Newtonsoft.Json.Required.Always)]
         public ShutterType Type { get; set; }
     
