@@ -877,6 +877,10 @@ namespace Ferretto.VW.MAS.DataLayer
             return shutter.Inverter.Index;
         }
 
+        public double GetShutterMaxSpeed(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.MaxSpeed;
+
+        public double GetShutterMinSpeed(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.MinSpeed;
+
         public void IncrementCycles(BayNumber bayNumber)
         {
             lock (this.dataContext)

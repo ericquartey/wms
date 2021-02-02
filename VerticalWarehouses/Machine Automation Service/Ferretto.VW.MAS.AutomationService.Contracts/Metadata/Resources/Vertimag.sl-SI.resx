@@ -520,4 +520,10 @@
   <data name="View" xml:space="preserve">
     <value>Pregled</value>
   </data>
+  <data name="ShutterMaxSpeed" xml:space="preserve">
+    <value>Najvišja hitrost</value>
+  </data>
+  <data name="ShutterMinSpeed" xml:space="preserve">
+    <value>Najmanjša hitrost </value>
+  </data>
 </root>

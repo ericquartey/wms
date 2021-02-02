@@ -235,7 +235,7 @@
     <comment>Sensor</comment>
   </data>
   <data name="GateControl" xml:space="preserve">
-    <value>Gates Control</value>
+    <value>Shutter test</value>
   </data>
   <data name="Move" xml:space="preserve">
     <value>Move</value>
@@ -858,7 +858,7 @@
     <value>Rear</value>
   </data>
   <data name="UseWeightControl" xml:space="preserve">
-    <value>Use weight control</value>
+    <value>Do weighing</value>
   </data>
   <data name="ExeMeasurement" xml:space="preserve">
     <value>Execute Measurement</value>
@@ -884,10 +884,10 @@
     <value>Test</value>
   </data>
   <data name="MovementsGuided" xml:space="preserve">
-    <value>Movimenti Guidati</value>
+    <value>Guided movements</value>
   </data>
   <data name="MovementsManual" xml:space="preserve">
-    <value>Movimenti Manuali</value>
+    <value>Manual movements</value>
   </data>
   <data name="Calibration" xml:space="preserve">
     <value>Calibration</value>
@@ -1141,7 +1141,7 @@
     <value>Start checking files checksum '{0}'.</value>
   </data>
   <data name="StartExtractingFiles" xml:space="preserve">
-    <value>Start excracting files from '{0}'.</value>
+    <value>Start extracting files from '{0}'.</value>
   </data>
   <data name="StartingApplication" xml:space="preserve">
     <value>Starting application '{0}'.</value>
@@ -1684,7 +1684,7 @@
     <value>Load first drawer and test cells</value>
   </data>
   <data name="CellTestMenuTitle" xml:space="preserve">
-    <value>Cell test</value>
+    <value>Border cells test</value>
   </data>
   <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
     <value>Apply a correction to a group of cells</value>
@@ -1693,10 +1693,10 @@
     <value>Change cell block (obsolete)</value>
   </data>
   <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
-    <value>Check the share of the cells, divided by panel, keeping track of the verification placements made</value>
+    <value>Check the vertical position  of the cells, one for each panel, marking every checked panel</value>
   </data>
   <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
-    <value>Checking cell dimensions</value>
+    <value>Check cell vertical positions</value>
   </data>
   <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
     <value>Check the quota of one or more cells</value>
@@ -1726,7 +1726,7 @@
     <value>It allows to carry out a series of repetitive tests for the gate</value>
   </data>
   <data name="GateTestMenuTitle" xml:space="preserve">
-    <value>Gate test</value>
+    <value>Shutter test</value>
   </data>
   <data name="InsertMenuDescription" xml:space="preserve">
     <value>New unit insertion procedure</value>
@@ -2370,6 +2370,60 @@
   <data name="SoftwareUpdateDescription" xml:space="preserve">
     <value>Please insert USB stick</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Inverter reading completed successfully</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Inverter reading ended with errors</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Inverter reading stopped</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Start of next inverter reading</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Write code</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Read code</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Decimal count</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Inverter reading started</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Read all</value>
+  </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Import structure</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Overwrite target file</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Save inverter configuration</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Write single</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Write all</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Command sent</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Errors &amp; Actual values</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Errors</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Actual values</value>
+  </data>
   <data name="MachineDatabaseBackupMode" xml:space="preserve">
     <value>Machine database backup</value>
     <comment>DatabaseBackup</comment>
@@ -2385,5 +2439,8 @@
   <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
     <value>On telemetry</value>
     <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Database backup settings</value>
   </data>
 </root>

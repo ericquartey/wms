@@ -95,22 +95,36 @@
                    Text="{res:Loc InstallationApp.InverterParameterizationMenuTitle}" />
       </StackPanel>
 
-      <TextBlock Grid.Row="1"
-                 Margin="0,10,15,10"
-                 VerticalAlignment="Top"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{x:Static res:InstallationApp.DefaultConfigurationLoaded}"
-                 TextWrapping="WrapWithOverflow"
-                 Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVIC}}" />
+      <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Margin="0,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.DefaultConfigurationLoaded}"
+                   TextWrapping="WrapWithOverflow"
+                   Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVIC}}" />
 
-      <TextBlock Grid.Row="1"
-                 Margin="0,10,15,10"
-                 VerticalAlignment="Top"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{Binding SelectedFileConfiguration.FullName}"
-                 TextWrapping="WrapWithOverflow"
-                 Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVC}}" />
+        <TextBlock Margin="0,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{Binding SelectedFileConfiguration.FullName}"
+                   TextWrapping="WrapWithOverflow"
+                   Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVC}}" />
 
+        <controls:PpcButton Grid.Column="1"
+                            Width="60"
+                            Height="60"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            HorizontalContentAlignment="Center"
+                            Command="{Binding RefreshCommand}"
+                            IsBusy="{Binding IsBusy}"
+                            KindMaterial="Refresh" />
+      </Grid>
 
       <ListView Grid.Row="2"
                 HorizontalAlignment="Stretch"
@@ -145,18 +159,30 @@
                                 Command="{Binding ElementName=layoutroot, Path=DataContext.ShowInverterParamertersCommand}"
                                 CommandParameter="{Binding}"
                                 Content=""
+                                IsBusy="{Binding IsBusy}"
                                 Kind="Check"
                                 Style="{DynamicResource PpcButtonMenuCardStyle}" />
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>
 
-      <controls:PpcButton Grid.Row="2"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding SetInvertersParamertersCommand}"
-                          Content="{res:Loc InstallationApp.SaveParameters}"
-                          IsBusy="{Binding IsWaitingForResponse}" />
+      <StackPanel Grid.Row="2"
+                  HorizontalAlignment="Right"
+                  Orientation="Horizontal">
+        <controls:PpcButton Margin="0,0,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding ReadInvertersCommand}"
+                            Content="{res:Loc InstallationApp.ReadInverterParameter}"
+                            IsBusy="{Binding IsBusy}"
+                            Visibility="{Binding SelectedFileConfiguration, Converter={StaticResource RTVIC}}" />
+
+        <controls:PpcButton HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding SetInvertersParamertersCommand}"
+                            Content="{res:Loc InstallationApp.WriteAll}"
+                            IsBusy="{Binding IsBusy}" />
+      </StackPanel>
 
     </Grid>
 

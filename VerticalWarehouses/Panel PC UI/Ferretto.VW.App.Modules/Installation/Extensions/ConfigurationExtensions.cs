@@ -9,6 +9,8 @@ namespace Ferretto.VW.App
 
         private const string InstallerSnapshotFileName = "Installer:Snapshot:FileName";
 
+        private const string InverterParametersPath = "InverterParameters:Repository:Path";
+
         private const string UpdateExchangeInstallerName = "Update:Exchange:Installer:Name";
 
         private const string UpdateExchangeInstallerPath = "Update:Exchange:Installer:Path";
@@ -31,6 +33,16 @@ namespace Ferretto.VW.App
             }
 
             return appSettings.Get(InstallerSnapshotFileName);
+        }
+
+        public static string GetInverterParametersPath(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            return appSettings.Get(InverterParametersPath);
         }
 
         public static string GetUpdateExchangeInstallerName(this NameValueCollection appSettings)

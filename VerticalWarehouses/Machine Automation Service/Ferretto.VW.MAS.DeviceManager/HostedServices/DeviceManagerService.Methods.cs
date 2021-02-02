@@ -24,6 +24,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Ferretto.VW.MAS.DeviceManager.InverterReading;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
@@ -318,6 +319,32 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 message.TargetBay = BayNumber.ElevatorBay;
                 var currentStateMachine = new InverterProgrammingStateMachine(
+                    message,
+                    this.EventAggregator,
+                    this.Logger,
+                    this.ServiceScopeFactory);
+
+                this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                this.currentStateMachines.Add(currentStateMachine);
+
+                this.StartStateMachine(currentStateMachine);
+            }
+        }
+
+        private void ProcessInvertersReading(CommandMessage message, IServiceProvider serviceProvider)
+        {
+            System.Diagnostics.Debug.Assert(
+                message.Data is IInverterReadingMessageData,
+                "Message data should be consistent with message.Type");
+
+            if (this.currentStateMachines.Any(x => (x is InverterReadingStateMachine)))
+            {
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Inverters reading state machine. Operation already in progress", 1, MessageVerbosity.Error));
+            }
+            else
+            {
+                message.TargetBay = BayNumber.ElevatorBay;
+                var currentStateMachine = new InverterReadingStateMachine(
                     message,
                     this.EventAggregator,
                     this.Logger,

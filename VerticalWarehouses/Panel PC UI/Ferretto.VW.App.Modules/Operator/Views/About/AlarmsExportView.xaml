@@ -14,357 +14,357 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <ctrls:View.Resources>
-        <converters:DriveToVertimagFilenameConverter2 x:Key="DriveToVertimagFilenameConverter" />
+  <ctrls:View.Resources>
+    <converters:DriveToVertimagFilenameConverter2 x:Key="DriveToVertimagFilenameConverter" />
 
-        <Style x:Key="CellBorderStyle"
-               TargetType="Border">
-            <Setter Property="BorderThickness" Value="1,0,0,0" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
-            <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-        </Style>
+    <Style x:Key="CellBorderStyle"
+           TargetType="Border">
+      <Setter Property="BorderThickness" Value="1,0,0,0" />
+      <Setter Property="Padding" Value="10,5" />
+      <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
+      <Setter Property="VerticalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
 
-        <Style x:Key="FirstCellBorderStyle"
-               BasedOn="{StaticResource CellBorderStyle}"
-               TargetType="Border">
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
+    <Style x:Key="FirstCellBorderStyle"
+           BasedOn="{StaticResource CellBorderStyle}"
+           TargetType="Border">
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
 
-        <Style x:Key="CellTextBlockStyle"
-               TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-            <Setter Property="ToolTip" Value="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-        </Style>
+    <Style x:Key="CellTextBlockStyle"
+           TargetType="TextBlock">
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+      <Setter Property="ToolTip" Value="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
+    </Style>
 
-        <Style x:Key="GridViewColumnHeaderStyle"
-               TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Background" Value="{x:Null}" />
-            <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
+    <Style x:Key="GridViewColumnHeaderStyle"
+           TargetType="{x:Type GridViewColumnHeader}">
+      <Setter Property="Background" Value="{x:Null}" />
+      <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
+      <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
+      <Setter Property="BorderThickness" Value="0,0,0,1" />
+      <Setter Property="Padding" Value="10,5" />
+      <Setter Property="Margin" Value="-2,0" />
+      <Setter Property="Height" Value="32" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
+            <Border Background="Transparent"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+              <TextBlock x:Name="ContentHeader"
+                         Width="{TemplateBinding Width}"
+                         Padding="{TemplateBinding Padding}"
+                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                         Foreground="{TemplateBinding Foreground}"
+                         Text="{TemplateBinding Content}"
+                         TextAlignment="Center" />
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="ListBoxItemBorder"
+           TargetType="Border">
+      <Setter Property="BorderThickness" Value="0,0,0,1" />
+      <Setter Property="CornerRadius" Value="0" />
+      <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <Style TargetType="{x:Type ListView}">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="ScrollViewer.PanningMode" Value="Both" />
+      <Setter Property="Background" Value="{x:Null}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="ItemContainerStyle">
+        <Setter.Value>
+          <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Height" Value="54" />
+            <Setter Property="Foreground" Value="{DynamicResource ScaffolderTextEnabled}" />
+            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
             <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
-            <Setter Property="BorderThickness" Value="0,0,0,1" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="Margin" Value="-2,0" />
-            <Setter Property="Height" Value="32" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type GridViewColumnHeader}">
-                        <Border Background="Transparent"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                            <TextBlock x:Name="ContentHeader"
-                                       Width="{TemplateBinding Width}"
-                                       Padding="{TemplateBinding Padding}"
-                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       Text="{TemplateBinding Content}"
-                                       TextAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="ListBoxItemBorder"
-               TargetType="Border">
-            <Setter Property="BorderThickness" Value="0,0,0,1" />
-            <Setter Property="CornerRadius" Value="0" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-        </Style>
-
-        <Style TargetType="{x:Type ListView}">
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="ScrollViewer.PanningMode" Value="Both" />
-            <Setter Property="Background" Value="{x:Null}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoMediumGray}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="ItemContainerStyle">
-                <Setter.Value>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Margin" Value="0" />
-                        <Setter Property="Height" Value="54" />
-                        <Setter Property="Foreground" Value="{DynamicResource ScaffolderTextEnabled}" />
-                        <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                        <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
-                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border Name="border"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
-                                            Style="{StaticResource ListBoxItemBorder}">
-                                        <Grid>
-                                            <GridViewRowPresenter />
-                                            <ProgressBar Margin="0"
-                                                         HorizontalAlignment="Stretch"
-                                                         VerticalAlignment="Stretch"
-                                                         Background="{TemplateBinding Background}"
-                                                         BorderBrush="{TemplateBinding BorderBrush}"
-                                                         Foreground="{DynamicResource PpcButtonForeground}"
-                                                         IsHitTestVisible="False"
-                                                         IsIndeterminate="True"
-                                                         Opacity="0.2">
-                                                <ProgressBar.Visibility>
-                                                    <MultiBinding Converter="{StaticResource MBTUI}">
-                                                        <Binding Path="DataContext.IsBusy"
-                                                                 RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                                 AncestorType=UserControl}" />
-                                                        <Binding Path="IsSelected"
-                                                                 RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                                 AncestorType=ListViewItem}" />
-                                                    </MultiBinding>
-                                                </ProgressBar.Visibility>
-                                            </ProgressBar>
-                                        </Grid>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-
-                        <Style.Triggers>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsSelected" Value="True" />
-                                    <!--<Condition Property="Selector.IsSelectionActive" Value="true" />-->
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Foreground" Value="{DynamicResource ScaffolderIsSelectedForeground}" />
-                                <Setter Property="Background" Value="{DynamicResource ScaffolderIsSelectedBackground}" />
-                            </MultiTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=Self}}" Value="True" />
-                                    <Condition Binding="{Binding Path=DataContext.IsBusy, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" Value="True" />
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
-                                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-                            </MultiDataTrigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsEnabled" Value="False" />
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
-                            </MultiTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Setter.Value>
-            </Setter>
             <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListView}">
-                        <Border Name="Bd"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="0"
-                                SnapsToDevicePixels="true">
-                            <ScrollViewer Padding="{TemplateBinding Padding}"
-                                          Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
-                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            </ScrollViewer>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsGrouping" Value="true" />
-                                    <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
-                                </MultiTrigger.Conditions>
-                                <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-                            </MultiTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                  <Border Name="border"
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{DynamicResource FerrettoMediumGray}"
+                          Style="{StaticResource ListBoxItemBorder}">
+                    <Grid>
+                      <GridViewRowPresenter />
+                      <ProgressBar Margin="0"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   Background="{TemplateBinding Background}"
+                                   BorderBrush="{TemplateBinding BorderBrush}"
+                                   Foreground="{DynamicResource PpcButtonForeground}"
+                                   IsHitTestVisible="False"
+                                   IsIndeterminate="True"
+                                   Opacity="0.2">
+                        <ProgressBar.Visibility>
+                          <MultiBinding Converter="{StaticResource MBTUI}">
+                            <Binding Path="DataContext.IsBusy"
+                                     RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                     AncestorType=UserControl}" />
+                            <Binding Path="IsSelected"
+                                     RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                     AncestorType=ListViewItem}" />
+                          </MultiBinding>
+                        </ProgressBar.Visibility>
+                      </ProgressBar>
+                    </Grid>
+                  </Border>
+                </ControlTemplate>
+              </Setter.Value>
             </Setter>
-        </Style>
 
-    </ctrls:View.Resources>
+            <Style.Triggers>
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="IsSelected" Value="True" />
+                  <!--<Condition Property="Selector.IsSelectionActive" Value="true" />-->
+                </MultiTrigger.Conditions>
+                <Setter Property="Foreground" Value="{DynamicResource ScaffolderIsSelectedForeground}" />
+                <Setter Property="Background" Value="{DynamicResource ScaffolderIsSelectedBackground}" />
+              </MultiTrigger>
+              <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                  <Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource Mode=Self}}" Value="True" />
+                  <Condition Binding="{Binding Path=DataContext.IsBusy, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+              </MultiDataTrigger>
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="IsEnabled" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+              </MultiTrigger>
+            </Style.Triggers>
+          </Style>
+        </Setter.Value>
+      </Setter>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ListView}">
+            <Border Name="Bd"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="0"
+                    SnapsToDevicePixels="true">
+              <ScrollViewer Padding="{TemplateBinding Padding}"
+                            Style="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+              </ScrollViewer>
+            </Border>
+            <ControlTemplate.Triggers>
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="IsGrouping" Value="true" />
+                  <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
+                </MultiTrigger.Conditions>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+              </MultiTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
 
-    <Grid Margin="15,15,15,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="6*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+  </ctrls:View.Resources>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Esportazione lista allarmi" />
+  <Grid Margin="15,15,15,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="6*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
 
-        <ListView Grid.Row="1"
-                  Grid.Column="0"
-                  ItemsSource="{Binding AvailableDrives}"
-                  SelectedValue="{Binding SelectedDrive, Mode=TwoWay}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="815"
-                                    Header="File">
-                        <GridViewColumn.HeaderContainerStyle>
-                            <Style BasedOn="{StaticResource GridViewColumnHeaderStyle}"
-                                   TargetType="{x:Type GridViewColumnHeader}">
-                                <Setter Property="HorizontalContentAlignment" Value="Left" />
-                            </Style>
-                        </GridViewColumn.HeaderContainerStyle>
+    <TextBlock Grid.ColumnSpan="2"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="Esportazione lista allarmi" />
+
+    <ListView Grid.Row="1"
+              Grid.Column="0"
+              ItemsSource="{Binding AvailableDrives}"
+              SelectedValue="{Binding SelectedDrive, Mode=TwoWay}">
+      <ListView.View>
+        <GridView>
+          <GridViewColumn Width="815"
+                          Header="File">
+            <GridViewColumn.HeaderContainerStyle>
+              <Style BasedOn="{StaticResource GridViewColumnHeaderStyle}"
+                     TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+              </Style>
+            </GridViewColumn.HeaderContainerStyle>
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <Border Style="{StaticResource FirstCellBorderStyle}">
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="24"
+                            Height="24"
+                            Margin="0,0,10,0"
+                            Background="{DynamicResource FerrettoRed}"
+                            CornerRadius="12">
+                      <icons:PackIconFontAwesome HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="{DynamicResource FerrettoPureWhite}"
+                                                 Kind="ExclamationSolid" />
+                      <Border.Visibility>
+                        <MultiBinding Converter="{StaticResource MBTUI}">
+                          <Binding Path="IsSelected"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=ListViewItem}" />
+                          <Binding Path="DataContext.OverwriteTargetFile"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=UserControl}" />
+                          <Binding Path="DataContext.HasFilenameConflict"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=UserControl}" />
+                        </MultiBinding>
+                      </Border.Visibility>
+                    </Border>
+                    <TextBlock Grid.Column="1"
+                               Style="{StaticResource CellTextBlockStyle}">
+                      <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource DriveToVertimagFilenameConverter}">
+                          <Binding Path="." />
+                          <Binding Path="DataContext.Data"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=UserControl}" />
+                          <Binding Path="DataContext.OverwriteTargetFile"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=UserControl}" />
+                          <Binding Path="IsSelected"
+                                   RelativeSource="{RelativeSource Mode=FindAncestor,
+                                                                   AncestorType=ListViewItem}" />
+                        </MultiBinding>
+                      </TextBlock.Text>
+                    </TextBlock>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <!--<GridViewColumn Width="550">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Border Style="{StaticResource FirstCellBorderStyle}">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Border Width="24"
-                                                Height="24"
-                                                Margin="0,0,10,0"
-                                                Background="{DynamicResource FerrettoRed}"
-                                                CornerRadius="12">
-                                            <icons:PackIconFontAwesome HorizontalAlignment="Center"
-                                                                       VerticalAlignment="Center"
-                                                                       Foreground="{DynamicResource FerrettoPureWhite}"
-                                                                       Kind="ExclamationSolid" />
-                                            <Border.Visibility>
-                                                <MultiBinding Converter="{StaticResource MBTUI}">
-                                                    <Binding Path="IsSelected"
-                                                             RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                             AncestorType=ListViewItem}" />
-                                                    <Binding Path="DataContext.OverwriteTargetFile"
-                                                             RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                             AncestorType=UserControl}" />
-                                                    <Binding Path="DataContext.HasFilenameConflict"
-                                                             RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                             AncestorType=UserControl}" />
-                                                </MultiBinding>
-                                            </Border.Visibility>
-                                        </Border>
-                                        <TextBlock Grid.Column="1"
-                                                   Style="{StaticResource CellTextBlockStyle}">
-                                            <TextBlock.Text>
-                                                <MultiBinding Converter="{StaticResource DriveToVertimagFilenameConverter}">
-                                                    <Binding Path="." />
-                                                    <Binding Path="DataContext.Data"
-                                                             RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                             AncestorType=UserControl}" />
-                                                    <Binding Path="DataContext.OverwriteTargetFile"
-                                                             RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                             AncestorType=UserControl}" />
-                                                    <Binding Path="IsSelected"
-                                                             RelativeSource="{RelativeSource Mode=FindAncestor,
-                                                                                             AncestorType=ListViewItem}" />
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <!--<GridViewColumn Width="550">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                    -->
-                    <!--<Border Style="{StaticResource CellBorderStyle}">
+          -->
+          <!--<Border Style="{StaticResource CellBorderStyle}">
                                     <TextBlock Style="{StaticResource CellTextBlockStyle}"
                                                    FontStyle="Italic"
                                                    Text="{Binding Path=FullName}" />
                                 </Border>-->
-                    <!--
+          <!--
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>-->
-                </GridView>
-            </ListView.View>
-        </ListView>
+        </GridView>
+      </ListView.View>
+    </ListView>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
 
-            <CheckBox Grid.Row="0"
-                      Grid.Column="0"
-                      Margin="0,15,0,0"
-                      Content="{res:Loc OperatorApp.Id}"
-                      IsChecked="{Binding IncludeID, Mode=TwoWay}"
-                      Style="{StaticResource PpcCheckBoxStyle}" />
-            <CheckBox Grid.Row="0"
-                      Grid.Column="1"
-                      Margin="0,15,0,0"
-                      Content="{res:Loc OperatorApp.BayNumber}"
-                      IsChecked="{Binding IncludeBayNumber, Mode=TwoWay}"
-                      Style="{StaticResource PpcCheckBoxStyle}" />
-            <CheckBox Grid.Row="0"
-                      Grid.Column="2"
-                      Margin="0,15,0,0"
-                      Content="{res:Loc OperatorApp.Code}"
-                      IsChecked="{Binding IncludeCode, Mode=TwoWay}"
-                      Style="{StaticResource PpcCheckBoxStyle}" />
-            <CheckBox Grid.Row="0"
-                      Grid.Column="3"
-                      Margin="0,15,0,0"
-                      Content="{res:Loc OperatorApp.Description}"
-                      IsChecked="{Binding IncludeDescription, Mode=TwoWay}"
-                      Style="{StaticResource PpcCheckBoxStyle}" />
+      <CheckBox Grid.Row="0"
+                Grid.Column="0"
+                Margin="0,15,0,0"
+                Content="{res:Loc OperatorApp.Id}"
+                IsChecked="{Binding IncludeID, Mode=TwoWay}"
+                Style="{StaticResource PpcCheckBoxStyle}" />
+      <CheckBox Grid.Row="0"
+                Grid.Column="1"
+                Margin="0,15,0,0"
+                Content="{res:Loc OperatorApp.BayNumber}"
+                IsChecked="{Binding IncludeBayNumber, Mode=TwoWay}"
+                Style="{StaticResource PpcCheckBoxStyle}" />
+      <CheckBox Grid.Row="0"
+                Grid.Column="2"
+                Margin="0,15,0,0"
+                Content="{res:Loc OperatorApp.Code}"
+                IsChecked="{Binding IncludeCode, Mode=TwoWay}"
+                Style="{StaticResource PpcCheckBoxStyle}" />
+      <CheckBox Grid.Row="0"
+                Grid.Column="3"
+                Margin="0,15,0,0"
+                Content="{res:Loc OperatorApp.Description}"
+                IsChecked="{Binding IncludeDescription, Mode=TwoWay}"
+                Style="{StaticResource PpcCheckBoxStyle}" />
 
-            <CheckBox Grid.Row="1"
-                      Grid.Column="0"
-                      Margin="0,15,0,0"
-                      Content="{res:Loc OperatorApp.DetailCode}"
-                      IsChecked="{Binding IncludeDetailCode, Mode=TwoWay}"
-                      Style="{StaticResource PpcCheckBoxStyle}" />
-            <CheckBox Grid.Row="1"
-                      Grid.Column="1"
-                      Margin="0,15,0,0"
-                      Content="{res:Loc OperatorApp.InverterIndex}"
-                      IsChecked="{Binding IncludeInverterIndex, Mode=TwoWay}"
-                      Style="{StaticResource PpcCheckBoxStyle}" />
-            <CheckBox Grid.Row="1"
-                      Grid.Column="2"
-                      Margin="0,15,0,0"
-                      Content="{res:Loc OperatorApp.OccurrenceDate}"
-                      IsChecked="{Binding IncludeOccurenceDate, Mode=TwoWay}"
-                      Style="{StaticResource PpcCheckBoxStyle}" />
-            <CheckBox Grid.Row="1"
-                      Grid.Column="3"
-                      Margin="0,15,0,0"
-                      Content="{res:Loc OperatorApp.ResolutionDate}"
-                      IsChecked="{Binding IncludeResolutionDate, Mode=TwoWay}"
-                      Style="{StaticResource PpcCheckBoxStyle}" />
-        </Grid>
-
-
-
-        <CheckBox Grid.Row="4"
-                  Margin="0,15,0,0"
-                  Content="Overwrite target file"
-                  IsChecked="{Binding OverwriteTargetFile, Mode=TwoWay}"
-                  Style="{StaticResource PpcCheckBoxStyle}"
-                  Visibility="{Binding HasFilenameConflict, Converter={StaticResource TTUI}}" />
-
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="-20,0,0,0"
-                            Command="{Binding ExportCommand}"
-                            Content="{res:Loc InstallationApp.Export}"
-                            IsBusy="{Binding IsBusy}" />
+      <CheckBox Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,15,0,0"
+                Content="{res:Loc OperatorApp.DetailCode}"
+                IsChecked="{Binding IncludeDetailCode, Mode=TwoWay}"
+                Style="{StaticResource PpcCheckBoxStyle}" />
+      <CheckBox Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,15,0,0"
+                Content="{res:Loc OperatorApp.InverterIndex}"
+                IsChecked="{Binding IncludeInverterIndex, Mode=TwoWay}"
+                Style="{StaticResource PpcCheckBoxStyle}" />
+      <CheckBox Grid.Row="1"
+                Grid.Column="2"
+                Margin="0,15,0,0"
+                Content="{res:Loc OperatorApp.OccurrenceDate}"
+                IsChecked="{Binding IncludeOccurenceDate, Mode=TwoWay}"
+                Style="{StaticResource PpcCheckBoxStyle}" />
+      <CheckBox Grid.Row="1"
+                Grid.Column="3"
+                Margin="0,15,0,0"
+                Content="{res:Loc OperatorApp.ResolutionDate}"
+                IsChecked="{Binding IncludeResolutionDate, Mode=TwoWay}"
+                Style="{StaticResource PpcCheckBoxStyle}" />
     </Grid>
+
+
+
+    <CheckBox Grid.Row="4"
+              Margin="0,15,0,0"
+              Content="{res:Loc InstallationApp.OverwriteFile}"
+              IsChecked="{Binding OverwriteTargetFile, Mode=TwoWay}"
+              Style="{StaticResource PpcCheckBoxStyle}"
+              Visibility="{Binding HasFilenameConflict, Converter={StaticResource TTUI}}" />
+
+    <controls:PpcButton Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="-20,0,0,0"
+                        Command="{Binding ExportCommand}"
+                        Content="{res:Loc InstallationApp.Export}"
+                        IsBusy="{Binding IsBusy}" />
+  </Grid>
 </ctrls:View>

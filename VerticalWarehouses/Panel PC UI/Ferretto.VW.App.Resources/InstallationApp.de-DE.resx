@@ -2310,13 +2310,70 @@
   <data name="MachineDatabaseBackupMode" xml:space="preserve">
     <value>Machine database backup</value>
   </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Wechselrichterablesung erfolgreich abgeschlossen</value>
+  </data>
   <data name="DatabaseBackupModeInternal" xml:space="preserve">
     <value>Internal copy</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Wechselrichterablesung mit Fehlern abgeschlossen</value>
   </data>
   <data name="DatabaseBackupModeOnServer" xml:space="preserve">
     <value>On server</value>
   </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Wechselrichterablesung gestoppt</value>
+  </data>
   <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
     <value>On telemetry</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Beginn der nächsten Wechselrichtermessung</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Code schreiben</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Code lesen</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Dezimalzahl</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Wechselrichtermessung gestartet</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Lese alles</value>
+  </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Struktur importieren</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Zieldatei überschreiben</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Speichern Sie die Wechselrichterkonfiguration</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Single schreiben</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Schreibe alles</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Befehl gesendet</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Fehler &amp; Istwerte</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Istwerte</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Database backup settings</value>
   </data>
 </root>

@@ -65,8 +65,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public void Move(ShutterMovementDirection direction, bool bypassConditions, BayNumber bayNumber, MessageActor sender)
         {
             var parameters = this.baysDataProvider.GetManualMovementsShutter(bayNumber);
+            var maxSpeed = this.baysDataProvider.GetShutterMaxSpeed(bayNumber);
+            var minSpeed = this.baysDataProvider.GetShutterMinSpeed(bayNumber);
 
-            var speedRate = parameters.FeedRate * parameters.MinSpeed;
+            var speedRate = parameters.FeedRate * minSpeed;
 
             // speed is negative to go up
             speedRate *= (direction == ShutterMovementDirection.Up) ? -1 : 1;
@@ -99,8 +101,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"targetPosition: {targetPosition}; " +
                 $"feedRate: {parameters.FeedRate}; " +
                 $"speed: {speedRate}; " +
-                $"minspeed: {parameters.MinSpeed}; " +
-                $"maxspeed: {parameters.MaxSpeed}; ");
+                $"minspeed: {minSpeed}; " +
+                $"maxspeed: {maxSpeed}; ");
 
             this.PublishCommand(
                 messageData,
@@ -124,6 +126,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var direction = ShutterMovementDirection.NotSpecified;
             var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
             var position = this.sensorsProvider.GetShutterPosition(shutterInverter);
+
             switch (targetPosition)
             {
                 case ShutterPosition.Closed:
@@ -161,9 +164,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var parameters = this.baysDataProvider.GetAssistedMovementsShutter(bayNumber);
+            var maxSpeed = this.baysDataProvider.GetShutterMaxSpeed(bayNumber);
+            var minSpeed = this.baysDataProvider.GetShutterMinSpeed(bayNumber);
 
-            var speedRate = parameters.FeedRate * parameters.MaxSpeed;
-            var lowSpeed = parameters.FeedRate * parameters.MinSpeed;
+            var speedRate = parameters.FeedRate * maxSpeed;
+            var lowSpeed = parameters.FeedRate * minSpeed;
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
@@ -196,8 +201,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"targetPosition: {targetPosition}; " +
                 $"feedRate: {parameters.FeedRate}; " +
                 $"speed: {speedRate}; " +
-                $"minspeed: {parameters.MinSpeed}; " +
-                $"maxspeed: {parameters.MaxSpeed}; " +
+                $"minspeed: {minSpeed}; " +
+                $"maxspeed: {maxSpeed}; " +
                 $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
                 $"highspeeddurationclose: {parameters.HighSpeedDurationClose};" +
                 $"highspeedHalfdurationopen: {parameters.HighSpeedHalfDurationOpen}; " +
@@ -235,10 +240,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var parameters = this.baysDataProvider.GetAssistedMovementsShutter(bayNumber);
+            var maxSpeed = this.baysDataProvider.GetShutterMaxSpeed(bayNumber);
+            var minSpeed = this.baysDataProvider.GetShutterMinSpeed(bayNumber);
 
-            var speedRate = parameters.FeedRate * parameters.MaxSpeed;
+            var speedRate = parameters.FeedRate * maxSpeed;
 
-            var lowSpeed = parameters.FeedRate * parameters.MinSpeed;
+            var lowSpeed = parameters.FeedRate * minSpeed;
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
@@ -262,8 +269,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"RunTest Shutter " +
                 $"feedRate: {parameters.FeedRate}; " +
                 $"speed: {speedRate}; " +
-                $"minspeed: {parameters.MinSpeed}; " +
-                $"maxspeed: {parameters.MaxSpeed}; " +
+                $"minspeed: {minSpeed}; " +
+                $"maxspeed: {maxSpeed}; " +
                 $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
                 $"highspeeddurationclose: {parameters.HighSpeedDurationClose}" +
                 $"highspeedHalfdurationopen: {parameters.HighSpeedHalfDurationOpen}; " +

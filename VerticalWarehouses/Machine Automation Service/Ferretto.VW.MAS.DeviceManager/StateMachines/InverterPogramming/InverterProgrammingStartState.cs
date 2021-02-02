@@ -3,7 +3,9 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.InverterProgramming.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -29,7 +31,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
 
         #region Constructors
 
-        public InverterProgrammingStartState(IInverterProgrammingStateData stateData, ILogger logger)
+        public InverterProgrammingStartState(IInverterProgrammingStateData stateData,
+            ILogger logger)
             : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
@@ -47,9 +50,23 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
             get
             {
                 var data = this.machineData.InverterParametersData;
-                var item = data.SingleOrDefault(p => p.InverterIndex == this.currentInverterIndex);
-                var index = data.IndexOf(item) + 1;
-                return index < data.Count() ? data.ToList()[index] : null;
+
+                if (this.machineData.InverterParametersData.Any(s => s.InverterIndex > this.currentInverterIndex))
+                {
+                    for (int i = this.currentInverterIndex; i < (int)InverterIndex.Slave7; i++)
+                    {
+                        if (data.Any(p => p.InverterIndex == i))
+                        {
+                            return data.Single(p => p.InverterIndex == i);
+                        }
+                    }
+
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -71,8 +88,9 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
+
                         var notificationMessage = new NotificationMessage(
-                                       null,
+                               new InverterProgrammingMessageData(this.machineData.InverterParametersData),
                                $"Starting inverter Programming state on inverters",
                                MessageActor.Any,
                                MessageActor.DeviceManager,
@@ -81,10 +99,12 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
                                this.targetBay,
                                MessageStatus.OperationStepEnd);
                         this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-                        if (this.NextInverterParameters is InverterParametersData nextInverterParametersData)
+
+                        if (this.NextInverterParameters is InverterParametersData nextInverterParametersData &&
+                            nextInverterParametersData != null)
                         {
                             this.currentInverterIndex = nextInverterParametersData.InverterIndex;
-                            var nextCommandMessageData = new InverterProgrammingFieldMessageData(nextInverterParametersData.Parameters, nextInverterParametersData.IsCheckInverterVersion);
+                            var nextCommandMessageData = new InverterProgrammingFieldMessageData(nextInverterParametersData);
                             var nextCommandMessage = new FieldCommandMessage(
                                 nextCommandMessageData,
                                 $"Inverter Programming Start State Field Command",
@@ -96,33 +116,27 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
                         }
                         else
                         {
+                            this.stateData.FieldMessage = message;
                             this.ParentStateMachine.ChangeState(new InverterProgrammingEndState(this.stateData, this.Logger));
-                            var notificationEndMessage = new NotificationMessage(
-                                              null,
-                                      $"Starting inverter Programming state on inverters",
-                                      MessageActor.Any,
-                                      MessageActor.DeviceManager,
-                                      MessageType.InverterProgramming,
-                                      this.requestingBay,
-                                      this.targetBay,
-                                      MessageStatus.OperationEnd);
-                            this.ParentStateMachine.PublishNotificationMessage(notificationEndMessage);
                         }
 
                         break;
 
                     case MessageStatus.OperationError:
+
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new InverterProgrammingErrorState(this.stateData, this.Logger));
                         break;
                 }
             }
 
-            if (message.Type == FieldMessageType.IoDriverException)
-            {
-                this.stateData.FieldMessage = message;
-                this.ParentStateMachine.ChangeState(new InverterProgrammingErrorState(this.stateData, this.Logger));
-            }
+            //if (message.Type == FieldMessageType.IoDriverException ||
+            //    message.Type == FieldMessageType.InverterException ||
+            //    message.Type == FieldMessageType.InverterError)
+            //{
+            //    this.stateData.FieldMessage = message;
+            //    this.ParentStateMachine.ChangeState(new InverterProgrammingErrorState(this.stateData, this.Logger));
+            //}
         }
 
         public override void ProcessNotificationMessage(NotificationMessage message)
@@ -131,21 +145,9 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
 
         public override void Start()
         {
-            var mainInverter = this.machineData.InverterParametersData.First();
-            var commandMessageData = new InverterProgrammingFieldMessageData(mainInverter.Parameters, mainInverter.IsCheckInverterVersion);
-            var commandMessage = new FieldCommandMessage(
-                commandMessageData,
-                $"Inverter Programming Start State Field Command",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.DeviceManager,
-                FieldMessageType.InverterProgramming,
-                mainInverter.InverterIndex);
-            this.currentInverterIndex = mainInverter.InverterIndex;
-
-            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverters {this.machineData.InverterParametersData.Count()}");
             var notificationMessage = new NotificationMessage(
-                           null,
+                   new InverterProgrammingMessageData(this.machineData.InverterParametersData),
                    $"Starting inverter Programming state on inverters",
                    MessageActor.Any,
                    MessageActor.DeviceManager,
@@ -153,8 +155,20 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
                    this.requestingBay,
                    this.targetBay,
                    MessageStatus.OperationStart);
-
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            var mainInverter = this.machineData.InverterParametersData.OrderBy(s => s.InverterIndex).FirstOrDefault();
+            var commandMessageData = new InverterProgrammingFieldMessageData(mainInverter);
+            var commandMessage = new FieldCommandMessage(
+                commandMessageData,
+                $"Inverter Programming Start State Field Command",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.InverterProgramming,
+                mainInverter.InverterIndex);
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+
+            this.currentInverterIndex = mainInverter.InverterIndex;
         }
 
         public override void Stop(StopRequestReason reason)

@@ -32,6 +32,8 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
+using Ferretto.VW.MAS.DeviceManager.InverterReading;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
@@ -241,6 +243,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                         this.ProcessInvertersProgramming(command, serviceProvider);
                         break;
 
+                    case MessageType.InverterReading:
+                        this.ProcessInvertersReading(command, serviceProvider);
+                        break;
+
                     case MessageType.CheckIntrusion:
                         this.ProcessCheckIntrusion(command);
                         break;
@@ -292,9 +298,15 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.PowerEnable:
                             case MessageType.InverterFaultReset:
                             case MessageType.ResetSecurity:
-                            case MessageType.InverterProgramming:
                             case MessageType.InverterPowerEnable:
                             case MessageType.CheckIntrusion:
+                                this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
+                                this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                this.SendCleanDebug();
+                                break;
+
+                            case MessageType.InverterProgramming:
+                            case MessageType.InverterReading:
                                 this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
@@ -544,7 +556,17 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         private void MachineSensorsStatusOnSecurityStateChanged(object sender, StatusUpdateEventArgs e)
         {
+            this.Logger.LogError($"Security signal fall detected! Begin Stop machine procedure.");
             this.SecurityErrorDetect();
+            var messageData = new StateChangedMessageData(e.NewState);
+            var msg = new NotificationMessage(
+                messageData,
+                "FSM Error",
+                MessageActor.Any,
+                MessageActor.DeviceManager,
+                MessageType.RunningStateChanged,
+                BayNumber.None);
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
         private void OnFieldNotificationReceived(FieldNotificationMessage receivedMessage, IServiceProvider serviceProvider)
@@ -855,15 +877,54 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     case FieldMessageType.InverterProgramming when receivedMessage.Source is FieldMessageActor.InverterDriver:
 
+                        var dataMessage = receivedMessage.Data as IInverterProgrammingFieldMessageData;
+                        var msgProgramming = new InverterProgrammingMessageData();
+
+                        if (dataMessage != null)
+                        {
+                            var parameterData = new InverterParametersData(dataMessage.InverterParametersData);
+                            var iparameterData = new List<InverterParametersData>();
+                            iparameterData.Add(parameterData);
+                            msgProgramming.InverterParametersData = iparameterData;
+                        }
+
                         this.EventAggregator
                             .GetEvent<NotificationEvent>()
                             .Publish(
                                 new NotificationMessage(
-                                    null,
+                                    msgProgramming,
                                     receivedMessage.Description,
                                     MessageActor.Any,
                                     MessageActor.DeviceManager,
                                     MessageType.InverterProgramming,
+                                    bayNumber,
+                                    bayNumber,
+                                    receivedMessage.Status));
+
+                        break;
+
+                    case FieldMessageType.InverterReading when receivedMessage.Source is FieldMessageActor.InverterDriver:
+
+                        var dataMessageRead = receivedMessage.Data as IInverterReadingFieldMessageData;
+                        var msgReading = new InverterReadingMessageData();
+
+                        if (dataMessageRead != null)
+                        {
+                            var parameterData = new InverterParametersData(dataMessageRead.InverterParametersData);
+                            var iparameterData = new List<InverterParametersData>();
+                            iparameterData.Add(parameterData);
+                            msgReading.InverterParametersData = iparameterData;
+                        }
+
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(
+                                new NotificationMessage(
+                                    msgReading,
+                                    receivedMessage.Description,
+                                    MessageActor.Any,
+                                    MessageActor.DeviceManager,
+                                    MessageType.InverterReading,
                                     bayNumber,
                                     bayNumber,
                                     receivedMessage.Status));

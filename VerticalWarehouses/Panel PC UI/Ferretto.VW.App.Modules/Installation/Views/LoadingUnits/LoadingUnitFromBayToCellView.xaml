@@ -125,7 +125,7 @@
                            MaxValue="999"
                            MinValue="1" />
 
-        <Border Grid.Row="5"
+        <Border Grid.Row="4"
                 Grid.ColumnSpan="4"
                 Margin="0,15,15,0"
                 BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -321,6 +321,7 @@
             </Grid>
         </Border>
 
+
         <TextBlock Grid.Row="6"
                    Grid.Column="0"
                    Grid.ColumnSpan="3"
@@ -383,6 +384,45 @@
                                 Command="{Binding SelectBayPositionUpCommand}"
                                 Content="{res:Loc InstallationApp.BayPositionUp}"
                                 IsActive="{Binding IsPositionUpSelected}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="6"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+            <StackPanel.Style>
+                <Style TargetType="{x:Type StackPanel}">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=MachineService.Bay.IsExternal}"
+                                     Value="false">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <controls:PpcButton Width="135"
+                                Margin="0,0,12,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding ExtBayTowardOperatorCommand}"
+                                Content="{res:Loc InstallationApp.ExtBayTowardOperator}" />
+
+            <controls:PpcButton Margin="0,0,12,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding ExtBayMovementForInsertionCommand}"
+                                Content="{res:Loc InstallationApp.ExtBayMovementForInsertion}" />
+
+            <controls:PpcButton Margin="0,0,12,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding ExtBayMovementForExtractionCommand}"
+                                Content="{res:Loc InstallationApp.ExtBayMovementForExtraction}" />
+
         </StackPanel>
 
         <StackPanel Grid.Row="6"

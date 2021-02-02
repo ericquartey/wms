@@ -136,6 +136,10 @@
         {
             #region Fields
 
+            public const string ERRORPARAMETERINVERTER = "ErrorParameterInverterViewModel";
+
+            public const string ERRORPARAMETERSINVERTERDETAILS = "ErrorParametersInverterDetailsViewModel";
+
             public const string INVERTERSPARAMETERSEXPORT = "InvertersParametersExportViewModel";
 
             public const string INVERTERSPARAMETERSIMPORT = "InvertersParametersImportViewModel";

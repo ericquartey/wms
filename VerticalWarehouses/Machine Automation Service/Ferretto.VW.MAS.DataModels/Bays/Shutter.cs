@@ -12,6 +12,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public ShutterManualParameters ManualMovements { get; set; }
 
+        public double MaxSpeed { get; set; }
+
+        public double MinSpeed { get; set; }
+
         public ShutterType Type { get; set; }
 
         #endregion

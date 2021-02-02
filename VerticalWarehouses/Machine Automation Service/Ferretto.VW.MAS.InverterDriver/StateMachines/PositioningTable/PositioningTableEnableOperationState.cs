@@ -58,6 +58,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     (short)InverterParameterId.ControlWord,
                     this.Inverter.TableTravelControlWord.Value));
 
+            // separate set HorizontalAxis and EnableOperation
             this.Inverter.TableTravelControlWord.EnableOperation = true;
             this.Inverter.TableTravelControlWord.Resume = false;
 

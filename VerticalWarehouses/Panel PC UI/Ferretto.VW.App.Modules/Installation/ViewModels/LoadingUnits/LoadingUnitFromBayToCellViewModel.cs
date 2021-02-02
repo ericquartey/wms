@@ -28,13 +28,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             IMachineModeWebService machineModeWebService,
             IMachineCellsWebService machineCellsWebService,
             ISensorsService sensorsService,
-            IBayManager bayManagerService)
+            IBayManager bayManagerService,
+            IMachineExternalBayWebService machineExternalBayWebService)
             : base(
                 machineLoadingUnitsWebService,
                 machineCellsWebService,
                 machineModeWebService,
                 sensorsService,
-                bayManagerService)
+                bayManagerService,
+                machineExternalBayWebService)
         {
         }
 
@@ -78,6 +80,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             switch (this.MachineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
@@ -97,14 +100,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual3 &&
-                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
-                   this.LoadingUnitId.HasValue &&
-                   !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
-
-                default:
-                    return base.CanStart() &&
-                   !this.IsMoving &&
-                   this.MachineModeService.MachineMode == MachineMode.Manual &&
                    (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);

@@ -28,8 +28,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(7)]
             public ShutterManualParameters ManualMovements { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Shutter_Type))]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterMaxSpeed))]
             [Id(5)]
+            public double MaxSpeed { get; set; }
+
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterMinSpeed))]
+            [Id(6)]
+            public double MinSpeed { get; set; }
+
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Shutter_Type))]
+            [Id(4)]
             public ShutterType Type { get; set; }
 
             #endregion

@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         IEnumerable<Inverter> GetAllParameters();
 
+        void SaveInverterStructure(IEnumerable<Inverter> inverters);
+
         #endregion
     }
 }

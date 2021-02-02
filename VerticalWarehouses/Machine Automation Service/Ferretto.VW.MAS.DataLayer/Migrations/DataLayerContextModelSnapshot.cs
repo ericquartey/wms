@@ -1076,15 +1076,25 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("DataSet");
 
+                    b.Property<int>("DecimalCount");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("Error");
+
                     b.Property<int?>("InverterId");
 
                     b.Property<bool>("IsReadOnly");
+
+                    b.Property<short>("ReadCode");
 
                     b.Property<string>("StringValue");
 
                     b.Property<string>("Type");
 
-                    b.Property<int>("Value");
+                    b.Property<string>("Um");
+
+                    b.Property<short>("WriteCode");
 
                     b.HasKey("Id");
 
@@ -1217,6 +1227,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("HorizontalPositionToCalibrate");
 
                     b.Property<bool>("IsAxisChanged");
+
+                    b.Property<bool>("IsDbSaveOnTelemetry");
 
                     b.Property<bool>("IsHeartBeat");
 
@@ -1662,6 +1674,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("InverterId");
 
                     b.Property<int?>("ManualMovementsId");
+
+                    b.Property<double>("MaxSpeed");
+
+                    b.Property<double>("MinSpeed");
 
                     b.Property<string>("Type")
                         .IsRequired()

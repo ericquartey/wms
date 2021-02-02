@@ -107,7 +107,17 @@
                                     Abbrevation="4.7.6"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuDatabaseBackupCommand}"
-                                    Content="Database backup settings"
+                                    Content="{res:Loc InstallationApp.DatabaseBackupMenuDescription}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="{res:Loc InstallationApp.ErrorAndActualValue}"
+                                    Height="86"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.7"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding ErrorInverterParametersCommand}"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 

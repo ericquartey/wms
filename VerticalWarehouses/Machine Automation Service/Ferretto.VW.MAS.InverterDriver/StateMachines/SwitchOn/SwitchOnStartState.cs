@@ -51,18 +51,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                 !this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
                 && this.axisToSwitchOn == Axis.Horizontal;
 
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
             if (this.InverterStatus.SystemIndex == 0
                 && !this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
                 && oldAxis != this.InverterStatus.CommonControlWord.HorizontalAxis
                 && this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsAxisChanged()
                 )
             {
-                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
-
-                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-
                 // read AxisChanged parameter
                 inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
 
@@ -80,9 +79,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                     this.minTimeout = 300;
                 }
 
-                // switch on axis
+                // separate set HorizontalAxis and switch on axis
                 this.InverterStatus.CommonControlWord.SwitchOn = true;
-                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
+                inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
                 this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 

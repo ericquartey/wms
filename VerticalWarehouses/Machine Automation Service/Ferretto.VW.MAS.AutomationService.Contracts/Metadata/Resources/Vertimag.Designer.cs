@@ -880,6 +880,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DB Save on Telemetry.
+        /// </summary>
+        public static string Machine_IsDbSaveOnTelemetry {
+            get {
+                return ResourceManager.GetString("Machine_IsDbSaveOnTelemetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HeartBeat in inverter communication .
         /// </summary>
         public static string Machine_IsHeartBeat {
@@ -1281,6 +1290,24 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string ShutterManualParameters_MinSpeed {
             get {
                 return ResourceManager.GetString("ShutterManualParameters_MinSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max speed.
+        /// </summary>
+        public static string ShutterMaxSpeed {
+            get {
+                return ResourceManager.GetString("ShutterMaxSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min speed.
+        /// </summary>
+        public static string ShutterMinSpeed {
+            get {
+                return ResourceManager.GetString("ShutterMinSpeed", resourceCulture);
             }
         }
         

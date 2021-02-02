@@ -55,11 +55,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             Services.ISensorsService sensorsService,
             Services.IBayManager bayManagerService,
-            IMachineModeWebService machineModeWebService)
+            IMachineModeWebService machineModeWebService,
+            IMachineExternalBayWebService machineExternalBayWebService)
             : base(
                 machineLoadingUnitsWebService,
                 machineModeWebService,
-                bayManagerService)
+                bayManagerService,
+                machineExternalBayWebService)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new System.ArgumentNullException(nameof(machineBaysWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
@@ -149,6 +151,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             switch (this.MachineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     return base.CanStart() &&
                         this.MachineModeService.MachineMode == MachineMode.Manual;
 
@@ -159,10 +162,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 case BayNumber.BayThree:
                     return base.CanStart() &&
                         this.MachineModeService.MachineMode == MachineMode.Manual3;
-
-                default:
-                    return base.CanStart() &&
-                        this.MachineModeService.MachineMode == MachineMode.Manual;
             }
         }
 

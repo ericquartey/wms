@@ -60,6 +60,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     this.Inverter.PositionControlWord.Value,
                     InverterDataset.ActualDataset));
 
+            // separate set HorizontalAxis and EnableOperation
             this.Inverter.PositionControlWord.EnableOperation = true;
             this.Inverter.PositionControlWord.RelativeMovement = (this.data.MovementType == MovementType.Relative);
 

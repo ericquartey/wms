@@ -66,25 +66,13 @@
     <None Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Parameters\ACU_giostra_800kg_INV20200305.txt">
+    <None Update="Parameters\ACU.vcb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Parameters\AGL_serranda_3posizioni_INV20200303.txt">
+    <None Update="Parameters\AGL.vcb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Parameters\AGL_serranda_800kg.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Parameters\ANG_vert_oriz_800kg_INV20200303.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Parameters\Para_list_ACU.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Parameters\Para_list_AGL.xlsx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Parameters\Para_list_ANG.xlsx">
+    <None Update="Parameters\ANG.vcb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Properties\app.manifest">

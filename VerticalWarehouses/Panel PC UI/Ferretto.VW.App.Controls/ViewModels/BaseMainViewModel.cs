@@ -224,6 +224,8 @@ namespace Ferretto.VW.App.Controls
             }
             catch (Exception)
             {
+                this.IsWaitingForResponse = false;
+                this.RaiseCanExecuteChanged();
                 throw;
             }
 
@@ -249,12 +251,15 @@ namespace Ferretto.VW.App.Controls
             }
             catch (Exception)
             {
+                this.IsWaitingForResponse = false;
+                this.RaiseCanExecuteChanged();
                 throw;
             }
             finally
             {
                 this.IsWaitingForResponse = false;
             }
+            this.RaiseCanExecuteChanged();
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)

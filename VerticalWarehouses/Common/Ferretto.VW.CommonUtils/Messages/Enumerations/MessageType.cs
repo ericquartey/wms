@@ -1,5 +1,7 @@
 ﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
+    // the Messages Data class name must begin with the MessageType name and end with MessageData
+    // see NotificationMessageUiFactory.FromNotificationMessage
     public enum MessageType
     {
         NotSpecified,
@@ -140,6 +142,10 @@
         /// <summary>
         /// use light curtain to check intrusion
         /// </summary>
-        CheckIntrusion
+        CheckIntrusion,
+
+        InverterReading,
+
+        InverterParameters
     }
 }

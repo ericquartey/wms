@@ -163,15 +163,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         this.Logger.LogTrace($"Inverter {this.InverterStatus.SystemIndex} moving towards target position: present {position.Value}, old {this.oldPosition}");
                         // if position doesn't change raise an alarm
                         if (this.oldPosition.HasValue
-                            && position.Value == this.oldPosition.Value
-                            && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                            && Math.Abs(position.Value - this.oldPosition.Value) < 3
+                            )
                         {
-                            this.Logger.LogError($"PositioningStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
-                            this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                            return true;
+                            if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                            {
+                                this.Logger.LogError($"PositioningStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
+                                this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                                return true;
+                            }
                         }
-                        this.startTime = DateTime.UtcNow;
-                        this.oldPosition = position;
+                        else
+                        {
+                            this.startTime = DateTime.UtcNow;
+                            this.oldPosition = position;
+                        }
                     }
                 }
             }

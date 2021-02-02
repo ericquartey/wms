@@ -1,222 +1,68 @@
 {
-  "LoadingUnits": [
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 1,
-        "IsFree": false,
-        "PanelId": 1,
-        "Position": 1995.0,
-        "Priority": 1,
-        "Side": "Front"
-      },
-      "CellId": 1,
-      "Code": "001",
-      "GrossWeight": 189.19687500000009,
-      "Height": 124.0,
-      "Id": 1,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 300.0,
-      "MissionsCount": 5,
-      "NetWeight": 101.19687500000009,
-      "Status": "InLocation",
-      "Tare": 88.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 194,
-        "IsFree": false,
-        "PanelId": 23,
-        "Position": 2694.0,
-        "Priority": 194,
-        "Side": "Back"
-      },
-      "CellId": 194,
-      "Code": "002",
-      "GrossWeight": 884.38172800000029,
-      "Height": 174.0,
-      "Id": 2,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 7,
-      "NetWeight": 795.38172800000029,
-      "Status": "InLocation",
-      "Tare": 89.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 138,
-        "IsFree": false,
-        "PanelId": 20,
-        "Position": 1994.0,
-        "Priority": 138,
-        "Side": "Back"
-      },
-      "CellId": 138,
-      "Code": "003",
-      "GrossWeight": 875.3586750000004,
-      "Height": 174.0,
-      "Id": 3,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 3,
-      "NetWeight": 786.3586750000004,
-      "Status": "InLocation",
-      "Tare": 89.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 13,
-        "IsFree": false,
-        "PanelId": 1,
-        "Position": 2145.0,
-        "Priority": 13,
-        "Side": "Front"
-      },
-      "CellId": 13,
-      "Code": "004",
-      "GrossWeight": 90.592432000000144,
-      "Height": 99.0,
-      "Id": 4,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 300.0,
-      "MissionsCount": 4,
-      "NetWeight": 2.5924320000001444,
-      "Status": "InLocation",
-      "Tare": 88.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 41,
-        "IsFree": false,
-        "PanelId": 3,
-        "Position": 2496.0,
-        "Priority": 41,
-        "Side": "Front"
-      },
-      "CellId": 41,
-      "Code": "005",
-      "GrossWeight": 90.592432000000144,
-      "Height": 99.0,
-      "Id": 5,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 300.0,
-      "MissionsCount": 2,
-      "NetWeight": 2.5924320000001444,
-      "Status": "InLocation",
-      "Tare": 88.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 51,
-        "IsFree": false,
-        "PanelId": 3,
-        "Position": 2621.0,
-        "Priority": 51,
-        "Side": "Front"
-      },
-      "CellId": 51,
-      "Code": "006",
-      "GrossWeight": 104.91612299999997,
-      "Height": 149.0,
-      "Id": 6,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 2,
-      "NetWeight": 15.91612299999997,
-      "Status": "InLocation",
-      "Tare": 89.0
-    },
-    {
-      "Cell": {
-        "BlockLevel": "None",
-        "Id": 27,
-        "IsFree": false,
-        "PanelId": 2,
-        "Position": 2320.0,
-        "Priority": 27,
-        "Side": "Front"
-      },
-      "CellId": 27,
-      "Code": "007",
-      "GrossWeight": 92.689779999999928,
-      "Height": 149.0,
-      "Id": 7,
-      "IsInFullTest": false,
-      "IsIntoMachine": true,
-      "MaxNetWeight": 800.0,
-      "MissionsCount": 1,
-      "NetWeight": 3.6897799999999279,
-      "Status": "InLocation",
-      "Tare": 89.0
-    }
-  ],
+  "LoadingUnits": [],
   "Machine": {
     "Bays": [
       {
         "Accessories": {
           "AlphaNumericBar": {
-            "Id": 4,
+            "Id": 21,
             "IpAddress": "192.168.0.11",
             "IsConfiguredNew": false,
-            "IsEnabledNew": true,
+            "IsEnabledNew": false,
             "Size": "ExtraLarge",
             "TcpPort": 2020
           },
           "BarcodeReader": {
-            "Id": 5,
+            "Id": 22,
             "IsConfiguredNew": false,
-            "IsEnabledNew": true,
+            "IsEnabledNew": false,
             "PortName": "COM3"
           },
           "CardReader": {
-            "Id": 6,
+            "Id": 23,
             "IsConfiguredNew": false,
-            "IsEnabledNew": false
+            "IsEnabledNew": false,
+            "TokenRegex": "(?<Token>.+)\\r"
           },
-          "Id": 1,
+          "Id": 0,
           "LabelPrinter": {
-            "Id": 7,
+            "Id": 24,
             "IsConfiguredNew": false,
             "IsEnabledNew": false,
             "Name": "Microsoft Print to PDF"
           },
           "LaserPointer": {
-            "Id": 8,
+            "Id": 25,
             "IpAddress": "192.168.0.13",
             "IsConfiguredNew": false,
-            "IsEnabledNew": true,
+            "IsEnabledNew": false,
             "TcpPort": 2020,
             "XOffset": 0.0,
             "YOffset": 0.0,
             "ZOffsetLowerPosition": 0.0,
             "ZOffsetUpperPosition": 875.0
+          },
+          "WeightingScale": {
+            "Id": 26,
+            "IpAddress": "192.168.137.14",
+            "IsConfiguredNew": false,
+            "IsEnabledNew": false,
+            "TcpPort": 4001
           }
         },
         "Carousel": {
           "AssistedMovements": {
             "FeedRate": 1.0,
-            "Id": 1
+            "Id": 12
           },
-          "ElevatorDistance": 448.216880625668,
+          "ElevatorDistance": 448.238271,
           "HomingCreepSpeed": 5.0,
-          "HomingFastSpeed": 22.0,
-          "Id": 1,
-          "LastIdealPosition": -7.9972127758901852,
+          "HomingFastSpeed": 20.0,
+          "Id": 11,
+          "LastIdealPosition": 0.0,
           "ManualMovements": {
             "FeedRate": 0.1,
-            "Id": 2
+            "Id": 13
           }
         },
         "ChainOffset": -8.0,
@@ -224,26 +70,26 @@
         "EmptyLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 5,
+          "Id": 11,
           "Speed": 140.0
         },
         "FullLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
-          "Id": 8,
+          "Id": 12,
           "Speed": 130.0
         },
         "Id": 1,
         "Inventory": true,
         "Inverter": {
-          "Id": 4,
+          "Id": 31,
           "Index": "Slave3",
           "Parameters": [],
           "TcpPort": 0,
           "Type": "Acu"
         },
         "IoDevice": {
-          "Id": 2,
+          "Id": 1,
           "Index": "IoDevice1",
           "IpAddress": "192.168.0.1",
           "TcpPort": 19550
@@ -251,7 +97,7 @@
         "IsActive": true,
         "IsAdjustByWeight": false,
         "IsCheckIntrusion": false,
-        "IsDouble": true,
+        "IsDouble": false,
         "IsExternal": false,
         "IsFastDepositToBay": false,
         "LastCalibrationCycles": 0,
@@ -260,19 +106,8 @@
         "Pick": true,
         "Positions": [
           {
-            "Height": 446.5,
-            "Id": 1,
-            "IsBlocked": false,
-            "IsUpper": false,
-            "Location": "InternalBay1Down",
-            "LocationUpDown": "Down",
-            "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 399.0,
-            "ProfileOffset": 0.0
-          },
-          {
-            "Height": 893.0,
-            "Id": 2,
+            "Height": 889.5,
+            "Id": 12,
             "IsBlocked": false,
             "IsUpper": true,
             "Location": "InternalBay1Up",
@@ -280,6 +115,17 @@
             "MaxDoubleHeight": 0.0,
             "MaxSingleHeight": 399.0,
             "ProfileOffset": 25.0
+          },
+          {
+            "Height": 445.5,
+            "Id": 11,
+            "IsBlocked": false,
+            "IsUpper": false,
+            "Location": "InternalBay1Down",
+            "LocationUpDown": "Down",
+            "MaxDoubleHeight": 0.0,
+            "MaxSingleHeight": 399.0,
+            "ProfileOffset": 0.0
           }
         ],
         "Put": true,
@@ -287,27 +133,28 @@
         "Shutter": {
           "AssistedMovements": {
             "FeedRate": 0.2,
-            "HighSpeedDurationClose": 14.0,
-            "HighSpeedDurationOpen": 14.0,
-            "HighSpeedHalfDurationClose": 6.0,
-            "HighSpeedHalfDurationOpen": 7.0,
-            "Id": 2,
+            "HighSpeedDurationClose": 15.0,
+            "HighSpeedDurationOpen": 15.0,
+            "HighSpeedHalfDurationClose": 8.0,
+            "HighSpeedHalfDurationOpen": 8.0,
+            "Id": 11,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
-          "Id": 1,
+          "Id": 0,
           "Inverter": {
             "Id": 3,
             "Index": "Slave2",
-            "Parameters": [],
             "TcpPort": 0,
             "Type": "Agl"
           },
           "ManualMovements": {
-            "FeedRate": 0.1,
+            "FeedRate": 0.2,
             "HighSpeedDurationClose": 0.0,
             "HighSpeedDurationOpen": 0.0,
-            "Id": 3,
+            "HighSpeedHalfDurationClose": 0.0,
+            "HighSpeedHalfDurationOpen": 0.0,
+            "Id": 13,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
@@ -321,72 +168,92 @@
       {
         "Accessories": {
           "AlphaNumericBar": {
+            "Id": 41,
+            "IpAddress": "192.168.0.11",
+            "IsConfiguredNew": false,
             "IsEnabledNew": false,
-            "IpAddress": "192.168.0.21",
-            "TcpPort": 1234,
-            "Size": "Medium"
+            "Size": "ExtraLarge",
+            "TcpPort": 2020
           },
+          "BarcodeReader": {
+            "Id": 42,
+            "IsConfiguredNew": false,
+            "IsEnabledNew": false,
+            "PortName": "COM3"
+          },
+          "CardReader": {
+            "Id": 43,
+            "IsConfiguredNew": false,
+            "IsEnabledNew": false,
+            "TokenRegex": "(?<Token>.+)\\r"
+          },
+          "Id": 0,
           "LabelPrinter": {
+            "Id": 44,
+            "IsConfiguredNew": false,
             "IsEnabledNew": false,
             "Name": "Microsoft Print to PDF"
           },
           "LaserPointer": {
+            "Id": 45,
+            "IpAddress": "192.168.0.13",
+            "IsConfiguredNew": false,
             "IsEnabledNew": false,
-            "IpAddress": "192.168.0.23",
-            "TcpPort": 12020
+            "TcpPort": 2020,
+            "XOffset": 0.0,
+            "YOffset": 0.0,
+            "ZOffsetLowerPosition": 0.0,
+            "ZOffsetUpperPosition": 875.0
           },
-          "BarcodeReader": {
+          "WeightingScale": {
+            "Id": 46,
+            "IpAddress": "192.168.0.15",
+            "IsConfiguredNew": false,
             "IsEnabledNew": false,
-            "PortName": "COM4"
-          },
-          "CardReader": {
-            "IsEnabledNew": false
+            "TcpPort": 4001
           }
-          /*  "WeightingScale": {
-            "IsEnabledNew": true
-          }*/
         },
         "ChainOffset": -10.0,
         "CyclesToCalibrate": 50,
         "EmptyLoadMovement": {
           "Acceleration": 400.0,
           "Deceleration": 400.0,
-          "Id": 7,
+          "Id": 21,
           "Speed": 500.0
         },
         "External": {
           "AssistedMovements": {
             "FeedRate": 1.0,
-            "Id": 1
+            "Id": 22
           },
           "ExtraRace": 25.0,
           "HomingCreepSpeed": 5.0,
           "HomingFastSpeed": 40.0,
-          "Id": 1,
-          "LastIdealPosition": -9.9828309898201866,
+          "Id": 21,
+          "LastIdealPosition": 0.0,
           "ManualMovements": {
             "FeedRate": 0.1,
-            "Id": 2
+            "Id": 23
           },
           "Race": 1016.0
         },
         "FullLoadMovement": {
           "Acceleration": 400.0,
           "Deceleration": 400.0,
-          "Id": 6,
+          "Id": 22,
           "Speed": 500.0
         },
         "Id": 2,
         "Inventory": true,
         "Inverter": {
-          "Id": 2,
+          "Id": 51,
           "Index": "Slave5",
           "Parameters": [],
           "TcpPort": 0,
           "Type": "Acu"
         },
         "IoDevice": {
-          "Id": 1,
+          "Id": 2,
           "Index": "IoDevice2",
           "IpAddress": "192.168.0.2",
           "TcpPort": 19550
@@ -403,8 +270,8 @@
         "Pick": true,
         "Positions": [
           {
-            "Height": 781.5,
-            "Id": 3,
+            "Height": 780.0,
+            "Id": 22,
             "IsBlocked": false,
             "IsUpper": true,
             "Location": "InternalBay2Up",
@@ -423,23 +290,24 @@
             "HighSpeedDurationOpen": 15.0,
             "HighSpeedHalfDurationClose": 8.0,
             "HighSpeedHalfDurationOpen": 8.0,
-            "Id": 1,
+            "Id": 21,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
-          "Id": 2,
+          "Id": 0,
           "Inverter": {
             "Id": 5,
             "Index": "Slave4",
-            "Parameters": [],
             "TcpPort": 0,
             "Type": "Agl"
           },
           "ManualMovements": {
-            "FeedRate": 0.1,
+            "FeedRate": 0.2,
             "HighSpeedDurationClose": 0.0,
             "HighSpeedDurationOpen": 0.0,
-            "Id": 4,
+            "HighSpeedHalfDurationClose": 0.0,
+            "HighSpeedHalfDurationOpen": 0.0,
+            "Id": 23,
             "MaxSpeed": 40000.0,
             "MinSpeed": 5000.0
           },
@@ -451,36 +319,39 @@
         "View": true
       }
     ],
+    "Box": false,
     "Elevator": {
       "Axes": [
         {
           "AssistedMovements": {
             "FeedRate": 0.3,
             "FeedRateAfterZero": 0.9,
-            "Id": 4,
+            "Id": 41,
             "TargetDistance": 0.0,
             "TargetDistanceAfterZero": 0.0
           },
           "BrakeActivatePercent": 10.0,
           "BrakeReleaseTime": 150.0,
+          "Center": 0,
           "ChainOffset": 0.0,
           "EmptyLoadMovement": {
             "Acceleration": 1000.0,
             "Deceleration": 1000.0,
-            "Id": 3,
+            "Id": 23,
             "Speed": 770.0
           },
           "FullLoadMovement": {
             "Acceleration": 400.0,
             "Deceleration": 400.0,
-            "Id": 2,
+            "Id": 33,
             "Speed": 550.0
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 40.0,
-          "Id": 1,
+          "HorizontalCalibrateSpeed": 0.0,
+          "Id": 40,
           "Inverter": {
-            "Id": 1,
+            "Id": 42,
             "Index": "MainInverter",
             "IpAddress": "192.168.0.100",
             "Parameters": [],
@@ -488,76 +359,192 @@
             "Type": "Ang"
           },
           "LastCalibrationCycles": 0,
-          "LastIdealPosition": 1996.0624187168858,
-          "LowerBound": 442.0,
+          "LastIdealPosition": 0.0,
+          "LowerBound": 440.0,
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.15,
-            "Id": 2,
+            "Id": 43,
             "TargetDistance": 30.0,
             "TargetDistanceAfterZero": 30.0
           },
-          "Offset": 604.5,
+          "Offset": 593.0,
           "Orientation": "Vertical",
           "ProfileCalibrateLength": 0.0,
           "ProfileCalibratePosition": 0,
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
-          "Resolution": 77.4970626897481,
+          "Resolution": 77.49706,
           "UpperBound": 4900.0,
           "WeightMeasurement": {
             "Id": 1,
-            "MeasureConst0": -839.02,
-            "MeasureConst1": 197.43,
-            "MeasureConst2": -3.9557,
+            "MeasureConst0": -723.53,
+            "MeasureConst1": 159.73,
+            "MeasureConst2": -1.8163,
             "MeasureSpeed": 20.0,
             "MeasureTime": 15
           }
         },
         {
           "AssistedMovements": {
-            "FeedRate": 0.3,
+            "FeedRate": 0.1,
             "FeedRateAfterZero": 0.9,
-            "Id": 1,
+            "Id": 51,
             "TargetDistance": 0.0,
             "TargetDistanceAfterZero": 0.0
           },
           "BrakeActivatePercent": 0.0,
           "BrakeReleaseTime": 0.0,
-          "ChainOffset": -9.5,
+          "Center": 0,
+          "ChainOffset": -12.0,
           "EmptyLoadMovement": {
             "Acceleration": 2000.0,
             "Deceleration": 2000.0,
-            "Id": 4,
+            "Id": 52,
             "Speed": 600.0
           },
           "FullLoadMovement": {
             "Acceleration": 600.0,
             "Deceleration": 600.0,
-            "Id": 1,
+            "Id": 53,
             "Speed": 400.0
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
-          "Id": 2,
-          "LastCalibrationCycles": 981,
+          "HorizontalCalibrateSpeed": 1.5,
+          "Id": 50,
+          "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,
           "LowerBound": -4000.0,
           "ManualMovements": {
             "FeedRate": 0.1,
             "FeedRateAfterZero": 0.3,
-            "Id": 3,
+            "Id": 54,
             "TargetDistance": 3000.0,
             "TargetDistanceAfterZero": 3000.0
           },
           "Offset": 0.0,
           "Orientation": "Horizontal",
           "ProfileCalibrateLength": 900.0,
-          "ProfileCalibratePosition": 124,
+          "ProfileCalibratePosition": 300,
           "ProfileCalibrateSpeed": 30.0,
           "Profiles": [
             {
               "Id": 1,
+              "Name": "LongPickup",
+              "Steps": [
+                {
+                  "Acceleration": 3000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 231,
+                  "Number": 0,
+                  "Position": 140.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 5000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 232,
+                  "Number": 1,
+                  "Position": 370.0,
+                  "Speed": 100.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 233,
+                  "Number": 2,
+                  "Position": 800.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 234,
+                  "Number": 3,
+                  "Position": 900.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 235,
+                  "Number": 4,
+                  "Position": 1249.0,
+                  "Speed": 600.0
+                }
+              ],
+              "TotalDistance": 1249.0
+            },
+            {
+              "Id": 2,
+              "Name": "ShortPickup",
+              "Steps": [
+                {
+                  "Acceleration": 3000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 131,
+                  "Number": 0,
+                  "Position": 140.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 5000.0,
+                  "AdjustAccelerationByWeight": false,
+                  "AdjustSpeedByWeight": false,
+                  "Deceleration": 0.0,
+                  "Id": 132,
+                  "Number": 1,
+                  "Position": 370.0,
+                  "Speed": 100.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 133,
+                  "Number": 2,
+                  "Position": 800.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 134,
+                  "Number": 3,
+                  "Position": 900.0,
+                  "Speed": 600.0
+                },
+                {
+                  "Acceleration": 2000.0,
+                  "AdjustAccelerationByWeight": true,
+                  "AdjustSpeedByWeight": true,
+                  "Deceleration": 0.0,
+                  "Id": 135,
+                  "Number": 4,
+                  "Position": 1249.0,
+                  "Speed": 600.0
+                }
+              ],
+              "TotalDistance": 1249.0
+            },
+            {
+              "Id": 3,
               "Name": "ShortDeposit",
               "Steps": [
                 {
@@ -565,7 +552,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 18,
+                  "Id": 121,
                   "Number": 0,
                   "Position": 210.0,
                   "Speed": 200.0
@@ -575,7 +562,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 25,
+                  "Id": 122,
                   "Number": 1,
                   "Position": 350.0,
                   "Speed": 600.0
@@ -585,7 +572,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 24,
+                  "Id": 123,
                   "Number": 2,
                   "Position": 740.0,
                   "Speed": 600.0
@@ -595,7 +582,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 23,
+                  "Id": 124,
                   "Number": 3,
                   "Position": 1000.0,
                   "Speed": 100.0
@@ -605,127 +592,13 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 22,
+                  "Id": 125,
                   "Number": 4,
-                  "Position": 1250.61368078981,
+                  "Position": 1249.0,
                   "Speed": 600.0
                 }
               ],
-              "TotalDistance": 1250.61368078981
-            },
-            {
-              "Id": 2,
-              "Name": "LongPickup",
-              "Steps": [
-                {
-                  "Acceleration": 3000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Id": 21,
-                  "Number": 0,
-                  "Position": 140.0,
-                  "Speed": 600.0
-                },
-                {
-                  "Acceleration": 5000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Id": 20,
-                  "Number": 1,
-                  "Position": 370.0,
-                  "Speed": 100.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 19,
-                  "Number": 2,
-                  "Position": 800.0,
-                  "Speed": 600.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 27,
-                  "Number": 3,
-                  "Position": 900.0,
-                  "Speed": 600.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 17,
-                  "Number": 4,
-                  "Position": 1250.61368078981,
-                  "Speed": 600.0
-                }
-              ],
-              "TotalDistance": 1250.61368078981
-            },
-            {
-              "Id": 3,
-              "Name": "ShortPickup",
-              "Steps": [
-                {
-                  "Acceleration": 3000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Id": 15,
-                  "Number": 0,
-                  "Position": 140.0,
-                  "Speed": 600.0
-                },
-                {
-                  "Acceleration": 5000.0,
-                  "AdjustAccelerationByWeight": false,
-                  "AdjustSpeedByWeight": false,
-                  "Deceleration": 0.0,
-                  "Id": 9,
-                  "Number": 1,
-                  "Position": 370.0,
-                  "Speed": 100.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 10,
-                  "Number": 2,
-                  "Position": 800.0,
-                  "Speed": 600.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 11,
-                  "Number": 3,
-                  "Position": 900.0,
-                  "Speed": 600.0
-                },
-                {
-                  "Acceleration": 2000.0,
-                  "AdjustAccelerationByWeight": true,
-                  "AdjustSpeedByWeight": true,
-                  "Deceleration": 0.0,
-                  "Id": 16,
-                  "Number": 4,
-                  "Position": 1250.61368078981,
-                  "Speed": 600.0
-                }
-              ],
-              "TotalDistance": 1250.61368078981
+              "TotalDistance": 1249.0
             },
             {
               "Id": 4,
@@ -736,7 +609,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 13,
+                  "Id": 221,
                   "Number": 0,
                   "Position": 210.0,
                   "Speed": 200.0
@@ -746,7 +619,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 14,
+                  "Id": 222,
                   "Number": 1,
                   "Position": 350.0,
                   "Speed": 600.0
@@ -756,7 +629,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": true,
                   "Deceleration": 0.0,
-                  "Id": 12,
+                  "Id": 223,
                   "Number": 2,
                   "Position": 740.0,
                   "Speed": 600.0
@@ -766,7 +639,7 @@
                   "AdjustAccelerationByWeight": true,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 26,
+                  "Id": 224,
                   "Number": 3,
                   "Position": 1000.0,
                   "Speed": 100.0
@@ -776,16 +649,16 @@
                   "AdjustAccelerationByWeight": false,
                   "AdjustSpeedByWeight": false,
                   "Deceleration": 0.0,
-                  "Id": 28,
+                  "Id": 225,
                   "Number": 4,
-                  "Position": 1250.61368078981,
+                  "Position": 1249.0,
                   "Speed": 600.0
                 }
               ],
-              "TotalDistance": 1250.61368078981
+              "TotalDistance": 1249.0
             }
           ],
-          "Resolution": 88.3038477,
+          "Resolution": 88.18085145,
           "UpperBound": 4000.0
         }
       ],
@@ -793,7 +666,7 @@
       "StructuralProperties": {
         "BeltRigidity": 7000000,
         "BeltSpacing": 300.0,
-        "ElevatorWeight": 230.0,
+        "ElevatorWeight": 233.0,
         "HalfShaftLength": 2084.0,
         "Id": 1,
         "PulleyDiameter": 160.0,
@@ -802,28 +675,32 @@
         "ShaftElasticity": 210000.0
       }
     },
+    "EnabeNoteRules": false,
     "ExpireCountPrecent": 10,
     "ExpireDays": 14,
     "Height": 5261.0,
     "HorizontalCyclesToCalibrate": 10,
     "HorizontalPositionToCalibrate": 3000,
-    "Id": 2,
+    "Id": 1,
+    "IsAxisChanged": true,
+    "IsHeartBeat": false,
+    "ItemUniqueIdLength": 0,
     "LoadUnitDepth": 840.0,
-    "LoadUnitMaxHeight": 695.0,
+    "LoadUnitMaxHeight": 699.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 95.0,
-    "LoadUnitTare": 88.0,
+    "LoadUnitTare": 104.0,
     "LoadUnitVeryHeavyPercent": 0.0,
     "LoadUnitWidth": 4250.0,
     "MaxGrossWeight": 70000.0,
-    "ModelName": "NEW VERTIMAG 84XL800-BIG/BES H5261",
+    "ModelName": "VERTIMAG 84XL800-BIG/BES H5261",
     "Panels": [
       {
         "Cells": [
           {
             "BlockLevel": "None",
             "Id": 1,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 1995.0,
             "Priority": 1,
@@ -832,7 +709,7 @@
           {
             "BlockLevel": "None",
             "Id": 3,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2020.0,
             "Priority": 3,
@@ -841,7 +718,7 @@
           {
             "BlockLevel": "None",
             "Id": 5,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2045.0,
             "Priority": 5,
@@ -850,7 +727,7 @@
           {
             "BlockLevel": "None",
             "Id": 7,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2070.0,
             "Priority": 7,
@@ -859,7 +736,7 @@
           {
             "BlockLevel": "None",
             "Id": 9,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2095.0,
             "Priority": 9,
@@ -868,7 +745,7 @@
           {
             "BlockLevel": "None",
             "Id": 11,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2120.0,
             "Priority": 11,
@@ -877,7 +754,7 @@
           {
             "BlockLevel": "None",
             "Id": 13,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2145.0,
             "Priority": 13,
@@ -886,7 +763,7 @@
           {
             "BlockLevel": "None",
             "Id": 15,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2170.0,
             "Priority": 15,
@@ -895,7 +772,7 @@
           {
             "BlockLevel": "None",
             "Id": 17,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2195.0,
             "Priority": 17,
@@ -904,7 +781,7 @@
           {
             "BlockLevel": "None",
             "Id": 19,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 1,
             "Position": 2220.0,
             "Priority": 19,
@@ -912,7 +789,7 @@
           }
         ],
         "Id": 1,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -920,7 +797,7 @@
           {
             "BlockLevel": "None",
             "Id": 21,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 2,
             "Position": 2245.0,
             "Priority": 21,
@@ -947,7 +824,7 @@
           {
             "BlockLevel": "None",
             "Id": 27,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 2,
             "Position": 2320.0,
             "Priority": 27,
@@ -956,7 +833,7 @@
           {
             "BlockLevel": "None",
             "Id": 29,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 2,
             "Position": 2345.0,
             "Priority": 29,
@@ -965,7 +842,7 @@
           {
             "BlockLevel": "None",
             "Id": 31,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 2,
             "Position": 2370.0,
             "Priority": 31,
@@ -974,7 +851,7 @@
           {
             "BlockLevel": "None",
             "Id": 33,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 2,
             "Position": 2395.0,
             "Priority": 33,
@@ -983,7 +860,7 @@
           {
             "BlockLevel": "None",
             "Id": 35,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 2,
             "Position": 2420.0,
             "Priority": 35,
@@ -992,7 +869,7 @@
           {
             "BlockLevel": "None",
             "Id": 37,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 2,
             "Position": 2445.0,
             "Priority": 37,
@@ -1001,7 +878,7 @@
           {
             "BlockLevel": "None",
             "Id": 39,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 2,
             "Position": 2470.0,
             "Priority": 39,
@@ -1009,7 +886,7 @@
           }
         ],
         "Id": 2,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1017,96 +894,96 @@
           {
             "BlockLevel": "None",
             "Id": 41,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2496.0,
+            "Position": 2495.0,
             "Priority": 41,
             "Side": "Front"
           },
           {
             "BlockLevel": "None",
             "Id": 43,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2521.0,
+            "Position": 2520.0,
             "Priority": 43,
             "Side": "Front"
           },
           {
             "BlockLevel": "None",
             "Id": 45,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2546.0,
+            "Position": 2545.0,
             "Priority": 45,
             "Side": "Front"
           },
           {
             "BlockLevel": "None",
             "Id": 47,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2571.0,
+            "Position": 2570.0,
             "Priority": 47,
             "Side": "Front"
           },
           {
             "BlockLevel": "None",
             "Id": 49,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2596.0,
+            "Position": 2595.0,
             "Priority": 49,
             "Side": "Front"
           },
           {
             "BlockLevel": "None",
             "Id": 51,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2621.0,
+            "Position": 2620.0,
             "Priority": 51,
             "Side": "Front"
           },
           {
             "BlockLevel": "None",
             "Id": 53,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2646.0,
+            "Position": 2645.0,
             "Priority": 53,
             "Side": "Front"
           },
           {
             "BlockLevel": "None",
             "Id": 55,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2671.0,
+            "Position": 2670.0,
             "Priority": 55,
             "Side": "Front"
           },
           {
             "BlockLevel": "None",
             "Id": 57,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2696.0,
+            "Position": 2695.0,
             "Priority": 57,
             "Side": "Front"
           },
           {
             "BlockLevel": "None",
             "Id": 59,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 3,
-            "Position": 2721.0,
+            "Position": 2720.0,
             "Priority": 59,
             "Side": "Front"
           }
         ],
         "Id": 3,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1114,7 +991,7 @@
           {
             "BlockLevel": "None",
             "Id": 61,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 4,
             "Position": 2745.0,
             "Priority": 61,
@@ -1123,7 +1000,7 @@
           {
             "BlockLevel": "None",
             "Id": 63,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 4,
             "Position": 2770.0,
             "Priority": 63,
@@ -1203,7 +1080,7 @@
           }
         ],
         "Id": 4,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1300,7 +1177,7 @@
           }
         ],
         "Id": 5,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1397,7 +1274,7 @@
           }
         ],
         "Id": 6,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1494,7 +1371,7 @@
           }
         ],
         "Id": 7,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1591,7 +1468,7 @@
           }
         ],
         "Id": 8,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1601,7 +1478,7 @@
             "Id": 161,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 3994.0,
+            "Position": 3995.0,
             "Priority": 161,
             "Side": "Front"
           },
@@ -1610,7 +1487,7 @@
             "Id": 163,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 4019.0,
+            "Position": 4020.0,
             "Priority": 163,
             "Side": "Front"
           },
@@ -1619,7 +1496,7 @@
             "Id": 165,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 4044.0,
+            "Position": 4045.0,
             "Priority": 165,
             "Side": "Front"
           },
@@ -1628,7 +1505,7 @@
             "Id": 167,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 4069.0,
+            "Position": 4070.0,
             "Priority": 167,
             "Side": "Front"
           },
@@ -1637,7 +1514,7 @@
             "Id": 169,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 4094.0,
+            "Position": 4095.0,
             "Priority": 169,
             "Side": "Front"
           },
@@ -1646,7 +1523,7 @@
             "Id": 171,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 4119.0,
+            "Position": 4120.0,
             "Priority": 171,
             "Side": "Front"
           },
@@ -1655,7 +1532,7 @@
             "Id": 173,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 4144.0,
+            "Position": 4145.0,
             "Priority": 173,
             "Side": "Front"
           },
@@ -1664,7 +1541,7 @@
             "Id": 175,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 4169.0,
+            "Position": 4170.0,
             "Priority": 175,
             "Side": "Front"
           },
@@ -1673,7 +1550,7 @@
             "Id": 177,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 4194.0,
+            "Position": 4195.0,
             "Priority": 177,
             "Side": "Front"
           },
@@ -1682,13 +1559,13 @@
             "Id": 179,
             "IsFree": true,
             "PanelId": 9,
-            "Position": 4219.0,
+            "Position": 4220.0,
             "Priority": 179,
             "Side": "Front"
           }
         ],
         "Id": 9,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1698,7 +1575,7 @@
             "Id": 181,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4244.0,
+            "Position": 4245.0,
             "Priority": 181,
             "Side": "Front"
           },
@@ -1707,7 +1584,7 @@
             "Id": 183,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4269.0,
+            "Position": 4270.0,
             "Priority": 183,
             "Side": "Front"
           },
@@ -1716,7 +1593,7 @@
             "Id": 185,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4294.0,
+            "Position": 4295.0,
             "Priority": 185,
             "Side": "Front"
           },
@@ -1725,7 +1602,7 @@
             "Id": 187,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4319.0,
+            "Position": 4320.0,
             "Priority": 187,
             "Side": "Front"
           },
@@ -1734,7 +1611,7 @@
             "Id": 189,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4344.0,
+            "Position": 4345.0,
             "Priority": 189,
             "Side": "Front"
           },
@@ -1743,7 +1620,7 @@
             "Id": 191,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4369.0,
+            "Position": 4370.0,
             "Priority": 191,
             "Side": "Front"
           },
@@ -1752,7 +1629,7 @@
             "Id": 193,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4394.0,
+            "Position": 4395.0,
             "Priority": 193,
             "Side": "Front"
           },
@@ -1761,7 +1638,7 @@
             "Id": 195,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4419.0,
+            "Position": 4420.0,
             "Priority": 195,
             "Side": "Front"
           },
@@ -1770,7 +1647,7 @@
             "Id": 197,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4444.0,
+            "Position": 4445.0,
             "Priority": 197,
             "Side": "Front"
           },
@@ -1779,13 +1656,13 @@
             "Id": 199,
             "IsFree": true,
             "PanelId": 10,
-            "Position": 4469.0,
+            "Position": 4470.0,
             "Priority": 199,
             "Side": "Front"
           }
         ],
         "Id": 10,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1882,7 +1759,7 @@
           }
         ],
         "Id": 11,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -1979,7 +1856,7 @@
           }
         ],
         "Id": 12,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Front"
       },
       {
@@ -2604,7 +2481,7 @@
           }
         ],
         "Id": 19,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2614,7 +2491,7 @@
             "Id": 122,
             "IsFree": true,
             "PanelId": 20,
-            "Position": 1794.0,
+            "Position": 1795.0,
             "Priority": 122,
             "Side": "Back"
           },
@@ -2623,7 +2500,7 @@
             "Id": 124,
             "IsFree": true,
             "PanelId": 20,
-            "Position": 1819.0,
+            "Position": 1820.0,
             "Priority": 124,
             "Side": "Back"
           },
@@ -2632,7 +2509,7 @@
             "Id": 126,
             "IsFree": true,
             "PanelId": 20,
-            "Position": 1844.0,
+            "Position": 1845.0,
             "Priority": 126,
             "Side": "Back"
           },
@@ -2641,7 +2518,7 @@
             "Id": 128,
             "IsFree": true,
             "PanelId": 20,
-            "Position": 1869.0,
+            "Position": 1870.0,
             "Priority": 128,
             "Side": "Back"
           },
@@ -2650,7 +2527,7 @@
             "Id": 130,
             "IsFree": true,
             "PanelId": 20,
-            "Position": 1894.0,
+            "Position": 1895.0,
             "Priority": 130,
             "Side": "Back"
           },
@@ -2659,7 +2536,7 @@
             "Id": 132,
             "IsFree": true,
             "PanelId": 20,
-            "Position": 1919.0,
+            "Position": 1920.0,
             "Priority": 132,
             "Side": "Back"
           },
@@ -2668,7 +2545,7 @@
             "Id": 134,
             "IsFree": true,
             "PanelId": 20,
-            "Position": 1944.0,
+            "Position": 1945.0,
             "Priority": 134,
             "Side": "Back"
           },
@@ -2677,31 +2554,31 @@
             "Id": 136,
             "IsFree": true,
             "PanelId": 20,
-            "Position": 1969.0,
+            "Position": 1970.0,
             "Priority": 136,
             "Side": "Back"
           },
           {
             "BlockLevel": "None",
             "Id": 138,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 20,
-            "Position": 1994.0,
+            "Position": 1995.0,
             "Priority": 138,
             "Side": "Back"
           },
           {
             "BlockLevel": "None",
             "Id": 140,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 20,
-            "Position": 2019.0,
+            "Position": 2020.0,
             "Priority": 140,
             "Side": "Back"
           }
         ],
         "Id": 20,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2709,7 +2586,7 @@
           {
             "BlockLevel": "None",
             "Id": 142,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 21,
             "Position": 2045.0,
             "Priority": 142,
@@ -2718,7 +2595,7 @@
           {
             "BlockLevel": "None",
             "Id": 144,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 21,
             "Position": 2070.0,
             "Priority": 144,
@@ -2727,7 +2604,7 @@
           {
             "BlockLevel": "None",
             "Id": 146,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 21,
             "Position": 2095.0,
             "Priority": 146,
@@ -2736,7 +2613,7 @@
           {
             "BlockLevel": "None",
             "Id": 148,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 21,
             "Position": 2120.0,
             "Priority": 148,
@@ -2745,7 +2622,7 @@
           {
             "BlockLevel": "None",
             "Id": 150,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 21,
             "Position": 2145.0,
             "Priority": 150,
@@ -2754,7 +2631,7 @@
           {
             "BlockLevel": "None",
             "Id": 152,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 21,
             "Position": 2170.0,
             "Priority": 152,
@@ -2798,7 +2675,7 @@
           }
         ],
         "Id": 21,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2808,7 +2685,7 @@
             "Id": 162,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2294.0,
+            "Position": 2295.0,
             "Priority": 162,
             "Side": "Back"
           },
@@ -2817,7 +2694,7 @@
             "Id": 164,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2319.0,
+            "Position": 2320.0,
             "Priority": 164,
             "Side": "Back"
           },
@@ -2826,7 +2703,7 @@
             "Id": 166,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2344.0,
+            "Position": 2345.0,
             "Priority": 166,
             "Side": "Back"
           },
@@ -2835,7 +2712,7 @@
             "Id": 168,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2369.0,
+            "Position": 2370.0,
             "Priority": 168,
             "Side": "Back"
           },
@@ -2844,7 +2721,7 @@
             "Id": 170,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2394.0,
+            "Position": 2395.0,
             "Priority": 170,
             "Side": "Back"
           },
@@ -2853,7 +2730,7 @@
             "Id": 172,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2419.0,
+            "Position": 2420.0,
             "Priority": 172,
             "Side": "Back"
           },
@@ -2862,7 +2739,7 @@
             "Id": 174,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2444.0,
+            "Position": 2445.0,
             "Priority": 174,
             "Side": "Back"
           },
@@ -2871,7 +2748,7 @@
             "Id": 176,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2469.0,
+            "Position": 2470.0,
             "Priority": 176,
             "Side": "Back"
           },
@@ -2880,7 +2757,7 @@
             "Id": 178,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2494.0,
+            "Position": 2495.0,
             "Priority": 178,
             "Side": "Back"
           },
@@ -2889,13 +2766,13 @@
             "Id": 180,
             "IsFree": true,
             "PanelId": 22,
-            "Position": 2519.0,
+            "Position": 2520.0,
             "Priority": 180,
             "Side": "Back"
           }
         ],
         "Id": 22,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -2905,7 +2782,7 @@
             "Id": 182,
             "IsFree": true,
             "PanelId": 23,
-            "Position": 2544.0,
+            "Position": 2545.0,
             "Priority": 182,
             "Side": "Back"
           },
@@ -2914,7 +2791,7 @@
             "Id": 184,
             "IsFree": true,
             "PanelId": 23,
-            "Position": 2569.0,
+            "Position": 2570.0,
             "Priority": 184,
             "Side": "Back"
           },
@@ -2923,7 +2800,7 @@
             "Id": 186,
             "IsFree": true,
             "PanelId": 23,
-            "Position": 2594.0,
+            "Position": 2595.0,
             "Priority": 186,
             "Side": "Back"
           },
@@ -2932,7 +2809,7 @@
             "Id": 188,
             "IsFree": true,
             "PanelId": 23,
-            "Position": 2619.0,
+            "Position": 2620.0,
             "Priority": 188,
             "Side": "Back"
           },
@@ -2941,7 +2818,7 @@
             "Id": 190,
             "IsFree": true,
             "PanelId": 23,
-            "Position": 2644.0,
+            "Position": 2645.0,
             "Priority": 190,
             "Side": "Back"
           },
@@ -2950,49 +2827,49 @@
             "Id": 192,
             "IsFree": true,
             "PanelId": 23,
-            "Position": 2669.0,
+            "Position": 2670.0,
             "Priority": 192,
             "Side": "Back"
           },
           {
             "BlockLevel": "None",
             "Id": 194,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 23,
-            "Position": 2694.0,
+            "Position": 2695.0,
             "Priority": 194,
             "Side": "Back"
           },
           {
             "BlockLevel": "None",
             "Id": 196,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 23,
-            "Position": 2719.0,
+            "Position": 2720.0,
             "Priority": 196,
             "Side": "Back"
           },
           {
             "BlockLevel": "None",
             "Id": 198,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 23,
-            "Position": 2744.0,
+            "Position": 2745.0,
             "Priority": 198,
             "Side": "Back"
           },
           {
             "BlockLevel": "None",
             "Id": 200,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 23,
-            "Position": 2769.0,
+            "Position": 2770.0,
             "Priority": 200,
             "Side": "Back"
           }
         ],
         "Id": 23,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3000,36 +2877,36 @@
           {
             "BlockLevel": "None",
             "Id": 202,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 24,
-            "Position": 2794.0,
+            "Position": 2795.0,
             "Priority": 202,
             "Side": "Back"
           },
           {
             "BlockLevel": "None",
             "Id": 204,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 24,
-            "Position": 2819.0,
+            "Position": 2820.0,
             "Priority": 204,
             "Side": "Back"
           },
           {
             "BlockLevel": "None",
             "Id": 206,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 24,
-            "Position": 2844.0,
+            "Position": 2845.0,
             "Priority": 206,
             "Side": "Back"
           },
           {
             "BlockLevel": "None",
             "Id": 208,
-            "IsFree": false,
+            "IsFree": true,
             "PanelId": 24,
-            "Position": 2869.0,
+            "Position": 2870.0,
             "Priority": 208,
             "Side": "Back"
           },
@@ -3038,7 +2915,7 @@
             "Id": 210,
             "IsFree": true,
             "PanelId": 24,
-            "Position": 2894.0,
+            "Position": 2895.0,
             "Priority": 210,
             "Side": "Back"
           },
@@ -3047,7 +2924,7 @@
             "Id": 212,
             "IsFree": true,
             "PanelId": 24,
-            "Position": 2919.0,
+            "Position": 2920.0,
             "Priority": 212,
             "Side": "Back"
           },
@@ -3056,7 +2933,7 @@
             "Id": 214,
             "IsFree": true,
             "PanelId": 24,
-            "Position": 2944.0,
+            "Position": 2945.0,
             "Priority": 214,
             "Side": "Back"
           },
@@ -3065,7 +2942,7 @@
             "Id": 216,
             "IsFree": true,
             "PanelId": 24,
-            "Position": 2969.0,
+            "Position": 2970.0,
             "Priority": 216,
             "Side": "Back"
           },
@@ -3074,7 +2951,7 @@
             "Id": 218,
             "IsFree": true,
             "PanelId": 24,
-            "Position": 2994.0,
+            "Position": 2995.0,
             "Priority": 218,
             "Side": "Back"
           },
@@ -3083,13 +2960,13 @@
             "Id": 220,
             "IsFree": true,
             "PanelId": 24,
-            "Position": 3019.0,
+            "Position": 3020.0,
             "Priority": 220,
             "Side": "Back"
           }
         ],
         "Id": 24,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3099,7 +2976,7 @@
             "Id": 222,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3044.0,
+            "Position": 3045.0,
             "Priority": 222,
             "Side": "Back"
           },
@@ -3108,7 +2985,7 @@
             "Id": 224,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3069.0,
+            "Position": 3070.0,
             "Priority": 224,
             "Side": "Back"
           },
@@ -3117,7 +2994,7 @@
             "Id": 226,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3094.0,
+            "Position": 3095.0,
             "Priority": 226,
             "Side": "Back"
           },
@@ -3126,7 +3003,7 @@
             "Id": 228,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3119.0,
+            "Position": 3120.0,
             "Priority": 228,
             "Side": "Back"
           },
@@ -3135,7 +3012,7 @@
             "Id": 230,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3144.0,
+            "Position": 3145.0,
             "Priority": 230,
             "Side": "Back"
           },
@@ -3144,7 +3021,7 @@
             "Id": 232,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3169.0,
+            "Position": 3170.0,
             "Priority": 232,
             "Side": "Back"
           },
@@ -3153,7 +3030,7 @@
             "Id": 234,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3194.0,
+            "Position": 3195.0,
             "Priority": 234,
             "Side": "Back"
           },
@@ -3162,7 +3039,7 @@
             "Id": 236,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3219.0,
+            "Position": 3220.0,
             "Priority": 236,
             "Side": "Back"
           },
@@ -3171,7 +3048,7 @@
             "Id": 238,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3244.0,
+            "Position": 3245.0,
             "Priority": 238,
             "Side": "Back"
           },
@@ -3180,13 +3057,13 @@
             "Id": 240,
             "IsFree": true,
             "PanelId": 25,
-            "Position": 3269.0,
+            "Position": 3270.0,
             "Priority": 240,
             "Side": "Back"
           }
         ],
         "Id": 25,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3196,7 +3073,7 @@
             "Id": 242,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3293.5,
+            "Position": 3295.0,
             "Priority": 242,
             "Side": "Back"
           },
@@ -3205,7 +3082,7 @@
             "Id": 244,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3318.5,
+            "Position": 3320.0,
             "Priority": 244,
             "Side": "Back"
           },
@@ -3214,7 +3091,7 @@
             "Id": 246,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3343.5,
+            "Position": 3345.0,
             "Priority": 246,
             "Side": "Back"
           },
@@ -3223,7 +3100,7 @@
             "Id": 248,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3368.5,
+            "Position": 3370.0,
             "Priority": 248,
             "Side": "Back"
           },
@@ -3232,7 +3109,7 @@
             "Id": 250,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3393.5,
+            "Position": 3395.0,
             "Priority": 250,
             "Side": "Back"
           },
@@ -3241,7 +3118,7 @@
             "Id": 252,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3418.5,
+            "Position": 3420.0,
             "Priority": 252,
             "Side": "Back"
           },
@@ -3250,7 +3127,7 @@
             "Id": 254,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3443.5,
+            "Position": 3445.0,
             "Priority": 254,
             "Side": "Back"
           },
@@ -3259,7 +3136,7 @@
             "Id": 256,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3468.5,
+            "Position": 3470.0,
             "Priority": 256,
             "Side": "Back"
           },
@@ -3268,7 +3145,7 @@
             "Id": 258,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3493.5,
+            "Position": 3495.0,
             "Priority": 258,
             "Side": "Back"
           },
@@ -3277,13 +3154,13 @@
             "Id": 260,
             "IsFree": true,
             "PanelId": 26,
-            "Position": 3518.5,
+            "Position": 3520.0,
             "Priority": 260,
             "Side": "Back"
           }
         ],
         "Id": 26,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3293,7 +3170,7 @@
             "Id": 262,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3543.5,
+            "Position": 3545.0,
             "Priority": 262,
             "Side": "Back"
           },
@@ -3302,7 +3179,7 @@
             "Id": 264,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3568.5,
+            "Position": 3570.0,
             "Priority": 264,
             "Side": "Back"
           },
@@ -3311,7 +3188,7 @@
             "Id": 266,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3593.5,
+            "Position": 3595.0,
             "Priority": 266,
             "Side": "Back"
           },
@@ -3320,7 +3197,7 @@
             "Id": 268,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3618.5,
+            "Position": 3620.0,
             "Priority": 268,
             "Side": "Back"
           },
@@ -3329,7 +3206,7 @@
             "Id": 270,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3643.5,
+            "Position": 3645.0,
             "Priority": 270,
             "Side": "Back"
           },
@@ -3338,7 +3215,7 @@
             "Id": 272,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3668.5,
+            "Position": 3670.0,
             "Priority": 272,
             "Side": "Back"
           },
@@ -3347,7 +3224,7 @@
             "Id": 274,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3693.5,
+            "Position": 3695.0,
             "Priority": 274,
             "Side": "Back"
           },
@@ -3356,7 +3233,7 @@
             "Id": 276,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3718.5,
+            "Position": 3720.0,
             "Priority": 276,
             "Side": "Back"
           },
@@ -3365,7 +3242,7 @@
             "Id": 278,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3743.5,
+            "Position": 3745.0,
             "Priority": 278,
             "Side": "Back"
           },
@@ -3374,13 +3251,13 @@
             "Id": 280,
             "IsFree": true,
             "PanelId": 27,
-            "Position": 3768.5,
+            "Position": 3770.0,
             "Priority": 280,
             "Side": "Back"
           }
         ],
         "Id": 27,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3390,7 +3267,7 @@
             "Id": 282,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 3794.0,
+            "Position": 3795.0,
             "Priority": 282,
             "Side": "Back"
           },
@@ -3399,7 +3276,7 @@
             "Id": 284,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 3819.0,
+            "Position": 3820.0,
             "Priority": 284,
             "Side": "Back"
           },
@@ -3408,7 +3285,7 @@
             "Id": 286,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 3844.0,
+            "Position": 3845.0,
             "Priority": 286,
             "Side": "Back"
           },
@@ -3417,7 +3294,7 @@
             "Id": 288,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 3869.0,
+            "Position": 3870.0,
             "Priority": 288,
             "Side": "Back"
           },
@@ -3426,7 +3303,7 @@
             "Id": 290,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 3894.0,
+            "Position": 3895.0,
             "Priority": 290,
             "Side": "Back"
           },
@@ -3435,7 +3312,7 @@
             "Id": 292,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 3919.0,
+            "Position": 3920.0,
             "Priority": 292,
             "Side": "Back"
           },
@@ -3444,7 +3321,7 @@
             "Id": 294,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 3944.0,
+            "Position": 3945.0,
             "Priority": 294,
             "Side": "Back"
           },
@@ -3453,7 +3330,7 @@
             "Id": 296,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 3969.0,
+            "Position": 3970.0,
             "Priority": 296,
             "Side": "Back"
           },
@@ -3462,7 +3339,7 @@
             "Id": 298,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 3994.0,
+            "Position": 3995.0,
             "Priority": 298,
             "Side": "Back"
           },
@@ -3471,13 +3348,13 @@
             "Id": 300,
             "IsFree": true,
             "PanelId": 28,
-            "Position": 4019.0,
+            "Position": 4020.0,
             "Priority": 300,
             "Side": "Back"
           }
         ],
         "Id": 28,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3487,7 +3364,7 @@
             "Id": 302,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4044.0,
+            "Position": 4045.0,
             "Priority": 302,
             "Side": "Back"
           },
@@ -3496,7 +3373,7 @@
             "Id": 304,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4069.0,
+            "Position": 4070.0,
             "Priority": 304,
             "Side": "Back"
           },
@@ -3505,7 +3382,7 @@
             "Id": 306,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4094.0,
+            "Position": 4095.0,
             "Priority": 306,
             "Side": "Back"
           },
@@ -3514,7 +3391,7 @@
             "Id": 308,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4119.0,
+            "Position": 4120.0,
             "Priority": 308,
             "Side": "Back"
           },
@@ -3523,7 +3400,7 @@
             "Id": 310,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4144.0,
+            "Position": 4145.0,
             "Priority": 310,
             "Side": "Back"
           },
@@ -3532,7 +3409,7 @@
             "Id": 312,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4169.0,
+            "Position": 4170.0,
             "Priority": 312,
             "Side": "Back"
           },
@@ -3541,7 +3418,7 @@
             "Id": 314,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4194.0,
+            "Position": 4195.0,
             "Priority": 314,
             "Side": "Back"
           },
@@ -3550,7 +3427,7 @@
             "Id": 316,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4219.0,
+            "Position": 4220.0,
             "Priority": 316,
             "Side": "Back"
           },
@@ -3559,7 +3436,7 @@
             "Id": 318,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4244.0,
+            "Position": 4245.0,
             "Priority": 318,
             "Side": "Back"
           },
@@ -3568,13 +3445,13 @@
             "Id": 320,
             "IsFree": true,
             "PanelId": 29,
-            "Position": 4269.0,
+            "Position": 4270.0,
             "Priority": 320,
             "Side": "Back"
           }
         ],
         "Id": 29,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3584,7 +3461,7 @@
             "Id": 322,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4294.0,
+            "Position": 4295.0,
             "Priority": 322,
             "Side": "Back"
           },
@@ -3593,7 +3470,7 @@
             "Id": 324,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4319.0,
+            "Position": 4320.0,
             "Priority": 324,
             "Side": "Back"
           },
@@ -3602,7 +3479,7 @@
             "Id": 326,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4344.0,
+            "Position": 4345.0,
             "Priority": 326,
             "Side": "Back"
           },
@@ -3611,7 +3488,7 @@
             "Id": 328,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4369.0,
+            "Position": 4370.0,
             "Priority": 328,
             "Side": "Back"
           },
@@ -3620,7 +3497,7 @@
             "Id": 330,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4394.0,
+            "Position": 4395.0,
             "Priority": 330,
             "Side": "Back"
           },
@@ -3629,7 +3506,7 @@
             "Id": 332,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4419.0,
+            "Position": 4420.0,
             "Priority": 332,
             "Side": "Back"
           },
@@ -3638,7 +3515,7 @@
             "Id": 334,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4444.0,
+            "Position": 4445.0,
             "Priority": 334,
             "Side": "Back"
           },
@@ -3647,7 +3524,7 @@
             "Id": 336,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4469.0,
+            "Position": 4470.0,
             "Priority": 336,
             "Side": "Back"
           },
@@ -3656,7 +3533,7 @@
             "Id": 338,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4494.0,
+            "Position": 4495.0,
             "Priority": 338,
             "Side": "Back"
           },
@@ -3665,13 +3542,13 @@
             "Id": 340,
             "IsFree": true,
             "PanelId": 30,
-            "Position": 4519.0,
+            "Position": 4520.0,
             "Priority": 340,
             "Side": "Back"
           }
         ],
         "Id": 30,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3681,7 +3558,7 @@
             "Id": 342,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4543.0,
+            "Position": 4545.0,
             "Priority": 342,
             "Side": "Back"
           },
@@ -3690,7 +3567,7 @@
             "Id": 344,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4568.0,
+            "Position": 4570.0,
             "Priority": 344,
             "Side": "Back"
           },
@@ -3699,7 +3576,7 @@
             "Id": 346,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4593.0,
+            "Position": 4595.0,
             "Priority": 346,
             "Side": "Back"
           },
@@ -3708,7 +3585,7 @@
             "Id": 348,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4618.0,
+            "Position": 4620.0,
             "Priority": 348,
             "Side": "Back"
           },
@@ -3717,7 +3594,7 @@
             "Id": 350,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4643.0,
+            "Position": 4645.0,
             "Priority": 350,
             "Side": "Back"
           },
@@ -3726,7 +3603,7 @@
             "Id": 352,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4668.0,
+            "Position": 4670.0,
             "Priority": 352,
             "Side": "Back"
           },
@@ -3735,7 +3612,7 @@
             "Id": 354,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4693.0,
+            "Position": 4695.0,
             "Priority": 354,
             "Side": "Back"
           },
@@ -3744,7 +3621,7 @@
             "Id": 356,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4718.0,
+            "Position": 4720.0,
             "Priority": 356,
             "Side": "Back"
           },
@@ -3753,7 +3630,7 @@
             "Id": 358,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4743.0,
+            "Position": 4745.0,
             "Priority": 358,
             "Side": "Back"
           },
@@ -3762,13 +3639,13 @@
             "Id": 360,
             "IsFree": true,
             "PanelId": 31,
-            "Position": 4768.0,
+            "Position": 4770.0,
             "Priority": 360,
             "Side": "Back"
           }
         ],
         "Id": 31,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3778,7 +3655,7 @@
             "Id": 362,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 4793.0,
+            "Position": 4795.0,
             "Priority": 362,
             "Side": "Back"
           },
@@ -3787,7 +3664,7 @@
             "Id": 364,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 4818.0,
+            "Position": 4820.0,
             "Priority": 364,
             "Side": "Back"
           },
@@ -3796,7 +3673,7 @@
             "Id": 366,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 4843.0,
+            "Position": 4845.0,
             "Priority": 366,
             "Side": "Back"
           },
@@ -3805,7 +3682,7 @@
             "Id": 368,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 4868.0,
+            "Position": 4870.0,
             "Priority": 368,
             "Side": "Back"
           },
@@ -3814,7 +3691,7 @@
             "Id": 370,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 4893.0,
+            "Position": 4895.0,
             "Priority": 370,
             "Side": "Back"
           },
@@ -3823,7 +3700,7 @@
             "Id": 372,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 4918.0,
+            "Position": 4920.0,
             "Priority": 372,
             "Side": "Back"
           },
@@ -3832,7 +3709,7 @@
             "Id": 374,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 4943.0,
+            "Position": 4945.0,
             "Priority": 374,
             "Side": "Back"
           },
@@ -3841,7 +3718,7 @@
             "Id": 376,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 4968.0,
+            "Position": 4970.0,
             "Priority": 376,
             "Side": "Back"
           },
@@ -3850,7 +3727,7 @@
             "Id": 378,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 4993.0,
+            "Position": 4995.0,
             "Priority": 378,
             "Side": "Back"
           },
@@ -3859,13 +3736,13 @@
             "Id": 380,
             "IsFree": true,
             "PanelId": 32,
-            "Position": 5018.0,
+            "Position": 5020.0,
             "Priority": 380,
             "Side": "Back"
           }
         ],
         "Id": 32,
-        "IsChecked": true,
+        "IsChecked": false,
         "Side": "Back"
       },
       {
@@ -3897,71 +3774,75 @@
     "SerialNumber": "MV20-P003",
     "Simulation": false
   },
-  "MachineStatistics": [
-  ],
-  "ServicingInfo": [
-  ],
+  "MachineStatistics": [],
+  "ServicingInfo": [],
   "SetupProcedures": {
     "Bay1CarouselCalibration": {
       "FeedRate": 0.9,
-      "Id": 33,
-      "InProgress": false,
-      "IsBypassed": false,
-      "IsCompleted": true,
-      "PerformedCycles": 600,
-      "RequiredCycles": 600
-    },
-    "Bay1ExternalCalibration": {
-      "FeedRate": 1.0,
-      "Id": 32,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
       "PerformedCycles": 0,
-      "RequiredCycles": 6
+      "RequiredCycles": 400
+    },
+    "Bay1ExternalCalibration": {
+      "FeedRate": 1.0,
+      "Id": 0,
+      "InProgress": false,
+      "IsBypassed": false,
+      "IsCompleted": false,
+      "PerformedCycles": 0,
+      "RequiredCycles": 0
     },
     "Bay1FullTest": {
       "FeedRate": 1.0,
-      "Id": 31,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": true,
-      "PerformedCycles": 30,
-      "RequiredCycles": 30
+      "IsCompleted": false,
+      "PerformedCycles": 0,
+      "RequiredCycles": 1
     },
     "Bay1HeightCheck": {
       "FeedRate": 0.1,
-      "Id": 30,
+      "Id": 0,
+      "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": true
+      "IsCompleted": false,
+      "PerformedCycles": 0,
+      "RequiredCycles": 0
     },
     "Bay1Laser": {
       "FeedRate": 1.0,
-      "Id": 29,
+      "Id": 0,
+      "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": false
+      "IsCompleted": false,
+      "PerformedCycles": 0,
+      "RequiredCycles": 0
     },
     "Bay1ProfileCheck": {
       "FeedRate": 1.0,
-      "Id": 28,
+      "Id": 0,
       "IsBypassed": true,
-      "IsCompleted": false,
-      "ProfileCorrectDistance": 124.0,
+      "IsCompleted": true,
+      "ProfileCorrectDistance": 150.0,
       "ProfileDegrees": 5.0,
-      "ProfileTotalDistance": 215.0
+      "ProfileTotalDistance": 265.0
     },
     "Bay1ShutterTest": {
       "FeedRate": 1.0,
-      "Id": 27,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": true,
-      "PerformedCycles": 20,
+      "IsCompleted": false,
+      "PerformedCycles": 0,
       "RequiredCycles": 20
     },
     "Bay2CarouselCalibration": {
       "FeedRate": 1.0,
-      "Id": 26,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -3970,16 +3851,16 @@
     },
     "Bay2ExternalCalibration": {
       "FeedRate": 1.0,
-      "Id": 25,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
       "PerformedCycles": 0,
-      "RequiredCycles": 6
+      "RequiredCycles": 0
     },
     "Bay2FullTest": {
       "FeedRate": 1.0,
-      "Id": 23,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -3988,37 +3869,43 @@
     },
     "Bay2HeightCheck": {
       "FeedRate": 0.1,
-      "Id": 38,
+      "Id": 0,
+      "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": true
+      "IsCompleted": false,
+      "PerformedCycles": 0,
+      "RequiredCycles": 0
     },
     "Bay2Laser": {
       "FeedRate": 1.0,
-      "Id": 22,
+      "Id": 0,
+      "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": false
+      "IsCompleted": false,
+      "PerformedCycles": 0,
+      "RequiredCycles": 0
     },
     "Bay2ProfileCheck": {
       "FeedRate": 1.0,
-      "Id": 8,
+      "Id": 0,
       "IsBypassed": true,
       "IsCompleted": true,
-      "ProfileCorrectDistance": 124.0,
+      "ProfileCorrectDistance": 150.0,
       "ProfileDegrees": 5.0,
-      "ProfileTotalDistance": 215.0
+      "ProfileTotalDistance": 265.0
     },
     "Bay2ShutterTest": {
       "FeedRate": 1.0,
-      "Id": 9,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": true,
-      "PerformedCycles": 20,
+      "IsCompleted": false,
+      "PerformedCycles": 0,
       "RequiredCycles": 20
     },
     "Bay3CarouselCalibration": {
       "FeedRate": 1.0,
-      "Id": 10,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -4027,16 +3914,16 @@
     },
     "Bay3ExternalCalibration": {
       "FeedRate": 1.0,
-      "Id": 11,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
       "PerformedCycles": 0,
-      "RequiredCycles": 6
+      "RequiredCycles": 0
     },
     "Bay3FullTest": {
       "FeedRate": 1.0,
-      "Id": 12,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -4045,28 +3932,34 @@
     },
     "Bay3HeightCheck": {
       "FeedRate": 0.1,
-      "Id": 13,
+      "Id": 0,
+      "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": false
+      "IsCompleted": false,
+      "PerformedCycles": 0,
+      "RequiredCycles": 0
     },
     "Bay3Laser": {
       "FeedRate": 1.0,
-      "Id": 14,
+      "Id": 0,
+      "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": false
+      "IsCompleted": false,
+      "PerformedCycles": 0,
+      "RequiredCycles": 0
     },
     "Bay3ProfileCheck": {
       "FeedRate": 1.0,
-      "Id": 21,
-      "IsBypassed": false,
-      "IsCompleted": false,
+      "Id": 0,
+      "IsBypassed": true,
+      "IsCompleted": true,
       "ProfileCorrectDistance": 150.0,
       "ProfileDegrees": 5.0,
       "ProfileTotalDistance": 265.0
     },
     "Bay3ShutterTest": {
       "FeedRate": 1.0,
-      "Id": 15,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -4075,24 +3968,24 @@
     },
     "BeltBurnishingTest": {
       "FeedRate": 1.0,
-      "Id": 17,
-      "InProgress": true,
+      "Id": 0,
+      "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
-      "PerformedCycles": 9,
+      "PerformedCycles": 0,
       "RequiredCycles": 200
     },
     "CellPanelsCheck": {
-      "FeedRate": 0.2,
-      "Id": 18,
+      "FeedRate": 1.0,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": true,
+      "IsCompleted": false,
       "Step": 0.5
     },
     "CellsHeightCheck": {
       "FeedRate": 0.2,
-      "Id": 19,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -4100,7 +3993,7 @@
     },
     "DepositAndPickUpTest": {
       "FeedRate": 1.0,
-      "Id": 20,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -4109,67 +4002,75 @@
     },
     "HorizontalChainCalibration": {
       "FeedRate": 1.0,
-      "Id": 24,
-      "IsBypassed": false,
-      "IsCompleted": true
-    },
-    "Id": 1,
-    "LoadFirstDrawerTest": {
-      "FeedRate": 0.2,
-      "Id": 39,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": true,
+      "IsCompleted": false,
+      "PerformedCycles": 0,
+      "RequiredCycles": 0
+    },
+    "Id": 0,
+    "LoadFirstDrawerTest": {
+      "FeedRate": 1.0,
+      "Id": 0,
+      "InProgress": false,
+      "IsBypassed": false,
+      "IsCompleted": false,
       "Step": 0.0
     },
     "ShutterHeightCheck": {
       "FeedRate": 1.0,
-      "Id": 16,
-      "IsBypassed": false,
-      "IsCompleted": false
-    },
-    "VerticalOffsetCalibration": {
-      "FeedRate": 0.2,
-      "Id": 34,
+      "Id": 0,
       "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": true,
+      "IsCompleted": false,
+      "Step": 0.0
+    },
+    "VerticalOffsetCalibration": {
+      "FeedRate": 1.0,
+      "Id": 0,
+      "InProgress": false,
+      "IsBypassed": false,
+      "IsCompleted": false,
       "ReferenceCellId": 50,
       "Step": 0.5
     },
     "VerticalOriginCalibration": {
       "FeedRate": 1.0,
-      "Id": 35,
+      "Id": 0,
+      "InProgress": false,
       "IsBypassed": false,
-      "IsCompleted": true
+      "IsCompleted": false,
+      "ReferenceCellId": 0,
+      "Step": 0.0
     },
     "VerticalResolutionCalibration": {
       "FeedRate": 0.2,
       "FinalPosition": 5500.0,
-      "Id": 37,
+      "Id": 0,
       "InitialPosition": 1000.0,
       "IsBypassed": false,
-      "IsCompleted": true,
+      "IsCompleted": false,
       "StartPosition": 500.0
     },
     "WeightMeasurement": {
       "FeedRate": 1.0,
-      "Id": 36,
+      "Id": 0,
       "IsBypassed": false,
       "IsCompleted": false
     }
   },
   "Wms": {
-    "Id": -1,
-    "IsConnected": true,
-    "IsEnabled": true,
-    "IsTimeSyncEnabled": true,
-    "LastWmsTimeSync": "2020-10-29T16:54:48.3072271+00:00",
+    "Id": 0,
+    "IsConnected": false,
+    "IsEnabled": false,
+    "IsTimeSyncEnabled": false,
+    "LastWmsTimeSync": "0001-01-01T00:00:00+00:00",
     "ServiceUrl": "http://192.168.137.1:10000/",
     "SocketLinkIsEnabled": false,
     "SocketLinkPolling": 0,
     "SocketLinkPort": 7075,
     "SocketLinkTimeout": 600,
-    "TimeSyncIntervalMilliseconds": 3600000
+    "TimeSyncIntervalMilliseconds": 10000
   }
 }

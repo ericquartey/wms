@@ -21,33 +21,51 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <Grid Margin="0,0,0,10">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="auto" />
-        <ColumnDefinition Width="auto" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="auto" />
+      <ColumnDefinition Width="auto" />
+    </Grid.ColumnDefinitions>
 
-      <TextBlock Grid.Column="0"
-                 Grid.ColumnSpan="2"
-                 Margin="0,10,15,10"
-                 VerticalAlignment="Center"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
-        <Run Text="{res:Loc General.Inverter}" /><Run Text=":" /> <Run Text="{Binding InverterParameters.Type}" />
-      </TextBlock>
+    <TextBlock Margin="0,10,15,10"
+               VerticalAlignment="Center"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+      <Run Text="{res:Loc General.Inverter}" /><Run Text=":" /> <Run Text="{Binding InverterParameters.Type}" />
+    </TextBlock>
 
-      <controls:PpcButton Grid.Column="3"
+    <StackPanel Grid.Column="1"
+                Orientation="Horizontal">
+      <controls:PpcButton Width="60"
+                          Height="60"
+                          Margin="0,0,10,10"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          HorizontalContentAlignment="Center"
+                          Command="{Binding RefreshCommand}"
+                          IsBusy="{Binding IsBusy}"
+                          KindMaterial="Refresh" />
+
+      <controls:PpcButton Margin="0,0,10,10"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
-                          Command="{Binding SetInvertersParamertersCommand}"
-                          Content="{res:Loc InstallationApp.SaveParameters}"
-                          IsBusy="{Binding IsWaitingForResponse}" />
-    </Grid>
-    <StackPanel Orientation="Horizontal" />
+                          Command="{Binding HardResetCommand}"
+                          Content="Hard reset"
+                          IsBusy="{Binding IsBusy}" />
+    </StackPanel>
+
+    <controls:PpcButton Grid.Column="2"
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding ReadInverterCommand}"
+                        Content="{res:Loc InstallationApp.ReadInverterParameter}"
+                        IsBusy="{Binding IsBusy}" />
 
     <Border Grid.Row="1"
+            Grid.ColumnSpan="3"
             Margin="0,0,0,10"
             BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
@@ -69,7 +87,7 @@
                 IsReadOnly="True"
                 IsSynchronizedWithCurrentItem="True"
                 ItemsSource="{Binding InverterParameters.Parameters}"
-                RowHeight="30"
+                RowHeight="40"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 SelectedItem="{Binding SelectedParameter}"
                 SelectionMode="Single"
@@ -78,7 +96,7 @@
 
         <DataGrid.Columns>
           <DataGridTextColumn x:Name="Column1"
-                              Width="1*"
+                              Width="0.3*"
                               Binding="{Binding Path=Code}"
                               Header="{res:Loc InstallationApp.InverterParametersId}">
             <DataGridTextColumn.CellStyle>
@@ -94,8 +112,26 @@
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
-          <DataGridTextColumn x:Name="Column2"
+          <DataGridTextColumn x:Name="Column6"
                               Width="1*"
+                              Binding="{Binding Path=Description}"
+                              Header="{res:Loc InstallationApp.Description}">
+            <DataGridTextColumn.CellStyle>
+              <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+              </Style>
+            </DataGridTextColumn.CellStyle>
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTextColumn x:Name="Column2"
+                              Width="0.3*"
                               Binding="{Binding Path=DataSet}"
                               Header="{res:Loc InstallationApp.InverterParametersDataset}">
             <DataGridTextColumn.ElementStyle>
@@ -106,7 +142,7 @@
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
           <DataGridTextColumn x:Name="Column3"
-                              Width="1*"
+                              Width="0.5*"
                               Binding="{Binding Path=Type}"
                               Header="{res:Loc InstallationApp.InverterParametersType}">
             <DataGridTextColumn.ElementStyle>
@@ -124,6 +160,7 @@
               <Style TargetType="TextBlock">
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
@@ -138,69 +175,149 @@
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
+          <DataGridTextColumn x:Name="Column7"
+                              Width="100"
+                              Binding="{Binding Path=Error, Converter={StaticResource BTSC}}"
+                              Header="{res:Loc OperatorApp.StatisticsErrorDataGridHeaderError}">
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
         </DataGrid.Columns>
       </DataGrid>
     </Border>
 
-    <Grid Grid.Row="2">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="auto" />
-      </Grid.ColumnDefinitions>
+    <Border Grid.Row="2"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            Margin="0,0,15,0"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2">
+      <Grid Margin="5,0,0,0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="2.5*" />
+          <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <controls:PpcTextBox Grid.Column="0"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedParameter.Code}"
+                             IsEnabled="False"
+                             LabelText="{res:Loc InstallationApp.InverterParametersId}" />
+        <controls:PpcTextBox Grid.Column="1"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedParameter.DataSet}"
+                             IsEnabled="False"
+                             LabelText="{res:Loc InstallationApp.InverterParametersDataset}" />
+        <controls:PpcTextBox Grid.Column="2"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedParameter.Type}"
+                             IsEnabled="False"
+                             LabelText="{res:Loc InstallationApp.InverterParametersType}" />
+        <controls:PpcTextBox Grid.Column="3"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedParameter.StringValue, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsAdmin}"
+                             IsReadOnly="{Binding SelectedParameter.IsReadOnly}"
+                             LabelText="{res:Loc InstallationApp.InverterParametersValue}" />
+        <StackPanel Grid.Column="4"
+                    Orientation="Vertical">
+          <TextBlock Margin="0,1,5,1"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     IsEnabled="{Binding IsAdmin}"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                     Text="{res:Loc InstallationApp.IsReadOnly}" />
+          <CheckBox Width="33"
+                    Height="33"
+                    Margin="0,3,5,5"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    IsChecked="{Binding SelectedParameter.IsReadOnly, Mode=TwoWay}"
+                    IsEnabled="{Binding IsAdmin}"
+                    Style="{StaticResource PpcCheckBoxStyle}" />
+        </StackPanel>
 
-      <Border Margin="0,0,10,0"
-              BorderBrush="{DynamicResource PpcBorderBrush}"
-              BorderThickness="{DynamicResource PpcBorderThickness}"
-              CornerRadius="2">
-        <Grid Margin="5,0,0,0">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-          </Grid.ColumnDefinitions>
-          <controls:PpcTextBox Grid.Column="0"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Stretch"
-                               InputText="{Binding SelectedParameter.Code}"
-                               IsEnabled="False"
-                               LabelText="{res:Loc InstallationApp.InverterParametersId}" />
-          <controls:PpcTextBox Grid.Column="1"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Stretch"
-                               InputText="{Binding SelectedParameter.DataSet}"
-                               IsEnabled="False"
-                               LabelText="{res:Loc InstallationApp.InverterParametersDataset}" />
-          <controls:PpcTextBox Grid.Column="2"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Stretch"
-                               InputText="{Binding SelectedParameter.Type}"
-                               IsEnabled="False"
-                               LabelText="{res:Loc InstallationApp.InverterParametersType}" />
-          <controls:PpcTextBox Grid.Column="3"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Stretch"
-                               InputText="{Binding SelectedParameter.StringValue, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                               IsEnabled="{Binding IsAdmin}"
-                               IsReadOnly="{Binding SelectedParameter.IsReadOnly}"
-                               LabelText="{res:Loc InstallationApp.InverterParametersValue}" />
-          <controls:PpcTextBox Grid.Column="4"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Stretch"
-                               InputText="{Binding SelectedParameter.IsReadOnly, Converter={StaticResource BTSC}}"
-                               IsEnabled="False"
-                               LabelText="{res:Loc InstallationApp.IsReadOnly}" />
-        </Grid>
-      </Border>
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="0"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedParameter.WriteCode}"
+                             IsEnabled="False"
+                             LabelText="{res:Loc InstallationApp.WriteCode}" />
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="1"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedParameter.ReadCode}"
+                             IsEnabled="False"
+                             LabelText="{res:Loc InstallationApp.ReadCode}" />
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="2"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedParameter.DecimalCount}"
+                             IsEnabled="False"
+                             LabelText="{res:Loc InstallationApp.DecimalCount}" />
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="3"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedParameter.Description}"
+                             IsEnabled="False"
+                             LabelText="{res:Loc InstallationApp.Description}" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="5"
+                    Orientation="Vertical">
+          <TextBlock Margin="0,1,5,1"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     IsEnabled="{Binding IsAdmin}"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                     Text="{res:Loc OperatorApp.StatisticsErrorDataGridHeaderError}" />
+          <CheckBox Width="33"
+                    Height="33"
+                    Margin="0,3,5,5"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    IsChecked="{Binding SelectedParameter.Error, Mode=TwoWay}"
+                    IsEnabled="False"
+                    Style="{StaticResource PpcCheckBoxStyle}" />
+        </StackPanel>
+      </Grid>
+    </Border>
 
-      <controls:PpcButton Grid.Column="1"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding SetParamerterCommand}"
-                          Content="{res:Loc InstallationApp.Save}"
-                          IsBusy="{Binding IsWaitingForResponse}" />
-    </Grid>
+    <controls:PpcButton Grid.Row="2"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding SetParamerterCommand}"
+                        Content="{res:Loc InstallationApp.WriteSingle}"
+                        IsBusy="{Binding IsBusy}" />
+
+    <controls:PpcButton Grid.Row="3"
+                        Grid.Column="3"
+                        Grid.ColumnSpan="2"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding SetInvertersParamertersCommand}"
+                        Content="{res:Loc InstallationApp.WriteAll}"
+                        IsBusy="{Binding IsBusy}" />
 
   </Grid>
 

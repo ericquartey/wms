@@ -221,6 +221,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             switch (this.MachineService.BayNumber)
             {
                 case BayNumber.BayOne:
+                default:
                     result = !this.IsWaitingForResponse &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
@@ -239,14 +240,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case BayNumber.BayThree:
                     result = !this.IsWaitingForResponse &&
                    this.MachineModeService.MachineMode == MachineMode.Manual3 &&
-                   this.MachineService.MachinePower == MachinePowerState.Powered &&
-                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
-                   !this.IsMachineMoving;
-                    break;
-
-                default:
-                    result = !this.IsWaitingForResponse &&
-                   this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
                    (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
                    !this.IsMachineMoving;

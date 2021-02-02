@@ -63,7 +63,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.EnableLocalDbSavingOnTelemetry = false;
             this.EnableLocalDbSavingOnServer = false;
-
             if (dataLayerService.IsReady)
             {
                 this.OnDataLayerReady();

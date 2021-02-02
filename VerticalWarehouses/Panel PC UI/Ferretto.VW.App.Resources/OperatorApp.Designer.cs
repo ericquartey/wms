@@ -997,7 +997,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerActivityLocalCallGoBack.
+        ///   Looks up a localized string similar to Load units to cell.
         /// </summary>
         public static string DrawerActivityLocalCallGoBack {
             get {

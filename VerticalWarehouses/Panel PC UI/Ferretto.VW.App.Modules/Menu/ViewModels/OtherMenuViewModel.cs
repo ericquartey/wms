@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuUsersCommand;
 
+        private DelegateCommand errorInverterParametersCommand;
+
         #endregion
 
         #region Constructors
@@ -53,6 +55,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             DateTime,
 
             DatabaseBackup,
+            
+            ErrorInverterParameters,
         }
 
         #endregion
@@ -103,6 +107,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommandOther(MenuOther.Users),
                 this.CanExecuteCommand));
 
+        public ICommand ErrorInverterParametersCommand =>
+            this.errorInverterParametersCommand
+            ??
+            (this.errorInverterParametersCommand = new DelegateCommand(
+                () => this.MenuCommandOther(MenuOther.ErrorInverterParameters),
+                this.CanExecute));
+
         #endregion
 
         #region Methods
@@ -116,6 +127,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuDateTimeCommand?.RaiseCanExecuteChanged();
             this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
             this.menuDatabaseBackupCommand?.RaiseCanExecuteChanged();
+            this.errorInverterParametersCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecute()
@@ -192,6 +204,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
+                    case MenuOther.ErrorInverterParameters:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.Inverters.ERRORPARAMETERINVERTER,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
                     case MenuOther.DatabaseBackup:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
@@ -199,7 +219,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             data: null,
                             trackCurrentView: true);
                         break;
-
+                        
                     default:
                         Debugger.Break();
                         break;
