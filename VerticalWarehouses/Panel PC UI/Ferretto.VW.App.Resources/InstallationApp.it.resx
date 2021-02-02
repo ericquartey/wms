@@ -1977,7 +1977,7 @@
     <value>Molto corta</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Carica file</value>
+    <value>Importa in memoria</value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Importazione  avvenuta con successo</value>
@@ -2343,8 +2343,8 @@
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Leggi tutto</value>
   </data>
-  <data name="ImportStructure" xml:space="preserve">
-    <value>Importa struttura</value>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Importa e salva</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Sovrascrivi il file di destinazione</value>

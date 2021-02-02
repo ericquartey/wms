@@ -232,7 +232,7 @@
 
       <controls:PpcButton Margin="15,15,0,0"
                           Command="{Binding ImportStructureCommand}"
-                          Content="{res:Loc InstallationApp.ImportStructure}"
+                          Content="{res:Loc InstallationApp.ImportAndSave}"
                           IsBusy="{Binding IsBusy}" />
 
       <controls:PpcButton Margin="15,15,0,0"
