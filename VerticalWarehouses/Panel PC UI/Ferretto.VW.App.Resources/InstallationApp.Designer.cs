@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Absorbed Current.
+        ///   Looks up a localized string similar to AbsorbedCurrent.
         /// </summary>
         public static string AbsorbedCurrent {
             get {
@@ -2257,7 +2257,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra movement for drawer insertion.
+        ///   Looks up a localized string similar to Extra movement toward elevator.
         /// </summary>
         public static string ExtBayMovementForInsertion {
             get {
@@ -2770,20 +2770,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import and save.
-        /// </summary>
-        public static string ImportAndSave {
-            get {
-                return ResourceManager.GetString("ImportAndSave", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Import configuration file .
         /// </summary>
         public static string ImportConfigurationFile {
             get {
                 return ResourceManager.GetString("ImportConfigurationFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import structure.
+        /// </summary>
+        public static string ImportStructure {
+            get {
+                return ResourceManager.GetString("ImportStructure", resourceCulture);
             }
         }
         
