@@ -61,9 +61,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private List<InverterParameter> actualValueParameters = new List<InverterParameter>();
 
+        private List<InverterParameter> error = new List<InverterParameter>();
+
         private DelegateCommand errorCommand;
 
-        private List<InverterParameter> errorParameters = new List<InverterParameter>();
+        private List<InverterParameters> errorParameters = new List<InverterParameters>();
 
         private SubscriptionToken inverterParameterReceivedToken;
 
@@ -130,7 +132,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsError = true;
                     }, this.CanExecuteError));
 
-        public List<InverterParameter> ErrorParameters
+        public List<InverterParameters> ErrorParameters
         {
             get => this.errorParameters;
             set => this.SetProperty(ref this.errorParameters, value, this.RaiseCanExecuteChanged);
@@ -181,6 +183,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override void Disappear()
         {
             this.inverterParameters = null;
+            this.error.Clear();
             this.errorParameters.Clear();
             this.actualValueParameters.Clear();
 
@@ -275,7 +278,69 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         }
 
                         parameter.StringValue += " " + parameter.Um;
-                        this.errorParameters.Add(parameter);
+                        this.error.Add(parameter);
+
+                        if (this.errorParameters.Any(s => s.Code == parameter.Code))
+                        {
+                            var parameterError = this.errorParameters.SingleOrDefault(s => s.Code == parameter.Code);
+                            this.errorParameters.Remove(parameterError);
+
+                            switch (parameter.DataSet)
+                            {
+                                case 0:
+                                    parameterError.DataSet0 = parameter.StringValue;
+                                    break;
+
+                                case 1:
+                                    parameterError.DataSet1 = parameter.StringValue;
+                                    break;
+
+                                case 2:
+                                    parameterError.DataSet2 = parameter.StringValue;
+                                    break;
+
+                                case 3:
+                                    parameterError.DataSet3 = parameter.StringValue;
+                                    break;
+
+                                case 4:
+                                    parameterError.DataSet4 = parameter.StringValue;
+                                    break;
+                            }
+
+                            this.errorParameters.Add(parameterError);
+                        }
+                        else
+                        {
+                            var parameterToAdd = new InverterParameters();
+                            parameterToAdd.Code = (short)parameter.Code;
+                            parameterToAdd.Description = parameter.Description;
+
+                            switch (parameter.DataSet)
+                            {
+                                case 0:
+                                    parameterToAdd.DataSet0 = parameter.StringValue;
+                                    break;
+
+                                case 1:
+                                    parameterToAdd.DataSet1 = parameter.StringValue;
+                                    break;
+
+                                case 2:
+                                    parameterToAdd.DataSet2 = parameter.StringValue;
+                                    break;
+
+                                case 3:
+                                    parameterToAdd.DataSet3 = parameter.StringValue;
+                                    break;
+
+                                case 4:
+                                    parameterToAdd.DataSet4 = parameter.StringValue;
+                                    break;
+                            }
+
+                            this.errorParameters.Add(parameterToAdd);
+                        }
                     }
                     else if (angActualValues.Any(s => s == parameter.Code))
                     {
@@ -351,7 +416,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsBusy = true;
 
-                var parameters = this.errorParameters;
+                var parameters = this.error;
                 parameters.AddRange(this.actualValueParameters);
 
                 this.inverterParameters.Parameters = parameters;

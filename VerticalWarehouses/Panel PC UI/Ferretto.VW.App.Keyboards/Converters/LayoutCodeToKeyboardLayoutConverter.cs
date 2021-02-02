@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
+using Ferretto.VW.App.Resources;
 
 namespace Ferretto.VW.App.Keyboards.Converters
 {
@@ -13,7 +14,8 @@ namespace Ferretto.VW.App.Keyboards.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var resourceName = string.Concat(culture.TwoLetterISOLanguageName, "-", value, ".json").ToLowerInvariant();
+            var currentCulture = Localized.Instance.CurrentCulture;
+            var resourceName = string.Concat(currentCulture.TwoLetterISOLanguageName, "-", value, ".json").ToLowerInvariant();
             var assembly = Assembly.GetAssembly(this.GetType());
             var assemblyName = assembly.GetName().Name;
             var jsonUri = new Uri(string.Concat($"pack://application:,,,/{ assemblyName };component/Resources/", resourceName));

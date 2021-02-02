@@ -169,6 +169,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actual values.
+        /// </summary>
+        public static string ActualValues {
+            get {
+                return ResourceManager.GetString("ActualValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add all unit to test.
         /// </summary>
         public static string AddTestAllUnit {
@@ -2136,6 +2145,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ErrorOnStarting {
             get {
                 return ResourceManager.GetString("ErrorOnStarting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors.
+        /// </summary>
+        public static string Errors {
+            get {
+                return ResourceManager.GetString("Errors", resourceCulture);
             }
         }
         

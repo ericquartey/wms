@@ -101,6 +101,13 @@
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
+        <!--  fake button  -->
+        <controls:PpcButton Title="{res:Loc InstallationApp.DateTimeMenuTitle}"
+                            Margin="0,0,30,30"
+                            Padding="-2,1,0,0"
+                            Style="{DynamicResource PpcButtonMenuCardStyle}"
+                            Visibility="Hidden" />
+
         <controls:PpcButton Title="{res:Loc InstallationApp.ErrorAndActualValue}"
                             Height="86"
                             Margin="0,0,30,30"

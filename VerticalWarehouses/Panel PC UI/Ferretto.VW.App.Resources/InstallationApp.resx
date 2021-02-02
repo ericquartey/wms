@@ -2271,7 +2271,7 @@
     <value>Extra movement toward operator</value>
   </data>
   <data name="ExtBayMovementForInsertion" xml:space="preserve">
-    <value>Extra movement toward elevator</value>
+    <value>Extra movement for drawer insertion</value>
   </data>
   <data name="InverterInFault" xml:space="preserve">
     <value>Inverters fault</value>
@@ -2417,5 +2417,11 @@
   </data>
   <data name="ErrorAndActualValue" xml:space="preserve">
     <value>Errors &amp; Actual values</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Errors</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Actual values</value>
   </data>
 </root>

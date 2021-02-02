@@ -2355,4 +2355,10 @@
   <data name="ErrorAndActualValue" xml:space="preserve">
     <value>Chyby a skutečné hodnoty </value>
   </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Chyby </value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Skutečné hodnoty</value>
+  </data>
 </root>

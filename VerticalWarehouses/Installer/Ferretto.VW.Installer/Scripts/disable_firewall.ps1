@@ -11,3 +11,6 @@ if(!(Test-Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time Pro
 }
 
 Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Session Manager" -Name "ProtectionMode" -Value 0
+
+#enable remote desktop with blank password
+Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Lsa" -Name "LimitBlankPasswordUse" -Value 0

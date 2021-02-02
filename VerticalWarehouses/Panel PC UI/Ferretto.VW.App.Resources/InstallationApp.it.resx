@@ -2217,7 +2217,7 @@
     <value>Extra movimento verso operatore</value>
   </data>
   <data name="ExtBayMovementForInsertion" xml:space="preserve">
-    <value>Extra movimento verso elevatore</value>
+    <value>Extra movimento per inserimento cassetto</value>
   </data>
   <data name="InverterInFault" xml:space="preserve">
     <value>Inverter in errore</value>
@@ -2363,5 +2363,11 @@
   </data>
   <data name="ErrorAndActualValue" xml:space="preserve">
     <value>Errori &amp; Valori attuali</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Errori</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Valori attuali</value>
   </data>
 </root>
