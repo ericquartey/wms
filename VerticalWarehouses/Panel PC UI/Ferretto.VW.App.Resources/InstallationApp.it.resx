@@ -1977,7 +1977,7 @@
     <value>Molto corta</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Importa in memoria</value>
+    <value>Carica file</value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Importazione  avvenuta con successo</value>
@@ -2217,7 +2217,7 @@
     <value>Extra movimento verso operatore</value>
   </data>
   <data name="ExtBayMovementForInsertion" xml:space="preserve">
-    <value>Extra movimento per inserimento cassetto</value>
+    <value>Extra movimento verso elevatore</value>
   </data>
   <data name="InverterInFault" xml:space="preserve">
     <value>Inverter in errore</value>
@@ -2343,8 +2343,8 @@
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Leggi tutto</value>
   </data>
-  <data name="ImportAndSave" xml:space="preserve">
-    <value>Importa e salva</value>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Importa struttura</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Sovrascrivi il file di destinazione</value>

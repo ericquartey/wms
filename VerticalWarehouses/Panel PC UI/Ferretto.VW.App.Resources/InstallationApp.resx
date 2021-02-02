@@ -2271,7 +2271,7 @@
     <value>Extra movement toward operator</value>
   </data>
   <data name="ExtBayMovementForInsertion" xml:space="preserve">
-    <value>Extra movement for drawer insertion</value>
+    <value>Extra movement toward elevator</value>
   </data>
   <data name="InverterInFault" xml:space="preserve">
     <value>Inverters fault</value>
@@ -2332,7 +2332,7 @@
     <value>Press the button to obtain the current data by moving the drawer and enter its net weight. When finished, press Next to confirm the operation</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
-    <value>Absorbed Current</value>
+    <value>AbsorbedCurrent</value>
   </data>
   <data name="OptionalWeighing1" xml:space="preserve">
     <value>First weighing with intermediate weight</value>
@@ -2397,8 +2397,8 @@
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Read all</value>
   </data>
-  <data name="ImportAndSave" xml:space="preserve">
-    <value>Import and save</value>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Import structure</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Overwrite target file</value>
