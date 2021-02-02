@@ -1521,7 +1521,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     try
                     {
-                        this.Logger.LogDebug("Schedule mission restore on bay {bay.Number}");
+                        this.Logger.LogDebug($"Schedule mission restore on bay {bay.Number}");
                         await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider, true);
                     }
                     catch (Exception ex)
@@ -1595,9 +1595,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     missionsDataProvider.Update(mission);
                     baysDataProvider.ClearMission(bayNumber);
 
-                    this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
-
-                    //    this.CompleteCurrentMissionInBay(bayNumber, mission, serviceProvider);
+                    this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed and move back from bay load unit {LoadUnitId}.", bayNumber, mission.WmsId.Value, mission.LoadUnitId);
+                    var missionSchedulingProvider = serviceProvider.GetRequiredService<IMissionSchedulingProvider>();
+                    missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, bayNumber, MissionType.IN);
                 }
             }
             catch (Exception ex)
