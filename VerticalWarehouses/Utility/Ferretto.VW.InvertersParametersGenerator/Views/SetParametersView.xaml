@@ -201,7 +201,6 @@
 
     <Grid Name="ParametersTxtFilesGrid"
           Grid.Row="1"
-          Margin="30"
           Visibility="{Binding IsParametersSet, Converter={StaticResource BTVIC}}">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -273,7 +272,6 @@
 
     <Grid Name="ParametersSetGrid"
           Grid.Row="1"
-          Margin="30"
           Visibility="{Binding IsParametersSet, Converter={StaticResource BTVC}}">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -376,7 +374,7 @@
 
         <DataGrid.Columns>
           <DataGridTextColumn x:Name="Column1"
-                              Width="0.5*"
+                              Width="0.2*"
                               Binding="{Binding Path=Code}"
                               Header="{x:Static res:Resources.InverterParametersId}">
             <DataGridTextColumn.HeaderStyle>
@@ -401,7 +399,7 @@
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
           <DataGridTextColumn x:Name="Column2"
-                              Width="0.5*"
+                              Width="0.3*"
                               Binding="{Binding Path=DataSet}"
                               Header="{x:Static res:Resources.InverterParametersDataset}">
             <DataGridTextColumn.HeaderStyle>
@@ -427,7 +425,7 @@
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
           <DataGridTextColumn x:Name="Column3"
-                              Width="0.7*"
+                              Width="0.4*"
                               Binding="{Binding Path=Type}"
                               Header="{x:Static res:Resources.InverterParametersType}">
             <DataGridTextColumn.HeaderStyle>
@@ -511,7 +509,7 @@
     <controls:PpcButton Grid.Row="2"
                         Width="130"
                         Height="60"
-                        Margin="0,0,30,0"
+                        Margin="0,20,0,0"
                         HorizontalAlignment="Right"
                         Command="{Binding LoadFileCommand}"
                         Content="{x:Static res:Resources.Import}"
