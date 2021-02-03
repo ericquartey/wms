@@ -40,16 +40,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public int Id { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterManualParameters_MaxSpeed))]
-            [Id(3)]
-            [Unit("Hz/100")]
-            public double MaxSpeed { get; set; }
-
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ShutterManualParameters_MinSpeed))]
-            [Id(2)]
-            [Unit("Hz/100")]
-            public double MinSpeed { get; set; }
-
             #endregion
         }
 

@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             #region Properties
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Shutter_AssistedMovements))]
-            [HideProperties(nameof(ShutterManualParameters.MaxSpeed),
-                            nameof(ShutterManualParameters.MinSpeed))]
             [Id(15)]
             public ShutterManualParameters AssistedMovements { get; set; }
 
@@ -26,9 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [HideProperties(nameof(ShutterManualParameters.HighSpeedDurationOpen),
                             nameof(ShutterManualParameters.HighSpeedDurationClose),
                             nameof(ShutterManualParameters.HighSpeedHalfDurationOpen),
-                            nameof(ShutterManualParameters.HighSpeedHalfDurationClose),
-                            nameof(ShutterManualParameters.MaxSpeed),
-                            nameof(ShutterManualParameters.MinSpeed))]
+                            nameof(ShutterManualParameters.HighSpeedHalfDurationClose))]
             [Id(7)]
             public ShutterManualParameters ManualMovements { get; set; }
 

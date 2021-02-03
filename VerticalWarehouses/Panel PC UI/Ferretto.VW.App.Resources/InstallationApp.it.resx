@@ -2370,4 +2370,7 @@
   <data name="ActualValues" xml:space="preserve">
     <value>Valori attuali</value>
   </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Importa e salva </value>
+  </data>
 </root>
