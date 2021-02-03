@@ -18,11 +18,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         // Enable/disable the raw database saving on server (EjLog)
         // (TODO: use another object for this configuration parameter)
-        bool EnableLocalDbSavingOnServer { get; set; }
+        //x bool EnableLocalDbSavingOnServer { get; set; }
 
         // Enable/disable the raw database saving on telemetry
         // (TODO: use another object for this configuration parameter)
-        bool EnableLocalDbSavingOnTelemetry { get; set; }
+        //x bool EnableLocalDbSavingOnTelemetry { get; set; }
 
         int ExecutedCycles { get; set; }
 

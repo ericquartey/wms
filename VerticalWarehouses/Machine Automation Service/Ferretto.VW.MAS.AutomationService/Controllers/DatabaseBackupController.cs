@@ -15,16 +15,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ILogger<DatabaseBackupController> logger;
 
+        private readonly IMachineProvider machineProvider;
+
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         #endregion
 
         #region Constructors
 
-        public DatabaseBackupController(IMachineVolatileDataProvider machineVolatileDataProvider,
+        public DatabaseBackupController(
+            IMachineVolatileDataProvider machineVolatileDataProvider,
+            IMachineProvider machineProvider,
             ILogger<DatabaseBackupController> logger)
         {
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -41,13 +46,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("get/backupOnServer")]
         public ActionResult<bool> GetBackupOnServer()
         {
-            return this.Ok(this.machineVolatileDataProvider.EnableLocalDbSavingOnServer);
+            //x return this.Ok(this.machineVolatileDataProvider.EnableLocalDbSavingOnServer);
+            return this.Ok(this.machineProvider.IsDbSaveOnServer());
         }
 
         [HttpPost("get/backupOnTelemetry")]
         public ActionResult<bool> GetBackupOnTelemetry()
         {
-            return this.Ok(this.machineVolatileDataProvider.EnableLocalDbSavingOnTelemetry);
+            //x return this.Ok(this.machineVolatileDataProvider.EnableLocalDbSavingOnTelemetry);
+            return this.Ok(this.machineProvider.IsDbSaveOnTelemetry());
         }
 
         [HttpPost("set/backupOnServer")]
@@ -55,7 +62,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SetBackupOnServer(bool enable)
         {
-            this.machineVolatileDataProvider.EnableLocalDbSavingOnServer = enable;
+            //x this.machineVolatileDataProvider.EnableLocalDbSavingOnServer = enable;
+            this.machineProvider.UpdateDbSaveOnServer(enable);
 
             return this.Accepted();
         }
@@ -65,7 +73,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SetBackupOnTelemetry(bool enable)
         {
-            this.machineVolatileDataProvider.EnableLocalDbSavingOnTelemetry = enable;
+            //x this.machineVolatileDataProvider.EnableLocalDbSavingOnTelemetry = enable;
+            this.machineProvider.UpdateDbSaveOnTelemetry(enable);
 
             return this.Accepted();
         }

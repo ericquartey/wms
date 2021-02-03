@@ -169,6 +169,7 @@ namespace Ferretto.VW.MAS.InternalTiming
                 using (var scope = this.serviceScopeFactory.CreateScope())
                 {
                     var machineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
 
                     var timeIntervalMilliseconds = DefaultTimeOutPeriodMilliseconds;
 
@@ -178,7 +179,7 @@ namespace Ferretto.VW.MAS.InternalTiming
                         {
                             if (!machineVolatileDataProvider.IsDeviceManagerBusy)
                             {
-                                if (/*machineVolatileDataProvider.EnableLocalDbSavingOnServer*/true)
+                                if (/*machineVolatileDataProvider.EnableLocalDbSavingOnServer*/ machineProvider.IsDbSaveOnServer())
                                 {
                                     this.logger.LogDebug("Attempting to send a back database file to server.");
 

@@ -61,8 +61,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.ElevatorVerticalPositionOld = -10000;
 
-            this.EnableLocalDbSavingOnTelemetry = false;
-            this.EnableLocalDbSavingOnServer = false;
+            //x this.EnableLocalDbSavingOnTelemetry = false;
+            //x this.EnableLocalDbSavingOnServer = false;
             if (dataLayerService.IsReady)
             {
                 this.OnDataLayerReady();
@@ -91,11 +91,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         // Enable/disable the raw database saving on server (EjLog)
         // (TODO: use another object for this configuration parameter)
-        public bool EnableLocalDbSavingOnServer { get; set; }
+        //x public bool EnableLocalDbSavingOnServer { get; set; }
 
         // Enable/disable the raw database saving on telemetry
         // (TODO: use another object for this configuration parameter)
-        public bool EnableLocalDbSavingOnTelemetry { get; set; }
+        //x public bool EnableLocalDbSavingOnTelemetry { get; set; }
 
         public int ExecutedCycles { get; set; }
 
