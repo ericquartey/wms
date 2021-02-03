@@ -122,9 +122,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
 
                                     if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                                    && shutterInverter != InverterDriver.Contracts.InverterIndex.None
-                                    && bay.Shutter != null
-                                    && bay.Shutter.Type != ShutterType.NotSpecified
+                                        && shutterInverter != InverterDriver.Contracts.InverterIndex.None
+                                        && bay.Shutter != null
+                                        && bay.Shutter.Type != ShutterType.NotSpecified
                                         && shutterPosition != this.Mission.CloseShutterPosition
                                         )
                                     {

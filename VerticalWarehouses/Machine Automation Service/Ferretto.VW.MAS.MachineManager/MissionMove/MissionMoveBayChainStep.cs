@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.LoadUnitDestination = destination.Location;
                 }
 
-                var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                 if (bay.Shutter != null
                     && bay.Shutter.Type == ShutterType.ThreeSensors
                     && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half)
@@ -364,7 +364,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.LoadUnitDestination = destination.Location;
                         this.Mission.StepTime = DateTime.UtcNow;
                     }
-                    var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                    var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                     if (bay.Shutter != null
                         && bay.Shutter.Type == ShutterType.ThreeSensors
                         && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half)

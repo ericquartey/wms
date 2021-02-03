@@ -816,6 +816,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             foreach (var otherBay in bays)
             {
                 if (otherBay.Shutter != null
+                    && otherBay.Shutter.Type != ShutterType.NotSpecified
                     && otherBay.Number != bay.Number
                     )
                 {
