@@ -72,6 +72,24 @@
             }
         }
 
+        public double MaxSpeed
+        {
+            get => this.maxSpeed;
+            set
+            {
+                this.maxSpeed = value;
+            }
+        }
+
+        public double MinSpeed
+        {
+            get => this.minSpeed;
+            set
+            {
+                this.minSpeed = value;
+            }
+        }
+
         #endregion
     }
 }
