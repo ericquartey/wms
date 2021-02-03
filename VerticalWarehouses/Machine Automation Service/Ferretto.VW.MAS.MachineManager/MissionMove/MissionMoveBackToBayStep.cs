@@ -291,7 +291,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void StartMovement(double? destinationHeight, int? targetBayPositionId, int? targetCellId, Bay bay)
         {
-            var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+            var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
             if (shutterPosition == ShutterPosition.Closed || shutterPosition == this.Mission.CloseShutterPosition)
             {
@@ -299,9 +299,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
-                if (bay.Shutter != null)
+                if (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified)
                 {
-                    this.Mission.CloseShutterBayNumber = (bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Number : BayNumber.None;
+                    this.Mission.CloseShutterBayNumber = bay.Number;
                 }
                 else
                 {

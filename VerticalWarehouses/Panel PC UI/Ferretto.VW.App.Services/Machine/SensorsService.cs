@@ -309,7 +309,7 @@ namespace Ferretto.VW.App.Services
 
                     this.BayZeroChainIsVisible = this.Bay.IsExternal || this.Bay.Carousel != null;
 
-                    this.shutterSensors.HasShutter = this.Bay.Shutter != null;
+                    this.shutterSensors.HasShutter = this.Bay.Shutter != null && this.Bay.Shutter.Type != ShutterType.NotSpecified;
                 }
             }
             catch (Exception ex)

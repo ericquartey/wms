@@ -607,8 +607,9 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 foreach (var bay in bays)
                 {
-                    var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
-                    if (sensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed
+                    var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                    if (shutterInverter != InverterDriver.Contracts.InverterIndex.None
+                        && sensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed
                         && sensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half
                         )
                     {

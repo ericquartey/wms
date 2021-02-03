@@ -445,7 +445,7 @@ namespace Ferretto.VW.Simulator.Services
                 {
                     // check if shutter is closed
                     var isShutterClosed = false;
-                    if (bay.Shutter != null)
+                    if (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified)
                     {
                         switch ((int)bay.Shutter.Inverter.Index)
                         {
