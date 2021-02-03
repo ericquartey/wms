@@ -210,7 +210,9 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             var bays = this.machineData.BaysDataProvider.GetAll();
             foreach (var bay in bays)
             {
-                if (bay.Shutter != null)
+                if (bay.Shutter != null
+                    && bay.Shutter.Type != ShutterType.NotSpecified
+                    )
                 {
                     if (bay.Id == this.machineData.BaysDataProvider.GetByNumber(this.machineData.RequestingBay)?.Id)
                     {

@@ -286,7 +286,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         var bays = baysDataProvider.GetAll();
                         foreach (var bay in bays)
                         {
-                            if (bay.Shutter != null)
+                            if (bay.Shutter != null
+                                && bay.Shutter.Type != ShutterType.NotSpecified
+                                )
                             {
                                 var shutterInverter = bay.Shutter.Inverter.Index;
                                 var shutterPosition = this.machineData.MachineSensorStatus.GetShutterPosition(shutterInverter);

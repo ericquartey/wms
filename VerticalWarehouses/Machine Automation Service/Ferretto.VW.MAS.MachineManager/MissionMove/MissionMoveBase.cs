@@ -228,9 +228,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else
                 {
                     // BID
-                    bayShutter = bay.Shutter != null &&
-                        bay.Shutter.Type != ShutterType.NotSpecified &&
-                        !this.isWaitingMissionOnThisBay();
+                    bayShutter = bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified && !this.isWaitingMissionOnThisBay();
                 }
 
                 if (bayShutter)
