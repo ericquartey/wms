@@ -4023,6 +4023,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HighSpeedHalfDurationOpen", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? HighSpeedHalfDurationOpen { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("MaxSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double MaxSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("MinSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double MinSpeed { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
