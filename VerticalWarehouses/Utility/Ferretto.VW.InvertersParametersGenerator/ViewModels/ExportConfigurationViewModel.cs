@@ -12,6 +12,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Ferretto.VW.MAS.DataModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 {
@@ -193,6 +194,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 if (!(axe.Inverter is null))
                 {
                     var inverter = axe.Inverter;
+                    inverter.Parameters = inverter.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
                     inverters.Add(inverter);
                 }
             }
@@ -203,6 +205,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                 if (!(bay.Inverter is null))
                 {
+                    inverter.Parameters = inverter.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
                     inverters.Add(inverter);
                 }
                 if (!(bay.Shutter?.Inverter?.Parameters is null))
@@ -211,6 +214,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                     if (!(bay.Shutter.Inverter is null))
                     {
+                        inverterShutter.Parameters = inverterShutter.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
                         inverters.Add(inverterShutter);
                     }
                 }

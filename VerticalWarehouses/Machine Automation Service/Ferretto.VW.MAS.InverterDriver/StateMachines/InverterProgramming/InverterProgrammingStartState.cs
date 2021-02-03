@@ -159,7 +159,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                     dataset = message.DataSetIndex;
                 }
 
-                this.Logger.LogDebug($"Inverter Programming parameter={message.ParameterId}, dataset={dataset}, messageDataset={message.DataSetIndex}");
+                this.Logger.LogDebug($"Inverter Programming parameter={message.ParameterId}, dataset={dataset}, messageDataset={message.DataSetIndex}, value={result}");
 
                 var notificationMessage = new NotificationMessage(
                                new InverterParametersMessageData(MessageType.InverterProgramming, message.ShortParameterId, dataset, result, false),
@@ -255,7 +255,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterProgramming
                     dataset = message.DataSetIndex;
                 }
 
-                this.Logger.LogDebug($"Inverter Programming: read parameter={message.ParameterId}, dataset={dataset}, messageDataset={message.DataSetIndex}");
+                this.Logger.LogDebug($"Inverter Programming: read parameter={message.ParameterId}, dataset={dataset}, messageDataset={message.DataSetIndex}, value={result}");
 
                 var notificationMessage = new NotificationMessage(
                                new InverterParametersMessageData(MessageType.InverterProgramming, message.ShortParameterId, dataset, result, true),

@@ -2770,6 +2770,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import and save.
+        /// </summary>
+        public static string ImportAndSave {
+            get {
+                return ResourceManager.GetString("ImportAndSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Import configuration file .
         /// </summary>
         public static string ImportConfigurationFile {
