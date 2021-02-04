@@ -7,6 +7,30 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
+    /// <inheritdoc />
+    public override void Start()
+    {
+        this.Logger.LogDebug("Set Sequence Mode");
+        this.startTime = DateTime.UtcNow;
+        if (this.InverterStatus is IPositioningInverterStatus currentStatus)
+        {
+            currentStatus.TableTravelControlWord.SequenceMode = true;
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, currentStatus.TableTravelControlWord.Value);
+
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
+            this.axisPositionUpdateTimer.Change(250, 250);
+            this.SignalsArrived = 0;
+        }
+        else
+        {
+            this.Logger.LogError($"1:Invalid inverter status");
+            this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+        }
+    }
+
     internal class PositioningTableStartMovingState : InverterStateBase
     {
         #region Fields
@@ -38,32 +62,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public int SignalsArrived { get; private set; }
 
         #endregion
-
-        #region Methods
-
-        /// <inheritdoc />
-        public override void Start()
-        {
-            this.Logger.LogDebug("Set Sequence Mode");
-            this.startTime = DateTime.UtcNow;
-            if (this.InverterStatus is IPositioningInverterStatus currentStatus)
-            {
-                currentStatus.TableTravelControlWord.SequenceMode = true;
-                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, currentStatus.TableTravelControlWord.Value);
-
-                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-
-                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
-
-                this.axisPositionUpdateTimer.Change(250, 250);
-                this.SignalsArrived = 0;
-            }
-            else
-            {
-                this.Logger.LogError($"1:Invalid inverter status");
-                this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-            }
-        }
 
         /// <inheritdoc />
         public override void Stop()
@@ -160,41 +158,35 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         this.Logger.LogTrace($"Inverter {this.InverterStatus.SystemIndex} moving towards target table position: present {position.Value}, old {this.oldPosition}");
                         // if position doesn't change raise an alarm
                         if (this.oldPosition.HasValue
-                            && Math.Abs(position.Value - this.oldPosition.Value) < 3
-                            )
+                            && position.Value == this.oldPosition.Value
+                            && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
                         {
-                            if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
-                            {
-                                this.Logger.LogError($"PositioningTableStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
-                                this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                                return true;
-                            }
+                            this.Logger.LogError($"PositioningTableStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
+                            this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                            return true;
                         }
-                        else
-                        {
-                            this.startTime = DateTime.UtcNow;
-                            this.oldPosition = position;
-                        }
+                        this.startTime = DateTime.UtcNow;
+                        this.oldPosition = position;
                     }
                 }
             }
+        }
+
             //INFO Next status word request handled by timer
             return true;
         }
 
-        protected override void OnDisposing()
-        {
-            this.axisPositionUpdateTimer?.Dispose();
-        }
-
-        private void RequestAxisPositionUpdate(object state)
-        {
-            this.ParentStateMachine.EnqueueCommandMessage(
-                new InverterMessage(
-                    this.InverterStatus.SystemIndex,
-                    InverterParameterId.ActualPositionShaft));
-        }
-
-        #endregion
+    protected override void OnDisposing()
+    {
+        this.axisPositionUpdateTimer?.Dispose();
     }
+
+    private void RequestAxisPositionUpdate(object state)
+    {
+        this.ParentStateMachine.EnqueueCommandMessage(
+            new InverterMessage(
+                this.InverterStatus.SystemIndex,
+                InverterParameterId.ActualPositionShaft));
+    }
+}
 }

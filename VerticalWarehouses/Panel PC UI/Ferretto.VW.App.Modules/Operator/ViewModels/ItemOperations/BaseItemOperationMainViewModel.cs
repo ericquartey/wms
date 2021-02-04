@@ -439,19 +439,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             break;
                         }
 
-                    case nameof(this.InputSerialNumber):
-                        {
-                            if (this.InputSerialNumber != null
-                                &&
-                                this.MissionOperation?.SerialNumber != null
-                                &&
-                                this.InputSerialNumber == this.MissionOperation.SerialNumber)
-                            {
-                                return columnName;
-                            }
+                        // TODO - for future use
+                        //case nameof(this.InputSerialNumber):
+                        //    {
+                        //        if (this.InputSerialNumber != null
+                        //            &&
+                        //            this.MissionOperation?.SerialNumber != null
+                        //            &&
+                        //            this.InputSerialNumber == this.MissionOperation.SerialNumber)
+                        //        {
+                        //            return columnName;
+                        //        }
 
-                            break;
-                        }
+                        //        break;
+                        //    }
                 }
                 return null;
             }
