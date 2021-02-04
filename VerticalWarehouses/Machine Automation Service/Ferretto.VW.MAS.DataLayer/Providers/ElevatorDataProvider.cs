@@ -154,8 +154,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        #region Methods
-
         public void CompleteProcedure()
         {
             lock (this.dataContext)
