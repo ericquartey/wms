@@ -154,6 +154,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        #region Methods
+
         public void CompleteProcedure()
         {
             lock (this.dataContext)
@@ -172,7 +174,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var cacheKey = GetAxisCacheKey(orientation);
                 if (!this.cache.TryGetValue(cacheKey, out ElevatorAxis cacheEntry))
                 {
-                    cacheEntry = this.dataContext.ElevatorAxes.AsNoTracking()
+                    cacheEntry = this.dataContext.ElevatorAxes
                         .Include(a => a.Profiles)
                         .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
