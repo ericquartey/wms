@@ -160,10 +160,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         this.Logger.LogTrace($"Inverter {this.InverterStatus.SystemIndex} moving towards target table position: present {position.Value}, old {this.oldPosition}");
                         // if position doesn't change raise an alarm
                         if (this.oldPosition.HasValue
-                            && Math.Abs(position.Value - this.oldPosition.Value) < 3
+                            && Math.Abs(position.Value - this.oldPosition.Value) < 1
                             )
                         {
-                            if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                            if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 5000)
                             {
                                 this.Logger.LogError($"PositioningTableStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
                                 this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));

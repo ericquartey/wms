@@ -35,6 +35,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly IMachineMissionsWebService machineMissionsWebService;
+
         private DelegateCommand applyCorrectionCommand;
 
         private Cell currentCell;
@@ -79,15 +81,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken themeChangedToken;
 
+        private bool missionInError;
+
         #endregion
 
         #region Constructors
 
         public CellPanelsCheckViewModel(
+            IMachineMissionsWebService machineMissionsWebService,
             IMachineCellPanelsWebService machineCellPanelsWebService,
             IMachineElevatorWebService machineElevatorWebService)
             : base(PresentationMode.Installer)
         {
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineCellPanelsWebService = machineCellPanelsWebService ?? throw new ArgumentNullException(nameof(machineCellPanelsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
         }
@@ -318,7 +324,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMeasuredFront()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                !this.missionInError;
         }
 
         public override void Disappear()
@@ -349,6 +356,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.UpdateStatusButtonFooter();
 
             await base.OnAppearedAsync();
+
+            var newMissions = await this.machineMissionsWebService.GetAllAsync();
+
+            if (newMissions.Any(s => s.ErrorCode != MachineErrorCode.NoError && s.ErrorCode != 0))
+            {
+                this.missionInError = true;
+                this.ClearNotifications();
+                this.ShowNotification(
+                     VW.App.Resources.Localized.Get("ServiceMachine.MissionInError"),
+                     Services.Models.NotificationSeverity.Error);
+            }
+            else
+            {
+                this.missionInError = false;
+            }
 
             if (this.lastPanel != 0)
             {
@@ -431,6 +453,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
             this.goToCellHeightCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
+            this.goToMeasuredFront?.RaiseCanExecuteChanged();
         }
 
         private async Task ApplyCorrectionAsync()
@@ -688,7 +711,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case CellPanelsCheckStep.Inizialize:
                     this.ShowPrevStepSinglePage(true, false);
-                    this.ShowNextStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, !this.missionInError);
                     break;
 
                 case CellPanelsCheckStep.MeasuredFront:
