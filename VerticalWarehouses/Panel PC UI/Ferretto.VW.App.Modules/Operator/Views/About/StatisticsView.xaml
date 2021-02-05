@@ -32,7 +32,7 @@
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-               Text="{x:Static resources:OperatorApp.Statistics}" />
+               Text="{resources:Loc OperatorApp.Statistics}" />
 
     <StackPanel Grid.Row="1"
                 Grid.Column="1"
@@ -602,9 +602,9 @@
                          HorizontalAlignment="Center"
                          VerticalAlignment="Top"
                          Style="{DynamicResource VWAPP_CardSensor_Data}">
-                         <Run Text="{Binding MaxSolidSpaceFront}" /><Run Text="mm" />
+                <Run Text="{Binding MaxSolidSpaceFront}" /><Run Text="mm" />
               </TextBlock>
-                            <!--  Text="{Binding LowerBound}"  -->
+              <!--  Text="{Binding LowerBound}"  -->
               <Border Grid.RowSpan="2"
                       Grid.Column="1"
                       Margin="0,25"
@@ -639,7 +639,7 @@
                          HorizontalAlignment="Center"
                          VerticalAlignment="Top"
                          Style="{DynamicResource VWAPP_CardSensor_Data}">
-                         <Run Text="{Binding MaxSolidSpaceBack}" /><Run Text="mm" />
+                <Run Text="{Binding MaxSolidSpaceBack}" /><Run Text="mm" />
               </TextBlock>
             </Grid>
 

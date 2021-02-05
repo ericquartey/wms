@@ -198,7 +198,7 @@
                            VerticalAlignment="Stretch"
                            InputText="{Binding SocketLinkPort, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding SocketLinkIsEnabled}"
-                           LabelText="{x:Static res:General.SocketLinkPort}" />
+                           LabelText="{res:Loc General.SocketLinkPort}" />
 
       <controls:PpcTextBox Grid.Row="0"
                            Grid.Column="1"
@@ -207,7 +207,7 @@
                            VerticalAlignment="Stretch"
                            InputText="{Binding SocketLinkTimeout, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding SocketLinkIsEnabled}"
-                           LabelText="{x:Static res:General.SocketLinkTimeout}" />
+                           LabelText="{res:Loc General.SocketLinkTimeout}" />
 
       <controls:PpcTextBox Grid.Row="0"
                            Grid.Column="2"
@@ -216,7 +216,7 @@
                            VerticalAlignment="Stretch"
                            InputText="{Binding SocketLinkPolling, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding SocketLinkIsEnabled}"
-                           LabelText="{x:Static res:General.SocketLinkPolling}" />
+                           LabelText="{res:Loc General.SocketLinkPolling}" />
     </Grid>
 
     <controls:PpcButton Grid.Row="7"

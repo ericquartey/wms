@@ -2370,4 +2370,28 @@
   <data name="ErrorActiveWarning" xml:space="preserve">
     <value>Existují aktivní chyby</value>
   </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>Manuál2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>Manuál3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Test2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Test3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Zhutnit2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Zhutnit3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Operace zásuvky2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Operace zásuvky3</value>
+  </data>
 </root>

@@ -45,13 +45,31 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private bool isMachineInCompact;
 
+        private bool isMachineInCompact2;
+
+        private bool isMachineInCompact3;
+
         private bool isMachineInFirstTest;
 
         private bool isMachineInLoadUnitOperations;
 
+        private bool isMachineInLoadUnitOperations2;
+
+        private bool isMachineInLoadUnitOperations3;
+
+        private bool isMachineInManualMode;
+
+        private bool isMachineInManualMode2;
+
+        private bool isMachineInManualMode3;
+
         private bool isMachineInSwitchingToLoadUnitOperations;
 
         private bool isMachineInTestMode;
+
+        private bool isMachineInTestMode2;
+
+        private bool isMachineInTestMode3;
 
         private bool isMissionInErrorByLoadUnitOperations;
 
@@ -138,6 +156,18 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             set => this.SetProperty(ref this.isMachineInCompact, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsMachineInCompact2
+        {
+            get => this.isMachineInCompact2;
+            set => this.SetProperty(ref this.isMachineInCompact2, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMachineInCompact3
+        {
+            get => this.isMachineInCompact3;
+            set => this.SetProperty(ref this.isMachineInCompact3, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsMachineInFirstTest
         {
             get => this.isMachineInFirstTest;
@@ -150,6 +180,36 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             set => this.SetProperty(ref this.isMachineInLoadUnitOperations, value);
         }
 
+        public bool IsMachineInLoadUnitOperations2
+        {
+            get => this.isMachineInLoadUnitOperations2;
+            set => this.SetProperty(ref this.isMachineInLoadUnitOperations2, value);
+        }
+
+        public bool IsMachineInLoadUnitOperations3
+        {
+            get => this.isMachineInLoadUnitOperations3;
+            set => this.SetProperty(ref this.isMachineInLoadUnitOperations3, value);
+        }
+
+        public bool IsMachineInManualMode
+        {
+            get => this.isMachineInManualMode;
+            set => this.SetProperty(ref this.isMachineInManualMode, value);
+        }
+
+        public bool IsMachineInManualMode2
+        {
+            get => this.isMachineInManualMode2;
+            set => this.SetProperty(ref this.isMachineInManualMode2, value);
+        }
+
+        public bool IsMachineInManualMode3
+        {
+            get => this.isMachineInManualMode3;
+            set => this.SetProperty(ref this.isMachineInManualMode3, value);
+        }
+
         public bool IsMachineInSwitchingToLoadUnitOperations
         {
             get => this.isMachineInSwitchingToLoadUnitOperations;
@@ -160,6 +220,18 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             get => this.isMachineInTestMode;
             set => this.SetProperty(ref this.isMachineInTestMode, value);
+        }
+
+        public bool IsMachineInTestMode2
+        {
+            get => this.isMachineInTestMode2;
+            set => this.SetProperty(ref this.isMachineInTestMode2, value);
+        }
+
+        public bool IsMachineInTestMode3
+        {
+            get => this.isMachineInTestMode;
+            set => this.SetProperty(ref this.isMachineInTestMode3, value);
         }
 
         public bool IsMissionInErrorByLoadUnitOperations
@@ -358,10 +430,19 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private void OnMachineModePropertyChanged()
         {
             this.IsMachineInAutomaticMode = this.MachineMode is MachineMode.Automatic;
-            this.IsMachineInTestMode = this.MachineMode is MachineMode.Test || this.MachineMode is MachineMode.Test2 || this.MachineMode is MachineMode.Test3;
-            this.IsMachineInLoadUnitOperations = this.MachineMode is MachineMode.LoadUnitOperations || this.MachineMode is MachineMode.LoadUnitOperations2 || this.MachineMode is MachineMode.LoadUnitOperations3;
+            this.IsMachineInManualMode = this.MachineMode is MachineMode.Manual;
+            this.IsMachineInManualMode2 = this.MachineMode is MachineMode.Manual2;
+            this.IsMachineInManualMode3 = this.MachineMode is MachineMode.Manual3;
+            this.IsMachineInTestMode = this.MachineMode is MachineMode.Test;
+            this.IsMachineInTestMode2 = this.MachineMode is MachineMode.Test2;
+            this.IsMachineInTestMode3 = this.MachineMode is MachineMode.Test3;
+            this.IsMachineInLoadUnitOperations = this.MachineMode is MachineMode.LoadUnitOperations;
+            this.IsMachineInLoadUnitOperations2 = this.MachineMode is MachineMode.LoadUnitOperations2;
+            this.IsMachineInLoadUnitOperations3 = this.MachineMode is MachineMode.LoadUnitOperations3;
             this.IsMachineInSwitchingToLoadUnitOperations = this.MachineMode is MachineMode.SwitchingToLoadUnitOperations || this.MachineMode is MachineMode.SwitchingToLoadUnitOperations2 || this.MachineMode is MachineMode.SwitchingToLoadUnitOperations3;
-            this.IsMachineInCompact = this.MachineMode is MachineMode.Compact || this.MachineMode is MachineMode.Compact2 || this.MachineMode is MachineMode.Compact3;
+            this.IsMachineInCompact = this.MachineMode is MachineMode.Compact;
+            this.IsMachineInCompact2 = this.MachineMode is MachineMode.Compact2;
+            this.IsMachineInCompact3 = this.MachineMode is MachineMode.Compact3;
             this.IsMachineInFirstTest = this.MachineMode is MachineMode.FirstTest || this.MachineMode is MachineMode.FirstTest2 || this.MachineMode is MachineMode.FirstTest3;
 
             this.IsMissionInErrorByLoadUnitOperations = this.machineService.IsMissionInErrorByLoadUnitOperations;
