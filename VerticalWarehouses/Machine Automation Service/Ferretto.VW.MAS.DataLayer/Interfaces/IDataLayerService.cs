@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         #region Methods
 
+        void CopyMachineDatabaseToServer();
+
         byte[] GetRawDatabaseContent();
 
         #endregion

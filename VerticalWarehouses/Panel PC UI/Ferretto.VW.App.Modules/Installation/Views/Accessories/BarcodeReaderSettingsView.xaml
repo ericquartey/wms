@@ -15,208 +15,208 @@
             UseLayoutRounding="True"
             mc:Ignorable="d">
 
-    <Grid Margin="30,0,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+  <Grid Margin="30,0,0,0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="Row0_Title"
-                           Height="100" />
-            <RowDefinition x:Name="Row1_DeviceInfo"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row2_Enable"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row3_SystemPortsTitle"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row4_SystemPorts"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row5_InputChars"
-                           Height="*" />
-            <RowDefinition x:Name="Row6_Configure"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row7_Save"
-                           Height="Auto" />
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition x:Name="Row0_Title"
+                     Height="100" />
+      <RowDefinition x:Name="Row1_DeviceInfo"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row2_Enable"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row3_SystemPortsTitle"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row4_SystemPorts"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row5_InputChars"
+                     Height="*" />
+      <RowDefinition x:Name="Row6_Configure"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row7_Save"
+                     Height="Auto" />
+    </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc Menu.AccessoriesBarcodeReaderMenuTitle}" />
+    <TextBlock HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc Menu.AccessoriesBarcodeReaderMenuTitle}" />
 
-        <views:DeviceInformationView Grid.Row="1" />
+    <views:DeviceInformationView Grid.Row="1" />
 
-        <controls:PpcCheckBox Grid.Row="2"
-                              Margin="0,15,0,0"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
-                              IsEnabled="{Binding IsEnabled}"
-                              LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
+    <controls:PpcCheckBox Grid.Row="2"
+                          Margin="0,15,0,0"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                          IsEnabled="{Binding IsEnabled}"
+                          LabelText="{res:Loc InstallationApp.AccessoryEnabled}" />
 
-        <TextBlock Grid.Row="3"
-                   Margin="0,15,0,0"
-                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.SystemPorts}" />
+    <TextBlock Grid.Row="3"
+               Margin="0,15,0,0"
+               Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+               Text="{res:Loc InstallationApp.SystemPorts}" />
 
-        <StackPanel Grid.Row="4"
-                    Grid.ColumnSpan="2"
-                    Orientation="Horizontal"
-                    Visibility="{Binding SystemPortsAvailable, Converter={StaticResource BTVIC}}">
-            <icon:PackIconMaterial Width="24"
-                                   Height="24"
-                                   Margin="0,0,15,0"
-                                   Foreground="Gold"
-                                   Kind="Alert" />
-            <TextBlock FontSize="18"
-                       Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.NoSerialPortDetected}" />
-        </StackPanel>
+    <StackPanel Grid.Row="4"
+                Grid.ColumnSpan="2"
+                Orientation="Horizontal"
+                Visibility="{Binding SystemPortsAvailable, Converter={StaticResource BTVIC}}">
+      <icon:PackIconMaterial Width="24"
+                             Height="24"
+                             Margin="0,0,15,0"
+                             Foreground="Gold"
+                             Kind="Alert" />
+      <TextBlock FontSize="18"
+                 Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                 Text="{res:Loc InstallationApp.NoSerialPortDetected}" />
+    </StackPanel>
 
-        <ListView x:Name="SerialPorts"
-                  Grid.Row="4"
-                  Margin="0,0,0,15"
-                  Background="Transparent"
-                  BorderBrush="Transparent"
-                  ItemsSource="{Binding PortNames}"
-                  SelectedItem="{Binding PortName}"
-                  Visibility="{Binding SystemPortsAvailable, Converter={StaticResource BTVC}}">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-
-
-            <ListView.Resources>
-                <Style x:Key="FocusVisual">
-                    <Setter Property="Control.Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <Rectangle SnapsToDevicePixels="true"
-                                           Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
-                                           StrokeDashArray="1 2"
-                                           StrokeThickness="1" />
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <SolidColorBrush x:Key="Item.MouseOver.Background"
-                                 Color="Red" />
-                <SolidColorBrush x:Key="Item.MouseOver.Border"
-                                 Color="#a826A0Da" />
-                <SolidColorBrush x:Key="Item.SelectedInactive.Background"
-                                 Color="#3DDADADA" />
-                <SolidColorBrush x:Key="Item.SelectedInactive.Border"
-                                 Color="#FFDADADA" />
-                <SolidColorBrush x:Key="Item.SelectedActive.Background"
-                                 Color="#3D26A0DA" />
-                <SolidColorBrush x:Key="Item.SelectedActive.Border"
-                                 Color="#FF26A0DA" />
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="SnapsToDevicePixels" Value="True" />
-                    <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                    <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
-                    <Setter Property="Margin" Value="1" />
-                    <Setter Property="BorderThickness" Value="2" />
-                    <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListViewItem}">
-
-                                <Border x:Name="Bd"
-                                        Padding="{TemplateBinding Padding}"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        SnapsToDevicePixels="true">
-                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="Selector.IsSelectionActive" Value="False" />
-                                            <Condition Property="IsSelected" Value="True" />
-                                        </MultiTrigger.Conditions>
-                                        <Setter TargetName="Bd" Property="Background" Value="Transparent" />
-                                        <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoLightGray}" />
-                                        <Setter TargetName="Bd" Property="BorderThickness" Value="2" />
-
-                                    </MultiTrigger>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="Selector.IsSelectionActive" Value="True" />
-                                            <Condition Property="IsSelected" Value="True" />
-                                        </MultiTrigger.Conditions>
-                                        <Setter TargetName="Bd" Property="Background" Value="Transparent" />
-                                        <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoLightGray}" />
-                                        <Setter TargetName="Bd" Property="BorderThickness" Value="2" />
+    <ListView x:Name="SerialPorts"
+              Grid.Row="4"
+              Margin="0,0,0,15"
+              Background="Transparent"
+              BorderBrush="Transparent"
+              ItemsSource="{Binding PortNames}"
+              SelectedItem="{Binding PortName}"
+              Visibility="{Binding SystemPortsAvailable, Converter={StaticResource BTVC}}">
+      <ListView.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel />
+        </ItemsPanelTemplate>
+      </ListView.ItemsPanel>
 
 
-                                    </MultiTrigger>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListView.Resources>
-            <ListView.ItemTemplate>
-                <DataTemplate>
+      <ListView.Resources>
+        <Style x:Key="FocusVisual">
+          <Setter Property="Control.Template">
+            <Setter.Value>
+              <ControlTemplate>
+                <Rectangle SnapsToDevicePixels="true"
+                           Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                           StrokeDashArray="1 2"
+                           StrokeThickness="1" />
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Item.MouseOver.Background"
+                         Color="Red" />
+        <SolidColorBrush x:Key="Item.MouseOver.Border"
+                         Color="#a826A0Da" />
+        <SolidColorBrush x:Key="Item.SelectedInactive.Background"
+                         Color="#3DDADADA" />
+        <SolidColorBrush x:Key="Item.SelectedInactive.Border"
+                         Color="#FFDADADA" />
+        <SolidColorBrush x:Key="Item.SelectedActive.Background"
+                         Color="#3D26A0DA" />
+        <SolidColorBrush x:Key="Item.SelectedActive.Border"
+                         Color="#FF26A0DA" />
+        <Style TargetType="{x:Type ListViewItem}">
+          <Setter Property="SnapsToDevicePixels" Value="True" />
+          <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+          <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+          <Setter Property="Background" Value="Transparent" />
+          <Setter Property="BorderBrush" Value="Transparent" />
+          <Setter Property="Margin" Value="1" />
+          <Setter Property="BorderThickness" Value="2" />
+          <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="{x:Type ListViewItem}">
 
-                    <Border MinWidth="70"
-                            Margin="0,3,0,3"
-                            Padding="10"
-                            Background="{StaticResource FerrettoLightGray}">
-                        <TextBlock HorizontalAlignment="Center"
-                                   FontSize="14"
-                                   FontWeight="DemiBold"
-                                   Text="{Binding .}" />
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <Border x:Name="Bd"
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="true">
+                  <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </Border>
+                <ControlTemplate.Triggers>
+                  <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                      <Condition Property="Selector.IsSelectionActive" Value="False" />
+                      <Condition Property="IsSelected" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter TargetName="Bd" Property="Background" Value="Transparent" />
+                    <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoLightGray}" />
+                    <Setter TargetName="Bd" Property="BorderThickness" Value="2" />
 
-        <controls:PpcLabeledText Grid.Row="5"
-                                 Grid.RowSpan="2"
-                                 ContentText="{Binding ReceivedBarcode}"
-                                 LabelText="{x:Static res:InstallationApp.ReceivedBarcode}" />
+                  </MultiTrigger>
+                  <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                      <Condition Property="Selector.IsSelectionActive" Value="True" />
+                      <Condition Property="IsSelected" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter TargetName="Bd" Property="Background" Value="Transparent" />
+                    <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoLightGray}" />
+                    <Setter TargetName="Bd" Property="BorderThickness" Value="2" />
 
 
-        <controls:PpcButton x:Name="Configure"
-                            Grid.Row="6"
-                            Grid.Column="2"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ConfigureDeviceCommand}"
-                            Content="{x:Static res:InstallationApp.ConfigureDevice}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
+                  </MultiTrigger>
+                  <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                  </Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+      </ListView.Resources>
+      <ListView.ItemTemplate>
+        <DataTemplate>
+
+          <Border MinWidth="70"
+                  Margin="0,3,0,3"
+                  Padding="10"
+                  Background="{StaticResource FerrettoLightGray}">
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="14"
+                       FontWeight="DemiBold"
+                       Text="{Binding .}" />
+          </Border>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+
+    <controls:PpcLabeledText Grid.Row="5"
+                             Grid.RowSpan="2"
+                             ContentText="{Binding ReceivedBarcode}"
+                             LabelText="{res:Loc InstallationApp.ReceivedBarcode}" />
 
 
-        <TextBlock x:Name="ConfigurationHint"
-                   Grid.Row="6"
-                   Grid.ColumnSpan="2"
-                   VerticalAlignment="Center"
-                   FontSize="18"
-                   Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.ConfigureBarcodeReaderHint}" />
+    <controls:PpcButton x:Name="Configure"
+                        Grid.Row="6"
+                        Grid.Column="2"
+                        Margin="15,15,15,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding ConfigureDeviceCommand}"
+                        Content="{res:Loc InstallationApp.ConfigureDevice}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
 
-        <controls:PpcButton x:Name="Save"
-                            Grid.Row="7"
-                            Grid.Column="2"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Command="{Binding SaveCommand}"
-                            Content="{x:Static res:General.Save}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
-    </Grid>
+
+    <TextBlock x:Name="ConfigurationHint"
+               Grid.Row="6"
+               Grid.ColumnSpan="2"
+               VerticalAlignment="Center"
+               FontSize="18"
+               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+               Text="{res:Loc InstallationApp.ConfigureBarcodeReaderHint}" />
+
+    <controls:PpcButton x:Name="Save"
+                        Grid.Row="7"
+                        Grid.Column="2"
+                        Margin="15,15,15,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding SaveCommand}"
+                        Content="{res:Loc General.Save}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
+  </Grid>
 </ctrls:View>

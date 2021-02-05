@@ -16,275 +16,275 @@
             UseLayoutRounding="True"
             mc:Ignorable="d">
 
-    <ctrls:View.Resources>
-        <converters:AlphaNumericBarSizeEnumConverter x:Key="ANBSEC" />
-    </ctrls:View.Resources>
+  <ctrls:View.Resources>
+    <converters:AlphaNumericBarSizeEnumConverter x:Key="ANBSEC" />
+  </ctrls:View.Resources>
 
-    <Grid x:Name="Root"
-          Margin="40,0,15,0">
+  <Grid x:Name="Root"
+        Margin="40,0,15,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+
+    <StackPanel Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Orientation="Horizontal">
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="4.6.1" />
+      <TextBlock Grid.ColumnSpan="2"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc Menu.AccessoriesAlphaNumBarMenuTitle}" />
+    </StackPanel>
+
+    <TextBlock Grid.Row="1"
+               Grid.ColumnSpan="4"
+               Height="Auto"
+               Margin="0,0,15,0"
+               VerticalAlignment="Top"
+               Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+               Text="{res:Loc Menu.AccessoriesAlphaNumBarMenuDescription}" />
+
+    <StackPanel Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Margin="0,5,5,5"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
+
+      <controls:PpcCheckBox Margin="0,0,70,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                            IsEnabled="{Binding IsEnabled}"
+                            LabelText="{res:Loc InstallationApp.AccessoryEnabled}" />
+    </StackPanel>
+
+    <Border Grid.Row="3"
+            Grid.ColumnSpan="4"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2"
+            IsEnabled="{Binding IsAccessoryEnabled}">
+      <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="auto" />
+
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Grid.ColumnSpan="2"
-                    Orientation="Horizontal">
-            <TextBlock Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="4.6.1" />
-            <TextBlock Grid.ColumnSpan="2"
-                       Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuTitle}" />
+        <TextBlock Grid.Row="0"
+                   Margin="0,0,0,0"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
+                   Text="{res:Loc Menu.AccessoriesAlphaNumBarMenuSection1}" />
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="3"
+                   Margin="15,0,0,0"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.FirmwareVersion}" />
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="0,5,15,5"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top">
+          <TextBlock Margin="5,0,5,0"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                     Text="{res:Loc Menu.AccessoriesIpAddress}" />
+          <ctrlssc:IPAddressBox Margin="5,4,5,5"
+                                IPAddress="{Binding IpAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding IsEnabledEditing}" />
         </StackPanel>
 
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="4"
-                   Height="Auto"
-                   Margin="0,0,15,0"
-                   VerticalAlignment="Top"
-                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuDescription}" />
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="1"
+                             Margin="5,5,5,5"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Top"
+                             InputText="{Binding Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsEnabledEditing}"
+                             LabelText="{res:Loc Menu.AccessoriesPort}" />
 
-        <StackPanel Grid.Row="2"
-                    Grid.ColumnSpan="2"
+        <StackPanel Grid.Row="1"
+                    Grid.Column="2"
                     Margin="0,5,5,5"
                     HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal">
+                    VerticalAlignment="Top">
 
-            <controls:PpcCheckBox Margin="0,0,70,0"
-                                  VerticalAlignment="Center"
-                                  IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
-                                  IsEnabled="{Binding IsEnabled}"
-                                  LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
-        </StackPanel>
-
-        <Border Grid.Row="3"
-                Grid.ColumnSpan="4"
-                BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="{DynamicResource PpcBorderThickness}"
-                CornerRadius="2"
-                IsEnabled="{Binding IsAccessoryEnabled}">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Row="0"
-                           Margin="0,0,0,0"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuSection1}" />
-
-                <TextBlock Grid.Row="0"
-                           Grid.Column="3"
-                           Margin="15,0,0,0"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{x:Static res:InstallationApp.FirmwareVersion}" />
-
-                <StackPanel Grid.Row="1"
-                            Grid.Column="0"
-                            Margin="0,5,15,5"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Top">
-                    <TextBlock Margin="5,0,5,0"
-                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{x:Static res:Menu.AccessoriesIpAddress}" />
-                    <ctrlssc:IPAddressBox Margin="5,4,5,5"
-                                          IPAddress="{Binding IpAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          IsEnabled="{Binding IsEnabledEditing}" />
-                </StackPanel>
-
-                <controls:PpcTextBox Grid.Row="1"
-                                     Grid.Column="1"
-                                     Margin="5,5,5,5"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Top"
-                                     InputText="{Binding Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="{x:Static res:Menu.AccessoriesPort}" />
-
-                <StackPanel Grid.Row="1"
-                            Grid.Column="2"
-                            Margin="0,5,5,5"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Top">
-
-                    <TextBlock Margin="6,0,5,0"
-                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{x:Static res:Menu.AccessoriesSize}" />
-                    <!--<Border Margin="6"
+          <TextBlock Margin="6,0,5,0"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                     Text="{res:Loc Menu.AccessoriesSize}" />
+          <!--<Border Margin="6"
                             Background="{DynamicResource FerrettoGreen}"
                             CornerRadius="4">-->
-                    <!--<TextBlock Grid.Row="0"
+          <!--<TextBlock Grid.Row="0"
                                    Margin="5,10,5,5"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Top"
                                    FontSize="12"
                                    Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
                                    Text="{Binding Size, Converter={StaticResource ANBSEC}}" />-->
-                    <ComboBox Grid.Row="0"
-                              Margin="6"
-                              FontFamily="{DynamicResource VWAPP_TitleFont}"
-                              FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
-                              ItemsSource="{Binding Sizes}"
-                              SelectedValue="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                              Style="{DynamicResource PpcComboBoxStyle}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <ContentPresenter Content="{Binding Converter={StaticResource ANBSEC}}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+          <ComboBox Grid.Row="0"
+                    Margin="6"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
+                    ItemsSource="{Binding Sizes}"
+                    SelectedValue="{Binding Size, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    Style="{DynamicResource PpcComboBoxStyle}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <ContentPresenter Content="{Binding Converter={StaticResource ANBSEC}}" />
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
 
-                    <!--</Border>-->
-                </StackPanel>
+          <!--</Border>-->
+        </StackPanel>
 
-                <views:DeviceInformationView Grid.Row="1"
-                                             Grid.Column="3"
-                                             Margin="15,5,5,0" />
-            </Grid>
-        </Border>
-
-        <Border Grid.Row="4"
-                Grid.ColumnSpan="4"
-                Margin="0,15,0,0"
-                BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="{DynamicResource PpcBorderThickness}"
-                CornerRadius="2"
-                IsEnabled="{Binding IsAccessoryEnabled}">
-
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Row="0"
-                           Margin="0,5,10,0"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                           Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuSection2}" />
-
-                <RadioButton Grid.Row="0"
-                             Grid.Column="1"
-                             Margin="5"
-                             GroupName="RadioBoxGroupTestMode"
-                             IsChecked="{Binding TestOffIsChecked, Mode=TwoWay}">
-                    <RadioButton.Content>
-                        <TextBlock Margin="0,5,0,0"
-                                   Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                   Text="{x:Static res:Menu.AccessoriesOff}" />
-                    </RadioButton.Content>
-                </RadioButton>
-
-                <RadioButton Grid.Row="0"
-                             Grid.Column="2"
-                             Margin="5"
-                             GroupName="RadioBoxGroupTestMode"
-                             IsChecked="{Binding TestLedIsChecked, Mode=TwoWay}">
-                    <RadioButton.Content>
-                        <TextBlock Margin="0,5,0,0"
-                                   Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                   Text="{x:Static res:Menu.AccessoriesAlphaNumBarTestLed}" />
-                    </RadioButton.Content>
-                </RadioButton>
-
-                <RadioButton Grid.Row="2"
-                             Grid.Column="1"
-                             Margin="5,5,0,0"
-                             GroupName="RadioBoxGroupTestMode"
-                             IsChecked="{Binding TestMessageIsChecked, Mode=TwoWay}">
-                    <RadioButton.Content>
-                        <TextBlock Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                   Text="{x:Static res:Menu.AccessoriesAlphaNumBarTestMessage}" />
-                    </RadioButton.Content>
-                </RadioButton>
-
-                <controls:PpcTextBox Grid.Row="2"
-                                     Grid.Column="2"
-                                     MaxWidth="80"
-                                     Margin="0,5,0,0"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding TestMessageOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="{x:Static res:Menu.AccessoriesAlphaNumBarTestOffset}" />
-
-                <controls:PpcTextBox Grid.Row="2"
+        <views:DeviceInformationView Grid.Row="1"
                                      Grid.Column="3"
-                                     Margin="0,5,0,0"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding TestMessageText, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="{x:Static res:Menu.AccessoriesAlphaNumBarTestText}" />
+                                     Margin="15,5,5,0" />
+      </Grid>
+    </Border>
 
-                <RadioButton Grid.Row="3"
-                             Grid.Column="1"
-                             Margin="5,0,0,0"
-                             GroupName="RadioBoxGroupTestMode"
-                             IsChecked="{Binding TestArrowIsChecked, Mode=TwoWay}">
-                    <RadioButton.Content>
-                        <TextBlock Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                                   Text="{x:Static res:Menu.AccessoriesAlphaNumBarTestArrow}" />
-                    </RadioButton.Content>
-                </RadioButton>
+    <Border Grid.Row="4"
+            Grid.ColumnSpan="4"
+            Margin="0,15,0,0"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2"
+            IsEnabled="{Binding IsAccessoryEnabled}">
 
-                <controls:PpcTextBox Grid.Row="3"
-                                     Grid.Column="2"
-                                     MaxWidth="80"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     InputText="{Binding TestArrowOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="{x:Static res:Menu.AccessoriesAlphaNumBarTestOffset}" />
-            </Grid>
-        </Border>
+      <Grid Margin="10">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
+          <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
 
-        <controls:PpcButton Grid.Row="6"
-                            Grid.Column="3"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding SaveCommand}"
-                            Content="{x:Static res:General.Save}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-    </Grid>
+        <TextBlock Grid.Row="0"
+                   Margin="0,5,10,0"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
+                   Text="{res:Loc Menu.AccessoriesAlphaNumBarMenuSection2}" />
+
+        <RadioButton Grid.Row="0"
+                     Grid.Column="1"
+                     Margin="5"
+                     GroupName="RadioBoxGroupTestMode"
+                     IsChecked="{Binding TestOffIsChecked, Mode=TwoWay}">
+          <RadioButton.Content>
+            <TextBlock Margin="0,5,0,0"
+                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                       Text="{res:Loc Menu.AccessoriesOff}" />
+          </RadioButton.Content>
+        </RadioButton>
+
+        <RadioButton Grid.Row="0"
+                     Grid.Column="2"
+                     Margin="5"
+                     GroupName="RadioBoxGroupTestMode"
+                     IsChecked="{Binding TestLedIsChecked, Mode=TwoWay}">
+          <RadioButton.Content>
+            <TextBlock Margin="0,5,0,0"
+                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                       Text="{res:Loc Menu.AccessoriesAlphaNumBarTestLed}" />
+          </RadioButton.Content>
+        </RadioButton>
+
+        <RadioButton Grid.Row="2"
+                     Grid.Column="1"
+                     Margin="5,5,0,0"
+                     GroupName="RadioBoxGroupTestMode"
+                     IsChecked="{Binding TestMessageIsChecked, Mode=TwoWay}">
+          <RadioButton.Content>
+            <TextBlock Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                       Text="{res:Loc Menu.AccessoriesAlphaNumBarTestMessage}" />
+          </RadioButton.Content>
+        </RadioButton>
+
+        <controls:PpcTextBox Grid.Row="2"
+                             Grid.Column="2"
+                             MaxWidth="80"
+                             Margin="0,5,0,0"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding TestMessageOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsEnabledEditing}"
+                             LabelText="{res:Loc Menu.AccessoriesAlphaNumBarTestOffset}" />
+
+        <controls:PpcTextBox Grid.Row="2"
+                             Grid.Column="3"
+                             Margin="0,5,0,0"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding TestMessageText, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsEnabledEditing}"
+                             LabelText="{res:Loc Menu.AccessoriesAlphaNumBarTestText}" />
+
+        <RadioButton Grid.Row="3"
+                     Grid.Column="1"
+                     Margin="5,0,0,0"
+                     GroupName="RadioBoxGroupTestMode"
+                     IsChecked="{Binding TestArrowIsChecked, Mode=TwoWay}">
+          <RadioButton.Content>
+            <TextBlock Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                       Text="{res:Loc Menu.AccessoriesAlphaNumBarTestArrow}" />
+          </RadioButton.Content>
+        </RadioButton>
+
+        <controls:PpcTextBox Grid.Row="3"
+                             Grid.Column="2"
+                             MaxWidth="80"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding TestArrowOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsEnabledEditing}"
+                             LabelText="{res:Loc Menu.AccessoriesAlphaNumBarTestOffset}" />
+      </Grid>
+    </Border>
+
+    <controls:PpcButton Grid.Row="6"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding SaveCommand}"
+                        Content="{res:Loc General.Save}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
+
+  </Grid>
 </ctrls:View>

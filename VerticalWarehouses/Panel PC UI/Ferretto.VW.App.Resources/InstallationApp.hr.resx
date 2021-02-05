@@ -2382,4 +2382,28 @@
   <data name="ErrorActiveWarning" xml:space="preserve">
     <value>Postoje aktivne pogreške</value>
   </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>Ručno2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>Ručno3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Test2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Test3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Sabij2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Sabij3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Operacija pretinca2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Operacija pretinca3</value>
+  </data>
 </root>

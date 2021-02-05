@@ -16,140 +16,140 @@
             UseLayoutRounding="True"
             mc:Ignorable="d">
 
-    <Grid Margin="30,0,0,0">
-        <Grid.Resources>
-            <converters:BoolToBrushConverter x:Key="BTBC"
-                                             FalseBrush="{StaticResource FerrettoLightGray}"
-                                             TrueBrush="{StaticResource FerrettoGreen}" />
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+  <Grid Margin="30,0,0,0">
+    <Grid.Resources>
+      <converters:BoolToBrushConverter x:Key="BTBC"
+                                       FalseBrush="{StaticResource FerrettoLightGray}"
+                                       TrueBrush="{StaticResource FerrettoGreen}" />
+    </Grid.Resources>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="Row0_Title"
-                           Height="100" />
-            <RowDefinition x:Name="Row1_Enable"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row2_TokenRegex"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row3_Input" />
-            <RowDefinition x:Name="Row4_Tokens_Title"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row5_Tokens" />
-            <RowDefinition x:Name="Row6_Save"
-                           Height="Auto" />
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition x:Name="Row0_Title"
+                     Height="100" />
+      <RowDefinition x:Name="Row1_Enable"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row2_TokenRegex"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row3_Input" />
+      <RowDefinition x:Name="Row4_Tokens_Title"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row5_Tokens" />
+      <RowDefinition x:Name="Row6_Save"
+                     Height="Auto" />
+    </Grid.RowDefinitions>
 
-        <TextBlock x:Name="PageTitle"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc Menu.AccessoriesCardReaderMenuTitle}" />
+    <TextBlock x:Name="PageTitle"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc Menu.AccessoriesCardReaderMenuTitle}" />
 
 
-        <controls:PpcCheckBox Grid.Row="1"
-                              Margin="0,15,0,0"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
-                              IsEnabled="{Binding IsEnabled}"
-                              LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
+    <controls:PpcCheckBox Grid.Row="1"
+                          Margin="0,15,0,0"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                          IsEnabled="{Binding IsEnabled}"
+                          LabelText="{res:Loc InstallationApp.AccessoryEnabled}" />
 
-        <controls:PpcTextBox Grid.Row="2"
-                             Width="350"
-                             VerticalAlignment="Center"
-                             InputText="{Binding TokenRegex, Mode=TwoWay}"
-                             IsEnabled="{Binding CanEditTokenRegex}"
-                             LabelText="{x:Static res:InstallationApp.AccessoriesCardReaderTokenRegex}" />
+    <controls:PpcTextBox Grid.Row="2"
+                         Width="350"
+                         VerticalAlignment="Center"
+                         InputText="{Binding TokenRegex, Mode=TwoWay}"
+                         IsEnabled="{Binding CanEditTokenRegex}"
+                         LabelText="{res:Loc InstallationApp.AccessoriesCardReaderTokenRegex}" />
 
-        <controls:PpcButton Grid.Row="2"
-                            Grid.Column="1"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Command="{Binding StartTestCommand}"
-                            Content="{x:Static res:InstallationApp.StartTest}"
-                            Visibility="{Binding IsTesting, Converter={StaticResource BTVIC}}" />
+    <controls:PpcButton Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="15,15,15,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Command="{Binding StartTestCommand}"
+                        Content="{res:Loc InstallationApp.StartTest}"
+                        Visibility="{Binding IsTesting, Converter={StaticResource BTVIC}}" />
 
-        <controls:PpcButton Grid.Row="2"
-                            Grid.Column="1"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Command="{Binding StopTestCommand}"
-                            Content="{x:Static res:InstallationApp.StopTest}"
-                            Visibility="{Binding IsTesting, Converter={StaticResource BTVC}}" />
+    <controls:PpcButton Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="15,15,15,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Command="{Binding StopTestCommand}"
+                        Content="{res:Loc InstallationApp.StopTest}"
+                        Visibility="{Binding IsTesting, Converter={StaticResource BTVC}}" />
 
-        <ItemsControl Grid.Row="3"
-                      Grid.ColumnSpan="2"
-                      Background="Transparent"
-                      BorderBrush="Transparent"
-                      ItemsSource="{Binding InputKeys}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                               ScrollViewer.VerticalScrollBarVisibility="Auto" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="1"
-                            Padding="1,10,1,1"
-                            BorderBrush="{Binding IsHighlighted, Converter={StaticResource BTBC}}"
-                            BorderThickness="0,0,0,3">
-                        <TextBlock HorizontalAlignment="Center"
-                                   FontSize="12"
-                                   FontWeight="DemiBold"
-                                   Foreground="{StaticResource FerrettoLightGray}"
-                                   Text="{Binding DisplayKey}" />
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+    <ItemsControl Grid.Row="3"
+                  Grid.ColumnSpan="2"
+                  Background="Transparent"
+                  BorderBrush="Transparent"
+                  ItemsSource="{Binding InputKeys}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Border Margin="1"
+                  Padding="1,10,1,1"
+                  BorderBrush="{Binding IsHighlighted, Converter={StaticResource BTBC}}"
+                  BorderThickness="0,0,0,3">
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="12"
+                       FontWeight="DemiBold"
+                       Foreground="{StaticResource FerrettoLightGray}"
+                       Text="{Binding DisplayKey}" />
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
 
-        <TextBlock Grid.Row="4"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   FontSize="14"
-                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.AcquiredToken}" />
+    <TextBlock Grid.Row="4"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               FontSize="14"
+               Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+               Text="{res:Loc InstallationApp.AcquiredToken}" />
 
-        <ItemsControl Grid.Row="5"
-                      Grid.ColumnSpan="2"
-                      Background="Transparent"
-                      BorderBrush="Transparent"
-                      ItemsSource="{Binding AcquiredTokens}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                               ScrollViewer.VerticalScrollBarVisibility="Auto" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="1"
-                            Padding="5"
-                            Background="{StaticResource FerrettoLightGray}"
-                            CornerRadius="5">
-                        <TextBlock HorizontalAlignment="Center"
-                                   FontSize="12"
-                                   FontWeight="DemiBold"
-                                   Foreground="{StaticResource FerrettoDarkGray}"
-                                   Text="{Binding .}" />
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+    <ItemsControl Grid.Row="5"
+                  Grid.ColumnSpan="2"
+                  Background="Transparent"
+                  BorderBrush="Transparent"
+                  ItemsSource="{Binding AcquiredTokens}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Border Margin="1"
+                  Padding="5"
+                  Background="{StaticResource FerrettoLightGray}"
+                  CornerRadius="5">
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="12"
+                       FontWeight="DemiBold"
+                       Foreground="{StaticResource FerrettoDarkGray}"
+                       Text="{Binding .}" />
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
 
-        <controls:PpcButton Grid.Row="6"
-                            Grid.Column="2"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Command="{Binding SaveCommand}"
-                            Content="{x:Static res:General.Save}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
-    </Grid>
+    <controls:PpcButton Grid.Row="6"
+                        Grid.Column="2"
+                        Margin="15,15,15,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding SaveCommand}"
+                        Content="{res:Loc General.Save}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
+  </Grid>
 </ctrls:View>
