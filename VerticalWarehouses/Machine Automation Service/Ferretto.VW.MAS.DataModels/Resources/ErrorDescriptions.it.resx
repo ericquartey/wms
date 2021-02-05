@@ -420,4 +420,7 @@
   <data name="LoadUnitNumber" xml:space="preserve">
     <value>Cassetto numero</value>
   </data>
+  <data name="HorizontalPositioningBlocked" xml:space="preserve">
+    <value>Errore di posizionamento</value>
+  </data>
 </root>
