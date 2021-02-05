@@ -41,7 +41,7 @@
                               Grid.Column="1"
                               Grid.ColumnSpan="2"
                               VerticalAlignment="Center"
-                              IsChecked="{Binding IsBackUpOnServer, Mode=TwoWay}"
+                              IsChecked="{Binding IsBackupOnServer, Mode=TwoWay}"
                               IsEnabled="{Binding IsBackupOnServerEnabled}"
                               LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnServer}" />
 

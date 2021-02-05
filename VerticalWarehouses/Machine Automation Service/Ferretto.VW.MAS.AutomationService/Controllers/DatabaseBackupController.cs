@@ -17,18 +17,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
-
         #endregion
 
         #region Constructors
 
         public DatabaseBackupController(
-            IMachineVolatileDataProvider machineVolatileDataProvider,
             IMachineProvider machineProvider,
             ILogger<DatabaseBackupController> logger)
         {
-            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -46,14 +42,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("get/backupOnServer")]
         public ActionResult<bool> GetBackupOnServer()
         {
-            //x return this.Ok(this.machineVolatileDataProvider.EnableLocalDbSavingOnServer);
             return this.Ok(this.machineProvider.IsDbSaveOnServer());
         }
 
         [HttpPost("get/backupOnTelemetry")]
         public ActionResult<bool> GetBackupOnTelemetry()
         {
-            //x return this.Ok(this.machineVolatileDataProvider.EnableLocalDbSavingOnTelemetry);
             return this.Ok(this.machineProvider.IsDbSaveOnTelemetry());
         }
 
@@ -62,7 +56,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SetBackupOnServer(bool enable)
         {
-            //x this.machineVolatileDataProvider.EnableLocalDbSavingOnServer = enable;
             this.machineProvider.UpdateDbSaveOnServer(enable);
 
             return this.Accepted();
@@ -73,7 +66,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SetBackupOnTelemetry(bool enable)
         {
-            //x this.machineVolatileDataProvider.EnableLocalDbSavingOnTelemetry = enable;
             this.machineProvider.UpdateDbSaveOnTelemetry(enable);
 
             return this.Accepted();

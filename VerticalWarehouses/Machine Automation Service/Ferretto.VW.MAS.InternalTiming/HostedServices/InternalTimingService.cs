@@ -21,9 +21,9 @@ namespace Ferretto.VW.MAS.InternalTiming
     {
         #region Fields
 
-        private const int DefaultTimeOutPeriodMilliseconds = 1000 * 2; /*15 * 60 * 1000;*/  // 15 minutes
+        private const int DefaultTimeOutPeriodMilliseconds = 15 * 60 * 1000;  // 15 minutes
 
-        private const int MinTimeOutPeriodMillisconds = 60 * 1000;  // 1 minute
+        private const int MinTimeOutPeriodMillisconds = 3 * 60 * 1000;  // 3 minutes
 
         private readonly IDataLayerService dataLayerService;
 
@@ -92,8 +92,14 @@ namespace Ferretto.VW.MAS.InternalTiming
 
         private void ExecuteBackupScript()
         {
-            //var backupScript = "f:\\database\\remote_backup.cmd";
-            var backupScript = "C:\\BackUpDB\\remote_backup.cmd";  // Use of xcopy ... command inside the batch file
+            // The location of cmd file is written hardcoded. TODO: use a different strategy?
+            // See the Installer/Scripts location (Installer project) to retrieve the file
+            // Note about batch file (remote_backup.cmd):
+            //  - use the IP of server (default: 192.168.137.1)
+            //  - fergrp_2012 /user:wmsadmin are the credential for accessing the server
+            //  - use of xcopy command (it retrieves an error code, if it fails)
+            var backupScript = "f:\\database\\remote_backup.cmd";
+
             var info = new FileInfo(backupScript);
             if (info.Exists)
             {
@@ -122,23 +128,23 @@ namespace Ferretto.VW.MAS.InternalTiming
                             switch (process.ExitCode)
                             {
                                 case 0:
-                                    this.logger.LogInformation($"Database Backup executed");
+                                    this.logger.LogInformation($"Database Backup executed.");
                                     break;
 
                                 case 4:
-                                    this.logger.LogInformation($"Database Backup error: invalid file name");
+                                    this.logger.LogInformation($"Database Backup error: invalid file name.");
                                     break;
 
                                 case 1:
-                                    this.logger.LogInformation($"Database Backup error: file does not exist");
+                                    this.logger.LogInformation($"Database Backup error: file does not exist.");
                                     break;
 
                                 case 2:
-                                    this.logger.LogInformation($"Database Backup error: CTRL+C pressed to terminate copying");
+                                    this.logger.LogInformation($"Database Backup error: CTRL+C pressed to terminate copying.");
                                     break;
 
                                 case 5:
-                                    this.logger.LogInformation($"Database Backup error: disk write error");
+                                    this.logger.LogInformation($"Database Backup error: disk write error.");
                                     break;
                             }
                         }
@@ -150,12 +156,12 @@ namespace Ferretto.VW.MAS.InternalTiming
                 }
                 else
                 {
-                    this.logger.LogDebug($"file {backupScript} empty");
+                    this.logger.LogDebug($"Database Backup error: file {backupScript} empty.");
                 }
             }
             else
             {
-                this.logger.LogDebug($"file {backupScript} not found");
+                this.logger.LogDebug($"Database Backup error: file {backupScript} not found.");
             }
         }
 
@@ -179,9 +185,9 @@ namespace Ferretto.VW.MAS.InternalTiming
                         {
                             if (!machineVolatileDataProvider.IsDeviceManagerBusy)
                             {
-                                if (/*machineVolatileDataProvider.EnableLocalDbSavingOnServer*/ machineProvider.IsDbSaveOnServer())
+                                if (machineProvider.IsDbSaveOnServer())
                                 {
-                                    this.logger.LogDebug("Attempting to send a back database file to server.");
+                                    this.logger.LogDebug("Internal timing: attempting to send a back database file to server...");
 
                                     this.ExecuteBackupScript();
                                 }
@@ -195,11 +201,11 @@ namespace Ferretto.VW.MAS.InternalTiming
                         }
                         catch (Exception ex)
                         {
-                            this.logger.LogWarning("Unable to send backup database file: '{details}'.", ex.Message);
+                            this.logger.LogWarning("Internal timing: unable to send backup database file. Reason: '{details}'.", ex.Message);
                         }
                         finally
                         {
-                            this.logger.LogDebug($"Pausing service for {timeIntervalMilliseconds / 1000} s.");
+                            this.logger.LogDebug($"Internal timing: pausing service for {timeIntervalMilliseconds / 1000} s.");
 
                             await Task.Delay(
                                 timeIntervalMilliseconds,

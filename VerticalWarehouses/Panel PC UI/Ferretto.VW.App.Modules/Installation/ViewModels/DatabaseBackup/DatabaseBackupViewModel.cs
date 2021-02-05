@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            this.IsBackupOnServerEnabled = await this.machineWmsStatusWebService.IsEnabledAsync();
+            this.IsBackupOnServerEnabled = true; //await this.machineWmsStatusWebService.IsEnabledAsync();
             this.IsBackupOnTelemetryEnabled = true;
 
             this.IsBackupOnServer = await this.machineDatabaseBackupWebService.GetBackupOnServerAsync();
