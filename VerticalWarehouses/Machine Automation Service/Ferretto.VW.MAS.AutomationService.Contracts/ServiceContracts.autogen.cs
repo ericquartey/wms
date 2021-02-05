@@ -3340,6 +3340,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         MoveExtBayNotAllowed = 81,
     
+        HorizontalPositioningBlocked = 82,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,

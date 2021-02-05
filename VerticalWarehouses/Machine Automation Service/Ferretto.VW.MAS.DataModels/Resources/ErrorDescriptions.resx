@@ -423,4 +423,7 @@
   <data name="MoveExtBayNotAllowed" xml:space="preserve">
     <value>Invalid bay sensors</value>
   </data>
+  <data name="HorizontalPositioningBlocked" xml:space="preserve">
+    <value>Positioning error</value>
+  </data>
 </root>
