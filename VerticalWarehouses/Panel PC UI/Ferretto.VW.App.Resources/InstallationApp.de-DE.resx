@@ -2361,4 +2361,7 @@
   <data name="ActualValues" xml:space="preserve">
     <value>Istwerte</value>
   </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Vor dem Ende</value>
+  </data>
 </root>

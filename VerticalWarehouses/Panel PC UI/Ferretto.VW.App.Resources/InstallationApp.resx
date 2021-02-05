@@ -2427,4 +2427,7 @@
   <data name="ImportAndSave" xml:space="preserve">
     <value>Import and save</value>
   </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Before end</value>
+  </data>
 </root>

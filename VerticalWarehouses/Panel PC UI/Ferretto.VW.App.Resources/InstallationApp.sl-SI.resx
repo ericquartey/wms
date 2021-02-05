@@ -2358,4 +2358,7 @@
   <data name="WriteSingle" xml:space="preserve">
     <value>Napišite eno</value>
   </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Pred zaključkom</value>
+  </data>
 </root>
