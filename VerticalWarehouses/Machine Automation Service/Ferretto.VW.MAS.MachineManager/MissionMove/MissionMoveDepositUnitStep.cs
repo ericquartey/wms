@@ -64,8 +64,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             && baySource.Shutter.Type != ShutterType.NotSpecified
                             )
                         {
-                            var shutterInverter = (baySource.Shutter != null) ? baySource.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
-                            if (this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed
+                            var shutterInverter = baySource.Shutter.Inverter.Index;
+                            if (shutterInverter != InverterDriver.Contracts.InverterIndex.None
+                                && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed
                                 && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half
                                 )
                             {

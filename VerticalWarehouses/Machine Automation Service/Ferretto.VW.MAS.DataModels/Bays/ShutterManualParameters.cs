@@ -1,4 +1,7 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using System;
+using Newtonsoft.Json;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public class ShutterManualParameters : DataModel
     {
@@ -72,6 +75,8 @@
             }
         }
 
+        [Obsolete("Use the Shutter.MaxSpeed field instead.")]
+        [JsonIgnore]
         public double MaxSpeed
         {
             get => this.maxSpeed;
@@ -81,6 +86,8 @@
             }
         }
 
+        [Obsolete("Use the Shutter.MinSpeed field instead.")]
+        [JsonIgnore]
         public double MinSpeed
         {
             get => this.minSpeed;

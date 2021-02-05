@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.VW.MAS.SocketLink;
 using Ferretto.VW.MAS.TimeManagement;
+using Ferretto.VW.MAS.InternalTiming;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.Telemetry.Contracts.Hub;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -149,6 +150,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddFiniteStateMachines()
                 .AddMachineManager()
                 .AddMissionManager();
+
+            services.AddInternalTimingServices();
 
             services.AddHostedService<NotificationTelemetryService>();
             services.AddHostedService<NotificationRelayService>();

@@ -1978,7 +1978,7 @@
     <value>Sehr kurz</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Datei laden</value>
+    <value>In den Speicher importieren</value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Erfolgreicher Import</value>
@@ -2307,14 +2307,26 @@
   <data name="VerticalCalibration" xml:space="preserve">
     <value>Aufzugskalibrierung</value>
   </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Machine database backup</value>
+  </data>
   <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
     <value>Wechselrichterablesung erfolgreich abgeschlossen</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Internal copy</value>
   </data>
   <data name="InverterReadingEndedErrors" xml:space="preserve">
     <value>Wechselrichterablesung mit Fehlern abgeschlossen</value>
   </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>On server</value>
+  </data>
   <data name="InvertersReadingStopped" xml:space="preserve">
     <value>Wechselrichterablesung gestoppt</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>On telemetry</value>
   </data>
   <data name="InverterReadingNext" xml:space="preserve">
     <value>Beginn der nächsten Wechselrichtermessung</value>
@@ -2334,8 +2346,8 @@
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Lese alles</value>
   </data>
-  <data name="ImportStructure" xml:space="preserve">
-    <value>Struktur importieren</value>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Importieren und speichern</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Zieldatei überschreiben</value>
@@ -2360,5 +2372,14 @@
   </data>
   <data name="ActualValues" xml:space="preserve">
     <value>Istwerte</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Database backup settings</value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Vor dem Ende</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Es gibt aktive Fehler</value>
   </data>
 </root>

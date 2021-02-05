@@ -532,4 +532,10 @@
   <data name="EnabeNoteRules" xml:space="preserve">
     <value>Aktivieren Sie bekannte Regeln</value>
   </data>
+  <data name="ShutterMaxSpeed" xml:space="preserve">
+    <value>Höchstgeschwindigkeit</value>
+  </data>
+  <data name="ShutterMinSpeed" xml:space="preserve">
+    <value>Min Geschwindigkeit </value>
+  </data>
 </root>

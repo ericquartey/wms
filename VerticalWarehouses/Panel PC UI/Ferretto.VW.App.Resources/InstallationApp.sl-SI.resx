@@ -2238,4 +2238,142 @@
   <data name="InternalBayShort" xml:space="preserve">
     <value>Not</value>
   </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Uvozi in shrani</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>Absorbirani tok</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Dejanske vrednosti </value>
+  </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Block Unit</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>Spremeni ID</value>
+  </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Spremenite številko stroja</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Spremeni enoto</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Ukaz poslan</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Decimalno štetje</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Tehtanje s prazno enoto</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Napake in dejanske vrednosti</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Napake</value>
+  </data>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Izvedite meritev</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Tehtanje s polno enoto</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Odčitavanje pretvornika se je končalo z napakami</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Začetek naslednjega branja pretvornika</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Začelo se je branje pretvornika</value>
+  </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Odčitavanje pretvornika je uspešno zaključeno</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Odčitavanje pretvornika se je ustavilo</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Blokirano</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Id novega stroja</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>Prvo tehtanje z vmesno težo</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Prepiši ciljno datoteko</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Preberite kodo</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Preberite vse</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Shrani konfiguracijo pretvornika</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Izberite model</value>
+  </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Serijska številka žetona</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Pritisnite gumb, da s premikanjem predala pridobite trenutne podatke in vnesite njihovo neto težo. Ko končate, pritisnite Naprej, da potrdite postopek</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Enota za odklepanje</value>
+  </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Posodobi taro</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Ali potrjujete, da je izbrani predal prazen?</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Postopek posodobitve tare predala</value>
+  </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Kalibracija dvigala</value>
+  </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Umerjanje teže</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>Funkcija umerjanja teže vam omogoča spreminjanje odčitavanja teže z uporabo uteži vzorca</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>V predal naložite predal ali ga pokličite, da zaženete čarovnika za umerjanje teže</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Napišite vse</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Napišite kodo</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Napišite eno</value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Pred zaključkom</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Database backup settings</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Internal copy</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>On server</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>On telemetry</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Obstajajo aktivne napake</value>
+  </data>
 </root>

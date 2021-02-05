@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             && bayDestination.Shutter.Type != ShutterType.NotSpecified
                             )
                         {
-                            var shutterInverter = (bayDestination.Shutter != null) ? bayDestination.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                            var shutterInverter = bayDestination.Shutter.Inverter.Index;
                             if (this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Closed
                                 && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half
                                 )
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         this.Mission.Direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                         this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitSource);
-                        var shutterInverter = (bay.Shutter != null) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                        var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                         if (this.Mission.OpenShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
                         {
                             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;

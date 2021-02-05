@@ -1,278 +1,269 @@
 ﻿<UserControl x:Class="Ferretto.VW.InvertersParametersGenerator.Views.InvertersView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Ferretto.VW.InvertersParametersGenerator.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="700"
-            d:DesignWidth="1024"            
-            mc:Ignorable="d">
+             d:DesignWidth="1024"
+             mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <Style TargetType="{x:Type ListView}">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="ScrollViewer.PanningMode" Value="None" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
+  <UserControl.Resources>
+    <Style TargetType="{x:Type ListView}">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="ScrollViewer.PanningMode" Value="None" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
 
-        <Style x:Key="PpcButtonMenuCardStyle"
+    <Style x:Key="PpcButtonMenuCardStyle"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-            <Setter Property="FontWeight" Value="Light" />
-            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-            <Setter Property="Height" Value="155" />
-            <Setter Property="Width" Value="220" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+      <Setter Property="FontWeight" Value="Light" />
+      <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+      <Setter Property="Height" Value="155" />
+      <Setter Property="Width" Value="220" />
 
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                        <Grid Visibility="{TemplateBinding VisibilityPermission}">
-                            <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{DynamicResource PpcBorderBrush}"
-                                BorderThickness="{DynamicResource PpcBorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}"
-                                Cursor="Hand"
-                                FlowDirection="LeftToRight">
-                                <Grid x:Name="PpcButton_Grid">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="65" />
-                                        <RowDefinition Height="*" />
-                                    </Grid.RowDefinitions>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+            <Grid Visibility="{TemplateBinding VisibilityPermission}">
+              <Border Background="{TemplateBinding Background}"
+                      BorderBrush="{DynamicResource PpcBorderBrush}"
+                      BorderThickness="{DynamicResource PpcBorderThickness}"
+                      CornerRadius="{DynamicResource PpcCornerRadius}"
+                      Cursor="Hand"
+                      FlowDirection="LeftToRight">
+                <Grid x:Name="PpcButton_Grid">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="65" />
+                    <RowDefinition Height="*" />
+                  </Grid.RowDefinitions>
 
-                                    <Border Name="PpcButtonMenu_Border"
-                                        Grid.RowSpan="2"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="5,0,0,0"
-                                        Opacity="0.8"
-                                        Visibility="Collapsed" />
+                  <Border Name="PpcButtonMenu_Border"
+                          Grid.RowSpan="2"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="5,0,0,0"
+                          Opacity="0.8"
+                          Visibility="Collapsed" />
 
-                                    <Border Grid.Column="0"
-                                        Margin="0"
-                                        Background="Transparent">
-                                        <Grid>
-                                            <Grid Grid.Column="0"
-                                              Margin="10,10,5,5"
-                                              VerticalAlignment="Top"
-                                              Visibility="Visible">
-                                                <Ellipse Width="38"
-                                                     Height="38"
-                                                     HorizontalAlignment="Center"
-                                                     VerticalAlignment="Center"
-                                                     Fill="{TemplateBinding BorderBrush}"
-                                                     Opacity="0.8"
-                                                     Stroke="White"
-                                                     StrokeThickness="0" />
+                  <Border Grid.Column="0"
+                          Margin="0"
+                          Background="Transparent">
+                    <Grid>
+                      <Grid Grid.Column="0"
+                            Margin="10,10,5,5"
+                            VerticalAlignment="Top"
+                            Visibility="Visible">
+                        <Ellipse Width="38"
+                                 Height="38"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 Fill="{TemplateBinding BorderBrush}"
+                                 Opacity="0.8"
+                                 Stroke="White"
+                                 StrokeThickness="0" />
 
-                                                <TextBlock Margin="{TemplateBinding Padding}"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"
-                                                       FontFamily="{TemplateBinding FontFamily}"
-                                                       FontSize="16"
-                                                       FontWeight="{TemplateBinding FontWeight}"
-                                                       Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
-                                                       Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
-                                            </Grid>
-                                        </Grid>
-                                    </Border>
+                        <TextBlock Margin="{TemplateBinding Padding}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   FontSize="16"
+                                   FontWeight="{TemplateBinding FontWeight}"
+                                   Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
+                                   Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
+                      </Grid>
+                    </Grid>
+                  </Border>
 
-                                    <TextBlock Grid.Column="1"
-                                           Margin="5,18,10,5"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"                                                 
-                                           FontFamily="{TemplateBinding FontFamily}"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           FontWeight="{TemplateBinding FontWeight}"
-                                           Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
-                                           Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap">
-                                        <TextBlock.Style>
-                                            <Style>
-                                                <Setter Property="Grid.RowSpan" Value="1" />
-                                                <Setter Property="Grid.Column" Value="1" />
-                                                <Setter Property="Grid.ColumnSpan" Value="1" />
-                                                <Setter Property="TextBlock.HorizontalAlignment" Value="Left" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                                             Value="">
-                                                        <Setter Property="Grid.RowSpan" Value="2" />
-                                                        <Setter Property="Grid.Column" Value="0" />
-                                                        <Setter Property="Grid.ColumnSpan" Value="2" />
-                                                        <Setter Property="TextBlock.HorizontalAlignment" Value="Center" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
+                  <TextBlock Grid.Column="1"
+                             Margin="5,18,10,5"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             FontFamily="{TemplateBinding FontFamily}"
+                             FontSize="{TemplateBinding FontSize}"
+                             FontWeight="{TemplateBinding FontWeight}"
+                             Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
+                             Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                             TextWrapping="Wrap">
+                    <TextBlock.Style>
+                      <Style>
+                        <Setter Property="Grid.RowSpan" Value="1" />
+                        <Setter Property="Grid.Column" Value="1" />
+                        <Setter Property="Grid.ColumnSpan" Value="1" />
+                        <Setter Property="TextBlock.HorizontalAlignment" Value="Left" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                       Value="">
+                            <Setter Property="Grid.RowSpan" Value="2" />
+                            <Setter Property="Grid.Column" Value="0" />
+                            <Setter Property="Grid.ColumnSpan" Value="2" />
+                            <Setter Property="TextBlock.HorizontalAlignment" Value="Center" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </TextBlock.Style>
+                  </TextBlock>
 
-                                    <TextBlock Grid.Row="1"
-                                           Grid.ColumnSpan="2"
-                                           Margin="10,10,10,5"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"
-                                           FontFamily="{TemplateBinding FontFamily}"
-                                           FontSize="{DynamicResource FontSize_Small}"
-                                           FontWeight="{TemplateBinding FontWeight}"
-                                           Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
-                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap" />
+                  <TextBlock Grid.Row="1"
+                             Grid.ColumnSpan="2"
+                             Margin="10,10,10,5"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             FontFamily="{TemplateBinding FontFamily}"
+                             FontSize="{DynamicResource FontSize_Small}"
+                             FontWeight="{TemplateBinding FontWeight}"
+                             Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
+                             Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                             TextWrapping="Wrap" />
 
-                                    <Grid Grid.RowSpan="2"
-                                      Grid.ColumnSpan="2">
+                  <Grid Grid.RowSpan="2"
+                        Grid.ColumnSpan="2">
 
-                                        <Grid.Style>
-                                            <Style TargetType="{x:Type Grid}">
-                                                <Setter Property="Grid.Visibility" Value="Collapsed" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsCompleted, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                                             Value="True">
-                                                        <Setter Property="Grid.Visibility" Value="Visible" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
+                    <Grid.Style>
+                      <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Grid.Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding IsCompleted, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                       Value="True">
+                            <Setter Property="Grid.Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Grid.Style>
 
-                                        <Polygon HorizontalAlignment="Right"
-                                             VerticalAlignment="Bottom"
-                                             Fill="{DynamicResource FerrettoBlue}"
-                                             Opacity="0.8"
-                                             Points="146,150 200,48 200,90 170,150 " />
+                    <Polygon HorizontalAlignment="Right"
+                             VerticalAlignment="Bottom"
+                             Fill="{DynamicResource FerrettoBlue}"
+                             Opacity="0.8"
+                             Points="146,150 200,48 200,90 170,150 " />
 
-                                        <TextBlock Grid.Row="0"
-                                               Grid.Column="0"
-                                               Margin="0,0,-2,4"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Bottom"
-                                               Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
-                                               FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                               FontSize="14"
-                                               FontWeight="Light"
-                                               Text="Completato">
-                                            <TextBlock.LayoutTransform>
-                                                <TransformGroup>
-                                                    <RotateTransform Angle="296" CenterX="0.5" CenterY="0.5" />
-                                                </TransformGroup>
-                                            </TextBlock.LayoutTransform>
-                                        </TextBlock>
-                                    </Grid>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Margin="0,0,-2,4"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Bottom"
+                               FontFamily="{DynamicResource VWAPP_TitleFont}"
+                               FontSize="14"
+                               FontWeight="Light"
+                               Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
+                               Text="Completato">
+                      <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                          <RotateTransform Angle="296" CenterX="0.5" CenterY="0.5" />
+                        </TransformGroup>
+                      </TextBlock.LayoutTransform>
+                    </TextBlock>
+                  </Grid>
 
-                                    <Grid Grid.RowSpan="2"
-                                      Grid.ColumnSpan="2">
+                  <Grid Grid.RowSpan="2"
+                        Grid.ColumnSpan="2">
 
-                                        <Grid.Style>
-                                            <Style TargetType="{x:Type Grid}">
-                                                <Setter Property="Grid.Visibility" Value="Collapsed" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsBypassed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                                             Value="True">
-                                                        <Setter Property="Grid.Visibility" Value="Visible" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
+                    <Grid.Style>
+                      <Style TargetType="{x:Type Grid}">
+                        <Setter Property="Grid.Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding IsBypassed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                       Value="True">
+                            <Setter Property="Grid.Visibility" Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Grid.Style>
 
-                                        <Polygon HorizontalAlignment="Right"
-                                             VerticalAlignment="Bottom"
-                                             Fill="{DynamicResource FerrettoRed}"
-                                             Opacity="0.8"
-                                             Points="146,150 200,48 200,90 170,150 " />
+                    <Polygon HorizontalAlignment="Right"
+                             VerticalAlignment="Bottom"
+                             Fill="{DynamicResource FerrettoRed}"
+                             Opacity="0.8"
+                             Points="146,150 200,48 200,90 170,150 " />
 
-                                        <TextBlock Grid.Row="0"
-                                               Grid.Column="0"
-                                               Margin="0,0,0,10"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Bottom"
-                                               FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                               FontSize="14"
-                                               FontWeight="Light"
-                                               Text="Bypassato">
-                                            <TextBlock.LayoutTransform>
-                                                <TransformGroup>
-                                                    <RotateTransform Angle="300" CenterX="0.5" CenterY="0.5" />
-                                                </TransformGroup>
-                                            </TextBlock.LayoutTransform>
-                                        </TextBlock>
-                                    </Grid>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Margin="0,0,0,10"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Bottom"
+                               FontFamily="{DynamicResource VWAPP_TitleFont}"
+                               FontSize="14"
+                               FontWeight="Light"
+                               Text="Bypassato">
+                      <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                          <RotateTransform Angle="300" CenterX="0.5" CenterY="0.5" />
+                        </TransformGroup>
+                      </TextBlock.LayoutTransform>
+                    </TextBlock>
+                  </Grid>
+                </Grid>
+              </Border>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Resources>
 
-                                </Grid>
-                            </Border>
-                        </Grid>
-                    </ControlTemplate>
+  <Grid Name="layoutroot">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-                </Setter.Value>
-            </Setter>
+    <TextBlock HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               FontSize="36"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="Inverters configuration" />
+
+    <StackPanel Grid.Row="1"
+                Orientation="Horizontal">
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{Binding SelectedFileConfigurationName}" />
+    </StackPanel>
+
+    <ListView Grid.Row="2"
+              HorizontalAlignment="Stretch"
+              ItemsSource="{Binding InvertersParameters}"
+              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+              ScrollViewer.VerticalScrollBarVisibility="Disabled">
+      <ItemsControl.Resources />
+      <ListView.ItemContainerStyle>
+        <Style TargetType="{x:Type ListViewItem}">
+          <Setter Property="Background" Value="Transparent" />
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="{x:Type ListViewItem}">
+                <ContentPresenter />
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
         </Style>
-
-
-    </UserControl.Resources>
-    
-    <Grid Name="layoutroot">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-         <TextBlock HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       FontSize="36"                       
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Inverters configuration" />
-
-
-        <StackPanel Grid.Row="1"
-                        Orientation="Horizontal">
-            <TextBlock Margin="0,10,15,10"
-                           VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{Binding SelectedFileConfigurationName}"/>
-        </StackPanel>
-
-        <ListView Grid.Row="2"
-                          ItemsSource="{Binding InvertersParameters}"                          
-                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                          ScrollViewer.VerticalScrollBarVisibility="Disabled"                        
-                          HorizontalAlignment="Stretch">
-            <ItemsControl.Resources>
-
-            </ItemsControl.Resources>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                <ContentPresenter />
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate >
-                    <WrapPanel IsItemsHost="True"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <controls:PpcButton
-                                        Title="{Binding Type}"                                                                                
-                                        Margin="0,30,30,0"                                        
-                                        Abbrevation="{Binding InverterIndex}"
-                                        BorderBrush="{DynamicResource FerrettoRed}"                                        
-                                        Content="{Binding Description}"                                        
-                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-    </Grid>
-
+      </ListView.ItemContainerStyle>
+      <ListView.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel IsItemsHost="True" />
+        </ItemsPanelTemplate>
+      </ListView.ItemsPanel>
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <controls:PpcButton Title="{Binding Type}"
+                              Margin="0,30,30,0"
+                              Abbrevation="{Binding InverterIndex}"
+                              BorderBrush="{DynamicResource FerrettoRed}"
+                              Content="{Binding Description}"
+                              IsHitTestVisible="False"
+                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </Grid>
 </UserControl>

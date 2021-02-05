@@ -289,6 +289,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsDbSaveOnServer()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsDbSaveOnServer ?? false;
+            }
+        }
+
         public bool IsDbSaveOnTelemetry()
         {
             lock (this.dataContext)
@@ -466,6 +474,32 @@ namespace Ferretto.VW.MAS.DataLayer
                         loadUnit.MissionsCount++;
                     }
 
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateDbSaveOnServer(bool enable)
+        {
+            lock (this.dataContext)
+            {
+                var machine = this.dataContext.Machines.FirstOrDefault();
+                if (machine != null)
+                {
+                    machine.IsDbSaveOnServer = enable;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateDbSaveOnTelemetry(bool enable)
+        {
+            lock (this.dataContext)
+            {
+                var machine = this.dataContext.Machines.FirstOrDefault();
+                if (machine != null)
+                {
+                    machine.IsDbSaveOnTelemetry = enable;
                     this.dataContext.SaveChanges();
                 }
             }

@@ -1228,6 +1228,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsAxisChanged");
 
+                    b.Property<bool>("IsDbSaveOnServer");
+
                     b.Property<bool>("IsDbSaveOnTelemetry");
 
                     b.Property<bool>("IsHeartBeat");
@@ -1674,6 +1676,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("InverterId");
 
                     b.Property<int?>("ManualMovementsId");
+
+                    b.Property<double>("MaxSpeed");
+
+                    b.Property<double>("MinSpeed");
 
                     b.Property<string>("Type")
                         .IsRequired()

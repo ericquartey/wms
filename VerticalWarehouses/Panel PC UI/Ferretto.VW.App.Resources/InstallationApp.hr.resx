@@ -1978,7 +1978,7 @@
     <value>Vrlo kratak</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Učit.datot.</value>
+    <value>Uvezi u memoriju </value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Uvoz je uspješan</value>
@@ -2310,11 +2310,23 @@
   <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
     <value>Čitanje pretvarača uspješno dovršeno</value>
   </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Machine database backup</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Internal copy</value>
+  </data>
   <data name="InverterReadingEndedErrors" xml:space="preserve">
     <value>Očitavanje pretvarača dovršeno s pogreškama</value>
   </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>On server</value>
+  </data>
   <data name="InvertersReadingStopped" xml:space="preserve">
     <value>Čitanje pretvarača je zaustavljeno</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>On telemetry</value>
   </data>
   <data name="InverterReadingNext" xml:space="preserve">
     <value>Početak sljedećeg očitavanja pretvarača</value>
@@ -2334,8 +2346,8 @@
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Pročitajte sve</value>
   </data>
-  <data name="ImportStructure" xml:space="preserve">
-    <value>Struktura uvoza</value>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Uvezite i spremite</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Prepiši ciljanu datoteku</value>
@@ -2360,5 +2372,14 @@
   </data>
   <data name="ActualValues" xml:space="preserve">
     <value>Stvarne vrijednosti</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Database backup settings</value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Prije završetka </value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Postoje aktivne pogreške</value>
   </data>
 </root>

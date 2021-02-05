@@ -1978,7 +1978,7 @@
     <value>Velmi krátk</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Nahrát soub</value>
+    <value>Import do paměti </value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Import proběhl úspěšně</value>
@@ -2334,8 +2334,8 @@
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Přečíst vše</value>
   </data>
-  <data name="ImportStructure" xml:space="preserve">
-    <value>Struktura importu</value>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Importujte a uložte</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Přepsat cílový soubor</value>
@@ -2360,5 +2360,14 @@
   </data>
   <data name="ActualValues" xml:space="preserve">
     <value>Skutečné hodnoty</value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Před dokončením</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Database backup settings</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Existují aktivní chyby</value>
   </data>
 </root>

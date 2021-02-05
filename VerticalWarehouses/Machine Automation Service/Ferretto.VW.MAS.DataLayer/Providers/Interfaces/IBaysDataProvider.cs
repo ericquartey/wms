@@ -110,6 +110,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         InverterIndex GetShutterInverterIndex(BayNumber bayNumber);
 
+        double GetShutterMaxSpeed(BayNumber bayNumber);
+
+        double GetShutterMinSpeed(BayNumber bayNumber);
+
         void IncrementCycles(BayNumber bayNumber);
 
         bool IsMissionInBay(Mission mission);

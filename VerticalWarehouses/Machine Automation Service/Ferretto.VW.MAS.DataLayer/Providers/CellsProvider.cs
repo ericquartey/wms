@@ -707,6 +707,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     var occupiedCells = this.dataContext.Cells
                         .Include(c => c.LoadingUnit)
+                        .Include(c => c.Panel)
                         .Where(c =>
                             c.Panel.Side == cell.Side
                             &&
@@ -801,6 +802,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     var freeCells = this.dataContext.Cells
                        .Include(c => c.LoadingUnit)
+                       .Include(c => c.Panel)
                        .Where(c =>
                            c.Panel.Side == cell.Side
                            &&
@@ -829,9 +831,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     loadingUnit.IsIntoMachine = true;
                     loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
-                    this.dataContext.SaveChanges();
-                    loadingUnit = this.dataContext.LoadingUnits
-                        .SingleOrDefault(l => l.Id == loadingUnitId);
+                    //this.dataContext.SaveChanges();
+                    //loadingUnit = this.dataContext.LoadingUnits
+                    //    .SingleOrDefault(l => l.Id == loadingUnitId);
 
                     cell.LoadingUnit = loadingUnit;
 

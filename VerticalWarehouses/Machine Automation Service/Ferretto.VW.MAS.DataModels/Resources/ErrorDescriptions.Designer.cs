@@ -313,6 +313,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Positioning error.
+        /// </summary>
+        public static string HorizontalPositioningBlocked {
+            get {
+                return ResourceManager.GetString("HorizontalPositioningBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {

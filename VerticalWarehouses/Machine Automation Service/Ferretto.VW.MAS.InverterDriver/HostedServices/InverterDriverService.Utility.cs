@@ -340,8 +340,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.Logger.LogTrace($"5a:ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; value={message.IntPayload}; current={this.currentAxis}");
 
-                    if ((axis == this.currentAxis || currentStateMachine == null || axis == Axis.BayChain) &&
-                        (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish[(int)message.SystemIndex]))
+                    if (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish[(int)message.SystemIndex])
                     {
                         var axisOrientation = (axis == Axis.Horizontal || axis == Axis.BayChain) ? Orientation.Horizontal : Orientation.Vertical;
 

@@ -2271,7 +2271,7 @@
     <value>Extra movement toward operator</value>
   </data>
   <data name="ExtBayMovementForInsertion" xml:space="preserve">
-    <value>Extra movement for drawer insertion</value>
+    <value>Extra movement toward elevator</value>
   </data>
   <data name="InverterInFault" xml:space="preserve">
     <value>Inverters fault</value>
@@ -2423,5 +2423,33 @@
   </data>
   <data name="ActualValues" xml:space="preserve">
     <value>Actual values</value>
+  </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Import and save</value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Before end</value>
+  </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Machine database backup</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Internal copy</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>On server</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>On telemetry</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Database backup settings</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>There are active errors</value>
   </data>
 </root>

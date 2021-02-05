@@ -286,6 +286,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal movement blocked for a long time.
+        /// </summary>
+        public static string HorizontalPositioningBlocked {
+            get {
+                return ResourceManager.GetString("HorizontalPositioningBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} Axis movement Acceleration {1} is invalid: Empty load acceleration lower than full load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {
