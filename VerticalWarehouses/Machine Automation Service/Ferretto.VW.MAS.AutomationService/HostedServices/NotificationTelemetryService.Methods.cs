@@ -172,6 +172,14 @@ namespace Ferretto.VW.MAS.AutomationService
                         // Send raw database content
                         await this.SendRawDatabaseContentAsync(rawDatabaseContent);
                     }
+
+                    if (machineDataProvider.IsDbSaveOnServer())
+                    {
+                        var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
+
+                        // save the database to server
+                        dataLayer.CopyMachineDatabaseToServer();
+                    }
                 }
             }
         }
