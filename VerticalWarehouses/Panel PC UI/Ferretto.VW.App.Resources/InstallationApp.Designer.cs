@@ -592,6 +592,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Before end.
+        /// </summary>
+        public static string BeforeEnd {
+            get {
+                return ResourceManager.GetString("BeforeEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Before we start.
         /// </summary>
         public static string BeforeStart {
@@ -2802,6 +2811,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Import {
             get {
                 return ResourceManager.GetString("Import", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import and save.
+        /// </summary>
+        public static string ImportAndSave {
+            get {
+                return ResourceManager.GetString("ImportAndSave", resourceCulture);
             }
         }
         

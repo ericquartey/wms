@@ -2376,4 +2376,7 @@
   <data name="DatabaseBackupMenuDescription" xml:space="preserve">
     <value>Database backup settings</value>
   </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Vor dem Ende</value>
+  </data>
 </root>

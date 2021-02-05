@@ -2361,6 +2361,9 @@
   <data name="ActualValues" xml:space="preserve">
     <value>Skutečné hodnoty</value>
   </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Před dokončením</value>
+  </data>
   <data name="DatabaseBackupMenuDescription" xml:space="preserve">
     <value>Database backup settings</value>
   </data>

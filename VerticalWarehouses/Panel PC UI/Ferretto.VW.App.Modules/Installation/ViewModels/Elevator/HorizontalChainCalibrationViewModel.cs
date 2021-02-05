@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         RunningCalibration,
 
+        EndChainCalibration,
+
         ConfirmAdjustment,
     }
 
@@ -92,6 +94,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand moveToGoToBayCommand;
 
         private DelegateCommand moveToStartCalibrationCommand;
+
+        private DelegateCommand moveToConfirmAdjustmentCommand;
 
         private int? newErrorValue;
 
@@ -207,6 +211,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool HasStepChainCalibration => this.currentStep is HorizontalChainCalibrationStep.ChainCalibration;
 
         public bool HasStepConfirmAdjustment => this.currentStep is HorizontalChainCalibrationStep.ConfirmAdjustment;
+
+        public bool HasStepEndChainCalibration => this.currentStep is HorizontalChainCalibrationStep.EndChainCalibration;
 
         public bool HasStepRunningCalibration => this.currentStep is HorizontalChainCalibrationStep.RunningCalibration;
 
@@ -336,6 +342,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveToStartCalibrationCommand = new DelegateCommand(
                 () => this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration,
                 () => this.CanMoveToStartCalibration()));
+
+        public ICommand MoveToConfirmAdjustmentCommand =>
+            this.moveToConfirmAdjustmentCommand
+            ??
+            (this.moveToConfirmAdjustmentCommand = new DelegateCommand(
+                () => this.CurrentStep = HorizontalChainCalibrationStep.ConfirmAdjustment,
+                () => this.CanBaseExecute()));
+
+        
 
         public int? NewErrorValue
         {
@@ -607,7 +622,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case HorizontalChainCalibrationStep.RunningCalibration:
                     if (e.Next)
                     {
-                        this.CurrentStep = HorizontalChainCalibrationStep.ConfirmAdjustment;
+                        this.CurrentStep = HorizontalChainCalibrationStep.EndChainCalibration;
                     }
                     else
                     {
@@ -616,10 +631,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     break;
 
+                case HorizontalChainCalibrationStep.EndChainCalibration:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = HorizontalChainCalibrationStep.ConfirmAdjustment;
+                    }
+                    else
+                    {
+                        this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+                    }
+
+                    break;
+
                 case HorizontalChainCalibrationStep.ConfirmAdjustment:
                     if (!e.Next)
                     {
-                        this.CurrentStep = HorizontalChainCalibrationStep.ChainCalibration;
+                        this.CurrentStep = HorizontalChainCalibrationStep.EndChainCalibration;
                     }
 
                     break;
@@ -642,6 +669,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.completeCommand?.RaiseCanExecuteChanged();
             this.tuningChainCommand?.RaiseCanExecuteChanged();
             this.moveToGoToBayCommand?.RaiseCanExecuteChanged();
+            this.moveToConfirmAdjustmentCommand?.RaiseCanExecuteChanged();
             this.moveToStartCalibrationCommand?.RaiseCanExecuteChanged();
             this.closedShutterCommand?.RaiseCanExecuteChanged();
 
@@ -903,7 +931,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.MeasuredDistance = data.Measured;
 
                 this.NewErrorValue = 0;
-                this.CurrentStep = HorizontalChainCalibrationStep.ConfirmAdjustment;
+                this.CurrentStep = HorizontalChainCalibrationStep.EndChainCalibration;
 
                 this.Measured = message.Data.Measured;
 
@@ -1005,6 +1033,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                            this.RaisePropertyChanged(nameof(this.HasStepStartCalibration));
                            this.RaisePropertyChanged(nameof(this.HasStepRunningCalibration));
                            this.RaisePropertyChanged(nameof(this.HasStepConfirmAdjustment));
+                           this.RaisePropertyChanged(nameof(this.HasStepEndChainCalibration));
                        },
                        ThreadOption.UIThread,
                        false);
@@ -1054,12 +1083,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case HorizontalChainCalibrationStep.StartCalibration:
                     this.ShowPrevStepSinglePage(true, true);
-                    this.ShowNextStepSinglePage(true, true);
+                    this.ShowNextStepSinglePage(true, false);
                     break;
 
                 case HorizontalChainCalibrationStep.RunningCalibration:
                     this.ShowPrevStepSinglePage(true, false);
                     this.ShowNextStepSinglePage(true, false);
+                    break;
+
+                case HorizontalChainCalibrationStep.EndChainCalibration:
+                    this.ShowPrevStepSinglePage(true, false);
+                    this.ShowNextStepSinglePage(true, true);
                     break;
 
                 case HorizontalChainCalibrationStep.ConfirmAdjustment:
@@ -1074,6 +1108,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.HasStepStartCalibration));
             this.RaisePropertyChanged(nameof(this.HasStepRunningCalibration));
             this.RaisePropertyChanged(nameof(this.HasStepConfirmAdjustment));
+            this.RaisePropertyChanged(nameof(this.HasStepEndChainCalibration));
         }
 
         #endregion

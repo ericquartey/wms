@@ -2370,8 +2370,14 @@
   <data name="ActualValues" xml:space="preserve">
     <value>Valori attuali</value>
   </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Importa e salva </value>
+  </data>
   <data name="MachineDatabaseBackupMode" xml:space="preserve">
     <value>Backup database di macchina</value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Prima di finire</value>
   </data>
   <data name="DatabaseBackupModeInternal" xml:space="preserve">
     <value>Copia interna</value>
