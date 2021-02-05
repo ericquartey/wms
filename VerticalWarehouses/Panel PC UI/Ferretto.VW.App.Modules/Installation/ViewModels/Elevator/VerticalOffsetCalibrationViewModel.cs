@@ -39,6 +39,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly IMachineErrorsWebService machineErrorsWebService;
+
+        private readonly IMachineMissionsWebService machineMissionsWebService;
+
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
 
         private readonly IMachineVerticalOffsetProcedureWebService verticalOffsetWebService;
@@ -64,6 +68,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand displacementCommand;
 
         private bool isOriginCalibrationStepVisible;
+
+        private bool missionInError;
 
         private DelegateCommand moveToCellCommand;
 
@@ -100,6 +106,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public VerticalOffsetCalibrationViewModel(
+            IMachineErrorsWebService machineErrorsWebService,
+            IMachineMissionsWebService machineMissionsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
             IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
@@ -107,6 +115,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
+            this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
             this.verticalOffsetWebService = verticalOffsetWebService ?? throw new ArgumentNullException(nameof(verticalOffsetWebService));
@@ -425,6 +435,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.UpdateSelectedCell();
 
+            var newMissions = await this.machineMissionsWebService.GetAllAsync();
+            var errors = await this.machineErrorsWebService.GetAllAsync();
+
+            if (newMissions.Any(s => s.ErrorCode != MachineErrorCode.NoError && s.ErrorCode != 0))
+            {
+                this.missionInError = true;
+                this.ClearNotifications();
+                this.ShowNotification(
+                     Localized.Get("ServiceMachine.MissionInError"),
+                     NotificationSeverity.Error);
+            }
+            else if (errors.Any(s => s.ResolutionDate == null))
+            {
+                this.missionInError = true;
+                this.ClearNotifications();
+                this.ShowNotification(
+                     Localized.Get("InstallationApp.ErrorActiveWarning"),
+                     NotificationSeverity.Error);
+            }
+            else
+            {
+                this.missionInError = false;
+            }
+
+            this.moveToCellPositioningCommand?.RaiseCanExecuteChanged();
+
             if (this.CurrentStep != VerticalOffsetCalibrationStep.OriginCalibration)
             {
                 this.IsOriginCalibrationStepVisible = false;
@@ -631,7 +667,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanToCellPositioning()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                !this.missionInError;
         }
 
         private async Task DisplacementCommandAsync()

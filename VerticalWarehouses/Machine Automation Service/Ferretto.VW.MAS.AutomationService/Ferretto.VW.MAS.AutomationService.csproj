@@ -92,6 +92,7 @@
     <ProjectReference Include="..\Ferretto.VW.MAS.AutomationService.Hubs\Ferretto.VW.MAS.AutomationService.Hubs.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.DateTime\Ferretto.VW.MAS.TimeManagement.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.InternalTiming\Ferretto.VW.MAS.InternalTiming.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.MachineManager\Ferretto.VW.MAS.MachineManager.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.MIssionManager\Ferretto.VW.MAS.MissionManager.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.SocketLink\Ferretto.VW.MAS.SocketLink.csproj" />

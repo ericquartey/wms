@@ -1627,6 +1627,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database backup settings.
+        /// </summary>
+        public static string DatabaseBackupMenuDescription {
+            get {
+                return ResourceManager.GetString("DatabaseBackupMenuDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internal copy.
+        /// </summary>
+        public static string DatabaseBackupModeInternal {
+            get {
+                return ResourceManager.GetString("DatabaseBackupModeInternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On server.
+        /// </summary>
+        public static string DatabaseBackupModeOnServer {
+            get {
+                return ResourceManager.GetString("DatabaseBackupModeOnServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On telemetry.
+        /// </summary>
+        public static string DatabaseBackupModeOnTelemetry {
+            get {
+                return ResourceManager.GetString("DatabaseBackupModeOnTelemetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The data must be positive..
         /// </summary>
         public static string DataBePositive {
@@ -2055,6 +2091,15 @@ namespace Ferretto.VW.App.Resources {
         public static string EmptyUnitWeighing {
             get {
                 return ResourceManager.GetString("EmptyUnitWeighing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are active errors.
+        /// </summary>
+        public static string ErrorActiveWarning {
+            get {
+                return ResourceManager.GetString("ErrorActiveWarning", resourceCulture);
             }
         }
         
@@ -3936,6 +3981,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LuPresenceOnOperatorCradleSide {
             get {
                 return ResourceManager.GetString("LuPresenceOnOperatorCradleSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine database backup.
+        /// </summary>
+        public static string MachineDatabaseBackupMode {
+            get {
+                return ResourceManager.GetString("MachineDatabaseBackupMode", resourceCulture);
             }
         }
         

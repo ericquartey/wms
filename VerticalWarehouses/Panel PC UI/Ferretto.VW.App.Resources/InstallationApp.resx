@@ -2430,4 +2430,26 @@
   <data name="BeforeEnd" xml:space="preserve">
     <value>Before end</value>
   </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Machine database backup</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Internal copy</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>On server</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>On telemetry</value>
+    <comment>DatabaseBackup</comment>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Database backup settings</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>There are active errors</value>
+  </data>
 </root>

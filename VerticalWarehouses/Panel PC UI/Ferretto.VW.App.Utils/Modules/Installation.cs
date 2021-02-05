@@ -37,6 +37,8 @@
 
         public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
+        public const string DATABASEBACKUP = "DatabaseBackupViewModel";
+
         public const string DATETIME = "DateTimeViewModel";
 
         public const string EXTERNALBAYCALIBRATION = "ExternalBayCalibrationViewModel";
