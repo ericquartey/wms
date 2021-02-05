@@ -287,12 +287,12 @@
     <Style.Triggers>
       <DataTrigger Binding="{Binding IsMachineInManualMode2}"
                    Value="True">
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
         <Setter Property="Content" Value="{res:Loc InstallationApp.Manual2}" />
       </DataTrigger>
       <DataTrigger Binding="{Binding IsMachineInManualMode3}"
                    Value="True">
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
         <Setter Property="Content" Value="{res:Loc InstallationApp.Manual3}" />
       </DataTrigger>
       <DataTrigger Binding="{Binding IsMachineInAutomaticMode}"
