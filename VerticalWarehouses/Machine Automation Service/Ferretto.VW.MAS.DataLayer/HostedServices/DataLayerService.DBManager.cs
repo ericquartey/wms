@@ -64,11 +64,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                         if (process.HasExited)
                         {
+                            success = true;
                             switch (process.ExitCode)
                             {
                                 case 0:
                                     this.Logger.LogInformation($"Database Backup executed.");
-                                    success = true;
                                     break;
 
                                 case 4:
@@ -97,11 +97,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 else
                 {
                     this.Logger.LogDebug($"Database Backup error: file {backupScript} empty.");
+                    success = true;
                 }
             }
             else
             {
                 this.Logger.LogDebug($"Database Backup error: file {backupScript} not found.");
+                success = true;
             }
 
             return success;
