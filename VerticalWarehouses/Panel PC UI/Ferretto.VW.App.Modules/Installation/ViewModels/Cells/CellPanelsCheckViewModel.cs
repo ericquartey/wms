@@ -351,10 +351,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.SubscribeToEvents();
 
-            this.UpdateStatusButtonFooter();
-
-            await base.OnAppearedAsync();
-
             var newMissions = await this.machineMissionsWebService.GetAllAsync();
             var errors = await this.machineErrorsWebService.GetAllAsync();
 
@@ -381,6 +377,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.goToMeasuredFront?.RaiseCanExecuteChanged();
 
+            this.UpdateStatusButtonFooter();
+
             if (this.lastPanel != 0)
             {
                 this.CurrentPanel = this.Panels?.ElementAtOrDefault(this.lastPanel - 1);
@@ -397,6 +395,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentStep = CellPanelsCheckStep.MeasuredBack;
                 this.RaisePropertyChanged(nameof(this.CurrentStep));
             }
+
+            await base.OnAppearedAsync();
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -726,7 +726,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case CellPanelsCheckStep.Inizialize:
                     this.ShowPrevStepSinglePage(true, false);
-                    this.ShowNextStepSinglePage(true, !this.missionInError);
+                    this.ShowNextStepSinglePage(true, this.goToMeasuredFront?.CanExecute() ?? false);
                     break;
 
                 case CellPanelsCheckStep.MeasuredFront:

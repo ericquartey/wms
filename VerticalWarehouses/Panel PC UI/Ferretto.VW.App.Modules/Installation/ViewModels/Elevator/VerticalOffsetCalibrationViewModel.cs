@@ -431,10 +431,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.SubscribeToEvents();
 
-            this.UpdateStatusButtonFooter();
-
-            this.UpdateSelectedCell();
-
             var newMissions = await this.machineMissionsWebService.GetAllAsync();
             var errors = await this.machineErrorsWebService.GetAllAsync();
 
@@ -460,6 +456,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.moveToCellPositioningCommand?.RaiseCanExecuteChanged();
+
+            this.UpdateStatusButtonFooter();
+
+            this.UpdateSelectedCell();
 
             if (this.CurrentStep != VerticalOffsetCalibrationStep.OriginCalibration)
             {
