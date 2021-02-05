@@ -2361,6 +2361,18 @@
   <data name="BeforeEnd" xml:space="preserve">
     <value>Pred zaključkom</value>
   </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Database backup settings</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Internal copy</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>On server</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>On telemetry</value>
+  </data>
   <data name="ErrorActiveWarning" xml:space="preserve">
     <value>Obstajajo aktivne napake</value>
   </data>

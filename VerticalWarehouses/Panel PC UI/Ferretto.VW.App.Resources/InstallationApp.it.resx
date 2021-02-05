@@ -2373,8 +2373,23 @@
   <data name="ImportAndSave" xml:space="preserve">
     <value>Importa e salva </value>
   </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Backup database di macchina</value>
+  </data>
   <data name="BeforeEnd" xml:space="preserve">
     <value>Prima di finire</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Copia interna</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>Su server</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>Su telemetria</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Impostazione backup database</value>
   </data>
   <data name="ErrorActiveWarning" xml:space="preserve">
     <value>Ci sono errori attivi</value>

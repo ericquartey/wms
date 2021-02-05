@@ -16,114 +16,117 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-    <Grid Grid.Column="0"
-          Margin="15,0">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
+        <Grid Grid.Column="0"
+              Margin="15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-      <views:InstallationNavigationMenuView Grid.Row="1" />
+            <views:InstallationNavigationMenuView Grid.Row="1" />
+        </Grid>
+
+        <Grid Grid.Column="1"
+              Margin="15,0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{res:Loc Menu.OtherMenuName}" />
+
+            <WrapPanel Grid.Row="1">
+
+                <controls:PpcButton Title="{res:Loc InstallationApp.ManageUserMenuTitle}"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.1"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuUsersCommand}"
+                                    Content="{res:Loc InstallationApp.manageUserMenuDescription}"
+                                    IsEnabled="False"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="{res:Loc InstallationApp.WMSComunicationMenuTitle}"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.2"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuComunicationWmsCommand}"
+                                    Content="{res:Loc InstallationApp.WMSComunicationMenuDescription}"
+                                    IsEnabled="True"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="{res:Loc InstallationApp.ParametersMenuTitle}"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.3"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuParametersCommand}"
+                                    Content="{res:Loc InstallationApp.ParametersMenuDescription}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="{res:Loc InstallationApp.InverterParameterizationMenuTitle}"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.4"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuParameterInverterCommand}"
+                                    Content="{res:Loc InstallationApp.InverterParameterizationMenuDescription}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="{res:Loc InstallationApp.DateTimeMenuTitle}"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.5"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuDateTimeCommand}"
+                                    Content="{res:Loc InstallationApp.DateTimeMenuDescription}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="Database backup"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.6"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuDatabaseBackupCommand}"
+                                    Content="{res:Loc InstallationApp.DatabaseBackupMenuDescription}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="{res:Loc InstallationApp.ErrorAndActualValue}"
+                                    Height="86"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.7"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding ErrorInverterParametersCommand}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+            </WrapPanel>
+
+            <views:InstallationNavigationFooterView Grid.Row="2"
+                                                    HorizontalAlignment="Right" />
+        </Grid>
+
+
     </Grid>
-
-    <Grid Grid.Column="1"
-          Margin="15,0">
-
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="Auto" />
-      </Grid.RowDefinitions>
-
-      <TextBlock Grid.Row="0"
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Top"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{res:Loc Menu.OtherMenuName}" />
-
-      <WrapPanel Grid.Row="1">
-
-        <controls:PpcButton Title="{res:Loc InstallationApp.ManageUserMenuTitle}"
-                            Margin="0,0,30,30"
-                            Padding="-2,1,0,0"
-                            Abbrevation="4.7.1"
-                            BorderBrush="{DynamicResource FerrettoRed}"
-                            Command="{Binding MenuUsersCommand}"
-                            Content="{res:Loc InstallationApp.manageUserMenuDescription}"
-                            IsEnabled="False"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-        <controls:PpcButton Title="{res:Loc InstallationApp.WMSComunicationMenuTitle}"
-                            Margin="0,0,30,30"
-                            Padding="-2,1,0,0"
-                            Abbrevation="4.7.2"
-                            BorderBrush="{DynamicResource FerrettoRed}"
-                            Command="{Binding MenuComunicationWmsCommand}"
-                            Content="{res:Loc InstallationApp.WMSComunicationMenuDescription}"
-                            IsEnabled="True"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-        <controls:PpcButton Title="{res:Loc InstallationApp.ParametersMenuTitle}"
-                            Margin="0,0,30,30"
-                            Padding="-2,1,0,0"
-                            Abbrevation="4.7.3"
-                            BorderBrush="{DynamicResource FerrettoRed}"
-                            Command="{Binding MenuParametersCommand}"
-                            Content="{res:Loc InstallationApp.ParametersMenuDescription}"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-        <controls:PpcButton Title="{res:Loc InstallationApp.InverterParameterizationMenuTitle}"
-                            Margin="0,0,30,30"
-                            Padding="-2,1,0,0"
-                            Abbrevation="4.7.4"
-                            BorderBrush="{DynamicResource FerrettoRed}"
-                            Command="{Binding MenuParameterInverterCommand}"
-                            Content="{res:Loc InstallationApp.InverterParameterizationMenuDescription}"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-        <controls:PpcButton Title="{res:Loc InstallationApp.DateTimeMenuTitle}"
-                            Margin="0,0,30,30"
-                            Padding="-2,1,0,0"
-                            Abbrevation="4.7.5"
-                            BorderBrush="{DynamicResource FerrettoRed}"
-                            Command="{Binding MenuDateTimeCommand}"
-                            Content="{res:Loc InstallationApp.DateTimeMenuDescription}"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-        <!--  fake button  -->
-        <controls:PpcButton Title="{res:Loc InstallationApp.DateTimeMenuTitle}"
-                            Margin="0,0,30,30"
-                            Padding="-2,1,0,0"
-                            Style="{DynamicResource PpcButtonMenuCardStyle}"
-                            Visibility="Hidden" />
-
-        <controls:PpcButton Title="{res:Loc InstallationApp.ErrorAndActualValue}"
-                            Height="86"
-                            Margin="0,0,30,30"
-                            Padding="-2,1,0,0"
-                            Abbrevation="4.7.7"
-                            BorderBrush="{DynamicResource FerrettoRed}"
-                            Command="{Binding ErrorInverterParametersCommand}"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-      </WrapPanel>
-
-      <views:InstallationNavigationFooterView Grid.Row="2"
-                                              HorizontalAlignment="Right" />
-    </Grid>
-
-
-  </Grid>
 </ctrls:View>

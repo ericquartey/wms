@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsAxisChanged();
 
+        bool IsDbSaveOnServer();
+
         bool IsDbSaveOnTelemetry();
 
         bool IsHeartBeat();
@@ -50,6 +52,10 @@ namespace Ferretto.VW.MAS.DataLayer
         void UpdateBayChainStatistics(double distance, BayNumber bayNumber);
 
         void UpdateBayLoadUnitStatistics(BayNumber bayNumber, int loadUnitId);
+
+        void UpdateDbSaveOnServer(bool enable);
+
+        void UpdateDbSaveOnTelemetry(bool enable);
 
         void UpdateHorizontalAxisStatistics(double distance);
 

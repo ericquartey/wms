@@ -1,0 +1,75 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.DatabaseBackupView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+    <Grid x:Name="Root"
+          Margin="15,0,0,0">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="Title"
+                   Grid.ColumnSpan="3"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.MachineDatabaseBackupMode}" />
+
+        <controls:PpcCheckBox Grid.Row="2"
+                              Grid.Column="1"
+                              Grid.ColumnSpan="2"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding IsBackupOnServer, Mode=TwoWay}"
+                              IsEnabled="{Binding IsBackupOnServerEnabled}"
+                              LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnServer}" />
+
+        <controls:PpcCheckBox Grid.Row="4"
+                              Grid.Column="1"
+                              Grid.ColumnSpan="2"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding IsBackupOnTelemetry, Mode=TwoWay}"
+                              IsEnabled="{Binding IsBackupOnTelemetryEnabled}"
+                              LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnTelemetry}" />
+
+        <controls:PpcCheckBox Grid.Row="6"
+                              Grid.Column="1"
+                              Grid.ColumnSpan="2"
+                              VerticalAlignment="Center"
+                              Foreground="DarkGray"
+                              IsChecked="True"
+                              IsEnabled="False"
+                              LabelText="{res:Loc InstallationApp.DatabaseBackupModeInternal}" />
+
+        <controls:PpcButton Grid.Row="7"
+                            Grid.ColumnSpan="3"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding SaveCommand}"
+                            Content="{res:Loc General.Save}"
+                            IsBusy="{Binding IsBusy}" />
+
+    </Grid>
+</ctrls:View>
