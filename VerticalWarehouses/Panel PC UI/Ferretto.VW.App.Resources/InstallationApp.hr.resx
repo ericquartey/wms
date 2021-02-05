@@ -2361,4 +2361,7 @@
   <data name="ActualValues" xml:space="preserve">
     <value>Stvarne vrijednosti</value>
   </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Prije završetka </value>
+  </data>
 </root>

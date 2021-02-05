@@ -592,6 +592,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Before end.
+        /// </summary>
+        public static string BeforeEnd {
+            get {
+                return ResourceManager.GetString("BeforeEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Before we start.
         /// </summary>
         public static string BeforeStart {
