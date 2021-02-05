@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddMachineManager()
                 .AddMissionManager();
 
-            services.AddInternalTimingServices();
+            //services.AddInternalTimingServices();
 
             services.AddHostedService<NotificationTelemetryService>();
             services.AddHostedService<NotificationRelayService>();
