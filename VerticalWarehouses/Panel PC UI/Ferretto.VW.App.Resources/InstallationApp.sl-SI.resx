@@ -2361,4 +2361,7 @@
   <data name="BeforeEnd" xml:space="preserve">
     <value>Pred zaključkom</value>
   </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Obstajajo aktivne napake</value>
+  </data>
 </root>

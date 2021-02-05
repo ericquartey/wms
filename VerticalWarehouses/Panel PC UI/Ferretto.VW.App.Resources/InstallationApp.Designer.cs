@@ -2059,6 +2059,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are active errors.
+        /// </summary>
+        public static string ErrorActiveWarning {
+            get {
+                return ResourceManager.GetString("ErrorActiveWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Errors &amp; Actual values.
         /// </summary>
         public static string ErrorAndActualValue {
