@@ -3,93 +3,94 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrlssc="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views" xmlns:ctrlssc="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             UseLayoutRounding="True"
             mc:Ignorable="d">
 
-    <Grid Margin="30,0,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+  <Grid Margin="30,0,0,0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="Row0_Title"
-                           Height="100" />
-            <RowDefinition x:Name="Row1_DeviceInfo"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row2_Enable"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row3_SystemPortsTitle"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row4_SystemPorts"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row5_InputChars"
-                           Height="*" />
-            <RowDefinition x:Name="Row6_Configure"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row7_Save"
-                           Height="Auto" />
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition x:Name="Row0_Title"
+                     Height="100" />
+      <RowDefinition x:Name="Row1_DeviceInfo"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row2_Enable"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row3_SystemPortsTitle"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row4_SystemPorts"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row5_InputChars"
+                     Height="*" />
+      <RowDefinition x:Name="Row6_Configure"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row7_Save"
+                     Height="Auto" />
+    </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc Menu.AccessoriesWeightingScaleMenuTitle}" />
+    <TextBlock HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc Menu.AccessoriesWeightingScaleMenuTitle}" />
 
-        <views:DeviceInformationView Grid.Row="1" />
+    <views:DeviceInformationView Grid.Row="1" />
 
-        <controls:PpcCheckBox Grid.Row="2"
-                              Margin="0,15,0,0"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
-                              IsEnabled="{Binding IsEnabled}"
-                              LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
+    <controls:PpcCheckBox Grid.Row="2"
+                          Margin="0,15,0,0"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                          IsEnabled="{Binding IsEnabled}"
+                          LabelText="{res:Loc InstallationApp.AccessoryEnabled}" />
 
-        <StackPanel Grid.Row="3"
-                            Grid.Column="0"
-                            Margin="0,5,15,5"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Top">
-            <TextBlock Margin="5,0,5,0"
-                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="{x:Static res:Menu.AccessoriesIpAddress}" />
-            <ctrlssc:IPAddressBox Margin="5,4,5,5"
-                                          IPAddress="{Binding IpAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          IsEnabled="{Binding IsEnabledEditing}" />
-        </StackPanel>
+    <StackPanel Grid.Row="3"
+                Grid.Column="0"
+                Margin="0,5,15,5"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top">
+      <TextBlock Margin="5,0,5,0"
+                 Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                 Text="{res:Loc Menu.AccessoriesIpAddress}" />
+      <ctrlssc:IPAddressBox Margin="5,4,5,5"
+                            IPAddress="{Binding IpAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="{Binding IsEnabledEditing}" />
+    </StackPanel>
 
-        <controls:PpcTextBox Grid.Row="3"
-                                     Grid.Column="1"
-                                     Margin="5,5,5,5"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Top"
-                                     InputText="{Binding Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="{Binding IsEnabledEditing}"
-                                     LabelText="{x:Static res:Menu.AccessoriesPort}" />
+    <controls:PpcTextBox Grid.Row="3"
+                         Grid.Column="1"
+                         Margin="5,5,5,5"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Top"
+                         InputText="{Binding Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{Binding IsEnabledEditing}"
+                         LabelText="{res:Loc Menu.AccessoriesPort}" />
 
-        <ctrls:WeightingScale Grid.Row="6"
-                              Grid.Column="0"
-                              Grid.ColumnSpan="3" />
+    <ctrls:WeightingScale Grid.Row="6"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="3" />
 
 
-        <controls:PpcButton x:Name="Save"
-                            Grid.Row="7"
-                            Grid.Column="2"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Command="{Binding SaveCommand}"
-                            Content="{x:Static res:General.Save}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
-    </Grid>
+    <controls:PpcButton x:Name="Save"
+                        Grid.Row="7"
+                        Grid.Column="2"
+                        Margin="15,15,15,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding SaveCommand}"
+                        Content="{res:Loc General.Save}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
+  </Grid>
 </ctrls:View>

@@ -11,38 +11,38 @@
             UseLayoutRounding="True"
             mc:Ignorable="d">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="DeviceInfo1"
-                           Height="Auto" />
-            <RowDefinition x:Name="DeviceInfo2"
-                           Height="Auto" />
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition x:Name="DeviceInfo1"
+                     Height="Auto" />
+      <RowDefinition x:Name="DeviceInfo2"
+                     Height="Auto" />
+    </Grid.RowDefinitions>
 
-        <controls:PpcLabeledText Margin="0,0,15,15"
-                                 ContentText="{Binding ModelNumber}"
-                                 LabelText="{x:Static res:InstallationApp.ModelNumber}" />
+    <controls:PpcLabeledText Margin="0,0,15,15"
+                             ContentText="{Binding ModelNumber}"
+                             LabelText="{res:Loc InstallationApp.ModelNumber}" />
 
-        <controls:PpcLabeledText Grid.Column="1"
-                                 ContentText="{Binding FirmwareVersion}"
-                                 LabelText="{x:Static res:InstallationApp.FirmwareVersion}" />
+    <controls:PpcLabeledText Grid.Column="1"
+                             ContentText="{Binding FirmwareVersion}"
+                             LabelText="{res:Loc InstallationApp.FirmwareVersion}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Margin="0,0,15,15"
-                                 ContentText="{Binding SerialNumber}"
-                                 LabelText="{x:Static res:InstallationApp.SerialNumber}" />
+    <controls:PpcLabeledText Grid.Row="1"
+                             Margin="0,0,15,15"
+                             ContentText="{Binding SerialNumber}"
+                             LabelText="{res:Loc InstallationApp.SerialNumber}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="1"
-                                 ContentText="{Binding ManufactureDate, StringFormat=d, TargetNullValue={x:Static res:General.TargetNullValue}}"
-                                 LabelText="{x:Static res:InstallationApp.ManufactureDate}" />
+    <controls:PpcLabeledText Grid.Row="1"
+                             Grid.Column="1"
+                             ContentText="{Binding ManufactureDate, StringFormat=d, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                             LabelText="{res:Loc InstallationApp.ManufactureDate}" />
 
 
 
-    </Grid>
+  </Grid>
 </ctrls:View>

@@ -13,55 +13,55 @@
             UseLayoutRounding="True"
             mc:Ignorable="d">
 
-    <Grid Margin="30,0,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+  <Grid Margin="30,0,0,0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="Row0_Title"
-                           Height="100" />
-            <RowDefinition x:Name="Row1_Enable"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row2_InputPrinterName"
-                           Height="Auto" />
-            <RowDefinition x:Name="Row3_Empty"
-                           Height="*" />
-            <RowDefinition x:Name="Row3_Save"
-                           Height="Auto" />
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition x:Name="Row0_Title"
+                     Height="100" />
+      <RowDefinition x:Name="Row1_Enable"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row2_InputPrinterName"
+                     Height="Auto" />
+      <RowDefinition x:Name="Row3_Empty"
+                     Height="*" />
+      <RowDefinition x:Name="Row3_Save"
+                     Height="Auto" />
+    </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc Menu.AccessoriesLabelPrinterMenuTitle}" />
+    <TextBlock HorizontalAlignment="Left"
+               VerticalAlignment="Center"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc Menu.AccessoriesLabelPrinterMenuTitle}" />
 
-        <controls:PpcCheckBox Grid.Row="1"
-                              Margin="0,15,0,0"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
-                              IsEnabled="{Binding IsEnabled}"
-                              LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
+    <controls:PpcCheckBox Grid.Row="1"
+                          Margin="0,15,0,0"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
+                          IsEnabled="{Binding IsEnabled}"
+                          LabelText="{res:Loc InstallationApp.AccessoryEnabled}" />
 
-        <controls:PpcTextBox Grid.Row="2"
-                             Margin="0,5,0,0"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch"
-                             InputText="{Binding PrinterName, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.PrinterName}" />
+    <controls:PpcTextBox Grid.Row="2"
+                         Margin="0,5,0,0"
+                         HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch"
+                         InputText="{Binding PrinterName, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}"
+                         LabelText="{res:Loc InstallationApp.PrinterName}" />
 
-        <controls:PpcButton x:Name="Save"
-                            Grid.Row="7"
-                            Grid.Column="2"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Command="{Binding SaveCommand}"
-                            Content="{x:Static res:General.Save}"
-                            IsBusy="{Binding IsWaitingForResponse}" />
-    </Grid>
+    <controls:PpcButton x:Name="Save"
+                        Grid.Row="7"
+                        Grid.Column="2"
+                        Margin="15,15,15,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Command="{Binding SaveCommand}"
+                        Content="{res:Loc General.Save}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
+  </Grid>
 
 </ctrls:View>
