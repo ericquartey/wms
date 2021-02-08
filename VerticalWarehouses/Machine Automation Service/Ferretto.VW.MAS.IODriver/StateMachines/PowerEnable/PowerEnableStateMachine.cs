@@ -3,9 +3,9 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 {
@@ -31,8 +31,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             IoStatus status,
             IoIndex deviceIndex,
             IEventAggregator eventAggregator,
-            ILogger logger)
-            : base(eventAggregator, logger, ioCommandQueue)
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, ioCommandQueue, serviceScopeFactory)
         {
             this.enable = enable;
             this.status = status;

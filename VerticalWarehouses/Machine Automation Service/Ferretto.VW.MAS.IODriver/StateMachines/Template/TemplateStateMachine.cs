@@ -1,9 +1,9 @@
 ﻿using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.StateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 {
@@ -29,8 +29,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
             IoIndex index,
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IEventAggregator eventAggregator,
-            ILogger logger)
-            : base(eventAggregator, logger, ioCommandQueue)
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, ioCommandQueue, serviceScopeFactory)
         {
             this.templateData = templateData;
             this.status = status;

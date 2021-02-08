@@ -1,5 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -8,12 +10,13 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 {
     internal class ResetFaultStartState : InverterStateBase
     {
         #region Fields
+
+        private readonly IErrorsProvider errorProvider;
 
         private readonly InverterIndex inverterIndex;
 
@@ -31,6 +34,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.inverterIndex = inverterIndex;
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -110,6 +114,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
                 {
                     if (this.InverterStatus.CommonStatusWord.IsFault)
                     {
+                        this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Reset Fault Inverter {this.inverterIndex}");
                         this.Logger.LogError($"2:ResetFaultStartState timeout, inverter {this.inverterIndex}");
                     }
                     // reset command FaultReset bit before exiting the state machine

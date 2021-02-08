@@ -56,7 +56,8 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.ioStatus,
                                 this.deviceIndex,
                                 this.eventAggregator,
-                                this.logger);
+                                this.logger,
+                                this.serviceScopeFactory);
 
                             this.logger.LogTrace("3:Method Start State Machine");
                             lock (this.syncAccess)
@@ -96,7 +97,8 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.ioStatus,
                                 this.deviceIndex,
                                 this.eventAggregator,
-                                this.logger);
+                                this.logger,
+                                this.serviceScopeFactory);
 
                             this.logger.LogDebug("5:Method Start State Machine");
                             lock (this.syncAccess)

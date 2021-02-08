@@ -417,7 +417,13 @@
   <data name="MoveExtBayNotAllowed" xml:space="preserve">
     <value>Invalid bay presence sensors.</value>
   </data>
-  <data name="HorizontalPositioningBlocked" xml:space="preserve">
-    <value>Horizontal movement blocked for a long time</value>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Movement blocked for a long time</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>I/O device timeout</value>
   </data>
 </root>

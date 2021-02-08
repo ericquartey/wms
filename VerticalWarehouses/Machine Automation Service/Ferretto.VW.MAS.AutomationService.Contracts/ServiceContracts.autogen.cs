@@ -3340,7 +3340,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         MoveExtBayNotAllowed = 81,
     
-        HorizontalPositioningBlocked = 82,
+        StartPositioningBlocked = 82,
+    
+        InverterCommandTimeout = 83,
+    
+        IoDeviceCommandTimeout = 84,
     
         InverterErrorBaseCode = 1000,
     
@@ -4498,6 +4502,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("FullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters FullLoadMovement { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HomingAcceleration", Required = Newtonsoft.Json.Required.Always)]
+        public double HomingAcceleration { get; set; }
     
         [Newtonsoft.Json.JsonProperty("HomingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double HomingCreepSpeed { get; set; }

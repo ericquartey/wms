@@ -423,7 +423,13 @@
   <data name="MoveExtBayNotAllowed" xml:space="preserve">
     <value>Invalid bay sensors</value>
   </data>
-  <data name="HorizontalPositioningBlocked" xml:space="preserve">
+  <data name="StartPositioningBlocked" xml:space="preserve">
     <value>Positioning error</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Inverter command timeout</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>I/O device command timeout</value>
   </data>
 </root>

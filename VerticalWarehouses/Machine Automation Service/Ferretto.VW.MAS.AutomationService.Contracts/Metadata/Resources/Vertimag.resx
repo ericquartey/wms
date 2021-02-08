@@ -570,4 +570,7 @@
   <data name="ShutterMinSpeed" xml:space="preserve">
     <value>Min speed</value>
   </data>
+  <data name="ElevatorAxis_HomingAcceleration" xml:space="preserve">
+    <value>Homing Acceleration</value>
+  </data>
 </root>

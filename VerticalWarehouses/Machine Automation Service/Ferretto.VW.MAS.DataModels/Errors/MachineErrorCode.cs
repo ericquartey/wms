@@ -256,8 +256,14 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MoveExtBayNotAllowed), 1)]
         MoveExtBayNotAllowed,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(HorizontalPositioningBlocked), 1)]
-        HorizontalPositioningBlocked,
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(StartPositioningBlocked), 1)]
+        StartPositioningBlocked,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterCommandTimeout), 1)]
+        InverterCommandTimeout,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceCommandTimeout), 1)]
+        IoDeviceCommandTimeout,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 1000,

@@ -414,7 +414,13 @@
   <data name="BayPositionDisabled" xml:space="preserve">
     <value>La posizione di baia è disabilitata</value>
   </data>
-  <data name="HorizontalPositioningBlocked" xml:space="preserve">
-    <value>Il movimento orizzontale è fermo da troppo tempo</value>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Il movimento è fermo da troppo tempo</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Errore momentaneo. Se il problema persiste spegnere la macchina e riaccendere dopo 15 secondi.</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>Errore nella gestione della scheda di Ingressi / uscite o nell'esecuzione di un comando.</value>
   </data>
 </root>

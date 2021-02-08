@@ -26,7 +26,8 @@ namespace Ferretto.VW.MAS.IODriver
                     this.mainIoDevice,
                     this.deviceIndex,
                     this.eventAggregator,
-                    this.logger);
+                    this.logger,
+                    this.serviceScopeFactory);
                 lock (this.syncAccess)
                 {
                     this.commandExecuting = true;
