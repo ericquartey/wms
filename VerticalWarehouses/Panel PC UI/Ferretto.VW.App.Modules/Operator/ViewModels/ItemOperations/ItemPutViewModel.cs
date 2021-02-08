@@ -190,7 +190,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (last &&
                     this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity == 1.0)
                 {
-                    var messageBoxResult = this.DialogService.ShowMessage(Localized.Get("OperatorApp.LastOperationMessage"), Localized.Get("OperatorApp.Warning"), DialogType.Exclamation, DialogButtons.OKCancel);
+                    var messageBoxResult = this.DialogService.ShowMessage(Localized.Get("OperatorApp.LastOperationMessage"), Localized.Get("OperatorApp.Warning"), DialogType.Exclamation, DialogButtons.OK);
                     if (messageBoxResult == DialogResult.OK)
                     {
                         await base.CommandUserActionAsync(userAction);
