@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -184,8 +185,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.VerifyItem)
             {
-                await base.CommandUserActionAsync(userAction);
-                return;
+                var last = this.Mission.Operations.Last().Id == this.MissionOperation.Id;
+
+                if (last &&
+                    this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity == 1.0)
+                {
+                    var messageBoxResult = this.DialogService.ShowMessage(Localized.Get("OperatorApp.LastOperationMessage"), Localized.Get("OperatorApp.Warning"), DialogType.Exclamation, DialogButtons.OKCancel);
+                    if (messageBoxResult == DialogResult.OK)
+                    {
+                        await base.CommandUserActionAsync(userAction);
+                        return;
+                    }
+                }
+                else
+                {
+                    await base.CommandUserActionAsync(userAction);
+                    return;
+                }
             }
         }
 

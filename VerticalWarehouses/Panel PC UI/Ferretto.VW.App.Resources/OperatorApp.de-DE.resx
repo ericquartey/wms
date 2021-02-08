@@ -1638,4 +1638,10 @@
   <data name="NoteNotValid" xml:space="preserve">
     <value>Feldoperation für ungültige Notizen nicht bestätigt</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warnung</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>Dies ist der letzte Vorgang in dieser Schublade, bei dem der Artikel platziert wurde, und drücken Sie OK</value>
+  </data>
 </root>
