@@ -94,6 +94,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
             if (message.IsError)
             {
                 this.Logger.LogError($"1:SwitchOffStartState message={message}");
+                this.errorProvider.RecordNew(MachineErrorCode.InverterErrorBaseCode);
                 this.ParentStateMachine.ChangeState(new SwitchOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else

@@ -67,7 +67,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                         break;
 
                     case MessageStatus.OperationError:
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData, this.Logger));
                         break;
@@ -83,7 +82,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                         break;
 
                     case MessageStatus.OperationError:
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new ExtBayPositioningErrorState(this.stateData, this.Logger));
                         break;
