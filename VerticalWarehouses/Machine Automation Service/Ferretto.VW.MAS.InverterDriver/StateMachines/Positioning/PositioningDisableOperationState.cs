@@ -1,4 +1,6 @@
 ﻿using System;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -8,6 +10,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     internal class PositioningDisableOperationState : InverterStateBase
     {
         #region Fields
+
+        private readonly IErrorsProvider errorProvider;
 
         private DateTime startTime;
 
@@ -26,6 +30,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Inverter = inverterStatus;
             this.stopRequested = stopRequested;
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -87,6 +92,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
                     {
                         this.Logger.LogError($"PositioningDisableOperationState timeout, inverter {this.InverterStatus.SystemIndex}");
+                        this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Positioning Disable Operation Inverter {this.InverterStatus.SystemIndex}");
                         this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     }
                     else

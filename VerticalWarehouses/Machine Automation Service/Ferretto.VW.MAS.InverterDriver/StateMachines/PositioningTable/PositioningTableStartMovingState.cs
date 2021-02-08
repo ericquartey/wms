@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -171,7 +172,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                             if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 5000)
                             {
                                 this.Logger.LogError($"PositioningTableStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
-                                this.errorProvider.RecordNew(MachineErrorCode.HorizontalPositioningBlocked);
+                                this.errorProvider.RecordNew(MachineErrorCode.StartPositioningBlocked, additionalText: $"{Axis.Horizontal}");
                                 this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                                 return true;
                             }

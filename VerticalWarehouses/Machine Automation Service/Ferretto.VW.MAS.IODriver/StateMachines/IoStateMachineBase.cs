@@ -5,9 +5,9 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
         #region Fields
 
         private readonly object lockObj = new object();
+
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private bool isDisposed;
 
@@ -26,11 +28,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
         public IoStateMachineBase(
             IEventAggregator eventAggregator,
             ILogger logger,
-            BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue)
+            BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
+            IServiceScopeFactory serviceScopeFactory)
         {
             this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.IoCommandQueue = ioCommandQueue ?? throw new ArgumentNullException(nameof(ioCommandQueue));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
         }
 
         #endregion
@@ -89,6 +93,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
         public void EnqueueMessage(IoWriteMessage message)
         {
             this.IoCommandQueue.Enqueue(message);
+        }
+
+        public TService GetRequiredService<TService>()
+            where TService : class
+        {
+            return this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<TService>();
         }
 
         public virtual void ProcessResponseMessage(IoReadMessage message)

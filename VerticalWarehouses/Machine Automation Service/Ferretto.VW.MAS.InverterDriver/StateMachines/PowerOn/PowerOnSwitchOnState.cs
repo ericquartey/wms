@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -10,6 +11,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
     internal class PowerOnSwitchOnState : InverterStateBase
     {
         #region Fields
+
+        private readonly IErrorsProvider errorProvider;
 
         private double minTimeout;
 
@@ -25,6 +28,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -104,6 +108,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                 else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
                 {
                     this.Logger.LogError($"2:PowerOnSwitchOnState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Switch On Inverter {this.InverterStatus.SystemIndex}");
                     this.ParentStateMachine.ChangeState(
                         new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }

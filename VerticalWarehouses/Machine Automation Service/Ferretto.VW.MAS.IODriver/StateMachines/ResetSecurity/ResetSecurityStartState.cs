@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Timers;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
@@ -11,6 +12,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
         #region Fields
 
         private const int ResponseTimeoutMilliseconds = 2000;
+
+        private readonly IErrorsProvider errorProvider;
 
         private readonly IoIndex index;
 
@@ -38,6 +41,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             this.mainIoDevice = mainIoDevice ?? throw new System.ArgumentNullException(nameof(mainIoDevice));
             this.index = index;
             this.responseTimer.Elapsed += this.OnResponseTimedOut;
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -102,7 +106,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         private void OnResponseTimedOut(object sender, ElapsedEventArgs e)
         {
-            this.Logger.LogWarning("Reset security failed because there was a timeout.");
+            this.Logger.LogError("Reset security timeout.");
+            this.errorProvider.RecordNew(MachineErrorCode.IoDeviceCommandTimeout, additionalText: $"Reset Security Index {this.index}");
 
             this.ParentStateMachine.ChangeState(
                 new ResetSecurityEndState(this.ParentStateMachine, this.status, this.index, hasError: true, this.Logger));

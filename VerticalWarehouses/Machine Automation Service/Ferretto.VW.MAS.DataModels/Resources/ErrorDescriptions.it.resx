@@ -420,7 +420,13 @@
   <data name="LoadUnitNumber" xml:space="preserve">
     <value>Cassetto numero</value>
   </data>
-  <data name="HorizontalPositioningBlocked" xml:space="preserve">
+  <data name="StartPositioningBlocked" xml:space="preserve">
     <value>Errore di posizionamento</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Errore di comando inverter</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>Errore di comando della scheda di ingressi / uscite</value>
   </data>
 </root>

@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
@@ -35,8 +35,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             IoStatus mainIoDevice,
             IoIndex index,
             IEventAggregator eventAggregator,
-            ILogger logger)
-            : base(eventAggregator, logger, ioCommandQueue)
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory)
+            : base(eventAggregator, logger, ioCommandQueue, serviceScopeFactory)
         {
             this.status = status ?? throw new System.ArgumentNullException(nameof(status));
             this.mainIoDevice = mainIoDevice ?? throw new System.ArgumentNullException(nameof(mainIoDevice));

@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         private const int CheckDelayTime = 200;
 
         private readonly IInverterPositioningFieldMessageData data;
+
+        private readonly IErrorsProvider errorProvider;
 
         private DateTime startTime;
 
@@ -32,6 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.data = data;
 
             this.Inverter = inverterStatus;
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -131,6 +135,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     )
                 {
                     this.Logger.LogError($"PositioningTableEnableOperation position timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Positioning Table Enable Operation Inverter {this.InverterStatus.SystemIndex}");
                     this.ParentStateMachine.ChangeState(new PositioningTableErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
             }

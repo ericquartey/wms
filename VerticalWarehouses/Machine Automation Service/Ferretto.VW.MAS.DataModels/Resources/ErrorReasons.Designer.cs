@@ -286,15 +286,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Horizontal movement blocked for a long time.
-        /// </summary>
-        public static string HorizontalPositioningBlocked {
-            get {
-                return ResourceManager.GetString("HorizontalPositioningBlocked", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The {0} Axis movement Acceleration {1} is invalid: Empty load acceleration lower than full load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {
@@ -354,6 +345,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string InvalidPresenceSensors {
             get {
                 return ResourceManager.GetString("InvalidPresenceSensors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
+        /// </summary>
+        public static string InverterCommandTimeout {
+            get {
+                return ResourceManager.GetString("InverterCommandTimeout", resourceCulture);
             }
         }
         
@@ -498,6 +498,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string InverterFaultStateDetected {
             get {
                 return ResourceManager.GetString("InverterFaultStateDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I/O device timeout.
+        /// </summary>
+        public static string IoDeviceCommandTimeout {
+            get {
+                return ResourceManager.GetString("IoDeviceCommandTimeout", resourceCulture);
             }
         }
         
@@ -885,6 +894,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string SensorZeroBayNotActiveAtStart {
             get {
                 return ResourceManager.GetString("SensorZeroBayNotActiveAtStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movement blocked for a long time.
+        /// </summary>
+        public static string StartPositioningBlocked {
+            get {
+                return ResourceManager.GetString("StartPositioningBlocked", resourceCulture);
             }
         }
         

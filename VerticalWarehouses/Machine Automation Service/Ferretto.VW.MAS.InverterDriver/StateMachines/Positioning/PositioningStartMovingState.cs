@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -16,6 +18,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         private readonly Timer axisPositionUpdateTimer;
 
         private readonly IInverterPositioningFieldMessageData data;
+
+        private readonly IErrorsProvider errorProvider;
 
         private int? oldPosition;
 
@@ -36,6 +40,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Inverter = inverterStatus;
             this.axisPositionUpdateTimer = new Timer(this.RequestAxisPositionUpdate, null, -1, Timeout.Infinite);
             this.oldPosition = null;
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -163,12 +168,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         this.Logger.LogTrace($"Inverter {this.InverterStatus.SystemIndex} moving towards target position: present {position.Value}, old {this.oldPosition}");
                         // if position doesn't change raise an alarm
                         if (this.oldPosition.HasValue
-                            && Math.Abs(position.Value - this.oldPosition.Value) < 3
+                            && Math.Abs(position.Value - this.oldPosition.Value) < 1
                             )
                         {
                             if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
                             {
                                 this.Logger.LogError($"PositioningStartMoving position timeout, inverter {this.InverterStatus.SystemIndex}");
+                                this.errorProvider.RecordNew(MachineErrorCode.StartPositioningBlocked, additionalText: $"{this.data.AxisMovement}");
                                 this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                                 return true;
                             }
