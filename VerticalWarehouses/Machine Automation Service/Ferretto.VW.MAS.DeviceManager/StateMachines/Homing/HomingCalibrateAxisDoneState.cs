@@ -79,7 +79,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                     case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
                         break;
                 }
@@ -94,7 +93,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         break;
 
                     case MessageStatus.OperationError:
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
                         break;

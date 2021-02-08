@@ -33,6 +33,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MovementParameters FullLoadMovement { get; set; }
 
+        /// <summary>
+        /// mm/s2
+        /// </summary>
+        public double HomingAcceleration { get; set; }
+
         public double HomingCreepSpeed { get; set; }
 
         public double HomingFastSpeed { get; set; }

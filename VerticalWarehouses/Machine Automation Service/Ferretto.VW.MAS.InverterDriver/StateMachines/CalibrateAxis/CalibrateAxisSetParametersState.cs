@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 this.SetHomingSensor();
                 return;
             }
-            else if (this.calibration == Calibration.FindSensor)
+            if (this.calibration == Calibration.FindSensor)
             {
                 if (this.axisToCalibrate == Axis.BayChain)
                 {
@@ -202,7 +202,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             {
                                 var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Horizontal);
 
-                                if (axisParameters.HomingCreepSpeed >= 2 * CREEP_SPEED_ELEVATOR_HORIZ_DEFAULT)
+                                if (axisParameters.HomingCreepSpeed >= 4 * CREEP_SPEED_ELEVATOR_HORIZ_DEFAULT)
                                 {
                                     isCommandToSend = false;
                                     this.Logger.LogError($"Homing Creep Speed parameter={axisParameters.HomingCreepSpeed} mm/s is too high! for Axis={this.axisToCalibrate}");
@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 if (!bay.IsExternal && bay.Carousel != null)
                                 {
                                     // Handle the carousel
-                                    if (bay.Carousel.HomingCreepSpeed >= 2 * CREEP_SPEED_CAROUSEL_DEFAULT)
+                                    if (bay.Carousel.HomingCreepSpeed >= 4 * CREEP_SPEED_CAROUSEL_DEFAULT)
                                     {
                                         isCommandToSend = false;
                                         this.Logger.LogError($"Homing Creep Speed parameter={bay.Carousel.HomingCreepSpeed} mm/s is too high! for Bay={bayNumber}");
@@ -237,7 +237,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 else
                                 {
                                     // Handle the external bay
-                                    if (bay.External.HomingCreepSpeed >= 2 * CREEP_SPEED_EXTERNALBAY_DEFAULT)
+                                    if (bay.External.HomingCreepSpeed >= 4 * CREEP_SPEED_EXTERNALBAY_DEFAULT)
                                     {
                                         isCommandToSend = false;
                                         this.Logger.LogError($"Homing Creep Speed parameter={bay.External.HomingCreepSpeed} mm/s is too high! for Bay={bayNumber}");
@@ -253,7 +253,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             {
                                 var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
 
-                                if (axisParameters.HomingCreepSpeed >= 2 * CREEP_SPEED_ELEVATOR_VERT_DEFAULT)
+                                if (axisParameters.HomingCreepSpeed >= 4 * CREEP_SPEED_ELEVATOR_VERT_DEFAULT)
                                 {
                                     isCommandToSend = false;
                                     this.Logger.LogError($"Homing Creep Speed parameter={axisParameters.HomingCreepSpeed} mm/s is too high! for Axis={this.axisToCalibrate}");
@@ -281,6 +281,36 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             break;
                         }
                     case InverterParameterId.HomingCreepSpeed:
+                        if (this.axisToCalibrate == Axis.Vertical)
+                        {
+                            var axisParameters = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
+
+                            if (axisParameters.HomingAcceleration == 0)
+                            {
+                                this.Logger.LogError($"Homing acceleration parameter={axisParameters.HomingAcceleration} mm/s2 error! for Axis={this.axisToCalibrate}");
+                                this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                                break;
+                            }
+                            var acceleration = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(
+                                axisParameters.HomingAcceleration,
+                                Orientation.Vertical);
+
+                            var inverterMessage = new InverterMessage(
+                                this.InverterStatus.SystemIndex,
+                                (short)InverterParameterId.HomingAcceleration,
+                                acceleration);
+
+                            this.Logger.LogDebug($"Set Homing acceleration={axisParameters.HomingAcceleration} mm/s2 [{acceleration} impulses], Axis={this.axisToCalibrate}");
+
+                            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                        }
+                        break;
+
+                    case InverterParameterId.HomingAcceleration:
                         this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         break;
                 }

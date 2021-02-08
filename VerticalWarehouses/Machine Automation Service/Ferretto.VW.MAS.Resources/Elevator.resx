@@ -123,6 +123,9 @@
   <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
     <value>A loading unit is already present in the specified bay position.</value>
   </data>
+  <data name="HorizontalHomingParametersError" xml:space="preserve">
+    <value>The horizontal axis homing parameters are invalid</value>
+  </data>
   <data name="MovementDistanceCannotBeZero" xml:space="preserve">
     <value>Movement distance cannot be zero.</value>
   </data>
@@ -164,6 +167,9 @@
   </data>
   <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
     <value>The loading unit does not fit in the specified cell.</value>
+  </data>
+  <data name="VerticalHomingParametersError" xml:space="preserve">
+    <value>The vertical axis homing parameters are invalid</value>
   </data>
   <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
     <value>Vertical origin calibration must be performed before attempting to move the elevator to a given position.</value>

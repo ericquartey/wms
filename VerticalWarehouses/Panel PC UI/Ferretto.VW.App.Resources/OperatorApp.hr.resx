@@ -1638,4 +1638,10 @@
   <data name="NoteNotValid" xml:space="preserve">
     <value>Nevažeća operacija polja bilješki nije potvrđena</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Upozorenje</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>Ovo je zadnja operacija na kojoj se u ovu ladicu stavlja članak i pritisnite U redu</value>
+  </data>
 </root>

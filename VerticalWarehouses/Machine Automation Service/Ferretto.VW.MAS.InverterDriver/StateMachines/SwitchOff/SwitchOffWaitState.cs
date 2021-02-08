@@ -1,4 +1,6 @@
 ﻿using System;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -9,6 +11,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
     internal class SwitchOffWaitState : InverterStateBase
     {
         #region Fields
+
+        private readonly IErrorsProvider errorProvider;
 
         private DateTime startTime;
 
@@ -22,6 +26,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -61,6 +66,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
             if (message.IsError)
             {
                 this.Logger.LogError($"1:SwitchOffWaitState message={message}");
+                this.errorProvider.RecordNew(MachineErrorCode.InverterErrorBaseCode);
                 this.ParentStateMachine.ChangeState(new SwitchOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else

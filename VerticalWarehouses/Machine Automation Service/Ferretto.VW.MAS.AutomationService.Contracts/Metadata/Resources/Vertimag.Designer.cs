@@ -466,6 +466,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Homing Acceleration.
+        /// </summary>
+        public static string ElevatorAxis_HomingAcceleration {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_HomingAcceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Homing Creep Speed.
         /// </summary>
         public static string ElevatorAxis_HomingCreepSpeed {

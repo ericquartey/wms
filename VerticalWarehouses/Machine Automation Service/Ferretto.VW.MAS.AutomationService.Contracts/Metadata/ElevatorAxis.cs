@@ -46,6 +46,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.FullLoadMovement))]
             public MovementParameters FullLoadMovement { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_HomingAcceleration))]
+            [Unit("mm/s2")]
+            [Id(6)]
+            public double HomingAcceleration { get; set; }
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_HomingCreepSpeed))]
             [Unit("mm/s")]
             [Id(4)]
@@ -58,7 +63,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_HorizontalCalibrateSpeed))]
             [Unit("mm/s")]
-            [Id(15)]
+            [Id(16)]
             public double HorizontalCalibrateSpeed { get; set; }
 
             [Id(20)]
@@ -66,10 +71,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public Inverter Inverter { get; set; }
 
             [ScaffoldColumn(false)]
-            [Id(6)]
+            [Id(7)]
             public double LastIdealPosition { get; set; }
 
-            [Id(7)]
+            [Id(8)]
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_LowerBound))]
             public double LowerBound { get; set; }
@@ -84,17 +89,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public Orientation Orientation { get; set; }
 
-            [Id(12)]
+            [Id(13)]
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateLength))]
             public double ProfileCalibrateLength { get; set; }
 
-            [Id(13)]
+            [Id(14)]
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibratePosition))]
             public int ProfileCalibratePosition { get; set; }
 
-            [Id(14)]
+            [Id(15)]
             [Unit("mm/s")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateSpeed))]
             public double ProfileCalibrateSpeed { get; set; }
@@ -111,17 +116,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double Resolution { get; set; }
 
             [Unit("mm")]
-            [Id(8)]
+            [Id(10)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_UpperBound))]
             public double UpperBound { get; set; }
 
             [Unit("mm")]
-            [Id(10)]
+            [Id(11)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_VerticalDepositOffset))]
             public double? VerticalDepositOffset { get; set; }
 
             [Unit("mm")]
-            [Id(11)]
+            [Id(12)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_VerticalPickupOffset))]
             public double? VerticalPickupOffset { get; set; }
 

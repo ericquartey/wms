@@ -1638,4 +1638,10 @@
   <data name="NoteNotValid" xml:space="preserve">
     <value>Neplatná operace s polem s poznámkami nebyla potvrzena</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Varování</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>Toto je poslední operace v této zásuvce umístěná na článek a stiskněte OK</value>
+  </data>
 </root>
