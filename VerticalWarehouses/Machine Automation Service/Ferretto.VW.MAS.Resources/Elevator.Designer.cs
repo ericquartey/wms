@@ -79,6 +79,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The horizontal axis homing parameters are invalid.
+        /// </summary>
+        public static string HorizontalHomingParametersError {
+            get {
+                return ResourceManager.GetString("HorizontalHomingParametersError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Movement distance cannot be zero..
         /// </summary>
         public static string MovementDistanceCannotBeZero {
@@ -201,6 +210,15 @@ namespace Ferretto.VW.MAS.Resources {
         public static string TheLoadingUnitDoesNotFitInTheSpecifiedCell {
             get {
                 return ResourceManager.GetString("TheLoadingUnitDoesNotFitInTheSpecifiedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The vertical axis homing parameters are invalid.
+        /// </summary>
+        public static string VerticalHomingParametersError {
+            get {
+                return ResourceManager.GetString("VerticalHomingParametersError", resourceCulture);
             }
         }
         

@@ -627,6 +627,60 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender)
         {
             IHomingMessageData homingData = new HomingMessageData(calibrateAxis, calibration, loadUnitId, showErrors);
+            switch (calibrateAxis)
+            {
+                case Axis.Horizontal:
+                    {
+                        var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+                        if (axis.HomingAcceleration == 0
+                            || axis.HomingFastSpeed == 0
+                            || axis.HomingCreepSpeed == 0
+                            || axis.HomingFastSpeed < axis.HomingCreepSpeed
+                            )
+                        {
+                            throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("HorizontalHomingParametersError", CommonUtils.Culture.Actual)));
+                        }
+                    }
+                    break;
+
+                case Axis.Vertical:
+                    {
+                        var axis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+                        if (axis.HomingAcceleration == 0
+                            || axis.HomingFastSpeed == 0
+                            || axis.HomingCreepSpeed == 0
+                            || axis.HomingFastSpeed < axis.HomingCreepSpeed
+                            )
+                        {
+                            throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("VerticalHomingParametersError", CommonUtils.Culture.Actual)));
+                        }
+                    }
+                    break;
+
+                case Axis.HorizontalAndVertical:
+                    {
+                        var axis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+                        if (axis.HomingAcceleration == 0
+                            || axis.HomingFastSpeed == 0
+                            || axis.HomingCreepSpeed == 0
+                            || axis.HomingFastSpeed < axis.HomingCreepSpeed
+                            )
+                        {
+                            throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("VerticalHomingParametersError", CommonUtils.Culture.Actual)));
+                        }
+
+                        axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+                        if (axis.HomingAcceleration == 0
+                            || axis.HomingFastSpeed == 0
+                            || axis.HomingCreepSpeed == 0
+                            || axis.HomingFastSpeed < axis.HomingCreepSpeed
+                            )
+                        {
+                            throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("HorizontalHomingParametersError", CommonUtils.Culture.Actual)));
+                        }
+                    }
+                    break;
+            }
 
             this.PublishCommand(
                 homingData,
