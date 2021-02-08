@@ -123,6 +123,14 @@ namespace Ferretto.VW.MAS.AutomationService
 
                         await this.SendRawDatabaseContentAsync(rawDatabaseContent);
                     }
+
+                    if (machineDataProvider.IsDbSaveOnServer())
+                    {
+                        var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
+
+                        // save the database to server
+                        dataLayer.CopyMachineDatabaseToServer();
+                    }
                 }
 
                 this.enableConnectionFlag = e.IsConnected;

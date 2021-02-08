@@ -1267,6 +1267,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compact2.
+        /// </summary>
+        public static string Compact2 {
+            get {
+                return ResourceManager.GetString("Compact2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compact3.
+        /// </summary>
+        public static string Compact3 {
+            get {
+                return ResourceManager.GetString("Compact3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Complete.
         /// </summary>
         public static string Complete {
@@ -4021,6 +4039,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manual2.
+        /// </summary>
+        public static string Manual2 {
+            get {
+                return ResourceManager.GetString("Manual2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual3.
+        /// </summary>
+        public static string Manual3 {
+            get {
+                return ResourceManager.GetString("Manual3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manufacture Date.
         /// </summary>
         public static string ManufactureDate {
@@ -4170,6 +4206,24 @@ namespace Ferretto.VW.App.Resources {
         public static string ModeLoadUnitOperations {
             get {
                 return ResourceManager.GetString("ModeLoadUnitOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loadunit Operations2.
+        /// </summary>
+        public static string ModeLoadUnitOperations2 {
+            get {
+                return ResourceManager.GetString("ModeLoadUnitOperations2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loadunit Operations3.
+        /// </summary>
+        public static string ModeLoadUnitOperations3 {
+            get {
+                return ResourceManager.GetString("ModeLoadUnitOperations3", resourceCulture);
             }
         }
         
@@ -6042,6 +6096,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test2.
+        /// </summary>
+        public static string Test2 {
+            get {
+                return ResourceManager.GetString("Test2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test3.
+        /// </summary>
+        public static string Test3 {
+            get {
+                return ResourceManager.GetString("Test3", resourceCulture);
             }
         }
         

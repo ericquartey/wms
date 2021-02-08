@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         #region Fields
 
         private readonly Axis axisToSwitchOn;
+
+        private readonly IErrorsProvider errorProvider;
 
         private bool isAxisChanged;
 
@@ -36,6 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToSwitchOn = axisToSwitchOn;
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -221,8 +225,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                 }
                 else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
                 {
-                    this.Logger.LogError($"2:SwitchOnStartState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.Logger.LogError($"2:SwitchOnStartState timeout, inverter {this.InverterStatus.SystemIndex}, waitAck {this.waitAck}");
+                    this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Switch On Inverter {this.InverterStatus.SystemIndex}");
                     this.ParentStateMachine.ChangeState(new SwitchOnErrorState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
+                }
+                else if (this.isAxisChanged
+                    && this.waitAck
+                    && !this.InverterStatus.CommonStatusWord.IsSwitchedOn
+                    )
+                {
+                    // read again
+                    var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
+
+                    this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
+
+                    this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                 }
             }
             return returnValue;

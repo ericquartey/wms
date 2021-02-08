@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -33,9 +34,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.BayLight
             IoStatus status,
             IoIndex index,
             IEventAggregator eventAggregator,
-            ILogger logger
+            ILogger logger,
+            IServiceScopeFactory serviceScopeFactory
             )
-            : base(eventAggregator, logger, ioCommandQueue)
+            : base(eventAggregator, logger, ioCommandQueue, serviceScopeFactory)
         {
             this.enable = enable;
             this.index = index;

@@ -11,6 +11,9 @@ namespace Ferretto.VW.MAS.IODriver
 
         void EnqueueMessage(IoWriteMessage message);
 
+        TService GetRequiredService<TService>()
+            where TService : class;
+
         void ProcessResponseMessage(IoReadMessage message);
 
         void PublishNotificationEvent(FieldNotificationMessage notificationMessage);

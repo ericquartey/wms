@@ -45,7 +45,7 @@
                  Margin="0,10,15,10"
                  VerticalAlignment="Top"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{x:Static res:Menu.AccessoriesLaserPointerMenuTitle}" />
+                 Text="{res:Loc Menu.AccessoriesLaserPointerMenuTitle}" />
     </StackPanel>
 
     <TextBlock Grid.Row="1"
@@ -54,7 +54,7 @@
                Margin="0,0,15,0"
                VerticalAlignment="Top"
                Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-               Text="{x:Static res:Menu.AccessoriesLaserPointerMenuDescription}" />
+               Text="{res:Loc Menu.AccessoriesLaserPointerMenuDescription}" />
 
     <StackPanel Grid.Row="2"
                 Grid.ColumnSpan="2"
@@ -67,7 +67,7 @@
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
                             IsEnabled="{Binding IsEnabled}"
-                            LabelText="{x:Static res:InstallationApp.AccessoryEnabled}" />
+                            LabelText="{res:Loc InstallationApp.AccessoryEnabled}" />
 
 
     </StackPanel>
@@ -97,14 +97,14 @@
                    Margin="0,0,0,0"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                   Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuSection1}" />
+                   Text="{res:Loc Menu.AccessoriesAlphaNumBarMenuSection1}" />
 
         <TextBlock Grid.Row="0"
                    Grid.Column="2"
                    Margin="15,0,0,0"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.FirmwareVersion}" />
+                   Text="{res:Loc InstallationApp.FirmwareVersion}" />
 
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
@@ -113,7 +113,7 @@
                     VerticalAlignment="Top">
           <TextBlock Margin="5,0,5,0"
                      Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                     Text="{x:Static res:Menu.AccessoriesIpAddress}" />
+                     Text="{res:Loc Menu.AccessoriesIpAddress}" />
           <ctrlssc:IPAddressBox Margin="5,4,5,5"
                                 IPAddress="{Binding IpAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 IsEnabled="{Binding IsEnabledEditing}" />
@@ -126,7 +126,7 @@
                              VerticalAlignment="Stretch"
                              InputText="{Binding Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding IsEnabledEditing}"
-                             LabelText="{x:Static res:Menu.AccessoriesPort}" />
+                             LabelText="{res:Loc Menu.AccessoriesPort}" />
 
         <StackPanel Grid.Row="2"
                     Grid.Column="0"
@@ -141,28 +141,28 @@
                                VerticalAlignment="Stretch"
                                InputText="{Binding XOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding IsEnabledEditing}"
-                               LabelText="{x:Static res:Menu.AccessoriesLaserPointerXOffset}" />
+                               LabelText="{res:Loc Menu.AccessoriesLaserPointerXOffset}" />
 
           <controls:PpcTextBox Margin="5,5,5,5"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Stretch"
                                InputText="{Binding YOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding IsEnabledEditing}"
-                               LabelText="{x:Static res:Menu.AccessoriesLaserPointerYOffset}" />
+                               LabelText="{res:Loc Menu.AccessoriesLaserPointerYOffset}" />
 
           <controls:PpcTextBox Margin="5,5,5,5"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Stretch"
                                InputText="{Binding ZOffsetUpperPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding IsEnabledEditing}"
-                               LabelText="{x:Static res:Menu.AccessoriesLaserPointerZOffsetUpperPosition}" />
+                               LabelText="{res:Loc Menu.AccessoriesLaserPointerZOffsetUpperPosition}" />
 
           <controls:PpcTextBox Margin="5,5,5,5"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Stretch"
                                InputText="{Binding ZOffsetLowerPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding IsEnabledEditing}"
-                               LabelText="{x:Static res:Menu.AccessoriesLaserPointerZOffsetLowerPosition}" />
+                               LabelText="{res:Loc Menu.AccessoriesLaserPointerZOffsetLowerPosition}" />
         </StackPanel>
 
         <views:DeviceInformationView Grid.Row="1"
@@ -201,7 +201,7 @@
                    Margin="0,5,10,0"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                   Text="{x:Static res:Menu.AccessoriesAlphaNumBarMenuSection2}" />
+                   Text="{res:Loc Menu.AccessoriesAlphaNumBarMenuSection2}" />
 
         <RadioButton Grid.Row="0"
                      Grid.Column="1"
@@ -210,7 +210,7 @@
           <RadioButton.Content>
             <TextBlock Margin="0,5,0,0"
                        Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                       Text="{x:Static res:Menu.AccessoriesOff}" />
+                       Text="{res:Loc Menu.AccessoriesOff}" />
           </RadioButton.Content>
         </RadioButton>
 
@@ -222,7 +222,7 @@
           <RadioButton.Content>
             <TextBlock Margin="0,5,0,0"
                        Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                       Text="{x:Static res:Menu.AccessoriesOn}" />
+                       Text="{res:Loc Menu.AccessoriesOn}" />
           </RadioButton.Content>
         </RadioButton>
 
@@ -230,7 +230,7 @@
                    Margin="0,5,10,0"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_RadioButtonTextBlockStyle}"
-                   Text="{x:Static res:General.Connectivity}" />
+                   Text="{res:Loc General.Connectivity}" />
 
         <Border Grid.Row="1"
                 Grid.Column="1"
@@ -261,7 +261,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Command="{Binding SaveCommand}"
-                        Content="{x:Static res:General.Save}"
+                        Content="{res:Loc General.Save}"
                         IsBusy="{Binding IsWaitingForResponse}" />
   </Grid>
 </ctrls:View>

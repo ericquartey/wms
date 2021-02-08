@@ -1016,8 +1016,9 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.AxisChanged:
-                    result = client.Client.Send(message.ToBytes());
-                    inverter.AxisChanged = 1;
+                    var axisChangedMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)inverter.AxisChanged));
+                    result = client.Client.Send(axisChangedMessage);
+                    inverter.AxisChanged = random.Next(0, 3);
                     break;
 
                 case InverterParameterId.ActiveDataset:

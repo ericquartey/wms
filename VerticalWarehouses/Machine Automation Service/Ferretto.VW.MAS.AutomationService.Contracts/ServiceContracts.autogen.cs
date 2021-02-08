@@ -3340,7 +3340,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         MoveExtBayNotAllowed = 81,
     
-        HorizontalPositioningBlocked = 82,
+        StartPositioningBlocked = 82,
+    
+        InverterCommandTimeout = 83,
+    
+        IoDeviceCommandTimeout = 84,
     
         InverterErrorBaseCode = 1000,
     

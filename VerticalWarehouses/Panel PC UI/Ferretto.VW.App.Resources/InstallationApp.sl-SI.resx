@@ -2376,4 +2376,28 @@
   <data name="ErrorActiveWarning" xml:space="preserve">
     <value>Obstajajo aktivne napake</value>
   </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>Ročno2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>Ročno3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Test2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Test3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Kompakt2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Kompakt3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Postopki na predalu2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Postopki na predalu3</value>
+  </data>
 </root>

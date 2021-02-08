@@ -2394,4 +2394,28 @@
   <data name="ErrorActiveWarning" xml:space="preserve">
     <value>Ci sono errori attivi</value>
   </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>Manuale2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>Manuale3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Test2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Test3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Compatta2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Compatta3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Operazioni cassetto2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Operazioni cassetto3</value>
+  </data>
 </root>

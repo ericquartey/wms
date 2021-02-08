@@ -1,6 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -16,6 +17,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         #region Fields
 
         private readonly Axis axisToSwitchOn;
+
+        private readonly IErrorsProvider errorProvider;
 
         private bool isAxisChanged;
 
@@ -34,6 +37,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         {
             this.Logger.LogTrace("1:Method Start");
             this.axisToSwitchOn = axisToSwitchOn;
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -189,6 +193,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                 else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
                 {
                     this.Logger.LogError($"2:PowerOnStartState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Power On Inverter {this.InverterStatus.SystemIndex}");
                     this.ParentStateMachine.ChangeState(
                         new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
