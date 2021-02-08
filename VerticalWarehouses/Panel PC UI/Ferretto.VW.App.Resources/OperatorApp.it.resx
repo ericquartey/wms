@@ -1643,4 +1643,10 @@
   <data name="NoteNotValid" xml:space="preserve">
     <value>Campo note non valido operazione non confermata</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Attenzione</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>Questa é l'ultima operazione su questo cassetto depostita l'articolo e premi OK</value>
+  </data>
 </root>

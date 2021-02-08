@@ -1629,4 +1629,10 @@
   <data name="SelectReasons" xml:space="preserve">
     <value>Izberi razlog</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Opozorilo</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>To je zadnja operacija tega predala, v katero je bil postavljen izdelek, in pritisnite OK</value>
+  </data>
 </root>

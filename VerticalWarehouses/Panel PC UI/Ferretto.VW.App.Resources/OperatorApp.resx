@@ -1996,4 +1996,10 @@
   <data name="NoteNotValid" xml:space="preserve">
     <value>Invalid notes field operation not confirmed</value>
   </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>This is the last operation on this drawer placed the article and press OK</value>
+  </data>
 </root>

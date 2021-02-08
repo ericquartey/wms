@@ -2374,6 +2374,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This is the last operation on this drawer placed the article and press OK.
+        /// </summary>
+        public static string LastOperationMessage {
+            get {
+                return ResourceManager.GetString("LastOperationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last service date.
         /// </summary>
         public static string LastServiceDate {
@@ -4584,6 +4593,15 @@ namespace Ferretto.VW.App.Resources {
         public static string WaitingListDetailDataGridHeaderRow {
             get {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
         
