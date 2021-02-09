@@ -50,35 +50,34 @@
             "TcpPort": 4001
           }
         },
-        "ChainOffset": -10.0,
-        "CyclesToCalibrate": 50,
-        "EmptyLoadMovement": {
-          "Acceleration": 400.0,
-          "Deceleration": 400.0,
-          "Id": 11,
-          "Speed": 500.0
-        },
-        "External": {
+        "Carousel": {
           "AssistedMovements": {
             "FeedRate": 1.0,
             "Id": 12
           },
-          "ExtraRace": 25.0,
+          "ElevatorDistance": 448.238271,
           "HomingCreepSpeed": 5.0,
-          "HomingFastSpeed": 40.0,
+          "HomingFastSpeed": 20.0,
           "Id": 11,
           "LastIdealPosition": 0.0,
           "ManualMovements": {
             "FeedRate": 0.1,
             "Id": 13
-          },
-          "Race": 1225.0
+          }
+        },
+        "ChainOffset": -8.0,
+        "CyclesToCalibrate": 50,
+        "EmptyLoadMovement": {
+          "Acceleration": 200.0,
+          "Deceleration": 150.0,
+          "Id": 11,
+          "Speed": 140.0
         },
         "FullLoadMovement": {
-          "Acceleration": 400.0,
-          "Deceleration": 400.0,
+          "Acceleration": 200.0,
+          "Deceleration": 150.0,
           "Id": 12,
-          "Speed": 500.0
+          "Speed": 130.0
         },
         "Id": 1,
         "Inventory": true,
@@ -99,7 +98,7 @@
         "IsAdjustByWeight": false,
         "IsCheckIntrusion": false,
         "IsDouble": false,
-        "IsExternal": true,
+        "IsExternal": false,
         "IsFastDepositToBay": false,
         "LastCalibrationCycles": 0,
         "Number": "BayOne",
@@ -107,19 +106,30 @@
         "Pick": true,
         "Positions": [
           {
-            "Height": 780.0,
+            "Height": 889.5,
             "Id": 12,
             "IsBlocked": false,
             "IsUpper": true,
             "Location": "InternalBay1Up",
             "LocationUpDown": "Up",
             "MaxDoubleHeight": 0.0,
-            "MaxSingleHeight": 699.0,
+            "MaxSingleHeight": 399.0,
             "ProfileOffset": 25.0
+          },
+          {
+            "Height": 445.5,
+            "Id": 11,
+            "IsBlocked": false,
+            "IsUpper": false,
+            "Location": "InternalBay1Down",
+            "LocationUpDown": "Down",
+            "MaxDoubleHeight": 0.0,
+            "MaxSingleHeight": 399.0,
+            "ProfileOffset": 0.0
           }
         ],
         "Put": true,
-        "Resolution": 82.2412,
+        "Resolution": 296.2282068,
         "Shutter": {
           "AssistedMovements": {
             "FeedRate": 0.2,
@@ -146,7 +156,7 @@
           },
           "MaxSpeed": 50000.0,
           "MinSpeed": 5000.0,
-          "Type": "TwoSensors"
+          "Type": "ThreeSensors"
         },
         "Side": "Front",
         "Status": "Idle",
@@ -525,14 +535,14 @@
     "IsHeartBeat": false,
     "ItemUniqueIdLength": 0,
     "LoadUnitDepth": 1030.0,
-    "LoadUnitMaxHeight": 699.0,
+    "LoadUnitMaxHeight": 399.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 145.0,
     "LoadUnitTare": 125.0,
     "LoadUnitVeryHeavyPercent": 0.0,
     "LoadUnitWidth": 4250.0,
     "MaxGrossWeight": 70000.0,
-    "ModelName": "VERTIMAG 103XL800-BES H6061",
+    "ModelName": "VERTIMAG 103XL800-BIG H6061",
     "Panels": [
       {
         "Cells": [
