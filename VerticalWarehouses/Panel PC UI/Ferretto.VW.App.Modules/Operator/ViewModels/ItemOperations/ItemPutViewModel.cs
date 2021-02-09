@@ -187,7 +187,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 var last = this.Mission.Operations.Last().Id == this.MissionOperation.Id;
 
-                if (last &&
+                if (last && this.BarcodeLenght > 0 &&
                     this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity == 1.0)
                 {
                     var messageBoxResult = this.DialogService.ShowMessage(Localized.Get("OperatorApp.LastOperationMessage"), Localized.Get("OperatorApp.Warning"), DialogType.Exclamation, DialogButtons.OK);
