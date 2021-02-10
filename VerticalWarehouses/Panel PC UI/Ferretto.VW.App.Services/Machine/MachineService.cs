@@ -1371,6 +1371,10 @@ namespace Ferretto.VW.App.Services
 
             // Devo aggiornare i dati delle posizioni della baia
             this.Bay = await this.bayManagerService.GetBayAsync();
+
+            this.HasShutter = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type != ShutterType.NotSpecified : false;
+            this.IsShutterThreeSensors = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors : false;
+
             var embarkedLoadingUnit = await this.GetLodingUnitOnBoardAsync();
             var bayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
 

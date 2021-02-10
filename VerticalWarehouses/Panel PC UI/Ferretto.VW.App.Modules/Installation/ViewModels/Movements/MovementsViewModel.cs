@@ -369,6 +369,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.lastActiveCommand = "";
 
                 this.RaisePropertyChanged(nameof(this.SelectedBayPosition));
+                this.RaisePropertyChanged(nameof(this.HasShutter));
+                this.RaisePropertyChanged(nameof(this.BayIsShutterThreeSensors));
 
                 await base.OnAppearedAsync();
             }
