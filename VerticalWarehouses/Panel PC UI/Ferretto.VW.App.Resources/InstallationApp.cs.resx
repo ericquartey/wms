@@ -2394,4 +2394,7 @@
   <data name="ModeLoadUnitOperations3" xml:space="preserve">
     <value>Operace zásuvky3</value>
   </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Zakažte prvních 30 buněk nad odpovídající pozicí</value>
+  </data>
 </root>

@@ -2406,4 +2406,7 @@
   <data name="ModeLoadUnitOperations3" xml:space="preserve">
     <value>Operacija pretinca3</value>
   </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Onemogućite prvih 30 ćelija iznad odgovarajućeg zaljeva</value>
+  </data>
 </root>

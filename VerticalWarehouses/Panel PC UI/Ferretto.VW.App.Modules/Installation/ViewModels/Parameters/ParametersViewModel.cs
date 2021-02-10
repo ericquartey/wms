@@ -184,6 +184,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.configuration = await this.machineConfigurationWebService.GetAsync();
                 this.RaisePropertyChanged(nameof(this.Configuration));
+
+                if (this.MachineService.Bay.Shutter?.Type == ShutterType.NotSpecified)
+                {
+                    this.ShowNotification(Resources.Localized.Get("InstallationApp.ShutterNotSpecifiedWarning"), Services.Models.NotificationSeverity.Warning);
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -232,8 +237,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.ShowNotification(Resources.Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
 
-                this.configuration = await this.machineConfigurationWebService.GetAsync();
-                this.RaisePropertyChanged(nameof(this.Configuration));
+                //this.configuration = await this.machineConfigurationWebService.GetAsync();
+                //this.RaisePropertyChanged(nameof(this.Configuration));
+
+                await this.MachineService.OnUpdateServiceAsync();
+                await this.OnDataRefreshAsync();
 
                 this.IsBusy = false;
             }

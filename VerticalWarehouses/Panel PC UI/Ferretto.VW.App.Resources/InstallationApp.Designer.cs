@@ -5650,6 +5650,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable the first 30 cells above the corresponding bay.
+        /// </summary>
+        public static string ShutterNotSpecifiedWarning {
+            get {
+                return ResourceManager.GetString("ShutterNotSpecifiedWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open.
         /// </summary>
         public static string ShutterOpen {

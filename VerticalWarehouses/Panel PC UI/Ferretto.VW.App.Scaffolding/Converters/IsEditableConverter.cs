@@ -32,6 +32,12 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 {
                     return true;
                 }
+                else if ((entity.Instance is Shutter ||
+                    entity.Instance is ShutterManualParameters) &&
+                    this.sessionService.UserAccessLevel >= UserAccessLevel.Installer)
+                {
+                    return true;
+                }
             }
 
             if (value is IEnumerable<Attribute> metadata)

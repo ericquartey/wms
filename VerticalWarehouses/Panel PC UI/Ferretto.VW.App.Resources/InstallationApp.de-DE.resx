@@ -2406,4 +2406,7 @@
   <data name="ModeLoadUnitOperations3" xml:space="preserve">
     <value>Kastenvorgänge3</value>
   </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Deaktivieren Sie die ersten 30 Zellen über dem entsprechenden Feld</value>
+  </data>
 </root>
