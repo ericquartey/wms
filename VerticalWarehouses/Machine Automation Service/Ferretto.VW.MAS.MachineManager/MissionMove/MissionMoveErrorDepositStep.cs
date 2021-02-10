@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -108,60 +109,57 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
+                            this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}; loadUnit {this.Mission.LoadUnitId}");
 
                             // Perform the operation if machine is regular or machine is 1Ton machine and notification type is MessageType.CombinedMovements
                             if (!this.MachineVolatileDataProvider.IsOneTonMachine.Value ||
                                 (this.MachineVolatileDataProvider.IsOneTonMachine.Value && notification.Type == MessageType.CombinedMovements))
                             {
-                                if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
-                                {
-                                    this.Mission.NeedMovingBackward = false;
-                                    var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
-                                    var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-
-                                    if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
-                                        && shutterInverter != InverterDriver.Contracts.InverterIndex.None
-                                        && bay.Shutter != null
-                                        && bay.Shutter.Type != ShutterType.NotSpecified
-                                        && shutterPosition != this.Mission.CloseShutterPosition
-                                        )
-                                    {
-                                        this.Logger.LogInformation($"{this.GetType().Name}: Close Shutter positioning start Mission:Id={this.Mission.Id}");
-                                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.CloseShutterPosition);
-                                        this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterClosed;
-                                        this.MissionsDataProvider.Update(this.Mission);
-                                    }
-                                    else
-                                    {
-                                        this.Mission.RestoreStep = MissionStep.NotDefined;
-                                        this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveBackward;
-                                        var newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                        newStep.OnEnter(null);
-                                    }
-                                }
-                                else
-                                {
-                                    this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveForward;
-                                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
-                                    this.DepositUnitEnd(restore: true);
-                                }
+                                this.ManualMovementEnd(notification);
                             }
                         }
                         break;
 
                     case MessageStatus.OperationStop:
+                        if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
+                        {
+                            this.Mission.ErrorMovements &= ~MissionErrorMovements.AbortMovement;
+                            this.ManualMovementEnd(notification);
+                        }
+                        break;
+
                     case MessageStatus.OperationError:
                     case MessageStatus.OperationRunningStop:
                     case MessageStatus.OperationFaultStop:
                         {
-                            if (notification.Type != MessageType.Homing)
+                            if (notification.Type != MessageType.Homing
+                                && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement)
+                                )
                             {
                                 this.Mission.ErrorMovements = MissionErrorMovements.None;
                                 this.MissionsDataProvider.Update(this.Mission);
 
                                 var newMessageData = new StopMessageData(StopRequestReason.Error);
+                                this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
+                            }
+                        }
+                        break;
+
+                    case MessageStatus.OperationUpdateData:
+                        {
+                            var data = notification.Data as PositioningMessageData;
+                            if (data != null
+                                && data.MovementType == MovementType.Relative
+                                && data.AxisMovement == Axis.Horizontal
+                                && (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward) || this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward))
+                                )
+                            {
+                                this.Logger.LogInformation($"{this.GetType().Name}:Manual Horizontal positioning abort Mission:Id={this.Mission.Id}; loadUnit {this.Mission.LoadUnitId}");
+
+                                this.Mission.ErrorMovements |= MissionErrorMovements.AbortMovement;
+                                this.MissionsDataProvider.Update(this.Mission);
+
+                                var newMessageData = new StopMessageData(StopRequestReason.Stop);
                                 this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
                             }
                         }
@@ -181,6 +179,43 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+            }
+        }
+
+        private void ManualMovementEnd(NotificationMessage notification)
+        {
+            if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
+            {
+                this.Mission.NeedMovingBackward = false;
+                var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
+                var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+
+                if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
+                    && shutterInverter != InverterDriver.Contracts.InverterIndex.None
+                    && bay.Shutter != null
+                    && bay.Shutter.Type != ShutterType.NotSpecified
+                    && shutterPosition != this.Mission.CloseShutterPosition
+                    )
+                {
+                    this.Logger.LogInformation($"{this.GetType().Name}: Close Shutter positioning start Mission:Id={this.Mission.Id}; loadUnit {this.Mission.LoadUnitId}");
+                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.CloseShutterPosition);
+                    this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterClosed;
+                    this.MissionsDataProvider.Update(this.Mission);
+                }
+                else
+                {
+                    this.Mission.RestoreStep = MissionStep.NotDefined;
+                    this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveBackward;
+                    var newStep = new MissionMoveWaitChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+                }
+            }
+            else
+            {
+                this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveForward;
+                this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                this.DepositUnitEnd(restore: true);
             }
         }
 

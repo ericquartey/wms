@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
     {
         #region Properties
 
+        double AbsorbedCurrent { get; set; }
+
         Axis AxisMovement { get; set; }
 
         bool ComputeElongation { get; set; }
@@ -57,9 +59,6 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
         int[] TargetSpeed { get; set; }
 
         bool WaitContinue { get; set; }
-
-        double AbsorbedCurrent { get; set; }
-        
 
         #endregion
     }

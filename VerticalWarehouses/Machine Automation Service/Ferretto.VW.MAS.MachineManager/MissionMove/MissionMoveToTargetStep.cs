@@ -252,6 +252,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
+                        this.Logger.LogDebug($"Stop requested by message {notification}");
                         this.OnStop(StopRequestReason.Error);
                         return;
                     }

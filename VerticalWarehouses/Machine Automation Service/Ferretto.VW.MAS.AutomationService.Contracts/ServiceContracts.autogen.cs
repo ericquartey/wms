@@ -3399,6 +3399,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"MoveShutterClosed")]
         MoveShutterClosed = 16,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"AbortMovement")]
+        AbortMovement = 32,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]

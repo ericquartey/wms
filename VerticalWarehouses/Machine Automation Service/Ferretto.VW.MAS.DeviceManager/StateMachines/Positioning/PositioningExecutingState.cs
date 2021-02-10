@@ -33,8 +33,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IErrorsProvider errorsProvider;
 
-        private readonly double[] findZeroPosition = new double[(int)HorizontalCalibrationStep.FindCenter];
-
         private readonly double firstPosition;
 
         private readonly IPositioningMachineData machineData;
@@ -106,6 +104,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
         }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsStartPartiallyOnBoard { get; private set; }
 
         #endregion
 
@@ -205,6 +209,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                         {
                             this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
+                            this.IsStartPartiallyOnBoard = this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle;
                         }
                         else if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
                         {
@@ -727,6 +732,32 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Error);
+                        }
+                        else if (this.machineData.MessageData.MovementMode == MovementMode.Position
+                            && this.machineData.MessageData.AxisMovement == Axis.Horizontal
+                            && this.IsStartPartiallyOnBoard
+                            && (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                                || this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+                            )
+                        {
+                            var data = new PositioningMessageData();
+                            data.MovementType = this.machineData.MessageData.MovementType;
+                            data.AxisMovement = this.machineData.MessageData.AxisMovement;
+
+                            this.Logger.LogDebug($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement}; Zero Sensor {this.machineData.MachineSensorStatus.IsSensorZeroOnCradle}");
+                            var notificationMessage = new NotificationMessage(
+                                data,
+                                $"Manual movement aborted",
+                                MessageActor.MachineManager,
+                                MessageActor.DeviceManager,
+                                MessageType.Positioning,
+                                this.machineData.RequestingBay,
+                                this.machineData.TargetBay,
+                                MessageStatus.OperationUpdateData);
+
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                            this.IsStartPartiallyOnBoard = false;
                         }
                         break;
                     }

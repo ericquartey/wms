@@ -12,12 +12,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double VerticalPosition { get; set; }
 
-        MachineErrorCode CanElevatorDeposit(BayPosition bayPosition);
-        MachineErrorCode CanElevatorPickup(BayPosition bayPosition);
-
         #endregion
 
         #region Methods
+
+        ActionPolicy CanCalibrateZeroPlate();
+
+        MachineErrorCode CanElevatorDeposit(BayPosition bayPosition);
+
+        MachineErrorCode CanElevatorPickup(BayPosition bayPosition);
 
         ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber);
 
