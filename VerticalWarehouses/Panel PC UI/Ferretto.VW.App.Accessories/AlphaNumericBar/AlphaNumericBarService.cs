@@ -226,7 +226,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         var message = this.GetMessageFromMissionChangedEventArg(e);
 
                         if (this.alphaNumericBarDriver.SelectedMessage != message
-                            && this.alphaNumericBarDriver.SelectedPosition != compartmentSelected.XPosition
+                            //&& this.alphaNumericBarDriver.SelectedPosition != compartmentSelected.XPosition
                             )
                         {
                             this.alphaNumericBarDriver.SelectedPosition = compartmentSelected.XPosition;
