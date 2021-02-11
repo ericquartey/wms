@@ -182,6 +182,8 @@ namespace Ferretto.VW.App.Controls
                 this.weightingScaleService.StopWeightAcquisition();
 
                 this.logger.Debug("Weighting scale component unloaded.");
+
+                this.weightingScaleService.StopAsync();
             }
             catch (Exception ex)
             {
