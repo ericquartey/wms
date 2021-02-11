@@ -119,47 +119,57 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
+                            this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}; loadUnit {this.Mission.LoadUnitId}");
 
                             // Perform the operation if machine is regular or machine is 1Ton machine and notification type is MessageType.CombinedMovements
                             if (!this.MachineVolatileDataProvider.IsOneTonMachine.Value ||
                                 (this.MachineVolatileDataProvider.IsOneTonMachine.Value && notification.Type == MessageType.CombinedMovements))
                             {
-                                if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
-                                {
-                                    this.Mission.NeedMovingBackward = false;
-                                    if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
-                                       || this.Mission.CloseShutterPosition == ShutterPosition.NotSpecified
-                                    )
-                                    {
-                                        this.RestoreOriginalStep();
-                                    }
-                                    else
-                                    {
-                                        this.CloseShutter();
-                                    }
-                                }
-                                else
-                                {
-                                    this.Mission.ErrorMovements = MissionErrorMovements.None;
-                                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
-                                    this.LoadUnitEnd(restore: true);
-                                }
+                                this.ManualMovementEnd();
                             }
                         }
                         break;
 
                     case MessageStatus.OperationStop:
+                        if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
+                        {
+                            this.Mission.ErrorMovements &= ~MissionErrorMovements.AbortMovement;
+                            this.ManualMovementEnd();
+                        }
+                        break;
+
                     case MessageStatus.OperationError:
                     case MessageStatus.OperationRunningStop:
                     case MessageStatus.OperationFaultStop:
                         {
-                            if (notification.Type != MessageType.Homing)
+                            if (notification.Type != MessageType.Homing
+                                && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement)
+                                )
                             {
                                 this.Mission.ErrorMovements = MissionErrorMovements.None;
                                 this.MissionsDataProvider.Update(this.Mission);
 
                                 var newMessageData = new StopMessageData(StopRequestReason.Error);
+                                this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
+                            }
+                        }
+                        break;
+
+                    case MessageStatus.OperationUpdateData:
+                        {
+                            var data = notification.Data as PositioningMessageData;
+                            if (data != null
+                                && data.MovementType == MovementType.Relative
+                                && data.AxisMovement == Axis.Horizontal
+                                && (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward) || this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward))
+                                )
+                            {
+                                this.Logger.LogInformation($"{this.GetType().Name}:Manual Horizontal positioning abort Mission:Id={this.Mission.Id}; loadUnit {this.Mission.LoadUnitId}");
+
+                                this.Mission.ErrorMovements |= MissionErrorMovements.AbortMovement;
+                                this.MissionsDataProvider.Update(this.Mission);
+
+                                var newMessageData = new StopMessageData(StopRequestReason.Stop);
                                 this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
                             }
                         }
@@ -189,6 +199,30 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, restore: true, this.Mission.CloseShutterPosition);
             this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
             this.MissionsDataProvider.Update(this.Mission);
+        }
+
+        private void ManualMovementEnd()
+        {
+            if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
+            {
+                this.Mission.NeedMovingBackward = false;
+                if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                   || this.Mission.CloseShutterPosition == ShutterPosition.NotSpecified
+                )
+                {
+                    this.RestoreOriginalStep();
+                }
+                else
+                {
+                    this.CloseShutter();
+                }
+            }
+            else
+            {
+                this.Mission.ErrorMovements = MissionErrorMovements.None;
+                this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                this.LoadUnitEnd(restore: true);
+            }
         }
 
         /// <summary>
@@ -232,6 +266,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
             if ((Math.Abs(origin - current) > 3)
                 && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                && !this.SensorsProvider.IsDrawerPartiallyOnCradle
                 )
             {
                 if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
