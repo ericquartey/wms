@@ -60,6 +60,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.BayTestNumber = BayNumber.None;
 
             this.ElevatorVerticalPositionOld = -10000;
+            this.RandomCells = false;
 
             //x this.EnableLocalDbSavingOnTelemetry = false;
             //x this.EnableLocalDbSavingOnServer = false;
@@ -170,6 +171,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
         }
+
+        public bool RandomCells { get; set; }
 
         public int? RequiredCycles { get; set; }
 

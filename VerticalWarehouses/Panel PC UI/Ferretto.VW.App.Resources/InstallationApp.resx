@@ -2479,4 +2479,7 @@
   <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
     <value>Disable the first 30 cells above the corresponding bay</value>
   </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Random cells assignment </value>
+  </data>
 </root>

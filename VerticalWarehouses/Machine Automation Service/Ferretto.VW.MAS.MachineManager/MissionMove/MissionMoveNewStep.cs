@@ -307,7 +307,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         try
                         {
-                            mission.DestinationCellId = this.CellsProvider.FindEmptyCell(messageData.LoadUnitId.Value);
+                            mission.DestinationCellId = this.CellsProvider.FindEmptyCell(messageData.LoadUnitId.Value, Utils.Enumerations.CompactingType.NoCompacting, false, this.MachineVolatileDataProvider.RandomCells);
                             returnValue = true;
                             mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                         }

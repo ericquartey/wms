@@ -102,8 +102,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 await this.LoadItemData(itemId);
 
-                await this.weightingScaleService.StartAsync();
-                this.weightingScaleService.StartWeightAcquisition();
+                //await this.weightingScaleService.StartAsync();
+                //this.weightingScaleService.StartWeightAcquisition();
             }
             else
             {

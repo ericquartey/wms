@@ -51,24 +51,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(List<int> loadunits, int cycles)
+        public IActionResult Start(List<int> loadunits, int cycles, bool randomCells)
         {
             switch (this.BayNumber)
             {
                 case BayNumber.BayOne:
-                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest, this.BayNumber, loadunits, cycles);
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest, this.BayNumber, loadunits, cycles, randomCells);
                     break;
 
                 case BayNumber.BayTwo:
-                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest2, this.BayNumber, loadunits, cycles);
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest2, this.BayNumber, loadunits, cycles, randomCells);
                     break;
 
                 case BayNumber.BayThree:
-                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest3, this.BayNumber, loadunits, cycles);
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest3, this.BayNumber, loadunits, cycles, randomCells);
                     break;
 
                 default:
-                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest, this.BayNumber, loadunits, cycles);
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FullTest, this.BayNumber, loadunits, cycles, randomCells);
                     break;
             }
 

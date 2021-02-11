@@ -2397,4 +2397,7 @@
   <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
     <value>Zakažte prvních 30 buněk nad odpovídající pozicí</value>
   </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Náhodné přiřazení buněk</value>
+  </data>
 </root>

@@ -2409,4 +2409,7 @@
   <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
     <value>Deaktivieren Sie die ersten 30 Zellen über dem entsprechenden Feld</value>
   </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Zufällige Zellenzuweisung</value>
+  </data>
 </root>
