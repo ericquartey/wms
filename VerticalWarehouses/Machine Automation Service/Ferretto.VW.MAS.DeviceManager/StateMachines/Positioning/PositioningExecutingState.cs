@@ -209,7 +209,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                         {
                             this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
-                            this.IsStartPartiallyOnBoard = this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle;
+                            this.IsStartPartiallyOnBoard = !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle
+                                || this.machineData.MachineSensorStatus.IsSensorZeroOnCradle);
                         }
                         else if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
                         {
@@ -757,6 +758,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
+                            // do not repeat notification
                             this.IsStartPartiallyOnBoard = false;
                         }
                         break;

@@ -266,7 +266,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
             if ((Math.Abs(origin - current) > 3)
                 && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
-                && !this.SensorsProvider.IsDrawerPartiallyOnCradle
                 )
             {
                 if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
@@ -281,11 +280,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     return;
                 }
-                else
-                {
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
-                    throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
-                }
+                //else
+                //{
+                //    this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
+                //    throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
+                //}
             }
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;

@@ -249,11 +249,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     newStep.OnEnter(null);
                     return;
                 }
-                else
-                {
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
-                    throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
-                }
+                //else
+                //{
+                //    this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
+                //    throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
+                //}
             }
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;
@@ -326,8 +326,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
             }
             if (this.Mission.NeedMovingBackward
-                || this.Mission.NeedHomingAxis == Axis.Horizontal
-                || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical
+                //|| this.Mission.NeedHomingAxis == Axis.Horizontal
+                //|| this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical
                 )
             {
                 this.Mission.NeedMovingBackward = true;
