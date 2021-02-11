@@ -52,6 +52,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineMode Mode { get; set; }
 
+        bool RandomCells { get; set; }
+
         int? RequiredCycles { get; set; }
 
         bool StopTest { get; set; }

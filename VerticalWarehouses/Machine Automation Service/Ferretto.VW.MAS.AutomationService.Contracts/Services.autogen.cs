@@ -11679,17 +11679,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task StartAsync(System.Collections.Generic.IEnumerable<int> loadunits, int cycles)
+        public System.Threading.Tasks.Task StartAsync(System.Collections.Generic.IEnumerable<int> loadunits, int cycles, bool randomCells)
         {
-            return StartAsync(loadunits, cycles, System.Threading.CancellationToken.None);
+            return StartAsync(loadunits, cycles, randomCells, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task StartAsync(System.Collections.Generic.IEnumerable<int> loadunits, int cycles, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StartAsync(System.Collections.Generic.IEnumerable<int> loadunits, int cycles, bool randomCells, System.Threading.CancellationToken cancellationToken)
         {
             if (cycles == null)
                 throw new System.ArgumentNullException("cycles");
+    
+            if (randomCells == null)
+                throw new System.ArgumentNullException("randomCells");
     
             if (loadunits == null)
                 throw new System.ArgumentNullException("loadunits");
@@ -11697,6 +11700,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/full-test/start?");
             urlBuilder_.Append(System.Uri.EscapeDataString("cycles") + "=").Append(System.Uri.EscapeDataString(ConvertToString(cycles, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("randomCells") + "=").Append(System.Uri.EscapeDataString(ConvertToString(randomCells, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

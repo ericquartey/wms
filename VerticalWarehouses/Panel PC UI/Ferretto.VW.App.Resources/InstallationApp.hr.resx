@@ -2409,4 +2409,7 @@
   <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
     <value>Onemogućite prvih 30 ćelija iznad odgovarajućeg zaljeva</value>
   </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Slučajno dodjeljivanje stanica</value>
+  </data>
 </root>

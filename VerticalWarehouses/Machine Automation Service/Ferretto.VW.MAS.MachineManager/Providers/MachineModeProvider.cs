@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             return this.machineVolatileDataProvider.UiFilteredMode;
         }
 
-        public void RequestChange(MachineMode machineMode, BayNumber bayNumber = BayNumber.None, List<int> loadUnits = null, int? cycles = null)
+        public void RequestChange(MachineMode machineMode, BayNumber bayNumber = BayNumber.None, List<int> loadUnits = null, int? cycles = null, bool randomCells = false)
         {
             if (machineMode == this.machineVolatileDataProvider.Mode)
             {
@@ -93,6 +93,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest;
                     this.machineVolatileDataProvider.StopTest = false;
+                    this.machineVolatileDataProvider.RandomCells = randomCells;
                     break;
 
                 case MachineMode.FullTest2:
@@ -107,6 +108,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest2;
                     this.machineVolatileDataProvider.StopTest = false;
+                    this.machineVolatileDataProvider.RandomCells = randomCells;
                     break;
 
                 case MachineMode.FullTest3:
@@ -121,6 +123,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFullTest3;
                     this.machineVolatileDataProvider.StopTest = false;
+                    this.machineVolatileDataProvider.RandomCells = randomCells;
                     break;
 
                 case MachineMode.FirstTest:

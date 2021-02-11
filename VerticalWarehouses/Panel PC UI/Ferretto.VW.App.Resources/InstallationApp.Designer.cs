@@ -4930,6 +4930,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Random cells assignment .
+        /// </summary>
+        public static string RandomCells {
+            get {
+                return ResourceManager.GetString("RandomCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Read code.
         /// </summary>
         public static string ReadCode {

@@ -2403,4 +2403,7 @@
   <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
     <value>Onemogoči prvih 30 celic nad ustreznim ležiščem</value>
   </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Dodelitev naključnih celic</value>
+  </data>
 </root>

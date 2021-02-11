@@ -2421,4 +2421,7 @@
   <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
     <value>Disabilitare le prime 30 celle sopra la baia corrispondente</value>
   </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Assegnazione celle random</value>
+  </data>
 </root>

@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int FindDownCell(LoadingUnit loadingUnit);
 
-        int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false);
+        int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false, bool randomCells = false);
 
         IEnumerable<Cell> GetAll();
 
