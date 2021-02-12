@@ -238,7 +238,7 @@ namespace Ferretto.VW.App.Accessories
             }
 
             this.logger.Debug("Starting continuous weight acquisition ...");
-            if (this.UnitaryWeight > 0)
+            if (this.UnitaryWeight >= 0)
             {
                 await this.deviceDriver.SetAverageUnitaryWeightAsync(this.UnitaryWeight);
             }

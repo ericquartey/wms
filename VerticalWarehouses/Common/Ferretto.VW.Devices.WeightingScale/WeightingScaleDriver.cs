@@ -158,12 +158,18 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         public async Task SetAverageUnitaryWeightAsync(float weight)
         {
-            if (weight <= 0)
+            if (weight < 0)
             {
-                throw new ArgumentNullException(nameof(weight), "Average unitary weight must be strictly positive.");
+                throw new ArgumentNullException(nameof(weight), "Average unitary weight must be positive or zero.");
             }
-
-            var line = await this.SendCommandAsync($"SPMU{weight:0.0}");
+            else if (weight > 0)
+            {
+                var line = await this.SendCommandAsync($"SPMU{weight:0.0}");
+            }
+            else
+            {
+                await this.ResetAverageUnitaryWeightAsync();
+            }
         }
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
