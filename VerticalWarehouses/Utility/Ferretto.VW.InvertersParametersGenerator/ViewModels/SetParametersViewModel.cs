@@ -264,26 +264,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private static List<InverterParameter> TakeConfigValue(IOrderedEnumerable<InverterParameter> vcbParameter, IOrderedEnumerable<InverterParameter> configurationParameter)
-        {
-            var parameters = new List<InverterParameter>();
-
-            foreach (var parameter in vcbParameter)
-            {
-                if (configurationParameter.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
-                {
-                    var parameterToAdd = configurationParameter.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet);
-                    parameters.Add(parameterToAdd);
-                }
-                else
-                {
-                    parameters.Add(parameter);
-                }
-            }
-
-            return parameters.OrderBy(s => s.Code).ToList();
-        }
-
         private void LoadParameters()
         {
             this.IsBusy = true;
@@ -291,15 +271,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             {
                 var inverterParameters = this.GetParameter(this.currentInverterParameters.Type, this.selectedFile.FullName).OrderBy(s => s.Code);
 
-                //var inverterParametersFromConfiguration = this.GetVertimagConfigurationByInverterId(this.currentInverterParameters.InverterIndex).Parameters.OrderBy(s => s.Code);
-                //this.inverterParameters = TakeConfigValue(inverterParameters, inverterParametersFromConfiguration);
-
                 this.inverterParameters = inverterParameters.OrderBy(i => i.Code).ToList();
-
-                if (this.inverters.Count > 1)
-                {
-                    this.configurationService.ConfigureInverterNode(this.currentInverterParameters.InverterIndex, this.inverterParameters);
-                }
 
                 this.RaisePropertyChanged(nameof(this.InverterParameters));
                 this.IsParametersSet = true;
@@ -471,17 +443,17 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     short writeCode = default(short);
                     short readCode = default(short);
 
-                    if (this.currentInverterParameters.Type == InverterType.Ang)
+                    if (inverterType == InverterType.Ang)
                     {
                         writeCode = GetANGWriteReadCode(parameter.Code).writeCode;
                         readCode = GetANGWriteReadCode(parameter.Code).readCode;
                     }
-                    else if (this.currentInverterParameters.Type == InverterType.Agl)
+                    else if (inverterType == InverterType.Agl)
                     {
                         writeCode = GetANGWriteReadCode(parameter.Code).writeCode;
                         readCode = GetANGWriteReadCode(parameter.Code).readCode;
                     }
-                    else if (this.currentInverterParameters.Type == InverterType.Acu)
+                    else if (inverterType == InverterType.Acu)
                     {
                         writeCode = GetANGWriteReadCode(parameter.Code).writeCode;
                         readCode = GetANGWriteReadCode(parameter.Code).readCode;
