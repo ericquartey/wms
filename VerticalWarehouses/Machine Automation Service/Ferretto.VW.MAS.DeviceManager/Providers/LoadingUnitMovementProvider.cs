@@ -660,17 +660,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 else
                 {
                     // with this trick we rely only on sensors
-                    distance = horizontalAxis.Profiles.First().TotalDistance;
+                    distance = horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset);
                 }
             }
-            if (distance > horizontalAxis.Profiles.First().TotalDistance)
+            if (distance > horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset))
             {
-                this.logger.LogError($"Invalid horizontal distance={distance:0.00} mm value [current HorizontalPosition={this.elevatorDataProvider.HorizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
+                this.logger.LogDebug($"Invalid horizontal distance={distance:0.00} mm value [current HorizontalPosition={this.elevatorDataProvider.HorizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
+                distance = horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset);
 
-                this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
-                //throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, requestingBay, MessageActor.MachineManager);
-                stopRequest = StopRequestReason.Abort;
-                return false;
+                //this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
+                //stopRequest = StopRequestReason.Abort;
+                //return false;
             }
 
             // Vertical
@@ -704,10 +704,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 .Steps
                 .OrderBy(s => s.Number);
             var compensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - horizontalAxis.LastIdealPosition);
-            var distance = profileSteps.Last().Position - compensation;
-            if (distance > profileSteps.Last().Position)
+            var distance = profileSteps.Last().Position - compensation + Math.Abs(horizontalAxis.ChainOffset);
+            if (distance > profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset))
             {
-                distance = profileSteps.Last().Position;
+                distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset);
             }
             else if (distance <= 0)
             {

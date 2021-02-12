@@ -118,10 +118,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     this.machineData.InverterIndexOld = this.machineData.CurrentInverterIndex;
                     if (this.axisToCalibrate == Axis.HorizontalAndVertical)
                     {
-                        this.machineData.AxisToCalibrate =
-                            (this.machineData.AxisToCalibrate == Axis.Vertical) ?
-                                Axis.Horizontal :
-                                Axis.Vertical;
+                        if (this.machineData.NumberOfExecutedSteps == this.machineData.MaximumSteps - 1)
+                        {
+                            this.machineData.AxisToCalibrate =
+                                (this.machineData.AxisToCalibrate == Axis.Vertical) ?
+                                    Axis.Horizontal :
+                                    Axis.Vertical;
+                        }
+                        else
+                        {
+                            this.machineData.CalibrationType = Calibration.ResetEncoder;
+                        }
                     }
                     else if (this.calibration == Calibration.FindSensor)
                     {
@@ -175,9 +182,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             {
                 case Axis.HorizontalAndVertical:
                     this.machineData.AxisToCalibrate = Axis.Horizontal;
-                    this.machineData.CalibrationType = Calibration.ResetEncoder;
+                    this.machineData.CalibrationType = this.machineData.MachineSensorStatus.IsSensorZeroOnCradle ? Calibration.FindSensor : Calibration.ResetEncoder;
                     this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = 2;
+                    this.machineData.MaximumSteps = this.machineData.MachineSensorStatus.IsSensorZeroOnCradle ? 3 : 2;
                     break;
 
                 case Axis.Horizontal:
