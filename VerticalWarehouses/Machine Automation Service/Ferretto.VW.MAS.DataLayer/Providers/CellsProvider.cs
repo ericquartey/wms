@@ -372,10 +372,11 @@ namespace Ferretto.VW.MAS.DataLayer
                         && c.Position < cell.Position);
 
                     // don't want floating cells: previous cell is free and available
-                    var isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None);
+                    var isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None && !randomCells);
 
                     // SpaceOnly cells can be occupied by high load units
-                    if (compactingType == CompactingType.NoCompacting
+                    if (isFloating
+                        && compactingType == CompactingType.NoCompacting
                         && loadUnitHeight > 175
                         && loadUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
                         && cellsFollowing.Any(c => c.IsFree && c.Position > cell.Position && c.Position < cell.Position + loadUnitHeight && c.BlockLevel == BlockLevel.SpaceOnly)
@@ -476,6 +477,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     $"total cells {cells.Count}; " +
                     $"available cells {availableCell.Count}; " +
                     $"available space {foundCell.Height}; " +
+                    $"random cells {randomCells}; " +
                     $"TotalWeightFront {machineStatistics.TotalWeightFront:0.00}; " +
                     $"TotalWeightBack {machineStatistics.TotalWeightBack:0.00}");
                 return cellId;
