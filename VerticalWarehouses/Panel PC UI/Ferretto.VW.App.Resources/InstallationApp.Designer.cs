@@ -3580,7 +3580,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load file.
+        ///   Looks up a localized string similar to Import into memory .
         /// </summary>
         public static string LoadFile {
             get {

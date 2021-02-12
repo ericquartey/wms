@@ -1977,7 +1977,7 @@
     <value>Molto corta</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Carica file</value>
+    <value>Importa in memoria</value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Importazione  avvenuta con successo</value>

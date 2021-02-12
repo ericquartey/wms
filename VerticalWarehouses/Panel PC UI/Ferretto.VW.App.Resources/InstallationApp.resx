@@ -2031,7 +2031,7 @@
     <value>Extra small</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Load file</value>
+    <value>Import into memory </value>
     <comment>text</comment>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">

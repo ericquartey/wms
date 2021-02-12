@@ -1981,7 +1981,7 @@
     <value>Zelo kratka</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Naloži dato</value>
+    <value>Uvozi v pomnilnik</value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Uvoz je bila uspešen</value>
