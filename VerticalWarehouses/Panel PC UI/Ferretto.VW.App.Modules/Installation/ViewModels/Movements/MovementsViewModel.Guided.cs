@@ -722,17 +722,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanTuningChain()
         {
-            return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || !this.HasShutter) &&
-
-                this.CanBaseExecute()
-                &&
-                !this.IsTuningChain
-                &&
-                this.SensorsService.IsZeroChain
-                &&
-                !this.SensorsService.Sensors.LuPresentInMachineSide
-                &&
-                !this.SensorsService.Sensors.LuPresentInOperatorSide;
+            return this.CanBaseExecute() &&
+                   !this.IsVerticalCalibration &&
+                   !this.MachineService.MachineStatus.IsMoving &&
+                   !this.MachineService.MachineStatus.IsMovingLoadingUnit &&
+                   !this.SensorsService.IsHorizontalInconsistentBothLow &&
+                   !this.SensorsService.IsHorizontalInconsistentBothHigh;
         }
 
         private bool CanUnloadToBay()

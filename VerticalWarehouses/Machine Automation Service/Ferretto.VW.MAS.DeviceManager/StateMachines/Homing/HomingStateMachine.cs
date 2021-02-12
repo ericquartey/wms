@@ -189,9 +189,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                 case Axis.Horizontal:
                     this.machineData.AxisToCalibrate = this.axisToCalibrate;
-                    this.machineData.CalibrationType = this.calibration;
+                    this.machineData.CalibrationType = this.machineData.MachineSensorStatus.IsSensorZeroOnCradle ? this.calibration : Calibration.ResetEncoder;
                     this.machineData.NumberOfExecutedSteps = 0;
-                    this.machineData.MaximumSteps = (this.calibration == Calibration.FindSensor) ? 2 : 1;
+                    this.machineData.MaximumSteps = (this.machineData.CalibrationType == Calibration.FindSensor) ? 2 : 1;
                     break;
 
                 case Axis.BayChain:

@@ -328,33 +328,42 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.ErrorMovements = MissionErrorMovements.None;
                     break;
             }
-            if (this.Mission.NeedMovingBackward
-                //|| this.Mission.NeedHomingAxis == Axis.Horizontal
-                //|| this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical
-                )
+
+            if (this.Mission.NeedMovingBackward)
             {
-                this.Mission.NeedMovingBackward = true;
-                this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal back positioning start Mission:Id={this.Mission.Id}");
-                if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBackward(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay, out var stopReason))
-                {
-                    this.Mission.ErrorMovements |= MissionErrorMovements.MoveBackward;
-                }
-                else if (stopReason == StopRequestReason.Abort)
-                {
-                    this.Mission.StopReason = stopReason;
-                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    this.Mission.StepTime = DateTime.UtcNow;
-                    newStep.OnEnter(null);
-                    return;
-                }
-                else
+                if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                 {
                     // no need to move back! restore original direction
                     this.Mission.NeedMovingBackward = false;
                     this.Mission.Direction = (this.Mission.Direction == HorizontalMovementDirection.Forwards ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
                 }
+                else
+                {
+                    this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal back positioning start Mission:Id={this.Mission.Id}");
+                    if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitBackward(this.Mission.Direction, this.Mission.LoadUnitId, MessageActor.MachineManager, this.Mission.TargetBay, out var stopReason))
+                    {
+                        this.Mission.ErrorMovements |= MissionErrorMovements.MoveBackward;
+                    }
+                    else if (stopReason == StopRequestReason.Abort)
+                    {
+                        this.Mission.StopReason = stopReason;
+                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        newStep.OnEnter(null);
+                        return;
+                    }
+                    else
+                    {
+                        // no need to move back! restore original direction
+                        this.Mission.NeedMovingBackward = false;
+                        this.Mission.Direction = (this.Mission.Direction == HorizontalMovementDirection.Forwards ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
+                    }
+                }
             }
-            else
+
+            if (!this.Mission.NeedMovingBackward
+                && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward)
+                )
             {
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
                 if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay))
