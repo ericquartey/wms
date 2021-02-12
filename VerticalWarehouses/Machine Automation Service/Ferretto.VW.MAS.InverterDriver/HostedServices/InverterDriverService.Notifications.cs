@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                     _ = serviceProvider.GetRequiredService<IInvertersProvider>();
                     var elevator = serviceProvider.GetRequiredService<IElevatorDataProvider>();
                     elevator.GetAxis(Orientation.Horizontal);
+                    elevator.UpdateLastIdealPosition(-999999);
+
                     elevator.GetAxis(Orientation.Vertical);
 
                     // start communication

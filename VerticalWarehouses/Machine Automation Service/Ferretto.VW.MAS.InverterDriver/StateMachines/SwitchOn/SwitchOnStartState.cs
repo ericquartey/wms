@@ -208,12 +208,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                         this.isAxisChanged = true;
                         this.waitAck = true;
 
-                        // and read again
-                        inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
+                        //// and read again
+                        //inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
 
-                        this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
+                        //this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
 
-                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                        //this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                     }
                 }
                 else if (this.InverterStatus.CommonStatusWord.IsSwitchedOn
@@ -232,14 +232,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                     this.ParentStateMachine.ChangeState(new SwitchOnErrorState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
                 }
                 else if (this.isAxisChanged
-                    && this.waitAck
-                    && !this.InverterStatus.CommonStatusWord.IsSwitchedOn
-                    )
+                    && this.waitAck)
                 {
                     // read again
                     var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
 
-                    this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
+                    this.Logger.LogDebug($"3:inverterMessage={inverterMessage}");
 
                     this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                 }

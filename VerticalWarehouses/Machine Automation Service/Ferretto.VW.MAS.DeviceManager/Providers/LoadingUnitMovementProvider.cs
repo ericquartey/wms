@@ -648,6 +648,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool MoveManualLoadingUnitBackward(HorizontalMovementDirection direction, int? loadUnitId, MessageActor sender, BayNumber requestingBay, out StopRequestReason stopRequest)
         {
             stopRequest = StopRequestReason.NoReason;
+            var highSpeed = true;
             // Horizontal
             var horizontalAxis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var distance = Math.Abs(this.elevatorDataProvider.HorizontalPosition - horizontalAxis.LastIdealPosition);
@@ -661,12 +662,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     // with this trick we rely only on sensors
                     distance = horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset);
+                    highSpeed = false;
                 }
             }
             if (distance > horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset))
             {
                 this.logger.LogDebug($"Invalid horizontal distance={distance:0.00} mm value [current HorizontalPosition={this.elevatorDataProvider.HorizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
                 distance = horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset);
+                highSpeed = false;
 
                 //this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
                 //stopRequest = StopRequestReason.Abort;
@@ -690,13 +693,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             this.logger.LogDebug($"Horizontal movement distance:{distance:0.00} mm - Last ideal position {horizontalAxis.LastIdealPosition:0.00} mm - Vertical movement displacement:{verticalDisplacement:0.00} mm [total displacement:{dTmp:0.00} mm, percentile displacement performed:{factor * 100:0.00} %, loading unit on elevator:{b}]");
 
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, verticalDisplacement, false, loadUnitId, null, false, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, verticalDisplacement, false, loadUnitId, null, false, requestingBay, sender, highSpeed);
             return true;
         }
 
         public bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, int? loadUnitId, int? positionId, MessageActor sender, BayNumber requestingBay)
         {
             // Horizontal
+            var highSpeed = true;
             var horizontalAxis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var profileType = this.elevatorProvider.SelectProfileType(direction, isLoadingUnitOnBoard);
             var profileSteps = horizontalAxis.Profiles
@@ -708,11 +712,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (distance > profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset))
             {
                 distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset);
+                highSpeed = false;
             }
             else if (distance <= 0)
             {
-                // already arrived at destination?
-                distance = 1;
+                distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset);
+                highSpeed = false;
             }
 
             // Vertical
@@ -732,7 +737,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             this.logger.LogDebug($"Horizontal movement distance:{distance:0.00} mm - Vertical movement displacement:{verticalDisplacement:0.00} mm [total displacement:{dTmp:0.00} mm, percentile displacement performed:{factor * 100:0.00} %, loading unit on elevator:{b}]");
 
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, verticalDisplacement, measure, loadUnitId, positionId, false, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, verticalDisplacement, measure, loadUnitId, positionId, false, requestingBay, sender, highSpeed);
             return true;
         }
 

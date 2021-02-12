@@ -226,7 +226,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
         {
-            this.elevatorProvider.MoveHorizontalManual(direction, -1, 0.0d, false, null, null, true, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveHorizontalManual(direction,
+                -1,
+                0.0d,
+                false,
+                null,
+                null,
+                true,
+                this.BayNumber,
+                MessageActor.AutomationService,
+                highSpeed: false);
             return this.Accepted();
         }
 

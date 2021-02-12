@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
                                 {
                                     // after opening the shutter i check again the situation
-                                    this.RestoreDepositStart();
+                                    this.RestoreDepositStart(false);
                                     break;
                                 }
                                 else
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.MissionsDataProvider.Update(this.Mission);
 
                                 // after closing the shutter i check again the situation
-                                this.RestoreDepositStart();
+                                this.RestoreDepositStart(false);
                             }
                             else
                             {
@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.ErrorMovements == MissionErrorMovements.None)
             {
-                this.RestoreDepositStart();
+                this.RestoreDepositStart(true);
             }
             else
             {
@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         ///     3.2) shutter is closed or intermediate: open the shutter and move chain back. Then repeat deposit step
         /// </summary>
         /// <returns></returns>
-        private void RestoreDepositStart()
+        private void RestoreDepositStart(bool first)
         {
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
@@ -304,7 +304,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         // in the first movement the shutter always goes to Opened
                         this.Mission.OpenShutterPosition = ShutterPosition.Opened;
                         this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start 1 Mission:Id={this.Mission.Id} from position {shutterPosition} to {this.Mission.OpenShutterPosition}");
-                        this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, restore: true);
+                        this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager,
+                            this.Mission.OpenShutterPosition,
+                            this.Mission.TargetBay,
+                            restore: (first || shutterPosition != ShutterPosition.Closed));
                         this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterOpen;
                         this.MissionsDataProvider.Update(this.Mission);
                         return;
