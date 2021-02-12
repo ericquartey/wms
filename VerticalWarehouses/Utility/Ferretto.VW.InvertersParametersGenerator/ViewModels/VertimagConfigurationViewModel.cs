@@ -9,6 +9,7 @@ using Ferretto.VW.InvertersParametersGenerator.Properties;
 using Ferretto.VW.InvertersParametersGenerator.Service;
 using Ferretto.VW.InvertersParametersGenerator.Services;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prism.Commands;
@@ -44,9 +45,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private string vertimagConfigurationFilePath;
 
-        private string vertimagConfigurationPath;
-
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -57,7 +56,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.Inistialize();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
@@ -113,7 +112,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             set => this.SetProperty(ref this.vertimagConfigurationFilePath, value);
         }
 
-        #endregion
+        #endregion Properties
 
         #region Methods
 
@@ -138,21 +137,29 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         public void OpenVertimagConfigurationFile()
         {
-            var resultFiles = DialogService.BrowseFile(Resources.ChooseConfigurationFile, string.Empty, "json", Resources.ConfigurationFolder, this.vertimagConfigurationPath);
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Title = Resources.ConfigurationFolder,
 
-            if ((resultFiles?.Length == 1) == false)
+                CheckFileExists = true,
+
+                DefaultExt = "json",
+                Filter = "Json files (*.json)|*.json"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
             {
-                this.isVertimagConfigurationValid = false;
-            }
-            else
-            {
-                this.VertimagConfigurationFilePath = resultFiles.First();
+                this.VertimagConfigurationFilePath = openFileDialog.FileName;
 
                 using (var sr = new StreamReader(this.VertimagConfigurationFilePath))
                 {
                     var fileContents = sr.ReadToEnd();
                     this.isVertimagConfigurationValid = this.LoadConfiguration(fileContents);
                 }
+            }
+            else
+            {
+                this.isVertimagConfigurationValid = false;
             }
 
             this.EvaluateCanNext();
@@ -200,10 +207,10 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private void Inistialize()
         {
-            this.vertimagConfigurationPath = this.VertimagConfigurationFilePath = ConfigurationManager.AppSettings.GetVertimagConfigurationRootPath();
-            //this.InvertersParametersFolder = ConfigurationManager.AppSettings.GetInvertersParametersRootPath();
             this.InvertersParametersFolder = Environment.CurrentDirectory + "\\Parameters";
             this.EvaluateCanNext();
+
+            this.ResultVertimagConfiguration = string.Empty;
         }
 
         private bool LoadConfiguration(string configuration)
@@ -219,7 +226,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
                 return !(this.vertimagConfiguration is null);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 this.parentActionChanged.Notify(ex, NotificationSeverity.Error);
             }
@@ -232,6 +239,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
-        #endregion
+        #endregion Methods
     }
 }

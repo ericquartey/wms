@@ -47,8 +47,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.configurationService = installationService ?? throw new ArgumentNullException(nameof(installationService));
             this.parentActionChanged = parentActionChanged;
 
-            this.VertimagInverterConfigurationFilePath = this.vertimagExportConfigurationPath = ConfigurationManager.AppSettings.GetVertimagExportConfigurationRootPath();
-            this.VertimagConfigurationFilePath = this.vertimagExportConfigurationPath = ConfigurationManager.AppSettings.GetVertimagExportConfigurationRootPath();
             this.ResultVertimagConfiguration = Resources.FileNotSaved;
             this.ResultVertimagInverterConfiguration = Resources.FileNotSaved;
             this.parentActionChanged.RaiseCanExecuteChanged();
