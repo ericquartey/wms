@@ -273,7 +273,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             int? positionId,
             bool bypassConditions,
             BayNumber requestingBay,
-            MessageActor sender)
+            MessageActor sender,
+            bool highSpeed)
         {
             // horizontal axis
             var horizontalAxis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
@@ -286,7 +287,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             horizontalTargetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var horizontalSpeed = new[] { horizontalAxis.FullLoadMovement.Speed * horizontalAxis.ManualMovements.FeedRate };
+            var horizontalSpeed = new[] { horizontalAxis.FullLoadMovement.Speed * (highSpeed ? horizontalAxis.ManualMovements.FeedRateAfterZero : horizontalAxis.ManualMovements.FeedRate) };
             var horizontalAcceleration = new[] { horizontalAxis.FullLoadMovement.Acceleration };
             var horizontalDeceleration = new[] { horizontalAxis.FullLoadMovement.Deceleration };
             var switchHorizontalPosition = new[] { 0.0 };

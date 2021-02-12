@@ -888,7 +888,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// Moves the horizontal chain of the elevator to load or unload a LoadUnit in manual mode.
         /// It does not use a selected profile to perform this operation.
         /// </summary>
-        public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, double verticalDisplacement, bool measure, int? loadingUnitId, int? positionId, bool bypassConditions, BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalManual(HorizontalMovementDirection direction,
+            double distance,
+            double verticalDisplacement,
+            bool measure,
+            int? loadingUnitId,
+            int? positionId,
+            bool bypassConditions,
+            BayNumber requestingBay,
+            MessageActor sender,
+            bool highSpeed)
         {
             this.machineVolatileDataProvider.IsHomingExecuted = false;
             if (!this.machineVolatileDataProvider.IsOneTonMachine.Value || sender == MessageActor.AutomationService)
@@ -902,7 +911,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     positionId,
                     bypassConditions,
                     requestingBay,
-                    sender);
+                    sender,
+                    highSpeed);
             }
             else
             {
@@ -916,7 +926,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     positionId,
                     bypassConditions,
                     requestingBay,
-                    sender);
+                    sender,
+                    highSpeed);
             }
         }
 
