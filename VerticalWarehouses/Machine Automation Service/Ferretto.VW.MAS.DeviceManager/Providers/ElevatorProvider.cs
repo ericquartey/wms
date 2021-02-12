@@ -899,7 +899,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             MessageActor sender,
             bool highSpeed)
         {
-            this.machineVolatileDataProvider.IsHomingExecuted = false;
+            if (!highSpeed)
+            {
+                this.machineVolatileDataProvider.IsHomingExecuted = false;
+            }
             if (!this.machineVolatileDataProvider.IsOneTonMachine.Value || sender == MessageActor.AutomationService)
             {
                 // Perform the horizontal movement for regular machine (no combined movements)
