@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private CarouselCalibrationStep currentStep;
 
-        private double? cyclesPercent;
+        private int cyclesPercent;
 
         private TimeSpan firstCycleTime = default(TimeSpan);
 
@@ -165,10 +165,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             protected set => this.SetProperty(ref this.currentStep, value, () => this.UpdateStatusButtonFooter(false));
         }
 
-        public double? CyclesPercent
+        public int CyclesPercent
         {
             get => this.cyclesPercent;
-            private set => this.SetProperty(ref this.cyclesPercent, value);
+            set => this.SetProperty(ref this.cyclesPercent, value);
         }
 
         public string Error => string.Join(
@@ -456,6 +456,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.RequiredCycles = procedureParameters.RequiredCycles;
                 this.PerformedCycles = procedureParameters.PerformedCycles;
+                this.CyclesPercent = (this.performedCycles * 100) / this.requiredCycles;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -597,7 +598,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanApply()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                !this.isCalibrationNotCompleted;
         }
 
         private bool CanBaseExecute()
@@ -610,7 +612,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanComplete()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                !this.isCalibrationNotCompleted;
         }
 
         private bool CanRepeat()
@@ -706,7 +709,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingProcedure = false;
 
-                this.IsCalibrationNotCompleted = false;
+                this.IsCalibrationNotCompleted = this.requiredCycles == this.performedCycles ? false : true;
 
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
 
@@ -736,6 +739,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.Status == MessageStatus.OperationEnd)
             {
+                this.PerformedCycles = message.Data.ExecutedCycles;
+
                 if (message.Data.IsTestStopped)
                 {
                     this.ShowNotification(Localized.Get("InstallationApp.TestStopped"), Services.Models.NotificationSeverity.Success);
@@ -750,7 +755,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     this.IsNewErrorValueVisible = true;
 
-                    this.IsCalibrationNotCompleted = false;
+                    this.IsCalibrationNotCompleted = this.requiredCycles == this.performedCycles ? false : true;
                 }
 
                 this.IsChainOffsetVisible = false;
@@ -760,7 +765,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsCalibrationCompletedOrStopped = true;
 
-                this.PerformedCycles = message.Data.ExecutedCycles;
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
 
                 this.NewErrorValue = 0;
@@ -789,6 +793,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingProcedure = false;
             }
+
+            this.CyclesPercent = (this.performedCycles * 100) / this.requiredCycles;
         }
 
         private async Task StartCalibrationAsync()
@@ -806,6 +812,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     // Update procedure info
                     this.StartPerformedCycles = this.PerformedCycles;
                     this.SessionPerformedCycles = 0;
+
+                    this.CyclesPercent = 0;
 
                     this.oldPerformedCycle = this.PerformedCycles;
                     this.startTime = DateTime.Now;
@@ -1034,6 +1042,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.RemainingTime));
             this.RaisePropertyChanged(nameof(this.PerformedCycles));
+            this.RaisePropertyChanged(nameof(this.CyclesPercent));
             this.RaisePropertyChanged(nameof(this.RequiredCycles));
             this.RaisePropertyChanged(nameof(this.IsExecutingProcedure));
             this.RaisePropertyChanged(nameof(this.IsExecutingStopInPhase));
