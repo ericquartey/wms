@@ -16,7 +16,9 @@ namespace Ferretto.VW.App.Services
             this IContainerRegistry containerRegistry,
             Uri serviceMasUrl,
             string serviceLiveHealthPath,
-            string serviceReadyHealthPath)
+            string serviceReadyHealthPath,
+            string masServiceName,
+            bool isMaster)
         {
             _ = containerRegistry ?? throw new ArgumentNullException(nameof(containerRegistry));
             _ = serviceMasUrl ?? throw new ArgumentNullException(nameof(serviceMasUrl));
@@ -45,6 +47,8 @@ namespace Ferretto.VW.App.Services
                          serviceMasUrl,
                          serviceLiveHealthPath,
                          serviceReadyHealthPath,
+                         masServiceName,
+                         isMaster,
                          c.Resolve<IMachineWmsStatusWebService>(),
                          c.Resolve<IEventAggregator>())));
 

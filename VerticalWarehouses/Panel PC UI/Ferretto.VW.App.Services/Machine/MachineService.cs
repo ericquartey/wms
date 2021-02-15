@@ -1685,6 +1685,12 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionsWmsNotActive"), NotificationSeverity.Warning);
                         }
+                        else if (view.Equals("DrawerCompactingView", StringComparison.InvariantCultureIgnoreCase) &&
+                                !this.MachineStatus.IsMovingLoadingUnit &&
+                                !this.sensorsService.IsZeroChain)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.LoadingUnitOnElevator"), NotificationSeverity.Error);
+                        }
                         else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
