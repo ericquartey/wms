@@ -1689,7 +1689,7 @@ namespace Ferretto.VW.App.Services
                                 !this.MachineStatus.IsMovingLoadingUnit &&
                                 !this.sensorsService.IsZeroChain)
                         {
-                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.LoadingUnitOnElevator"), NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.LoadingUnitOnElevator"), NotificationSeverity.Error);
                         }
                         else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {

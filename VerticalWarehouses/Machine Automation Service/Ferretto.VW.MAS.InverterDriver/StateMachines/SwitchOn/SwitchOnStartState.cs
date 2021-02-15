@@ -188,12 +188,27 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                         }
                         else
                         {
-                            // read again
-                            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
+                            if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 800)
+                            {
+                                // try to restart inverter
+                                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.AxisChanged, message.UShortPayload, InverterDataset.AxisChangeDatasetWrite);
 
-                            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                                this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
 
-                            this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+
+                                this.isAxisChanged = true;
+                                this.waitAck = true;
+                            }
+                            else
+                            {
+                                // read again
+                                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
+
+                                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                                this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
+                            }
                         }
                     }
                     else

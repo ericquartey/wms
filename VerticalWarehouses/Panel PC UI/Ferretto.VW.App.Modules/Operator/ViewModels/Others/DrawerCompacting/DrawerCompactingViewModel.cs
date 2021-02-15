@@ -221,7 +221,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                    this.MachineService.MachinePower == MachinePowerState.Powered &&
                    (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
                    !this.IsMachineMoving &&
-                   !this.SensorsService.IsZeroChain;
+                   this.SensorsService.IsZeroChain;
 
             if (result)
             {
