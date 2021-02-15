@@ -414,6 +414,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
                                 baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; in elevator from bay position {bayPosition.Id}");
                                 isChanged = true;
                             }
                         }
@@ -424,7 +425,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 elevatorDataProvider.SetLoadingUnit(null);
                                 baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
-                                loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
+                                //loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
+                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; from elevator to bay position {bayPosition.Id}");
                                 isChanged = true;
                             }
                         }
@@ -438,6 +440,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
                                 cellsProvider.SetLoadingUnit(cell.Id, null);
+                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {cell.LoadingUnit.Id}; in elevator from Cell id {cell.Id}");
                                 isChanged = true;
                             }
                         }
@@ -450,6 +453,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 {
                                     elevatorDataProvider.SetLoadingUnit(null);
                                     cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
+                                    this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; from elevator to Cell id {cell.Id}");
                                     isChanged = true;
                                 }
                                 else

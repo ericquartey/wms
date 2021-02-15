@@ -331,7 +331,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.NeedMovingBackward)
             {
-                if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                    || this.SensorsProvider.IsSensorZeroOnCradle)
                 {
                     // no need to move back! restore original direction
                     this.Mission.NeedMovingBackward = false;
@@ -369,6 +370,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
                     this.Mission.ErrorMovements |= MissionErrorMovements.MoveForward;
+                }
+                else
+                {
+                    this.Logger.LogDebug($"loadUnit {this.Mission.LoadUnitId} already deposited! Mission:Id={this.Mission.Id}");
+                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                    this.DepositUnitEnd(restore: true);
+                    return;
                 }
             }
 
