@@ -3319,7 +3319,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Int Up.
+        ///   Looks up a localized string similar to Int Down.
         /// </summary>
         public static string InternalDown {
             get {
@@ -3328,7 +3328,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Int Down.
+        ///   Looks up a localized string similar to Int Up.
         /// </summary>
         public static string InternalUp {
             get {

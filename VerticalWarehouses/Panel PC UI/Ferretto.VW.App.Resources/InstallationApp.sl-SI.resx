@@ -2406,10 +2406,10 @@
   <data name="RandomCells" xml:space="preserve">
     <value>Dodelitev naključnih celic</value>
   </data>
-  <data name="InternalDown" xml:space="preserve">
+  <data name="InternalUp" xml:space="preserve">
     <value>Int Up</value>
   </data>
-  <data name="InternalUp" xml:space="preserve">
+  <data name="InternalDown" xml:space="preserve">
     <value>Int Down</value>
   </data>
   <data name="UnitHightInternalPosition" xml:space="preserve">
