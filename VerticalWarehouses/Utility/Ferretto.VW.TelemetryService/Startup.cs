@@ -94,6 +94,7 @@ namespace Ferretto.VW.TelemetryService
             var config = new RealmConfiguration(connectionString) { SchemaVersion = schemaVersion };
             try
             {
+                Realm.Compact(config);
                 services.AddTransient(s => Realm.GetInstance(config));
             }
             catch (Realms.Exceptions.RealmFileAccessErrorException exc)

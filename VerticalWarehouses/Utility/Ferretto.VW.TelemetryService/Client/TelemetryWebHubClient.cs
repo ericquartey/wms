@@ -100,6 +100,7 @@ namespace Ferretto.VW.TelemetryService
 
             using (var realm = scope.ServiceProvider.GetRequiredService<Realms.Realm>())
             {
+                this.logger.Debug("Send saved MissionLog");
                 foreach (var missionLog in realm.All<Models.MissionLog>().ToArray())
                 {
                     var success = await this.TrySendMissionLogAsync(machine.SerialNumber, missionLog, persistOnSendFailure: false);
@@ -112,6 +113,7 @@ namespace Ferretto.VW.TelemetryService
                     }
                 }
 
+                this.logger.Debug("Send saved ErrorLog");
                 foreach (var errorLogRealm in realm.All<Models.ErrorLog>().ToArray())
                 {
                     var errorLog = new Models.ErrorLog()
@@ -161,6 +163,7 @@ namespace Ferretto.VW.TelemetryService
                 //    }
                 //}
 
+                this.logger.Debug("Send saved ScreenShot");
                 foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
                 {
                     if (screenShot.Image != null)
