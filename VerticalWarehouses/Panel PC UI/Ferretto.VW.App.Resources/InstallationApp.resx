@@ -2482,4 +2482,25 @@
   <data name="RandomCells" xml:space="preserve">
     <value>Random cells assignment </value>
   </data>
+  <data name="InternalDown" xml:space="preserve">
+    <value>Int Down</value>
+  </data>
+  <data name="InternalUp" xml:space="preserve">
+    <value>Int Up</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Unit in high internal position</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Unit in low internal position</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Double external bay 1</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Double external bay 2</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Double external bay 3</value>
+  </data>
 </root>

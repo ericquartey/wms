@@ -9,18 +9,22 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <local:CardSensor CardDescription="{Binding MachineStatus.BayChainTargetPosition, StringFormat={}{0:F2}}"
-                      CardLuDown="{Binding MachineStatus.LoadingUnitPositionDownInBay}"
-                      CardLuUp="{Binding MachineStatus.LoadingUnitPositionUpInBay}"
-                      CardSensorLabel1="{Binding CardSensorLabel1}"
-                      CardSensorLabel2="{Binding CardSensorLabel2}"
-                      CardSensorLabel3="{Binding CardSensorLabel3}"
-                      CardText="{Binding BayNumber}"
-                      CardValue="{Binding MachineStatus.BayChainPosition, StringFormat={}{0:F2}}"
-                      Sensor1="{Binding SensorsService.BayZeroChain}"
-                      Sensor2="{Binding SensorsService.IsLoadingUnitInBay}"
-                      Sensor3="{Binding SensorsService.IsLoadingUnitInMiddleBottomBay}"
-                      CardBayPosition="{Binding CardBayPosition}"
-                      Type="Bay" />
-    
+  <local:CardSensor CardBayPosition="{Binding CardBayPosition}"
+                    CardDescription="{Binding MachineStatus.BayChainTargetPosition, StringFormat={}{0:F2}}"
+                    CardLuDown="{Binding MachineStatus.LoadingUnitPositionDownInBay}"
+                    CardLuUp="{Binding MachineStatus.LoadingUnitPositionUpInBay}"
+                    CardSensorLabel1="{Binding CardSensorLabel1}"
+                    CardSensorLabel2="{Binding CardSensorLabel2}"
+                    CardSensorLabel3="{Binding CardSensorLabel3}"
+                    CardSensorLabel4="{Binding CardSensorLabel4}"
+                    CardSensorLabel5="{Binding CardSensorLabel5}"
+                    CardText="{Binding BayNumber}"
+                    CardValue="{Binding MachineStatus.BayChainPosition, StringFormat={}{0:F2}}"
+                    Sensor1="{Binding SensorsService.BayZeroChain}"
+                    Sensor2="{Binding Sensor2}"
+                    Sensor3="{Binding Sensor3}"
+                    Sensor4="{Binding Sensor4}"
+                    Sensor5="{Binding Sensor5}"
+                    Type="Bay" />
+
 </UserControl>

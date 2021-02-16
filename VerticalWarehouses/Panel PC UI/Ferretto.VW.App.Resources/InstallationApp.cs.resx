@@ -2400,4 +2400,25 @@
   <data name="RandomCells" xml:space="preserve">
     <value>Náhodné přiřazení buněk</value>
   </data>
+  <data name="InternalUp" xml:space="preserve">
+    <value>Int Up</value>
+  </data>
+  <data name="InternalDown" xml:space="preserve">
+    <value>Int Down</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Zásuvka ve vysoké vnitřní poloze</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Zásuvka v nízké vnitřní poloze</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Dvojitá externí pozice 1</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Dvojitá externí pozice 2</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Dvojitá externí pozice 3</value>
+  </data>
 </root>
