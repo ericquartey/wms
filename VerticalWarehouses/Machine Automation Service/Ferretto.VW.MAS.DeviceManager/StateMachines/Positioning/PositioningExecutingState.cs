@@ -109,6 +109,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         #region Properties
 
+        public bool IsBayZeroReached { get; private set; }
+
+        public bool IsStartBayNotZero { get; private set; }
+
         public bool IsStartPartiallyOnBoard { get; private set; }
 
         #endregion
@@ -215,6 +219,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         else if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
                         {
                             this.verticalStartingPosition = this.elevatorProvider.VerticalPosition;
+                        }
+                        if (this.machineData.MessageData.MovementMode == MovementMode.BayChainManual)
+                        {
+                            this.IsStartBayNotZero = !(this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay));
                         }
 
                         if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
@@ -621,6 +629,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             switch (this.machineData.MessageData.MovementMode)
             {
+                case MovementMode.BayChainManual:
+                    {
+                        if (this.IsStartBayNotZero && this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+                        {
+                            this.IsBayZeroReached = true;
+                        }
+                        if (this.IsBayZeroReached && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+                        {
+                            this.Logger.LogWarning("Bay chain in wrong position!");
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
+
+                            //this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Stop);
+                            this.IsBayZeroReached = false;
+                        }
+                    }
+                    break;
+
                 case MovementMode.HorizontalCalibration:
                     {
                         if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
@@ -1093,7 +1119,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             )
                         {
                             this.Logger.LogError($"Bracket sensor error");
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
                             this.Stop(StopRequestReason.Stop);
                         }
                         else

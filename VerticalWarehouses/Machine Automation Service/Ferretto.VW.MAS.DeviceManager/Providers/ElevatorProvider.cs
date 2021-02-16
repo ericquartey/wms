@@ -899,7 +899,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             MessageActor sender,
             bool highSpeed)
         {
-            if (!highSpeed)
+            if (!highSpeed || distance < 0)
             {
                 this.machineVolatileDataProvider.IsHomingExecuted = false;
             }
