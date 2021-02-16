@@ -60,7 +60,7 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         /// Starts the continuous weight acquisition.
         /// </summary>
         /// <exception cref="System.Exception" />
-        void StartWeightAcquisition();
+        Task StartWeightAcquisitionAsync();
 
         /// <summary>
         /// Stops the continuous weight acquisition.

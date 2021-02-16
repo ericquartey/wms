@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         #region Methods
 
-        void CopyMachineDatabaseToServer();
+        void CopyMachineDatabaseToServer(string host);
 
         byte[] GetRawDatabaseContent();
 

@@ -217,33 +217,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanCompactingStart()
         {
-            bool result = false;
-            switch (this.MachineService.BayNumber)
+            var result = !this.IsWaitingForResponse &&
+                   this.MachineService.MachinePower == MachinePowerState.Powered &&
+                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
+                   !this.IsMachineMoving &&
+                   this.SensorsService.IsZeroChain;
+
+            if (result)
             {
-                case BayNumber.BayOne:
-                default:
-                    result = !this.IsWaitingForResponse &&
-                   this.MachineModeService.MachineMode == MachineMode.Manual &&
-                   this.MachineService.MachinePower == MachinePowerState.Powered &&
-                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
-                   !this.IsMachineMoving;
-                    break;
+                switch (this.MachineService.BayNumber)
+                {
+                    case BayNumber.BayOne:
+                    default:
+                        result = this.MachineModeService.MachineMode == MachineMode.Manual;
+                        break;
 
-                case BayNumber.BayTwo:
-                    result = !this.IsWaitingForResponse &&
-                   this.MachineModeService.MachineMode == MachineMode.Manual2 &&
-                   this.MachineService.MachinePower == MachinePowerState.Powered &&
-                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
-                   !this.IsMachineMoving;
-                    break;
+                    case BayNumber.BayTwo:
+                        result = this.MachineModeService.MachineMode == MachineMode.Manual2;
+                        break;
 
-                case BayNumber.BayThree:
-                    result = !this.IsWaitingForResponse &&
-                   this.MachineModeService.MachineMode == MachineMode.Manual3 &&
-                   this.MachineService.MachinePower == MachinePowerState.Powered &&
-                   (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
-                   !this.IsMachineMoving;
-                    break;
+                    case BayNumber.BayThree:
+                        result = this.MachineModeService.MachineMode == MachineMode.Manual3;
+                        break;
+                }
             }
 
             if (result)

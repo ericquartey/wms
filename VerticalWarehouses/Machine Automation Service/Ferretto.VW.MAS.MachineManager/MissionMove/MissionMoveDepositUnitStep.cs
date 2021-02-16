@@ -163,6 +163,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || notification.TargetBay == BayNumber.ElevatorBay
                         )
                     {
+                        if (notification.Type == MessageType.Homing
+                            && (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                            )
+                        {
+                            this.Mission.NeedHomingAxis = Axis.None;
+                            if (this.Mission.DeviceNotifications == MissionDeviceNotifications.None)
+                            {
+                                this.DepositUnitEnd();
+                                break;
+                            }
+                        }
+
                         if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
@@ -246,7 +258,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         {
                             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-                            this.DepositUnitEnd();
+                            if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                            {
+                                this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
+                                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
+                            else
+                            {
+                                this.DepositUnitEnd();
+                            }
                         }
                     }
                     break;

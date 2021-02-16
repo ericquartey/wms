@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -12,7 +13,7 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private const int DefaultPollInterval = 3000;
+        private const int DefaultPollInterval = 5000;
 
         private readonly Uri baseMasAddress;
 
@@ -22,9 +23,13 @@ namespace Ferretto.VW.App.Services
 
         private readonly PubSubEvent<HealthStatusChangedEventArgs> healthStatusChangedEvent;
 
+        private readonly bool isMaster;
+
         private readonly string liveHealthCheckPath;
 
         private readonly Logger logger;
+
+        private readonly string masServiceName;
 
         private readonly string readyHealthCheckPath;
 
@@ -36,6 +41,8 @@ namespace Ferretto.VW.App.Services
 
         private HealthStatus healthWmsStatus;
 
+        private bool isAlreadyStarted;
+
         private volatile int pollInterval = DefaultPollInterval;
 
         #endregion
@@ -46,6 +53,8 @@ namespace Ferretto.VW.App.Services
             Uri baseMasAddress,
             string liveHealthCheckPath,
             string readyHealthCheckPath,
+            string masServiceName,
+            bool isMaster,
             IMachineWmsStatusWebService wmsStatusWebService,
             IEventAggregator eventAggregator)
         {
@@ -53,6 +62,8 @@ namespace Ferretto.VW.App.Services
             this.liveHealthCheckPath = liveHealthCheckPath ?? throw new ArgumentNullException(nameof(liveHealthCheckPath));
             this.readyHealthCheckPath = readyHealthCheckPath ?? throw new ArgumentNullException(nameof(readyHealthCheckPath));
             this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
+            this.masServiceName = masServiceName ?? throw new ArgumentNullException(nameof(masServiceName));
+            this.isMaster = isMaster;
 
             if (eventAggregator is null)
             {
@@ -214,6 +225,27 @@ namespace Ferretto.VW.App.Services
                         this.HealthMasStatus == HealthStatus.Initializing)
                     {
                         this.HealthMasStatus = await this.CheckReadinessStatus(client, cancellationToken);
+                        if (this.isMaster
+                            && this.healthMasStatus == HealthStatus.Unknown
+                            && !this.isAlreadyStarted)
+                        {
+                            var sc = new ServiceController();
+                            sc.ServiceName = this.masServiceName;
+                            if (sc.Status == ServiceControllerStatus.Stopped)
+                            {
+                                try
+                                {
+                                    sc.Start();
+                                    this.logger.Debug($"Force starting of {sc.ServiceName} service.");
+                                    this.isAlreadyStarted = true;
+                                }
+                                catch (InvalidOperationException)
+                                {
+                                    this.logger.Debug($"Could not start the {sc.ServiceName} service.");
+                                }
+                            }
+                            sc.Dispose();
+                        }
                     }
                     else
                     {

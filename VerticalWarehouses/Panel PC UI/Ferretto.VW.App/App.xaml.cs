@@ -122,11 +122,11 @@ namespace Ferretto.VW.App
 
             var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
             containerRegistry.RegisterMasHubs(serviceUrl, operatorHubPath, installationHubPath);
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
             containerRegistry.RegisterMasWebServices(serviceUrl, c =>
             {
                 var client = new HttpClient();
 
-                var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
                 client.DefaultRequestHeaders.Add("Bay-Number", bayNumber.ToString());
                 client.DefaultRequestHeaders.Add("Accept-Language", System.Globalization.CultureInfo.CurrentUICulture.Name);
 
@@ -144,8 +144,11 @@ namespace Ferretto.VW.App
             // App services
             var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
             var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
+            var serviceName = ConfigurationManager.AppSettings.GetAutomationServiceName();
+            var bayNumberDef = (BayNumber)Enum.Parse(typeof(BayNumber), bayNumber);
+            var isMaster = (bayNumberDef == BayNumber.BayOne);
 
-            containerRegistry.RegisterAppServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
+            containerRegistry.RegisterAppServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath, serviceName, isMaster);
         }
 
         private static void ClearTempFolder()

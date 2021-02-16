@@ -1978,7 +1978,7 @@
     <value>Vrlo kratak</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Uvezi u memoriju </value>
+    <value>Uvezi u memoriju</value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Uvoz je uspješan</value>
@@ -2405,5 +2405,11 @@
   </data>
   <data name="ModeLoadUnitOperations3" xml:space="preserve">
     <value>Operacija pretinca3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Onemogućite prvih 30 ćelija iznad odgovarajućeg zaljeva</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Slučajno dodjeljivanje stanica</value>
   </data>
 </root>

@@ -1981,7 +1981,7 @@
     <value>Zelo kratka</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Naloži dato</value>
+    <value>Uvozi v pomnilnik</value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Uvoz je bila uspešen</value>
@@ -2399,5 +2399,11 @@
   </data>
   <data name="ModeLoadUnitOperations3" xml:space="preserve">
     <value>Postopki na predalu3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Onemogoči prvih 30 celic nad ustreznim ležiščem</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Dodelitev naključnih celic</value>
   </data>
 </root>

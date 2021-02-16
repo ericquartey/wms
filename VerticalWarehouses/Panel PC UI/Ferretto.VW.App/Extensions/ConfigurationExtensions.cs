@@ -27,6 +27,16 @@ namespace Ferretto.VW.App
             return appSettings.Get("AutomationService:HealthChecks:Live:Path");
         }
 
+        public static string GetAutomationServiceName(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            return appSettings.Get("MAS:Service:Name");
+        }
+
         public static string GetAutomationServiceOperatorHubPath(this NameValueCollection appSettings)
         {
             if (appSettings is null)

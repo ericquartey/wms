@@ -33,8 +33,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IErrorsProvider errorsProvider;
 
-        private readonly double[] findZeroPosition = new double[(int)HorizontalCalibrationStep.FindCenter];
-
         private readonly double firstPosition;
 
         private readonly IPositioningMachineData machineData;
@@ -106,6 +104,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
         }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsBayZeroReached { get; private set; }
+
+        public bool IsStartBayNotZero { get; private set; }
+
+        public bool IsStartPartiallyOnBoard { get; private set; }
 
         #endregion
 
@@ -205,10 +213,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                         {
                             this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
+                            this.IsStartPartiallyOnBoard = !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle
+                                || this.machineData.MachineSensorStatus.IsSensorZeroOnCradle);
                         }
                         else if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
                         {
                             this.verticalStartingPosition = this.elevatorProvider.VerticalPosition;
+                        }
+                        if (this.machineData.MessageData.MovementMode == MovementMode.BayChainManual)
+                        {
+                            this.IsStartBayNotZero = !(this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay));
                         }
 
                         if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
@@ -615,6 +629,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             switch (this.machineData.MessageData.MovementMode)
             {
+                case MovementMode.BayChainManual:
+                    {
+                        if (this.IsStartBayNotZero && this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+                        {
+                            this.IsBayZeroReached = true;
+                        }
+                        if (this.IsBayZeroReached && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+                        {
+                            this.Logger.LogWarning("Bay chain in wrong position!");
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
+
+                            //this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Stop);
+                            this.IsBayZeroReached = false;
+                        }
+                    }
+                    break;
+
                 case MovementMode.HorizontalCalibration:
                     {
                         if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
@@ -727,6 +759,33 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Error);
+                        }
+                        else if (this.machineData.MessageData.MovementMode == MovementMode.Position
+                            && this.machineData.MessageData.AxisMovement == Axis.Horizontal
+                            && this.IsStartPartiallyOnBoard
+                            && (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                                || this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+                            )
+                        {
+                            var data = new PositioningMessageData();
+                            data.MovementType = this.machineData.MessageData.MovementType;
+                            data.AxisMovement = this.machineData.MessageData.AxisMovement;
+
+                            this.Logger.LogDebug($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement}; Zero Sensor {this.machineData.MachineSensorStatus.IsSensorZeroOnCradle}");
+                            var notificationMessage = new NotificationMessage(
+                                data,
+                                $"Manual movement aborted",
+                                MessageActor.MachineManager,
+                                MessageActor.DeviceManager,
+                                MessageType.Positioning,
+                                this.machineData.RequestingBay,
+                                this.machineData.TargetBay,
+                                MessageStatus.OperationUpdateData);
+
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                            // do not repeat notification
+                            this.IsStartPartiallyOnBoard = false;
                         }
                         break;
                     }
@@ -1060,7 +1119,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             )
                         {
                             this.Logger.LogError($"Bracket sensor error");
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
                             this.Stop(StopRequestReason.Stop);
                         }
                         else

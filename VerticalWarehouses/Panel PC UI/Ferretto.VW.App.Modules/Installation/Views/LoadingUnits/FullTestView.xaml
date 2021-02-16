@@ -12,230 +12,240 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="15,0,0,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="160" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+  <Grid Margin="15,0,0,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="160" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.ColumnSpan="4"
-                    Orientation="Horizontal">
-            <TextBlock Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="4.5.6" />
-            <TextBlock Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc InstallationApp.FullTest}" />
-        </StackPanel>
+    <StackPanel Grid.ColumnSpan="4"
+                Orientation="Horizontal">
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="4.5.6" />
+      <TextBlock Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc InstallationApp.FullTest}" />
+    </StackPanel>
 
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="4"
-                   Height="Auto"
-                   Margin="0,0,15,0"
-                   VerticalAlignment="Top"
-                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.FullTestDescription}" />
+    <TextBlock Grid.Row="1"
+               Grid.ColumnSpan="4"
+               Height="Auto"
+               Margin="0,0,15,0"
+               VerticalAlignment="Top"
+               Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+               Text="{res:Loc InstallationApp.FullTestDescription}" />
 
-        <controls:CardSensorAxisVertical Grid.Row="2"
-                                         Grid.Column="0"
-                                         Height="90"
-                                         Margin="0,20,15,0" />
-        <controls:CardSensorAxisHorizontal Grid.Row="2"
-                                           Grid.Column="1"
-                                           Height="90"
-                                           Margin="0,20,15,0" />
-        <controls:CardSensorPosition Grid.Row="2"
-                                     Grid.Column="2"
+    <controls:CardSensorAxisVertical Grid.Row="2"
+                                     Grid.Column="0"
                                      Height="90"
                                      Margin="0,20,15,0" />
-        <controls:CardSensorDrawer Grid.Row="2"
-                                   Grid.Column="3"
-                                   Height="90"
-                                   Margin="0,20,15,0" />
+    <controls:CardSensorAxisHorizontal Grid.Row="2"
+                                       Grid.Column="1"
+                                       Height="90"
+                                       Margin="0,20,15,0" />
+    <controls:CardSensorPosition Grid.Row="2"
+                                 Grid.Column="2"
+                                 Height="90"
+                                 Margin="0,20,15,0" />
+    <controls:CardSensorDrawer Grid.Row="2"
+                               Grid.Column="3"
+                               Height="90"
+                               Margin="0,20,15,0" />
 
-        <controls:CardSensorBay Grid.Row="3"
-                                Grid.Column="0"
+    <controls:CardSensorBay Grid.Row="3"
+                            Grid.Column="0"
+                            Height="90"
+                            Margin="0,15,15,0" />
+
+    <controls:CardSensorShutter Grid.Row="3"
+                                Grid.Column="1"
                                 Height="90"
-                                Margin="0,15,15,0" />
+                                Margin="0,15,15,0"
+                                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
-        <controls:CardSensorShutter Grid.Row="3"
-                                    Grid.Column="1"
-                                    Height="90"
-                                    Margin="0,15,15,0"
-                                    Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+    <ctrls:PpcSpinEdit Grid.Row="3"
+                       Grid.Column="2"
+                       Height="90"
+                       Margin="0,15,15,0"
+                       EditValue="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                       LabelText="{res:Loc InstallationApp.RequiredCycles}"
+                       MaxValue="99999"
+                       MinValue="1" />
 
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="2"
-                           Height="90"
-                           Margin="0,15,15,0"
-                           EditValue="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{res:Loc InstallationApp.RequiredCycles}"
-                           MaxValue="99999"
-                           MinValue="1" />
+    <Border Grid.Row="3"
+            Grid.Column="3"
+            Height="90"
+            Margin="0,15,15,0"
+            Background="{DynamicResource PpcBackground}">
+      <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+              BorderThickness="{DynamicResource PpcBorderThickness}">
 
-        <Border Grid.Row="3"
-                Grid.Column="3"
-                Height="90"
-                Margin="0,15,15,0"
-                Background="{DynamicResource PpcBackground}">
-            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}">
+        <Grid Grid.Column="8"
+              Grid.ColumnSpan="4">
 
-                <Grid Grid.Column="8"
-                      Grid.ColumnSpan="4">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+          <TextBlock Margin="8,4"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     Style="{DynamicResource VWAPP_CardSensor}">
+            <Run Text="{res:Loc InstallationApp.FullTestSessionCycles}" />
+            <!--<Run Text="(" /><Run Text="{Binding TotalCycles}" /><Run Text=")" />-->
+          </TextBlock>
 
-                    <TextBlock Margin="8,4"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               Style="{DynamicResource VWAPP_CardSensor}">
-                        <Run Text="{res:Loc InstallationApp.FullTestSessionCycles}" />
-                        <!--<Run Text="(" /><Run Text="{Binding TotalCycles}" /><Run Text=")" />-->
-                    </TextBlock>
+          <StackPanel Grid.Row="1"
+                      Margin="4"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Top"
+                      Orientation="Horizontal">
+            <TextBlock Margin="4,0,4,4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_CardSensor_Data}"
+                       Text="{Binding PerformedCyclesThisSession, FallbackValue=0}" />
+            <TextBlock Margin="4,0,4,4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_CardSensor_Data}"
+                       Text="/" />
+            <TextBlock Margin="4,0,4,4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_CardSensor_Data}"
+                       Text="{Binding RequiredCycles, FallbackValue=0}" />
+          </StackPanel>
 
-                    <StackPanel Grid.Row="1"
-                                Margin="4"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Top"
-                                Orientation="Horizontal">
-                        <TextBlock Margin="4,0,4,4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="{Binding PerformedCyclesThisSession, FallbackValue=0}" />
-                        <TextBlock Margin="4,0,4,4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="/" />
-                        <TextBlock Margin="4,0,4,4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
-                                   Text="{Binding RequiredCycles, FallbackValue=0}" />
-                    </StackPanel>
+          <controls:PpcProgressBar Grid.Row="2"
+                                   Height="8"
+                                   Margin="8,4,8,8"
+                                   Color1="{DynamicResource FerrettoGreen}"
+                                   Color2="Green"
+                                   Maximum="100"
+                                   Minimum="0"
+                                   Value="{Binding CyclesPercent, Mode=OneWay, Converter={StaticResource DNTPV}}" />
 
-                    <controls:PpcProgressBar Grid.Row="2"
-                                             Height="8"
-                                             Margin="8,4,8,8"
-                                             Color1="{DynamicResource FerrettoGreen}"
-                                             Color2="Green"
-                                             Maximum="100"
-                                             Minimum="0"
-                                             Value="{Binding CyclesPercent, Mode=OneWay, Converter={StaticResource DNTPV}}" />
+        </Grid>
+      </Border>
+    </Border>
 
-                </Grid>
-            </Border>
-        </Border>
+    <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="2"
+                                                Margin="0,15,15,0"
+                                                ItemsSource="{Binding LoadingUnits}"
+                                                SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
-                                                    Grid.Column="0"
-                                                    Grid.ColumnSpan="2"
-                                                    Margin="0,15,15,0"
-                                                    ItemsSource="{Binding LoadingUnits}"
-                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
+                                                Grid.Column="2"
+                                                Grid.ColumnSpan="2"
+                                                Margin="0,15,15,0"
+                                                ItemsSource="{Binding TestUnits}"
+                                                SelectedItem="{Binding SelectedTU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
-                                                    Grid.Column="2"
-                                                    Grid.ColumnSpan="2"
-                                                    Margin="0,15,15,0"
-                                                    ItemsSource="{Binding TestUnits}"
-                                                    SelectedItem="{Binding SelectedTU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    <StackPanel Grid.Row="5"
+                Grid.Column="2"
+                Grid.ColumnSpan="2"
+                Margin="0,0,15,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
 
-        <StackPanel Grid.Row="5"
-                    Grid.Column="2"
-                    Grid.ColumnSpan="2"
-                    Margin="0,0,15,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
+      <controls:PpcButton Margin="0,10,15,10"
+                          Command="{Binding RemoveAllUnitCommand}"
+                          Content="{res:Loc InstallationApp.RemoveTestAllUnits}" />
 
-            <controls:PpcButton Margin="0,10,15,10"
-                                Command="{Binding RemoveAllUnitCommand}"
-                                Content="{res:Loc InstallationApp.RemoveTestAllUnits}" />
+      <controls:PpcButton Margin="0,10,0,10"
+                          Command="{Binding RemoveUnitCommand}"
+                          Content="{res:Loc InstallationApp.RemoveTestUnit}" />
+    </StackPanel>
 
-            <controls:PpcButton Margin="0,10,0,10"
-                                Command="{Binding RemoveUnitCommand}"
-                                Content="{res:Loc InstallationApp.RemoveTestUnit}" />
-        </StackPanel>
+    <StackPanel Grid.Row="5"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+      <controls:PpcButton Margin="0,10,15,10"
+                          Command="{Binding AddUnitCommand}"
+                          Content="{res:Loc InstallationApp.AddTestUnit}" />
 
-        <StackPanel Grid.Row="5"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-            <controls:PpcButton Margin="0,10,15,10"
-                                Command="{Binding AddUnitCommand}"
-                                Content="{res:Loc InstallationApp.AddTestUnit}" />
+      <controls:PpcButton Margin="0,10,15,10"
+                          Command="{Binding AddAllUnitCommand}"
+                          Content="{res:Loc InstallationApp.AddTestAllUnit}" />
 
-            <controls:PpcButton Margin="0,10,15,10"
-                                Command="{Binding AddAllUnitCommand}"
-                                Content="{res:Loc InstallationApp.AddTestAllUnit}" />
+    </StackPanel>
 
-        </StackPanel>
 
-        <StackPanel Grid.Row="6"
-                    Grid.ColumnSpan="4"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
-            <controls:PpcButton Margin="0,0,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding ResetSessionCommand}"
-                                Content="{res:Loc InstallationApp.ResetSession}" />
+    <CheckBox Grid.Row="6"
+              Grid.ColumnSpan="2"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Center"
+              Content="{res:Loc InstallationApp.RandomCells}"
+              IsChecked="{Binding RandomCells}"
+              IsEnabled="{Binding IsMoving, Converter={StaticResource BNC}}"
+              Style="{StaticResource PpcCheckBoxStyle}" />
 
-            <controls:PpcButton Margin="0,0,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding ResetTotalCommand}"
-                                Content="{res:Loc InstallationApp.ResetTotal}"
-                                Visibility="Collapsed" />
+    <StackPanel Grid.Row="6"
+                Grid.ColumnSpan="4"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Orientation="Horizontal">
+      <controls:PpcButton Margin="0,0,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding ResetSessionCommand}"
+                          Content="{res:Loc InstallationApp.ResetSession}" />
 
-            <controls:PpcButton Margin="0,0,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding StartCommand}"
-                                Content="{res:Loc InstallationApp.Start}" />
+      <controls:PpcButton Margin="0,0,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding ResetTotalCommand}"
+                          Content="{res:Loc InstallationApp.ResetTotal}"
+                          Visibility="Collapsed" />
 
-            <controls:PpcButton Margin="0,0,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding StopTestCommand}"
-                                Content="{res:Loc InstallationApp.StopTest}" />
+      <controls:PpcButton Margin="0,0,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding StartCommand}"
+                          Content="{res:Loc InstallationApp.Start}" />
 
-            <controls:PpcButton Margin="0,0,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center"
-                                Command="{Binding StopCommand}"
-                                Content="{res:Loc InstallationApp.Stop}"
-                                Visibility="Collapsed"/>
-        </StackPanel>
+      <controls:PpcButton Margin="0,0,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding StopTestCommand}"
+                          Content="{res:Loc InstallationApp.StopTest}" />
 
-    </Grid>
+      <controls:PpcButton Margin="0,0,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding StopCommand}"
+                          Content="{res:Loc InstallationApp.Stop}"
+                          Visibility="Collapsed" />
+    </StackPanel>
+
+  </Grid>
 </ctrls:View>

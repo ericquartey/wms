@@ -267,7 +267,7 @@ namespace Ferretto.VW.MAS.DataLayer
         ///     </param>
         ///     <param name="isCellTest">finds a cell marked for the first load unit test</param>
         /// <returns>the preferred cellId that fits the LoadUnit</returns>
-        public int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false)
+        public int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false, bool randomCells = false)
         {
             var loadUnit = this.dataContext.LoadingUnits
                 .AsNoTracking()
@@ -372,10 +372,11 @@ namespace Ferretto.VW.MAS.DataLayer
                         && c.Position < cell.Position);
 
                     // don't want floating cells: previous cell is free and available
-                    var isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None);
+                    var isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None && !randomCells);
 
                     // SpaceOnly cells can be occupied by high load units
-                    if (compactingType == CompactingType.NoCompacting
+                    if (isFloating
+                        && compactingType == CompactingType.NoCompacting
                         && loadUnitHeight > 175
                         && loadUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
                         && cellsFollowing.Any(c => c.IsFree && c.Position > cell.Position && c.Position < cell.Position + loadUnitHeight && c.BlockLevel == BlockLevel.SpaceOnly)
@@ -445,17 +446,29 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
                 }
 
-                // sort cells from bottom to top, optimizing free space
-                var foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
-                    .ThenBy(t => (isCellTest) ? 0 : t.Height)          // minimize free space
-                    .ThenBy(t => t.Cell.Priority)   // start from bottom to top
-                    .First();
+                var foundCell = default(AvailableCell);
+
+                if (!randomCells)
+                {
+                    // sort cells from bottom to top, optimizing free space
+                    foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
+                        .ThenBy(t => (isCellTest) ? 0 : t.Height)          // minimize free space
+                        .ThenBy(t => t.Cell.Priority)   // start from bottom to top
+                        .First();
+                }
+                else
+                {
+                    var index = new Random().Next(availableCell.Count);
+                    foundCell = availableCell.ElementAt(index);
+                }
+
                 var cellId = foundCell.Cell.Id;
                 if (loadUnit.IsVeryHeavy(machine.LoadUnitVeryHeavyPercent))
                 {
                     // return second cell for heavy LU
                     cellId = cells.First(c => c.Side == foundCell.Cell.Side && c.Position > foundCell.Cell.Position).Id;
                 }
+
                 this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; " +
                     $"Height {loadUnitHeight:0.00}; " +
                     $"Weight {loadUnit.GrossWeight:0.00}; " +
@@ -464,6 +477,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     $"total cells {cells.Count}; " +
                     $"available cells {availableCell.Count}; " +
                     $"available space {foundCell.Height}; " +
+                    $"random cells {randomCells}; " +
                     $"TotalWeightFront {machineStatistics.TotalWeightFront:0.00}; " +
                     $"TotalWeightBack {machineStatistics.TotalWeightBack:0.00}");
                 return cellId;

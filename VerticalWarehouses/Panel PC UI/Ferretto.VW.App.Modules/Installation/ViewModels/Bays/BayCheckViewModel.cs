@@ -394,14 +394,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanDisplacementCommand()
         {
-            return this.CanBaseExecute() &&
+            return this.CanBaseExecute() && 
+                   (!this.HasShutter || this.SensorsService.ShutterSensors.Closed) &&
                    ((this.CurrentStep == BayCheckStep.PositionUp && this.StepValueUp != 0) ||
-                    (this.CurrentStep == BayCheckStep.PositionDown && this.StepValueDown != 0));
+                   (this.CurrentStep == BayCheckStep.PositionDown && this.StepValueDown != 0));
         }
 
         private bool CanMoveToBayPosition()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                   (!this.HasShutter || this.SensorsService.ShutterSensors.Closed);
         }
 
         private bool CanStop()

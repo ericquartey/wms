@@ -1977,7 +1977,7 @@
     <value>Molto corta</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Carica file</value>
+    <value>Importa in memoria</value>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
     <value>Importazione  avvenuta con successo</value>
@@ -2417,5 +2417,11 @@
   </data>
   <data name="ModeLoadUnitOperations3" xml:space="preserve">
     <value>Operazioni cassetto3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Disabilitare le prime 30 celle sopra la baia corrispondente</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Assegnazione celle random</value>
   </data>
 </root>

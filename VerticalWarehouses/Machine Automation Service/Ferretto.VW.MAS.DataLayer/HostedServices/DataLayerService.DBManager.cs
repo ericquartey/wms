@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        public void CopyMachineDatabaseToServer()
+        public void CopyMachineDatabaseToServer(string host)
         {
             const int NUMBER_OF_RETRIES = 5;
 
@@ -20,14 +20,14 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.Logger.LogInformation($"Try: #{i + 1}. Copying machine database to server...");
 
-                if (this.ExecuteBackupScript() == true)
+                if (this.ExecuteBackupScript(host) == true)
                 {
                     break;
                 }
             }
         }
 
-        private bool ExecuteBackupScript()
+        private bool ExecuteBackupScript(string host)
         {
             var success = false;
 
@@ -47,6 +47,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     var process = new Process();
                     process.StartInfo.FileName = backupScript;
+                    process.StartInfo.Arguments = host;
                     process.StartInfo.ErrorDialog = false;
                     process.StartInfo.CreateNoWindow = true;
                     process.StartInfo.ErrorDialog = false;

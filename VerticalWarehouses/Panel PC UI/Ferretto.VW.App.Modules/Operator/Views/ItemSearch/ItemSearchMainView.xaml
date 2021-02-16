@@ -285,6 +285,7 @@
                            Increment="{Binding SelectedItem.PickIncrement}"
                            LabelText="{Binding SelectedItemTxt, TargetNullValue={x:Static Resources:OperatorApp.RequestedQuantityBase}}"
                            Mask="{Binding SelectedItem.PickTolerance, StringFormat=F{0}}"
+                           MaxValue="{Binding AvailableQuantity, TargetNullValue=0}"
                            MinValue="0" />
 
         <StackPanel Grid.Row="4"

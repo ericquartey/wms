@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && (lowerUnit = bay.Positions.FirstOrDefault(p => !p.IsUpper && p.LoadingUnit != null)?.LoadingUnit) != null
                     )
                 {
-                    var lowerMission = this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.LoadUnitId == lowerUnit.Id);
+                    var lowerMission = this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.LoadUnitId == lowerUnit.Id && m.MissionType != MissionType.IN);
                     if (lowerMission != null)
                     {
                         this.Logger.LogInformation($"Resume lower bay Mission:Id={lowerMission.Id}");

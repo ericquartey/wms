@@ -45,6 +45,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private int? performedCyclesThisSession;
 
+        private bool randomCells;
+
         private DelegateCommand removeAllUnitCommand;
 
         private DelegateCommand removeUnitCommand;
@@ -138,6 +140,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             get => this.performedCyclesThisSession;
             set => this.SetProperty(ref this.performedCyclesThisSession, value);
+        }
+
+        public bool RandomCells
+        {
+            get => this.randomCells;
+            set => this.SetProperty(ref this.randomCells, value);
         }
 
         public ICommand RemoveAllUnitCommand =>
@@ -502,7 +510,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 var lst = this.TestUnits.Where(w => w.Status == LoadingUnitStatus.InLocation).Select(s => s.Id).ToList();
-                await this.machineFullTestWebService.StartAsync(lst, this.RequiredCycles.Value);
+                await this.machineFullTestWebService.StartAsync(lst, this.RequiredCycles.Value, this.randomCells);
 
                 this.IsExecutingProcedure = true;
             }

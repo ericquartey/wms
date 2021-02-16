@@ -26,10 +26,11 @@
           Margin="10,20,10,0"
           HorizontalAlignment="Stretch">
       <Grid.RowDefinitions>
-        <RowDefinition />
-        <RowDefinition />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
-      <StackPanel Orientation="Vertical">
+      <StackPanel Orientation="Vertical"
+                  Visibility="Collapsed">
         <TextBlock Grid.Row="2"
                    Margin="0,20"
                    HorizontalAlignment="Left"

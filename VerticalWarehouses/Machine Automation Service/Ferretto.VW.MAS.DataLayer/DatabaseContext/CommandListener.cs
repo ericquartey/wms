@@ -70,24 +70,24 @@ namespace Ferretto.VW.MAS.DataLayer
             bool async,
             DateTimeOffset startTime)
         {
-#if DEBUG
-            var stackTrace = new System.Diagnostics.StackTrace();
-            var methods = new List<string>();
-            for (var i = 1; i < stackTrace.FrameCount && methods.Count < 4; i++)
-            {
-                var frame = stackTrace.GetFrame(i);
-                var method = frame.GetMethod();
-                if (method.Module.Name.Contains("Ferretto", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    methods.Add($"{method.Module.Name}!{method.Name}");
-                }
-            }
-            methods.Reverse();
+            //#if DEBUG
+            //            var stackTrace = new System.Diagnostics.StackTrace();
+            //            var methods = new List<string>();
+            //            for (var i = 1; i < stackTrace.FrameCount && methods.Count < 4; i++)
+            //            {
+            //                var frame = stackTrace.GetFrame(i);
+            //                var method = frame.GetMethod();
+            //                if (method.Module.Name.Contains("Ferretto", StringComparison.InvariantCultureIgnoreCase))
+            //                {
+            //                    methods.Add($"{method.Module.Name}!{method.Name}");
+            //                }
+            //            }
+            //            methods.Reverse();
 
-            this.logger.LogTrace($"{string.Join(" -> ", methods)}\n{command.CommandText}");
-#else
+            //            this.logger.LogTrace($"{string.Join(" -> ", methods)}\n{command.CommandText}");
+            //#else
             this.logger.LogTrace($"{command.CommandText}");
-#endif
+            //#endif
 
             lock (this.redundancyService)
             {

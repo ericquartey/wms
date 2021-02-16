@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsMachineSecurityRunning { get; }
 
+        bool IsSensorZeroOnCradle { get; }
+
         #endregion
 
         #region Methods

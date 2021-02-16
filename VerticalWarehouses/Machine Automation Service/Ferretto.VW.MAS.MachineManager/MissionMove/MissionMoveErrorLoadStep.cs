@@ -119,47 +119,57 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
+                            this.Logger.LogDebug($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}; loadUnit {this.Mission.LoadUnitId}");
 
                             // Perform the operation if machine is regular or machine is 1Ton machine and notification type is MessageType.CombinedMovements
                             if (!this.MachineVolatileDataProvider.IsOneTonMachine.Value ||
                                 (this.MachineVolatileDataProvider.IsOneTonMachine.Value && notification.Type == MessageType.CombinedMovements))
                             {
-                                if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
-                                {
-                                    this.Mission.NeedMovingBackward = false;
-                                    if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
-                                       || this.Mission.CloseShutterPosition == ShutterPosition.NotSpecified
-                                    )
-                                    {
-                                        this.RestoreOriginalStep();
-                                    }
-                                    else
-                                    {
-                                        this.CloseShutter();
-                                    }
-                                }
-                                else
-                                {
-                                    this.Mission.ErrorMovements = MissionErrorMovements.None;
-                                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
-                                    this.LoadUnitEnd(restore: true);
-                                }
+                                this.ManualMovementEnd();
                             }
                         }
                         break;
 
                     case MessageStatus.OperationStop:
+                        if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
+                        {
+                            this.Mission.ErrorMovements &= ~MissionErrorMovements.AbortMovement;
+                            this.ManualMovementEnd();
+                        }
+                        break;
+
                     case MessageStatus.OperationError:
                     case MessageStatus.OperationRunningStop:
                     case MessageStatus.OperationFaultStop:
                         {
-                            if (notification.Type != MessageType.Homing)
+                            if (notification.Type != MessageType.Homing
+                                && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement)
+                                )
                             {
                                 this.Mission.ErrorMovements = MissionErrorMovements.None;
                                 this.MissionsDataProvider.Update(this.Mission);
 
                                 var newMessageData = new StopMessageData(StopRequestReason.Error);
+                                this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
+                            }
+                        }
+                        break;
+
+                    case MessageStatus.OperationUpdateData:
+                        {
+                            var data = notification.Data as PositioningMessageData;
+                            if (data != null
+                                && data.MovementType == MovementType.Relative
+                                && data.AxisMovement == Axis.Horizontal
+                                && (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward) || this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward))
+                                )
+                            {
+                                this.Logger.LogInformation($"{this.GetType().Name}:Manual Horizontal positioning abort Mission:Id={this.Mission.Id}; loadUnit {this.Mission.LoadUnitId}");
+
+                                this.Mission.ErrorMovements |= MissionErrorMovements.AbortMovement;
+                                this.MissionsDataProvider.Update(this.Mission);
+
+                                var newMessageData = new StopMessageData(StopRequestReason.Stop);
                                 this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
                             }
                         }
@@ -191,6 +201,65 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
         }
 
+        private void ManualMovementEnd()
+        {
+            if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
+            {
+                this.Mission.NeedMovingBackward = false;
+                var loadUnitOnBoard = this.ElevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnitOnBoard != null
+                    && loadUnitOnBoard.Id == this.Mission.LoadUnitId
+                    && this.SensorsProvider.IsSensorZeroOnCradle)
+                {
+                    using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
+                    {
+                        this.ElevatorDataProvider.SetLoadingUnit(null);
+                        if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
+                        {
+                            var destinationCellId = this.Mission.LoadUnitCellSourceId;
+                            if (destinationCellId.HasValue)
+                            {
+                                try
+                                {
+                                    this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadUnitId);
+                                    this.Logger.LogDebug($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; Cell id {destinationCellId}");
+                                }
+                                catch (Exception ex)
+                                {
+                                    transaction.Rollback();
+                                    this.Logger.LogError($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; error {ex.Message}");
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.CellLogicallyOccupied, this.Mission.TargetBay, ex.Message);
+                                    throw new StateMachineException(ErrorDescriptions.CellLogicallyOccupied, this.Mission.TargetBay, MessageActor.MachineManager);
+                                }
+                            }
+                        }
+                        else if (this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
+                        {
+                            var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitSource);
+                            this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
+                        }
+                        transaction.Commit();
+                    }
+                }
+                if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                   || this.Mission.CloseShutterPosition == ShutterPosition.NotSpecified
+                )
+                {
+                    this.RestoreOriginalStep();
+                }
+                else
+                {
+                    this.CloseShutter();
+                }
+            }
+            else
+            {
+                this.Mission.ErrorMovements = MissionErrorMovements.None;
+                this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                this.LoadUnitEnd(restore: true);
+            }
+        }
+
         /// <summary>
         /// we try to resolve different error situations:
         /// 1)  if the elevator has moved vertically we can start from previous step: if elevator is not full will be checked later
@@ -218,6 +287,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     )
                 {
                     this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
                     this.Mission.RestoreStep = MissionStep.ToTarget;
                     this.Mission.StepTime = DateTime.UtcNow;
                     var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
@@ -246,11 +316,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     return;
                 }
-                else
-                {
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
-                    throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
-                }
+                //else
+                //{
+                //    this.ErrorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, this.Mission.TargetBay);
+                //    throw new StateMachineException(ErrorDescriptions.AutomaticRestoreNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
+                //}
             }
 
             this.Mission.Direction = HorizontalMovementDirection.Backwards;

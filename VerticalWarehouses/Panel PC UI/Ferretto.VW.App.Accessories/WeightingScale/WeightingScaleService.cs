@@ -59,6 +59,8 @@ namespace Ferretto.VW.App.Accessories
 
         public Devices.DeviceInformation DeviceInformation => this.deviceInformation;
 
+        public float UnitaryWeight { get; private set; }
+
         #endregion
 
         #region Methods
@@ -139,13 +141,14 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isDeviceEnabled)
-            {
-                throw new InvalidOperationException(
-                    "Cannot perform the operation because the weighting scale service is not enabled.");
-            }
+            this.UnitaryWeight = 0;
+            //if (!this.isDeviceEnabled)
+            //{
+            //    throw new InvalidOperationException(
+            //        "Cannot perform the operation because the weighting scale service is not enabled.");
+            //}
 
-            await this.deviceDriver.ResetAverageUnitaryWeightAsync();
+            //await this.deviceDriver.ResetAverageUnitaryWeightAsync();
         }
 
         public async Task SetAverageUnitaryWeightAsync(float weight)
@@ -155,13 +158,15 @@ namespace Ferretto.VW.App.Accessories
                 throw new ObjectDisposedException(nameof(BarcodeReaderService));
             }
 
-            if (!this.isDeviceEnabled)
-            {
-                throw new InvalidOperationException(
-                    "Cannot perform the operation because the weighting scale service is not enabled.");
-            }
+            this.UnitaryWeight = weight;
 
-            await this.deviceDriver.SetAverageUnitaryWeightAsync(weight);
+            //if (!this.isDeviceEnabled)
+            //{
+            //    throw new InvalidOperationException(
+            //        "Cannot perform the operation because the weighting scale service is not enabled.");
+            //}
+
+            //await this.deviceDriver.SetAverageUnitaryWeightAsync(weight);
         }
 
         public async Task StartAsync()
@@ -219,7 +224,7 @@ namespace Ferretto.VW.App.Accessories
             }
         }
 
-        public void StartWeightAcquisition()
+        public async Task StartWeightAcquisitionAsync()
         {
             if (this.isDisposed)
             {
@@ -233,6 +238,10 @@ namespace Ferretto.VW.App.Accessories
             }
 
             this.logger.Debug("Starting continuous weight acquisition ...");
+            if (this.UnitaryWeight >= 0)
+            {
+                await this.deviceDriver.SetAverageUnitaryWeightAsync(this.UnitaryWeight);
+            }
 
             this.weightPollTimer.Change(0, WeightPollInterval);
         }

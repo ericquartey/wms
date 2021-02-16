@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name}");
+            this.Logger.LogDebug($"Start {this.GetType().Name}, axis {this.machineData.AxisToCalibrate}, calibration {this.machineData.CalibrationType}");
 
             if (this.machineData.IsOneTonMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
             {

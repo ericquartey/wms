@@ -3580,7 +3580,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load file.
+        ///   Looks up a localized string similar to Import into memory .
         /// </summary>
         public static string LoadFile {
             get {
@@ -4930,6 +4930,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Random cells assignment .
+        /// </summary>
+        public static string RandomCells {
+            get {
+                return ResourceManager.GetString("RandomCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Read code.
         /// </summary>
         public static string ReadCode {
@@ -5646,6 +5655,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ShutterMidWay {
             get {
                 return ResourceManager.GetString("ShutterMidWay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable the first 30 cells above the corresponding bay.
+        /// </summary>
+        public static string ShutterNotSpecifiedWarning {
+            get {
+                return ResourceManager.GetString("ShutterNotSpecifiedWarning", resourceCulture);
             }
         }
         

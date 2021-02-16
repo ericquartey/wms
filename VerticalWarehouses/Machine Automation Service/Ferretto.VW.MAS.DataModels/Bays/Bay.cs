@@ -131,9 +131,14 @@ namespace Ferretto.VW.MAS.DataModels
                 throw new Exception($"Baia {this.Number}: la giostra è definita, ma la baia non ha due posizioni.");
             }
 
-            if (this.External != null && positionsCount != 1)
+            if (this.External != null && positionsCount != 1 && !this.IsDouble)
             {
-                throw new Exception($"Baia {this.Number}: la baia esterna è definita, ma la baia deve avere una posizione.");
+                throw new Exception($"Baia {this.Number}: la baia esterna singola è definita, ma la baia deve avere una posizione.");
+            }
+
+            if (this.External != null && positionsCount != 2 && this.IsDouble)
+            {
+                throw new Exception($"Baia {this.Number}: la baia esterna doppia è definita, ma la baia non ha due posizioni.");
             }
 
             if (this.IoDevice is null)

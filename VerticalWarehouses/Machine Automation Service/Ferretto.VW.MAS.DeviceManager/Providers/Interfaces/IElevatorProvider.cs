@@ -12,12 +12,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double VerticalPosition { get; set; }
 
-        MachineErrorCode CanElevatorDeposit(BayPosition bayPosition);
-        MachineErrorCode CanElevatorPickup(BayPosition bayPosition);
-
         #endregion
 
         #region Methods
+
+        ActionPolicy CanCalibrateZeroPlate();
+
+        MachineErrorCode CanElevatorDeposit(BayPosition bayPosition);
+
+        MachineErrorCode CanElevatorPickup(BayPosition bayPosition);
 
         ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber);
 
@@ -64,7 +67,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveHorizontalCalibration(BayNumber requestingBay, MessageActor sender);
 
-        void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, double verticalDisplacement, bool measure, int? loadingUnitId, int? positionId, bool bypassConditions, BayNumber requestingBay, MessageActor sender);
+        void MoveHorizontalManual(HorizontalMovementDirection direction,
+            double distance,
+            double verticalDisplacement,
+            bool measure,
+            int? loadingUnitId,
+            int? positionId,
+            bool bypassConditions,
+            BayNumber requestingBay,
+            MessageActor sender,
+            bool highSpeed);
 
         void MoveHorizontalProfileCalibration(int bayPositionId, BayNumber requestingBay, MessageActor sender);
 

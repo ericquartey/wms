@@ -2031,7 +2031,7 @@
     <value>Extra small</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
-    <value>Load file</value>
+    <value>Import into memory </value>
     <comment>text</comment>
   </data>
   <data name="ImportSuccessful" xml:space="preserve">
@@ -2475,5 +2475,11 @@
   </data>
   <data name="ModeLoadUnitOperations3" xml:space="preserve">
     <value>Loadunit Operations3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Disable the first 30 cells above the corresponding bay</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Random cells assignment </value>
   </data>
 </root>

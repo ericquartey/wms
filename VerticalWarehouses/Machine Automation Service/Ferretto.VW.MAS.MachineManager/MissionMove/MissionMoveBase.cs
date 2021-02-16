@@ -195,7 +195,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
-                    // we never set LoadUnit height to zero
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
                 }
 
@@ -535,7 +534,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 try
                 {
-                    this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId, isCellTest: (this.Mission.MissionType == MissionType.FirstTest));
+                    this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId, Utils.Enumerations.CompactingType.NoCompacting, isCellTest: (this.Mission.MissionType == MissionType.FirstTest), this.MachineVolatileDataProvider.RandomCells);
                     this.Logger.LogDebug($"Found cell {this.Mission.DestinationCellId} for LU {this.Mission.LoadUnitId}");
                 }
                 catch (InvalidOperationException)
@@ -668,12 +667,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     if (this.Mission.Step == MissionStep.LoadElevator)
                     {
-                        this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                        this.Mission.NeedHomingAxis = Axis.Horizontal;
                         newStep = new MissionMoveErrorLoadStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                     else if (this.Mission.Step == MissionStep.DepositUnit)
                     {
-                        this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                        this.Mission.NeedHomingAxis = Axis.Horizontal;
                         newStep = new MissionMoveErrorDepositStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                     else

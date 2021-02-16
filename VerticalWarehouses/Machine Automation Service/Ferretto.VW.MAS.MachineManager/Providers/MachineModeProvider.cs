@@ -44,8 +44,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             return this.machineVolatileDataProvider.UiFilteredMode;
         }
 
-        public void RequestChange(MachineMode machineMode, BayNumber bayNumber = BayNumber.None, List<int> loadUnits = null, int? cycles = null)
+        public void RequestChange(MachineMode machineMode, BayNumber bayNumber = BayNumber.None, List<int> loadUnits = null, int? cycles = null, bool randomCells = false)
         {
+            this.machineVolatileDataProvider.RandomCells = randomCells;
+
             if (machineMode == this.machineVolatileDataProvider.Mode)
             {
                 return;
