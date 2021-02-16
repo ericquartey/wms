@@ -206,6 +206,41 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
             {
                 this.Mission.NeedMovingBackward = false;
+                var loadUnitOnBoard = this.ElevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnitOnBoard != null
+                    && loadUnitOnBoard.Id == this.Mission.LoadUnitId
+                    && this.SensorsProvider.IsSensorZeroOnCradle)
+                {
+                    using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
+                    {
+                        this.ElevatorDataProvider.SetLoadingUnit(null);
+                        if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
+                        {
+                            var destinationCellId = this.Mission.LoadUnitCellSourceId;
+                            if (destinationCellId.HasValue)
+                            {
+                                try
+                                {
+                                    this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadUnitId);
+                                    this.Logger.LogDebug($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; Cell id {destinationCellId}");
+                                }
+                                catch (Exception ex)
+                                {
+                                    transaction.Rollback();
+                                    this.Logger.LogError($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; error {ex.Message}");
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.CellLogicallyOccupied, this.Mission.TargetBay, ex.Message);
+                                    throw new StateMachineException(ErrorDescriptions.CellLogicallyOccupied, this.Mission.TargetBay, MessageActor.MachineManager);
+                                }
+                            }
+                        }
+                        else if (this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator)
+                        {
+                            var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitSource);
+                            this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
+                        }
+                        transaction.Commit();
+                    }
+                }
                 if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
                    || this.Mission.CloseShutterPosition == ShutterPosition.NotSpecified
                 )
@@ -252,6 +287,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     )
                 {
                     this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
                     this.Mission.RestoreStep = MissionStep.ToTarget;
                     this.Mission.StepTime = DateTime.UtcNow;
                     var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);

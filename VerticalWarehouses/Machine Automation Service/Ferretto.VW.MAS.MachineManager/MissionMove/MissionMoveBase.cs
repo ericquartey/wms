@@ -195,7 +195,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
-                    // we never set LoadUnit height to zero
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
                 }
 

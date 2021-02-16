@@ -233,8 +233,8 @@
           "LastIdealPosition": 0.0,
           "LowerBound": -4000.0,
           "ManualMovements": {
-            "FeedRate": 0.1,
-            "FeedRateAfterZero": 0.3,
+            "FeedRate": 0.08,
+            "FeedRateAfterZero": 0.2,
             "Id": 54,
             "TargetDistance": 3000.0,
             "TargetDistanceAfterZero": 3000.0
