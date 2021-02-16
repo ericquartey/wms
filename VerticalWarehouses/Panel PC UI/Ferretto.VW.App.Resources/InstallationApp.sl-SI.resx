@@ -2406,4 +2406,25 @@
   <data name="RandomCells" xml:space="preserve">
     <value>Dodelitev naključnih celic</value>
   </data>
+  <data name="InternalDown" xml:space="preserve">
+    <value>Int Up</value>
+  </data>
+  <data name="InternalUp" xml:space="preserve">
+    <value>Int Down</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Predal v visokem notranjem položaju</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Predal v nizkem notranjem položaju</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Dvojni zunanji predel 1</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Dvojni zunanji predel 2</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Dvojni zunanji predel 3</value>
+  </data>
 </root>

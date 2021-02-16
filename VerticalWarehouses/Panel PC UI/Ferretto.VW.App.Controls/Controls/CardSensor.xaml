@@ -10,462 +10,462 @@
              d:DesignHeight="120"
              d:DesignWidth="250"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <converters:BooleanConverter x:Key="BooleanConverter" />
+  <UserControl.Resources>
+    <converters:BooleanConverter x:Key="BooleanConverter" />
 
-        <ControlTemplate x:Key="ButtonBaseControlTemplate1"
-                         TargetType="{x:Type ButtonBase}">
-            <Border x:Name="border"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    SnapsToDevicePixels="True">
-                <ContentPresenter x:Name="contentPresenter"
-                                  Margin="0,-1.5,0,0"
-                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                  Content="{TemplateBinding Content}"
-                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Focusable="False"
-                                  RecognizesAccessKey="True"
-                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+    <ControlTemplate x:Key="ButtonBaseControlTemplate1"
+                     TargetType="{x:Type ButtonBase}">
+      <Border x:Name="border"
+              Background="{TemplateBinding Background}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              SnapsToDevicePixels="True">
+        <ContentPresenter x:Name="contentPresenter"
+                          Margin="0,-1.5,0,0"
+                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                          Content="{TemplateBinding Content}"
+                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Focusable="False"
+                          RecognizesAccessKey="True"
+                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+      </Border>
+    </ControlTemplate>
+
+    <DataTemplate x:Key="DataTemplateAxis">
+      <Grid Margin="4"
+            UseLayoutRounding="True">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
+                   Margin="4,0"
+                   Style="{DynamicResource VWAPP_CardSensor}"
+                   Text="{Binding ElementName=Card, Path=CardText}" />
+
+        <StackPanel Grid.Row="1"
+                    Grid.RowSpan="2"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+          <StackPanel.Style>
+            <Style>
+              <Setter Property="Grid.ColumnSpan" Value="1" />
+              <Style.Triggers>
+                <MultiDataTrigger>
+                  <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding ElementName=Card, Path=CardBadge1}" Value="{x:Null}" />
+                    <Condition Binding="{Binding ElementName=Card, Path=CardSensorLabel1}" Value="{x:Null}" />
+                  </MultiDataTrigger.Conditions>
+                  <MultiDataTrigger.Setters>
+                    <Setter Property="Grid.ColumnSpan" Value="2" />
+                  </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+              </Style.Triggers>
+            </Style>
+          </StackPanel.Style>
+          <TextBlock HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Very_High}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardValue}">
+            <TextBlock.Style>
+              <Style>
+                <Style.Triggers>
+                  <Trigger Property="TextBlock.Text" Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+          <TextBlock HorizontalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Very_Small}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardDescription}">
+            <TextBlock.Style>
+              <Style>
+                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                               Value="{x:Null}">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                               Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.RowSpan="3"
+                    Grid.Column="1"
+                    VerticalAlignment="Center">
+          <StackPanel.Style>
+            <Style>
+              <Setter Property="StackPanel.MinWidth" Value="45" />
+              <Setter Property="StackPanel.Visibility" Value="Visible" />
+              <Style.Triggers>
+                <MultiDataTrigger>
+                  <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding ElementName=Card, Path=CardBadge1}" Value="" />
+                  </MultiDataTrigger.Conditions>
+                  <MultiDataTrigger.Setters>
+                    <Setter Property="StackPanel.MinWidth" Value="0" />
+                    <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                  </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+              </Style.Triggers>
+            </Style>
+          </StackPanel.Style>
+
+          <StackPanel Margin="4,0"
+                      VerticalAlignment="Center">
+            <Border x:Name="BorderBadge"
+                    Width="35"
+                    Height="35"
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    Background="{DynamicResource PpcBackground}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="4">
+              <ToggleButton x:Name="ToggleButtonBadge"
+                            Margin="1"
+                            Padding="0"
+                            Background="{DynamicResource PpcBackground}"
+                            BorderThickness="0"
+                            Content="{Binding ElementName=Card, Path=CardBadge1}"
+                            FontSize="{StaticResource FontSize_High}"
+                            Foreground="{DynamicResource PpcForeground}"
+                            Template="{DynamicResource ButtonBaseControlTemplate1}" />
+              <Border.Style>
+                <Style>
+                  <Setter Property="Grid.RowSpan" Value="1" />
+                  <Setter Property="Border.Visibility" Value="Visible" />
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                 Value="">
+                      <Setter Property="Border.Visibility" Value="Collapsed" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </Border.Style>
             </Border>
-        </ControlTemplate>
 
-        <DataTemplate x:Key="DataTemplateAxis">
-            <Grid Margin="4"
-                  UseLayoutRounding="True">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.ColumnSpan="2"
-                           Margin="4,0"
-                           Style="{DynamicResource VWAPP_CardSensor}"
-                           Text="{Binding ElementName=Card, Path=CardText}" />
-
-                <StackPanel Grid.Row="1"
-                            Grid.RowSpan="2"
-                            VerticalAlignment="Center"
-                            Orientation="Vertical">
-                    <StackPanel.Style>
-                        <Style>
-                            <Setter Property="Grid.ColumnSpan" Value="1" />
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding ElementName=Card, Path=CardBadge1}" Value="{x:Null}" />
-                                        <Condition Binding="{Binding ElementName=Card, Path=CardSensorLabel1}" Value="{x:Null}" />
-                                    </MultiDataTrigger.Conditions>
-                                    <MultiDataTrigger.Setters>
-                                        <Setter Property="Grid.ColumnSpan" Value="2" />
-                                    </MultiDataTrigger.Setters>
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardValue}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <Trigger Property="TextBlock.Text" Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_Small}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardDescription}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
-                                                 Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-
-                <StackPanel Grid.RowSpan="3"
-                            Grid.Column="1"
-                            VerticalAlignment="Center">
-                    <StackPanel.Style>
-                        <Style>
-                            <Setter Property="StackPanel.MinWidth" Value="45" />
-                            <Setter Property="StackPanel.Visibility" Value="Visible" />
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding ElementName=Card, Path=CardBadge1}" Value="" />
-                                    </MultiDataTrigger.Conditions>
-                                    <MultiDataTrigger.Setters>
-                                        <Setter Property="StackPanel.MinWidth" Value="0" />
-                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
-                                    </MultiDataTrigger.Setters>
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-
-                    <StackPanel Margin="4,0"
-                                VerticalAlignment="Center">
-                        <Border x:Name="BorderBadge"
-                                Width="35"
-                                Height="35"
-                                Margin="4"
-                                HorizontalAlignment="Center"
-                                Background="{DynamicResource PpcBackground}"
-                                BorderBrush="{DynamicResource PpcBorderBrush}"
-                                BorderThickness="{DynamicResource PpcBorderThickness}"
-                                CornerRadius="4">
-                            <ToggleButton x:Name="ToggleButtonBadge"
-                                          Margin="1"
-                                          Padding="0"
-                                          Background="{DynamicResource PpcBackground}"
-                                          BorderThickness="0"
-                                          Content="{Binding ElementName=Card, Path=CardBadge1}"
-                                          FontSize="{StaticResource FontSize_High}"
-                                          Foreground="{DynamicResource PpcForeground}"
-                                          Template="{DynamicResource ButtonBaseControlTemplate1}" />
-                            <Border.Style>
-                                <Style>
-                                    <Setter Property="Grid.RowSpan" Value="1" />
-                                    <Setter Property="Border.Visibility" Value="Visible" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                     Value="">
-                                            <Setter Property="Border.Visibility" Value="Collapsed" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                        </Border>
-
-                        <Popup Height="90"
-                               VerticalAlignment="Top"
-                               AllowsTransparency="True"
-                               HorizontalOffset="0"
-                               IsOpen="{Binding IsChecked, ElementName=ToggleButtonBadge}"
-                               Placement="Right"
-                               PlacementTarget="{Binding ElementName=BorderBadge}"
-                               SnapsToDevicePixels="True"
-                               StaysOpen="False"
-                               UseLayoutRounding="True"
-                               VerticalOffset="-28">
-                            <Grid>
-                                <Border Grid.RowSpan="2"
-                                        Grid.ColumnSpan="4"
-                                        Margin="23,0,0,0"
-                                        HorizontalAlignment="Left"
-                                        Background="{StaticResource PpcBackground}"
-                                        BorderBrush="{DynamicResource PpcBorderBrush}"
-                                        BorderThickness="{DynamicResource PpcBorderThickness}"
-                                        CornerRadius="10,10,10,10">
-                                    <Grid Margin="4"
-                                          Background="{StaticResource PpcBackground}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-
-                                        <TextBlock Grid.Row="0"
-                                                   Grid.Column="0"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Bottom"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{res:Loc SensorCard.Weight}" />
-                                        <TextBlock Grid.Row="1"
-                                                   Grid.Column="0"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{res:Loc SensorCard.Height}" />
-
-                                        <TextBlock Grid.Row="0"
-                                                   Grid.Column="1"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Bottom"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
-                                                   Text="{Binding ElementName=Card, Path=LuWeight, StringFormat={}{0} kg}" />
-                                        <TextBlock Grid.Row="1"
-                                                   Grid.Column="1"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
-                                                   Text="{Binding ElementName=Card, Path=LuHeight, StringFormat={}{0} mm}" />
-
-                                    </Grid>
-                                </Border>
-
-                                <Path Width="26"
-                                      Height="26"
-                                      Margin="0,32,0,0"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top"
-                                      Data="M18,5L0,11 18,17"
-                                      Fill="{StaticResource PpcBackground}"
-                                      Stretch="Fill"
-                                      Stroke="{StaticResource PpcBorderBrush}"
-                                      StrokeThickness="1.5" />
-                            </Grid>
-                        </Popup>
-
-                        <TextBlock Margin="1"
-                                   HorizontalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_Small}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
-                            <TextBlock.Style>
-                                <Style>
-                                    <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                     Value="">
-                                            <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </StackPanel>
-
-                </StackPanel>
-
-                <StackPanel Grid.RowSpan="3"
-                            Grid.Column="2"
-                            VerticalAlignment="Center">
-                    <StackPanel.Style>
-                        <Style>
-                            <Setter Property="StackPanel.MinWidth" Value="45" />
-                            <Setter Property="StackPanel.Visibility" Value="Visible" />
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding ElementName=Card, Path=CardBadge1}" Value="" />
-                                        <Condition Binding="{Binding ElementName=Card, Path=CardSensorLabel1}" Value="{x:Null}" />
-                                    </MultiDataTrigger.Conditions>
-                                    <MultiDataTrigger.Setters>
-                                        <Setter Property="StackPanel.MinWidth" Value="0" />
-                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
-                                    </MultiDataTrigger.Setters>
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-
-                    <Border Margin="4"
-                            CornerRadius="4">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel1}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor1}"
-                                                 Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Margin="4,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_Small}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding ElementName=Card, Path=CardSensorLabel1}" />
-                    </Border>
-
-                    <Border Margin="4"
-                            CornerRadius="4">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
-                                                 Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Margin="4,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_Small}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding ElementName=Card, Path=CardSensorLabel2}" />
-                    </Border>
-
-                    <Border Margin="4"
-                            CornerRadius="4">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel3}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor3}"
-                                                 Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Margin="4,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_Small}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding ElementName=Card, Path=CardSensorLabel3}" />
-                    </Border>
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="DataTemplateBay">
-            <Grid Margin="4"
-                  UseLayoutRounding="True">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.ColumnSpan="2"
-                           Margin="4,0"
-                           Style="{DynamicResource VWAPP_CardSensor}"
-                           Text="{Binding ElementName=Card, Path=CardText}" />
-
-                <StackPanel Grid.Row="1"
-                            Grid.RowSpan="2"
-                            Grid.ColumnSpan="2"
-                            VerticalAlignment="Center"
-                            Orientation="Vertical">
-                    <TextBlock HorizontalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardValue}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=HasBayWithInverter}"
-                                                 Value="false">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <Trigger Property="TextBlock.Text" Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_Small}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardDescription, StringFormat='Target: {0}'}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
-                                                 Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-
-                <Grid Grid.Row="0"
-                      Grid.RowSpan="3"
-                      Grid.Column="1">
+            <Popup Height="90"
+                   VerticalAlignment="Top"
+                   AllowsTransparency="True"
+                   HorizontalOffset="0"
+                   IsOpen="{Binding IsChecked, ElementName=ToggleButtonBadge}"
+                   Placement="Right"
+                   PlacementTarget="{Binding ElementName=BorderBadge}"
+                   SnapsToDevicePixels="True"
+                   StaysOpen="False"
+                   UseLayoutRounding="True"
+                   VerticalOffset="-28">
+              <Grid>
+                <Border Grid.RowSpan="2"
+                        Grid.ColumnSpan="4"
+                        Margin="23,0,0,0"
+                        HorizontalAlignment="Left"
+                        Background="{StaticResource PpcBackground}"
+                        BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}"
+                        CornerRadius="10,10,10,10">
+                  <Grid Margin="4"
+                        Background="{StaticResource PpcBackground}">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition />
+                      <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
+                      <RowDefinition />
+                      <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0"
-                                Margin="0"
-                                VerticalAlignment="Center">
-                        <StackPanel.Style>
-                            <Style>
-                                <Setter Property="StackPanel.Visibility" Value="Visible" />
-                                <Setter Property="Grid.RowSpan" Value="1" />
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.BayFirstPositionIsUpper}" Value="true" />
-                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="false" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Grid.RowSpan" Value="2" />
-                                    </MultiDataTrigger>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Margin="4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Bottom"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="{res:Loc SensorCard.Weight}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Margin="4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="{res:Loc SensorCard.Height}" />
 
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuUp}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1"
+                               Margin="4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Bottom"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoPureWhite}"
+                               Text="{Binding ElementName=Card, Path=LuWeight, StringFormat={}{0} kg}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Margin="4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoPureWhite}"
+                               Text="{Binding ElementName=Card, Path=LuHeight, StringFormat={}{0} mm}" />
 
-                                    <!--<MultiDataTrigger>
+                  </Grid>
+                </Border>
+
+                <Path Width="26"
+                      Height="26"
+                      Margin="0,32,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Data="M18,5L0,11 18,17"
+                      Fill="{StaticResource PpcBackground}"
+                      Stretch="Fill"
+                      Stroke="{StaticResource PpcBorderBrush}"
+                      StrokeThickness="1.5" />
+              </Grid>
+            </Popup>
+
+            <TextBlock Margin="1"
+                       HorizontalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
+              <TextBlock.Style>
+                <Style>
+                  <Setter Property="TextBlock.Visibility" Value="Visible" />
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                 Value="">
+                      <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </StackPanel>
+
+        </StackPanel>
+
+        <StackPanel Grid.RowSpan="3"
+                    Grid.Column="2"
+                    VerticalAlignment="Center">
+          <StackPanel.Style>
+            <Style>
+              <Setter Property="StackPanel.MinWidth" Value="45" />
+              <Setter Property="StackPanel.Visibility" Value="Visible" />
+              <Style.Triggers>
+                <MultiDataTrigger>
+                  <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding ElementName=Card, Path=CardBadge1}" Value="" />
+                    <Condition Binding="{Binding ElementName=Card, Path=CardSensorLabel1}" Value="{x:Null}" />
+                  </MultiDataTrigger.Conditions>
+                  <MultiDataTrigger.Setters>
+                    <Setter Property="StackPanel.MinWidth" Value="0" />
+                    <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                  </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+              </Style.Triggers>
+            </Style>
+          </StackPanel.Style>
+
+          <Border Margin="4"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel1}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor1}"
+                               Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel1}" />
+          </Border>
+
+          <Border Margin="4"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
+                               Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel2}" />
+          </Border>
+
+          <Border Margin="4"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel3}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor3}"
+                               Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel3}" />
+          </Border>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataTemplateBay">
+      <Grid Margin="4"
+            UseLayoutRounding="True">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
+                   Margin="4,0"
+                   Style="{DynamicResource VWAPP_CardSensor}"
+                   Text="{Binding ElementName=Card, Path=CardText}" />
+
+        <StackPanel Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="2"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+          <TextBlock HorizontalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Very_High}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardValue}">
+            <TextBlock.Style>
+              <Style>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=HasBayWithInverter}"
+                               Value="false">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <Trigger Property="TextBlock.Text" Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+          <TextBlock HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Very_Small}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardDescription, StringFormat='Target: {0}'}">
+            <TextBlock.Style>
+              <Style>
+                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                               Value="{x:Null}">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                               Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </StackPanel>
+
+        <Grid Grid.Row="0"
+              Grid.RowSpan="3"
+              Grid.Column="1">
+
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+
+          <StackPanel Grid.Row="0"
+                      Margin="0"
+                      VerticalAlignment="Center">
+            <StackPanel.Style>
+              <Style>
+                <Setter Property="StackPanel.Visibility" Value="Visible" />
+                <Setter Property="Grid.RowSpan" Value="1" />
+                <Style.Triggers>
+                  <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                      <Condition Binding="{Binding ElementName=Card, Path=MachineService.BayFirstPositionIsUpper}" Value="true" />
+                      <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="false" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Grid.RowSpan" Value="2" />
+                  </MultiDataTrigger>
+
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuUp}"
+                               Value="{x:Null}">
+                    <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+
+                  <!--<MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding ElementName=Card, Path=CardLuUp}" Value="{x:Null}" />
                                             <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="false" />
@@ -482,847 +482,907 @@
                                     </MultiDataTrigger>-->
 
 
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
+                </Style.Triggers>
+              </Style>
+            </StackPanel.Style>
 
-                        <Border x:Name="BorderBadgeUp"
-                                Width="35"
-                                Height="35"
-                                Margin="4"
-                                HorizontalAlignment="Center"
-                                Background="{DynamicResource PpcBackground}"
-                                BorderBrush="{DynamicResource PpcBorderBrush}"
-                                BorderThickness="{DynamicResource PpcBorderThickness}"
-                                CornerRadius="4">
-                            <ToggleButton x:Name="ToggleButtonBadgeUp"
-                                          Margin="1"
-                                          Padding="0"
-                                          Background="{DynamicResource PpcBackground}"
-                                          BorderThickness="0"
-                                          Content="{Binding ElementName=Card, Path=CardLuUp.Id}"
-                                          FontSize="{StaticResource FontSize_High}"
-                                          Foreground="{DynamicResource PpcForeground}"
-                                          Template="{DynamicResource ButtonBaseControlTemplate1}">
-                                <ToggleButton.Style>
-                                    <Style>
-                                        <Setter Property="ToggleButton.Visibility" Value="Visible" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuUp}"
-                                                         Value="{x:Null}">
-                                                <Setter Property="ToggleButton.Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ToggleButton.Style>
-                            </ToggleButton>
-                        </Border>
+            <Border x:Name="BorderBadgeUp"
+                    Width="35"
+                    Height="35"
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    Background="{DynamicResource PpcBackground}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="4">
+              <ToggleButton x:Name="ToggleButtonBadgeUp"
+                            Margin="1"
+                            Padding="0"
+                            Background="{DynamicResource PpcBackground}"
+                            BorderThickness="0"
+                            Content="{Binding ElementName=Card, Path=CardLuUp.Id}"
+                            FontSize="{StaticResource FontSize_High}"
+                            Foreground="{DynamicResource PpcForeground}"
+                            Template="{DynamicResource ButtonBaseControlTemplate1}">
+                <ToggleButton.Style>
+                  <Style>
+                    <Setter Property="ToggleButton.Visibility" Value="Visible" />
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuUp}"
+                                   Value="{x:Null}">
+                        <Setter Property="ToggleButton.Visibility" Value="Collapsed" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </ToggleButton.Style>
+              </ToggleButton>
+            </Border>
 
-                        <Popup Height="90"
-                               VerticalAlignment="Top"
-                               AllowsTransparency="True"
-                               HorizontalOffset="0"
-                               IsOpen="{Binding IsChecked, ElementName=ToggleButtonBadgeUp}"
-                               Placement="Right"
-                               PlacementTarget="{Binding ElementName=BorderBadgeUp}"
-                               SnapsToDevicePixels="True"
-                               StaysOpen="False"
-                               UseLayoutRounding="True"
-                               VerticalOffset="-28">
-                            <Grid>
-                                <Border Grid.RowSpan="2"
-                                        Grid.ColumnSpan="4"
-                                        Margin="23,0,0,0"
-                                        HorizontalAlignment="Left"
-                                        Background="{StaticResource PpcBackground}"
-                                        BorderBrush="{DynamicResource PpcBorderBrush}"
-                                        BorderThickness="{DynamicResource PpcBorderThickness}"
-                                        CornerRadius="10,10,10,10">
-                                    <Grid Margin="4"
-                                          Background="{StaticResource PpcBackground}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-
-                                        <TextBlock Grid.Row="0"
-                                                   Grid.Column="0"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Bottom"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{res:Loc SensorCard.Weight}" />
-                                        <TextBlock Grid.Row="1"
-                                                   Grid.Column="0"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{res:Loc SensorCard.Height}" />
-
-                                        <TextBlock Grid.Row="0"
-                                                   Grid.Column="1"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Bottom"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
-                                                   Text="{Binding ElementName=Card, Path=CardLuUp.NetWeight, StringFormat={}{0:F2} kg}" />
-                                        <TextBlock Grid.Row="1"
-                                                   Grid.Column="1"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
-                                                   Text="{Binding ElementName=Card, Path=CardLuUp.Height, StringFormat={}{0:F2} mm}" />
-
-                                    </Grid>
-                                </Border>
-
-                                <Path Width="26"
-                                      Height="26"
-                                      Margin="0,32,0,0"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top"
-                                      Data="M18,5L0,11 18,17"
-                                      Fill="{StaticResource PpcBackground}"
-                                      Stretch="Fill"
-                                      Stroke="{StaticResource PpcBorderBrush}"
-                                      StrokeThickness="1.5" />
-                            </Grid>
-                        </Popup>
-
-                    </StackPanel>
-
-                    <StackPanel Margin="0"
-                                VerticalAlignment="Center">
-                        <StackPanel.Style>
-                            <Style>
-                                <Setter Property="StackPanel.Visibility" Value="Visible" />
-                                <Setter Property="Grid.Row" Value="1" />
-                                <Setter Property="Grid.RowSpan" Value="1" />
-                                <Style.Triggers>
-
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.BayFirstPositionIsUpper}" Value="false" />
-                                            <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="false" />
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Grid.RowSpan" Value="2" />
-                                        <Setter Property="Grid.Row" Value="0" />
-                                    </MultiDataTrigger>
-
-
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuDown}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="StackPanel.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-
-
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
-
-                        <Border x:Name="BorderBadgeDown"
-                                Width="35"
-                                Height="35"
-                                Margin="4"
-                                HorizontalAlignment="Center"
-                                Background="{DynamicResource PpcBackground}"
-                                BorderBrush="{DynamicResource PpcBorderBrush}"
-                                BorderThickness="{DynamicResource PpcBorderThickness}"
-                                CornerRadius="4">
-                            <ToggleButton x:Name="ToggleButtonBadgeDown"
-                                          Margin="1"
-                                          Padding="0"
-                                          Background="{DynamicResource PpcBackground}"
-                                          BorderThickness="0"
-                                          Content="{Binding ElementName=Card, Path=CardLuDown.Id}"
-                                          FontSize="{StaticResource FontSize_High}"
-                                          Foreground="{DynamicResource PpcForeground}"
-                                          Template="{DynamicResource ButtonBaseControlTemplate1}">
-                                <ToggleButton.Style>
-                                    <Style>
-                                        <Setter Property="ToggleButton.Visibility" Value="Visible" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuDown}"
-                                                         Value="{x:Null}">
-                                                <Setter Property="ToggleButton.Visibility" Value="Collapsed" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ToggleButton.Style>
-                            </ToggleButton>
-                        </Border>
-
-                        <Popup Height="90"
-                               VerticalAlignment="Top"
-                               AllowsTransparency="True"
-                               HorizontalOffset="0"
-                               IsOpen="{Binding IsChecked, ElementName=ToggleButtonBadgeDown}"
-                               Placement="Right"
-                               PlacementTarget="{Binding ElementName=BorderBadgeDown}"
-                               SnapsToDevicePixels="True"
-                               StaysOpen="False"
-                               UseLayoutRounding="True"
-                               VerticalOffset="-28">
-                            <Grid>
-                                <Border Grid.RowSpan="2"
-                                        Grid.ColumnSpan="4"
-                                        Margin="23,0,0,0"
-                                        HorizontalAlignment="Left"
-                                        Background="{StaticResource PpcBackground}"
-                                        BorderBrush="{DynamicResource PpcBorderBrush}"
-                                        BorderThickness="{DynamicResource PpcBorderThickness}"
-                                        CornerRadius="10,10,10,10">
-                                    <Grid Margin="4"
-                                          Background="{StaticResource PpcBackground}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-
-                                        <TextBlock Grid.Row="0"
-                                                   Grid.Column="0"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Bottom"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{res:Loc SensorCard.Weight}" />
-                                        <TextBlock Grid.Row="1"
-                                                   Grid.Column="0"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoLightGray}"
-                                                   Text="{res:Loc SensorCard.Height}" />
-
-                                        <TextBlock Grid.Row="0"
-                                                   Grid.Column="1"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Bottom"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
-                                                   Text="{Binding ElementName=Card, Path=CardLuDown.NetWeight, StringFormat={}{0:F2} kg}" />
-                                        <TextBlock Grid.Row="1"
-                                                   Grid.Column="1"
-                                                   Margin="4"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
-                                                   Text="{Binding ElementName=Card, Path=CardLuDown.Height, StringFormat={}{0:F2} mm}" />
-
-                                    </Grid>
-                                </Border>
-
-                                <Path Width="26"
-                                      Height="26"
-                                      Margin="0,32,0,0"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top"
-                                      Data="M18,5L0,11 18,17"
-                                      Fill="{StaticResource PpcBackground}"
-                                      Stretch="Fill"
-                                      Stroke="{StaticResource PpcBorderBrush}"
-                                      StrokeThickness="1.5" />
-                            </Grid>
-                        </Popup>
-
-                    </StackPanel>
-
-                </Grid>
-
-                <StackPanel Grid.RowSpan="3"
-                            Grid.Column="2"
-                            Width="45"
-                            Margin="4,0,0,0"
-                            VerticalAlignment="Center">
-                    <Border Margin="4"
-                            CornerRadius="4">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel1}"
-                                                 Value="">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor1}"
-                                                 Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Margin="4,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_Small}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding ElementName=Card, Path=CardSensorLabel1}" />
-                    </Border>
-
-                    <Border Margin="4"
-                            CornerRadius="4">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
-                                                 Value="">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
-                                                 Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Margin="4,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_Small}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding ElementName=Card, Path=CardSensorLabel2}" />
-                    </Border>
-
-                    <Border Margin="4"
-                            CornerRadius="4">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel3}"
-                                                 Value="">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel3}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor3}"
-                                                 Value="False">
-                                        <Setter Property="Background" Value="{DynamicResource SensorColor}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Margin="4,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_Small}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding ElementName=Card, Path=CardSensorLabel3}" />
-                    </Border>
-
-                    <Border Margin="4"
-                            CornerRadius="4">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Visibility" Value="Visible" />
-                                <Setter Property="Background" Value="{DynamicResource SensorColor}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBayPosition}"
-                                                 Value="">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBayPosition}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Margin="4,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_Small}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding ElementName=Card, Path=CardBayPosition}" />
-                    </Border>
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-
-        <DataTemplate x:Key="DataTemplateDrawer">
-            <Grid Margin="4"
-                  UseLayoutRounding="True">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Margin="4,0"
-                           VerticalAlignment="Center"
-                           Style="{DynamicResource VWAPP_CardSensor}"
-                           Text="{Binding ElementName=Card, Path=CardText}" />
-
-                <TextBlock Grid.Column="2"
-                           Margin="0"
-                           VerticalAlignment="Center"
-                           Style="{DynamicResource VWAPP_CardSensor}"
-                           Text="{Binding ElementName=Card, Path=CardDescription}" />
-
-                <Grid Grid.Row="1"
-                      Grid.RowSpan="2"
-                      Grid.ColumnSpan="2">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-
+            <Popup Height="90"
+                   VerticalAlignment="Top"
+                   AllowsTransparency="True"
+                   HorizontalOffset="0"
+                   IsOpen="{Binding IsChecked, ElementName=ToggleButtonBadgeUp}"
+                   Placement="Right"
+                   PlacementTarget="{Binding ElementName=BorderBadgeUp}"
+                   SnapsToDevicePixels="True"
+                   StaysOpen="False"
+                   UseLayoutRounding="True"
+                   VerticalOffset="-28">
+              <Grid>
+                <Border Grid.RowSpan="2"
+                        Grid.ColumnSpan="4"
+                        Margin="23,0,0,0"
+                        HorizontalAlignment="Left"
+                        Background="{StaticResource PpcBackground}"
+                        BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}"
+                        CornerRadius="10,10,10,10">
+                  <Grid Margin="4"
+                        Background="{StaticResource PpcBackground}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
+                      <ColumnDefinition />
+                      <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
+                    <Grid.RowDefinitions>
+                      <RowDefinition />
+                      <RowDefinition />
+                    </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
                                Grid.Column="0"
-                               Margin="20,0"
+                               Margin="4"
                                HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Small}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                               VerticalAlignment="Bottom"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="{res:Loc SensorCard.Weight}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Margin="4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="{res:Loc SensorCard.Height}" />
 
                     <TextBlock Grid.Row="0"
                                Grid.Column="1"
-                               Margin="15,0,0,0"
+                               Margin="4"
                                HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardBadge1, StringFormat={}{0} kg}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="0"
-                               Margin="20,0"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Small}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardBadgeLabel2}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
-                                                 Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
+                               VerticalAlignment="Bottom"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoPureWhite}"
+                               Text="{Binding ElementName=Card, Path=CardLuUp.NetWeight, StringFormat={}{0:F2} kg}" />
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
-                               Margin="15,0,0,0"
+                               Margin="4"
                                HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardBadge2, StringFormat={}{0} mm}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
-                                                 Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
+                               VerticalAlignment="Top"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoPureWhite}"
+                               Text="{Binding ElementName=Card, Path=CardLuUp.Height, StringFormat={}{0:F2} mm}" />
 
-            </Grid>
-        </DataTemplate>
+                  </Grid>
+                </Border>
 
-        <DataTemplate x:Key="DataTemplatePosition">
-            <Grid Margin="4"
-                  UseLayoutRounding="True">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+                <Path Width="26"
+                      Height="26"
+                      Margin="0,32,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Data="M18,5L0,11 18,17"
+                      Fill="{StaticResource PpcBackground}"
+                      Stretch="Fill"
+                      Stroke="{StaticResource PpcBorderBrush}"
+                      StrokeThickness="1.5" />
+              </Grid>
+            </Popup>
 
-                <TextBlock Grid.ColumnSpan="2"
-                           Margin="4,0"
-                           Style="{DynamicResource VWAPP_CardSensor}"
-                           Text="{Binding ElementName=Card, Path=CardText}" />
+          </StackPanel>
 
-                <StackPanel Grid.Row="1"
-                            Grid.RowSpan="2"
-                            VerticalAlignment="Center"
-                            Orientation="Vertical">
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardValue}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <Trigger Property="TextBlock.Text" Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_Small}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardDescription, StringFormat={}{0}}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
-                                                 Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
+          <StackPanel Margin="0"
+                      VerticalAlignment="Center">
+            <StackPanel.Style>
+              <Style>
+                <Setter Property="StackPanel.Visibility" Value="Visible" />
+                <Setter Property="Grid.Row" Value="1" />
+                <Setter Property="Grid.RowSpan" Value="1" />
+                <Style.Triggers>
 
-                <StackPanel Grid.RowSpan="3"
-                            Grid.Column="1"
-                            Margin="4,0"
-                            VerticalAlignment="Bottom">
-                    <Border x:Name="BorderBadge"
-                            Width="35"
-                            Height="35"
-                            Margin="4"
-                            HorizontalAlignment="Center"
+                  <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                      <Condition Binding="{Binding ElementName=Card, Path=MachineService.BayFirstPositionIsUpper}" Value="false" />
+                      <Condition Binding="{Binding ElementName=Card, Path=MachineService.Bay.IsDouble}" Value="false" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Grid.RowSpan" Value="2" />
+                    <Setter Property="Grid.Row" Value="0" />
+                  </MultiDataTrigger>
+
+
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuDown}"
+                               Value="{x:Null}">
+                    <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+
+
+                </Style.Triggers>
+              </Style>
+            </StackPanel.Style>
+
+            <Border x:Name="BorderBadgeDown"
+                    Width="35"
+                    Height="35"
+                    Margin="4"
+                    HorizontalAlignment="Center"
+                    Background="{DynamicResource PpcBackground}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="4">
+              <ToggleButton x:Name="ToggleButtonBadgeDown"
+                            Margin="1"
+                            Padding="0"
                             Background="{DynamicResource PpcBackground}"
-                            BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}"
-                            CornerRadius="4">
-                        <ToggleButton x:Name="ToggleButtonBadge"
-                                      Margin="1"
-                                      Padding="0"
-                                      Background="{DynamicResource PpcBackground}"
-                                      BorderThickness="0"
-                                      Content="{Binding ElementName=Card, Path=CardBadge1}"
-                                      FontSize="{StaticResource FontSize_High}"
-                                      Foreground="{DynamicResource PpcForeground}"
-                                      Template="{DynamicResource ButtonBaseControlTemplate1}" />
-                        <Border.Style>
-                            <Style>
-                                <Setter Property="Grid.RowSpan" Value="1" />
-                                <Setter Property="Border.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="">
-                                        <Setter Property="Border.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
+                            BorderThickness="0"
+                            Content="{Binding ElementName=Card, Path=CardLuDown.Id}"
+                            FontSize="{StaticResource FontSize_High}"
+                            Foreground="{DynamicResource PpcForeground}"
+                            Template="{DynamicResource ButtonBaseControlTemplate1}">
+                <ToggleButton.Style>
+                  <Style>
+                    <Setter Property="ToggleButton.Visibility" Value="Visible" />
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding ElementName=Card, Path=CardLuDown}"
+                                   Value="{x:Null}">
+                        <Setter Property="ToggleButton.Visibility" Value="Collapsed" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </ToggleButton.Style>
+              </ToggleButton>
+            </Border>
 
-                    <Popup Height="90"
-                           VerticalAlignment="Top"
-                           AllowsTransparency="True"
-                           HorizontalOffset="0"
-                           IsOpen="{Binding IsChecked, ElementName=ToggleButtonBadge}"
-                           Placement="Right"
-                           PlacementTarget="{Binding ElementName=BorderBadge}"
-                           SnapsToDevicePixels="True"
-                           StaysOpen="True"
-                           UseLayoutRounding="True"
-                           VerticalOffset="-28">
-                        <Grid>
-                            <Border Grid.RowSpan="2"
-                                    Grid.ColumnSpan="4"
-                                    Margin="23,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    Background="{StaticResource PpcBackground}"
-                                    BorderBrush="{DynamicResource PpcBorderBrush}"
-                                    BorderThickness="{DynamicResource PpcBorderThickness}"
-                                    CornerRadius="10,10,10,10">
-                                <Grid Margin="4"
-                                      Background="{StaticResource PpcBackground}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
+            <Popup Height="90"
+                   VerticalAlignment="Top"
+                   AllowsTransparency="True"
+                   HorizontalOffset="0"
+                   IsOpen="{Binding IsChecked, ElementName=ToggleButtonBadgeDown}"
+                   Placement="Right"
+                   PlacementTarget="{Binding ElementName=BorderBadgeDown}"
+                   SnapsToDevicePixels="True"
+                   StaysOpen="False"
+                   UseLayoutRounding="True"
+                   VerticalOffset="-28">
+              <Grid>
+                <Border Grid.RowSpan="2"
+                        Grid.ColumnSpan="4"
+                        Margin="23,0,0,0"
+                        HorizontalAlignment="Left"
+                        Background="{StaticResource PpcBackground}"
+                        BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}"
+                        CornerRadius="10,10,10,10">
+                  <Grid Margin="4"
+                        Background="{StaticResource PpcBackground}">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition />
+                      <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                      <RowDefinition />
+                      <RowDefinition />
+                    </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="0"
-                                               Grid.Column="0"
-                                               Margin="4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Bottom"
-                                               FontSize="16"
-                                               Foreground="{DynamicResource PopupText_Foreground}"
-                                               Text="{res:Loc SensorCard.Weight}" />
-                                    <TextBlock Grid.Row="1"
-                                               Grid.Column="0"
-                                               Margin="4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Top"
-                                               FontSize="16"
-                                               Foreground="{DynamicResource PopupText_Foreground}"
-                                               Text="{res:Loc SensorCard.Height}" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Margin="4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Bottom"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="{res:Loc SensorCard.Weight}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Margin="4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="{res:Loc SensorCard.Height}" />
+
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1"
+                               Margin="4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Bottom"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoPureWhite}"
+                               Text="{Binding ElementName=Card, Path=CardLuDown.NetWeight, StringFormat={}{0:F2} kg}" />
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Margin="4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               FontSize="16"
+                               Foreground="{DynamicResource FerrettoPureWhite}"
+                               Text="{Binding ElementName=Card, Path=CardLuDown.Height, StringFormat={}{0:F2} mm}" />
+
+                  </Grid>
+                </Border>
+
+                <Path Width="26"
+                      Height="26"
+                      Margin="0,32,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Data="M18,5L0,11 18,17"
+                      Fill="{StaticResource PpcBackground}"
+                      Stretch="Fill"
+                      Stroke="{StaticResource PpcBorderBrush}"
+                      StrokeThickness="1.5" />
+              </Grid>
+            </Popup>
+
+          </StackPanel>
+
+        </Grid>
+
+        <StackPanel Grid.RowSpan="3"
+                    Grid.Column="2"
+                    Width="50"
+                    Margin="4,0,0,0"
+                    VerticalAlignment="Center">
+          <Border Margin="2"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel1}"
+                               Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor1}"
+                               Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel1}" />
+          </Border>
+
+          <Border Margin="2"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
+                               Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
+                               Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel2}" />
+          </Border>
+
+          <Border Margin="2"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel3}"
+                               Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel3}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor3}"
+                               Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel3}" />
+          </Border>
+
+          <Border Margin="2"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel4}"
+                               Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel4}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor4}"
+                               Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel4}" />
+          </Border>
+
+          <Border Margin="2"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel5}"
+                               Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel5}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor5}"
+                               Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel5}" />
+          </Border>
+
+          <Border Margin="2"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBayPosition}"
+                               Value="">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBayPosition}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardBayPosition}" />
+          </Border>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DataTemplateDrawer">
+      <Grid Margin="4"
+            UseLayoutRounding="True">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Margin="4,0"
+                   VerticalAlignment="Center"
+                   Style="{DynamicResource VWAPP_CardSensor}"
+                   Text="{Binding ElementName=Card, Path=CardText}" />
+
+        <TextBlock Grid.Column="2"
+                   Margin="0"
+                   VerticalAlignment="Center"
+                   Style="{DynamicResource VWAPP_CardSensor}"
+                   Text="{Binding ElementName=Card, Path=CardDescription}" />
+
+        <Grid Grid.Row="1"
+              Grid.RowSpan="2"
+              Grid.ColumnSpan="2">
+
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
 
 
-                                    <TextBlock Grid.Row="0"
-                                               Grid.Column="1"
-                                               Margin="4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Bottom"
-                                               FontSize="16"
-                                               Foreground="{DynamicResource PopupContent_Foreground}"
-                                               Text="{Binding ElementName=Card, Path=LuWeight, StringFormat={}{0} kg}" />
-                                    <TextBlock Grid.Row="1"
-                                               Grid.Column="1"
-                                               Margin="4"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Top"
-                                               FontSize="16"
-                                               Foreground="{DynamicResource PopupContent_Foreground}"
-                                               Text="{Binding ElementName=Card, Path=LuHeight, StringFormat={}{0} mm}" />
+          <TextBlock Grid.Row="0"
+                     Grid.Column="0"
+                     Margin="20,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Small}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
+            <TextBlock.Style>
+              <Style>
+                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="{x:Null}">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
 
-                                </Grid>
-                            </Border>
+          <TextBlock Grid.Row="0"
+                     Grid.Column="1"
+                     Margin="15,0,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     FontSize="{StaticResource FontSize_High}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardBadge1, StringFormat={}{0} kg}">
+            <TextBlock.Style>
+              <Style>
+                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="{x:Null}">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
 
-                            <Path Width="26"
-                                  Height="26"
-                                  Margin="0,32,0,0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
-                                  Data="M18,5L0,11 18,17"
-                                  Fill="{StaticResource PpcBackground}"
-                                  Stretch="Fill"
-                                  Stroke="{StaticResource PpcBorderBrush}"
-                                  StrokeThickness="1.5" />
-                        </Grid>
-                    </Popup>
+          <TextBlock Grid.Row="1"
+                     Grid.Column="0"
+                     Margin="20,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Small}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardBadgeLabel2}">
+            <TextBlock.Style>
+              <Style>
+                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
+                               Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
+                               Value="{x:Null}">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
 
-                    <TextBlock Margin="1"
-                               HorizontalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_Small}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
+          <TextBlock Grid.Row="1"
+                     Grid.Column="1"
+                     Margin="15,0,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     FontSize="{StaticResource FontSize_High}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardBadge2, StringFormat={}{0} mm}">
+            <TextBlock.Style>
+              <Style>
+                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
+                               Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
+                               Value="{x:Null}">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </Grid>
 
-                <StackPanel Grid.RowSpan="3"
-                            Grid.Column="1"
-                            Margin="4,0"
-                            VerticalAlignment="Bottom"
-                            Visibility="Collapsed">
+      </Grid>
+    </DataTemplate>
 
-                    <Border Width="35"
-                            Height="35"
-                            Margin="4"
-                            BorderBrush="{DynamicResource PpcBorderBrush}"
-                            BorderThickness="{DynamicResource PpcBorderThickness}"
-                            CornerRadius="4">
-                        <Border.Style>
-                            <Style>
-                                <Setter Property="Border.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="Border.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="">
-                                        <Setter Property="Border.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <TextBlock Margin="4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding ElementName=Card, Path=CardBadge1}" />
-                    </Border>
+    <DataTemplate x:Key="DataTemplatePosition">
+      <Grid Margin="4"
+            UseLayoutRounding="True">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_Small}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
-                        <TextBlock.Style>
-                            <Style>
-                                <Setter Property="TextBlock.Visibility" Value="Visible" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="{x:Null}">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
-                                                 Value="">
-                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
+        <TextBlock Grid.ColumnSpan="2"
+                   Margin="4,0"
+                   Style="{DynamicResource VWAPP_CardSensor}"
+                   Text="{Binding ElementName=Card, Path=CardText}" />
+
+        <StackPanel Grid.Row="1"
+                    Grid.RowSpan="2"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+          <TextBlock HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Very_High}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardValue}">
+            <TextBlock.Style>
+              <Style>
+                <Style.Triggers>
+                  <Trigger Property="TextBlock.Text" Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+          <TextBlock HorizontalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Very_Small}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardDescription, StringFormat={}{0}}">
+            <TextBlock.Style>
+              <Style>
+                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                               Value="{x:Null}">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                               Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.RowSpan="3"
+                    Grid.Column="1"
+                    Margin="4,0"
+                    VerticalAlignment="Bottom">
+          <Border x:Name="BorderBadge"
+                  Width="35"
+                  Height="35"
+                  Margin="4"
+                  HorizontalAlignment="Center"
+                  Background="{DynamicResource PpcBackground}"
+                  BorderBrush="{DynamicResource PpcBorderBrush}"
+                  BorderThickness="{DynamicResource PpcBorderThickness}"
+                  CornerRadius="4">
+            <ToggleButton x:Name="ToggleButtonBadge"
+                          Margin="1"
+                          Padding="0"
+                          Background="{DynamicResource PpcBackground}"
+                          BorderThickness="0"
+                          Content="{Binding ElementName=Card, Path=CardBadge1}"
+                          FontSize="{StaticResource FontSize_High}"
+                          Foreground="{DynamicResource PpcForeground}"
+                          Template="{DynamicResource ButtonBaseControlTemplate1}" />
+            <Border.Style>
+              <Style>
+                <Setter Property="Grid.RowSpan" Value="1" />
+                <Setter Property="Border.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="">
+                    <Setter Property="Border.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+          </Border>
+
+          <Popup Height="90"
+                 VerticalAlignment="Top"
+                 AllowsTransparency="True"
+                 HorizontalOffset="0"
+                 IsOpen="{Binding IsChecked, ElementName=ToggleButtonBadge}"
+                 Placement="Right"
+                 PlacementTarget="{Binding ElementName=BorderBadge}"
+                 SnapsToDevicePixels="True"
+                 StaysOpen="True"
+                 UseLayoutRounding="True"
+                 VerticalOffset="-28">
+            <Grid>
+              <Border Grid.RowSpan="2"
+                      Grid.ColumnSpan="4"
+                      Margin="23,0,0,0"
+                      HorizontalAlignment="Left"
+                      Background="{StaticResource PpcBackground}"
+                      BorderBrush="{DynamicResource PpcBorderBrush}"
+                      BorderThickness="{DynamicResource PpcBorderThickness}"
+                      CornerRadius="10,10,10,10">
+                <Grid Margin="4"
+                      Background="{StaticResource PpcBackground}">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                  </Grid.ColumnDefinitions>
+
+                  <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                  </Grid.RowDefinitions>
+
+                  <TextBlock Grid.Row="0"
+                             Grid.Column="0"
+                             Margin="4"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Bottom"
+                             FontSize="16"
+                             Foreground="{DynamicResource PopupText_Foreground}"
+                             Text="{res:Loc SensorCard.Weight}" />
+                  <TextBlock Grid.Row="1"
+                             Grid.Column="0"
+                             Margin="4"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             FontSize="16"
+                             Foreground="{DynamicResource PopupText_Foreground}"
+                             Text="{res:Loc SensorCard.Height}" />
+
+
+                  <TextBlock Grid.Row="0"
+                             Grid.Column="1"
+                             Margin="4"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Bottom"
+                             FontSize="16"
+                             Foreground="{DynamicResource PopupContent_Foreground}"
+                             Text="{Binding ElementName=Card, Path=LuWeight, StringFormat={}{0} kg}" />
+                  <TextBlock Grid.Row="1"
+                             Grid.Column="1"
+                             Margin="4"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             FontSize="16"
+                             Foreground="{DynamicResource PopupContent_Foreground}"
+                             Text="{Binding ElementName=Card, Path=LuHeight, StringFormat={}{0} mm}" />
+
+                </Grid>
+              </Border>
+
+              <Path Width="26"
+                    Height="26"
+                    Margin="0,32,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Data="M18,5L0,11 18,17"
+                    Fill="{StaticResource PpcBackground}"
+                    Stretch="Fill"
+                    Stroke="{StaticResource PpcBorderBrush}"
+                    StrokeThickness="1.5" />
             </Grid>
-        </DataTemplate>
+          </Popup>
 
-        <DataTemplate x:Key="DataTemplateShutter">
-            <Grid Margin="4"
-                  UseLayoutRounding="True">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+          <TextBlock Margin="1"
+                     HorizontalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Very_Small}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
+            <TextBlock.Style>
+              <Style>
+                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </StackPanel>
 
-                <TextBlock Grid.ColumnSpan="2"
-                           Margin="4,0"
-                           Style="{DynamicResource VWAPP_CardSensor}"
-                           Text="{Binding ElementName=Card, Path=CardText}" />
+        <StackPanel Grid.RowSpan="3"
+                    Grid.Column="1"
+                    Margin="4,0"
+                    VerticalAlignment="Bottom"
+                    Visibility="Collapsed">
 
-                <TextBlock Grid.Row="1"
-                           Grid.RowSpan="2"
-                           Margin="4"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           FontSize="{StaticResource FontSize_Very_High}"
-                           Foreground="{DynamicResource PpcForeground}"
-                           Text="{Binding ElementName=Card, Path=CardValue}">
-                    <TextBlock.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <Trigger Property="TextBlock.Text" Value="">
-                                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-            </Grid>
-        </DataTemplate>
+          <Border Width="35"
+                  Height="35"
+                  Margin="4"
+                  BorderBrush="{DynamicResource PpcBorderBrush}"
+                  BorderThickness="{DynamicResource PpcBorderThickness}"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style>
+                <Setter Property="Border.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="{x:Null}">
+                    <Setter Property="Border.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="">
+                    <Setter Property="Border.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_High}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardBadge1}" />
+          </Border>
 
-        <local:CardTemplateSelector x:Key="selector"
-                                    EnumAxis="{StaticResource DataTemplateAxis}"
-                                    EnumBay="{StaticResource DataTemplateBay}"
-                                    EnumDrawer="{StaticResource DataTemplateDrawer}"
-                                    EnumPosition="{StaticResource DataTemplatePosition}"
-                                    EnumShutter="{StaticResource DataTemplateShutter}" />
-    </UserControl.Resources>
-    <Grid x:Name="LayoutRoot">
-        <Border Background="{DynamicResource PpcBackground}"
-                BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="{DynamicResource PpcBorderThickness}"
-                CornerRadius="{DynamicResource PpcCornerRadius}">
-            <ContentControl Content="{Binding ElementName=Card, Path=Type}"
-                            ContentTemplateSelector="{StaticResource selector}" />
+          <TextBlock HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     FontSize="{StaticResource FontSize_Very_Small}"
+                     Foreground="{DynamicResource PpcForeground}"
+                     Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
+            <TextBlock.Style>
+              <Style>
+                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="{x:Null}">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                               Value="">
+                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
 
-        </Border>
-    </Grid>
+    <DataTemplate x:Key="DataTemplateShutter">
+      <Grid Margin="4"
+            UseLayoutRounding="True">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
+                   Margin="4,0"
+                   Style="{DynamicResource VWAPP_CardSensor}"
+                   Text="{Binding ElementName=Card, Path=CardText}" />
+
+        <TextBlock Grid.Row="1"
+                   Grid.RowSpan="2"
+                   Margin="4"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="{StaticResource FontSize_Very_High}"
+                   Foreground="{DynamicResource PpcForeground}"
+                   Text="{Binding ElementName=Card, Path=CardValue}">
+          <TextBlock.Style>
+            <Style>
+              <Style.Triggers>
+                <Trigger Property="TextBlock.Text" Value="">
+                  <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+      </Grid>
+    </DataTemplate>
+
+    <local:CardTemplateSelector x:Key="selector"
+                                EnumAxis="{StaticResource DataTemplateAxis}"
+                                EnumBay="{StaticResource DataTemplateBay}"
+                                EnumDrawer="{StaticResource DataTemplateDrawer}"
+                                EnumPosition="{StaticResource DataTemplatePosition}"
+                                EnumShutter="{StaticResource DataTemplateShutter}" />
+  </UserControl.Resources>
+  <Grid x:Name="LayoutRoot">
+    <Border Background="{DynamicResource PpcBackground}"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="{DynamicResource PpcCornerRadius}">
+      <ContentControl Content="{Binding ElementName=Card, Path=Type}"
+                      ContentTemplateSelector="{StaticResource selector}" />
+
+    </Border>
+  </Grid>
 </UserControl>

@@ -36,7 +36,7 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(CardBayPosition), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardDescriptionProperty =
-                    DependencyProperty.Register(nameof(CardDescription), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardDescription), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardLuDownProperty =
             DependencyProperty.Register(nameof(CardLuDown), typeof(LoadingUnit), typeof(CardSensor));
@@ -49,6 +49,12 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public static readonly DependencyProperty CardSensorLabel3Property =
             DependencyProperty.Register(nameof(CardSensorLabel3), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty CardSensorLabel4Property =
+            DependencyProperty.Register(nameof(CardSensorLabel4), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty CardSensorLabel5Property =
+            DependencyProperty.Register(nameof(CardSensorLabel5), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardTextProperty =
             DependencyProperty.Register(nameof(CardText), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
@@ -66,20 +72,26 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(LuHeight), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty LuWeightProperty =
-                    DependencyProperty.Register(nameof(LuWeight), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(LuWeight), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         [Browsable(false)]
         public static readonly DependencyProperty MachineServiceProperty =
             DependencyProperty.Register(nameof(MachineService), typeof(IMachineService), typeof(CardSensor));
 
         public static readonly DependencyProperty Sensor1Property =
-                    DependencyProperty.Register(nameof(Sensor1), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(Sensor1), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
         public static readonly DependencyProperty Sensor2Property =
             DependencyProperty.Register(nameof(Sensor2), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
         public static readonly DependencyProperty Sensor3Property =
             DependencyProperty.Register(nameof(Sensor3), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty Sensor4Property =
+            DependencyProperty.Register(nameof(Sensor4), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty Sensor5Property =
+            DependencyProperty.Register(nameof(Sensor5), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
         #endregion
 
@@ -200,6 +212,18 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(CardSensorLabel3Property, value);
         }
 
+        public string CardSensorLabel4
+        {
+            get => (string)this.GetValue(CardSensorLabel4Property);
+            set => this.SetValue(CardSensorLabel4Property, value);
+        }
+
+        public string CardSensorLabel5
+        {
+            get => (string)this.GetValue(CardSensorLabel5Property);
+            set => this.SetValue(CardSensorLabel5Property, value);
+        }
+
         public string CardText
         {
             get => (string)this.GetValue(CardTextProperty);
@@ -247,6 +271,18 @@ namespace Ferretto.VW.App.Controls.Controls
         }
 
         public bool Sensor3
+        {
+            get => (bool)this.GetValue(Sensor1Property);
+            set => this.SetValue(Sensor1Property, value);
+        }
+
+        public bool Sensor4
+        {
+            get => (bool)this.GetValue(Sensor1Property);
+            set => this.SetValue(Sensor1Property, value);
+        }
+
+        public bool Sensor5
         {
             get => (bool)this.GetValue(Sensor1Property);
             set => this.SetValue(Sensor1Property, value);
