@@ -632,8 +632,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case Axis.Horizontal:
                     {
                         var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
-                        if (axis.HomingAcceleration == 0
-                            || axis.HomingFastSpeed == 0
+                        if (axis.HomingFastSpeed == 0
                             || axis.HomingCreepSpeed == 0
                             || axis.HomingFastSpeed < axis.HomingCreepSpeed
                             )
@@ -670,8 +669,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         }
 
                         axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
-                        if (axis.HomingAcceleration == 0
-                            || axis.HomingFastSpeed == 0
+                        if (axis.HomingFastSpeed == 0
                             || axis.HomingCreepSpeed == 0
                             || axis.HomingFastSpeed < axis.HomingCreepSpeed
                             )
