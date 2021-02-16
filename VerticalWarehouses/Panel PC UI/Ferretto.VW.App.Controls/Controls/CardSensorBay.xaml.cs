@@ -204,6 +204,16 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.machineStatusChangesToken = null;
             }
 
+            if (this.subscriptionToken != null)
+            {
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
+                    .Unsubscribe(this.subscriptionToken);
+
+                this.subscriptionToken.Dispose();
+                this.subscriptionToken = null;
+            }
+
             this.eventAggregator = null;
             this.sensorsService = null;
             this.machineService = null;
@@ -272,52 +282,17 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            switch (this.machineService.Bay.Number)
+            if (this.machineService.Bay.IsDouble && this.machineService.Bay.IsExternal)
             {
-                case MAS.AutomationService.Contracts.BayNumber.BayOne:
-                    if (this.machineService.Bay.IsDouble && this.machineService.Bay.IsExternal)
-                    {
-                        this.Sensor4 = this.sensorsService.Sensors.TrolleyOptionBay1;
-                        this.Sensor5 = this.sensorsService.Sensors.RobotOptionBay1;
-                        this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
-                        this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
-                    }
-                    else
-                    {
-                        this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
-                        this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
-                    }
-                    break;
-
-                case MAS.AutomationService.Contracts.BayNumber.BayTwo:
-                    if (this.machineService.Bay.IsDouble && this.machineService.Bay.IsExternal)
-                    {
-                        this.Sensor4 = this.sensorsService.Sensors.TrolleyOptionBay2;
-                        this.Sensor5 = this.sensorsService.Sensors.RobotOptionBay2;
-                        this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
-                        this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
-                    }
-                    else
-                    {
-                        this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
-                        this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
-                    }
-                    break;
-
-                case MAS.AutomationService.Contracts.BayNumber.BayThree:
-                    if (this.machineService.Bay.IsDouble && this.machineService.Bay.IsExternal)
-                    {
-                        this.Sensor4 = this.sensorsService.Sensors.TrolleyOptionBay3;
-                        this.Sensor5 = this.sensorsService.Sensors.RobotOptionBay3;
-                        this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
-                        this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
-                    }
-                    else
-                    {
-                        this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
-                        this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
-                    }
-                    break;
+                this.Sensor4 = this.sensorsService.BayTrolleyOption;
+                this.Sensor5 = this.sensorsService.BayRobotOption;
+                this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
+                this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
+            }
+            else
+            {
+                this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
+                this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
             }
         }
 

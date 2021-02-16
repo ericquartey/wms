@@ -601,31 +601,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (this.MachineService.Bay.IsDouble)
             {
-                if (this.MachineService.BayNumber == BayNumber.BayOne)
-                {
-                    return
-                        this.CanBaseExecute() &&
+                return this.CanBaseExecute() &&
                         !this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.RobotOptionBay1 &&
-                        !this.SensorsService.Sensors.LUPresentInBay1;
-                }
-                else if (this.MachineService.BayNumber == BayNumber.BayTwo)
-                {
-                    return
-                        this.CanBaseExecute() &&
-                        !this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.RobotOptionBay2 &&
-                        !this.SensorsService.Sensors.LUPresentInBay2;
-                }
-                else if (this.MachineService.BayNumber == BayNumber.BayThree)
-                {
-                    return
-                        this.CanBaseExecute() &&
-                        !this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.RobotOptionBay3 &&
-                        !this.SensorsService.Sensors.LUPresentInBay3;
-                }
-                return false;
+                        !this.SensorsService.BayRobotOption &&
+                        !this.SensorsService.IsLoadingUnitInBay;
             }
             else
             {
@@ -639,31 +618,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (this.MachineService.Bay.IsDouble)
             {
-                if (this.MachineService.BayNumber == BayNumber.BayOne)
-                {
-                    return
-                        this.CanBaseExecute() &&
+                return this.CanBaseExecute() &&
                         !this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.RobotOptionBay1 &&
-                        !this.SensorsService.Sensors.LUPresentInBay1;
-                }
-                else if (this.MachineService.BayNumber == BayNumber.BayTwo)
-                {
-                    return
-                        this.CanBaseExecute() &&
-                        !this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.RobotOptionBay2 &&
-                        !this.SensorsService.Sensors.LUPresentInBay2;
-                }
-                else if (this.MachineService.BayNumber == BayNumber.BayThree)
-                {
-                    return
-                        this.CanBaseExecute() &&
-                        !this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.RobotOptionBay3 &&
-                        !this.SensorsService.Sensors.LUPresentInBay3;
-                }
-                return false;
+                        !this.SensorsService.BayRobotOption &&
+                        !this.SensorsService.IsLoadingUnitInBay;
             }
             else
             {
@@ -677,31 +635,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (this.MachineService.Bay.IsDouble)
             {
-                if (this.MachineService.BayNumber == BayNumber.BayOne)
-                {
-                    return
-                        this.CanBaseExecute() &&
+                return this.CanBaseExecute() &&
                         this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.TrolleyOptionBay1 &&
-                        !this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
-                }
-                else if (this.MachineService.BayNumber == BayNumber.BayTwo)
-                {
-                    return
-                        this.CanBaseExecute() &&
-                        this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.TrolleyOptionBay2 &&
-                        !this.SensorsService.Sensors.LUPresentMiddleBottomBay2;
-                }
-                else if (this.MachineService.BayNumber == BayNumber.BayThree)
-                {
-                    return
-                        this.CanBaseExecute() &&
-                        this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.TrolleyOptionBay3 &&
-                        !this.SensorsService.Sensors.LUPresentMiddleBottomBay3;
-                }
-                return false;
+                        !this.SensorsService.BayTrolleyOption &&
+                        !this.SensorsService.IsLoadingUnitInMiddleBottomBay;
             }
             else
             {
@@ -714,31 +651,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (this.MachineService.Bay.IsDouble)
             {
-                if (this.MachineService.BayNumber == BayNumber.BayOne)
-                {
-                    return
-                        this.CanBaseExecute() &&
+                return this.CanBaseExecute() &&
                         this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.TrolleyOptionBay1 &&
-                        !this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
-                }
-                else if (this.MachineService.BayNumber == BayNumber.BayTwo)
-                {
-                    return
-                        this.CanBaseExecute() &&
-                        this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.TrolleyOptionBay2 &&
-                        !this.SensorsService.Sensors.LUPresentMiddleBottomBay2;
-                }
-                else if (this.MachineService.BayNumber == BayNumber.BayThree)
-                {
-                    return
-                        this.CanBaseExecute() &&
-                        this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.Sensors.TrolleyOptionBay3 &&
-                        !this.SensorsService.Sensors.LUPresentMiddleBottomBay3;
-                }
-                return false;
+                        !this.SensorsService.BayTrolleyOption &&
+                        !this.SensorsService.IsLoadingUnitInMiddleBottomBay;
             }
             else
             {
