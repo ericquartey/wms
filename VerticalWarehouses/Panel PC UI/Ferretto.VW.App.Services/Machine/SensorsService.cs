@@ -124,6 +124,14 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        public bool BEDInternalBayTop => this.BayTrolleyOption;
+
+        public bool BEDInternalBayBottom => this.IsLoadingUnitInMiddleBottomBay;
+
+        public bool BEDExternalBayTop => this.BayRobotOption;
+
+        public bool BEDExternalBayBottom => this.IsLoadingUnitInBay;
+
         public bool BayTrolleyOption
         {
             get
