@@ -448,18 +448,44 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanMoveExtBayForExtraction()
         {
-            return
+            if (this.MachineService.Bay.IsDouble)
+            {
+                return
                 !this.IsExecutingProcedure &&
                 !this.SensorsService.BayZeroChain &&
-                !this.IsExternalBayMoving;
+                !this.IsExternalBayMoving &&
+                !this.SensorsService.BEDInternalBayBottom &&
+                !this.SensorsService.BEDInternalBayTop;
+            }
+            else
+            {
+                return
+                !this.IsExecutingProcedure &&
+                !this.SensorsService.BayZeroChain &&
+                !this.IsExternalBayMoving &&
+                !this.SensorsService.IsLoadingUnitInMiddleBottomBay;
+            }
         }
 
         private bool CanMoveExtBayForInsertion()
         {
-            return
+            if (this.MachineService.Bay.IsDouble)
+            {
+                return
                 !this.IsExecutingProcedure &&
                 !this.SensorsService.BayZeroChain &&
-                !this.IsExternalBayMoving;
+                !this.IsExternalBayMoving &&
+                !this.SensorsService.BEDInternalBayBottom &&
+                !this.SensorsService.BEDInternalBayTop;
+            }
+            else
+            {
+                return
+                !this.IsExecutingProcedure &&
+                !this.SensorsService.BayZeroChain &&
+                !this.IsExternalBayMoving &&
+                !this.SensorsService.IsLoadingUnitInMiddleBottomBay;
+            }
         }
 
         private bool CanMoveExtBayTowardOperator()

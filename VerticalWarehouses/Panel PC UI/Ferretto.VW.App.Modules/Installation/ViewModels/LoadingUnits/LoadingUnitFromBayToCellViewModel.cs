@@ -68,14 +68,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             // Load from InBay only if bay is carousel
             var checkP2 = this.SensorsService.IsLoadingUnitInBay && (this.MachineService.HasCarousel);
             // Load from InBay only if bay is double and Bay selected position is upper
-            var checkP3 = this.SensorsService.IsLoadingUnitInBay && this.MachineService.Bay.IsDouble && this.IsPositionUpSelected;
+            var checkP3 = this.SensorsService.IsLoadingUnitInBay && this.MachineService.Bay.IsDouble && this.IsPositionUpSelected && !this.MachineService.Bay.IsExternal;
             // Load from MiddleBottomBay only if bay is double and Bay selected position is lower
-            var checkP4 = this.SensorsService.IsLoadingUnitInMiddleBottomBay && this.MachineService.Bay.IsDouble && this.IsPositionDownSelected;
+            var checkP4 = this.SensorsService.IsLoadingUnitInMiddleBottomBay && this.MachineService.Bay.IsDouble && this.IsPositionDownSelected && !this.MachineService.Bay.IsExternal;
             // Load from MiddleBottomBay only if bay is not carousel, bay is not double and Bay first position is NOT upper
             var checkP5 = this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
                 !this.MachineService.HasCarousel &&
                 !this.MachineService.Bay.IsDouble &&
                 !this.MachineService.BayFirstPositionIsUpper;
+            // Load from MiddleBottomBay only if bay is not carousel, not single and is external
+            var checkP6 = this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
+                !this.MachineService.HasCarousel &&
+                this.MachineService.Bay.IsDouble &&
+                this.MachineService.Bay.IsExternal;
 
             switch (this.MachineService.BayNumber)
             {
@@ -84,7 +89,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
-                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5 || checkP6) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
 
@@ -92,7 +97,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual2 &&
-                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5 || checkP6) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
 
@@ -100,7 +105,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual3 &&
-                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5) &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5 || checkP6) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
             }
