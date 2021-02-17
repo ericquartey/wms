@@ -83,7 +83,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsDrawerInBay1ExternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
 
+        public bool IsDrawerInBay1InternalBottom => this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1];
+
         public bool IsDrawerInBay1InternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
+
+        public bool IsDrawerInBay1InternalTop => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1];
 
         public bool IsDrawerInBay1Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay1];
 
@@ -91,7 +95,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsDrawerInBay2ExternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
 
+        public bool IsDrawerInBay2InternalBottom => this.sensorStatus[(int)IOMachineSensors.RobotOptionBay2];
+
         public bool IsDrawerInBay2InternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay2];
+
+        public bool IsDrawerInBay2InternalTop => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay2];
 
         public bool IsDrawerInBay2Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay2];
 
@@ -99,7 +107,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsDrawerInBay3ExternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
 
+        public bool IsDrawerInBay3InternalBottom => this.sensorStatus[(int)IOMachineSensors.RobotOptionBay3];
+
         public bool IsDrawerInBay3InternalPosition => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay3];
+
+        public bool IsDrawerInBay3InternalTop => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay3];
 
         public bool IsDrawerInBay3Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
 
@@ -215,19 +227,37 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public bool IsDrawerInBayInternalPosition(BayNumber bayNumber)
+        public bool IsDrawerInBayInternalPosition(BayNumber bayNumber, bool isDouble)
         {
-            switch (bayNumber)
+            if (isDouble)
             {
-                default:
-                case BayNumber.BayOne:
-                    return this.IsDrawerInBay1InternalPosition;
+                switch (bayNumber)
+                {
+                    default:
+                    case BayNumber.BayOne:
+                        return this.IsDrawerInBay1InternalTop || this.IsDrawerInBay1InternalBottom;
 
-                case BayNumber.BayTwo:
-                    return this.IsDrawerInBay2InternalPosition;
+                    case BayNumber.BayTwo:
+                        return this.IsDrawerInBay2InternalTop || this.IsDrawerInBay2InternalBottom;
 
-                case BayNumber.BayThree:
-                    return this.IsDrawerInBay3InternalPosition;
+                    case BayNumber.BayThree:
+                        return this.IsDrawerInBay3InternalTop || this.IsDrawerInBay3InternalBottom;
+                }
+            }
+            else
+            {
+                switch (bayNumber)
+                {
+                    default:
+                    case BayNumber.BayOne:
+                        return this.IsDrawerInBay1InternalPosition;
+
+                    case BayNumber.BayTwo:
+                        return this.IsDrawerInBay2InternalPosition;
+
+                    case BayNumber.BayThree:
+                        return this.IsDrawerInBay3InternalPosition;
+                }
             }
         }
 
