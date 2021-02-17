@@ -60,6 +60,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MachineErrorCode CanElevatorDeposit(BayNumber bayNumber)    /*BayPosition bayPosition*/
         {
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
             /*var bayNumber = bayPosition.Bay.Number;*/
             var returnValue = MachineErrorCode.NoError;
             // Check the zero sensor
@@ -70,7 +71,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             else
             {
                 // Check if bay is fully
-                if (this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber) ||
+                if (this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble) ||
                     this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber))
                 {
                     returnValue = MachineErrorCode.ExternalBayOccupied;
@@ -82,6 +83,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MachineErrorCode CanElevatorPickup(BayNumber bayNumber)   /*BayPosition bayPosition*/
         {
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
             /*var bayNumber = bayPosition.Bay.Number;*/
             var returnValue = MachineErrorCode.NoError;
             // Check the zero sensor
@@ -92,7 +94,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             else
             {
                 // Check if bay is emptied
-                if (!this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber))
+                if (!this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble))
                 {
                     returnValue = MachineErrorCode.ExternalBayEmpty;
                 }
@@ -121,7 +123,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // Check the position of loading unit onto the bay and the given movement direction
             var isLoadingUnitInExternalPosition = this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber);
-            var isLoadingUnitInInternalPosition = this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber);
+            var isLoadingUnitInInternalPosition = this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
 
             switch (direction)
             {
@@ -192,8 +194,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsInternalPositionOccupied(BayNumber bayNumber)
         {
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
             var val = this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) &&
-                this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber);
+                this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
             return val;
         }
 

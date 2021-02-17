@@ -79,8 +79,6 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private ISensorsService sensorsService;
 
-        private SubscriptionToken subscriptionToken;
-
         #endregion
 
         #region Constructors
@@ -204,16 +202,6 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.machineStatusChangesToken = null;
             }
 
-            if (this.subscriptionToken != null)
-            {
-                this.eventAggregator
-                    .GetEvent<PubSubEvent<NavigationCompletedEventArgs>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken.Dispose();
-                this.subscriptionToken = null;
-            }
-
             this.eventAggregator = null;
             this.sensorsService = null;
             this.machineService = null;
@@ -239,11 +227,19 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.CardSensorLabel5 = Localized.Get("InstallationApp.InternalDown");
                 this.CardSensorLabel2 = Localized.Get("OperatorApp.Up");
                 this.CardSensorLabel3 = Localized.Get("OperatorApp.Down");
+
+                this.Sensor4 = this.sensorsService.BEDInternalBayTop;
+                this.Sensor5 = this.sensorsService.BEDInternalBayBottom;
+                this.Sensor2 = this.sensorsService.BEDExternalBayTop;
+                this.Sensor3 = this.sensorsService.BEDExternalBayBottom;
             }
             else if (this.machineService.Bay.IsDouble)
             {
                 this.CardSensorLabel2 = Localized.Get("OperatorApp.Up");
                 this.CardSensorLabel3 = Localized.Get("OperatorApp.Down");
+
+                this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
+                this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
             }
             else
             {
@@ -251,16 +247,23 @@ namespace Ferretto.VW.App.Controls.Controls
                 {
                     this.CardSensorLabel2 = Localized.Get("OperatorApp.Bay");
                     this.CardSensorLabel3 = null;
+
+                    this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
                 }
                 else
                 {
                     this.CardSensorLabel2 = null;
                     this.CardSensorLabel3 = Localized.Get("OperatorApp.Bay");
+
+                    this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
                 }
                 if (this.machineService.Bays.Any(f => f.IsExternal))
                 {
                     this.CardSensorLabel2 = Localized.Get("InstallationApp.ExternalBayShort");
                     this.CardSensorLabel3 = Localized.Get("InstallationApp.InternalBayShort");
+
+                    this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
+                    this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
                 }
             }
 
@@ -280,22 +283,6 @@ namespace Ferretto.VW.App.Controls.Controls
             return Task.CompletedTask;
         }
 
-        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
-        {
-            if (this.machineService.Bay.IsDouble && this.machineService.Bay.IsExternal)
-            {
-                this.Sensor4 = this.sensorsService.BayTrolleyOption;
-                this.Sensor5 = this.sensorsService.BayRobotOption;
-                this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
-                this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
-            }
-            else
-            {
-                this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
-                this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
-            }
-        }
-
         private void SubscribeToEvents()
         {
             this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
@@ -309,16 +296,6 @@ namespace Ferretto.VW.App.Controls.Controls
                         async (m) => await this.OnMachineStatusChangedAsync(m),
                         ThreadOption.UIThread,
                         false);
-
-            this.subscriptionToken = this.subscriptionToken
-                ??
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data?.SensorsStates != null);
         }
 
         #endregion

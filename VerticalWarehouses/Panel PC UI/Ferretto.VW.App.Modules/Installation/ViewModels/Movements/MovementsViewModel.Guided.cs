@@ -603,8 +603,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 return this.CanBaseExecute() &&
                         !this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.BayRobotOption &&
-                        !this.SensorsService.IsLoadingUnitInBay;
+                        !this.SensorsService.BEDInternalBayBottom &&
+                        !this.SensorsService.BEDExternalBayTop;
             }
             else
             {
@@ -620,8 +620,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 return this.CanBaseExecute() &&
                         !this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.BayRobotOption &&
-                        !this.SensorsService.IsLoadingUnitInBay;
+                        !this.SensorsService.BEDInternalBayBottom &&
+                        !this.SensorsService.BEDExternalBayTop;
             }
             else
             {
@@ -637,8 +637,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 return this.CanBaseExecute() &&
                         this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.BayTrolleyOption &&
-                        !this.SensorsService.IsLoadingUnitInMiddleBottomBay;
+                        !this.SensorsService.BEDExternalBayBottom &&
+                        !this.SensorsService.BEDInternalBayTop;
             }
             else
             {
@@ -653,8 +653,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 return this.CanBaseExecute() &&
                         this.SensorsService.BayZeroChain &&
-                        !this.SensorsService.BayTrolleyOption &&
-                        !this.SensorsService.IsLoadingUnitInMiddleBottomBay;
+                        !this.SensorsService.BEDExternalBayBottom &&
+                        !this.SensorsService.BEDInternalBayTop;
             }
             else
             {

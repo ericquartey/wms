@@ -521,7 +521,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.RequiredCycles = procedureParameters.RequiredCycles;
                 this.PerformedCycles = procedureParameters.PerformedCycles;
-                this.CyclesPercent = (this.PerformedCycles / this.RequiredCycles) * 100;
+
+                if(this.RequiredCycles != 0)
+                {
+                    this.CyclesPercent = (this.PerformedCycles / this.RequiredCycles) * 100;
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
