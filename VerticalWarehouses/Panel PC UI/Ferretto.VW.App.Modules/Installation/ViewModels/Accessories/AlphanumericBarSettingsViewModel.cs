@@ -296,6 +296,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+                await this.deviceDriver.EnabledAsync(false);
                 if (this.deviceDriver.TestEnabled)
                 {
                     await this.deviceDriver.TestAsync(false);
@@ -342,16 +343,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
 
+                this.Logger.Debug($"DoTestMessageOnAsync; message {message}");
+
+                await this.deviceDriver.EnabledAsync(false);
+
                 if (this.deviceDriver.TestEnabled)
                 {
                     await this.deviceDriver.TestAsync(false);
                 }
 
-                this.Logger.Debug($"DoTestMessageOnAsync; message {message}");
-
-                await this.deviceDriver.EnabledAsync(false);
-
-                return await this.deviceDriver.SetAndWriteMessageAsync(message, offset, true);
+                this.deviceDriver.GetOffsetArrowAndMessage(offset, message, out var offsetArrow, out var offsetMessage);
+                await this.deviceDriver.SetAndWriteArrowAsync(offsetArrow, true);
+                return await this.deviceDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
             }
             catch (Exception ex)
             {
