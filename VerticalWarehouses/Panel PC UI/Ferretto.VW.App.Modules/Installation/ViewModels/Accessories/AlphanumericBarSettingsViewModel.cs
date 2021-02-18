@@ -233,6 +233,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.Port = bayAccessories.AlphaNumericBar.TcpPort;
                     this.Size = bayAccessories.AlphaNumericBar.Size;
                     this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+                    if (this.IsAccessoryEnabled)
+                    {
+                        await this.deviceDriver.ConnectAsync();
+                    }
+                    else
+                    {
+                        this.deviceDriver.Disconnect();
+                    }
 
                     this.SetDeviceInformation(bayAccessories.AlphaNumericBar.DeviceInformation);
 

@@ -11,9 +11,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         int NumberOfLeds { get; }
 
-        bool TestEnabled { get; }
         string SelectedMessage { get; set; }
+
         double? SelectedPosition { get; set; }
+
+        bool TestEnabled { get; }
 
         #endregion
 
@@ -29,9 +31,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false);
 
+        Task ConnectAsync();
+
         Task<bool> CustomAsync(string hexval);
 
         Task<bool> DimAsync(int dimension);
+
+        void Disconnect();
 
         Task<bool> EnabledAsync(bool value, bool force = true);
 

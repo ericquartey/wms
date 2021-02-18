@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Accessories
                     var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
 
                     this.laserPointerDriver.Configure(ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
-                    await this.laserPointerDriver.ConnectAsync(ipAddress, port);
+                    await this.laserPointerDriver.ConnectAsync();
                 }
                 else
                 {

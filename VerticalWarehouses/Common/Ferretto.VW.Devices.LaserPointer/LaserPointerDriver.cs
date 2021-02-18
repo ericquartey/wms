@@ -136,11 +136,8 @@ namespace Ferretto.VW.Devices.LaserPointer
             return true;
         }
 
-        public async Task ConnectAsync(IPAddress ipAddress, int port)
+        public async Task ConnectAsync()
         {
-            this.ipAddress = ipAddress;
-            this.port = port;
-
             try
             {
                 if (this.client is null)
@@ -150,10 +147,11 @@ namespace Ferretto.VW.Devices.LaserPointer
                 }
                 if (!this.IsConnected)
                 {
-                    this.logger.Debug($"Connect");
+                    this.logger.Trace($"Connect");
                     this.client.SendTimeout = this.tcpTimeout;
                     await this.client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
                     this.stream = this.client.GetStream();
+                    this.logger.Debug($"Connected");
                 }
             }
             catch (Exception e)
@@ -508,7 +506,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             var result = false;
             if (!this.IsConnected)
             {
-                await this.ConnectAsync(this.ipAddress, this.port);
+                await this.ConnectAsync();
             }
 
             if (this.IsConnected)
@@ -548,6 +546,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                                 //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
                                 this.messagesReceivedQueue.Enqueue("");
                             }
+                            System.Threading.Thread.Sleep(20);
                         }
                         else
                         {
@@ -559,6 +558,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                 }
                 catch (Exception e)
                 {
+                    this.ClearConcurrentQueue(this.messagesToBeSendQueue);
                     this.logger.Error(e);
                     this.Disconnect();
                 }
@@ -610,7 +610,9 @@ namespace Ferretto.VW.Devices.LaserPointer
             }
             else if (msgSend.StartsWith("TEST", StringComparison.Ordinal))
             {
-                if (msgReceive.StartsWith("TEST", StringComparison.Ordinal))
+                if (msgReceive.StartsWith("TEST", StringComparison.Ordinal) ||
+                    msgReceive.StartsWith("OK", StringComparison.Ordinal)
+                    )
                 {
                     result = true;
                 }
@@ -648,7 +650,6 @@ namespace Ferretto.VW.Devices.LaserPointer
 
             if (message.StartsWith("CLEAR", StringComparison.Ordinal)
                 || message.StartsWith("ENABLE", StringComparison.Ordinal)
-                || message.StartsWith("TEST OFF", StringComparison.Ordinal)
                 || message.StartsWith("LASER OFF", StringComparison.Ordinal)
                 || message.StartsWith("MOVE", StringComparison.Ordinal)
                 )

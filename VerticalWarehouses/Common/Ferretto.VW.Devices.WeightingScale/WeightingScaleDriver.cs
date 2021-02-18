@@ -71,9 +71,11 @@ namespace Ferretto.VW.Devices.WeightingScale
                 }
                 if (!this.IsConnected)
                 {
+                    this.logger.Trace($"Connect");
                     this.client.SendTimeout = this.tcpTimeout;
                     await this.client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
                     this.stream = this.client.GetStream();
+                    this.logger.Debug($"Connected");
                 }
             }
             catch (Exception e)

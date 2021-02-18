@@ -14,7 +14,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0);
 
-        Task ConnectAsync(IPAddress ipAddress, int port);
+        Task ConnectAsync();
 
         void Disconnect();
 

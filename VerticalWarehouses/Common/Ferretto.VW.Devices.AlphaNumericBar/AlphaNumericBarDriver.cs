@@ -32,6 +32,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private bool barEnabled;
 
+        private TcpClient client;
+
         private IPAddress ipAddress;
 
         private int ledHideOnLeftSide;
@@ -40,12 +42,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private double loadingUnitWidth;
 
+        private AlphaNumericBarSize size = AlphaNumericBarSize.ExtraLarge;
+
+        private NetworkStream stream = null;
+
         //private string selectedMessage;
 
         //private double? selectedPosition;
-
-        private AlphaNumericBarSize size = AlphaNumericBarSize.ExtraLarge;
-
         private bool testEnabled;
 
         private bool testScrollEnabled;
@@ -55,6 +58,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         #region Properties
 
         public IPAddress IpAddress => this.ipAddress;
+
+        public bool IsConnected => this.client?.Connected ?? false;
 
         public ConcurrentQueue<string> MessagesReceived => this.messagesReceivedQueue;
 
@@ -204,6 +209,31 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
         }
 
+        public async Task ConnectAsync()
+        {
+            try
+            {
+                if (this.client is null)
+                {
+                    this.client = new TcpClient();
+                    this.stream = null;
+                }
+                if (!this.IsConnected)
+                {
+                    this.logger.Trace($"Connect");
+                    this.client.SendTimeout = this.tcpTimeout;
+                    await this.client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
+                    this.stream = this.client.GetStream();
+                    this.logger.Debug($"Connected");
+                }
+            }
+            catch (Exception e)
+            {
+                this.logger.Error(e);
+                this.Disconnect();
+            }
+        }
+
         /// <summary>
         /// Send a CUSTOM command.
         /// </summary>
@@ -225,6 +255,21 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             this.ClearConcurrentQueue(this.errorsQueue);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.DIM, null, dimension);
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+        }
+
+        public void Disconnect()
+        {
+            try
+            {
+                this.logger.Debug($"Disconnect");
+                this.stream?.Close();
+                this.client?.Close();
+                this.client = null;
+            }
+            catch (Exception e)
+            {
+                this.logger.Error(e);
+            }
         }
 
         /// <summary>
@@ -723,6 +768,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 case AlphaNumericBarCommands.Command.ENABLE_OFF:
                     strCommand = "ENABLE OFF";
                     this.barEnabled = false;
+                    this.testEnabled = false;
                     break;
 
                 case AlphaNumericBarCommands.Command.TEST_ON:                   // deprecated, not use
@@ -802,46 +848,34 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         private async Task<bool> ExecuteCommandsAsync()
         {
             var result = false;
-            try
+            if (!this.IsConnected)
             {
-                this.ClearConcurrentQueue(this.messagesReceivedQueue);
-                this.ClearConcurrentQueue(this.errorsQueue);
-                var client = new TcpClient();
-                NetworkStream stream = null;
+                await this.ConnectAsync();
+            }
 
-                while (!this.messagesToBeSendQueue.IsEmpty)
+            if (this.IsConnected)
+            {
+                try
                 {
-                    if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
-                    {
-                        try
-                        {
-                            if (!client.Connected)
-                            {
-                                this.logger.Debug($"ExecuteCommands();Connect");
-                                client.SendTimeout = this.tcpTimeout;
-                                if (this.IpAddress != null)
-                                {
-                                    await client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                                stream = client.GetStream();
-                            }
+                    this.ClearConcurrentQueue(this.messagesReceivedQueue);
+                    this.ClearConcurrentQueue(this.errorsQueue);
 
+                    while (!this.messagesToBeSendQueue.IsEmpty)
+                    {
+                        if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
+                        {
                             this.logger.Trace($"ExecuteCommands();Write");
                             var data = Encoding.ASCII.GetBytes(sendMessage);
-                            stream = client.GetStream();
-                            stream.ReadTimeout = this.tcpTimeout;
-                            stream.WriteTimeout = this.tcpTimeout;
-                            stream.Write(data, 0, data.Length);
+                            this.stream = this.client.GetStream();
+                            this.stream.ReadTimeout = this.tcpTimeout * 2;
+                            this.stream.WriteTimeout = this.tcpTimeout;
+                            this.stream.Write(data, 0, data.Length);
                             this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
 
                             if (this.IsWaitResponse(sendMessage))
                             {
-                                data = new byte[client.ReceiveBufferSize];
-                                var bytes = stream.Read(data, 0, data.Length);
+                                data = new byte[this.client.ReceiveBufferSize];
+                                var bytes = this.stream.Read(data, 0, data.Length);
                                 var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
 
                                 this.messagesReceivedQueue.Enqueue(responseMessage);
@@ -856,29 +890,24 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                                 //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
                                 this.messagesReceivedQueue.Enqueue("");
                             }
+                            System.Threading.Thread.Sleep(20);
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            this.logger.Error(ex);
-                            this.logger.Debug($"ExecuteCommands();Error: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-                            this.errorsQueue.Enqueue(ex.Message);
+                            this.logger.Debug("queue locked");
+                            System.Threading.Thread.Sleep(100);
                         }
                     }
-                    else
-                    {
-                        this.logger.Debug("queue locked");
-                        System.Threading.Thread.Sleep(100);
-                    }
+
+                    result = true;
                 }
-
-                stream?.Close();
-                client?.Close();
-
-                result = this.errorsQueue.IsEmpty;
-            }
-            catch (Exception ex)
-            {
-                this.logger.Error(ex);
+                catch (Exception e)
+                {
+                    this.ClearConcurrentQueue(this.messagesToBeSendQueue);
+                    this.logger.Error(e);
+                    this.Disconnect();
+                    System.Threading.Thread.Sleep(100);
+                }
             }
 
             return result;
@@ -949,12 +978,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 return false;
             }
 
-            if (message.StartsWith("CLEAR", StringComparison.Ordinal)
-                || message.StartsWith("ENABLE", StringComparison.Ordinal)
-                || message.StartsWith("TEST OFF", StringComparison.Ordinal)
-                || message.StartsWith("SCROLL OFF", StringComparison.Ordinal)
-                || message.StartsWith("CSTSET", StringComparison.Ordinal)
-                )
+            if (message.StartsWith("TEST OFF", StringComparison.Ordinal))
             {
                 result = false;
             }

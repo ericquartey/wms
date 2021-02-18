@@ -76,8 +76,10 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         #region Methods
 
-        public Task StartAsync()
+        public async Task StartAsync()
         {
+            await this.AlphaNumericBarConfigureAsync();
+
             this.missionToken = this.missionToken
             ??
             this.eventAggregator
@@ -95,8 +97,6 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     async e => await this.OnSocketLinkAlphaNumericBarChangeAsync(e),
                     ThreadOption.BackgroundThread,
                     false);
-
-            return Task.CompletedTask;
         }
 
         public async Task StopAsync()
@@ -132,9 +132,11 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     var bay = await this.bayManager.GetBayAsync();
 
                     this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal);
+                    await this.alphaNumericBarDriver.ConnectAsync();
                 }
                 else
                 {
+                    this.alphaNumericBarDriver.Disconnect();
                     this.alphaNumericBarDriver = null;
                 }
             }
@@ -230,21 +232,32 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         {
                             this.alphaNumericBarDriver.SelectedPosition = compartmentSelected.XPosition;
                             this.alphaNumericBarDriver.SelectedMessage = message;
-                            this.logger.Debug($"OnMissionChangeAsync; SelectedPosition {this.alphaNumericBarDriver.SelectedPosition}; message {this.alphaNumericBarDriver.SelectedMessage}");
+                            this.logger.Debug($"OnMissionChangeAsync; SelectedPosition {compartmentSelected.XPosition}; message {message}");
 
                             if (!await this.alphaNumericBarDriver.EnabledAsync(false))
                             {
-                                // retry
-                                await this.alphaNumericBarDriver.EnabledAsync(false);
+                                this.logger.Debug($"retry enable off");
+                                if (!await this.alphaNumericBarDriver.EnabledAsync(false))
+                                {
+                                    this.alphaNumericBarDriver.SelectedMessage = null;
+                                    return;
+                                }
                             }
 
                             this.alphaNumericBarDriver.GetOffsetArrowAndMessageFromCompartment(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value, message, out offsetArrow, out offsetMessage);
 
-                            await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, false);
+                            if (!await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true))
+                            {
+                                this.alphaNumericBarDriver.SelectedMessage = null;
+                                return;
+                            }
 
                             if (message.Length > 0)
                             {
-                                await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                                if (!await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false))
+                                {
+                                    this.alphaNumericBarDriver.SelectedMessage = null;
+                                }
                             }
                         }
 
@@ -331,7 +344,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                         this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; set arrow {offsetArrow}");
                         await this.alphaNumericBarDriver.EnabledAsync(false);
-                        await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, false);
+                        await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
 
                         if (message.Length > 0)
                         {
