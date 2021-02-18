@@ -118,75 +118,75 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BeltBurnishingUpLimit" xml:space="preserve">
-    <value>BeltBurnishingUpLimit</value>
+    <value>Indicates the value of the upper quota required by the test. Set the value only if the field is editable.</value>
     <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingDownLimit" xml:space="preserve">
-    <value>BeltBurnishingDownLimit</value>
+    <value>Indicates the value of the lower quota required by the test. Set the value only if the field is editable.</value>
     <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
-    <value>BeltBurnishingRequiredCycles</value>
+    <value>Set the number of cycles required.</value>
     <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
-    <value>BeltBurnishingCompletedCycles</value>
+    <value>Displays the number of cycles currently completed.</value>
     <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingActualPosition" xml:space="preserve">
-    <value>BeltBurnishingActualPosition</value>
+    <value>Reports the current position of the axis.</value>
     <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingStartCycle" xml:space="preserve">
-    <value>BeltBurnishingStartCycle</value>
+    <value>Start the test. The test continues until the required number of cycles is reached or until the stop button is pressed.</value>
     <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingStopCycle" xml:space="preserve">
-    <value>BeltBurnishingStopCycle</value>
+    <value>Stop the test. The cycle stops at the end of the current movement. Pressing the cycle start button resumes test execution until completion.</value>
     <comment>Note text</comment>
   </data>
   <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
-    <value>BeltBurnishingFunctionDescription</value>
+    <value>The procedure allows to carry out a series of cycles of moving the vertical axis between two points indicated in the input data. The cycle, when started, continues either until the required cycles are reached or the end key is pressed.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
-    <value>ResolutionCalibrationFunctionDescription</value>
+    <value>The vertical axis resolution calibration function allows you to calibrate the correct value by measuring in the field, then updating the default value proposed by the system. The procedure operates in successive steps until successful completion.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
-    <value>ResolutionCalibrationInitialPositionHelp</value>
+    <value>If the field is editable, set the required initial quota.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
-    <value>ResolutionCalibrationInitialStartHelp</value>
+    <value>Indicates the measured travel from the start to the end position.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
-    <value>ResolutionCalibrationFinalPositionHelp</value>
+    <value>If the field is editable, set the final quota required.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
-    <value>ResolutionCalibrationFinalPosizionStartHelp</value>
+    <value>The button starts moving the axis to the final position previously set.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
-    <value>ResolutionCalibrationMeasuredeValueHelp</value>
+    <value>Indicates the measured travel from the start to the end position.</value>
     <comment>Note text</comment>
   </data>
   <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
-    <value>VerticalResolutionCalibrationStep1</value>
+    <value>Step 1: place axis at the initial position</value>
     <comment>Note text</comment>
   </data>
   <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
-    <value>VerticalResolutionCalibrationStep2</value>
+    <value>Step 2: place axis at the final dimension</value>
     <comment>Note text</comment>
   </data>
   <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
-    <value>VerticalResolutionCalibrationStep3</value>
+    <value>Step 3: Update the resolution to the new value</value>
     <comment>Note text</comment>
   </data>
   <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
-    <value>VerticalResolutionCalibrationStep4</value>
+    <value>Step 4: reposition axis and close the procedure</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
@@ -194,1347 +194,1347 @@
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
-    <value>ResolutionCalibrationNewResolutionHelp</value>
+    <value>Displays the new resolution value calculated by the procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
-    <value>ResolutionCalibrationAcceptNewResolution</value>
+    <value>Replaces the previous resolution value with the new calculated value.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
-    <value>ResolutionCalibrationGoToInitialPosizion</value>
+    <value>Return the axis to its initial position.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
-    <value>ResolutionCalibrationCloseProcedure</value>
+    <value>Make the origin of the axis and close the procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpInstallationStateDescription" xml:space="preserve">
-    <value>HelpInstallationStateDescription</value>
+    <value>Displays the current status of the installation. The parts already completed are highlighted in green while those to be completed or to be done are in gray. Some procedures are possible only after having correctly completed the preparatory ones.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpInstallationStateToDo" xml:space="preserve">
-    <value>HelpInstallationStateToDo</value>
+    <value>The gray indicator indicates a procedure still to be done</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpInstallationStateDone" xml:space="preserve">
-    <value>HelpInstallationStateDone</value>
+    <value>The green indicator indicates a successful procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpSSTitle" xml:space="preserve">
-    <value>HelpSSTitle</value>
+    <value>Sensor status display</value>
     <comment>Page header</comment>
   </data>
   <data name="HelpSSDescription" xml:space="preserve">
-    <value>HelpSSDescription</value>
+    <value>The gray color indicates the inactive state of the sensor.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpSSStateOn" xml:space="preserve">
-    <value>HelpSSStateOn</value>
+    <value>The green color indicates the active state of the sensor.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpSSStateOff" xml:space="preserve">
-    <value>HelpSSStateOff</value>
+    <value>The gray color indicates the inactive state of the sensor.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLSMTTitle" xml:space="preserve">
-    <value>HelpLSMTTitle</value>
+    <value>Low speed manual controls.</value>
     <comment>Page header</comment>
   </data>
   <data name="HelpLSMTDescription" xml:space="preserve">
-    <value>HelpLSMTDescription</value>
+    <value>It allows to carry out the movement of the various axes at low speed. A small movement space in both directions is set. The text of the buttons changes according to the required movement. Once the machine has been tested, it will be possible to control all the various axes at low speed without interlocks and for unlimited strokes.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpLSMTActualPosition" xml:space="preserve">
-    <value>HelpLSMTActualPosition</value>
+    <value>Indicates the current position or status for those parts that only have discrete positions.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLSMTMoveUp" xml:space="preserve">
-    <value>HelpLSMTMoveUp</value>
+    <value>Button for forward movement, upward movement or opening according to the selected part</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLSMTMoveDown" xml:space="preserve">
-    <value>HelpLSMTMoveDown</value>
+    <value>Button for moving backward, downward or closed according to the selected part</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGCDescription" xml:space="preserve">
-    <value>HelpGCDescription</value>
+    <value>It allows to carry out a series of repetitive tests for the closing damper of the selected bay. It is possible to set a waiting time between two consecutive movements. The procedure ends when the set number of cycles is reached or at the exit.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpGCRequiredCycles" xml:space="preserve">
-    <value>HelpGCRequiredCycles</value>
+    <value>Set the number of cycles required.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGCDelay" xml:space="preserve">
-    <value>HelpGCDelay</value>
+    <value>Set the delay time between two consecutive cycles.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGCCompleted" xml:space="preserve">
-    <value>HelpGCCompleted</value>
+    <value>Indicates the number of cycles currently completed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGCSensorA" xml:space="preserve">
-    <value>HelpGCSensorA</value>
+    <value>Status of sensor A of the barrier.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGCSensorB" xml:space="preserve">
-    <value>HelpGCSensorB</value>
+    <value>Status of sensor B of the barrier.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGCStartButton" xml:space="preserve">
-    <value>HelpGCStartButton</value>
+    <value>Start the start of the required tests. The button is active if the number of required cycles is greater than zero.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGCStopButton" xml:space="preserve">
-    <value>HelpGCStopButton</value>
+    <value>Stops the loop when the current move is complete. The next press of the start button resumes the test from the cycle following the one stopped.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVACDescription" xml:space="preserve">
-    <value>HelpVACDescription</value>
+    <value>The procedure allows you to make the origin of the vertical axis at the end of which the current position indicated by the offset value is set. The procedure is preparatory for the realization of other functions that require the axis movement to height.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpVACDownLimit" xml:space="preserve">
-    <value>HelpVACDownLimit</value>
+    <value>Lower movement limit.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVACUpLimit" xml:space="preserve">
-    <value>HelpVACUpLimit</value>
+    <value>Upper movement limit.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVACOffset" xml:space="preserve">
-    <value>HelpVACOffset</value>
+    <value>Current offset value. At the end of the axis origin, the current quota is set to this value.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVACResolution" xml:space="preserve">
-    <value>HelpVACResolution</value>
+    <value>Current resolution of the axis.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVACFinalResult" xml:space="preserve">
-    <value>HelpVACFinalResult</value>
+    <value>Report the final outcome of the procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVacStart" xml:space="preserve">
-    <value>HelpVacStart</value>
+    <value>Starts the vertical axis origin procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVACStop" xml:space="preserve">
-    <value>HelpVACStop</value>
+    <value>Stops the vertical axis origin procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
-    <value>ResolutionCalibrationInitialReadValueHelp</value>
+    <value>Initial value of the current position read by the meter.</value>
     <comment>Note text</comment>
   </data>
   <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
-    <value>ResolutionCalibrationFinalReadValueHelp</value>
+    <value>Final value of the current position read by the meter.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCCVDescription" xml:space="preserve">
-    <value>HelpCCVDescription</value>
+    <value>The procedure allows you to check and possibly correct the dimension of the selected cell. The correction is applied to the selected cell only.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpCCVSelectedCell" xml:space="preserve">
-    <value>HelpCCVSelectedCell</value>
+    <value>Set the cell whose dimension you want to check.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCCVCellPosition" xml:space="preserve">
-    <value>HelpCCVCellPosition</value>
+    <value>Indicates the dimension of the currently selected cell.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCCVStepValue" xml:space="preserve">
-    <value>HelpCCVStepValue</value>
+    <value>Value of the change in height during the adjustment phase.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCCVAttualPosition" xml:space="preserve">
-    <value>HelpCCVAttualPosition</value>
+    <value>Current value of the axis coordinate.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCCVCorrectionValue" xml:space="preserve">
-    <value>HelpCCVCorrectionValue</value>
+    <value>Total value of the correction to be applied.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCCVSetPosition" xml:space="preserve">
-    <value>HelpCCVSetPosition</value>
+    <value>Place the vertical axis at the selected cell.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCCVStepPiu" xml:space="preserve">
-    <value>HelpCCVStepPiu</value>
+    <value>Increases the current coordinate of the axis by the value indicated by the step.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCCVStepMeno" xml:space="preserve">
-    <value>HelpCCVStepMeno</value>
+    <value>Decreases the current coordinate of the axis by the value indicated by the step.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCCVApplyCorrection" xml:space="preserve">
-    <value>HelpCCVApplyCorrection</value>
+    <value>Step value applied to the current coordinate of the axis each time the movement buttons are pressed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMDescription" xml:space="preserve">
-    <value>HelpVPPMDescription</value>
+    <value>The procedure allows you to check the correct positioning of the various shelf door panels. Any correction is applied to all the cells belonging to the panel being tested.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpVPPMTotalPanels" xml:space="preserve">
-    <value>HelpVPPMTotalPanels</value>
+    <value>Indicates the total number of panels on the side selected by the reference cell.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMActualPanel" xml:space="preserve">
-    <value>HelpVPPMActualPanel</value>
+    <value>Indicates the currently selected panel that is being checked.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMSelectedCell" xml:space="preserve">
-    <value>HelpVPPMSelectedCell</value>
+    <value>Selected cell from which the panel to control is derived. Odd or even numbers select the front or back side.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
-    <value>HelpVPPMSelectedCellPosition</value>
+    <value>Dimension of the selected cell.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMActualPosition" xml:space="preserve">
-    <value>HelpVPPMActualPosition</value>
+    <value>Indicates the current position of the axis. It is changed by the action of the step buttons.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMStepValue" xml:space="preserve">
-    <value>HelpVPPMStepValue</value>
+    <value>Step value to use when modifying the dimension.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMCorrectionValue" xml:space="preserve">
-    <value>HelpVPPMCorrectionValue</value>
+    <value>Total value of the correction that will be applied to the dimension of the selected cell.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMNextPanel" xml:space="preserve">
-    <value>HelpVPPMNextPanel</value>
+    <value>Allows you to go to the next panel to check.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMGoToCell" xml:space="preserve">
-    <value>HelpVPPMGoToCell</value>
+    <value>Place the axis at the selected cell.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMStepPiu" xml:space="preserve">
-    <value>HelpVPPMStepPiu</value>
+    <value>Increases the current coordinate of the axis by the value indicated by the step.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMStepMeno" xml:space="preserve">
-    <value>HelpVPPMStepMeno</value>
+    <value>Decreases the current coordinate of the axis by the value indicated by the step.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVPPMApplyCorrection" xml:space="preserve">
-    <value>HelpVPPMApplyCorrection</value>
+    <value>Apply the correction to the group of cells in the currently selected panel.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGHCDescription" xml:space="preserve">
-    <value>HelpGHCDescription</value>
+    <value>The procedure allows you to adjust the drawer height detection barrier. The height reached signal must also be used in the pre-positioning phase of the test template.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpGHCVelocity" xml:space="preserve">
-    <value>HelpGHCVelocity</value>
+    <value>Set the speed to be used during the calibration phase.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGHCSystemError" xml:space="preserve">
-    <value>HelpGHCSystemError</value>
+    <value>Indicates the system error resulting from the set calibration speed and the system scan time. Reduce the speed to decrease the error.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGHCTollerance" xml:space="preserve">
-    <value>HelpGHCTollerance</value>
+    <value>Sets the maximum tolerance allowed in the measurement. The test fails if the result exceeds the required value.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGHCHeightReached" xml:space="preserve">
-    <value>HelpGHCHeightReached</value>
+    <value>Indicates the activation of the beam used as a height verification element.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGHCCurrentPosition" xml:space="preserve">
-    <value>HelpGHCCurrentPosition</value>
+    <value>Returns the current position of the chain axis.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGHCBarrierCorrection" xml:space="preserve">
-    <value>HelpGHCBarrierCorrection</value>
+    <value>Indicates the correction to be applied to the barrier. The plus sign requires to raise the barrier, the minus sign to lower it by the indicated value.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGHCFinalResult" xml:space="preserve">
-    <value>HelpGHCFinalResult</value>
+    <value>Report the final test result.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGHCStart" xml:space="preserve">
-    <value>HelpGHCStart</value>
+    <value>The button starts the check procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGHCStop" xml:space="preserve">
-    <value>HelpGHCStop</value>
+    <value>The button stops the check procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpWCDescription" xml:space="preserve">
-    <value>HelpWCDescription</value>
+    <value>The procedure allows you to verify that the weight measurement falls within the expected tolerance. For the measurement, sample weights are used in the quantity indicated in the appropriate field.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpWCTestRun" xml:space="preserve">
-    <value>HelpWCTestRun</value>
+    <value>Indicates the run performed at low speed during which the samples of the delivered current are carried out.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpWCWeightInserted" xml:space="preserve">
-    <value>HelpWCWeightInserted</value>
+    <value>Indicates the sample weight entered for the test.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpWCWeightTollerance" xml:space="preserve">
-    <value>HelpWCWeightTollerance</value>
+    <value>Indicates the tolerance required by the measure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpWCWeightMeasured" xml:space="preserve">
-    <value>HelpWCWeightMeasured</value>
+    <value>Indicates the weight measured by the system.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpWCFinalResult" xml:space="preserve">
-    <value>HelpWCFinalResult</value>
+    <value>Report the final outcome of the procedure. The result will be positive if the measured weight falls within the set tolerance.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpWCStart" xml:space="preserve">
-    <value>HelpWCStart</value>
+    <value>Start the test procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpWCStop" xml:space="preserve">
-    <value>HelpWCStop</value>
+    <value>Stop the test procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCDescription" xml:space="preserve">
-    <value>HelpVOCDescription</value>
+    <value>The procedure allows you to correct the offset of the vertical axis in order to align the height of the various cells with the reference system of the vertical axis.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpVOCSelectedCell" xml:space="preserve">
-    <value>HelpVOCSelectedCell</value>
+    <value>Cell selected for checking.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCCellPosition" xml:space="preserve">
-    <value>HelpVOCCellPosition</value>
+    <value>Current elevation of the selected cell</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCStepValue" xml:space="preserve">
-    <value>HelpVOCStepValue</value>
+    <value>Value of the change in height to be applied each time the axis movement keys are pressed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCActualPosition" xml:space="preserve">
-    <value>HelpVOCActualPosition</value>
+    <value>Current position of the vertical axis.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCActualOffset" xml:space="preserve">
-    <value>HelpVOCActualOffset</value>
+    <value>Current value of the vertical axis offset.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCAdjustedOffset" xml:space="preserve">
-    <value>HelpVOCAdjustedOffset</value>
+    <value>New offset value.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCGoToCell" xml:space="preserve">
-    <value>HelpVOCGoToCell</value>
+    <value>Moves the vertical axis in to the dimension of the selected cell.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCStepPiu" xml:space="preserve">
-    <value>HelpVOCStepPiu</value>
+    <value>Increases the current height of the vertical axis by the set step value.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCStepMeno" xml:space="preserve">
-    <value>HelpVOCStepMeno</value>
+    <value>Decreases the current height of the vertical axis by the set step value.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpVOCApplyCorrection" xml:space="preserve">
-    <value>HelpVOCApplyCorrection</value>
+    <value>Updates the vertical axis offset to the indicated value.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCSCDescription" xml:space="preserve">
-    <value>HelpCSCDescription</value>
+    <value>The procedure allows you to modify a block of cells between the first and last selected. The selected side is automatically indicated based on the starting cell number depending on whether it is odd or even.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpCSCInitialCell" xml:space="preserve">
-    <value>HelpCSCInitialCell</value>
+    <value>Set the starting cell number of the block.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCSCFinalCell" xml:space="preserve">
-    <value>HelpCSCFinalCell</value>
+    <value>Set the number of the final cell of the block.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCSCCorrection" xml:space="preserve">
-    <value>HelpCSCCorrection</value>
+    <value>Set the desired value of the correction that will be applied to the selected cell group.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCSCSelectedSide" xml:space="preserve">
-    <value>HelpCSCSelectedSide</value>
+    <value>Shows the side you are editing on. The side is automatically determined based on the selected starting cell number if even or odd.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCSCApplyCorrection" xml:space="preserve">
-    <value>HelpCSCApplyCorrection</value>
+    <value>Apply the correction to the selected cell group.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLFDTotalCells" xml:space="preserve">
-    <value>HelpLFDTotalCells</value>
+    <value>Indicates the total number of cells to be tested.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLFDTestedCells" xml:space="preserve">
-    <value>HelpLFDTestedCells</value>
+    <value>Indicates the number of cells currently tested.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLFDCellInTest" xml:space="preserve">
-    <value>HelpLFDCellInTest</value>
+    <value>Number of the cell currently being tested.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLFDDrawerNumber" xml:space="preserve">
-    <value>HelpLFDDrawerNumber</value>
+    <value>Number of the drawer being inserted.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLFDMaxLoad" xml:space="preserve">
-    <value>HelpLFDMaxLoad</value>
+    <value>Maximum capacity of the drawer during loading.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLFDInsertDrawer" xml:space="preserve">
-    <value>HelpLFDInsertDrawer</value>
+    <value>Start the drawer insertion procedure. The procedure ends when the planned cycles are completed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLFDRecallDrawer" xml:space="preserve">
-    <value>HelpLFDRecallDrawer</value>
+    <value>Recall the drawer used for the test in the bay.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLFDDescription" xml:space="preserve">
-    <value>HelpLFDDescription</value>
+    <value>The procedure allows you to use the drawer selected in the appropriate input field to test the lower and upper cells of the machine as well as the cells below and above the cell blocks indicated as disabled. The purpose of the procedure is to verify that there is no mechanical interference in these areas.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLDRDescription" xml:space="preserve">
-    <value>HelpLDRDescription</value>
+    <value>The procedure allows you to insert the empty drawers inside the machine at the end of the commissioning procedure. The drawers are inserted inside the free blocks choosing them according to the lowest priority.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpLDRTotalDrawers" xml:space="preserve">
-    <value>HelpLDRTotalDrawers</value>
+    <value>Total number of drawers to be inserted.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLDRInsertedDrawers" xml:space="preserve">
-    <value>HelpLDRInsertedDrawers</value>
+    <value>Drawers already inserted in the car.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLDRDrawerToInsert" xml:space="preserve">
-    <value>HelpLDRDrawerToInsert</value>
+    <value>Number of the drawer being inserted. It can be generated by the appropriate button or inserted in the appropriate field.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLDRMaxLoad" xml:space="preserve">
-    <value>HelpLDRMaxLoad</value>
+    <value>Indicates the maximum capacity allowed for the drawer currently being inserted.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLDRNextDrawer" xml:space="preserve">
-    <value>HelpLDRNextDrawer</value>
+    <value>The button sets the next drawer to be inserted. the number is the one following the last one entered.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLDRStart" xml:space="preserve">
-    <value>HelpLDRStart</value>
+    <value>Starts the procedure for inserting the selected drawer.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRDescription" xml:space="preserve">
-    <value>HelpBCTRDescription</value>
+    <value>The procedure allows you to check and possibly correct the height of the various possible positions on the various bays. The procedure is suitable for the type of bay indicated in the document that describes the machine configuration. In the case of several positions on the same bay, the procedure allows multiple checks.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpBCTRSelectedBay" xml:space="preserve">
-    <value>HelpBCTRSelectedBay</value>
+    <value>Select the bay whose odds you want to check.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRSelectedPosition" xml:space="preserve">
-    <value>HelpBCTRSelectedPosition</value>
+    <value>Indicates the position inside the selected bay whose heights you want to check. It is set automatically.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRPositionHeight" xml:space="preserve">
-    <value>HelpBCTRPositionHeight</value>
+    <value>Displays the elevation of the selected position within the bay under control.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRStepValue" xml:space="preserve">
-    <value>HelpBCTRStepValue</value>
+    <value>Step value applied to the current coordinate of the axis each time the movement buttons are pressed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRCorrectionValue" xml:space="preserve">
-    <value>HelpBCTRCorrectionValue</value>
+    <value>Cumulative value of the correction that will be applied to the height of the selected bay-position.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRMoveToPosition" xml:space="preserve">
-    <value>HelpBCTRMoveToPosition</value>
+    <value>Place the vertical axis at the selected bay-location.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRStepPiu" xml:space="preserve">
-    <value>HelpBCTRStepPiu</value>
+    <value>Increases the current coordinate of the axis by the value indicated by the step.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRStepMeno" xml:space="preserve">
-    <value>HelpBCTRStepMeno</value>
+    <value>Decreases the current coordinate of the axis by the value indicated by the step.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRAdjust" xml:space="preserve">
-    <value>HelpBCTRAdjust</value>
+    <value>Corrects the current height of the bay-current position by the value indicated in the appropriate field.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpBCTRNextPosition" xml:space="preserve">
-    <value>HelpBCTRNextPosition</value>
+    <value>If enabled, the button allows you to choose the next position in the currently selected bay. The procedure must be repeated for the new position.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpIPGDescription" xml:space="preserve">
-    <value>HelpIPGDescription</value>
+    <value>The main menu allows access to all the functions foreseen for the machine commissioning phase.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpIPGHeder" xml:space="preserve">
-    <value>HelpIPGHeder</value>
+    <value>Main menu.</value>
     <comment>Procedure header</comment>
   </data>
   <data name="HelpIPGError" xml:space="preserve">
-    <value>HelpIPGError</value>
+    <value>Indicates, when visible, the presence of an error. Pressing the button opens the window dedicated to restoring the situation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpIPGOff" xml:space="preserve">
-    <value>HelpIPGOff</value>
+    <value>The Off status of this button indicates the disabling of the machine movements.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpIPGOn" xml:space="preserve">
-    <value>HelpIPGOn</value>
+    <value>The On state of this button indicates that the machine is enabled to move.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpIPGInstaller" xml:space="preserve">
-    <value>HelpIPGInstaller</value>
+    <value>Indicates the name of the user currently logged in. If pressed, it allows you to log out of the system.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpIPGHelp" xml:space="preserve">
-    <value>HelpIPGHelp</value>
+    <value>If pressed, opens the contextual menu for the currently selected function.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpIPGUp" xml:space="preserve">
-    <value>HelpIPGUp</value>
+    <value>Allows you to scroll up the list of buttons for accessing the various functions.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpIPGButton" xml:space="preserve">
-    <value>HelpIPGButton</value>
+    <value>List of buttons to access the installation functions.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpIPGDown" xml:space="preserve">
-    <value>HelpIPGDown</value>
+    <value>Allows you to scroll down the list of buttons for accessing the various functions.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTDescription" xml:space="preserve">
-    <value>HelpDLUTDescription</value>
+    <value>The procedure allows you to carry out a series of boarding and disembarking tests of a drawer using the bay selected in the appropriate input fields. For the test it is possible to vary the acceleration, deceleration and speed feed rate according to what is indicated in the appropriate field. The test continues until the required number of cycles is reached or until the stop button is pressed.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDLUTBay" xml:space="preserve">
-    <value>HelpDLUTBay</value>
+    <value>Enter the number of the bay on which you want to perform the test.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTPosition" xml:space="preserve">
-    <value>HelpDLUTPosition</value>
+    <value>Enter the position inside the bay on which you want to perform the test.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTFeedRate" xml:space="preserve">
-    <value>HelpDLUTFeedRate</value>
+    <value>Enter the feed rate required for the test. The reduction also affects the acceleration and deceleration values.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTChain" xml:space="preserve">
-    <value>HelpDLUTChain</value>
+    <value>It reports the current position of the chain axis as a value relative to the starting height.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTCyclesRequired" xml:space="preserve">
-    <value>HelpDLUTCyclesRequired</value>
+    <value>Enter the number of test cycles required.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTCycleCompleted" xml:space="preserve">
-    <value>HelpDLUTCycleCompleted</value>
+    <value>Reports the number of complete cycles currently performed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTGotoPosition" xml:space="preserve">
-    <value>HelpDLUTGotoPosition</value>
+    <value>Moves the vertical axis to the position inside the selected bay. The fee takes into account the boarding offset.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTStart" xml:space="preserve">
-    <value>HelpDLUTStart</value>
+    <value>Start the test procedure. The button is active only after the vertical axis is at the required position in the bay.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTStop" xml:space="preserve">
-    <value>HelpDLUTStop</value>
+    <value>Stop the test cycle.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpLSMTComandMode" xml:space="preserve">
-    <value>HelpLSMTComandMode</value>
+    <value>It reports the mode currently enabled for manual commands. Extended stroke mode is automatically set after commissioning is complete.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpSRCPageHeader" xml:space="preserve">
-    <value>HelpSRCPageHeader</value>
+    <value>Cancel the file saving procedure.</value>
     <comment>Page header</comment>
   </data>
   <data name="HelpSRCDescription" xml:space="preserve">
-    <value>HelpSRCDescription</value>
+    <value>The procedure allows you to save or recover configuration files on the external device.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpSRCSaveSide" xml:space="preserve">
-    <value>HelpSRCSaveSide</value>
+    <value>Configuration saving procedure.</value>
     <comment>Block description</comment>
   </data>
   <data name="HelpSRCSaveFolder" xml:space="preserve">
-    <value>HelpSRCSaveFolder</value>
+    <value>Indicates the automatically created folder where the configuration files will be saved.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpSRCSaveButton" xml:space="preserve">
-    <value>HelpSRCSaveButton</value>
+    <value>Start the procedure for saving the configuration files. Any files already present will be overwritten.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
-    <value>HelpSRCSaveConfirmButton</value>
+    <value>Confirm the file saving procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpSRCSaveAbortButton" xml:space="preserve">
-    <value>HelpSRCSaveAbortButton</value>
+    <value>Cancel the file saving procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpSRCLoadSide" xml:space="preserve">
-    <value>HelpSRCLoadSide</value>
+    <value>Configuration restore procedure.</value>
     <comment>Block description</comment>
   </data>
   <data name="HelpSRCLoadButton" xml:space="preserve">
-    <value>HelpSRCLoadButton</value>
+    <value>Start the configuration files upload procedure. Any files already present will be overwritten.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
-    <value>HelpSRCLoadConfirmButton</value>
+    <value>Confirm the file upload procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpSRCLoadAbortButton" xml:space="preserve">
-    <value>HelpSRCLoadAbortButton</value>
+    <value>Cancel the file upload procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainPageHeadr" xml:space="preserve">
-    <value>HelpOpMainPageHeadr</value>
+    <value>First page.</value>
     <comment>Page header</comment>
   </data>
   <data name="HelpOpMainPageDescription" xml:space="preserve">
-    <value>HelpOpMainPageDescription</value>
+    <value>The main menu allows you to check the machine status using the appropriate buttons at the top of the screen. On the left side, using the navigation buttons, it is possible to access the various functions.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpOpMainManu" xml:space="preserve">
-    <value>HelpOpMainManu</value>
+    <value>Indicates the manual condition. The automatic cycle is suspended.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainAuto" xml:space="preserve">
-    <value>HelpOpMainAuto</value>
+    <value>Indicates the automatic condition. The machine manages the commands coming from the control system.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainOff" xml:space="preserve">
-    <value>HelpOpMainOff</value>
+    <value>The power to the motors is disabled. Movements are not possible in any mode.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainOn" xml:space="preserve">
-    <value>HelpOpMainOn</value>
+    <value>The power to the motors is enabled. The machine is able to make movements.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainServiceAdvice" xml:space="preserve">
-    <value>HelpOpMainServiceAdvice</value>
+    <value>The system signals that some parts of the machine are approaching the time for scheduled maintenance.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainServiceAllert" xml:space="preserve">
-    <value>HelpOpMainServiceAllert</value>
+    <value>The system signals that some parts of the machine have reached the end of the scheduled period between two maintenance operations. Maintenance required!</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainError" xml:space="preserve">
-    <value>HelpOpMainError</value>
+    <value>An error occurred while the machine was running. Pressing this button opens the page for managing the recovery procedures.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainUser" xml:space="preserve">
-    <value>HelpOpMainUser</value>
+    <value>Reports the name of the currently logged in operator. Pressing the button allows you to log off.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainHelp" xml:space="preserve">
-    <value>HelpOpMainHelp</value>
+    <value>The button opens the help page contextual to the procedure you are using.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainDrawerOp" xml:space="preserve">
-    <value>HelpOpMainDrawerOp</value>
+    <value>The button opens the page for managing the operations scheduled on the drawer in the bay.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainItem" xml:space="preserve">
-    <value>HelpOpMainItem</value>
+    <value>The button opens the page that allows you to search for an article code.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainLists" xml:space="preserve">
-    <value>HelpOpMainLists</value>
+    <value>The button opens the display page of the lists pending execution scheduled by the WMS.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpOpMainOther" xml:space="preserve">
-    <value>HelpOpMainOther</value>
+    <value>Allows access to additional functions.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWaitDescription" xml:space="preserve">
-    <value>HelpDrawerWaitDescription</value>
+    <value>The page indicates that the system has completed the operations planned on the last drawer arrived in the bay. It is awaiting the arrival of the next drawer which will cause the opening of the page dedicated to the planned operations.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerWaitNote" xml:space="preserve">
-    <value>HelpDrawerWaitNote</value>
+    <value>The note reports the current situation of the system.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWaitScheduledOperations" xml:space="preserve">
-    <value>HelpDrawerWaitScheduledOperations</value>
+    <value>The field reports the number of operations currently scheduled towards the bay on which the operator works.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDescription</value>
+    <value>The procedure provides all the detailed information relating to the withdrawal operation scheduled on the drawer present in the bay where the user operates. The drawing, if present, shows the division of the drawer and the highlighted area indicates the compartment on which to operate. If present, the image of the item being handled is also shown.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
-    <value>HelpDrawerActivityPickingQtyRequest</value>
+    <value>The quantity of the item to be removed from the highlighted compartment is displayed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
-    <value>HelpDrawerActivityPickingQtyPicked</value>
+    <value>The user can change the quantity actually withdrawn in the event that the stock is not sufficient. Under normal conditions the field is already filled with the required quantity.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailDescription</value>
+    <value>The window shows a series of additional information to those present in the picking window. Detailed information is displayed both for the item being picked and for any associated packing list. If present, the article image is also displayed.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailListRow</value>
+    <value>Shows the row of the list to which the withdrawal operation in progress refers.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailProductionDate" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailProductionDate</value>
+    <value>The production date of the item being picked is indicated.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailLotto" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailLotto</value>
+    <value>If present, the production lot of the item being picked is indicated.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
-    <value>HelpDrawerActivityPickingMaterialStatus</value>
+    <value>If required, the state of the material subject to withdrawal is indicated.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailPackListCode</value>
+    <value>If applicable, it indicates the packing list where information relating to the various items being picked is collected.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailPackListDescription</value>
+    <value>If present, it indicates the description of the packing list that unites the materials being picked.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailBoxType</value>
+    <value>Provides indication of the type of packaging of the item being picked.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
-    <value>HelpDrawerActivityPickingDetailQtyRequest</value>
+    <value>The quantity of the item to be removed from the highlighted compartment is displayed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailDescription</value>
+    <value>The page shows the details of the deposit operation currently in progress. More details about the operations to be performed are provided on the basic page.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailListRow</value>
+    <value>Indicates the row of the list involved in the operation in progress.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailProductionDate</value>
+    <value>Reports from the item's production date.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailMaterialStatus</value>
+    <value>Shows the material status of the item being paid.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailLotto</value>
+    <value>Indicates the row of the list involved in the operation in progress.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailPackaging</value>
+    <value>Indicates the type of packaging of the item being paid.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDetailQtyToRefill</value>
+    <value>Amount to be poured into the indicated compartment.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCommonList" xml:space="preserve">
-    <value>HelpCommonList</value>
+    <value>The code of the list associated with the procedure in progress is indicated.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCommonListDescription" xml:space="preserve">
-    <value>HelpCommonListDescription</value>
+    <value>Shows the description of the list associated with the operation in progress.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCommonItem" xml:space="preserve">
-    <value>HelpCommonItem</value>
+    <value>Indicates the code of the item involved in the operation in progress.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCommonItemDescription" xml:space="preserve">
-    <value>HelpCommonItemDescription</value>
+    <value>The description of the item that is the subject of the current operation is displayed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCommonPosition" xml:space="preserve">
-    <value>HelpCommonPosition</value>
+    <value>The field indicates the position in which the compartment object of the operation in progress is located, mapped according to the coding adopted.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCommonNote" xml:space="preserve">
-    <value>HelpCommonNote</value>
+    <value>Any notes associated with the operation to be performed are shown to the operator.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCommonDetail" xml:space="preserve">
-    <value>HelpCommonDetail</value>
+    <value>The button allows you to enter the page that shows further details relating to the operation in progress.</value>
     <comment>Button description</comment>
   </data>
   <data name="HelpCommonConfirm" xml:space="preserve">
-    <value>HelpCommonConfirm</value>
+    <value>Confirm that the current operation has been completed.</value>
     <comment>Button description</comment>
   </data>
   <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingDescription</value>
+    <value>The procedure makes it possible to refill the compartment that contains the item with the same characteristics as the one in payment. The procedure allows to update the maximum capacity of the compartment if the recorded value is wrong.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingQtyToRefill</value>
+    <value>Amount to pour into the selected compartment.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingUpdateMaxQty</value>
+    <value>Opens the page for managing the update of the maximum capacity of the compartment.</value>
     <comment>Button text</comment>
   </data>
   <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
-    <value>HelpDrawerActivityRefillingQtyRefilled</value>
+    <value>Allows you to set the amount actually poured into the selected compartment.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCommonGridColumnHeader" xml:space="preserve">
-    <value>HelpCommonGridColumnHeader</value>
+    <value>Column description of the table.</value>
     <comment>Column grid description</comment>
   </data>
   <data name="HelpCommonUp" xml:space="preserve">
-    <value>HelpCommonUp</value>
+    <value>Move the pointer to the previous item. Double pressing moves to the beginning of the list.</value>
     <comment>Button description</comment>
   </data>
   <data name="HelpCommonDown" xml:space="preserve">
-    <value>HelpCommonDown</value>
+    <value>Move the pointer to the next item. Double-pressing moves to the end of the list.</value>
     <comment>Button description</comment>
   </data>
   <data name="HelpListsInWaitDescription" xml:space="preserve">
-    <value>HelpListsInWaitDescription</value>
+    <value>The procedure allows you to view all the lists pending execution by the WMS system. The machines involved are indicated for each list. It is possible to execute only the portion of lists that have some article to be taken present in the machine from which the procedure is being used.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpListsInWaitGridList" xml:space="preserve">
-    <value>HelpListsInWaitGridList</value>
+    <value>The grid column presents the codes of the lists awaiting execution.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpListsInWaitGridDescription" xml:space="preserve">
-    <value>HelpListsInWaitGridDescription</value>
+    <value>The column of the grid presents the description of the lists awaiting execution.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpListsInWaitGridMachine" xml:space="preserve">
-    <value>HelpListsInWaitGridMachine</value>
+    <value>The column shows, for each list, the list of machines involved for its execution.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpListsInWaitListsDetail" xml:space="preserve">
-    <value>HelpListsInWaitListsDetail</value>
+    <value>The button allows you to access the detail page of the list where you can see the list of articles present.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpListsInWaitListsExecute" xml:space="preserve">
-    <value>HelpListsInWaitListsExecute</value>
+    <value>The button, if active, allows you to execute the list currently selected for the portion present in the machine you are working on.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
-    <value>HelpDetailListsInWaitGridRow</value>
+    <value>Shows the row number of the displayed list.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
-    <value>HelpDetailListsInWaitGridItem</value>
+    <value>Indicate the article code.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
-    <value>HelpDetailListsInWaitGridItemDescription</value>
+    <value>Report the description of the item.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
-    <value>HelpDetailListsInWaitGridQuantity</value>
+    <value>Indicates the required quantity of that item.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
-    <value>HelpDetailListsInWaitDescription</value>
+    <value>The page shows the detail of the selected list. Within all the displayed lines it is possible to execute only those which are highlighted because the article is contained in the machine on which you are working. The "Run list" button is active only if there is at least one executable line in the machine you are working on.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpItemSearchDescription" xml:space="preserve">
-    <value>HelpItemSearchDescription</value>
+    <value>The procedure allows you to search for an article using both the code and description columns. The text entered in the search field is automatically used to find what is required using the contents of the two columns. The result is displayed in the grid.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpItemSearchGridItem" xml:space="preserve">
-    <value>HelpItemSearchGridItem</value>
+    <value>It shows the list of article codes that match the search criteria.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
-    <value>HelpItemSearchGridItemDescription</value>
+    <value>It shows the description of the article codes that match the search criteria.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchGridMachine" xml:space="preserve">
-    <value>HelpItemSearchGridMachine</value>
+    <value>Indicates the list of machines that contain the item indicated in the row. An article can be present in one or more machines.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchTextToFind" xml:space="preserve">
-    <value>HelpItemSearchTextToFind</value>
+    <value>Enter the sequence of characters to search for in the code and item description fields in the field.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
-    <value>HelpItemSearchQtyAvailable</value>
+    <value>Indicates the available quantity of the selected item inside the machine you are working on.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchQtyRequired" xml:space="preserve">
-    <value>HelpItemSearchQtyRequired</value>
+    <value>The field is enabled only if the quantity available for the selected item is greater than zero. It is possible to insert a value not exceeding the available quantity.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchItemCall" xml:space="preserve">
-    <value>HelpItemSearchItemCall</value>
+    <value>Allows you to request the selected item in the required quantity. The button is enabled only if the item is available on the machine where you are working.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchDetailDescription" xml:space="preserve">
-    <value>HelpItemSearchDetailDescription</value>
+    <value>The page displays the main data of the selected article. More detailed information can be viewed at the management WMS level.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
-    <value>HelpItemSearchDetailMangementType</value>
+    <value>Indicates how to manage the article.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
-    <value>HelpItemSearchDetailFifoPeriod</value>
+    <value>Indicates the Fifo period of the article, expressed in the unit of measurement indicated.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchDetailCategory" xml:space="preserve">
-    <value>HelpItemSearchDetailCategory</value>
+    <value>Categoria di appartenenza dell'articolo.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchDetailClasse" xml:space="preserve">
-    <value>HelpItemSearchDetailClasse</value>
+    <value>Handling class of the selected item.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
-    <value>HelpItemSearchDetailMeasurementUnit</value>
+    <value>Unit of measure selected for the item.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
-    <value>HelpItemSearchDetailAverageWeight</value>
+    <value>Average unit weight expressed in the unit of measurement indicated.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
-    <value>HelpDetailListsInWaitListExecute</value>
+    <value>Allows the execution of the highlighted list lines. The button is enabled only if at least one row of the selected list can be executed on the machine you are working on.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
-    <value>HelpDetailListsInWaitMachine</value>
+    <value>The column shows the machine or machines on which the article is currently present.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
-    <value>HelpImmediateDrawerCallDescription</value>
+    <value>The procedure allows to call the selected drawer in the bay on which the operator is working. The drawers with the red status are not accessible to the user who is working as they are blocked by the WMS or associated with a particular user.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
-    <value>HelpImmediateDrawerCallGridDrawer</value>
+    <value>Indicates the number of the drawer to which the grid data refers.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
-    <value>HelpImmediateDrawerCallGridHeight</value>
+    <value>Current height of the selected drawer.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
-    <value>HelpImmediateDrawerCallGridWeight</value>
+    <value>Indicates the current weight of the selected drawer.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
-    <value>HelpImmediateDrawerCallGridCell</value>
+    <value>Indicates the cell in which it is stored in the drawer.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
-    <value>HelpImmediateDrawerCallGridSide</value>
+    <value>Indicates the side of the machine where the drawer is stored.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
-    <value>HelpImmediateDrawerCallGridStatus</value>
+    <value>Reports the current status of the drawer. The red color indicates that the drawer cannot be recalled by the currently connected user.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
-    <value>HelpImmediateDrawerCallRequestedDrawer</value>
+    <value>Shows the number of the drawer to be recalled.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
-    <value>HelpImmediateDrawerCallDrawerCall</value>
+    <value>The button allows you to recall the drawer currently selected in the grid. The button is active if the drawer can be called up by the current user.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDescription" xml:space="preserve">
-    <value>HelpDrawerCompactingDescription</value>
+    <value>Activates the compaction procedure for the rear side of the machine. The button is active if it is possible to recover the required space.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerCompactingSide" xml:space="preserve">
-    <value>HelpDrawerCompactingSide</value>
+    <value>Indicates the side of the machine to which the data provided refers.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingFragment" xml:space="preserve">
-    <value>HelpDrawerCompactingFragment</value>
+    <value>Indicates the number of lost fragments present on the current side.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
-    <value>HelpDrawerCompactingSpaceRecoverable</value>
+    <value>Report the maximum space that can be recovered on the current side.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
-    <value>HelpDrawerCompactingSpaceToRecover</value>
+    <value>Space to recover. By default it is set to the maximum value of recoverable space.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
-    <value>HelpDrawerCompactingCompactFront</value>
+    <value>Activates the compaction procedure for the front side of the machine. The button is active if it is possible to recover the required space.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
-    <value>HelpDrawerCompactingCompactRear</value>
+    <value>Activates the compaction procedure for the rear side of the machine. The button is active if it is possible to recover the required space.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationDescription</value>
+    <value>Space to recover. By default it is set to the maximum value of recoverable space.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationGridDrawer</value>
+    <value>Indicates the drawer number.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationGridMissions</value>
+    <value>Indicates the number of missions the drawer has been subject to.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationGridCompartments</value>
+    <value>Indicates the number of mapped compartments, present inside the drawer regardless of their status.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationTotalDrawer</value>
+    <value>Reports the total number of drawers allocated in the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationDimension</value>
+    <value>Shows the size of the drawers stored inside the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationMachineFilling</value>
+    <value>Indicates, in both graphic and numerical form, the total filling degree of the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
-    <value>HelpDrawerSpaceSaturationWeightAnalisys</value>
+    <value>Allows access to the statistical analysis procedure relating to the weight allocated in the various drawers.</value>
     <comment>Button description</comment>
   </data>
   <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationDescription</value>
+    <value>The procedure provides data on the weight allocated in the various drawers and, globally, inside the machine. For each drawer, further information is provided, including the current height, the maximum weight that can be loaded for each drawer, the tare, the current total weight, as well as the percentage of the current weight compared to the maximum provided both in graphical and numerical form. A global indication valid for the whole machine is also provided.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationGridDrawer</value>
+    <value>Indicates the drawer number.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationGridHeight</value>
+    <value>Current drawer height.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationGridMaxWeight</value>
+    <value>Indicates the maximum weight allowed for the drawer.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationGridGross</value>
+    <value>Indicates the weight of the empty drawer.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationGridActualWeight</value>
+    <value>Reports the current weight of the drawer.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationGridWeightPercent</value>
+    <value>Indicates the percentage of weight used referred to the maximum possible.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationTotalDrawers</value>
+    <value>Indicates the maximum number of drawers allocated in the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationGrossCapacityMax</value>
+    <value>Shows the maximum gross capacity of the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationGrossLoaded</value>
+    <value>Indicates the gross weight loaded.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationNetCapacity</value>
+    <value>Maximum net flow allowed by the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationNetLoaded</value>
+    <value>Indicates the net weight currently loaded.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
-    <value>HelpDrawerWeightSaturationWeightPercent</value>
+    <value>Shows the current percentage of loaded weight referred to the maximum allowed weight.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsDescription" xml:space="preserve">
-    <value>HelpMachineStatisticsDescription</value>
+    <value>The procedure provides statistical data of the main parts of the machine. The data provided refer to what the machine has done during its life cycle from the moment of installation.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
-    <value>HelpMachineStatisticsVerticalCycles</value>
+    <value>Indicates the total number of cycles performed by the vertical axis. A cycle is equivalent to a shift between two points.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
-    <value>HelpMachineStatisticsVerticalKm</value>
+    <value>It reports the totalisation of the Km. Traveled by the vertical axis from the moment of installation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
-    <value>HelpMachineStatisticsShutter1</value>
+    <value>It reports the total number of cycles performed by the shutter that equips bay n. 1. A cycle is a total or intermediate opening or closing operation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
-    <value>HelpMachineStatisticsShutter2</value>
+    <value>It reports the total number of cycles performed by the shutter that equips bay n. 2. A cycle is a total or intermediate opening or closing operation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
-    <value>HelpMachineStatisticsShutter3</value>
+    <value>It reports the total number of cycles performed by the shutter that equips bay n. 3. A cycle is a total or intermediate opening or closing operation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsHorizontalCycles" xml:space="preserve">
-    <value>HelpMachineStatisticsHorizontalCycles</value>
+    <value>The field shows the total number of cycles carried out by the chain on the machine lift since installation. A cycle is an embarkation or disembarkation operation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsBay1" xml:space="preserve">
-    <value>HelpMachineStatisticsBay1</value>
+    <value>The field shows the total number of drawers that have affected bay n. 2. The count increases when a drawer is brought into the bay and then returned to the warehouse.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsBay2" xml:space="preserve">
-    <value>HelpMachineStatisticsBay2</value>
+    <value>The field shows the total number of drawers that have affected bay n. 2. The count increases when a drawer is brought into the bay and then returned to the warehouse.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsBay3" xml:space="preserve">
-    <value>HelpMachineStatisticsBay3</value>
+    <value>The field shows the total number of drawers that have affected bay n. 3. The count increases when a drawer is brought into the bay and then returned to the warehouse.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
-    <value>HelpMaintenanceMainPageGridKit</value>
+    <value>The column shows the kit code for the selected component.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
-    <value>HelpMaintenanceMainPageGridDescription</value>
+    <value>The column shows the description of the various kits.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
-    <value>HelpMaintenanceMainPageGridState</value>
+    <value>Indicates the current status of the kit. the orange color indicates the approach of maintenance, the red period expired and therefore maintenance required.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
-    <value>HelpMaintenanceMainPageGridRequest</value>
+    <value>The column indicates that a request for intervention has already been made to the maintenance staff for a specific kit.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
-    <value>HelpMaintenanceMainPageModel</value>
+    <value>Show the machine model.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
-    <value>HelpMaintenanceMainPageSerial</value>
+    <value>Report the serial number of the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
-    <value>HelpMaintenanceMainPageInstallation</value>
+    <value>Reports the machine installation date.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
-    <value>HelpMaintenanceMainPageLastMaintenance</value>
+    <value>Indicates the date on which the last maintenance was performed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
-    <value>HelpMaintenanceMainPageNextMaintenance</value>
+    <value>Indicates the estimated date for the next maintenance.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
-    <value>HelpMaintenanceMainPageMachineStatus</value>
+    <value>Indicates the current status of the kit. the orange color indicates the approach of maintenance, the red period expired and therefore maintenance required.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
-    <value>HelpMaintenanceDetailDescription</value>
+    <value>The page allows you to view the data on which the maintenance of the selected kit is based. All the information used by the system to determine scheduled maintenance operations is displayed.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
-    <value>HelpMaintenanceDetailGridElement</value>
+    <value>Shows the part number used by the selected maintenance kit.</value>
     <comment>Grid note text</comment>
   </data>
   <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
-    <value>HelpMaintenanceDetailGridDescription</value>
+    <value>Reports the description of the component used in the selected kit.</value>
     <comment>Grid note text</comment>
   </data>
   <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
-    <value>HelpMaintenanceDetailGridQuantity</value>
+    <value>Indicates the number of pieces of the element required in the selected kit.</value>
     <comment>Grid note text</comment>
   </data>
   <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
-    <value>HelpMaintenanceDetailCyclesTotal</value>
+    <value>Total number of cycles completed since the machine was installed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
-    <value>HelpMaintenanceDetailCyclesFromLastMaint</value>
+    <value>Reports the number of cycles performed since the last maintenance.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
-    <value>HelpMaintenanceDetailCyclesBetweenTwoMaint</value>
+    <value>Indicates the number of cycles that can be carried out between two maintenance operations.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
-    <value>HelpMaintenanceDetailElementStatus</value>
+    <value>It reports the status of the kit with the convention that the orange color indicates the approach of maintenance and the red that the maintenance is expired.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
-    <value>HelpMaintenanceDetailHoursRequired</value>
+    <value>Indicates the number of hours required to carry out the required maintenance operation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
-    <value>HelpMaintenanceDetailPlatformRequired</value>
+    <value>Indicates whether the use of a platform for work at height is necessary for the maintenance operation to be carried out.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
-    <value>HelpMaintenanceDetailSendRequestContact</value>
+    <value>It allows you to send an email to the assistance office asking to be contacted to arrange a maintenance intervention.</value>
     <comment>Button description</comment>
   </data>
   <data name="HelpGeneralInfoDescription" xml:space="preserve">
-    <value>HelpGeneralInfoDescription</value>
+    <value>The page presents a series of general information relating to the machine on which you are working. Among other information, the date of the next maintenance is also displayed. In case there are more maintenances due, the most recent date is displayed.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpGeneralInfoModel" xml:space="preserve">
-    <value>HelpGeneralInfoModel</value>
+    <value>Shows the model of the machine you are working on.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoSerial" xml:space="preserve">
-    <value>HelpGeneralInfoSerial</value>
+    <value>Indicates the serial number of the machine you are working on.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
-    <value>HelpGeneralInfoSwRelease</value>
+    <value>Shows the release of the SW currently installed on the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
-    <value>HelpGeneralInfoTotalDrawers</value>
+    <value>Total number of drawers inserted in the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
-    <value>HelpGeneralInfoInstallationDate</value>
+    <value>Reports the machine installation date.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
-    <value>HelpGeneralInfoLastMaintenanceDate</value>
+    <value>Indicates the date of the last maintenance.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
-    <value>HelpGeneralInfoNextMaintenanceDate</value>
+    <value>Indicates the estimated date of the next maintenance.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
-    <value>HelpGeneralInfoMachineStatus</value>
+    <value>Reports the current maintenance status of the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataDescription</value>
+    <value>The page displays some statistical information relating to the use of the drawer area and the total weight loaded in relation to the characteristics of the machine. Information on the use of the machine is also displayed.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataMovedDrawers</value>
+    <value>Total number of drawers moved since the start of installation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataOccupiedArea</value>
+    <value>Indicates the percentage of area occupied inside the machine referred to the total space available.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataLoadedWeight</value>
+    <value>Total number of drawers moved since the start of installation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataPowerOnTotalTime</value>
+    <value>Reports the total power on time since the machine was installed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataAutomaticTotalTime</value>
+    <value>Indicates the ratio between the total time elapsed in automatic mode and the switch-on time from the moment of installation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataUseRatio</value>
+    <value>The utilization coefficient indicates the ratio between the time spent in automatic moving drawers and that of ignition.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCellsStatisticsDescription" xml:space="preserve">
-    <value>HelpCellsStatisticsDescription</value>
+    <value>The procedure shows the statistical data relating to the cells present inside the machine. In addition to the global data relating to the front and rear side, the data relating to the number of cells in the various states provided for both the front and rear sides are displayed.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
-    <value>HelpCellsStatisticsGridStatus</value>
+    <value>Reports the status of the cell to which the row data refers.</value>
     <comment>Grid note text</comment>
   </data>
   <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
-    <value>HelpCellsStatisticsGridTotAnt</value>
+    <value>Shows the total of the cells that have the status indicated in the first column of the grid referring to the front side.</value>
     <comment>Grid note text</comment>
   </data>
   <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
-    <value>HelpCellsStatisticsGridPercTotAnt</value>
+    <value>Indicates the percentage of cells that have the status indicated in the first column of the grid referring to the front side.</value>
     <comment>Grid note text</comment>
   </data>
   <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
-    <value>HelpCellsStatisticsGridTotPost</value>
+    <value>Shows the total of the cells that have the status indicated in the first column of the grid referring to the front side.</value>
     <comment>Grid note text</comment>
   </data>
   <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
-    <value>HelpCellsStatisticsGridPercTotPost</value>
+    <value>Indicates the percentage of cells that have the status indicated in the first column of the grid referring to the back side.</value>
     <comment>Grid note text</comment>
   </data>
   <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
-    <value>HelpCellsStatisticsCellsTot</value>
+    <value>Total number of cells present in the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
-    <value>HelpCellsStatisticsCellsAnt</value>
+    <value>Total number of cells present on the front of the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
-    <value>HelpCellsStatisticsCellsPost</value>
+    <value>Total number of cells present on the rear side of the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
-    <value>HelpCellsStatisticsTotalOccupiedCells</value>
+    <value>Shows the percentage of occupied cells referred to the total of cells present.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
-    <value>HelpCellsStatisticsButtonOther</value>
+    <value>The button allows access to the storage space compaction procedure.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataButtonCellsStatistics" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataButtonCellsStatistics</value>
+    <value>Activate the cell statistics display page.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataButtonDrawersStatistics" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataButtonDrawersStatistics</value>
+    <value>Displays the statistical data page of the various drawers present in the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataButtonMachineStatistics" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataButtonMachineStatistics</value>
+    <value>Allows access to the display page of the statistical data of the machine.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpStatisticsGeneralDataButtonErrorsStatistics" xml:space="preserve">
-    <value>HelpStatisticsGeneralDataButtonErrorsStatistics</value>
+    <value>Activates the page for displaying the statistical data relating to errors generated by the machine since installation.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoButtonDrawerCall" xml:space="preserve">
-    <value>HelpGeneralInfoButtonDrawerCall</value>
+    <value>View the page dedicated to immediate call by drawer.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoButtonCompacting" xml:space="preserve">
-    <value>HelpGeneralInfoButtonCompacting</value>
+    <value>Allows access to the management page of the storage space compaction procedures.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoButtonStastistics" xml:space="preserve">
-    <value>HelpGeneralInfoButtonStastistics</value>
+    <value>Allows you to access the section dedicated to the statistical information relating to the machine you are working on.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoButtonMaintenance" xml:space="preserve">
-    <value>HelpGeneralInfoButtonMaintenance</value>
+    <value>Opens the page dedicated to the maintenance operations foreseen for the machine on which you are working.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpErrorsStatisticsDescription" xml:space="preserve">
-    <value>HelpErrorsStatisticsDescription</value>
+    <value>The procedure allows you to access the error statistics display page relating to the machine you are working on. The statistics covers the entire period from the moment of installation to the moment of consultation.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpErrorsStatisticsGridError" xml:space="preserve">
-    <value>HelpErrorsStatisticsGridError</value>
+    <value>The column of the table shows the list of error codes generated by the machine on which you are working.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpErrorsStatisticsGridTotal" xml:space="preserve">
-    <value>HelpErrorsStatisticsGridTotal</value>
+    <value>The percentage incidence of each individual error is indicated in relation to the total errors counted.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpErrorsStatisticsGridPercTotal" xml:space="preserve">
@@ -1542,107 +1542,107 @@
     <comment>Note text</comment>
   </data>
   <data name="HelpErrorsStatisticsTotalDrawersMoved" xml:space="preserve">
-    <value>HelpErrorsStatisticsTotalDrawersMoved</value>
+    <value>The field shows the total number of drawers handled since the beginning of the installation. A drawer is considered to be moved when moved from a source to a destination.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpErrorsStatisticsErrorDescription" xml:space="preserve">
-    <value>HelpErrorsStatisticsErrorDescription</value>
+    <value>The complete description of the error selected in the table is displayed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpErrorsStatisticsTotaleErrors" xml:space="preserve">
-    <value>HelpErrorsStatisticsTotaleErrors</value>
+    <value>The total number of errors that the machine has counted since installation is displayed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpErrorsStatisticsTotalDrawersNoError" xml:space="preserve">
-    <value>HelpErrorsStatisticsTotalDrawersNoError</value>
+    <value>The field shows a statistical data calculated by the system that refers to the average of the drawers moved without errors.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
-    <value>HelpErrorsStatisticsReliability</value>
+    <value>The system calculates the reliability coefficient of the machine as the ratio between the number of errors counted and the total of the moved drawers.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
-    <value>HelpDrawerActivityInventoryDescription</value>
+    <value>The page presents the main data relating to the inventory operation to be carried out on the various items allocated in the drawer in the bay. The procedure, once the compartment containing the requested item has been indicated, waits for the operator to insert the quantity of pieces currently in stock.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
-    <value>HelpDrawerActivityInventoryQtyStored</value>
+    <value>The field shows the quantity of pieces currently in stock counted by the operator.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
-    <value>HelpDrawerActivityInventoryDetailDescription</value>
+    <value>The page provides the operator with further details on the inventory operation currently in progress.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
-    <value>HelpDrawerActivityInventoryDetailProductionDate</value>
+    <value>Reports the production date of the item currently in inventory.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
-    <value>HelpDrawerActivityInventoryDetailMaterialStatus</value>
+    <value>Indicates the material status of the item being inventory.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
-    <value>HelpDrawerActivityInventoryDetailLotto</value>
+    <value>Reports the production batch of the item in the inventory phase.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
-    <value>HelpDrawerActivityInventoryDetailPackaging</value>
+    <value>Report the type of packaging used for the item being inventory.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpListsInWaitGridType" xml:space="preserve">
-    <value>HelpListsInWaitGridType</value>
+    <value>It indicates the type of list according to the following code: P: pick V: put I: Inventory</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpCommonListType" xml:space="preserve">
-    <value>HelpCommonListType</value>
+    <value>Indicates the type of list selected according to the following code: P: Pick V: put I: Inventory.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
-    <value>HelpGeneralInfoWmsStatus</value>
+    <value>The field reports the current status of the WMS, if present, which controls the machine you are working on.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailDescription</value>
+    <value>The page shows the progress of the compaction procedure. The drawer being moved and from which cell it is withdrawn and to which cell it is destined is indicated. The progress of the procedure is also shown with an indication of the fragments and the space to be recovered in addition to the space already recovered.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailDrawer</value>
+    <value>Indicates the code of the drawer currently being moved.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailSourceCell</value>
+    <value>Indicates the source cell where the drawer being handled was stored.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailDestinationCell</value>
+    <value>Indicates the cell number where the drawer will be moved during handling.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailCurrentStep</value>
+    <value>It reports the current phase of the handling cycle of the various drawers.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailVerticalPosition</value>
+    <value>Shows the current position of the vertical axis.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailOrizzontalPosition</value>
+    <value>Indicates the current position of the horizontal axis.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailFragmentRemaining</value>
+    <value>Indicates the number of fragments still to be packed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailRecoveredSpace</value>
+    <value>Indicates the total space currently reclaimed.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
-    <value>HelpDrawerCompactingDetailSpaceToRecover</value>
+    <value>Reports the space required to be recovered after which the procedure ends.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpMachineStatisticsShutter" xml:space="preserve">
-    <value>HelpMachineStatisticsShutter</value>
+    <value>It reports the total number of cycles performed by the shutter that equips bay n. 1. A cycle is a total or intermediate opening or closing operation.</value>
   </data>
   <data name="CarouselCalibrationFunctionDescription" xml:space="preserve">
     <value>The carousel calibration function allows you to calibrate the correct value by performing a series of consecutive automatic movements, then updating the default value proposed by the system. The procedure works in successive steps until correct completion.</value>

@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AbsorbedCurrent.
+        ///   Looks up a localized string similar to Absorbed current.
         /// </summary>
         public static string AbsorbedCurrent {
             get {
@@ -6649,7 +6649,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VerticalAxisButton.
+        ///   Looks up a localized string similar to Elevator.
         /// </summary>
         public static string VerticalAxisButton {
             get {

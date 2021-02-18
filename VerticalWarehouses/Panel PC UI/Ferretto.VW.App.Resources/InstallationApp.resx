@@ -413,7 +413,7 @@
     <comment>Sensor</comment>
   </data>
   <data name="VerticalAxisButton" xml:space="preserve">
-    <value>VerticalAxisButton</value>
+    <value>Elevator</value>
   </data>
   <data name="CellsSideControlDescription" xml:space="preserve">
     <value>Modify cell group position</value>
@@ -2332,7 +2332,7 @@
     <value>Press the button to obtain the current data by moving the drawer and enter its net weight. When finished, press Next to confirm the operation</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
-    <value>AbsorbedCurrent</value>
+    <value>Absorbed current</value>
   </data>
   <data name="OptionalWeighing1" xml:space="preserve">
     <value>First weighing with intermediate weight</value>
