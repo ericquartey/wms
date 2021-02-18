@@ -639,10 +639,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_ON);
             }
-            else
-            {
-                this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_OFF);
-            }
+            //else
+            //{
+            //    this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_OFF);
+            //    this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
+            //}
 
             return await this.ExecuteCommandsAsync().ConfigureAwait(true);
         }
@@ -810,12 +811,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
                 while (!this.messagesToBeSendQueue.IsEmpty)
                 {
-                    try
+                    if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
                     {
-                        if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
+                        try
                         {
                             if (!client.Connected)
                             {
+                                this.logger.Debug($"ExecuteCommands();Connect");
                                 client.SendTimeout = this.tcpTimeout;
                                 if (this.IpAddress != null)
                                 {
@@ -828,6 +830,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                                 stream = client.GetStream();
                             }
 
+                            this.logger.Trace($"ExecuteCommands();Write");
                             var data = Encoding.ASCII.GetBytes(sendMessage);
                             stream = client.GetStream();
                             stream.ReadTimeout = this.tcpTimeout;
@@ -854,20 +857,24 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                                 this.messagesReceivedQueue.Enqueue("");
                             }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            System.Threading.Thread.Sleep(100);
+                            this.logger.Error(ex);
+                            this.logger.Debug($"ExecuteCommands();Error: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                            this.errorsQueue.Enqueue(ex.Message);
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        this.logger.Error(ex);
+                        this.logger.Debug("queue locked");
+                        System.Threading.Thread.Sleep(100);
                     }
                 }
 
                 stream?.Close();
                 client?.Close();
-                result = true;
+
+                result = this.errorsQueue.IsEmpty;
             }
             catch (Exception ex)
             {
@@ -904,7 +911,9 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             else if (msgSend.StartsWith("TEST", StringComparison.Ordinal))
             {
                 if (msgReceive == "TEST ON OK" ||
-                    msgReceive == "TEST OFF OK")
+                    msgReceive == "TEST OFF OK" ||
+                    msgReceive.StartsWith("OK", StringComparison.Ordinal)
+                    )
                 {
                     result = true;
                 }
@@ -944,6 +953,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 || message.StartsWith("ENABLE", StringComparison.Ordinal)
                 || message.StartsWith("TEST OFF", StringComparison.Ordinal)
                 || message.StartsWith("SCROLL OFF", StringComparison.Ordinal)
+                || message.StartsWith("CSTSET", StringComparison.Ordinal)
                 )
             {
                 result = false;

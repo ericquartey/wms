@@ -223,6 +223,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 await this.bayManager.SetLaserPointerAsync(this.IsAccessoryEnabled, this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
+                if (this.IsAccessoryEnabled)
+                {
+                    await this.deviceDriver.ConnectAsync(this.ipAddress, this.port);
+                }
+                else
+                {
+                    this.deviceDriver.Disconnect();
+                }
             }
             catch (Exception ex)
             {

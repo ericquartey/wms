@@ -310,6 +310,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.NeedHomingAxis == Axis.None
                                 && bay != null
                                 && bay.Positions != null
+                                && bay.Carousel != null
                                 && bay.TotalCycles - bay.LastCalibrationCycles >= bay.CyclesToCalibrate)
                             {
                                 this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
@@ -320,6 +321,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (this.Mission.NeedHomingAxis == Axis.BayChain
                                 && bay != null
                                 && bay.Positions != null
+                                && bay.Carousel != null
                                 && bay.Positions.All(p => p.LoadingUnit is null)
                                 )
                             {
