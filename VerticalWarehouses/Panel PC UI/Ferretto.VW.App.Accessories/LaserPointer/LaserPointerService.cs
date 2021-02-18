@@ -75,8 +75,10 @@ namespace Ferretto.VW.App.Accessories
 
         #region Methods
 
-        public Task StartAsync()
+        public async Task StartAsync()
         {
+            await this.LaserPointerConfigureAsync();
+
             this.missionToken = this.missionToken
                 ??
                 this.eventAggregator
@@ -94,8 +96,6 @@ namespace Ferretto.VW.App.Accessories
                         async e => await this.OnSocketLinkLaserPointerChangeAsync(e),
                         ThreadOption.BackgroundThread,
                         false);
-
-            return Task.CompletedTask;
         }
 
         public async Task StopAsync()
@@ -127,9 +127,11 @@ namespace Ferretto.VW.App.Accessories
                     var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
 
                     this.laserPointerDriver.Configure(ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+                    await this.laserPointerDriver.ConnectAsync(ipAddress, port);
                 }
                 else
                 {
+                    this.laserPointerDriver.Disconnect();
                     this.laserPointerDriver = null;
                 }
             }
