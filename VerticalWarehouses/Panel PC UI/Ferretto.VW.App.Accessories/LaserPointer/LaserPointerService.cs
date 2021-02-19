@@ -78,6 +78,7 @@ namespace Ferretto.VW.App.Accessories
         public async Task StartAsync()
         {
             await this.LaserPointerConfigureAsync();
+            await this.laserPointerDriver?.EnabledAsync(false, false);
 
             this.missionToken = this.missionToken
                 ??
@@ -160,11 +161,8 @@ namespace Ferretto.VW.App.Accessories
                     if (this.laserPointerDriver != null)
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
-                        if (!await this.laserPointerDriver.EnabledAsync(false, false))
-                        {
-                            // retry
-                            await this.laserPointerDriver.EnabledAsync(false, false);
-                        }
+                        await this.laserPointerDriver.EnabledAsync(false, false);
+                        await this.laserPointerDriver.EnabledAsync(false, false);
                     }
                     return;
                 }
@@ -208,6 +206,7 @@ namespace Ferretto.VW.App.Accessories
 
                         this.logger.Info("Move and switch on laser pointer");
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
+                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
                     }
                 }
             }
@@ -235,18 +234,21 @@ namespace Ferretto.VW.App.Accessories
                 {
                     case 0: // switch off
                         await this.laserPointerDriver.EnabledAsync(false, false);
+                        await this.laserPointerDriver.EnabledAsync(false, false);
                         this.logger.Info("OnSocketLinkLaserPointerChangeAsync, switch 0");
                         break;
 
                     case 1: // switch on in upper bay position
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, true, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
+                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
                         break;
 
                     case 2: // switch on in lower bay position
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, false, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
+                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
                         break;
                 }

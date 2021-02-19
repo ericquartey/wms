@@ -848,66 +848,84 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         private async Task<bool> ExecuteCommandsAsync()
         {
             var result = false;
-            if (!this.IsConnected)
+            try
             {
-                await this.ConnectAsync();
-            }
+                this.ClearConcurrentQueue(this.messagesReceivedQueue);
+                this.ClearConcurrentQueue(this.errorsQueue);
 
-            if (this.IsConnected)
-            {
-                try
+                while (!this.messagesToBeSendQueue.IsEmpty)
                 {
-                    this.ClearConcurrentQueue(this.messagesReceivedQueue);
-                    this.ClearConcurrentQueue(this.errorsQueue);
-
-                    while (!this.messagesToBeSendQueue.IsEmpty)
+                    if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
                     {
-                        if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
+                        var ackReceived = false;
+                        for (var retry = 0; retry < 3 && !ackReceived; retry++)
                         {
-                            this.logger.Trace($"ExecuteCommands();Write");
-                            var data = Encoding.ASCII.GetBytes(sendMessage);
-                            this.stream = this.client.GetStream();
-                            this.stream.ReadTimeout = this.tcpTimeout * 2;
-                            this.stream.WriteTimeout = this.tcpTimeout;
-                            this.stream.Write(data, 0, data.Length);
-                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-
-                            if (this.IsWaitResponse(sendMessage))
+                            if (!this.IsConnected)
                             {
-                                data = new byte[this.client.ReceiveBufferSize];
-                                var bytes = this.stream.Read(data, 0, data.Length);
-                                var responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
+                                await this.ConnectAsync();
+                            }
 
-                                this.messagesReceivedQueue.Enqueue(responseMessage);
-                                this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-                                if (!this.IsResponseOk(sendMessage, responseMessage))
+                            if (this.IsConnected)
+                            {
+                                this.logger.Trace($"ExecuteCommands();Write");
+                                var data = Encoding.ASCII.GetBytes(sendMessage);
+                                this.stream = this.client.GetStream();
+                                this.stream.ReadTimeout = this.tcpTimeout * 4;
+                                this.stream.WriteTimeout = this.tcpTimeout;
+                                this.stream.Write(data, 0, data.Length);
+                                this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+
+                                if (this.IsWaitResponse(sendMessage))
                                 {
-                                    this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage},{responseMessage}");
+                                    data = new byte[this.client.ReceiveBufferSize];
+                                    var bytes = 0;
+                                    var responseMessage = "";
+                                    try
+                                    {
+                                        bytes = this.stream.Read(data, 0, data.Length);
+                                        responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
+
+                                        this.messagesReceivedQueue.Enqueue(responseMessage);
+                                        this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        this.logger.Debug(e);
+                                    }
+                                    if (bytes <= 0 || !this.IsResponseOk(sendMessage, responseMessage))
+                                    {
+                                        this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")},{responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                                    }
+                                    else
+                                    {
+                                        ackReceived = true;
+                                    }
+                                }
+                                else
+                                {
+                                    //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
+                                    this.messagesReceivedQueue.Enqueue("");
+                                    ackReceived = true;
                                 }
                             }
-                            else
-                            {
-                                //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
-                                this.messagesReceivedQueue.Enqueue("");
-                            }
-                            System.Threading.Thread.Sleep(20);
-                        }
-                        else
-                        {
-                            this.logger.Debug("queue locked");
-                            System.Threading.Thread.Sleep(100);
+                            System.Threading.Thread.Sleep(40);
                         }
                     }
+                    else
+                    {
+                        this.logger.Debug("queue locked");
+                        System.Threading.Thread.Sleep(100);
+                    }
+                }
 
-                    result = true;
-                }
-                catch (Exception e)
-                {
-                    this.ClearConcurrentQueue(this.messagesToBeSendQueue);
-                    this.logger.Error(e);
-                    this.Disconnect();
-                    System.Threading.Thread.Sleep(100);
-                }
+                result = true;
+            }
+            catch (Exception e)
+            {
+                this.ClearConcurrentQueue(this.messagesToBeSendQueue);
+                this.logger.Error(e);
+                this.Disconnect();
+                System.Threading.Thread.Sleep(100);
             }
 
             return result;

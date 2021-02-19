@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Modules.Operator
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
         Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null);
 
+        bool IsRecallLoadingUnitId();
+
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
         Task<bool> PartiallyCompleteAsync(int operationId, double quantity);
@@ -28,8 +30,6 @@ namespace Ferretto.VW.App.Modules.Operator
         Task RecallLoadingUnitAsync(int id);
 
         int RecallLoadingUnitId();
-
-        bool IsRecallLoadingUnitId();
 
         Task RefreshAsync();
 
