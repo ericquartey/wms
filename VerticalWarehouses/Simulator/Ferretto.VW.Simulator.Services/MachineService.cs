@@ -468,6 +468,7 @@ namespace Ferretto.VW.Simulator.Services
                     }
                     var isCarousel = bay.Carousel != null;
                     var isExternal = bay.IsExternal;
+                    var isDouble = bay.IsDouble;
 
                     // Retrieve bay position (upper/lower position)
                     var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 5);
@@ -485,6 +486,11 @@ namespace Ferretto.VW.Simulator.Services
                                     {
                                         this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                     }
+                                    else if (isExternal && isDouble)
+                                    {
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value = !e.IsLoading;
+                                    }
                                     else
                                     {
                                         // check state of external sensor for the ext bay
@@ -496,7 +502,15 @@ namespace Ferretto.VW.Simulator.Services
                                 }
                                 else
                                 {
-                                    this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
+                                    if (isExternal && isDouble)
+                                    {
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoading;
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value = !e.IsLoading;
+                                    }
+                                    else
+                                    {
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
+                                    }
                                 }
                                 break;
 
@@ -509,6 +523,11 @@ namespace Ferretto.VW.Simulator.Services
                                     {
                                         this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                     }
+                                    else if(isExternal && isDouble)
+                                    {
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.HookTrolley].Value = !e.IsLoading;
+                                    }
                                     else
                                     {
                                         if (this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
@@ -519,7 +538,15 @@ namespace Ferretto.VW.Simulator.Services
                                 }
                                 else
                                 {
-                                    this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
+                                    if(isExternal && isDouble)
+                                    {
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoading;
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value = !e.IsLoading;
+                                    }
+                                    else
+                                    {
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
+                                    }
                                 }
                                 break;
 
@@ -532,6 +559,11 @@ namespace Ferretto.VW.Simulator.Services
                                     {
                                         this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                     }
+                                    else if (isExternal && isDouble)
+                                    {
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.HookTrolley].Value = !e.IsLoading;
+                                    }
                                     else
                                     {
                                         if (this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
@@ -542,7 +574,15 @@ namespace Ferretto.VW.Simulator.Services
                                 }
                                 else
                                 {
-                                    this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
+                                    if (isExternal && isDouble)
+                                    {
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoading;
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value = !e.IsLoading;
+                                    }
+                                    else
+                                    {
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = (isCarousel ? !e.IsLoading : e.IsLoading);
+                                    }
                                 }
                                 break;
                         }
