@@ -1321,51 +1321,16 @@ namespace Ferretto.VW.Simulator.Services.Models
                     }
                     else if(this.isExternal && this.IsDouble)
                     {
-                        // external bay, simulate the Forward (TowardOperator) direction
-                        if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) < 20)
+                        // bay chain. simulate the lift process
+                        if (target - this.AxisPosition < 20)
                         {
-                            // turn on the internal up presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.HookTrolley].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
-                        }
-                        else
-                        {
-                            // turn off the internal up presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.HookTrolley].Value = false;
-                        }
-                        if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) < 20)
-                        {
-                            // turn on the external up presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
                         }
-                        else
+                        else if (target - this.AxisPosition > 20
+                            && this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value
+                            )
                         {
-                            // turn off the external up presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = true;
-                        }
-                        // external bay, simulate the Forward (TowardOperator) direction
-                        if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) > 20)
-                        {
-                            // turn on the internal low presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.FinePickingRobot].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
-                        }
-                        else
-                        {
-                            // turn off the internal low presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.FinePickingRobot].Value = false;
-                        }
-                        if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) > 20)
-                        {
-                            // turn on the external low presence of drawer
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
-                        }
-                        else
-                        {
-                            // turn off the external low presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
                         }
                     }
                     else
@@ -1468,56 +1433,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     && this.OperationMode == InverterOperationMode.Position
                     && this.Id > 1)
                 {
-                    if (this.isExternal && this.IsDouble)
-                    {
-                        // external bay, simulate the Forward (TowardOperator) direction
-                        if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) < 20)
-                        {
-                            // turn on the internal up presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.HookTrolley].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
-                        }
-                        else
-                        {
-                            // turn off the internal up presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.HookTrolley].Value = false;
-                        }
-                        if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) < 20)
-                        {
-                            // turn on the external up presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
-                        }
-                        else
-                        {
-                            // turn off the external up presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = true;
-                        }
-                        // external bay, simulate the Forward (TowardOperator) direction
-                        if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) > 20)
-                        {
-                            // turn on the internal low presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.FinePickingRobot].Value = true;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
-                        }
-                        else
-                        {
-                            // turn off the internal low presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.FinePickingRobot].Value = false;
-                        }
-                        if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) > 20)
-                        {
-                            // turn on the external low presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
-                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
-                        }
-                        else
-                        {
-                            // turn off the external low presence of drawer
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
-                        }
-                    }
-                    else if (this.isExternal)
+                    if (this.isExternal && !this.isDouble)
                     {
                         // external bay, simulate the Backward (TowardMachine) direction
                         if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) < 20)
