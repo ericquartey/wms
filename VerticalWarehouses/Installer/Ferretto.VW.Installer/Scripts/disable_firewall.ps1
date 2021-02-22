@@ -1,4 +1,4 @@
-﻿NetSh Advfirewall set allprofiles state off
+﻿Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender" -Name "DisableRoutinelyTakingAction" -Value 1
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value 1

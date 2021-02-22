@@ -11,4 +11,4 @@ $primDbFilePath =  \"E:\\database\\\" +  ([io.fileinfo]$primFileDbName).Name;
 $secDbFileName = \"F:\\database\\\" + ([io.fileinfo]$secFileDbName).Name;
 Move-Item -Path $primDbStageFile -Destination $primDbFilePath -Force;
 Move-Item -Path $secDbStageFile -Destination $secDbFileName -Force;
-Move-Item -Path $telemetryDbStageFolder -Destination \"F:\\database\\Telemetry\" -Force
+Move-Item -Path $telemetryDbStageFolder -Destination \"E:\\database\\Telemetry\" -Force
