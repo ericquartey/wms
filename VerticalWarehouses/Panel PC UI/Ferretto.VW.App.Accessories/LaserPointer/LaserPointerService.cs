@@ -135,7 +135,10 @@ namespace Ferretto.VW.App.Accessories
                 }
                 else
                 {
-                    this.laserPointerDriver.Disconnect();
+                    if (this.laserPointerDriver != null)
+                    {
+                        this.laserPointerDriver.Disconnect();
+                    }
                     this.laserPointerDriver = null;
                 }
             }
