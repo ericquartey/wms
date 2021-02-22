@@ -127,7 +127,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                 var alphaNumericBar = accessories.AlphaNumericBar;
 
-                if (alphaNumericBar.IsEnabledNew)
+                if (alphaNumericBar != null &&
+                    alphaNumericBar.IsEnabledNew)
                 {
                     var ipAddress = alphaNumericBar.IpAddress;
                     var port = alphaNumericBar.TcpPort;

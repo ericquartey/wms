@@ -121,7 +121,8 @@ namespace Ferretto.VW.App.Accessories
                 }
 
                 var laserPointer = accessories.LaserPointer;
-                if (laserPointer.IsEnabledNew)
+                if (laserPointer != null &&
+                    laserPointer.IsEnabledNew)
                 {
                     var ipAddress = laserPointer.IpAddress;
                     var port = laserPointer.TcpPort;
