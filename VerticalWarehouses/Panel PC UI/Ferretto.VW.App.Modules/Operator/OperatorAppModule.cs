@@ -41,8 +41,8 @@ namespace Ferretto.VW.App.Modules.Operator
             containerProvider.Resolve<IOperatorNavigationService>();
             containerProvider.Resolve<IWmsDataProvider>().Start();
             containerProvider.Resolve<IMissionOperationsService>().StartAsync();
-            containerProvider.Resolve<IAlphaNumericBarService>().StartAsync();
-            containerProvider.Resolve<ILaserPointerService>().StartAsync();
+            //containerProvider.Resolve<IAlphaNumericBarService>().StartAsync();
+            //containerProvider.Resolve<ILaserPointerService>().StartAsync();
             //containerProvider.Resolve<IWeightingScaleService>().StartAsync();
         }
 

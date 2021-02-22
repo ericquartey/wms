@@ -599,28 +599,69 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveExtBayTowardMachine()
         {
-            return
-                this.CanBaseExecute() &&
-                !this.SensorsService.BayZeroChain;
+            if (this.MachineService.Bay.IsDouble)
+            {
+                return this.CanBaseExecute() &&
+                        !this.SensorsService.BayZeroChain &&
+                        !this.SensorsService.BEDInternalBayBottom &&
+                        !this.SensorsService.BEDExternalBayTop;
+            }
+            else
+            {
+                return
+                    this.CanBaseExecute() &&
+                    !this.SensorsService.BayZeroChain;
+            }
         }
 
         private bool CanMoveExtBayForInsertion()
         {
-            return
-                this.CanBaseExecute() &&
-                !this.SensorsService.BayZeroChain;
+            if (this.MachineService.Bay.IsDouble)
+            {
+                return this.CanBaseExecute() &&
+                        !this.SensorsService.BayZeroChain &&
+                        !this.SensorsService.BEDInternalBayBottom &&
+                        !this.SensorsService.BEDExternalBayTop;
+            }
+            else
+            {
+                return
+                    this.CanBaseExecute() &&
+                    !this.SensorsService.BayZeroChain;
+            }
         }
 
         private bool CanMoveExtBayForExtraction()
         {
-            return this.CanBaseExecute();
+            if (this.MachineService.Bay.IsDouble)
+            {
+                return this.CanBaseExecute() &&
+                        this.SensorsService.BayZeroChain &&
+                        !this.SensorsService.BEDExternalBayBottom &&
+                        !this.SensorsService.BEDInternalBayTop;
+            }
+            else
+            {
+                return
+                    this.CanBaseExecute();
+            }
         }
 
         private bool CanMoveExtBayTowardOperator()
         {
-            return
-                this.CanBaseExecute() &&
-                this.SensorsService.BayZeroChain;
+            if (this.MachineService.Bay.IsDouble)
+            {
+                return this.CanBaseExecute() &&
+                        this.SensorsService.BayZeroChain &&
+                        !this.SensorsService.BEDExternalBayBottom &&
+                        !this.SensorsService.BEDInternalBayTop;
+            }
+            else
+            {
+                return
+                    this.CanBaseExecute() &&
+                    this.SensorsService.BayZeroChain;
+            }
         }
 
         private bool CanMoveToBayPosition()

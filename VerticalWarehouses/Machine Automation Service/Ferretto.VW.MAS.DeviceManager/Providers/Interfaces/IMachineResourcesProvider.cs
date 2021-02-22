@@ -36,13 +36,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerInBay1Bottom { get; }
 
+        bool IsDrawerInBay1InternalBottom { get; }
+
+        bool IsDrawerInBay1InternalTop { get; }
+
         bool IsDrawerInBay1Top { get; }
 
         bool IsDrawerInBay2Bottom { get; }
 
+        bool IsDrawerInBay2InternalBottom { get; }
+
+        bool IsDrawerInBay2InternalTop { get; }
+
         bool IsDrawerInBay2Top { get; }
 
         bool IsDrawerInBay3Bottom { get; }
+
+        bool IsDrawerInBay3InternalBottom { get; }
+
+        bool IsDrawerInBay3InternalTop { get; }
 
         bool IsDrawerInBay3Top { get; }
 
@@ -88,7 +100,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerInBayExternalPosition(BayNumber bayNumber);
 
-        bool IsDrawerInBayInternalPosition(BayNumber bayNumber);
+        bool IsDrawerInBayInternalPosition(BayNumber bayNumber, bool isDouble);
 
         bool IsDrawerInBayTop(BayNumber bayNumber);
 

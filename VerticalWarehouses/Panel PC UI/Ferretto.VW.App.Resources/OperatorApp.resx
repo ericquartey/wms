@@ -342,31 +342,31 @@
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
-    <value>MachineStatistics_TotalMovedTrays</value>
+    <value>Moved unit</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
-    <value>MachineStatistics_TotalPowerOnTime</value>
+    <value>Total power on time</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
-    <value>MachineStatistics_AreaFillPercentage</value>
+    <value>Area fill</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
-    <value>MachineStatistics_WeightCapacityPercentage</value>
+    <value>Weight capacity</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
-    <value>MachineStatistics_AutomaticTimePercentage</value>
+    <value>Automatic time</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
-    <value>MachineStatistics_UsageTimePercentage</value>
+    <value>Usage time</value>
     <comment>Label</comment>
   </data>
   <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
-    <value>DrawerSpaceSaturazionHeader</value>
+    <value>Statistics: drawer space saturation.</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
@@ -374,155 +374,155 @@
     <comment>Label text</comment>
   </data>
   <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
-    <value>DrawerSpaceSaturazionDrawerMeasure</value>
+    <value>Drawer measure (mm)</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
-    <value>DrawerSpaceSaturazionFillingMachine</value>
+    <value>Filling machine</value>
     <comment>Progress bar label text</comment>
   </data>
   <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
-    <value>DrawerSpaceSaturazionWeightAnalisys</value>
+    <value>Space analysis</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerWeightSaturationHeader" xml:space="preserve">
-    <value>DrawerWeightSaturationHeader</value>
+    <value>Statistics: unit weight analysis.</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
-    <value>DrawerWeightSaturationTotalDrawers</value>
+    <value>Total units</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
-    <value>DrawerWeightSaturationMaxGrossRange</value>
+    <value>Statistics: unit weight analysis.</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
-    <value>DrawerWeightSaturationMaxNetRange</value>
+    <value>Net flow max. (kg)</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
-    <value>DrawerWeightSaturationWeightGrossLoaded</value>
+    <value>Net weight loaded (%)</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
-    <value>DrawerWeightSaturationWeightNetLoaded</value>
+    <value>Net weight loaded (kg)</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
-    <value>DrawerWeightSaturationNetLoadedWeight</value>
+    <value>Net weight loaded (%)</value>
     <comment>Progress bar label text</comment>
   </data>
   <data name="DetailListInWaitHeader" xml:space="preserve">
-    <value>DetailListInWaitHeader</value>
+    <value>Executable list lines</value>
     <comment>Page header</comment>
   </data>
   <data name="CellsStatisticsHeader" xml:space="preserve">
-    <value>CellsStatisticsHeader</value>
+    <value>Statistics: cells.</value>
     <comment>Page header</comment>
   </data>
   <data name="CellsStatisticsCellsTotal" xml:space="preserve">
-    <value>CellsStatisticsCellsTotal</value>
+    <value>Total cells</value>
     <comment>Label text</comment>
   </data>
   <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
-    <value>CellsStatisticsFrontCellsTotal</value>
+    <value>Total front cells</value>
     <comment>Label text</comment>
   </data>
   <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
-    <value>CellsStatisticsRearCellsTotal</value>
+    <value>Total rear cells</value>
     <comment>Label text</comment>
   </data>
   <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
-    <value>CellsStatisticsTotalUsedCells</value>
+    <value>Total used cells</value>
     <comment>Progress bar label text</comment>
   </data>
   <data name="CellsStatisticsOther" xml:space="preserve">
-    <value>CellsStatisticsOther</value>
+    <value>Other</value>
     <comment>Button text</comment>
   </data>
   <data name="ErrorsStatisticsHeader" xml:space="preserve">
-    <value>ErrorsStatisticsHeader</value>
+    <value>Statistics: error analysis.</value>
     <comment>Page header</comment>
   </data>
   <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
-    <value>ErrorsStatisticsTotDrawersMoved</value>
+    <value>Total units moved</value>
     <comment>Label text</comment>
   </data>
   <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
-    <value>ErrorsStatisticsTotErrors</value>
+    <value>Total errors</value>
     <comment>Label text</comment>
   </data>
   <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
-    <value>ErrorsStatisticsDrawersMovedWithoutError</value>
+    <value>Units moved without error</value>
     <comment>Label text</comment>
   </data>
   <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
-    <value>ErrorsStatisticsReliabilityIndex</value>
+    <value>Reliability index</value>
     <comment>Progress bar label text</comment>
   </data>
   <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
-    <value>ErrorsStatisticsErrorDescription</value>
+    <value>Error description</value>
     <comment>Label text</comment>
   </data>
   <data name="MaintenanceMainPageHeader" xml:space="preserve">
-    <value>MaintenanceMainPageHeader</value>
+    <value>Maintenance: Vertimag X</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageModel" xml:space="preserve">
-    <value>MaintenanceMainPageModel</value>
+    <value>Model</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageSerial" xml:space="preserve">
-    <value>MaintenanceMainPageSerial</value>
+    <value>Serial</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
-    <value>MaintenanceMainPageInstallationDate</value>
+    <value>Installation date</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
-    <value>MaintenanceMainPageLastMaintenanceDate</value>
+    <value>Last maintenance date</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
-    <value>MaintenanceNextMaintenanceDate</value>
+    <value>Next maintenance date</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
-    <value>MaintenanceMainPageStateMachine</value>
+    <value>State machine</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailHeader" xml:space="preserve">
-    <value>MaintenanceDetailHeader</value>
+    <value>Maintenance detail</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
-    <value>MaintenanceDetailTotalCycles</value>
+    <value>Total cycles</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
-    <value>MaintenanceDetailCyclesBetweenTwoMaintenance</value>
+    <value>Cycles between two maintenance</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
-    <value>MaintenanceDetailCyclesFromLastMaintenance</value>
+    <value>Cycles from last maintenance</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailElementStatus" xml:space="preserve">
-    <value>MaintenanceDetailElementStatus</value>
+    <value>Element status</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailStopRequired" xml:space="preserve">
-    <value>MaintenanceDetailStopRequired</value>
+    <value>Machine downtime required [hours]</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
-    <value>MaintenanceDetailPlatformRequired</value>
+    <value>Platform</value>
     <comment>Label</comment>
   </data>
   <data name="MaintenanceDetailContactRequired" xml:space="preserve">
-    <value>MaintenanceDetailContactRequired</value>
+    <value>Send contact request</value>
     <comment>Label</comment>
   </data>
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
@@ -530,15 +530,15 @@
     <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationDrawers" xml:space="preserve">
-    <value>StatisticsNavigationDrawers</value>
+    <value>Statistics units</value>
     <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationCells" xml:space="preserve">
-    <value>StatisticsNavigationCells</value>
+    <value>Statistics cells</value>
     <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationErrors" xml:space="preserve">
-    <value>StatisticsNavigationErrors</value>
+    <value>Statistics errors</value>
     <comment>Label</comment>
   </data>
   <data name="DrawerActivityRefillingHeader" xml:space="preserve">
@@ -662,11 +662,11 @@
     <comment>Label</comment>
   </data>
   <data name="ItemDetailMeasurementUnity" xml:space="preserve">
-    <value>ItemDetailMeasurementUnity</value>
+    <value>Measurement unity</value>
     <comment>Label</comment>
   </data>
   <data name="ItemDetailWeight" xml:space="preserve">
-    <value>ItemDetailWeight</value>
+    <value>Average weight [gr]</value>
     <comment>Label</comment>
   </data>
   <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
@@ -834,63 +834,63 @@
     <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationMachine" xml:space="preserve">
-    <value>StatisticsNavigationMachine</value>
+    <value>Statistics machine</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsHeader" xml:space="preserve">
-    <value>MachineStatisticsHeader</value>
+    <value>Machine statistics</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionVertical" xml:space="preserve">
-    <value>MachineStatisticsSectionVertical</value>
+    <value>Vertical axis data.</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
-    <value>MachineStatistics_TotalVerticalAxisKilometers</value>
+    <value>Total vertical axis kilometers</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
-    <value>MachineStatistics_TotalVerticalAxisCycles</value>
+    <value>Total vertical axis cycles</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionShutters" xml:space="preserve">
-    <value>MachineStatisticsSectionShutters</value>
+    <value>Shutters data.</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
-    <value>MachineStatistics_TotalShutter1Cycles</value>
+    <value>Total shutter 1 cycles</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
-    <value>MachineStatistics_TotalShutter2Cycles</value>
+    <value>Total shutter 2 cycles</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
-    <value>MachineStatistics_TotalShutter3Cycles</value>
+    <value>Total shutter 3 cycles</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
-    <value>MachineStatisticsSectionHorizontal</value>
+    <value>Chain axis data.</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
-    <value>MachineStatisticsSectionHorizontalTotalCycles</value>
+    <value>Horizontal total cycles</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBays" xml:space="preserve">
-    <value>MachineStatisticsSectionBays</value>
+    <value>Statistics bays</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
-    <value>MachineStatisticsSectionBaysBay1</value>
+    <value>Drawers moved in bay 1</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
-    <value>MachineStatisticsSectionBaysBay2</value>
+    <value>Drawers moved in bay 2</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
-    <value>MachineStatisticsSectionBaysBay3</value>
+    <value>Drawers moved in bay 3</value>
     <comment>Label</comment>
   </data>
   <data name="ItemSearchGridItem" xml:space="preserve">
@@ -898,7 +898,7 @@
     <comment>Label</comment>
   </data>
   <data name="ItemSearchGridDescription" xml:space="preserve">
-    <value>ItemSearchGridDescription</value>
+    <value>Item description</value>
     <comment>Label</comment>
   </data>
   <data name="ItemSearchGridMachine" xml:space="preserve">
@@ -910,55 +910,55 @@
     <comment>Section Header</comment>
   </data>
   <data name="CommonListType" xml:space="preserve">
-    <value>CommonListType</value>
+    <value>List type</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoWmsStatus" xml:space="preserve">
-    <value>GeneralInfoWmsStatus</value>
+    <value>WMS status</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingDetailHeader" xml:space="preserve">
-    <value>DrawerCompactingDetailHeader</value>
+    <value>View compaction details.</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
-    <value>DrawerCompactingDetailDrawer</value>
+    <value>Drawer moving</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
-    <value>DrawerCompactingDetailSourceCell</value>
+    <value>Source cell</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
-    <value>DrawerCompactingDetailDestinationCell</value>
+    <value>Destination cell</value>
     <comment>label text</comment>
   </data>
   <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
-    <value>DrawerCompactingDetailActualStep</value>
+    <value>Actual step</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
-    <value>DrawerCompactingDetailVerticalPosition</value>
+    <value>Vertical axis position</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
-    <value>DrawerCompactingDetailOrizzontalPosition</value>
+    <value>Orizzontal axis position</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
-    <value>DrawerCompactingDetailRemainingFragment</value>
+    <value>Remaining fragment</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
-    <value>DrawerCompactingDetailRecoveredSpace</value>
+    <value>Recovered space mm.</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
-    <value>DrawerCompactingDetailSpaceToRecover</value>
+    <value>Space to recover mm.</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingAntStop" xml:space="preserve">
-    <value>DrawerCompactingAntStop</value>
+    <value>Finish compaction</value>
     <comment>Button text</comment>
   </data>
   <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
@@ -974,7 +974,7 @@
     <comment>Block Level</comment>
   </data>
   <data name="BlockLevelSpaceOnly" xml:space="preserve">
-    <value>SpaceOnly</value>
+    <value>Space only</value>
     <comment>Block Level</comment>
   </data>
   <data name="BlockLevelBlocked" xml:space="preserve">
@@ -1010,7 +1010,7 @@
     <comment>Button text</comment>
   </data>
   <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
-    <value>DrawerSpaceSaturazionWeightAnalisys</value>
+    <value>Space analysis</value>
     <comment>Button text</comment>
   </data>
   <data name="ItemManagementType_FIFO" xml:space="preserve">
@@ -1388,7 +1388,7 @@
     <value>Compacting</value>
   </data>
   <data name="BlockLevelNeedsTest" xml:space="preserve">
-    <value>NeedsTest</value>
+    <value>Needs test</value>
     <comment>BlockLevel</comment>
   </data>
   <data name="Code" xml:space="preserve">

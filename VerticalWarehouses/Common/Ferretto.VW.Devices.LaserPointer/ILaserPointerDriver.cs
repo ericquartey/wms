@@ -14,6 +14,10 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0);
 
+        Task ConnectAsync();
+
+        void Disconnect();
+
         Task<bool> EnabledAsync(bool enable, bool onMovement);
 
         Task<bool> HelpAsync();
@@ -22,7 +26,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         Task<bool> JogAsync(LaserPointerCommands.Command JogCommand);
 
-        Task<bool> MoveAndSwitchOnAsync(LaserPoint point);
+        Task<bool> MoveAndSwitchOnAsync(LaserPoint point, bool select = false);
 
         Task<bool> MoveAsync(LaserPoint point);
 

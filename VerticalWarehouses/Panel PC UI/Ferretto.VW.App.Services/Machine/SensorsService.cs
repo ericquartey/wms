@@ -124,6 +124,66 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        public bool BEDInternalBayTop => this.BayTrolleyOption;
+
+        public bool BEDInternalBayBottom => this.BayRobotOption;
+
+        public bool BEDExternalBayTop => this.IsLoadingUnitInBay;
+
+        public bool BEDExternalBayBottom => this.IsLoadingUnitInMiddleBottomBay;
+
+        public bool BayTrolleyOption
+        {
+            get
+            {
+                if (this.Bay is null)
+                {
+                    return false;
+                }
+
+                if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
+                {
+                    return this.Sensors.TrolleyOptionBay1;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                {
+                    return this.Sensors.TrolleyOptionBay2;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
+                {
+                    return this.Sensors.TrolleyOptionBay3;
+                }
+
+                return false;
+            }
+        }
+
+        public bool BayRobotOption
+        {
+            get
+            {
+                if (this.Bay is null)
+                {
+                    return false;
+                }
+
+                if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
+                {
+                    return this.Sensors.RobotOptionBay1;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                {
+                    return this.Sensors.RobotOptionBay2;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
+                {
+                    return this.Sensors.RobotOptionBay3;
+                }
+
+                return false;
+            }
+        }
+
         public bool BayZeroChainIsVisible
         {
             get => this.bayZeroChainIsVisible;
@@ -377,6 +437,8 @@ namespace Ferretto.VW.App.Services
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInMiddleBottomBay));
+            this.RaisePropertyChanged(nameof(this.BayTrolleyOption));
+            this.RaisePropertyChanged(nameof(this.BayRobotOption));
             this.RaisePropertyChanged(nameof(this.ProfileCalibrationBay));
         }
 

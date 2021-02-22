@@ -46,6 +46,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly ILocalizationService localizationService;
 
+        private readonly IAlphaNumericBarService alphaNumericBarService;
+
+        private readonly ILaserPointerService laserPointerService;
+
         private DelegateCommand loginCommand;
 
         private MachineIdentity machineIdentity;
@@ -80,7 +84,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IBarcodeReaderService barcodeReaderService,
             IMachineBaysWebService machineBaysWebService,
             IMachineIdentityWebService machineIdentityWebService,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            IAlphaNumericBarService alphaNumericBarService,
+            ILaserPointerService laserPointerService)
             : base(PresentationMode.Login)
         {
             this.usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
@@ -96,6 +102,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
+            this.alphaNumericBarService = alphaNumericBarService ?? throw new ArgumentNullException(nameof(alphaNumericBarService));
+            this.laserPointerService = laserPointerService ?? throw new ArgumentNullException(nameof(laserPointerService));
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -339,6 +347,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             await this.barcodeReaderService.StartAsync();
             await this.cardReaderService.StartAsync();
             await this.tokenReaderService.StartAsync();
+            await this.alphaNumericBarService.StartAsync();
+            await this.laserPointerService.StartAsync();
 
             if (this.authenticationService.IsAutoLogoutServiceUser)
             {

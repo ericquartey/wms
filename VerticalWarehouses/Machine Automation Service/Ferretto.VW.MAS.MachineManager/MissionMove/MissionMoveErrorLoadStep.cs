@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                                 {
                                     this.Mission.ErrorMovements = MissionErrorMovements.None;
-                                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                                    this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
                                     this.LoadUnitEnd(restore: true);
                                 }
                                 else
@@ -255,7 +255,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Mission.ErrorMovements = MissionErrorMovements.None;
-                this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
                 this.LoadUnitEnd(restore: true);
             }
         }
@@ -287,7 +287,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     )
                 {
                     this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
-                    this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                    this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
                     this.Mission.RestoreStep = MissionStep.ToTarget;
                     this.Mission.StepTime = DateTime.UtcNow;
                     var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);

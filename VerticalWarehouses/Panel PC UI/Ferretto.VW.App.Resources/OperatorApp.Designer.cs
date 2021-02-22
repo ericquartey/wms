@@ -358,7 +358,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NeedsTest.
+        ///   Looks up a localized string similar to Needs test.
         /// </summary>
         public static string BlockLevelNeedsTest {
             get {
@@ -376,7 +376,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SpaceOnly.
+        ///   Looks up a localized string similar to Space only.
         /// </summary>
         public static string BlockLevelSpaceOnly {
             get {
@@ -529,7 +529,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CellsStatisticsCellsTotal.
+        ///   Looks up a localized string similar to Total cells.
         /// </summary>
         public static string CellsStatisticsCellsTotal {
             get {
@@ -538,7 +538,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CellsStatisticsFrontCellsTotal.
+        ///   Looks up a localized string similar to Total front cells.
         /// </summary>
         public static string CellsStatisticsFrontCellsTotal {
             get {
@@ -547,7 +547,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CellsStatisticsHeader.
+        ///   Looks up a localized string similar to Statistics: cells..
         /// </summary>
         public static string CellsStatisticsHeader {
             get {
@@ -556,7 +556,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CellsStatisticsOther.
+        ///   Looks up a localized string similar to Other.
         /// </summary>
         public static string CellsStatisticsOther {
             get {
@@ -565,7 +565,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CellsStatisticsRearCellsTotal.
+        ///   Looks up a localized string similar to Total rear cells.
         /// </summary>
         public static string CellsStatisticsRearCellsTotal {
             get {
@@ -574,7 +574,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CellsStatisticsTotalUsedCells.
+        ///   Looks up a localized string similar to Total used cells.
         /// </summary>
         public static string CellsStatisticsTotalUsedCells {
             get {
@@ -691,7 +691,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CommonListType.
+        ///   Looks up a localized string similar to List type.
         /// </summary>
         public static string CommonListType {
             get {
@@ -925,7 +925,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DetailListInWaitHeader.
+        ///   Looks up a localized string similar to Executable list lines.
         /// </summary>
         public static string DetailListInWaitHeader {
             get {
@@ -1204,7 +1204,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingAntStop.
+        ///   Looks up a localized string similar to Finish compaction.
         /// </summary>
         public static string DrawerCompactingAntStop {
             get {
@@ -1213,7 +1213,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailActualStep.
+        ///   Looks up a localized string similar to Actual step.
         /// </summary>
         public static string DrawerCompactingDetailActualStep {
             get {
@@ -1222,7 +1222,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailDestinationCell.
+        ///   Looks up a localized string similar to Destination cell.
         /// </summary>
         public static string DrawerCompactingDetailDestinationCell {
             get {
@@ -1231,7 +1231,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailDrawer.
+        ///   Looks up a localized string similar to Drawer moving.
         /// </summary>
         public static string DrawerCompactingDetailDrawer {
             get {
@@ -1240,7 +1240,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailHeader.
+        ///   Looks up a localized string similar to View compaction details..
         /// </summary>
         public static string DrawerCompactingDetailHeader {
             get {
@@ -1249,7 +1249,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailOrizzontalPosition.
+        ///   Looks up a localized string similar to Orizzontal axis position.
         /// </summary>
         public static string DrawerCompactingDetailOrizzontalPosition {
             get {
@@ -1258,7 +1258,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailRecoveredSpace.
+        ///   Looks up a localized string similar to Recovered space mm..
         /// </summary>
         public static string DrawerCompactingDetailRecoveredSpace {
             get {
@@ -1267,7 +1267,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailRemainingFragment.
+        ///   Looks up a localized string similar to Remaining fragment.
         /// </summary>
         public static string DrawerCompactingDetailRemainingFragment {
             get {
@@ -1276,7 +1276,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailSourceCell.
+        ///   Looks up a localized string similar to Source cell.
         /// </summary>
         public static string DrawerCompactingDetailSourceCell {
             get {
@@ -1285,7 +1285,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailSpaceToRecover.
+        ///   Looks up a localized string similar to Space to recover mm..
         /// </summary>
         public static string DrawerCompactingDetailSpaceToRecover {
             get {
@@ -1294,7 +1294,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerCompactingDetailVerticalPosition.
+        ///   Looks up a localized string similar to Vertical axis position.
         /// </summary>
         public static string DrawerCompactingDetailVerticalPosition {
             get {
@@ -1429,7 +1429,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerSpaceSaturazionWeightAnalisys.
+        ///   Looks up a localized string similar to Space analysis.
         /// </summary>
         public static string DrawerSpaceSaturazionAnalisys {
             get {
@@ -1438,7 +1438,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerSpaceSaturazionDrawerMeasure.
+        ///   Looks up a localized string similar to Drawer measure (mm).
         /// </summary>
         public static string DrawerSpaceSaturazionDrawerMeasure {
             get {
@@ -1447,7 +1447,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerSpaceSaturazionFillingMachine.
+        ///   Looks up a localized string similar to Filling machine.
         /// </summary>
         public static string DrawerSpaceSaturazionFillingMachine {
             get {
@@ -1456,7 +1456,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerSpaceSaturazionHeader.
+        ///   Looks up a localized string similar to Statistics: drawer space saturation..
         /// </summary>
         public static string DrawerSpaceSaturazionHeader {
             get {
@@ -1474,7 +1474,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerSpaceSaturazionWeightAnalisys.
+        ///   Looks up a localized string similar to Space analysis.
         /// </summary>
         public static string DrawerSpaceSaturazionWeightAnalisys {
             get {
@@ -1501,7 +1501,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerWeightSaturationHeader.
+        ///   Looks up a localized string similar to Statistics: unit weight analysis..
         /// </summary>
         public static string DrawerWeightSaturationHeader {
             get {
@@ -1510,7 +1510,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerWeightSaturationMaxGrossRange.
+        ///   Looks up a localized string similar to Statistics: unit weight analysis..
         /// </summary>
         public static string DrawerWeightSaturationMaxGrossRange {
             get {
@@ -1519,7 +1519,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerWeightSaturationMaxNetRange.
+        ///   Looks up a localized string similar to Net flow max. (kg).
         /// </summary>
         public static string DrawerWeightSaturationMaxNetRange {
             get {
@@ -1528,7 +1528,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerWeightSaturationNetLoadedWeight.
+        ///   Looks up a localized string similar to Net weight loaded (%).
         /// </summary>
         public static string DrawerWeightSaturationNetLoadedWeight {
             get {
@@ -1537,7 +1537,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerWeightSaturationTotalDrawers.
+        ///   Looks up a localized string similar to Total units.
         /// </summary>
         public static string DrawerWeightSaturationTotalDrawers {
             get {
@@ -1546,7 +1546,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerWeightSaturationWeightGrossLoaded.
+        ///   Looks up a localized string similar to Net weight loaded (%).
         /// </summary>
         public static string DrawerWeightSaturationWeightGrossLoaded {
             get {
@@ -1555,7 +1555,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DrawerWeightSaturationWeightNetLoaded.
+        ///   Looks up a localized string similar to Net weight loaded (kg).
         /// </summary>
         public static string DrawerWeightSaturationWeightNetLoaded {
             get {
@@ -1600,7 +1600,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ErrorsStatisticsDrawersMovedWithoutError.
+        ///   Looks up a localized string similar to Units moved without error.
         /// </summary>
         public static string ErrorsStatisticsDrawersMovedWithoutError {
             get {
@@ -1609,7 +1609,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ErrorsStatisticsErrorDescription.
+        ///   Looks up a localized string similar to Error description.
         /// </summary>
         public static string ErrorsStatisticsErrorDescription {
             get {
@@ -1618,7 +1618,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ErrorsStatisticsHeader.
+        ///   Looks up a localized string similar to Statistics: error analysis..
         /// </summary>
         public static string ErrorsStatisticsHeader {
             get {
@@ -1627,7 +1627,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ErrorsStatisticsReliabilityIndex.
+        ///   Looks up a localized string similar to Reliability index.
         /// </summary>
         public static string ErrorsStatisticsReliabilityIndex {
             get {
@@ -1636,7 +1636,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ErrorsStatisticsTotDrawersMoved.
+        ///   Looks up a localized string similar to Total units moved.
         /// </summary>
         public static string ErrorsStatisticsTotDrawersMoved {
             get {
@@ -1645,7 +1645,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ErrorsStatisticsTotErrors.
+        ///   Looks up a localized string similar to Total errors.
         /// </summary>
         public static string ErrorsStatisticsTotErrors {
             get {
@@ -1879,7 +1879,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GeneralInfoWmsStatus.
+        ///   Looks up a localized string similar to WMS status.
         /// </summary>
         public static string GeneralInfoWmsStatus {
             get {
@@ -2185,7 +2185,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ItemDetailMeasurementUnity.
+        ///   Looks up a localized string similar to Measurement unity.
         /// </summary>
         public static string ItemDetailMeasurementUnity {
             get {
@@ -2203,7 +2203,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ItemDetailWeight.
+        ///   Looks up a localized string similar to Average weight [gr].
         /// </summary>
         public static string ItemDetailWeight {
             get {
@@ -2293,7 +2293,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ItemSearchGridDescription.
+        ///   Looks up a localized string similar to Item description.
         /// </summary>
         public static string ItemSearchGridDescription {
             get {
@@ -2617,7 +2617,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_AreaFillPercentage.
+        ///   Looks up a localized string similar to Area fill.
         /// </summary>
         public static string MachineStatistics_AreaFillPercentage {
             get {
@@ -2626,7 +2626,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_AutomaticTimePercentage.
+        ///   Looks up a localized string similar to Automatic time.
         /// </summary>
         public static string MachineStatistics_AutomaticTimePercentage {
             get {
@@ -2635,7 +2635,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_TotalMovedTrays.
+        ///   Looks up a localized string similar to Moved unit.
         /// </summary>
         public static string MachineStatistics_TotalMovedTrays {
             get {
@@ -2644,7 +2644,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_TotalPowerOnTime.
+        ///   Looks up a localized string similar to Total power on time.
         /// </summary>
         public static string MachineStatistics_TotalPowerOnTime {
             get {
@@ -2653,7 +2653,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_TotalShutter1Cycles.
+        ///   Looks up a localized string similar to Total shutter 1 cycles.
         /// </summary>
         public static string MachineStatistics_TotalShutter1Cycles {
             get {
@@ -2662,7 +2662,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_TotalShutter2Cycles.
+        ///   Looks up a localized string similar to Total shutter 2 cycles.
         /// </summary>
         public static string MachineStatistics_TotalShutter2Cycles {
             get {
@@ -2671,7 +2671,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_TotalShutter3Cycles.
+        ///   Looks up a localized string similar to Total shutter 3 cycles.
         /// </summary>
         public static string MachineStatistics_TotalShutter3Cycles {
             get {
@@ -2680,7 +2680,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_TotalVerticalAxisCycles.
+        ///   Looks up a localized string similar to Total vertical axis cycles.
         /// </summary>
         public static string MachineStatistics_TotalVerticalAxisCycles {
             get {
@@ -2689,7 +2689,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_TotalVerticalAxisKilometers.
+        ///   Looks up a localized string similar to Total vertical axis kilometers.
         /// </summary>
         public static string MachineStatistics_TotalVerticalAxisKilometers {
             get {
@@ -2698,7 +2698,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_UsageTimePercentage.
+        ///   Looks up a localized string similar to Usage time.
         /// </summary>
         public static string MachineStatistics_UsageTimePercentage {
             get {
@@ -2707,7 +2707,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatistics_WeightCapacityPercentage.
+        ///   Looks up a localized string similar to Weight capacity.
         /// </summary>
         public static string MachineStatistics_WeightCapacityPercentage {
             get {
@@ -2716,7 +2716,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsHeader.
+        ///   Looks up a localized string similar to Machine statistics.
         /// </summary>
         public static string MachineStatisticsHeader {
             get {
@@ -2725,7 +2725,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionBays.
+        ///   Looks up a localized string similar to Statistics bays.
         /// </summary>
         public static string MachineStatisticsSectionBays {
             get {
@@ -2734,7 +2734,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionBaysBay1.
+        ///   Looks up a localized string similar to Drawers moved in bay 1.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay1 {
             get {
@@ -2743,7 +2743,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionBaysBay2.
+        ///   Looks up a localized string similar to Drawers moved in bay 2.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay2 {
             get {
@@ -2752,7 +2752,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionBaysBay3.
+        ///   Looks up a localized string similar to Drawers moved in bay 3.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay3 {
             get {
@@ -2761,7 +2761,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionHorizontal.
+        ///   Looks up a localized string similar to Chain axis data..
         /// </summary>
         public static string MachineStatisticsSectionHorizontal {
             get {
@@ -2770,7 +2770,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionHorizontalTotalCycles.
+        ///   Looks up a localized string similar to Horizontal total cycles.
         /// </summary>
         public static string MachineStatisticsSectionHorizontalTotalCycles {
             get {
@@ -2779,7 +2779,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionShutters.
+        ///   Looks up a localized string similar to Shutters data..
         /// </summary>
         public static string MachineStatisticsSectionShutters {
             get {
@@ -2788,7 +2788,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineStatisticsSectionVertical.
+        ///   Looks up a localized string similar to Vertical axis data..
         /// </summary>
         public static string MachineStatisticsSectionVertical {
             get {
@@ -2806,7 +2806,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceDetailContactRequired.
+        ///   Looks up a localized string similar to Send contact request.
         /// </summary>
         public static string MaintenanceDetailContactRequired {
             get {
@@ -2815,7 +2815,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceDetailCyclesBetweenTwoMaintenance.
+        ///   Looks up a localized string similar to Cycles between two maintenance.
         /// </summary>
         public static string MaintenanceDetailCyclesBetweenTwoMaintenance {
             get {
@@ -2824,7 +2824,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceDetailCyclesFromLastMaintenance.
+        ///   Looks up a localized string similar to Cycles from last maintenance.
         /// </summary>
         public static string MaintenanceDetailCyclesFromLastMaintenance {
             get {
@@ -2833,7 +2833,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceDetailElementStatus.
+        ///   Looks up a localized string similar to Element status.
         /// </summary>
         public static string MaintenanceDetailElementStatus {
             get {
@@ -2842,7 +2842,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceDetailHeader.
+        ///   Looks up a localized string similar to Maintenance detail.
         /// </summary>
         public static string MaintenanceDetailHeader {
             get {
@@ -2851,7 +2851,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceDetailPlatformRequired.
+        ///   Looks up a localized string similar to Platform.
         /// </summary>
         public static string MaintenanceDetailPlatformRequired {
             get {
@@ -2860,7 +2860,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceDetailStopRequired.
+        ///   Looks up a localized string similar to Machine downtime required [hours].
         /// </summary>
         public static string MaintenanceDetailStopRequired {
             get {
@@ -2869,7 +2869,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceDetailTotalCycles.
+        ///   Looks up a localized string similar to Total cycles.
         /// </summary>
         public static string MaintenanceDetailTotalCycles {
             get {
@@ -2878,7 +2878,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceMainPageHeader.
+        ///   Looks up a localized string similar to Maintenance: Vertimag X.
         /// </summary>
         public static string MaintenanceMainPageHeader {
             get {
@@ -2887,7 +2887,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceMainPageInstallationDate.
+        ///   Looks up a localized string similar to Installation date.
         /// </summary>
         public static string MaintenanceMainPageInstallationDate {
             get {
@@ -2896,7 +2896,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceMainPageLastMaintenanceDate.
+        ///   Looks up a localized string similar to Last maintenance date.
         /// </summary>
         public static string MaintenanceMainPageLastMaintenanceDate {
             get {
@@ -2905,7 +2905,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceMainPageModel.
+        ///   Looks up a localized string similar to Model.
         /// </summary>
         public static string MaintenanceMainPageModel {
             get {
@@ -2914,7 +2914,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceNextMaintenanceDate.
+        ///   Looks up a localized string similar to Next maintenance date.
         /// </summary>
         public static string MaintenanceMainPageNextMaintenanceDate {
             get {
@@ -2923,7 +2923,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceMainPageSerial.
+        ///   Looks up a localized string similar to Serial.
         /// </summary>
         public static string MaintenanceMainPageSerial {
             get {
@@ -2932,7 +2932,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaintenanceMainPageStateMachine.
+        ///   Looks up a localized string similar to State machine.
         /// </summary>
         public static string MaintenanceMainPageStateMachine {
             get {
@@ -4120,7 +4120,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsNavigationCells.
+        ///   Looks up a localized string similar to Statistics cells.
         /// </summary>
         public static string StatisticsNavigationCells {
             get {
@@ -4129,7 +4129,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsNavigationDrawers.
+        ///   Looks up a localized string similar to Statistics units.
         /// </summary>
         public static string StatisticsNavigationDrawers {
             get {
@@ -4138,7 +4138,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsNavigationErrors.
+        ///   Looks up a localized string similar to Statistics errors.
         /// </summary>
         public static string StatisticsNavigationErrors {
             get {
@@ -4147,7 +4147,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to StatisticsNavigationMachine.
+        ///   Looks up a localized string similar to Statistics machine.
         /// </summary>
         public static string StatisticsNavigationMachine {
             get {

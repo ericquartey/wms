@@ -2412,4 +2412,25 @@
   <data name="RandomCells" xml:space="preserve">
     <value>Zufällige Zellenzuweisung</value>
   </data>
+  <data name="InternalUp" xml:space="preserve">
+    <value>Int Up</value>
+  </data>
+  <data name="InternalDown" xml:space="preserve">
+    <value>Int Down</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Schublade in hoher Innenstellung</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Schublade in niedriger Innenstellung</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Doppelter Außenschacht 1</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Doppelter Außenschacht 2</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Doppelter Außenschacht 3</value>
+  </data>
 </root>

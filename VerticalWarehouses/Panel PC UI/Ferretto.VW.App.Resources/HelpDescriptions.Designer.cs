@@ -1978,7 +1978,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchDescription.
+        ///   Looks up a localized string similar to The procedure allows you to search for an article using both the code and description columns. The text entered in the search field is automatically used to find what is required using the contents of the two columns. The result is displayed in the grid..
         /// </summary>
         public static string HelpItemSearchDescription {
             get {

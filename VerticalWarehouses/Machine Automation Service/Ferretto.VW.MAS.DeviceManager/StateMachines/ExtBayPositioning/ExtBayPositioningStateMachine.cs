@@ -150,6 +150,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
         /// <returns><c>true</c> if success, <c>false</c> otherwise</returns>
         private bool CheckConditions(out string errorText, out DataModels.MachineErrorCode errorCode)
         {
+            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
             var ok = true;
             errorText = string.Empty;
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
@@ -168,7 +169,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
                 ok = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator ?
                     !this.machineData.MachineSensorStatus.IsDrawerInBayExternalPosition(this.machineData.TargetBay) :
-                    !this.machineData.MachineSensorStatus.IsDrawerInBayInternalPosition(this.machineData.TargetBay));
+                    !this.machineData.MachineSensorStatus.IsDrawerInBayInternalPosition(this.machineData.TargetBay, bay.IsDouble));
                 if (!ok)
                 {
                     errorText = ErrorDescriptions.ExternalBayOccupied;

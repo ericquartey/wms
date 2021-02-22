@@ -16,18 +16,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             //[HideProperties(nameof(ElevatorAxisManualParameters.TargetDistance), nameof(ElevatorAxisManualParameters.TargetDistanceAfterZero))]
             //public ElevatorAxisManualParameters AssistedMovements { get; set; }
 
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeActivatePercent))]
+            //[Range(0D, 100D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            //[Unit("%")]
+            //[Id(1)]
+            //public double BrakeActivatePercent { get; set; }
+
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeReleaseTime))]
+            //[Unit("ms")]
+            //[Id(2)]
+            //public double BrakeReleaseTime { get; set; }
+
             #region Properties
-
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeActivatePercent))]
-            [Range(0D, 100D, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
-            [Unit("%")]
-            [Id(1)]
-            public double BrakeActivatePercent { get; set; }
-
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_BrakeReleaseTime))]
-            [Unit("ms")]
-            [Id(2)]
-            public double BrakeReleaseTime { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Center))]
             [Range(-10, 10)]

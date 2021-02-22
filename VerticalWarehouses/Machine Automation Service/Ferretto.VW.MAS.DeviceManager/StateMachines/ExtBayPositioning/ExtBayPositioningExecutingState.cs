@@ -264,6 +264,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
         /// </returns>
         private bool IsInvalidSensorsCondition()
         {
+            var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
             //var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
             //    ExternalBayMovementDirection.TowardOperator :
             //    ExternalBayMovementDirection.TowardMachine;
@@ -284,7 +285,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                 case ExternalBayMovementDirection.TowardMachine:
                     {
                         failed = !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay) &&
-                            !this.machineData.MachineSensorStatus.IsDrawerInBayInternalPosition(this.machineData.RequestingBay);
+                            !this.machineData.MachineSensorStatus.IsDrawerInBayInternalPosition(this.machineData.RequestingBay, bay.IsDouble);
                         break;
                     }
             }

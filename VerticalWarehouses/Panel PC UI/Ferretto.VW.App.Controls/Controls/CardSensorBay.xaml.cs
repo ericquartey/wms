@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using CommonServiceLocator;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Controls.Controls
@@ -38,8 +40,32 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(CardSensorLabel3), typeof(string), typeof(CardSensorBay));
 
         [Browsable(false)]
+        public static readonly DependencyProperty CardSensorLabel4Property =
+            DependencyProperty.Register(nameof(CardSensorLabel4), typeof(string), typeof(CardSensorBay));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty CardSensorLabel5Property =
+            DependencyProperty.Register(nameof(CardSensorLabel5), typeof(string), typeof(CardSensorBay));
+
+        [Browsable(false)]
         public static readonly DependencyProperty MachineStatusProperty =
             DependencyProperty.Register(nameof(MachineStatus), typeof(App.Services.Models.MachineStatus), typeof(CardSensorBay));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty Sensor2Property =
+            DependencyProperty.Register(nameof(Sensor2), typeof(bool), typeof(CardSensorBay));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty Sensor3Property =
+            DependencyProperty.Register(nameof(Sensor3), typeof(bool), typeof(CardSensorBay));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty Sensor4Property =
+            DependencyProperty.Register(nameof(Sensor4), typeof(bool), typeof(CardSensorBay));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty Sensor5Property =
+            DependencyProperty.Register(nameof(Sensor5), typeof(bool), typeof(CardSensorBay));
 
         [Browsable(false)]
         public static readonly DependencyProperty SensorsServiceProperty =
@@ -112,10 +138,46 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(CardSensorLabel3Property, value);
         }
 
+        public string CardSensorLabel4
+        {
+            get => (string)this.GetValue(CardSensorLabel4Property);
+            set => this.SetValue(CardSensorLabel4Property, value);
+        }
+
+        public string CardSensorLabel5
+        {
+            get => (string)this.GetValue(CardSensorLabel5Property);
+            set => this.SetValue(CardSensorLabel5Property, value);
+        }
+
         public App.Services.Models.MachineStatus MachineStatus
         {
             get => (App.Services.Models.MachineStatus)this.GetValue(MachineStatusProperty);
             set => this.SetValue(MachineStatusProperty, value);
+        }
+
+        public bool Sensor2
+        {
+            get => (bool)this.GetValue(Sensor2Property);
+            set => this.SetValue(Sensor2Property, value);
+        }
+
+        public bool Sensor3
+        {
+            get => (bool)this.GetValue(Sensor3Property);
+            set => this.SetValue(Sensor3Property, value);
+        }
+
+        public bool Sensor4
+        {
+            get => (bool)this.GetValue(Sensor4Property);
+            set => this.SetValue(Sensor4Property, value);
+        }
+
+        public bool Sensor5
+        {
+            get => (bool)this.GetValue(Sensor5Property);
+            set => this.SetValue(Sensor5Property, value);
         }
 
         public ISensorsService SensorsService
@@ -159,10 +221,25 @@ namespace Ferretto.VW.App.Controls.Controls
 
             this.BayNumber = $"{Localized.Get("OperatorApp.Bay")} {(int)this.machineService.Bay.Number}";
 
-            if (this.machineService.Bay.IsDouble)
+            if (this.machineService.Bay.IsDouble && this.machineService.Bay.IsExternal)
+            {
+                this.CardSensorLabel4 = Localized.Get("InstallationApp.InternalUp");
+                this.CardSensorLabel5 = Localized.Get("InstallationApp.InternalDown");
+                this.CardSensorLabel2 = Localized.Get("OperatorApp.Up");
+                this.CardSensorLabel3 = Localized.Get("OperatorApp.Down");
+
+                this.Sensor4 = this.sensorsService.BEDInternalBayTop;
+                this.Sensor5 = this.sensorsService.BEDInternalBayBottom;
+                this.Sensor2 = this.sensorsService.BEDExternalBayTop;
+                this.Sensor3 = this.sensorsService.BEDExternalBayBottom;
+            }
+            else if (this.machineService.Bay.IsDouble)
             {
                 this.CardSensorLabel2 = Localized.Get("OperatorApp.Up");
                 this.CardSensorLabel3 = Localized.Get("OperatorApp.Down");
+
+                this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
+                this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
             }
             else
             {
@@ -170,16 +247,23 @@ namespace Ferretto.VW.App.Controls.Controls
                 {
                     this.CardSensorLabel2 = Localized.Get("OperatorApp.Bay");
                     this.CardSensorLabel3 = null;
+
+                    this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
                 }
                 else
                 {
                     this.CardSensorLabel2 = null;
                     this.CardSensorLabel3 = Localized.Get("OperatorApp.Bay");
+
+                    this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
                 }
                 if (this.machineService.Bays.Any(f => f.IsExternal))
                 {
                     this.CardSensorLabel2 = Localized.Get("InstallationApp.ExternalBayShort");
                     this.CardSensorLabel3 = Localized.Get("InstallationApp.InternalBayShort");
+
+                    this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
+                    this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
                 }
             }
 

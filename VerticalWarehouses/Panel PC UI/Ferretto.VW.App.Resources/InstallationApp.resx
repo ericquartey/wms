@@ -413,7 +413,7 @@
     <comment>Sensor</comment>
   </data>
   <data name="VerticalAxisButton" xml:space="preserve">
-    <value>VerticalAxisButton</value>
+    <value>Elevator</value>
   </data>
   <data name="CellsSideControlDescription" xml:space="preserve">
     <value>Modify cell group position</value>
@@ -2332,7 +2332,7 @@
     <value>Press the button to obtain the current data by moving the drawer and enter its net weight. When finished, press Next to confirm the operation</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
-    <value>AbsorbedCurrent</value>
+    <value>Absorbed current</value>
   </data>
   <data name="OptionalWeighing1" xml:space="preserve">
     <value>First weighing with intermediate weight</value>
@@ -2481,5 +2481,26 @@
   </data>
   <data name="RandomCells" xml:space="preserve">
     <value>Random cells assignment </value>
+  </data>
+  <data name="InternalDown" xml:space="preserve">
+    <value>Int Down</value>
+  </data>
+  <data name="InternalUp" xml:space="preserve">
+    <value>Int Up</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Unit in high internal position</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Unit in low internal position</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Double external bay 1</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Double external bay 2</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Double external bay 3</value>
   </data>
 </root>

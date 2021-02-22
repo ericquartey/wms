@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AbsorbedCurrent.
+        ///   Looks up a localized string similar to Absorbed current.
         /// </summary>
         public static string AbsorbedCurrent {
             get {
@@ -394,6 +394,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double external bay 1.
+        /// </summary>
+        public static string Bay1ExternalDouble {
+            get {
+                return ResourceManager.GetString("Bay1ExternalDouble", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay 2.
         /// </summary>
         public static string Bay2 {
@@ -403,11 +412,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double external bay 2.
+        /// </summary>
+        public static string Bay2ExternalDouble {
+            get {
+                return ResourceManager.GetString("Bay2ExternalDouble", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay 3.
         /// </summary>
         public static string Bay3 {
             get {
                 return ResourceManager.GetString("Bay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double external bay 3.
+        /// </summary>
+        public static string Bay3ExternalDouble {
+            get {
+                return ResourceManager.GetString("Bay3ExternalDouble", resourceCulture);
             }
         }
         
@@ -3288,6 +3315,24 @@ namespace Ferretto.VW.App.Resources {
         public static string InternalBayShort {
             get {
                 return ResourceManager.GetString("InternalBayShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Int Down.
+        /// </summary>
+        public static string InternalDown {
+            get {
+                return ResourceManager.GetString("InternalDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Int Up.
+        /// </summary>
+        public static string InternalUp {
+            get {
+                return ResourceManager.GetString("InternalUp", resourceCulture);
             }
         }
         
@@ -6379,6 +6424,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unit in high internal position.
+        /// </summary>
+        public static string UnitHightInternalPosition {
+            get {
+                return ResourceManager.GetString("UnitHightInternalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit in high position.
         /// </summary>
         public static string UnitHightPosition {
@@ -6393,6 +6447,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UnitInternalPosition {
             get {
                 return ResourceManager.GetString("UnitInternalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit in low internal position.
+        /// </summary>
+        public static string UnitLowInternalPosition {
+            get {
+                return ResourceManager.GetString("UnitLowInternalPosition", resourceCulture);
             }
         }
         
@@ -6586,7 +6649,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VerticalAxisButton.
+        ///   Looks up a localized string similar to Elevator.
         /// </summary>
         public static string VerticalAxisButton {
             get {

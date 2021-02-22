@@ -193,7 +193,7 @@
     <value>L'indicatore in grigio indica una procedura ancora da fare</value>
   </data>
   <data name="HelpInstallationStateDone" xml:space="preserve">
-    <value>Lìndicatore in verde indica una procedura correttamente completata.</value>
+    <value>L'indicatore in verde indica una procedura correttamente completata.</value>
   </data>
   <data name="HelpSSTitle" xml:space="preserve">
     <value>Visualizzazione stato sensori</value>
@@ -214,7 +214,7 @@
     <value>Permette di effettuare il movimento dei vari assi a bassa velocita. E' impostato uno spazio di movimento ridotto in entrambe le direzioni. Il testo dei pulsanti cambia in base al movimento richiesto. A collaudo macchina completato sara' possibile comandare a bassa velocita' tutti i vari assi senza interblocchi e per corse non limitate.</value>
   </data>
   <data name="HelpLSMTActualPosition" xml:space="preserve">
-    <value>Indica lo posizione corrente o lo stato per quelle parti che hanno solo posizioni discrete.</value>
+    <value>Indica la posizione corrente o lo stato per quelle parti che hanno solo posizioni discrete.</value>
   </data>
   <data name="HelpLSMTMoveUp" xml:space="preserve">
     <value>Pulsante di movimento avanti, salita o apertura in base alla parte selezionata</value>
@@ -445,7 +445,7 @@
     <value>Impostare il valore desiderato della correzione che verra' applicata al gruppo celle selezionato.</value>
   </data>
   <data name="HelpCSCSelectedSide" xml:space="preserve">
-    <value>Riporta il lato su cui si sta effettuando la modifica. Il lato e' automaticamente determinato sulla base del numero cella iniziale selezionato se pari o dispari.</value>
+    <value>Riporta il lato su cui si sta effettuando la modifica. Il lato é automaticamente determinato sulla base del numero cella iniziale selezionato se pari o dispari.</value>
   </data>
   <data name="HelpCSCApplyCorrection" xml:space="preserve">
     <value>Applica la correzione al gruppo celle selezionato.</value>
@@ -511,7 +511,7 @@
     <value>Valore dello step applicato alla quota corrente dell'asse ad ogni pressione dei pulsanti di spostamento.</value>
   </data>
   <data name="HelpBCTRCorrectionValue" xml:space="preserve">
-    <value>Valore cumulativo della correzione che verra' applicata all quota della baia-posizione selezionata. </value>
+    <value>Valore cumulativo della correzione che verrá applicata alla quota della baia-posizione selezionata. </value>
   </data>
   <data name="HelpBCTRMoveToPosition" xml:space="preserve">
     <value>Posiziona l'asse verticale in corrispondenza della baia-posizione selezionata.</value>
@@ -757,7 +757,7 @@
     <value>Il pulsante permette di entrare nella pagina che mostra ulteriori dettagli relativi all'operazione in corso.</value>
   </data>
   <data name="HelpCommonConfirm" xml:space="preserve">
-    <value>Conferma che l'operazione in corso e' stata completata.</value>
+    <value>Conferma che l'operazione in corso é stata completata.</value>
   </data>
   <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
     <value>La procedura permette di effettuare il refilling dello scomparto che contiene l'articolo avente le stesse caratteristiche di quello in versamento. La procedura permette di aggiornare la capacita' massima dello scomparto nel caso il valore registrato risulti errato.</value>
@@ -808,7 +808,7 @@
     <value>Riporta la descrizione dell'articolo.</value>
   </data>
   <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
-    <value>Indica la quantita' richiesta di quell'articolo.</value>
+    <value>Indica la quantità richiesta di quell'articolo.</value>
   </data>
   <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
     <value>La pagina mostra il dettaglio della lista selezionata. Nell'ambito di tutte le righe visualizzate e' possibile eseguire solo quelle che risultano evidenziate perche' l'articolo e' contenuto nella macchina su cui si sta operando. Il pulsante di "Esegui lista" e' attivo solo se esiste almeno una riga eseguibile nella macchina su cui si sta lavorando.</value>
@@ -817,10 +817,10 @@
     <value>La procedura permette la ricerca di un articolo utilizzando sia la colonna codice che quella di descrizione. Il testo inserito nel campo di ricerca viene automaticamente utilizzato per trovare quanto richiesto sfruttando il contenuto delle due colonne. Nella griglia viene visualizzato il risultato.</value>
   </data>
   <data name="HelpItemSearchGridItem" xml:space="preserve">
-    <value>Riporta la lista dei codici articolo che corrispondo al criterio di ricerca.</value>
+    <value>Riporta la lista dei codici articolo che corrispondono al criterio di ricerca.</value>
   </data>
   <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
-    <value>Riporta la descrizione dei codici articolo che corrispondo al criterio di ricerca.</value>
+    <value>Riporta la descrizione dei codici articolo che corrispondono al criterio di ricerca.</value>
   </data>
   <data name="HelpItemSearchGridMachine" xml:space="preserve">
     <value>Indica la lista delle macchine che contengono l'articolo indicato nella riga. Un articolo puo' essere presente in una o piu' macchine.</value>

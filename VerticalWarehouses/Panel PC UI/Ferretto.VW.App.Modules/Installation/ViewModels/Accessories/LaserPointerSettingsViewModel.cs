@@ -223,6 +223,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 await this.bayManager.SetLaserPointerAsync(this.IsAccessoryEnabled, this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
+                if (this.IsAccessoryEnabled)
+                {
+                    await this.deviceDriver.ConnectAsync();
+                }
+                else
+                {
+                    this.deviceDriver.Disconnect();
+                }
             }
             catch (Exception ex)
             {
@@ -280,7 +289,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.deviceDriver.Configure(this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
-                return await this.deviceDriver.TestAsync(enable);
+                var ret = await this.deviceDriver.TestAsync(enable);
+                if (!ret)
+                {
+                    ret = await this.deviceDriver.TestAsync(enable);
+                }
+                return ret;
             }
             catch (Exception ex)
             {

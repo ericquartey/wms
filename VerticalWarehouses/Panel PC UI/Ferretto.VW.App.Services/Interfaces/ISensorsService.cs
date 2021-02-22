@@ -5,9 +5,33 @@ namespace Ferretto.VW.App.Services
 {
     public interface ISensorsService
     {
+        #region Events
+
+        event EventHandler<EventArgs> OnUpdateSensors;
+
+        #endregion
+
         #region Properties
 
+        bool BayRobotOption { get; }
+
+        bool BayTrolleyOption { get; }
+
+        bool BayZeroChain { get; }
+
+        bool BEDExternalBayBottom { get; }
+
+        bool BEDExternalBayTop { get; }
+
+        bool BEDInternalBayBottom { get; }
+
+        bool BEDInternalBayTop { get; }
+
         bool IsExtraVertical { get; }
+
+        bool IsHorizontalInconsistentBothHigh { get; }
+
+        bool IsHorizontalInconsistentBothLow { get; }
 
         bool IsLoadingUnitInBay { get; }
 
@@ -22,11 +46,6 @@ namespace Ferretto.VW.App.Services
         Sensors Sensors { get; }
 
         ShutterSensors ShutterSensors { get; }
-        bool IsHorizontalInconsistentBothLow { get; }
-        bool IsHorizontalInconsistentBothHigh { get; }
-        bool BayZeroChain { get; }
-
-        event EventHandler<EventArgs> OnUpdateSensors;
 
         #endregion
 

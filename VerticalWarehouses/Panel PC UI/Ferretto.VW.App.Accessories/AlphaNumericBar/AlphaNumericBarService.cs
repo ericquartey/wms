@@ -76,8 +76,11 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         #region Methods
 
-        public Task StartAsync()
+        public async Task StartAsync()
         {
+            await this.AlphaNumericBarConfigureAsync();
+            await this.alphaNumericBarDriver?.EnabledAsync(false);
+
             this.missionToken = this.missionToken
             ??
             this.eventAggregator
@@ -95,8 +98,6 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     async e => await this.OnSocketLinkAlphaNumericBarChangeAsync(e),
                     ThreadOption.BackgroundThread,
                     false);
-
-            return Task.CompletedTask;
         }
 
         public async Task StopAsync()
@@ -132,9 +133,11 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     var bay = await this.bayManager.GetBayAsync();
 
                     this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal);
+                    await this.alphaNumericBarDriver.ConnectAsync();
                 }
                 else
                 {
+                    this.alphaNumericBarDriver.Disconnect();
                     this.alphaNumericBarDriver = null;
                 }
             }
@@ -181,11 +184,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     if (this.alphaNumericBarDriver != null)
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
-                        if (!await this.alphaNumericBarDriver.EnabledAsync(false))
-                        {
-                            // retry
-                            await this.alphaNumericBarDriver.EnabledAsync(false);
-                        }
+                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                        await this.alphaNumericBarDriver.EnabledAsync(false);
 
                         this.alphaNumericBarDriver.SelectedMessage = string.Empty;
                         this.alphaNumericBarDriver.SelectedPosition = null;
@@ -231,17 +231,32 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         {
                             this.alphaNumericBarDriver.SelectedPosition = compartmentSelected.XPosition;
                             this.alphaNumericBarDriver.SelectedMessage = message;
-                            this.logger.Debug($"OnMissionChangeAsync; SelectedPosition {this.alphaNumericBarDriver.SelectedPosition}; message {this.alphaNumericBarDriver.SelectedMessage}");
+                            this.logger.Debug($"OnMissionChangeAsync; SelectedPosition {compartmentSelected.XPosition}; message {message}");
 
-                            await this.alphaNumericBarDriver.EnabledAsync(false);
+                            if (!await this.alphaNumericBarDriver.EnabledAsync(false))
+                            {
+                                this.logger.Debug($"retry enable off");
+                                if (!await this.alphaNumericBarDriver.EnabledAsync(false))
+                                {
+                                    this.alphaNumericBarDriver.SelectedMessage = string.Empty;
+                                    return;
+                                }
+                            }
 
                             this.alphaNumericBarDriver.GetOffsetArrowAndMessageFromCompartment(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value, message, out offsetArrow, out offsetMessage);
 
-                            await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
+                            if (!await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true))
+                            {
+                                this.alphaNumericBarDriver.SelectedMessage = string.Empty;
+                                return;
+                            }
 
                             if (message.Length > 0)
                             {
-                                await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                                if (!await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false))
+                                {
+                                    this.alphaNumericBarDriver.SelectedMessage = string.Empty;
+                                }
                             }
                         }
 
@@ -327,6 +342,7 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                         this.alphaNumericBarDriver.GetOffsetArrowAndMessage(socketLinkMessage.Data.X, message, out offsetArrow, out offsetMessage);
 
                         this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; set arrow {offsetArrow}");
+                        await this.alphaNumericBarDriver.EnabledAsync(false);
                         await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true);
 
                         if (message.Length > 0)
