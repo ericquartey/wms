@@ -78,7 +78,10 @@ namespace Ferretto.VW.App.Accessories
         public async Task StartAsync()
         {
             await this.LaserPointerConfigureAsync();
-            await this.laserPointerDriver?.EnabledAsync(false, false);
+            if (this.laserPointerDriver != null)
+            {
+                await this.laserPointerDriver.EnabledAsync(false, false);
+            }
 
             this.missionToken = this.missionToken
                 ??
