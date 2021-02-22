@@ -147,7 +147,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public bool IsMachineInAutomaticMode
         {
             get => this.isMachineInAutomaticMode;
-            set => this.SetProperty(ref this.isMachineInAutomaticMode, value);
+            set => this.SetProperty(ref this.isMachineInAutomaticMode, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInCompact
@@ -171,73 +171,73 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public bool IsMachineInFirstTest
         {
             get => this.isMachineInFirstTest;
-            set => this.SetProperty(ref this.isMachineInFirstTest, value);
+            set => this.SetProperty(ref this.isMachineInFirstTest, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInLoadUnitOperations
         {
             get => this.isMachineInLoadUnitOperations;
-            set => this.SetProperty(ref this.isMachineInLoadUnitOperations, value);
+            set => this.SetProperty(ref this.isMachineInLoadUnitOperations, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInLoadUnitOperations2
         {
             get => this.isMachineInLoadUnitOperations2;
-            set => this.SetProperty(ref this.isMachineInLoadUnitOperations2, value);
+            set => this.SetProperty(ref this.isMachineInLoadUnitOperations2, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInLoadUnitOperations3
         {
             get => this.isMachineInLoadUnitOperations3;
-            set => this.SetProperty(ref this.isMachineInLoadUnitOperations3, value);
+            set => this.SetProperty(ref this.isMachineInLoadUnitOperations3, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInManualMode
         {
             get => this.isMachineInManualMode;
-            set => this.SetProperty(ref this.isMachineInManualMode, value);
+            set => this.SetProperty(ref this.isMachineInManualMode, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInManualMode2
         {
             get => this.isMachineInManualMode2;
-            set => this.SetProperty(ref this.isMachineInManualMode2, value);
+            set => this.SetProperty(ref this.isMachineInManualMode2, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInManualMode3
         {
             get => this.isMachineInManualMode3;
-            set => this.SetProperty(ref this.isMachineInManualMode3, value);
+            set => this.SetProperty(ref this.isMachineInManualMode3, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInSwitchingToLoadUnitOperations
         {
             get => this.isMachineInSwitchingToLoadUnitOperations;
-            set => this.SetProperty(ref this.isMachineInSwitchingToLoadUnitOperations, value);
+            set => this.SetProperty(ref this.isMachineInSwitchingToLoadUnitOperations, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInTestMode
         {
             get => this.isMachineInTestMode;
-            set => this.SetProperty(ref this.isMachineInTestMode, value);
+            set => this.SetProperty(ref this.isMachineInTestMode, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInTestMode2
         {
             get => this.isMachineInTestMode2;
-            set => this.SetProperty(ref this.isMachineInTestMode2, value);
+            set => this.SetProperty(ref this.isMachineInTestMode2, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInTestMode3
         {
             get => this.isMachineInTestMode;
-            set => this.SetProperty(ref this.isMachineInTestMode3, value);
+            set => this.SetProperty(ref this.isMachineInTestMode3, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMissionInErrorByLoadUnitOperations
         {
             get => this.isMissionInErrorByLoadUnitOperations;
-            set => this.SetProperty(ref this.isMissionInErrorByLoadUnitOperations, value);
+            set => this.SetProperty(ref this.isMissionInErrorByLoadUnitOperations, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsUnknownState
