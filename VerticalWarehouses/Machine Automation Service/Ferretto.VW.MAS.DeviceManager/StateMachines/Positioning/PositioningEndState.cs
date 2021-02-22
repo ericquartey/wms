@@ -296,18 +296,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
-                    if ((previousCell?.Id != targetCellId) || (previousBayPosition?.Id != targetBayPositionId))
+                    if ((previousCell?.Id != targetCellId))
                     {
-                        // se uno dei due target è null e il suo previous non è null e se è dentro la tolleranza non setto null
-                        if ((targetBayPositionId != null && targetCellId != null) ||
-                            (previousBayPosition == null && previousCell == null) ||
-                            (targetCellId == null && previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
-                            (targetBayPositionId == null && previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)) ||
-                            (targetCellId != null && previousCell != null && targetCellId != previousCell.Id) ||
-                            (targetBayPositionId != null && previousBayPosition != null && targetBayPositionId != previousBayPosition.Id)
-                            )
+                        if(targetCellId is null)
                         {
-                            elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
+                            elevatorDataProvider.SetCurrentCell(null);
+                        }
+                        // se uno dei due target è null e il suo previous non è null e se è dentro la tolleranza non setto null
+                        else if (targetCellId != null ||
+                            previousCell == null ||
+                            (targetCellId == null && previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
+                            (targetCellId != null && previousCell != null && targetCellId != previousCell.Id))
+                        {
                             elevatorDataProvider.SetCurrentCell(targetCellId);
                             elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
                         }
@@ -317,8 +317,32 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if ((previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
                             (previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)))
                         {
-                            elevatorDataProvider.SetCurrentBayPosition(null);
                             elevatorDataProvider.SetCurrentCell(null);
+                        }
+                    }
+
+                    if ((previousBayPosition?.Id != targetBayPositionId))
+                    {
+                        if(targetBayPositionId is null)
+                        {
+                            elevatorDataProvider.SetCurrentBayPosition(null);
+                        }
+                        // se uno dei due target è null e il suo previous non è null e se è dentro la tolleranza non setto null
+                        else if (targetBayPositionId != null ||
+                            previousBayPosition == null||
+                            (targetBayPositionId == null && previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)) ||
+                            (targetBayPositionId != null && previousBayPosition != null && targetBayPositionId != previousBayPosition.Id))
+                        {
+                            elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
+                            elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
+                        }
+                    }
+                    else
+                    {
+                        if ((previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
+                            (previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)))
+                        {
+                            elevatorDataProvider.SetCurrentBayPosition(null);
                         }
                     }
 
