@@ -79,7 +79,10 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
         public async Task StartAsync()
         {
             await this.AlphaNumericBarConfigureAsync();
-            await this.alphaNumericBarDriver?.EnabledAsync(false);
+            if (this.alphaNumericBarDriver != null)
+            {
+                await this.alphaNumericBarDriver.EnabledAsync(false);
+            }
 
             this.missionToken = this.missionToken
             ??
