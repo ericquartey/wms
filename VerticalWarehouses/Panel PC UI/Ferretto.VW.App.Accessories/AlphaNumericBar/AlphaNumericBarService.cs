@@ -140,7 +140,10 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                 }
                 else
                 {
-                    this.alphaNumericBarDriver.Disconnect();
+                    if (this.alphaNumericBarDriver != null)
+                    {
+                        this.alphaNumericBarDriver.Disconnect();
+                    }
                     this.alphaNumericBarDriver = null;
                 }
             }
