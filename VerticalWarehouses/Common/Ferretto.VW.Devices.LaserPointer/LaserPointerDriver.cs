@@ -270,6 +270,10 @@ namespace Ferretto.VW.Devices.LaserPointer
                 {
                     this.SelectedPoint = point;
                 }
+                else
+                {
+                    this.ClearConcurrentQueue(this.messagesToBeSendQueue);
+                }
 
                 this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
                 this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);

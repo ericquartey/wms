@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
@@ -28,6 +29,8 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IMachineMissionsWebService missionWebService;
 
+        private readonly Timer startupTimer;
+
         private ILaserPointerDriver laserPointerDriver;
 
         private SubscriptionToken missionToken;
@@ -50,6 +53,7 @@ namespace Ferretto.VW.App.Accessories
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+            this.startupTimer = new Timer(this.StartupProcedure, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
@@ -75,13 +79,9 @@ namespace Ferretto.VW.App.Accessories
 
         #region Methods
 
-        public async Task StartAsync()
+        public Task StartAsync()
         {
-            await this.LaserPointerConfigureAsync();
-            if (this.laserPointerDriver != null)
-            {
-                await this.laserPointerDriver.EnabledAsync(false, false);
-            }
+            this.startupTimer.Change(0, Timeout.Infinite);
 
             this.missionToken = this.missionToken
                 ??
@@ -100,6 +100,7 @@ namespace Ferretto.VW.App.Accessories
                         async e => await this.OnSocketLinkLaserPointerChangeAsync(e),
                         ThreadOption.BackgroundThread,
                         false);
+            return Task.CompletedTask;
         }
 
         public async Task StopAsync()
@@ -290,6 +291,15 @@ namespace Ferretto.VW.App.Accessories
             }
 
             return null;
+        }
+
+        private async void StartupProcedure(object state)
+        {
+            await this.LaserPointerConfigureAsync();
+            if (this.laserPointerDriver != null)
+            {
+                await this.laserPointerDriver.EnabledAsync(false, false);
+            }
         }
 
         #endregion
