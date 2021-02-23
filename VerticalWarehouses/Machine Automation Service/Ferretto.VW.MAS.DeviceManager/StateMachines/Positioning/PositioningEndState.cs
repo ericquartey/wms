@@ -287,6 +287,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private void PersistElevatorPosition(int? targetBayPositionId, int? targetCellId, double targetPosition)
         {
+            this.Logger.LogDebug($"PersistElevatorPosition: targetBayPositionId={targetBayPositionId}, targetCellId={targetCellId}, targetPosition={targetPosition}");
+
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
                 var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
@@ -296,20 +298,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
-                    if ((previousCell?.Id != targetCellId))
+                    if(previousCell?.Id != targetCellId)
                     {
-                        if(targetCellId is null)
-                        {
-                            elevatorDataProvider.SetCurrentCell(null);
-                        }
-                        // se uno dei due target è null e il suo previous non è null e se è dentro la tolleranza non setto null
-                        else if (targetCellId != null ||
+                        if (targetCellId != null ||
                             previousCell == null ||
                             (targetCellId == null && previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
                             (targetCellId != null && previousCell != null && targetCellId != previousCell.Id))
                         {
                             elevatorDataProvider.SetCurrentCell(targetCellId);
                             elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
+                        }
+                        else if (targetCellId is null)
+                        {
+                            elevatorDataProvider.SetCurrentCell(null);
                         }
                     }
                     else
@@ -321,20 +322,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         }
                     }
 
-                    if ((previousBayPosition?.Id != targetBayPositionId))
+                    if (previousBayPosition?.Id != targetBayPositionId)
                     {
-                        if(targetBayPositionId is null)
-                        {
-                            elevatorDataProvider.SetCurrentBayPosition(null);
-                        }
-                        // se uno dei due target è null e il suo previous non è null e se è dentro la tolleranza non setto null
-                        else if (targetBayPositionId != null ||
-                            previousBayPosition == null||
+                        if (targetBayPositionId != null ||
+                            previousBayPosition == null ||
                             (targetBayPositionId == null && previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)) ||
                             (targetBayPositionId != null && previousBayPosition != null && targetBayPositionId != previousBayPosition.Id))
                         {
                             elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
                             elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
+                        }
+                        else if (targetBayPositionId is null)
+                        {
+                            elevatorDataProvider.SetCurrentBayPosition(null);
                         }
                     }
                     else
