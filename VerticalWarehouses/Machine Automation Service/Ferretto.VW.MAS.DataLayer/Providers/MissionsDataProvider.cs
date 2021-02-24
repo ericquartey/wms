@@ -371,7 +371,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public List<int> GetAllActiveUnitGoCell()
         {
-            var UnitGoBay = new List<int>();
+            var unitGoCell = new List<int>();
 
             lock (this.dataContext)
             {
@@ -394,27 +394,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 foreach (var unit in missions)
                 {
-                    UnitGoBay.Add(unit.LoadUnitId);
+                    unitGoCell.Add(unit.LoadUnitId);
                 }
             }
 
-            return UnitGoBay;
+            return unitGoCell;
         }
 
         public List<int> GetAllActiveUnitGoCell(BayNumber bayNumber)
         {
-            var UnitGoBay = new List<int>();
+            var unitGoCell = new List<int>();
 
             lock (this.dataContext)
             {
-                //var missions = this.dataContext.Missions
-                //.AsNoTracking()
-                //.Where(x => x.Status != MissionStatus.Completed
-                //        && x.Status != MissionStatus.Aborted)
-                //.OrderBy(o => o.Priority)
-                //.ThenBy(o => o.CreationDate)
-                //.ToList();
-
                 var missions = this.dataContext.Missions
                 .AsNoTracking()
                 .Where(x => x.Status != MissionStatus.Completed
@@ -427,11 +419,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 foreach (var unit in missions)
                 {
-                    UnitGoBay.Add(unit.LoadUnitId);
+                    unitGoCell.Add(unit.LoadUnitId);
                 }
             }
 
-            return UnitGoBay;
+            return unitGoCell;
         }
 
         public IEnumerable<Mission> GetAllExecutingMissions()

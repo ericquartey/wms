@@ -287,6 +287,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private void PersistElevatorPosition(int? targetBayPositionId, int? targetCellId, double targetPosition)
         {
+            this.Logger.LogDebug($"PersistElevatorPosition: targetBayPositionId={targetBayPositionId}, targetCellId={targetCellId}, targetPosition={targetPosition}");
+
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
                 var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
@@ -296,20 +298,43 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
-                    if ((previousCell?.Id != targetCellId) || (previousBayPosition?.Id != targetBayPositionId))
+                    if(previousCell?.Id != targetCellId)
                     {
-                        // se uno dei due target è null e il suo previous non è null e se è dentro la tolleranza non setto null
-                        if ((targetBayPositionId != null && targetCellId != null) ||
-                            (previousBayPosition == null && previousCell == null) ||
+                        if (targetCellId != null ||
+                            previousCell == null ||
                             (targetCellId == null && previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
-                            (targetBayPositionId == null && previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)) ||
-                            (targetCellId != null && previousCell != null && targetCellId != previousCell.Id) ||
-                            (targetBayPositionId != null && previousBayPosition != null && targetBayPositionId != previousBayPosition.Id)
-                            )
+                            (targetCellId != null && previousCell != null && targetCellId != previousCell.Id))
                         {
-                            elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
                             elevatorDataProvider.SetCurrentCell(targetCellId);
                             elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
+                        }
+                        else if (targetCellId is null)
+                        {
+                            elevatorDataProvider.SetCurrentCell(null);
+                        }
+                    }
+                    else
+                    {
+                        if ((previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position)) ||
+                            (previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)))
+                        {
+                            elevatorDataProvider.SetCurrentCell(null);
+                        }
+                    }
+
+                    if (previousBayPosition?.Id != targetBayPositionId)
+                    {
+                        if (targetBayPositionId != null ||
+                            previousBayPosition == null ||
+                            (targetBayPositionId == null && previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)) ||
+                            (targetBayPositionId != null && previousBayPosition != null && targetBayPositionId != previousBayPosition.Id))
+                        {
+                            elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
+                            elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
+                        }
+                        else if (targetBayPositionId is null)
+                        {
+                            elevatorDataProvider.SetCurrentBayPosition(null);
                         }
                     }
                     else
@@ -318,7 +343,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             (previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height)))
                         {
                             elevatorDataProvider.SetCurrentBayPosition(null);
-                            elevatorDataProvider.SetCurrentCell(null);
                         }
                     }
 

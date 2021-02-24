@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                (setup.Bay1ExternalCalibration.IsCompleted || !bay1.IsExternal) &&
                                (setup.Bay1ShutterTest.IsCompleted || bay1.Shutter is null) &&
                                 setup.Bay1HeightCheck.IsCompleted &&
-                               (setup.Bay1Laser.IsCompleted || bay1.Accessories?.LaserPointer is null) &&
+                               //(setup.Bay1Laser.IsCompleted || bay1.Accessories?.LaserPointer is null) &&
                                setup.Bay1FullTest.IsCompleted &&
                                 setup.Bay1ProfileCheck.IsCompleted;
             }
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                (setup.Bay2ExternalCalibration.IsCompleted || !bay2.IsExternal) &&
                                (setup.Bay2ShutterTest.IsCompleted || bay2.Shutter is null) &&
                                 setup.Bay2HeightCheck.IsCompleted &&
-                               (setup.Bay2Laser.IsCompleted || bay2.Accessories?.LaserPointer is null) &&
+                               //(setup.Bay2Laser.IsCompleted || bay2.Accessories?.LaserPointer is null) &&
                                setup.Bay2FullTest.IsCompleted &&
                                 setup.Bay2ProfileCheck.IsCompleted;
             }
@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                (setup.Bay3ExternalCalibration.IsCompleted || !bay3.IsExternal) &&
                                (setup.Bay3ShutterTest.IsCompleted || bay3.Shutter is null) &&
                                 setup.Bay3HeightCheck.IsCompleted &&
-                               (setup.Bay3Laser.IsCompleted || bay3.Accessories?.LaserPointer is null) &&
+                               //(setup.Bay3Laser.IsCompleted || bay3.Accessories?.LaserPointer is null) &&
                                setup.Bay3FullTest.IsCompleted &&
                                 setup.Bay3ProfileCheck.IsCompleted;
             }
@@ -107,12 +107,12 @@ namespace Ferretto.VW.MAS.DataLayer
                         CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = setup.Bay1HeightCheck.IsBypassed,
                     },
-                    Laser = new SetupStepStatus
-                    {
-                        IsCompleted = setup.Bay1Laser.IsCompleted,
-                        CanBePerformed = true,
-                        IsBypassed = setup.Bay1Laser.IsBypassed,
-                    },
+                    //Laser = new SetupStepStatus
+                    //{
+                    //    IsCompleted = setup.Bay1Laser.IsCompleted,
+                    //    CanBePerformed = true,
+                    //    IsBypassed = setup.Bay1Laser.IsBypassed,
+                    //},
                     Profile = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay1ProfileCheck.IsCompleted,
@@ -156,12 +156,12 @@ namespace Ferretto.VW.MAS.DataLayer
                         CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = setup.Bay2HeightCheck.IsBypassed,
                     },
-                    Laser = new SetupStepStatus
-                    {
-                        IsCompleted = setup.Bay2Laser.IsCompleted,
-                        CanBePerformed = true,
-                        IsBypassed = setup.Bay2Laser.IsBypassed,
-                    },
+                    //Laser = new SetupStepStatus
+                    //{
+                    //    IsCompleted = setup.Bay2Laser.IsCompleted,
+                    //    CanBePerformed = true,
+                    //    IsBypassed = setup.Bay2Laser.IsBypassed,
+                    //},
                     Profile = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay2ProfileCheck.IsCompleted,
@@ -205,12 +205,12 @@ namespace Ferretto.VW.MAS.DataLayer
                         CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = setup.Bay3HeightCheck.IsBypassed,
                     },
-                    Laser = new SetupStepStatus
-                    {
-                        IsCompleted = setup.Bay3Laser.IsCompleted,
-                        CanBePerformed = true,
-                        IsBypassed = setup.Bay3Laser.IsBypassed,
-                    },
+                    //Laser = new SetupStepStatus
+                    //{
+                    //    IsCompleted = setup.Bay3Laser.IsCompleted,
+                    //    CanBePerformed = true,
+                    //    IsBypassed = setup.Bay3Laser.IsBypassed,
+                    //},
                     Profile = new SetupStepStatus
                     {
                         IsCompleted = setup.Bay3ProfileCheck.IsCompleted,

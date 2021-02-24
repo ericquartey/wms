@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
@@ -29,6 +30,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         private readonly IMachineMissionsWebService missionWebService;
 
+        private readonly Timer startupTimer;
+
         private IAlphaNumericBarDriver alphaNumericBarDriver;
 
         private SubscriptionToken missionToken;
@@ -51,6 +54,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+
+            this.startupTimer = new Timer(this.StartupProcedure, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
@@ -76,10 +81,9 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         #region Methods
 
-        public async Task StartAsync()
+        public Task StartAsync()
         {
-            await this.AlphaNumericBarConfigureAsync();
-            await this.alphaNumericBarDriver?.EnabledAsync(false);
+            this.startupTimer.Change(0, Timeout.Infinite);
 
             this.missionToken = this.missionToken
             ??
@@ -98,6 +102,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     async e => await this.OnSocketLinkAlphaNumericBarChangeAsync(e),
                     ThreadOption.BackgroundThread,
                     false);
+
+            return Task.CompletedTask;
         }
 
         public async Task StopAsync()
@@ -124,7 +130,8 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
                 var alphaNumericBar = accessories.AlphaNumericBar;
 
-                if (alphaNumericBar.IsEnabledNew)
+                if (alphaNumericBar != null &&
+                    alphaNumericBar.IsEnabledNew)
                 {
                     var ipAddress = alphaNumericBar.IpAddress;
                     var port = alphaNumericBar.TcpPort;
@@ -137,7 +144,10 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                 }
                 else
                 {
-                    this.alphaNumericBarDriver.Disconnect();
+                    if (this.alphaNumericBarDriver != null)
+                    {
+                        this.alphaNumericBarDriver.Disconnect();
+                    }
                     this.alphaNumericBarDriver = null;
                 }
             }
@@ -384,6 +394,15 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             }
 
             return null;
+        }
+
+        private async void StartupProcedure(object state)
+        {
+            await this.AlphaNumericBarConfigureAsync();
+            if (this.alphaNumericBarDriver != null)
+            {
+                await this.alphaNumericBarDriver.EnabledAsync(false);
+            }
         }
 
         #endregion
