@@ -4471,6 +4471,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Moving machine.
+        /// </summary>
+        public static string MovingMachine {
+            get {
+                return ResourceManager.GetString("MovingMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Detected {0} importable configurations..
         /// </summary>
         public static string MultipleConfigurationsDetected {
