@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineServicingWebService machineServicingWebService;
 
+        private readonly ISessionService sessionService;
+
         private DelegateCommand confirmInstructionCommand;
 
         private DelegateCommand confirmServiceCommand;
@@ -44,8 +46,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private ServicingInfo service;
 
         private int servicingInfoId = 0;
-
-        private ISessionService sessionService;
 
         #endregion
 

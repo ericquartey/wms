@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
 using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;
@@ -29,9 +30,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> ClearAsync();
 
+        void ClearCommands();
+
         void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false);
 
-        Task ConnectAsync();
+        Task ConnectAsync(SemaphoreSlim syncObject);
 
         Task<bool> CustomAsync(string hexval);
 
@@ -40,6 +43,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         void Disconnect();
 
         Task<bool> EnabledAsync(bool value, bool force = true);
+
+        Task<bool> ExecuteCommandsAsync();
 
         bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage);
 

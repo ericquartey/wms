@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.Devices;
 
-namespace Ferretto.VW.App.Accessories.Interfaces
+namespace Ferretto.VW.App.Services
 {
-    public interface ILaserPointerService : IAccessoryService
+    public interface IAlphaNumericBarService : IAccessoryService
     {
         #region Properties
 
@@ -17,6 +18,8 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         #endregion
 
         #region Methods
+
+        Task AlphaNumericBarConfigureAsync();
 
         /// <summary>
         ///

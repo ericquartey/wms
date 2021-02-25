@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IAlphaNumericBarDriver deviceDriver;
 
+        private readonly IAlphaNumericBarService deviceService;
+
         private IPAddress ipAddress;
 
         private int port;
@@ -46,10 +48,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public AlphaNumericBarSettingsViewModel(
             IBayManager bayManager,
-            IAlphaNumericBarDriver deviceDriver)
+            IAlphaNumericBarDriver deviceDriver,
+            IAlphaNumericBarService alphaNumericBarService)
         {
             this.bayManager = bayManager;
             this.deviceDriver = deviceDriver;
+            this.deviceService = alphaNumericBarService;
         }
 
         #endregion
@@ -232,15 +236,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IpAddress = bayAccessories.AlphaNumericBar.IpAddress;
                     this.Port = bayAccessories.AlphaNumericBar.TcpPort;
                     this.Size = bayAccessories.AlphaNumericBar.Size;
-                    this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
-                    if (this.IsAccessoryEnabled)
-                    {
-                        await this.deviceDriver.ConnectAsync();
-                    }
-                    else
-                    {
-                        this.deviceDriver.Disconnect();
-                    }
+                    await this.deviceService.AlphaNumericBarConfigureAsync();
+                    //this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+                    //if (this.IsAccessoryEnabled)
+                    //{
+                    //    await this.deviceDriver.ConnectAsync();
+                    //}
+                    //else
+                    //{
+                    //    this.deviceDriver.Disconnect();
+                    //}
 
                     this.SetDeviceInformation(bayAccessories.AlphaNumericBar.DeviceInformation);
 

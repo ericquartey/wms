@@ -3,22 +3,21 @@ using System.Configuration;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Accessories.Interfaces;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.Devices;
 using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Accessories.AlphaNumericBar
+namespace Ferretto.VW.App.Services
 {
     internal sealed class AlphaNumericBarService : IAlphaNumericBarService
     {
         #region Fields
+
+        private readonly IAlphaNumericBarDriver alphaNumericBarDriver;
 
         private readonly IBayManager bayManager;
 
@@ -26,17 +25,25 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ILaserPointerService laserPointerService;
+
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineMissionsWebService missionWebService;
 
-        private readonly Timer startupTimer;
+        private readonly int pollingDelay = 200;
 
-        private IAlphaNumericBarDriver alphaNumericBarDriver;
+        private bool isEnabled;
 
         private SubscriptionToken missionToken;
 
+        private string PollingStep = "Undefined";
+
         private SubscriptionToken socketLinkToken;
+
+        private SemaphoreSlim syncObject;
+
+        private CancellationTokenSource tokenSource;
 
         #endregion
 
@@ -46,16 +53,16 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IAlphaNumericBarDriver alphaNumericBarDriver,
-            IMachineMissionsWebService missionWebService)
+            IMachineMissionsWebService missionWebService,
+            ILaserPointerService laserPointerService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.alphaNumericBarDriver = alphaNumericBarDriver ?? throw new ArgumentNullException(nameof(alphaNumericBarDriver));
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
+            this.laserPointerService = laserPointerService ?? throw new ArgumentNullException(nameof(laserPointerService));
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
-
-            this.startupTimer = new Timer(this.StartupProcedure, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
@@ -81,10 +88,45 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
         #region Methods
 
+        public async Task AlphaNumericBarConfigureAsync()
+        {
+            try
+            {
+                var accessories = await this.bayManager.GetBayAccessoriesAsync();
+
+                if (accessories is null)
+                {
+                    this.isEnabled = false;
+                    return;
+                }
+
+                var alphaNumericBar = accessories.AlphaNumericBar;
+
+                if (alphaNumericBar != null &&
+                    alphaNumericBar.IsEnabledNew)
+                {
+                    var ipAddress = alphaNumericBar.IpAddress;
+                    var port = alphaNumericBar.TcpPort;
+                    var size = (MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
+
+                    var bay = await this.bayManager.GetBayAsync();
+
+                    this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal);
+                    this.isEnabled = true;
+                }
+                else
+                {
+                    this.isEnabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
+        }
+
         public Task StartAsync()
         {
-            this.startupTimer.Change(0, Timeout.Infinite);
-
             this.missionToken = this.missionToken
             ??
             this.eventAggregator
@@ -103,6 +145,28 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
                     ThreadOption.BackgroundThread,
                     false);
 
+            this.tokenSource?.Cancel();
+            this.tokenSource = new CancellationTokenSource();
+
+            Task.Run(async () =>
+            {
+                var cancellationToken = this.tokenSource.Token;
+                this.syncObject = this.laserPointerService.SyncObject;
+
+                try
+                {
+                    do
+                    {
+                        await this.PollingAlphaNumericBar();
+                        await Task.Delay(this.pollingDelay, cancellationToken);
+                    }
+                    while (!cancellationToken.IsCancellationRequested);
+                }
+                catch (OperationCanceledException)
+                {
+                    //return;
+                }
+            });
             return Task.CompletedTask;
         }
 
@@ -114,47 +178,6 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
 
             this.alphaNumericBarDriver.SelectedMessage = string.Empty;
             this.alphaNumericBarDriver.SelectedPosition = null;
-        }
-
-        private async Task AlphaNumericBarConfigureAsync()
-        {
-            try
-            {
-                var accessories = await this.bayManager.GetBayAccessoriesAsync();
-
-                if (accessories is null)
-                {
-                    this.alphaNumericBarDriver = null;
-                    return;
-                }
-
-                var alphaNumericBar = accessories.AlphaNumericBar;
-
-                if (alphaNumericBar != null &&
-                    alphaNumericBar.IsEnabledNew)
-                {
-                    var ipAddress = alphaNumericBar.IpAddress;
-                    var port = alphaNumericBar.TcpPort;
-                    var size = (MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
-
-                    var bay = await this.bayManager.GetBayAsync();
-
-                    this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal);
-                    await this.alphaNumericBarDriver.ConnectAsync();
-                }
-                else
-                {
-                    if (this.alphaNumericBarDriver != null)
-                    {
-                        this.alphaNumericBarDriver.Disconnect();
-                    }
-                    this.alphaNumericBarDriver = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                this.NotifyError(ex);
-            }
         }
 
         private string GetMessageFromMissionChangedEventArg(MissionChangedEventArgs e)
@@ -370,6 +393,59 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             }
         }
 
+        private async Task PollingAlphaNumericBar()
+        {
+            switch (this.PollingStep)
+            {
+                case "Undefined":
+                    {
+                        await this.AlphaNumericBarConfigureAsync();
+                        this.PollingStep = "Configured";
+                        this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                        break;
+                    }
+                case "Configured":
+                    {
+                        if (this.isEnabled)
+                        {
+                            await this.alphaNumericBarDriver.ConnectAsync(this.syncObject);
+                            this.PollingStep = "Connected";
+                            this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                        }
+                        break;
+                    }
+                case "Connected":
+                    {
+                        if (this.isEnabled)
+                        {
+                            await this.alphaNumericBarDriver.EnabledAsync(false);
+                        }
+                        else
+                        {
+                            this.alphaNumericBarDriver.Disconnect();
+                        }
+                        this.PollingStep = "Active";
+                        this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                        break;
+                    }
+                case "Active":
+                    {
+                        if (this.isEnabled)
+                        {
+                            await this.alphaNumericBarDriver.ExecuteCommandsAsync().ConfigureAwait(true);
+                        }
+                        else
+                        {
+                            this.alphaNumericBarDriver.Disconnect();
+                            this.alphaNumericBarDriver.ClearCommands();
+                            this.PollingStep = "Configured";
+                            this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                        }
+                        break;
+                    }
+            }
+        }
+
         private async Task<Mission> RetrieveActiveMissionAsync()
         {
             try
@@ -394,15 +470,6 @@ namespace Ferretto.VW.App.Accessories.AlphaNumericBar
             }
 
             return null;
-        }
-
-        private async void StartupProcedure(object state)
-        {
-            await this.AlphaNumericBarConfigureAsync();
-            if (this.alphaNumericBarDriver != null)
-            {
-                await this.alphaNumericBarDriver.EnabledAsync(false);
-            }
         }
 
         #endregion

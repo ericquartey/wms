@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
@@ -12,13 +13,17 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         LaserPoint CalculateLaserPointForSocketLink(int x, int y, int z, MachineIdentity machineIdentity, bool isBayUpperPosition, WarehouseSide baySide);
 
+        void ClearCommands();
+
         bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0);
 
-        Task ConnectAsync();
+        Task ConnectAsync(SemaphoreSlim syncObject);
 
         void Disconnect();
 
         Task<bool> EnabledAsync(bool enable, bool onMovement);
+
+        Task<bool> ExecuteCommandsAsync();
 
         Task<bool> HelpAsync();
 

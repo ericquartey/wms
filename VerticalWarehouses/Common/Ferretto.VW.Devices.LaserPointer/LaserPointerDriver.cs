@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
@@ -20,8 +21,6 @@ namespace Ferretto.VW.Devices.LaserPointer
         public const int PORT_DEFAULT = 2020;
 
         private const string NEW_LINE = "\r\n";
-
-        private readonly ConcurrentQueue<string> errorsQueue;
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
@@ -41,7 +40,9 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         //private LaserPointerCommands.Command setPositionStatus = LaserPointerCommands.Command.SETP_F;
 
-        private NetworkStream stream = null;
+        private NetworkStream stream;
+
+        private SemaphoreSlim syncObject;
 
         private bool testEnabled = false;
 
@@ -61,7 +62,6 @@ namespace Ferretto.VW.Devices.LaserPointer
         {
             this.messagesToBeSendQueue = new ConcurrentQueue<string>();
             this.messagesReceivedQueue = new ConcurrentQueue<string>();
-            this.errorsQueue = new ConcurrentQueue<string>();
         }
 
         #endregion
@@ -124,6 +124,11 @@ namespace Ferretto.VW.Devices.LaserPointer
             return result;
         }
 
+        public void ClearCommands()
+        {
+            this.ClearConcurrentQueue(this.messagesToBeSendQueue);
+        }
+
         public bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0)
         {
             this.ipAddress = ipAddress;
@@ -136,8 +141,11 @@ namespace Ferretto.VW.Devices.LaserPointer
             return true;
         }
 
-        public async Task ConnectAsync()
+        public async Task ConnectAsync(SemaphoreSlim syncObject)
         {
+            this.syncObject = syncObject;
+            await this.syncObject.WaitAsync();
+
             try
             {
                 if (this.client is null)
@@ -149,7 +157,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                 {
                     this.logger.Trace($"Connect");
                     this.client.SendTimeout = this.tcpTimeout;
-                    await this.client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
+                    await this.client.ConnectAsync(this.IpAddress, this.Port);
                     this.stream = this.client.GetStream();
                     this.logger.Debug($"Connected");
                     this.SelectedPoint = null;
@@ -159,6 +167,10 @@ namespace Ferretto.VW.Devices.LaserPointer
             {
                 this.logger.Error(e);
                 this.Disconnect();
+            }
+            finally
+            {
+                this.syncObject.Release();
             }
         }
 
@@ -214,19 +226,110 @@ namespace Ferretto.VW.Devices.LaserPointer
                 this.SelectedPoint = null;
             }
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
+        }
+
+        /// <summary>
+        /// Send the messages int the queue, in the right order.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> ExecuteCommandsAsync()
+        {
+            var result = false;
+            await this.syncObject.WaitAsync();
+            try
+            {
+                this.ClearConcurrentQueue(this.messagesReceivedQueue);
+
+                while (!this.messagesToBeSendQueue.IsEmpty)
+                {
+                    if (this.messagesToBeSendQueue.TryPeek(out var sendMessage))
+                    {
+                        var ackReceived = false;
+                        if (!this.IsConnected)
+                        {
+                            await this.ConnectAsync(this.syncObject);
+                        }
+
+                        if (this.IsConnected)
+                        {
+                            this.logger.Trace($"ExecuteCommands();Write");
+                            var data = Encoding.ASCII.GetBytes(sendMessage);
+                            this.stream = this.client.GetStream();
+                            this.stream.ReadTimeout = this.tcpTimeout;
+                            this.stream.WriteTimeout = this.tcpTimeout;
+                            this.stream.Write(data, 0, data.Length);
+                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+
+                            if (this.IsWaitResponse(sendMessage))
+                            {
+                                data = new byte[this.client.ReceiveBufferSize];
+                                var bytes = 0;
+                                var responseMessage = "";
+                                try
+                                {
+                                    bytes = this.stream.Read(data, 0, data.Length);
+                                    responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
+
+                                    this.messagesReceivedQueue.Enqueue(responseMessage);
+                                    this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                                }
+                                catch (Exception e)
+                                {
+                                    this.logger.Debug(e);
+                                }
+                                if (bytes <= 0 || !this.IsResponseOk(sendMessage, responseMessage))
+                                {
+                                    this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")},{responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                                }
+                                else
+                                {
+                                    ackReceived = true;
+                                }
+                            }
+                            else
+                            {
+                                //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
+                                this.messagesReceivedQueue.Enqueue("");
+                                ackReceived = true;
+                            }
+                        }
+                        if (ackReceived)
+                        {
+                            this.messagesToBeSendQueue.TryDequeue(out _);
+                        }
+                    }
+                    else
+                    {
+                        this.logger.Debug("queue locked");
+                        break;
+                    }
+                }
+                result = true;
+            }
+            catch (Exception e)
+            {
+                this.ClearCommands();
+                this.logger.Error(e);
+                this.Disconnect();
+            }
+            finally
+            {
+                this.syncObject.Release();
+            }
+            return result;
         }
 
         public async Task<bool> HelpAsync()
         {
             this.EnqueueCommand(LaserPointerCommands.Command.HELP);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public async Task<bool> HomeAsync()
         {
             this.EnqueueCommand(LaserPointerCommands.Command.HOME);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -272,13 +375,13 @@ namespace Ferretto.VW.Devices.LaserPointer
                 }
                 else
                 {
-                    this.ClearConcurrentQueue(this.messagesToBeSendQueue);
+                    this.ClearCommands();
                 }
 
                 this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
                 this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);
 
-                return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+                return true;
             }
 
             return false;
@@ -297,7 +400,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             }
 
             this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public async Task<bool> ParametersAsync()
@@ -332,31 +435,31 @@ namespace Ferretto.VW.Devices.LaserPointer
         public async Task<bool> PositionAsync(LaserSetPosition position)
         {
             this.EnqueueCommand(LaserPointerCommands.Command.STEP, null, null, position);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public async Task<bool> PositionFinishAsync()
         {
             this.EnqueueCommand(LaserPointerCommands.Command.SETP_F);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public async Task<bool> PositionInitializeAsync()
         {
             this.EnqueueCommand(LaserPointerCommands.Command.SETP_I);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public async Task<bool> PositionSaveAsync()
         {
             this.EnqueueCommand(LaserPointerCommands.Command.SETP_S);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public async Task<bool> StepAsync(LaserStep step)
         {
             this.EnqueueCommand(LaserPointerCommands.Command.STEP, null, step);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public async Task<bool> SwitchOnAndMoveAsync(LaserPoint point)
@@ -368,7 +471,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
             this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);
             this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -389,7 +492,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                 this.EnqueueCommand(LaserPointerCommands.Command.LASER_OFF);
             }
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
@@ -493,93 +596,6 @@ namespace Ferretto.VW.Devices.LaserPointer
             this.messagesToBeSendQueue.Enqueue(strCommand);
             result = true;
 
-            return result;
-        }
-
-        /// <summary>
-        /// Send the messages int the queue, in the right order.
-        /// </summary>
-        /// <returns></returns>
-        private async Task<bool> ExecuteCommandsAsync()
-        {
-            var result = false;
-            try
-            {
-                this.ClearConcurrentQueue(this.messagesReceivedQueue);
-                this.ClearConcurrentQueue(this.errorsQueue);
-
-                while (!this.messagesToBeSendQueue.IsEmpty)
-                {
-                    if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
-                    {
-                        var ackReceived = false;
-                        for (var retry = 0; retry < 3 && !ackReceived; retry++)
-                        {
-                            if (!this.IsConnected)
-                            {
-                                await this.ConnectAsync();
-                            }
-
-                            if (this.IsConnected)
-                            {
-                                this.logger.Trace($"ExecuteCommands();Write");
-                                var data = Encoding.ASCII.GetBytes(sendMessage);
-                                this.stream = this.client.GetStream();
-                                this.stream.ReadTimeout = this.tcpTimeout * 4;
-                                this.stream.WriteTimeout = this.tcpTimeout;
-                                this.stream.Write(data, 0, data.Length);
-                                this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-
-                                if (this.IsWaitResponse(sendMessage))
-                                {
-                                    data = new byte[this.client.ReceiveBufferSize];
-                                    var bytes = 0;
-                                    var responseMessage = "";
-                                    try
-                                    {
-                                        bytes = this.stream.Read(data, 0, data.Length);
-                                        responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
-
-                                        this.messagesReceivedQueue.Enqueue(responseMessage);
-                                        this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        this.logger.Debug(e);
-                                    }
-                                    if (bytes <= 0 || !this.IsResponseOk(sendMessage, responseMessage))
-                                    {
-                                        this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")},{responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-                                    }
-                                    else
-                                    {
-                                        ackReceived = true;
-                                    }
-                                }
-                                else
-                                {
-                                    //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
-                                    this.messagesReceivedQueue.Enqueue("");
-                                    ackReceived = true;
-                                }
-                            }
-                            System.Threading.Thread.Sleep(40);
-                        }
-                    }
-                    else
-                    {
-                        this.logger.Debug("queue locked");
-                        System.Threading.Thread.Sleep(100);
-                    }
-                }
-                result = true;
-            }
-            catch (Exception e)
-            {
-                this.ClearConcurrentQueue(this.messagesToBeSendQueue);
-                this.logger.Error(e);
-                this.Disconnect();
-            }
             return result;
         }
 
