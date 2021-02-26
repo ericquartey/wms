@@ -196,7 +196,6 @@ namespace Ferretto.VW.App.Services
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
                         await this.laserPointerDriver.EnabledAsync(false, false);
-                        await this.laserPointerDriver.EnabledAsync(false, false);
                     }
                     return;
                 }
@@ -239,7 +238,6 @@ namespace Ferretto.VW.App.Services
                         var point = this.laserPointerDriver.CalculateLaserPoint(e.WmsMission.LoadingUnit.Width, e.WmsMission.LoadingUnit.Depth, compartmentSelected.Width.Value, compartmentSelected.Depth.Value, compartmentSelected.XPosition.Value, compartmentSelected.YPosition.Value, itemHeight, bayPosition.IsUpper, bay.Side);
 
                         this.logger.Info("Move and switch on laser pointer");
-                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
                     }
                 }
@@ -268,20 +266,17 @@ namespace Ferretto.VW.App.Services
                 {
                     case 0: // switch off
                         await this.laserPointerDriver.EnabledAsync(false, false);
-                        await this.laserPointerDriver.EnabledAsync(false, false);
                         this.logger.Info("OnSocketLinkLaserPointerChangeAsync, switch 0");
                         break;
 
                     case 1: // switch on in upper bay position
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, true, bay.Side);
-                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
                         break;
 
                     case 2: // switch on in lower bay position
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, false, bay.Side);
-                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
                         break;
@@ -299,31 +294,15 @@ namespace Ferretto.VW.App.Services
             {
                 case "Undefined":
                     {
+                        try
+                        {
+                            await this.bayManager.GetBayAccessoriesAsync();
+                        }
+                        catch (Exception)
+                        {
+                            break;
+                        }
                         await this.LaserPointerConfigureAsync();
-                        this.PollingStep = "Configured";
-                        this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
-                        break;
-                    }
-                case "Configured":
-                    {
-                        if (this.isEnabled)
-                        {
-                            await this.laserPointerDriver.ConnectAsync(this.syncObject);
-                            this.PollingStep = "Connected";
-                            this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
-                        }
-                        break;
-                    }
-                case "Connected":
-                    {
-                        if (this.isEnabled)
-                        {
-                            await this.laserPointerDriver.EnabledAsync(false, false);
-                        }
-                        else
-                        {
-                            this.laserPointerDriver.Disconnect();
-                        }
                         this.PollingStep = "Active";
                         this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
                         break;
@@ -332,14 +311,7 @@ namespace Ferretto.VW.App.Services
                     {
                         if (this.isEnabled)
                         {
-                            await this.laserPointerDriver.ExecuteCommandsAsync().ConfigureAwait(true);
-                        }
-                        else
-                        {
-                            this.laserPointerDriver.Disconnect();
-                            this.laserPointerDriver.ClearCommands();
-                            this.PollingStep = "Configured";
-                            this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                            await this.laserPointerDriver.ExecuteCommandsAsync(this.syncObject).ConfigureAwait(true);
                         }
                         break;
                     }

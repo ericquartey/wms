@@ -5,9 +5,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
 using NLog;
 using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.Devices.AlphaNumericBar
 {
@@ -48,8 +48,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         private NetworkStream stream = null;
 
         //private string selectedMessage;
-
-        private SemaphoreSlim syncObject;
 
         //private double? selectedPosition;
         private bool testEnabled;
@@ -171,6 +169,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public void ClearCommands()
         {
             this.ClearConcurrentQueue(this.messagesToBeSendQueue);
+            this.SelectedMessage = null;
         }
 
         public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false)
@@ -217,10 +216,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
         }
 
-        public async Task ConnectAsync(SemaphoreSlim syncObject)
+        public async Task ConnectAsync()
         {
-            this.syncObject = syncObject;
-            await this.syncObject.WaitAsync();
             try
             {
                 if (this.client is null)
@@ -230,7 +227,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 }
                 if (!this.IsConnected)
                 {
-                    this.logger.Trace($"Connect");
+                    this.logger.Debug($"Connect");
                     this.client.SendTimeout = this.tcpTimeout;
                     await this.client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
                     this.stream = this.client.GetStream();
@@ -241,10 +238,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 this.logger.Error(e);
                 this.Disconnect();
-            }
-            finally
-            {
-                this.syncObject.Release();
             }
         }
 
@@ -317,10 +310,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// Send the messages int the queue, in the right order.
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> ExecuteCommandsAsync()
+        public async Task<bool> ExecuteCommandsAsync(SemaphoreSlim syncObject)
         {
             var result = false;
-            await this.syncObject.WaitAsync();
+            await syncObject.WaitAsync();
             try
             {
                 this.ClearConcurrentQueue(this.messagesReceivedQueue);
@@ -333,7 +326,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                         var ackReceived = false;
                         if (!this.IsConnected)
                         {
-                            await this.ConnectAsync(this.syncObject);
+                            await this.ConnectAsync();
                         }
 
                         if (this.IsConnected)
@@ -341,7 +334,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                             this.logger.Trace($"ExecuteCommands();Write");
                             var data = Encoding.ASCII.GetBytes(sendMessage);
                             this.stream = this.client.GetStream();
-                            this.stream.ReadTimeout = this.tcpTimeout * 4;
+                            this.stream.ReadTimeout = this.tcpTimeout;
                             this.stream.WriteTimeout = this.tcpTimeout;
                             this.stream.Write(data, 0, data.Length);
                             this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
@@ -379,6 +372,18 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                                 ackReceived = true;
                             }
                         }
+                        else
+                        {
+                            // retry
+                            Thread.Sleep(1000);
+                            await this.ConnectAsync();
+                            if (!this.IsConnected)
+                            {
+                                this.logger.Error("Device not ready");
+                                this.ClearCommands();
+                                break;
+                            }
+                        }
                         if (ackReceived)
                         {
                             this.messagesToBeSendQueue.TryDequeue(out _);
@@ -398,11 +403,16 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 this.ClearCommands();
                 this.logger.Error(e);
                 this.Disconnect();
-                System.Threading.Thread.Sleep(100);
+                Thread.Sleep(400);
             }
             finally
             {
-                this.syncObject.Release();
+                if (this.IsConnected)
+                {
+                    this.Disconnect();
+                    //Thread.Sleep(2000);
+                }
+                syncObject.Release();
             }
 
             return result;
@@ -459,9 +469,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return result;
         }
 
-        public bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, out int offsetArrow, out int offsetMessage)
+        public bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, double loadingUnitWidth, WarehouseSide side, out int offsetArrow, out int offsetMessage)
         {
-            var arrowPosition = (compartmentWidth / 2) + itemXPosition;
+            var frontPosition = (compartmentWidth / 2) + itemXPosition;
+            var arrowPosition = (side == WarehouseSide.Back) ?
+                    loadingUnitWidth - frontPosition :
+                    frontPosition;
             return this.GetOffsetArrowAndMessage(arrowPosition, message, out offsetArrow, out offsetMessage);
         }
 

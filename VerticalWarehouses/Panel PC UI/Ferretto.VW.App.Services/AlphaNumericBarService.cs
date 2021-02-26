@@ -107,7 +107,7 @@ namespace Ferretto.VW.App.Services
                 {
                     var ipAddress = alphaNumericBar.IpAddress;
                     var port = alphaNumericBar.TcpPort;
-                    var size = (MAS.DataModels.AlphaNumericBarSize)alphaNumericBar.Size;
+                    var size = alphaNumericBar.Size;
 
                     var bay = await this.bayManager.GetBayAsync();
 
@@ -218,7 +218,7 @@ namespace Ferretto.VW.App.Services
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
                         await this.alphaNumericBarDriver.EnabledAsync(false);
-                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                        //await this.alphaNumericBarDriver.EnabledAsync(false);
 
                         this.alphaNumericBarDriver.SelectedMessage = string.Empty;
                         this.alphaNumericBarDriver.SelectedPosition = null;
@@ -266,17 +266,9 @@ namespace Ferretto.VW.App.Services
                             this.alphaNumericBarDriver.SelectedMessage = message;
                             this.logger.Debug($"OnMissionChangeAsync; SelectedPosition {compartmentSelected.XPosition}; message {message}");
 
-                            if (!await this.alphaNumericBarDriver.EnabledAsync(false))
-                            {
-                                this.logger.Debug($"retry enable off");
-                                if (!await this.alphaNumericBarDriver.EnabledAsync(false))
-                                {
-                                    this.alphaNumericBarDriver.SelectedMessage = string.Empty;
-                                    return;
-                                }
-                            }
+                            await this.alphaNumericBarDriver.EnabledAsync(false);
 
-                            this.alphaNumericBarDriver.GetOffsetArrowAndMessageFromCompartment(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value, message, out offsetArrow, out offsetMessage);
+                            this.alphaNumericBarDriver.GetOffsetArrowAndMessageFromCompartment(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value, message, e.WmsMission.LoadingUnit.Width, bay.Side, out offsetArrow, out offsetMessage);
 
                             if (!await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true))
                             {
@@ -286,10 +278,8 @@ namespace Ferretto.VW.App.Services
 
                             if (message.Length > 0)
                             {
-                                if (!await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false))
-                                {
-                                    this.alphaNumericBarDriver.SelectedMessage = string.Empty;
-                                }
+                                await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                                this.alphaNumericBarDriver.SelectedMessage = message;
                             }
                         }
 
@@ -399,31 +389,15 @@ namespace Ferretto.VW.App.Services
             {
                 case "Undefined":
                     {
+                        try
+                        {
+                            await this.bayManager.GetBayAccessoriesAsync();
+                        }
+                        catch (Exception)
+                        {
+                            break;
+                        }
                         await this.AlphaNumericBarConfigureAsync();
-                        this.PollingStep = "Configured";
-                        this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
-                        break;
-                    }
-                case "Configured":
-                    {
-                        if (this.isEnabled)
-                        {
-                            await this.alphaNumericBarDriver.ConnectAsync(this.syncObject);
-                            this.PollingStep = "Connected";
-                            this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
-                        }
-                        break;
-                    }
-                case "Connected":
-                    {
-                        if (this.isEnabled)
-                        {
-                            await this.alphaNumericBarDriver.EnabledAsync(false);
-                        }
-                        else
-                        {
-                            this.alphaNumericBarDriver.Disconnect();
-                        }
                         this.PollingStep = "Active";
                         this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
                         break;
@@ -432,14 +406,7 @@ namespace Ferretto.VW.App.Services
                     {
                         if (this.isEnabled)
                         {
-                            await this.alphaNumericBarDriver.ExecuteCommandsAsync().ConfigureAwait(true);
-                        }
-                        else
-                        {
-                            this.alphaNumericBarDriver.Disconnect();
-                            this.alphaNumericBarDriver.ClearCommands();
-                            this.PollingStep = "Configured";
-                            this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                            await this.alphaNumericBarDriver.ExecuteCommandsAsync(this.syncObject).ConfigureAwait(true);
                         }
                         break;
                     }

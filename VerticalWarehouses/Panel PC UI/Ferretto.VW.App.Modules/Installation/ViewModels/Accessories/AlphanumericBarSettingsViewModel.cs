@@ -308,7 +308,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.size);
                 await this.deviceDriver.EnabledAsync(false);
                 if (this.deviceDriver.TestEnabled)
                 {
@@ -334,7 +334,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.size);
                 return await this.deviceDriver.TestAsync(enable);
             }
             catch (Exception ex)
@@ -354,7 +354,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.size);
 
                 this.Logger.Debug($"DoTestMessageOnAsync; message {message}");
 

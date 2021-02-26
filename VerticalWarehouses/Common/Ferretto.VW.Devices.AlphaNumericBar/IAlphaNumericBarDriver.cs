@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;
 
 namespace Ferretto.VW.Devices.AlphaNumericBar
@@ -34,7 +34,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false);
 
-        Task ConnectAsync(SemaphoreSlim syncObject);
+        Task ConnectAsync();
 
         Task<bool> CustomAsync(string hexval);
 
@@ -44,11 +44,11 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> EnabledAsync(bool value, bool force = true);
 
-        Task<bool> ExecuteCommandsAsync();
+        Task<bool> ExecuteCommandsAsync(SemaphoreSlim syncObject);
 
         bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage);
 
-        bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, out int offsetArrow, out int offsetMessage);
+        bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, double loadingUnitWidth, WarehouseSide side, out int offsetArrow, out int offsetMessage);
 
         bool GetOffsetMessage(double x, string message, out int offsetMessage);
 

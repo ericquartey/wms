@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -41,8 +40,6 @@ namespace Ferretto.VW.Devices.LaserPointer
         //private LaserPointerCommands.Command setPositionStatus = LaserPointerCommands.Command.SETP_F;
 
         private NetworkStream stream;
-
-        private SemaphoreSlim syncObject;
 
         private bool testEnabled = false;
 
@@ -127,6 +124,7 @@ namespace Ferretto.VW.Devices.LaserPointer
         public void ClearCommands()
         {
             this.ClearConcurrentQueue(this.messagesToBeSendQueue);
+            this.SelectedPoint = null;
         }
 
         public bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0)
@@ -141,11 +139,8 @@ namespace Ferretto.VW.Devices.LaserPointer
             return true;
         }
 
-        public async Task ConnectAsync(SemaphoreSlim syncObject)
+        public async Task ConnectAsync()
         {
-            this.syncObject = syncObject;
-            await this.syncObject.WaitAsync();
-
             try
             {
                 if (this.client is null)
@@ -155,22 +150,18 @@ namespace Ferretto.VW.Devices.LaserPointer
                 }
                 if (!this.IsConnected)
                 {
-                    this.logger.Trace($"Connect");
+                    this.logger.Debug($"Connect");
                     this.client.SendTimeout = this.tcpTimeout;
                     await this.client.ConnectAsync(this.IpAddress, this.Port);
                     this.stream = this.client.GetStream();
                     this.logger.Debug($"Connected");
-                    this.SelectedPoint = null;
+                    //this.SelectedPoint = null;
                 }
             }
             catch (Exception e)
             {
                 this.logger.Error(e);
                 this.Disconnect();
-            }
-            finally
-            {
-                this.syncObject.Release();
             }
         }
 
@@ -233,10 +224,10 @@ namespace Ferretto.VW.Devices.LaserPointer
         /// Send the messages int the queue, in the right order.
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> ExecuteCommandsAsync()
+        public async Task<bool> ExecuteCommandsAsync(SemaphoreSlim syncObject)
         {
             var result = false;
-            await this.syncObject.WaitAsync();
+            await syncObject.WaitAsync();
             try
             {
                 this.ClearConcurrentQueue(this.messagesReceivedQueue);
@@ -248,7 +239,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                         var ackReceived = false;
                         if (!this.IsConnected)
                         {
-                            await this.ConnectAsync(this.syncObject);
+                            await this.ConnectAsync();
                         }
 
                         if (this.IsConnected)
@@ -294,6 +285,18 @@ namespace Ferretto.VW.Devices.LaserPointer
                                 ackReceived = true;
                             }
                         }
+                        else
+                        {
+                            // retry
+                            Thread.Sleep(1000);
+                            await this.ConnectAsync();
+                            if (!this.IsConnected)
+                            {
+                                this.logger.Error("Device not ready");
+                                this.ClearCommands();
+                                break;
+                            }
+                        }
                         if (ackReceived)
                         {
                             this.messagesToBeSendQueue.TryDequeue(out _);
@@ -312,10 +315,16 @@ namespace Ferretto.VW.Devices.LaserPointer
                 this.ClearCommands();
                 this.logger.Error(e);
                 this.Disconnect();
+                Thread.Sleep(400);
             }
             finally
             {
-                this.syncObject.Release();
+                if (this.IsConnected)
+                {
+                    this.Disconnect();
+                    //Thread.Sleep(2000);
+                }
+                syncObject.Release();
             }
             return result;
         }
@@ -354,7 +363,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                     return false;
             }
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public async Task<bool> MoveAndSwitchOnAsync(LaserPoint point, bool select = false)
@@ -373,10 +382,10 @@ namespace Ferretto.VW.Devices.LaserPointer
                 {
                     this.SelectedPoint = point;
                 }
-                else
-                {
-                    this.ClearCommands();
-                }
+                //else
+                //{
+                //    this.ClearCommands();
+                //}
 
                 this.EnqueueCommand(LaserPointerCommands.Command.MOVE, point);
                 this.EnqueueCommand(LaserPointerCommands.Command.LASER_ON, point);
