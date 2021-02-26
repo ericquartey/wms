@@ -10,4 +10,4 @@ Remove-Item $ppc -Force -Recurse;
 Remove-Item $installer -Force -Recurse
 Remove-Item $telemetry -Force -Recurse
 
-Remove-Item "F:\Database\Telemetry\*.*" -Force -Recurse
+Remove-Item "E:\Database\Telemetry\*.*" -Force -Recurse

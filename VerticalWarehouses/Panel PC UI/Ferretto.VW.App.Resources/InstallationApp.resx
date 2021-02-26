@@ -2503,4 +2503,7 @@
   <data name="Bay3ExternalDouble" xml:space="preserve">
     <value>Double external bay 3</value>
   </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Moving machine</value>
+  </data>
 </root>

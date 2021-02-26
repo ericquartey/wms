@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.Devices;
 
-namespace Ferretto.VW.App.Accessories.Interfaces
+namespace Ferretto.VW.App.Services
 {
-    public interface IAlphaNumericBarService : IAccessoryService
+    public interface ILaserPointerService : IAccessoryService
     {
         #region Properties
 
@@ -14,9 +16,13 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         /// <exception cref="System.NotSupportedException">An exception is thrown if the device does not support information querying.</exception>
         DeviceInformation DeviceInformation { get; }
 
+        SemaphoreSlim SyncObject { get; }
+
         #endregion
 
         #region Methods
+
+        Task LaserPointerConfigureAsync();
 
         /// <summary>
         ///

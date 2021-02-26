@@ -30,9 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Ferretto.VW.Devices.AlphaNumericBar\Ferretto.VW.Devices.AlphaNumericBar.csproj" />
     <ProjectReference Include="..\..\Common\Ferretto.VW.Devices.BarcodeReader.Newland\Ferretto.VW.Devices.BarcodeReader.Newland.csproj" />
-    <ProjectReference Include="..\..\Common\Ferretto.VW.Devices.LaserPointer\Ferretto.VW.Devices.LaserPointer.csproj" />
     <ProjectReference Include="..\..\Common\Ferretto.VW.Devices.TokenReader\Ferretto.VW.Devices.TokenReader.csproj" />
     <ProjectReference Include="..\..\Common\Ferretto.VW.Devices.WeightingScale\Ferretto.VW.Devices.WeightingScale.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />

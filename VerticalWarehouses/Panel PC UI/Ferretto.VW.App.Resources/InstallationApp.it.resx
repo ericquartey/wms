@@ -2445,4 +2445,7 @@
   <data name="Bay3ExternalDouble" xml:space="preserve">
     <value>Baia 3 esterna doppia</value>
   </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Macchina in movimento</value>
+  </data>
 </root>

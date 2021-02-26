@@ -40,6 +40,8 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IMachineService, MachineService>();
 
             containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
+            containerRegistry.RegisterSingleton<ILaserPointerService, LaserPointerService>();
+            containerRegistry.RegisterSingleton<IAlphaNumericBarService, AlphaNumericBarService>();
 
             _ = containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
                  new InjectionFactory(c =>
@@ -68,6 +70,8 @@ namespace Ferretto.VW.App.Services
             containerProvider.Resolve<IMachineService>().StartAsync();
             containerProvider.Resolve<ITimeSyncService>().Start();
             containerProvider.Resolve<ISerialPortsService>().Start();
+            containerProvider.Resolve<ILaserPointerService>().StartAsync();
+            containerProvider.Resolve<IAlphaNumericBarService>().StartAsync();
 
             return containerProvider;
         }

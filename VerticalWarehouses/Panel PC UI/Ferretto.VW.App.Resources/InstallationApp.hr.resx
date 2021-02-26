@@ -2433,4 +2433,7 @@
   <data name="Bay3ExternalDouble" xml:space="preserve">
     <value>Dvostruko vanjsko ležište 3</value>
   </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Pokretni stroj</value>
+  </data>
 </root>

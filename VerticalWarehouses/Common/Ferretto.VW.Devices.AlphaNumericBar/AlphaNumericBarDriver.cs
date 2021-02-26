@@ -3,10 +3,11 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataModels;
 using NLog;
 using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.Devices.AlphaNumericBar
 {
@@ -162,7 +163,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.ClearConcurrentQueue(this.messagesToBeSendQueue);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
+        }
+
+        public void ClearCommands()
+        {
+            this.ClearConcurrentQueue(this.messagesToBeSendQueue);
+            this.SelectedMessage = null;
         }
 
         public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false)
@@ -220,7 +227,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 }
                 if (!this.IsConnected)
                 {
-                    this.logger.Trace($"Connect");
+                    this.logger.Debug($"Connect");
                     this.client.SendTimeout = this.tcpTimeout;
                     await this.client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
                     this.stream = this.client.GetStream();
@@ -242,7 +249,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public async Task<bool> CustomAsync(string hexval)
         {
             this.EnqueueCommand(AlphaNumericBarCommands.Command.CUSTOM, hexval);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -254,7 +261,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.ClearConcurrentQueue(this.errorsQueue);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.DIM, null, dimension);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public void Disconnect()
@@ -296,7 +303,119 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);
             }
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
+        }
+
+        /// <summary>
+        /// Send the messages int the queue, in the right order.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> ExecuteCommandsAsync(SemaphoreSlim syncObject)
+        {
+            var result = false;
+            await syncObject.WaitAsync();
+            try
+            {
+                this.ClearConcurrentQueue(this.messagesReceivedQueue);
+                this.ClearConcurrentQueue(this.errorsQueue);
+
+                while (!this.messagesToBeSendQueue.IsEmpty)
+                {
+                    if (this.messagesToBeSendQueue.TryPeek(out var sendMessage))
+                    {
+                        var ackReceived = false;
+                        if (!this.IsConnected)
+                        {
+                            await this.ConnectAsync();
+                        }
+
+                        if (this.IsConnected)
+                        {
+                            this.logger.Trace($"ExecuteCommands();Write");
+                            var data = Encoding.ASCII.GetBytes(sendMessage);
+                            this.stream = this.client.GetStream();
+                            this.stream.ReadTimeout = this.tcpTimeout;
+                            this.stream.WriteTimeout = this.tcpTimeout;
+                            this.stream.Write(data, 0, data.Length);
+                            this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+
+                            if (this.IsWaitResponse(sendMessage))
+                            {
+                                data = new byte[this.client.ReceiveBufferSize];
+                                var bytes = 0;
+                                var responseMessage = "";
+                                try
+                                {
+                                    bytes = this.stream.Read(data, 0, data.Length);
+                                    responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
+
+                                    this.messagesReceivedQueue.Enqueue(responseMessage);
+                                    this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                                }
+                                catch (Exception e)
+                                {
+                                    this.logger.Debug(e);
+                                }
+                                if (bytes <= 0 || !this.IsResponseOk(sendMessage, responseMessage))
+                                {
+                                    this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")},{responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                                }
+                                else
+                                {
+                                    ackReceived = true;
+                                }
+                            }
+                            else
+                            {
+                                //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
+                                this.messagesReceivedQueue.Enqueue("");
+                                ackReceived = true;
+                            }
+                        }
+                        else
+                        {
+                            // retry
+                            Thread.Sleep(1000);
+                            await this.ConnectAsync();
+                            if (!this.IsConnected)
+                            {
+                                this.logger.Error("Device not ready");
+                                this.ClearCommands();
+                                break;
+                            }
+                        }
+                        if (ackReceived)
+                        {
+                            this.messagesToBeSendQueue.TryDequeue(out _);
+                        }
+                    }
+                    else
+                    {
+                        this.logger.Debug("queue locked");
+                        break;
+                    }
+                }
+
+                result = true;
+            }
+            catch (Exception e)
+            {
+                this.ClearCommands();
+                this.logger.Error(e);
+                this.Disconnect();
+                Thread.Sleep(400);
+            }
+            finally
+            {
+                if (this.IsConnected)
+                {
+                    this.Disconnect();
+                    //Thread.Sleep(2000);
+                }
+                syncObject.Release();
+            }
+
+            return result;
         }
 
         public bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage)
@@ -350,9 +469,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return result;
         }
 
-        public bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, out int offsetArrow, out int offsetMessage)
+        public bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, double loadingUnitWidth, WarehouseSide side, out int offsetArrow, out int offsetMessage)
         {
-            var arrowPosition = (compartmentWidth / 2) + itemXPosition;
+            var frontPosition = (compartmentWidth / 2) + itemXPosition;
+            var arrowPosition = (side == WarehouseSide.Back) ?
+                    loadingUnitWidth - frontPosition :
+                    frontPosition;
             return this.GetOffsetArrowAndMessage(arrowPosition, message, out offsetArrow, out offsetMessage);
         }
 
@@ -393,7 +515,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.ClearConcurrentQueue(this.errorsQueue);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.HELP);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -414,7 +536,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
 
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_LUM, AlphaNumericBarCommands.Command.SET_LUM.ToString(), luminosity);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         public string NormalizeMessageCharacters(string str)
@@ -546,7 +668,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_DIR, null, (int)direction);
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -558,7 +680,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         {
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET_SCROLL_SPEED, null, speed);
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -577,7 +699,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
 
             this.EnqueueCommand(AlphaNumericBarCommands.Command.CSTSET, "", arrowPosition, 0);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -602,7 +724,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET, message, offset);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.WRITE);
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -625,7 +747,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SCROLL_ON, message, offset, scrollEnd);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.WRITE);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -645,7 +767,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
 
             this.EnqueueCommand(AlphaNumericBarCommands.Command.CSTSET, null, offset, index);
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -666,7 +788,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.SCROLL_OFF);
             }
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -690,7 +812,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             //    this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
             //}
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         /// <summary>
@@ -711,7 +833,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 this.EnqueueCommand(AlphaNumericBarCommands.Command.TEST_SCROLL_OFF);
             }
 
-            return await this.ExecuteCommandsAsync().ConfigureAwait(true);
+            return true;
         }
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
@@ -837,96 +959,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             this.messagesToBeSendQueue.Enqueue(strCommand);
             result = true;
-
-            return result;
-        }
-
-        /// <summary>
-        /// Send the messages int the queue, in the right order.
-        /// </summary>
-        /// <returns></returns>
-        private async Task<bool> ExecuteCommandsAsync()
-        {
-            var result = false;
-            try
-            {
-                this.ClearConcurrentQueue(this.messagesReceivedQueue);
-                this.ClearConcurrentQueue(this.errorsQueue);
-
-                while (!this.messagesToBeSendQueue.IsEmpty)
-                {
-                    if (this.messagesToBeSendQueue.TryDequeue(out var sendMessage))
-                    {
-                        var ackReceived = false;
-                        for (var retry = 0; retry < 3 && !ackReceived; retry++)
-                        {
-                            if (!this.IsConnected)
-                            {
-                                await this.ConnectAsync();
-                            }
-
-                            if (this.IsConnected)
-                            {
-                                this.logger.Trace($"ExecuteCommands();Write");
-                                var data = Encoding.ASCII.GetBytes(sendMessage);
-                                this.stream = this.client.GetStream();
-                                this.stream.ReadTimeout = this.tcpTimeout * 4;
-                                this.stream.WriteTimeout = this.tcpTimeout;
-                                this.stream.Write(data, 0, data.Length);
-                                this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-
-                                if (this.IsWaitResponse(sendMessage))
-                                {
-                                    data = new byte[this.client.ReceiveBufferSize];
-                                    var bytes = 0;
-                                    var responseMessage = "";
-                                    try
-                                    {
-                                        bytes = this.stream.Read(data, 0, data.Length);
-                                        responseMessage = Encoding.ASCII.GetString(data, 0, bytes);
-
-                                        this.messagesReceivedQueue.Enqueue(responseMessage);
-                                        this.logger.Debug($"ExecuteCommands();Received: {responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        this.logger.Debug(e);
-                                    }
-                                    if (bytes <= 0 || !this.IsResponseOk(sendMessage, responseMessage))
-                                    {
-                                        this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")},{responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-                                    }
-                                    else
-                                    {
-                                        ackReceived = true;
-                                    }
-                                }
-                                else
-                                {
-                                    //this.logger.Debug($"ArgumentException;no wait {sendMessage}");
-                                    this.messagesReceivedQueue.Enqueue("");
-                                    ackReceived = true;
-                                }
-                            }
-                            System.Threading.Thread.Sleep(40);
-                        }
-                    }
-                    else
-                    {
-                        this.logger.Debug("queue locked");
-                        System.Threading.Thread.Sleep(100);
-                    }
-                }
-
-                result = true;
-            }
-            catch (Exception e)
-            {
-                this.ClearConcurrentQueue(this.messagesToBeSendQueue);
-                this.logger.Error(e);
-                this.Disconnect();
-                System.Threading.Thread.Sleep(100);
-            }
 
             return result;
         }

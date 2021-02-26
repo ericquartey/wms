@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             if (!this.isDeviceEnabled)
@@ -85,7 +85,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             if (!this.isDeviceEnabled)
@@ -101,7 +101,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             if (!this.isDeviceEnabled)
@@ -117,7 +117,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             if (!this.isDeviceEnabled)
@@ -138,7 +138,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             this.UnitaryWeight = 0;
@@ -155,7 +155,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             this.UnitaryWeight = weight;
@@ -173,7 +173,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             if (this.isStarted)
@@ -228,7 +228,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             if (!this.isDeviceEnabled)
@@ -250,7 +250,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             //if (!this.isStarted)
@@ -281,7 +281,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             if (!this.isDeviceEnabled)
@@ -297,7 +297,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isDisposed)
             {
-                throw new ObjectDisposedException(nameof(BarcodeReaderService));
+                throw new ObjectDisposedException(nameof(WeightingScaleService));
             }
 
             this.logger.Debug("Updating the weighting scale settings on MAS ...");

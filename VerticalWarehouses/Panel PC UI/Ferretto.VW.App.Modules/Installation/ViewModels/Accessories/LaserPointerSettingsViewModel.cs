@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ILaserPointerDriver deviceDriver;
 
+        private readonly ILaserPointerService deviceService;
+
         private DelegateCommand checkConnectionCommand;
 
         private Brush connectionBrush;
@@ -47,10 +49,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public LaserPointerSettingsViewModel(
             IBayManager bayManager,
-            ILaserPointerDriver laserPointerDriver)
+            ILaserPointerDriver laserPointerDriver,
+            ILaserPointerService laserPointerService)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.deviceDriver = laserPointerDriver;
+            this.deviceService = laserPointerService;
         }
 
         #endregion
@@ -223,15 +227,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 await this.bayManager.SetLaserPointerAsync(this.IsAccessoryEnabled, this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
-                this.deviceDriver.Configure(this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
-                if (this.IsAccessoryEnabled)
-                {
-                    await this.deviceDriver.ConnectAsync();
-                }
-                else
-                {
-                    this.deviceDriver.Disconnect();
-                }
+                await this.deviceService.LaserPointerConfigureAsync();
+                //this.deviceDriver.Configure(this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
+                //if (this.IsAccessoryEnabled)
+                //{
+                //    await this.deviceDriver.ConnectAsync();
+                //}
+                //else
+                //{
+                //    this.deviceDriver.Disconnect();
+                //}
             }
             catch (Exception ex)
             {

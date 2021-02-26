@@ -327,7 +327,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool CanOpenWeightPage()
         {
-            return this.MachineService.Bay.Accessories.WeightingScale is null ? false : this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew &&
+            return this.MachineService.Bay.Accessories?.WeightingScale is null ? false : this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew &&
                 this.MissionOperationsService.ActiveWmsOperation != null;
         }
 
