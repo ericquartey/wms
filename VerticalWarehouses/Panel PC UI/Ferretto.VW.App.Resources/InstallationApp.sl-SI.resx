@@ -2427,4 +2427,7 @@
   <data name="Bay3ExternalDouble" xml:space="preserve">
     <value>Dvojni zunanji predel 3</value>
   </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Premični stroj</value>
+  </data>
 </root>

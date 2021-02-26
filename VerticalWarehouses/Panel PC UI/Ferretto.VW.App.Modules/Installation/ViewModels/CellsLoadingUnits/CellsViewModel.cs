@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -103,6 +104,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.Cells));
             this.RaisePropertyChanged(nameof(this.BlockLevels));
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
+
+            if (this.IsMoving)
+            {
+                this.ShowNotification(Localized.Get("InstallationApp.MovingMachine"), Services.Models.NotificationSeverity.Error);
+            }
         }
 
         private async Task Save()

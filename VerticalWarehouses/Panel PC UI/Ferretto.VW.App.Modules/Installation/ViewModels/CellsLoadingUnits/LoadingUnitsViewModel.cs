@@ -381,6 +381,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
             this.RaisePropertyChanged(nameof(this.Status));
             this.RaisePropertyChanged(nameof(this.IsEditStatus));
+
+            if (this.IsMoving)
+            {
+                this.ShowNotification(Localized.Get("InstallationApp.MovingMachine"), Services.Models.NotificationSeverity.Error);
+            }
         }
 
         private async Task BlockUnlockAsync()

@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 {
                     if (this.axisBounds != null)
                     {
-                        if (this.IsCellFree)
+                        if (this.IsCellFree && !this.IsCellBlocked)
                         {
                             this.RaiseCanExecuteChanged();
                         }
@@ -75,6 +75,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                                 var l = this.Cells.Where(w => w.Position > this.axisBounds?.Lower &&
                                                               w.Position < this.axisBounds?.Upper &&
                                                               w.IsFree &&
+                                                              w.BlockLevel != BlockLevel.Blocked &&
                                                               w.Id > (old ?? 0));
                                 if (l.Any())
                                 {
@@ -86,6 +87,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                                 var l = this.Cells.Where(w => w.Position > this.axisBounds?.Lower &&
                                                               w.Position < this.axisBounds?.Upper &&
                                                               w.IsFree &&
+                                                              w.BlockLevel != BlockLevel.Blocked &&
                                                               old.HasValue &&
                                                               w.Id < old.Value);
                                 if (l.Any())
@@ -120,6 +122,29 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 if (!(cellFound is null))
                 {
                     return cellFound.IsFree;
+                }
+
+                return false;
+            }
+        }
+
+        public bool IsCellBlocked
+        {
+            get
+            {
+                if (!this.destinationCellId.HasValue)
+                {
+                    return false;
+                }
+
+                var cellFound = this.Cells.FirstOrDefault(l =>
+                                                          !(this.axisBounds is null) &&
+                                                          l.Position > this.axisBounds.Lower &&
+                                                          l.Position < this.axisBounds.Upper &&
+                                                          l.Id == this.destinationCellId.Value);
+                if (!(cellFound is null))
+                {
+                    return cellFound.BlockLevel == BlockLevel.Blocked;
                 }
 
                 return false;
