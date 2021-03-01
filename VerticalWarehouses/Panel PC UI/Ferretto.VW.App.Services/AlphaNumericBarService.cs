@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly IMachineWmsStatusWebService machineWmsStatusWebService;
+
         private readonly IMachineMissionsWebService missionWebService;
 
         private readonly int pollingDelay = 200;
@@ -54,13 +56,16 @@ namespace Ferretto.VW.App.Services
             IBayManager bayManager,
             IAlphaNumericBarDriver alphaNumericBarDriver,
             IMachineMissionsWebService missionWebService,
-            ILaserPointerService laserPointerService)
+            ILaserPointerService laserPointerService,
+            IMachineWmsStatusWebService machineWmsStatusWebService
+            )
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.alphaNumericBarDriver = alphaNumericBarDriver ?? throw new ArgumentNullException(nameof(alphaNumericBarDriver));
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
             this.laserPointerService = laserPointerService ?? throw new ArgumentNullException(nameof(laserPointerService));
+            this.machineWmsStatusWebService = machineWmsStatusWebService ?? throw new ArgumentNullException(nameof(machineWmsStatusWebService));
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
@@ -216,12 +221,16 @@ namespace Ferretto.VW.App.Services
 
                     if (this.alphaNumericBarDriver != null)
                     {
-                        this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
-                        await this.alphaNumericBarDriver.EnabledAsync(false);
-                        //await this.alphaNumericBarDriver.EnabledAsync(false);
+                        var socketLink = await this.machineWmsStatusWebService.SocketLinkIsEnabledAsync();
+                        if (!socketLink)
+                        {
+                            this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
+                            await this.alphaNumericBarDriver.EnabledAsync(false);
+                            //await this.alphaNumericBarDriver.EnabledAsync(false);
 
-                        this.alphaNumericBarDriver.SelectedMessage = string.Empty;
-                        this.alphaNumericBarDriver.SelectedPosition = null;
+                            this.alphaNumericBarDriver.SelectedMessage = string.Empty;
+                            this.alphaNumericBarDriver.SelectedPosition = null;
+                        }
                     }
 
                     return;
