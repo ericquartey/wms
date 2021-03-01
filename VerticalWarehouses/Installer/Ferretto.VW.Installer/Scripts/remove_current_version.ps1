@@ -10,4 +10,4 @@ Remove-Item $ppc -Force -Recurse;
 Remove-Item $installer -Force -Recurse
 Remove-Item $telemetry -Force -Recurse
 
-Remove-Item "E:\Database\Telemetry\*.*" -Force -Recurse
+if(Test-Path "E:\Database\Telemetry" -PathType Container) Remove-Item "E:\Database\Telemetry\*.*" -Force -Recurse
