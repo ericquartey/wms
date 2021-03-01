@@ -298,7 +298,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
-                    if(previousCell?.Id != targetCellId)
+                    if (previousCell?.Id != targetCellId)
                     {
                         if (targetCellId != null ||
                             previousCell == null ||

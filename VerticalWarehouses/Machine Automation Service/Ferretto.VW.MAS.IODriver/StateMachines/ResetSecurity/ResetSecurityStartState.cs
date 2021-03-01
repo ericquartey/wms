@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         private bool isDisposed = false;
 
+        private bool tryReset = false;
+
         #endregion
 
         #region Constructors
@@ -101,16 +103,29 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
                 }
 
                 this.isDisposed = true;
+                this.tryReset = false;
             }
         }
 
         private void OnResponseTimedOut(object sender, ElapsedEventArgs e)
         {
-            this.Logger.LogError("Reset security timeout.");
-            this.errorProvider.RecordNew(MachineErrorCode.IoDeviceCommandTimeout, additionalText: $"Reset Security Index {this.index}");
+            if (!this.tryReset)
+            {
+                this.Logger.LogError("Try reset security.");
+                this.tryReset = true;
 
-            this.ParentStateMachine.ChangeState(
-                new ResetSecurityEndState(this.ParentStateMachine, this.status, this.index, hasError: true, this.Logger));
+                this.Start();
+            }
+            else
+            {
+                this.tryReset = false;
+
+                this.Logger.LogError("Reset security timeout.");
+                this.errorProvider.RecordNew(MachineErrorCode.IoDeviceCommandTimeout, additionalText: $"Reset Security Index {this.index}");
+
+                this.ParentStateMachine.ChangeState(
+                    new ResetSecurityEndState(this.ParentStateMachine, this.status, this.index, hasError: true, this.Logger));
+            }
         }
 
         #endregion

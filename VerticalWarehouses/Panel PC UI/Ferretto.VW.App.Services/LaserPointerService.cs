@@ -3,8 +3,6 @@ using System.Configuration;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Accessories.Interfaces;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.Devices;
 using Ferretto.VW.Devices.LaserPointer;
@@ -13,7 +11,7 @@ using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Events;
 
-namespace Ferretto.VW.App.Accessories
+namespace Ferretto.VW.App.Services
 {
     internal sealed class LaserPointerService : ILaserPointerService
     {
@@ -25,17 +23,28 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ILaserPointerDriver laserPointerDriver;
+
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineMissionsWebService missionWebService;
 
-        private readonly Timer startupTimer;
+        private readonly int pollingDelay = 200;
 
-        private ILaserPointerDriver laserPointerDriver;
+        /// <summary>
+        /// this semapfore is used to serialize commands to laser and alpha bar, because the devices seem to conflict with each other
+        /// </summary>
+        private readonly SemaphoreSlim syncObject = new SemaphoreSlim(1, 1);
+
+        private bool isEnabled;
 
         private SubscriptionToken missionToken;
 
+        private string PollingStep = "Undefined";
+
         private SubscriptionToken socketLinkToken;
+
+        private CancellationTokenSource tokenSource;
 
         #endregion
 
@@ -53,7 +62,6 @@ namespace Ferretto.VW.App.Accessories
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
-            this.startupTimer = new Timer(this.StartupProcedure, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
@@ -75,14 +83,51 @@ namespace Ferretto.VW.App.Accessories
             }
         }
 
+        public SemaphoreSlim SyncObject => this.syncObject;
+
         #endregion
 
         #region Methods
 
+        public async Task LaserPointerConfigureAsync()
+        {
+            try
+            {
+                var accessories = await this.bayManager.GetBayAccessoriesAsync();
+
+                if (accessories is null)
+                {
+                    this.isEnabled = false;
+                    return;
+                }
+
+                var laserPointer = accessories.LaserPointer;
+                if (laserPointer != null &&
+                    laserPointer.IsEnabledNew)
+                {
+                    var ipAddress = laserPointer.IpAddress;
+                    var port = laserPointer.TcpPort;
+                    var xOffset = laserPointer.XOffset;
+                    var yOffset = laserPointer.YOffset;
+                    var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
+                    var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
+
+                    this.laserPointerDriver.Configure(ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
+                    this.isEnabled = true;
+                }
+                else
+                {
+                    this.isEnabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
+        }
+
         public Task StartAsync()
         {
-            this.startupTimer.Change(0, Timeout.Infinite);
-
             this.missionToken = this.missionToken
                 ??
                 this.eventAggregator
@@ -100,6 +145,28 @@ namespace Ferretto.VW.App.Accessories
                         async e => await this.OnSocketLinkLaserPointerChangeAsync(e),
                         ThreadOption.BackgroundThread,
                         false);
+
+            this.tokenSource?.Cancel();
+            this.tokenSource = new CancellationTokenSource();
+
+            Task.Run(async () =>
+            {
+                var cancellationToken = this.tokenSource.Token;
+
+                try
+                {
+                    do
+                    {
+                        await this.PollingLaserPointer();
+                        await Task.Delay(this.pollingDelay, cancellationToken);
+                    }
+                    while (!cancellationToken.IsCancellationRequested);
+                }
+                catch (OperationCanceledException)
+                {
+                    //return;
+                }
+            });
             return Task.CompletedTask;
         }
 
@@ -107,47 +174,6 @@ namespace Ferretto.VW.App.Accessories
         {
             await Task.Run(() => this.logger.Info("StopAsync;Switch off laser pointer"));
             //await this.laserPointerDriver.EnabledAsync(false, false);
-        }
-
-        private async Task LaserPointerConfigureAsync()
-        {
-            try
-            {
-                var accessories = await this.bayManager.GetBayAccessoriesAsync();
-
-                if (accessories is null)
-                {
-                    this.laserPointerDriver = null;
-                    return;
-                }
-
-                var laserPointer = accessories.LaserPointer;
-                if (laserPointer != null &&
-                    laserPointer.IsEnabledNew)
-                {
-                    var ipAddress = laserPointer.IpAddress;
-                    var port = laserPointer.TcpPort;
-                    var xOffset = laserPointer.XOffset;
-                    var yOffset = laserPointer.YOffset;
-                    var zOffsetLowerPosition = laserPointer.ZOffsetLowerPosition;
-                    var zOffsetUpperPosition = laserPointer.ZOffsetUpperPosition;
-
-                    this.laserPointerDriver.Configure(ipAddress, port, xOffset, yOffset, zOffsetLowerPosition, zOffsetUpperPosition);
-                    await this.laserPointerDriver.ConnectAsync();
-                }
-                else
-                {
-                    if (this.laserPointerDriver != null)
-                    {
-                        this.laserPointerDriver.Disconnect();
-                    }
-                    this.laserPointerDriver = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                this.NotifyError(ex);
-            }
         }
 
         private void NotifyError(Exception ex)
@@ -166,10 +192,9 @@ namespace Ferretto.VW.App.Accessories
                 {
                     await this.LaserPointerConfigureAsync();
 
-                    if (this.laserPointerDriver != null)
+                    if (this.isEnabled)
                     {
                         this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
-                        await this.laserPointerDriver.EnabledAsync(false, false);
                         await this.laserPointerDriver.EnabledAsync(false, false);
                     }
                     return;
@@ -186,7 +211,7 @@ namespace Ferretto.VW.App.Accessories
                 {
                     await this.LaserPointerConfigureAsync();
 
-                    if (this.laserPointerDriver is null)
+                    if (!this.isEnabled)
                     {
                         return;
                     }
@@ -213,7 +238,6 @@ namespace Ferretto.VW.App.Accessories
                         var point = this.laserPointerDriver.CalculateLaserPoint(e.WmsMission.LoadingUnit.Width, e.WmsMission.LoadingUnit.Depth, compartmentSelected.Width.Value, compartmentSelected.Depth.Value, compartmentSelected.XPosition.Value, compartmentSelected.YPosition.Value, itemHeight, bayPosition.IsUpper, bay.Side);
 
                         this.logger.Info("Move and switch on laser pointer");
-                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
                     }
                 }
@@ -233,7 +257,7 @@ namespace Ferretto.VW.App.Accessories
 
                 await this.LaserPointerConfigureAsync();
 
-                if (this.laserPointerDriver is null)
+                if (!this.isEnabled)
                 {
                     return;
                 }
@@ -242,20 +266,17 @@ namespace Ferretto.VW.App.Accessories
                 {
                     case 0: // switch off
                         await this.laserPointerDriver.EnabledAsync(false, false);
-                        await this.laserPointerDriver.EnabledAsync(false, false);
                         this.logger.Info("OnSocketLinkLaserPointerChangeAsync, switch 0");
                         break;
 
                     case 1: // switch on in upper bay position
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, true, bay.Side);
-                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
                         break;
 
                     case 2: // switch on in lower bay position
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, false, bay.Side);
-                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
                         break;
@@ -264,6 +285,36 @@ namespace Ferretto.VW.App.Accessories
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+            }
+        }
+
+        private async Task PollingLaserPointer()
+        {
+            switch (this.PollingStep)
+            {
+                case "Undefined":
+                    {
+                        try
+                        {
+                            await this.bayManager.GetBayAccessoriesAsync();
+                        }
+                        catch (Exception)
+                        {
+                            break;
+                        }
+                        await this.LaserPointerConfigureAsync();
+                        this.PollingStep = "Active";
+                        this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                        break;
+                    }
+                case "Active":
+                    {
+                        if (this.isEnabled)
+                        {
+                            await this.laserPointerDriver.ExecuteCommandsAsync(this.syncObject).ConfigureAwait(true);
+                        }
+                        break;
+                    }
             }
         }
 
@@ -291,15 +342,6 @@ namespace Ferretto.VW.App.Accessories
             }
 
             return null;
-        }
-
-        private async void StartupProcedure(object state)
-        {
-            await this.LaserPointerConfigureAsync();
-            if (this.laserPointerDriver != null)
-            {
-                await this.laserPointerDriver.EnabledAsync(false, false);
-            }
         }
 
         #endregion

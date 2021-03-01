@@ -2421,4 +2421,7 @@
   <data name="Bay3ExternalDouble" xml:space="preserve">
     <value>Dvojitá externí pozice 3</value>
   </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Pohybující se stroj</value>
+  </data>
 </root>

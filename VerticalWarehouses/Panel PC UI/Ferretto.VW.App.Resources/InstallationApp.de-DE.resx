@@ -2433,4 +2433,7 @@
   <data name="Bay3ExternalDouble" xml:space="preserve">
     <value>Doppelter Außenschacht 3</value>
   </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Maschine bewegen</value>
+  </data>
 </root>
