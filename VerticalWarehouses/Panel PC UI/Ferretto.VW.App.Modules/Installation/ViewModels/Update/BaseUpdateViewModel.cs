@@ -33,8 +33,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string InstallPackageZipExtension = "VMag*.zip";
 
-        private readonly EventHandler<DrivesChangedEventArgs> drivesChangeEventHandler;
-
         private readonly IUsbWatcherService usbWatcher;
 
         private IEnumerable<InstallerInfo> installations = new List<InstallerInfo>();
@@ -65,8 +63,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             : base(PresentationMode.Installer)
         {
             this.usbWatcher = usbWatcher;
-
-            this.drivesChangeEventHandler = new EventHandler<DrivesChangedEventArgs>(this.OnUsbDrivesChanged);
         }
 
         #endregion
@@ -166,7 +162,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.usbWatcher.DrivesChanged -= this.drivesChangeEventHandler;
+            this.usbWatcher.DrivesChanged -= this.UsbWatcher_DrivesChange;
             this.usbWatcher.Disable();
 
             base.Disappear();
@@ -180,7 +176,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.RepositoryPath = ConfigurationManager.AppSettings.GetUpdateRepositoryPath();
 
-                this.usbWatcher.DrivesChanged += this.drivesChangeEventHandler;
+                this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
                 this.usbWatcher.Enable();
 
                 this.ScanAllPackageSources();
@@ -217,34 +213,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
 
             return (assemblyVersion, assemblyName);
-        }
-
-        private void OnUsbDrivesChanged(object sender, DrivesChangedEventArgs e)
-        {
-            if (this.isScanInProgress)
-            {
-                return;
-            }
-
-            this.isScanInProgress = true;
-
-            this.IsBusy = true;
-
-            try
-            {
-                this.removableDevicePackages = this.ScanRemovableDevices();
-
-                this.Installations = this.SelectValidPackages();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsBusy = false;
-                this.isScanInProgress = false;
-            }
         }
 
         private void ScanAllPackageSources()
@@ -361,6 +329,34 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
 
             return validPackages.ToArray();
+        }
+
+        private void UsbWatcher_DrivesChange(object sender, DrivesChangedEventArgs e)
+        {
+            if (this.isScanInProgress)
+            {
+                return;
+            }
+
+            this.isScanInProgress = true;
+
+            this.IsBusy = true;
+
+            try
+            {
+                this.removableDevicePackages = this.ScanRemovableDevices();
+
+                this.Installations = this.SelectValidPackages();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+                this.isScanInProgress = false;
+            }
         }
 
         #endregion
