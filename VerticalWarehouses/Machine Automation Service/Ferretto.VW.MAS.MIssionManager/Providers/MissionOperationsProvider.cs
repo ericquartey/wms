@@ -89,7 +89,8 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (this.wmsSettingsProvider.IsEnabled)
                 {
-                    await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, printerName, null, barcode);
+                    double wastedQuantity = 0;
+                    await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, wastedQuantity, printerName, null, barcode);
                 }
                 else
                 {
