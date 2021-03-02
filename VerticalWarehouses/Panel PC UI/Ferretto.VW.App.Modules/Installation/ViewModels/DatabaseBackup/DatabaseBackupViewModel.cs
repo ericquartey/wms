@@ -113,6 +113,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsEnabled => true;
+
         public ICommand SaveCommand =>
                     this.saveCommand
             ??
