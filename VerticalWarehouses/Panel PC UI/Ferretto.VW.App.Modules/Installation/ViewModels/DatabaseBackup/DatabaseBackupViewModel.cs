@@ -123,6 +123,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            //set checkbox activated on page open
+            this.IsBackupOnServerEnabled = true;
+            this.IsBackupOnTelemetryEnabled = true;
+        }
+
         protected override async Task OnDataRefreshAsync()
         {
             this.IsBackupOnServerEnabled = true; //await this.machineWmsStatusWebService.IsEnabledAsync();
