@@ -708,15 +708,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 .Steps
                 .OrderBy(s => s.Number);
             var compensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - horizontalAxis.LastIdealPosition);
-            var distance = profileSteps.Last().Position - compensation + Math.Abs(horizontalAxis.ChainOffset);
-            if (distance > profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset))
+            var center = horizontalAxis.Center;
+            if (profileType == MovementProfileType.ShortDeposit || profileType == MovementProfileType.ShortPickup)
             {
-                distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset);
-                highSpeed = false;
+                center *= -1;
             }
-            else if (distance <= 0)
+            var distance = profileSteps.Last().Position - compensation + Math.Abs(horizontalAxis.ChainOffset);
+            if (distance > profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset) + center
+                || distance <= 0
+                )
             {
-                distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset);
+                distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset) + center;
                 highSpeed = false;
             }
 
