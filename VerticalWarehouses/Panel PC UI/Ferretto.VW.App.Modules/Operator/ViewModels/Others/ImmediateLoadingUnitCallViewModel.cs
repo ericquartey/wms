@@ -301,7 +301,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 this.currentItemIndex = this.loadingUnits.IndexOf(loadingUnitfound);
-                this.SelectLoadingUnit();
+                this.SelectedLoadingUnit = loadingUnitfound;
+                //this.SelectLoadingUnit();
             }
             else if (this.loadingUnitId > this.MaxLoadingUnitId || this.loadingUnitId < this.MinLoadingUnitId)
             {
