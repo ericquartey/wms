@@ -113,6 +113,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsEnabled => true;
+
         public ICommand SaveCommand =>
                     this.saveCommand
             ??
@@ -122,15 +124,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            //set checkbox activated on page open
-            this.IsBackupOnServerEnabled = true;
-            this.IsBackupOnTelemetryEnabled = true;
-        }
 
         protected override async Task OnDataRefreshAsync()
         {
