@@ -35,6 +35,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly int pollingDelay = 200;
 
+        private readonly SemaphoreSlim syncObject = new SemaphoreSlim(1, 1);
+
         private bool isEnabled;
 
         private SubscriptionToken missionToken;
@@ -42,8 +44,6 @@ namespace Ferretto.VW.App.Services
         private string PollingStep = "Undefined";
 
         private SubscriptionToken socketLinkToken;
-
-        private SemaphoreSlim syncObject;
 
         private CancellationTokenSource tokenSource;
 
@@ -156,7 +156,6 @@ namespace Ferretto.VW.App.Services
             Task.Run(async () =>
             {
                 var cancellationToken = this.tokenSource.Token;
-                this.syncObject = this.laserPointerService.SyncObject;
 
                 try
                 {

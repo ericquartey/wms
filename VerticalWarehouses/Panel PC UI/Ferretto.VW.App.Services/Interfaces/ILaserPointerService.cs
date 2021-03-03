@@ -16,8 +16,6 @@ namespace Ferretto.VW.App.Services
         /// <exception cref="System.NotSupportedException">An exception is thrown if the device does not support information querying.</exception>
         DeviceInformation DeviceInformation { get; }
 
-        SemaphoreSlim SyncObject { get; }
-
         #endregion
 
         #region Methods

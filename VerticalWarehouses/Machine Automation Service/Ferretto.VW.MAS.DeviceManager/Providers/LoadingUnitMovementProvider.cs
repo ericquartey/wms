@@ -713,12 +713,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 center *= -1;
             }
-            var distance = profileSteps.Last().Position - compensation + Math.Abs(horizontalAxis.ChainOffset);
-            if (distance > profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset) + center
+            var distance = profileSteps.Last().Position - compensation + Math.Abs(horizontalAxis.ChainOffset) + center;
+            if (distance > profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset)
                 || distance <= 0
                 )
             {
-                distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset) + center;
+                distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset);
                 highSpeed = false;
             }
 
