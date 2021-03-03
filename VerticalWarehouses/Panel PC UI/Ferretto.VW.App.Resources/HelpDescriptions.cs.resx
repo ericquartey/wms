@@ -865,7 +865,7 @@
     <value>Sloupek uvádí stroj nebo stroje, na kterých je položka momentálně přítomna.</value>
   </data>
   <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
-    <value>Postup umožňuje vyvolat vybranou zásuvku do stanice, na které obsluha pracuje. Zásuvky se stavem červené barvy nejsou přístupné pro uživatele, který pracuje, protože jsou zablokovány WMS nebo přiřazeny konkrétnímu uživateli.</value>
+    <value>Tento postup vám umožňuje zavolat vybranou zásuvku prostřednictvím příslušného pole umístěného vpravo v pozici, na které operátor pracuje.</value>
   </data>
   <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
     <value>Uvádí číslo zásuvky, jíž se týkají údaje v tabulce.</value>

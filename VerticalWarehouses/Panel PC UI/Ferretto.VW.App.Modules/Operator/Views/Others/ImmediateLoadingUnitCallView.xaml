@@ -59,97 +59,10 @@
             BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="0">
-      <Grid Margin="20">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0"
-              Margin="0"
-              Visibility="Collapsed">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-          </Grid.ColumnDefinitions>
-
-          <TextBlock Margin="0,0,10,0"
-                     VerticalAlignment="Center"
-                     FontSize="{DynamicResource FontSize_High}"
-                     Foreground="{DynamicResource FerrettoPureWhite}">
-            <Run Text="{Resources:Loc OperatorApp.ItemSearchKeySearch}" />
-            <Run Text=":" />
-          </TextBlock>
-
-          <TextBox x:Name="SearchText"
-                   Grid.Column="1"
-                   Margin="0"
-                   Style="{DynamicResource SearchTextBoxStyle}"
-                   Text="{Binding SearchItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=250}">
-            <i:Interaction.Behaviors>
-              <behaviors:TextBoxAutoSelectBehavior />
-              <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
-                                                       KeyboardLabel="{Resources:Loc OperatorApp.ItemSearchKeySearch}" />
-            </i:Interaction.Behaviors>
-          </TextBox>
-
-          <Button x:Name="ClearButton"
-                  Grid.Column="2"
-                  Width="70"
-                  Margin="0,1,1,1"
-                  BorderThickness="0"
-                  Visibility="{Binding Path=SearchItem, Converter={StaticResource TTUI}}">
-            <Button.Style>
-              <Style BasedOn="{StaticResource IconButtonInvertStyle}"
-                     TargetType="{x:Type Button}">
-                <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
-                <Setter Property="Background" Value="{StaticResource FerrettoPureWhite}" />
-                <Setter Property="BorderBrush" Value="{StaticResource FerrettoPureWhite}" />
-                <Style.Triggers>
-                  <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource FerrettoLightGray}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource FerrettoPureWhite}" />
-                  </Trigger>
-                  <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource FerrettoLightGray}" />
-                    <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
-                    <Setter Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
-                  </Trigger>
-                </Style.Triggers>
-              </Style>
-            </Button.Style>
-            <in:Interaction.Triggers>
-              <in:EventTrigger EventName="Click">
-                <ei:ChangePropertyAction PropertyName="Text"
-                                         TargetObject="{Binding ElementName=SearchText}"
-                                         TargetName="SearchText"
-                                         Value="" />
-              </in:EventTrigger>
-            </in:Interaction.Triggers>
-            <Button.Template>
-              <ControlTemplate>
-                <Grid Margin="0"
-                      Background="{TemplateBinding Background}">
-                  <icons:PackIconFontAwesome Width="{TemplateBinding Width}"
-                                             Height="{TemplateBinding Height}"
-                                             Margin="2"
-                                             HorizontalAlignment="Center"
-                                             VerticalAlignment="Center"
-                                             Foreground="{TemplateBinding Foreground}"
-                                             Kind="BackspaceSolid" />
-                </Grid>
-              </ControlTemplate>
-            </Button.Template>
-          </Button>
-        </Grid>
-
-        <views:LoadingUnitDataGridView Grid.Row="1"
-                                       Grid.Column="0"
-                                       Margin="0,0,0,0" />
-
-      </Grid>
-
+      <views:LoadingUnitDataGridView Grid.Row="1"
+                                     Grid.Column="0"
+                                     Margin="0,0,0,0" />
     </Border>
 
     <Grid Grid.Row="2"
