@@ -713,7 +713,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 center *= -1;
             }
-            var distance = profileSteps.Last().Position - compensation + Math.Abs(horizontalAxis.ChainOffset) + center;
+            var distance = profileSteps.Last().Position - compensation + center;
             if (distance > profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset)
                 || distance <= 0
                 )
