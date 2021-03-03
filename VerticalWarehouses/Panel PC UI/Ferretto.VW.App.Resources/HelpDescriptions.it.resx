@@ -865,7 +865,7 @@
     <value>La colonna riporta la macchina o le macchine su cui l'articolo e' attualmente presente.</value>
   </data>
   <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
-    <value>La procedura permette di chiamare il cassetto selezionato nella baia su cui l'operatore sta lavorando. I cassetti con lo status di colore rosso non sono accessibili all'utente che sta operando in quanto bloccati dal WMS oppure associati ad un particolare utente.</value>
+    <value>La procedura permette di chiamare il cassetto selezionato tramite l'apposito riquadro situato sulla destra nella baia su cui l'operatore sta lavorando.</value>
   </data>
   <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
     <value>Indica il numero del cassetto a cui si riferiscono i dati della griglia.</value>

@@ -6,9 +6,12 @@
   <DataGrid Name="DataGrid"
             Width="auto"
             Height="auto"
+            IsHitTestVisible="False"
             ItemsSource="{Binding LoadingUnits}"
             RowHeight="45"
-            SelectedItem="{Binding SelectedLoadingUnit}">
+            VerticalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedLoadingUnit, Mode=TwoWay}"
+            SelectionChanged="DataGrid_SelectionChanged">
     <DataGrid.Columns>
       <DataGridTextColumn x:Name="Column1"
                           Width="1*"

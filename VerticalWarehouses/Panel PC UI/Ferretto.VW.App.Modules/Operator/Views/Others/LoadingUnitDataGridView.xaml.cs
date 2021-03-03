@@ -12,5 +12,14 @@ namespace Ferretto.VW.App.Modules.Operator.Views
         }
 
         #endregion
+
+        #region Methods
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this.DataGrid.ScrollIntoView(this.DataGrid.SelectedItem);
+        }
+
+        #endregion
     }
 }

@@ -31,12 +31,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand callLoadingUnitCommand;
 
-        private int currentItemIndex;
-
-        private DelegateCommand downSelectionCommand;
-
-        private bool isSearching;
-
         private int? loadingUnitId;
 
         private DelegateCommand loadingUnitsMissionsCommand;
@@ -50,8 +44,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private SubscriptionToken receiveHomingUpdateToken;
 
         private LoadingUnit selectedUnitUnit;
-
-        private DelegateCommand upSelectionCommand;
 
         #endregion
 
@@ -72,19 +64,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public ICommand DownSelectionCommand =>
-            this.downSelectionCommand
-            ??
-            (this.downSelectionCommand = new DelegateCommand(
-                this.SelectNextLoadingUnitAsync,
-                this.CanSelectNextItem));
-
-        public bool IsSearching
-        {
-            get => this.isSearching;
-            set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
-        }
-
         public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -101,7 +80,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override bool KeepAlive => true;
 
         public ICommand LoadingUnitCallCommand =>
-            this.callLoadingUnitCommand
+                            this.callLoadingUnitCommand
             ??
             (this.callLoadingUnitCommand = new DelegateCommand(
                 async () => await this.CallLoadingUnitAsync(),
@@ -151,13 +130,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
             }
         }
-
-        public ICommand UpSelectionCommand =>
-            this.upSelectionCommand
-            ??
-            (this.upSelectionCommand = new DelegateCommand(
-                this.SelectPreviousLoadingUnitAsync,
-                this.CanSelectPreviousItem));
 
         #endregion
 
@@ -212,12 +184,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ShowNotification(ex);
                 this.loadingUnits.Clear();
                 this.SelectedLoadingUnit = null;
-                this.currentItemIndex = 0;
             }
             finally
             {
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
-                this.IsSearching = false;
             }
 
             return Task.CompletedTask;
@@ -234,23 +204,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.LoadingUnitId = null;
 
             await this.GetLoadingUnitsAsync();
-            this.SelectLoadingUnit();
-        }
-
-        public void SelectNextLoadingUnitAsync()
-        {
-            System.Diagnostics.Debug.Assert(this.currentItemIndex < this.loadingUnits.Count - 1);
-
-            this.currentItemIndex++;
-            this.SelectLoadingUnit();
-        }
-
-        public void SelectPreviousLoadingUnitAsync()
-        {
-            System.Diagnostics.Debug.Assert(this.currentItemIndex > 0);
-
-            this.currentItemIndex--;
-            this.SelectLoadingUnit();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -258,8 +211,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
-            this.upSelectionCommand?.RaiseCanExecuteChanged();
-            this.downSelectionCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanCallLoadingUnit()
@@ -274,22 +225,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.loadingUnits.Any(l => l.Id == this.loadingUnitId);
         }
 
-        private bool CanSelectNextItem()
-        {
-            return
-                this.currentItemIndex < this.loadingUnits.Count - 1
-                &&
-                !this.IsSearching;
-        }
-
-        private bool CanSelectPreviousItem()
-        {
-            return
-                this.currentItemIndex > 0
-                &&
-                !this.IsSearching;
-        }
-
         private void CheckToSelectLoadingUnit()
         {
             this.Logger.Debug($"CheckToSelectLoadingUnit: loadingUnitId {this.loadingUnitId} ");
@@ -300,18 +235,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return;
                 }
 
-                this.currentItemIndex = this.loadingUnits.IndexOf(loadingUnitfound);
                 this.SelectedLoadingUnit = loadingUnitfound;
-                //this.SelectLoadingUnit();
-            }
-            else if (this.loadingUnitId > this.MaxLoadingUnitId || this.loadingUnitId < this.MinLoadingUnitId)
-            {
-                this.SelectLoadingUnit();
             }
             else
             {
                 this.SelectedLoadingUnit = null;
             }
+
+            this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
         }
 
         private void LoadingUnitsMissionsAppear()
@@ -345,11 +276,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ShowNotification(Resources.Localized.Get("OperatorApp.HorizontalCalibration"), Services.Models.NotificationSeverity.Info);
             }
-        }
-
-        private void SelectLoadingUnit()
-        {
-            this.SelectedLoadingUnit = this.loadingUnits.ElementAtOrDefault(this.currentItemIndex);
         }
 
         private void SubscribeToEvents()
