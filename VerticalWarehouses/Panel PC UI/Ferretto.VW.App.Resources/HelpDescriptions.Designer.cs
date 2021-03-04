@@ -1780,7 +1780,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to call the selected drawer through the appropriate box located on the right in the bay on which the operator is working..
+        ///   Looks up a localized string similar to The procedure allows you to call the selected drawer in the bay on which the operator is working..
         /// </summary>
         public static string HelpImmediateDrawerCallDescription {
             get {

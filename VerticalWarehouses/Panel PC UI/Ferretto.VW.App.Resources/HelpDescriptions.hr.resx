@@ -865,7 +865,7 @@
     <value>Stupac vraća stroj ili strojeve na kojima je artikl trenutačno prisutan.</value>
   </data>
   <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
-    <value>Postupak omogućuje pozivanje odabrane ladice kroz odgovarajući okvir smješten s desne strane u odjeljku na kojem operater radi.</value>
+    <value>Postupak omogućuje pozivanje odabrane ladice u odjeljku na kojem operater radi.</value>
   </data>
   <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
     <value>Označuje broj pretinca na koji se odnose podaci mreže.</value>

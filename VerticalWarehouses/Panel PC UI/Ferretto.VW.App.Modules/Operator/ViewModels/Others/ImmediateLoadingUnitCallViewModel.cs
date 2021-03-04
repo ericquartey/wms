@@ -23,21 +23,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly List<LoadingUnit> loadingUnits = new List<LoadingUnit>();
-
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineService machineService;
 
         private DelegateCommand callLoadingUnitCommand;
 
-        private int? loadingUnitId;
-
         private DelegateCommand loadingUnitsMissionsCommand;
-
-        private int maxLoadingUnitId;
-
-        private int minLoadingUnitId;
 
         private SubscriptionToken positioningMessageReceivedToken;
 
@@ -86,33 +78,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.CallLoadingUnitAsync(),
                 this.CanCallLoadingUnit));
 
-        public int? LoadingUnitId
-        {
-            get => this.loadingUnitId;
-            set
-            {
-                this.SetProperty(ref this.loadingUnitId, value, this.CheckToSelectLoadingUnit);
-            }
-        }
-
-        public IEnumerable<LoadingUnit> LoadingUnits => new BindingList<LoadingUnit>(this.loadingUnits);
+        public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
 
         public ICommand LoadingUnitsMissionsCommand =>
             this.loadingUnitsMissionsCommand
             ??
             (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
-
-        public int MaxLoadingUnitId
-        {
-            get => this.maxLoadingUnitId;
-            set => this.SetProperty(ref this.maxLoadingUnitId, value);
-        }
-
-        public int MinLoadingUnitId
-        {
-            get => this.minLoadingUnitId;
-            set => this.SetProperty(ref this.minLoadingUnitId, value);
-        }
 
         public LoadingUnit SelectedLoadingUnit
         {
@@ -121,11 +92,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.selectedUnitUnit, value))
                 {
-                    if (this.selectedUnitUnit != null)
-                    {
-                        this.LoadingUnitId = this.selectedUnitUnit?.Id;
-                    }
-
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -137,9 +103,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task CallLoadingUnitAsync()
         {
-            this.Logger.Debug($"CallLoadingUnitAsync: loadingUnitId {this.loadingUnitId} ");
+            this.Logger.Debug($"CallLoadingUnitAsync: loadingUnitId {this.selectedUnitUnit.Id} ");
 
-            if (!this.loadingUnitId.HasValue)
+            if (this.selectedUnitUnit == null)
             {
                 this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
                 return;
@@ -149,7 +115,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.LoadingUnitId.Value);
+                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.selectedUnitUnit.Id);
 
                 this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.SelectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }
@@ -159,38 +125,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                this.LoadingUnitId = null;
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        public Task GetLoadingUnitsAsync()
-        {
-            try
-            {
-                this.loadingUnits.Clear();
-                this.loadingUnits.AddRange(this.machineService.Loadunits);
-
-                if (this.loadingUnits != null &&
-                    this.loadingUnits.Any())
-                {
-                    this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
-
-                    this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-                this.loadingUnits.Clear();
-                this.SelectedLoadingUnit = null;
-            }
-            finally
-            {
-                this.RaisePropertyChanged(nameof(this.LoadingUnits));
-            }
-
-            return Task.CompletedTask;
         }
 
         public override async Task OnAppearedAsync()
@@ -201,9 +137,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.LoadingUnitId = null;
-
-            await this.GetLoadingUnitsAsync();
+            if (this.LoadingUnits.Any())
+            {
+                this.SelectedLoadingUnit = this.LoadingUnits.FirstOrDefault();
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -211,6 +148,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.LoadingUnits));
+            this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
         }
 
         private bool CanCallLoadingUnit()
@@ -223,26 +163,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //!this.IsWaitingForResponse
             //&&
             //this.loadingUnits.Any(l => l.Id == this.loadingUnitId);
-        }
-
-        private void CheckToSelectLoadingUnit()
-        {
-            this.Logger.Debug($"CheckToSelectLoadingUnit: loadingUnitId {this.loadingUnitId} ");
-            if (this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound)
-            {
-                if (this.selectedUnitUnit != null && loadingUnitfound.Id == this.selectedUnitUnit.Id)
-                {
-                    return;
-                }
-
-                this.SelectedLoadingUnit = loadingUnitfound;
-            }
-            else
-            {
-                this.SelectedLoadingUnit = null;
-            }
-
-            this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
         }
 
         private void LoadingUnitsMissionsAppear()

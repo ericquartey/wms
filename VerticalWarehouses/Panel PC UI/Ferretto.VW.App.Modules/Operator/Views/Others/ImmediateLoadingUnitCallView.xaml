@@ -53,17 +53,10 @@
                Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
                Text="{Resources:Loc HelpDescriptions.HelpImmediateDrawerCallDescription}" />
 
-    <Border Grid.Row="2"
-            Margin="0,15,0,0"
-            Background="{DynamicResource PpcBackground}"
-            BorderBrush="{DynamicResource PpcBorderBrush}"
-            BorderThickness="{DynamicResource PpcBorderThickness}"
-            CornerRadius="0">
-
-      <views:LoadingUnitDataGridView Grid.Row="1"
-                                     Grid.Column="0"
-                                     Margin="0,0,0,0" />
-    </Border>
+    <views:LoadingUnitDataGridView Grid.Row="2"
+                                   Margin="0,15,0,0"
+                                   ItemsSource="{Binding LoadingUnits}"
+                                   SelectedItem="{Binding SelectedLoadingUnit, Mode=TwoWay}" />
 
     <Grid Grid.Row="2"
           Grid.Column="1"
@@ -112,15 +105,6 @@
           </Grid>
         </Border>
       </Border>
-
-      <ctrls:PpcSpinEdit Grid.Row="1"
-                         Width="230"
-                         Height="90"
-                         Margin="15,15,15,0"
-                         EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         LabelText="{Resources:Loc OperatorApp.ImmediateDrawerCallRequiredDrawer}"
-                         MaxValue="{Binding MaxLoadingUnitId}"
-                         MinValue="{Binding MinLoadingUnitId}" />
 
       <controls:PpcButton Grid.Row="2"
                           Margin="15,15,15,0"

@@ -865,7 +865,7 @@
     <value>Die Spalte zeigt die Maschine(n) an, auf der (denen) sich der Artikel gerade befindet.</value>
   </data>
   <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
-    <value>Mit diesem Verfahren können Sie die ausgewählte Schublade über das entsprechende Feld rechts in der Bucht aufrufen, an der der Bediener arbeitet.</value>
+    <value>Das Verfahren ermöglicht das Aufrufen der ausgewählten Schublade in der Bucht, an der der Bediener arbeitet.</value>
   </data>
   <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
     <value>Gibt die Nummer der Kasten an, auf die sich die Rasterdaten beziehen.</value>

@@ -865,7 +865,7 @@
     <value>Sloupek uvádí stroj nebo stroje, na kterých je položka momentálně přítomna.</value>
   </data>
   <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
-    <value>Tento postup vám umožňuje zavolat vybranou zásuvku prostřednictvím příslušného pole umístěného vpravo v pozici, na které operátor pracuje.</value>
+    <value>Tento postup umožňuje vyvolat vybranou zásuvku v pozici, na které operátor pracuje.</value>
   </data>
   <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
     <value>Uvádí číslo zásuvky, jíž se týkají údaje v tabulce.</value>

@@ -865,7 +865,7 @@
     <value>Stolpec prikazuje stroj ali stroje, na katerih je izdelek trenutno prisoten.</value>
   </data>
   <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
-    <value>Postopek vam omogoča, da izbrani predal pokličete skozi ustrezno okence, ki se nahaja na desni strani v odprtini, na kateri deluje operater.</value>
+    <value>Postopek omogoča klic izbranega predala v ležišču, na katerem deluje operater.</value>
   </data>
   <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
     <value>Označuje številko predala, na katerega se nanašajo podatki mreže.</value>
