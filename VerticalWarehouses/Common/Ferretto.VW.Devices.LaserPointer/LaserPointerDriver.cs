@@ -319,11 +319,6 @@ namespace Ferretto.VW.Devices.LaserPointer
             }
             finally
             {
-                if (this.IsConnected)
-                {
-                    this.Disconnect();
-                    //Thread.Sleep(2000);
-                }
                 syncObject.Release();
             }
             return result;

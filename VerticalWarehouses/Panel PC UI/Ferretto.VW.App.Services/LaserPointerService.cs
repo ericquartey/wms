@@ -33,9 +33,6 @@ namespace Ferretto.VW.App.Services
 
         private readonly int pollingDelay = 200;
 
-        /// <summary>
-        /// this semapfore is used to serialize commands to laser and alpha bar, because the devices seem to conflict with each other
-        /// </summary>
         private readonly SemaphoreSlim syncObject = new SemaphoreSlim(1, 1);
 
         private bool isEnabled;
@@ -87,8 +84,6 @@ namespace Ferretto.VW.App.Services
                 }
             }
         }
-
-        public SemaphoreSlim SyncObject => this.syncObject;
 
         #endregion
 

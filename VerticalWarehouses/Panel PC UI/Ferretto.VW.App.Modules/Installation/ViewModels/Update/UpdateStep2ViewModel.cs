@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
@@ -42,8 +43,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly string updateExchangeTemp;
 
-        private readonly IList<InstallerInfo> updates = new List<InstallerInfo>();
-
         private readonly string updateZipChecksumFileName;
 
         private int currentUpdateIndex;
@@ -55,6 +54,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private string restoreInfo;
 
         private InstallerInfo selectedUpdate;
+
+        private ObservableCollection<InstallerInfo> updates = new ObservableCollection<InstallerInfo>();
 
         private string updatesInfo;
 
@@ -108,7 +109,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public ICommand UpdateCommand => this.updateCommand;
 
-        public IEnumerable<InstallerInfo> Updates => this.updates;
+        public ObservableCollection<InstallerInfo> Updates => this.updates;
 
         public string UpdatesInfo => this.updatesInfo;
 

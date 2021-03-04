@@ -130,6 +130,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || notification.TargetBay == this.Mission.TargetBay
                         )
                         && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.EjectLoadUnit)
+                        && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
                         )
                     {
                         this.OnStop(StopRequestReason.Error);

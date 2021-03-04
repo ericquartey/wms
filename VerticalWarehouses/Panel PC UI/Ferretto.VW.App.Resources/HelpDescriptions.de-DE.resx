@@ -865,7 +865,7 @@
     <value>Die Spalte zeigt die Maschine(n) an, auf der (denen) sich der Artikel gerade befindet.</value>
   </data>
   <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
-    <value>Die Prozedur erlaubt es, den ausgewählte Kasten in der Bucht aufzurufen, an der der Bediener arbeitet. Kästen mit rotem Status sind für den aktuellen Benutzer nicht zugänglich, weil sie vom WMS blockiert oder einem bestimmten Benutzer zugeordnet sind.</value>
+    <value>Das Verfahren ermöglicht das Aufrufen der ausgewählten Schublade in der Bucht, an der der Bediener arbeitet.</value>
   </data>
   <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
     <value>Gibt die Nummer der Kasten an, auf die sich die Rasterdaten beziehen.</value>
