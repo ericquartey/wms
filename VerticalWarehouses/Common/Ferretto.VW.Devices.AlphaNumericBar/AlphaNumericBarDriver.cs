@@ -407,11 +407,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
             finally
             {
-                if (this.IsConnected)
-                {
-                    this.Disconnect();
-                    //Thread.Sleep(2000);
-                }
                 syncObject.Release();
             }
 
