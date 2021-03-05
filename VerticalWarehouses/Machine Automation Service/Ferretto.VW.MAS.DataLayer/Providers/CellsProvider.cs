@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const double CellHeight = 25;
 
+        private const int MinimumLU_HeightForTopCells = 175;
+
         // TODO - remove this parameter when all versions are > 0.27.24
         private const double OldVerticalPositionTolerance = 27;
 
@@ -228,22 +230,17 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
             }
-            // high load units in space only positions are not moved by compacting
-            if (loadingUnit.Height > 175
-                && loadingUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
-                )
+            // load units in space only positions are not moved by compacting down
+            cells = this.GetAll(x => x.Position >= verticalAxis.LowerBound
+                         && x.Side == loadingUnit.Cell.Side)
+                .OrderBy(o => o.Position)
+                .ToList();
+            if (cells.Any(c => c.Side == loadingUnit.Cell.Side && c.Position > loadingUnit.Cell.Position && c.Position < loadingUnit.Cell.Position + loadingUnit.Height && c.BlockLevel == BlockLevel.SpaceOnly)
+                && cells.Count(c => c.IsFree) < cells.Count * 0.4
+            )
             {
-                cells = this.GetAll(x => x.Position >= verticalAxis.LowerBound
-                             && x.Side == loadingUnit.Cell.Side)
-                    .OrderBy(o => o.Position)
-                    .ToList();
-                if (cells.Any(c => c.Side == loadingUnit.Cell.Side && c.Position > loadingUnit.Cell.Position && c.Position < loadingUnit.Cell.Position + loadingUnit.Height && c.BlockLevel == BlockLevel.SpaceOnly)
-                    && cells.Count(c => c.IsFree) < cells.Count * 0.4
-                )
-                {
-                    this.logger.LogError($"FindDownCell: do not move LU {loadingUnit.Id} from space only positions; Height {loadingUnit.Height:0.00}; total cells {cells.Count}; ");
-                    throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
-                }
+                this.logger.LogError($"FindDownCell: do not move LU {loadingUnit.Id} from space only positions; Height {loadingUnit.Height:0.00}; total cells {cells.Count}; ");
+                throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
             }
             this.logger.LogInformation($"FindDownCell: found Cell {cellId} for LU {loadingUnit.Id}; from cell {loadingUnit.Cell.Id}");
             return cellId;
@@ -345,12 +342,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     .OrderBy(o => o.Position)
                     .ToList();
 
-                // high load units in space only positions are not moved by compacting
+                var freeCells = cells.Count(c => c.IsFree);
+                // load units in space only positions are not moved by compacting
                 if (compactingType != CompactingType.NoCompacting
-                    && loadUnitHeight > 175
+                    //&& loadUnitHeight > MinimumLU_HeightForTopCells
                     && loadUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
+                    && freeCells < cells.Count * 0.4
                     && cells.Any(c => c.Side == loadUnit.Cell.Side && c.Position > loadUnit.Cell.Position && c.Position < loadUnit.Cell.Position + loadUnitHeight && c.BlockLevel == BlockLevel.SpaceOnly)
-                    && cells.Count(c => c.IsFree) < cells.Count * 0.4
                     )
                 {
                     this.logger.LogTrace($"FindEmptyCell: do not move LU {loadingUnitId} from space only positions; Height {loadUnitHeight:0.00}; total cells {cells.Count}; ");
@@ -363,9 +361,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     && (compactingType == CompactingType.NoCompacting || c.Position < loadUnit.Cell.Position)
                     ), (cell) =>
                 {
-                    // load all cells following the selected cell
+                    // load 1 meter of cells following the selected cell
                     var cellsFollowing = cells.Where(c => c.Panel.Side == cell.Side
-                        && c.Position >= cell.Position);
+                        && c.Position >= cell.Position
+                        && c.Position < cell.Position + 1500);
 
                     // load previous cell
                     var prev = cells.LastOrDefault(c => c.Side == cell.Side
@@ -377,10 +376,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     // SpaceOnly cells can be occupied by high load units
                     if (isFloating
                         && compactingType == CompactingType.NoCompacting
-                        && loadUnitHeight > 175
+                        && loadUnitHeight > MinimumLU_HeightForTopCells
                         && loadUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
+                        && freeCells < cells.Count * 0.4
                         && cellsFollowing.Any(c => c.IsFree && c.Position > cell.Position && c.Position < cell.Position + loadUnitHeight && c.BlockLevel == BlockLevel.SpaceOnly)
-                        && cells.Count(c => c.IsFree) < cells.Count * 0.4
                         )
                     {
                         isFloating = false;
@@ -398,7 +397,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                 lastCellPosition = cellsFollowing.LastOrDefault(c => c.Position < firstUnavailable.Position)?.Position ?? lastCellPosition;
                             }
                         }
-                        var availableSpace = lastCellPosition - cellsFollowing.First().Position + CellHeight;
+                        var availableSpace = lastCellPosition - cell.Position + CellHeight;
                         var firstFree = true;
                         if (compactingType == CompactingType.ExactMatchCompacting || compactingType == CompactingType.AnySpaceCompacting)
                         {
@@ -478,10 +477,68 @@ namespace Ferretto.VW.MAS.DataLayer
                     $"available cells {availableCell.Count}; " +
                     $"available space {foundCell.Height}; " +
                     $"random cells {randomCells}; " +
+                    $"free cells {freeCells}; " +
                     $"TotalWeightFront {machineStatistics.TotalWeightFront:0.00}; " +
                     $"TotalWeightBack {machineStatistics.TotalWeightBack:0.00}");
                 return cellId;
             }
+        }
+
+        public int FindTopCell(LoadingUnit loadingUnit)
+        {
+            if (loadingUnit.Cell is null)
+            {
+                this.logger.LogError($"FindTopCell for compacting: LU {loadingUnit.Id} not in cell! ");
+                throw new EntityNotFoundException();
+            }
+            //if (loadingUnit.Height <= MinimumLU_HeightForTopCells)
+            //{
+            //    throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
+            //}
+            var machine = this.machineProvider.Get();
+            if (machine is null)
+            {
+                throw new EntityNotFoundException();
+            }
+            if (loadingUnit.NetWeight >= machine.LoadUnitMaxNetWeight * 0.6)
+            {
+                throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
+            }
+            var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+
+            // load all top cells
+            var cells = this.GetAll(x => x.Position >= verticalAxis.UpperBound - 1000
+                         && x.Side == loadingUnit.Cell.Side)
+                .OrderByDescending(o => o.Position)
+                .ToList();
+            var lastCellPosition = cells.First().Position;
+            foreach (var cell in cells.Where(c => c.BlockLevel == BlockLevel.None
+                    && c.IsFree))
+            {
+                if (cells.Any(c => c.Position > cell.Position
+                    && c.Position < cell.Position + loadingUnit.Height + CellHeight
+                    && c.BlockLevel == BlockLevel.SpaceOnly)
+                    )
+                {
+                    // measure available space
+                    var cellsFollowing = cells.Where(c => c.Position >= cell.Position).OrderBy(o => o.Position);
+                    if (cellsFollowing.Any())
+                    {
+                        var firstUnavailable = cellsFollowing.FirstOrDefault(c => !c.IsFree || c.IsNotAvailable || (c.BlockLevel == BlockLevel.NeedsTest && c.Position > cell.Position));
+                        if (firstUnavailable != null)
+                        {
+                            lastCellPosition = cellsFollowing.LastOrDefault(c => c.Position < firstUnavailable.Position)?.Position ?? lastCellPosition;
+                        }
+                    }
+                    var availableSpace = lastCellPosition - cell.Position + CellHeight;
+                    if (availableSpace >= loadingUnit.Height + VerticalPositionTolerance)
+                    {
+                        this.logger.LogInformation($"FindTopCell: found Cell {cell.Id} for LU {loadingUnit.Id}; from cell {loadingUnit.Cell.Id}");
+                        return cell.Id;
+                    }
+                }
+            }
+            throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
         }
 
         public IEnumerable<Cell> GetAll()
@@ -576,6 +633,15 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.Cells.Any(c => c.BlockLevel == BlockLevel.NeedsTest);
             }
+        }
+
+        public bool IsTopCellAvailable(WarehouseSide side)
+        {
+            var cells = this.GetAll(x => x.Side == side)
+                .OrderByDescending(o => o.Position)
+                .ToList();
+            return cells.Count(c => c.IsFree) < cells.Count * 0.4
+                && (cells.FirstOrDefault(x => x.BlockLevel != BlockLevel.SpaceOnly)?.IsFree ?? false);
         }
 
         public void Save(Cell cell)

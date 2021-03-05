@@ -182,9 +182,12 @@ namespace Ferretto.VW.MAS.MissionManager
 
             this.cellsProvider.CleanUnderWeightCells();
             // first we try to find a lower place for each load unit, matching exactly the height
-            if (this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnit, out cellId)
+            if (//this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnit, out cellId)
+                //||
                 // then we try to find a lower place for each load unit
-                || this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnit, out cellId)
+                this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnit, out cellId)
+                // then we try to send a load unit in top cells
+                || this.CompactTopCell(loadUnits, out loadUnit, out cellId)
                 // then we try to shift down the load units
                 || this.CompactDownCell(loadUnits, out loadUnit, out cellId)
                 )
@@ -293,6 +296,40 @@ namespace Ferretto.VW.MAS.MissionManager
                 catch (InvalidOperationException)
                 {
                     // continue with next Load Unit
+                }
+            }
+            return false;
+        }
+
+        private bool CompactTopCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
+        {
+            loadUnitOut = null;
+            cellId = null;
+            if (!loadUnits.Any())
+            {
+                return false;
+            }
+            this.logger.LogDebug("Compacting top cells");
+            for (var side = WarehouseSide.Front; side <= WarehouseSide.Back; side++)
+            {
+                if (this.cellsProvider.IsTopCellAvailable(side))
+                {
+                    foreach (var loadUnit in loadUnits.OrderByDescending(o => o.Height))
+                    {
+                        try
+                        {
+                            if (loadUnit.IsIntoMachine)
+                            {
+                                cellId = this.cellsProvider.FindTopCell(loadUnit);
+                                loadUnitOut = loadUnit;
+                                return true;
+                            }
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            // continue with next Load Unit
+                        }
+                    }
                 }
             }
             return false;
