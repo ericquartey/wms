@@ -29,5 +29,7 @@
         SelectBasket,
 
         SelectShelf,
+
+        Notes,
     }
 }

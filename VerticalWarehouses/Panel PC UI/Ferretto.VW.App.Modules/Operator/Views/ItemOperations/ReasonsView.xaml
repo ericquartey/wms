@@ -240,7 +240,8 @@
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
           <cctrls:PpcButton Command="{Binding ConfirmReasonCommand}"
-                            Content="{res:Loc OperatorApp.Confirm}" />
+                            Content="{res:Loc OperatorApp.Confirm}"
+                            IsEnabled="{Binding IsBusyConfirmingOperation, Converter={StaticResource BNC}}"/>
           <cctrls:PpcButton Margin="15,0,0,0"
                             Command="{Binding CancelReasonCommand}"
                             Content="{res:Loc General.Cancel}" />

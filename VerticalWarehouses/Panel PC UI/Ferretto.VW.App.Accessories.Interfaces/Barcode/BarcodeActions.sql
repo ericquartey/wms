@@ -17,3 +17,4 @@ INSERT INTO BarcodeActions VALUES ('SelectShelf', NULL, '#SHELF(?<ShelfCode>[0-9
 INSERT INTO BarcodeActions VALUES ('AssociateBasketToShelf', NULL, '\$APERTURACOLLO', 10, 11, 'TRUE')
 INSERT INTO BarcodeActions VALUES ('CompleteBasket', NULL, '\$CHIUSURACOLLO', 10, 11, 'TRUE')
 INSERT INTO BarcodeActions VALUES ('RemoveFullBasket', NULL, '\$SATURAZIONECAMPATA', 10, 11, 'TRUE')
+INSERT INTO BarcodeActions VALUES ('Notes', 'NoteDescription', '(?<ItemCode>[0-9A-Za-z_]+)', 0, NULL, 'FALSE')
