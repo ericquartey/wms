@@ -187,7 +187,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             //this.barcodeReaderService.SimulateRead("000prova01\r");
             //this.barcodeReaderService.SimulateRead("TEST010000100001\r");
             //this.barcodeReaderService.SimulateRead("VMC1000001\r");
-            //this.barcodeReaderService.SimulateRead("TEST0001\r");
+            //this.barcodeReaderService.SimulateRead("1805_B_F_01\r");
 
             // TEST linear regression
             //var measures = new Dictionary<double, double>() {
@@ -214,6 +214,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
             //string text = $"{measureConst2}, {measureConst1}, {measureConst0}";
 
+            // NO TEST
             this.NavigationService.Appear(
                     nameof(Utils.Modules.Menu),
                     Utils.Modules.Menu.MAIN_MENU,
