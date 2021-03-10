@@ -3033,6 +3033,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("LoadUnitSource", Required = Newtonsoft.Json.Required.Always)]
         public LoadingUnitLocation LoadUnitSource { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("MissionTime", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.TimeSpan MissionTime { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("MissionType", Required = Newtonsoft.Json.Required.Always)]
         public MissionType MissionType { get; set; }
     

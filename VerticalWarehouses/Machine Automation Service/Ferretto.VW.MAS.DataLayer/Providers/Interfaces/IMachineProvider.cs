@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int GetItemUniqueIdLength();
 
+        Machine GetMinMaxHeight();
+
         MachineStatistics GetPresentStatistics();
 
         IEnumerable<ServicingInfo> GetServicingInfo();

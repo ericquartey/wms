@@ -94,14 +94,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             canRetry = false;
 #if CHECK_PROFILE
             var unitToMove = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
-            var bayPosition = locationBay.Positions.First(w => w.Location == bayLocation);
-            var bay = this.BaysDataProvider.GetByNumber(locationBay.Number);
-            const double tolerance = 2.5;       // TODO use a parameter for this value??
             if (unitToMove != null
-                && bay != null
+                && locationBay != null
                 )
             {
-                var machine = this.MachineProvider.Get();
+                var bayPosition = locationBay.Positions.First(w => w.Location == bayLocation);
+                const double tolerance = 2.5;       // TODO use a parameter for this value??
+
+                var machine = this.MachineProvider.GetMinMaxHeight();
                 if (unitToMove.Height > machine.LoadUnitMaxHeight + tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
@@ -118,13 +118,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && unitToMove.Height < bayPosition.MaxDoubleHeight + tolerance
                     )
                 {
-                    if (bay.Positions.Count() == 1)
+                    if (locationBay.Positions.Count() == 1)
                     {
                         returnValue = true;
                     }
                     else if (!bayPosition.IsUpper
-                        && bay.Positions.Any(p => p.IsUpper)
-                        && bay.Positions.First(p => p.IsUpper).LoadingUnit == null)
+                        && locationBay.Positions.Any(p => p.IsUpper)
+                        && locationBay.Positions.First(p => p.IsUpper).LoadingUnit == null)
                     {
                         returnValue = true;
                     }
@@ -534,6 +534,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 try
                 {
+                    this.Logger.LogDebug($"Height ok for LU {this.Mission.LoadUnitId}");
                     this.Mission.DestinationCellId = this.CellsProvider.FindEmptyCell(this.Mission.LoadUnitId, Utils.Enumerations.CompactingType.NoCompacting, isCellTest: (this.Mission.MissionType == MissionType.FirstTest), this.MachineVolatileDataProvider.RandomCells);
                     this.Logger.LogDebug($"Found cell {this.Mission.DestinationCellId} for LU {this.Mission.LoadUnitId}");
                 }

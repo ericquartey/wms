@@ -226,7 +226,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         if ((mission.MissionType != MissionType.Manual
-                            || this.Mission.MissionType != MissionType.ScaleCalibration)
+                                || this.Mission.MissionType != MissionType.ScaleCalibration)
                             && !this.CheckBayHeight(destinationBay, destination, mission, out var canRetry)
                             )
                         {

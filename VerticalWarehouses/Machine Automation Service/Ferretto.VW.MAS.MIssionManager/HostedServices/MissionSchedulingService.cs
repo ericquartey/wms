@@ -1151,7 +1151,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         var loadingUnitProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
                         var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
-                        var machine = machineProvider.Get();
+                        var machine = machineProvider.GetMinMaxHeight();
                         loadingUnitProvider.SetHeight(loadUnit.Id, machine.LoadUnitMaxHeight);
                     }
                     this.Logger.LogInformation($"Insert load unit {loadUnit.Id} from {LoadingUnitLocation.Elevator} to cell");
@@ -1549,6 +1549,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var missionsWmsWebService = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IMissionsWmsWebService>();
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
 
             try
             {
@@ -1593,7 +1594,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     // wms mission is finished
                     mission.Status = MissionStatus.Completed;
+                    mission.MissionTime.Add(DateTime.UtcNow - mission.StepTime);
                     missionsDataProvider.Update(mission);
+                    machineProvider.UpdateMissionTime(mission.MissionTime);
                     baysDataProvider.ClearMission(bayNumber);
 
                     this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed and move back from bay load unit {LoadUnitId}.", bayNumber, mission.WmsId.Value, mission.LoadUnitId);

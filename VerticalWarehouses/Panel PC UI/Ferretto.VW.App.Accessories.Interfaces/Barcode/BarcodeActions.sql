@@ -3,7 +3,7 @@
 DBCC CHECKIDENT( 'BarcodeActions', RESEED, 0)
 
 INSERT INTO BarcodeActions VALUES ('FilterItems', 'ItemsSearch', '(?<ItemCode>[0-9A-Za-z_]+)', 0, NULL, 'FALSE')
-INSERT INTO BarcodeActions VALUES ('PickItem', 'ItemsSearch', 'ITEM_(?<ItemCode>[0-9A-Za-z]+)_QTY(?<ItemQuantity>[0-9]+)_PICK', 0, NULL, 'FALSE')
+INSERT INTO BarcodeActions VALUES ('PickItem', 'ItemsSearch', 'ITEM_(?<ItemCode>[0-9A-Za-z_]+)_QTY(?<ItemQuantity>[0-9]+)_PICK', 0, NULL, 'FALSE')
 INSERT INTO BarcodeActions VALUES ('FilterLists', 'ListSearch', 'LIST_(?<ListId>[0-9]+)_FILTER', 0, NULL, 'FALSE')
 INSERT INTO BarcodeActions VALUES ('ExecuteList', 'ListSearch', '(?<ListId>[0-9A-Za-z_]+)', 0, NULL, 'FALSE')
 INSERT INTO BarcodeActions VALUES ('LoginUser', 'Login', '(?<BearerToken>[a-zA-Z0-9_]+)', 0, NULL, 'FALSE')

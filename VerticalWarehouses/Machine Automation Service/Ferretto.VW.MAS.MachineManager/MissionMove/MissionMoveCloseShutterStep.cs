@@ -34,10 +34,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
-            this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
-
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.CloseShutter;
+            this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
@@ -73,7 +72,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 // Close the shutter of specified bay
                 this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
 
-                var machine = this.MachineProvider.Get();
+                var machine = this.MachineProvider.GetMinMaxHeight();
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal
                     || (this.Mission.NeedHomingAxis == Axis.None
                         && (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate

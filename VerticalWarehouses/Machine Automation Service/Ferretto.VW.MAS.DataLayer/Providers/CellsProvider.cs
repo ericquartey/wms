@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new EntityNotFoundException(loadingUnitId);
             }
 
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
             if (machine is null)
             {
                 throw new EntityNotFoundException();
@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machine = this.machineProvider.Get();
+                var machine = this.machineProvider.GetMinMaxHeight();
                 if (machine is null)
                 {
                     throw new EntityNotFoundException();
@@ -188,7 +188,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.logger.LogError($"FindDownCell for compacting: LU {loadingUnit.Id} not in cell! ");
                 throw new EntityNotFoundException();
             }
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
             if (machine is null)
             {
                 throw new EntityNotFoundException();
@@ -285,7 +285,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new EntityNotFoundException();
             }
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
             if (machine is null)
             {
                 throw new EntityNotFoundException();
@@ -495,7 +495,7 @@ namespace Ferretto.VW.MAS.DataLayer
             //{
             //    throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
             //}
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
             if (machine is null)
             {
                 throw new EntityNotFoundException();
@@ -606,7 +606,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     CellOccupationPercentage = 100.0 * occupiedOrUnusableCellsCount / totalCells,
                     MaxSolidSpace = this.FindMaxSolidSpace(cellsWithSide)
                 };
-                var machine = this.machineProvider.Get();
+                var machine = this.machineProvider.GetMinMaxHeight();
                 var minSpace = machine.LoadUnitMinHeight / 25;
                 var freeBlocksFront = this.FreeBlocks(cellsWithSide, WarehouseSide.Front, out var freeCellsFront);
                 freeCellsFront /= minSpace;
@@ -767,7 +767,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(cellId);
                 }
-                var machine = this.machineProvider.Get();
+                var machine = this.machineProvider.GetMinMaxHeight();
                 if (machine is null)
                 {
                     throw new EntityNotFoundException();
