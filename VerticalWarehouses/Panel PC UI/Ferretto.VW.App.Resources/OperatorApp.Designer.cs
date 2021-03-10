@@ -2113,6 +2113,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IP additional.
+        /// </summary>
+        public static string IP_Additional {
+            get {
+                return ResourceManager.GetString("IP_Additional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsDone.
         /// </summary>
         public static string IsDone {
@@ -3409,6 +3418,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network cards.
+        /// </summary>
+        public static string NetworkCards {
+            get {
+                return ResourceManager.GetString("NetworkCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New operations available.
         /// </summary>
         public static string NewOperationsAvailable {
@@ -4206,6 +4224,15 @@ namespace Ferretto.VW.App.Resources {
         public static string StatusWaiting {
             get {
                 return ResourceManager.GetString("StatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SubnetMask additional.
+        /// </summary>
+        public static string SubnetMask_Additional {
+            get {
+                return ResourceManager.GetString("SubnetMask_Additional", resourceCulture);
             }
         }
         

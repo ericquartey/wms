@@ -23,9 +23,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isGeneralActive;
 
+        private bool isNetworkAdaptersActive;
+
         private bool isStatisticsActive;
 
         private bool isUserActive;
+
+        private DelegateCommand networkAdaptersCommand;
 
         private ISessionService sessionService;
 
@@ -58,6 +62,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             Diagnostics,
 
             User,
+
+            NetworkAdapters,
         }
 
         #endregion
@@ -105,6 +111,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isGeneralActive, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsNetworkAdaptersActive
+        {
+            get => this.isNetworkAdaptersActive;
+            set => this.SetProperty(ref this.isNetworkAdaptersActive, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsStatisticsActive
         {
             get => this.isStatisticsActive;
@@ -117,8 +129,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isUserActive, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand NetworkAdaptersCommand =>
+            this.networkAdaptersCommand
+            ??
+            (this.networkAdaptersCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.NetworkAdapters),
+                this.CanExecuteCommand));
+
         public ICommand StatisticsCommand =>
-            this.statisticsCommand
+                    this.statisticsCommand
             ??
             (this.statisticsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.Statistics),
@@ -151,6 +170,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.isUserActive = false;
             this.IsGeneralActive = false;
             this.IsStatisticsActive = false;
+            this.IsNetworkAdaptersActive = false;
 
             switch ((Menu)(this.Data ?? Menu.General))
             {
@@ -173,6 +193,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case Menu.User:
                     this.IsUserActive = true;
                     break;
+
+                case Menu.NetworkAdapters:
+                    this.IsNetworkAdaptersActive = true;
+                    break;
             }
 
             await base.OnAppearedAsync();
@@ -187,6 +211,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.userCommand?.RaiseCanExecuteChanged();
             this.generalCommand?.RaiseCanExecuteChanged();
             this.statisticsCommand?.RaiseCanExecuteChanged();
+            this.networkAdaptersCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteCommand()
@@ -239,6 +264,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.About.USER,
+                        data: menu,
+                        trackCurrentView: false);
+                    break;
+
+                case Menu.NetworkAdapters:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.About.NETWORKADAPTERS,
                         data: menu,
                         trackCurrentView: false);
                     break;

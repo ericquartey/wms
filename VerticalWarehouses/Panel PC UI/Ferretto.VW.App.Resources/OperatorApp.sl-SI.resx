@@ -1635,4 +1635,13 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>To je zadnja operacija tega predala, v katero je bil postavljen izdelek, in pritisnite OK</value>
   </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Omrežne kartice</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>IP dodatno</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>SubnetMask dodatno</value>
+  </data>
 </root>

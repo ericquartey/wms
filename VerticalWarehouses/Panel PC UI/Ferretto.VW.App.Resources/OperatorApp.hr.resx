@@ -1644,4 +1644,13 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>Ovo je zadnja operacija na kojoj se u ovu ladicu stavlja članak i pritisnite U redu</value>
   </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Mrežne kartice</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>IP dodatni</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>SubnetMask dodatni</value>
+  </data>
 </root>

@@ -2002,4 +2002,13 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>This is the last operation on this drawer placed the article and press OK</value>
   </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Network cards</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>IP additional</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>SubnetMask additional</value>
+  </data>
 </root>

@@ -1644,4 +1644,13 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>Toto je poslední operace v této zásuvce umístěná na článek a stiskněte OK</value>
   </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Síťové karty</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>IP další</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>SubnetMask další</value>
+  </data>
 </root>
