@@ -10,73 +10,85 @@
              d:DesignWidth="1024"
              mc:Ignorable="d">
 
-    <Grid Grid.Row="0"
-          Margin="15,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+  <Grid Grid.Row="0"
+        Margin="15,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <controls:PpcButton Grid.Row="0"
-                            Margin="0,0,15,15"
-                            Padding="-1,1,0,0"
-                            Abbrevation="3.1"
-                            BorderBrush="{DynamicResource FerrettoGreen}"
-                            Command="{Binding GeneralCommand}"
-                            Content="{resources:Loc OperatorApp.General}"
-                            IsActive="{Binding IsGeneralActive}"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuStyle}" />
+    <controls:PpcButton Grid.Row="0"
+                        Margin="0,0,15,15"
+                        Padding="-1,1,0,0"
+                        Abbrevation="3.1"
+                        BorderBrush="{DynamicResource FerrettoGreen}"
+                        Command="{Binding GeneralCommand}"
+                        Content="{resources:Loc OperatorApp.General}"
+                        IsActive="{Binding IsGeneralActive}"
+                        Kind="Account"
+                        Style="{DynamicResource PpcButtonMenuStyle}" />
 
-        <controls:PpcButton Grid.Row="2"
-                            Margin="0,0,15,15"
-                            Padding="-1,1,0,0"
-                            Abbrevation="3.2"
-                            BorderBrush="{DynamicResource FerrettoGreen}"
-                            Command="{Binding StatisticsCommand}"
-                            Content="{resources:Loc OperatorApp.Statistics}"
-                            IsActive="{Binding IsStatisticsActive}"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuStyle}" />
+    <controls:PpcButton Grid.Row="2"
+                        Margin="0,0,15,15"
+                        Padding="-1,1,0,0"
+                        Abbrevation="3.2"
+                        BorderBrush="{DynamicResource FerrettoGreen}"
+                        Command="{Binding StatisticsCommand}"
+                        Content="{resources:Loc OperatorApp.Statistics}"
+                        IsActive="{Binding IsStatisticsActive}"
+                        Kind="Account"
+                        Style="{DynamicResource PpcButtonMenuStyle}" />
 
-        <controls:PpcButton Grid.Row="3"
-                            Margin="0,0,15,15"
-                            Padding="-1,1,0,0"
-                            Abbrevation="3.3"
-                            BorderBrush="{DynamicResource FerrettoGreen}"
-                            Command="{Binding AlarmCommand}"
-                            Content="{resources:Loc OperatorApp.Alarms}"
-                            IsActive="{Binding IsAlarmActive}"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuStyle}" />
+    <controls:PpcButton Grid.Row="3"
+                        Margin="0,0,15,15"
+                        Padding="-1,1,0,0"
+                        Abbrevation="3.3"
+                        BorderBrush="{DynamicResource FerrettoGreen}"
+                        Command="{Binding AlarmCommand}"
+                        Content="{resources:Loc OperatorApp.Alarms}"
+                        IsActive="{Binding IsAlarmActive}"
+                        Kind="Account"
+                        Style="{DynamicResource PpcButtonMenuStyle}" />
 
-        <controls:PpcButton Grid.Row="4"
-                            Margin="0,0,15,15"
-                            Padding="-1,1,0,0"
-                            Abbrevation="3.4"
-                            BorderBrush="{DynamicResource FerrettoGreen}"
-                            Command="{Binding DiagnosticsCommand}"
-                            Content="{resources:Loc OperatorApp.Diagnostics}"
-                            IsActive="{Binding IsDiagnosticsActive}"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuStyle}" />
+    <controls:PpcButton Grid.Row="4"
+                        Margin="0,0,15,15"
+                        Padding="-1,1,0,0"
+                        Abbrevation="3.4"
+                        BorderBrush="{DynamicResource FerrettoGreen}"
+                        Command="{Binding DiagnosticsCommand}"
+                        Content="{resources:Loc OperatorApp.Diagnostics}"
+                        IsActive="{Binding IsDiagnosticsActive}"
+                        Kind="Account"
+                        Style="{DynamicResource PpcButtonMenuStyle}" />
 
-        <controls:PpcButton Grid.Row="5"
-                            Margin="0,0,15,15"
-                            Padding="-1,1,0,0"
-                            Abbrevation="3.5"
-                            BorderBrush="{DynamicResource FerrettoGreen}"
-                            Command="{Binding UserCommand}"
-                            Content="{resources:Loc OperatorApp.Users}"
-                            IsActive="{Binding IsUserActive}"
-                            Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuStyle}" />
+    <controls:PpcButton Grid.Row="5"
+                        Margin="0,0,15,15"
+                        Padding="-1,1,0,0"
+                        Abbrevation="3.5"
+                        BorderBrush="{DynamicResource FerrettoGreen}"
+                        Command="{Binding UserCommand}"
+                        Content="{resources:Loc OperatorApp.Users}"
+                        IsActive="{Binding IsUserActive}"
+                        Kind="Account"
+                        Style="{DynamicResource PpcButtonMenuStyle}" />
 
-    </Grid>
+    <controls:PpcButton Grid.Row="6"
+                        Margin="0,0,15,15"
+                        Padding="-1,1,0,0"
+                        Abbrevation="3.6"
+                        BorderBrush="{DynamicResource FerrettoGreen}"
+                        Command="{Binding NetworkAdaptersCommand}"
+                        Content="{resources:Loc OperatorApp.NetworkCards}"
+                        IsActive="{Binding IsNetworkAdaptersActive}"
+                        Kind="Account"
+                        Style="{DynamicResource PpcButtonMenuStyle}" />
+
+  </Grid>
 
 </UserControl>

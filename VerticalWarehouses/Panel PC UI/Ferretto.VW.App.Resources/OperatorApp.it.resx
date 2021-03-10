@@ -1649,4 +1649,13 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>Questa é l'ultima operazione su questo cassetto depostita l'articolo e premi OK</value>
   </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Schede di rete</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>IP aggiuntivo</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>SubnetMask aggiuntivo</value>
+  </data>
 </root>
