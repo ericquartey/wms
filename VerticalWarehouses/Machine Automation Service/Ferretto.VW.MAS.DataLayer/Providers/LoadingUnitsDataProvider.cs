@@ -358,13 +358,23 @@ namespace Ferretto.VW.MAS.DataLayer
             var luDb = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnit.Id));
             if (luDb is null)
             {
-                throw new EntityNotFoundException($"LoadingUnit ID={loadingUnit.Id}");
+                throw new EntityNotFoundException($"Load Unit ID={loadingUnit.Id}");
             }
 
             if (loadingUnit.CellId.HasValue &&
-                loadingUnit.Height == 0)
+                loadingUnit.Height <= 0)
             {
-                throw new ArgumentException($"LoadingUnit with Height to 0 (Id={loadingUnit.Id})");
+                throw new ArgumentException($"Load Unit with Height to 0 (Id={loadingUnit.Id})");
+            }
+
+            if (loadingUnit.GrossWeight < 0)
+            {
+                throw new ArgumentException($"Load Unit with negative Weight (Id={loadingUnit.Id})");
+            }
+
+            if (loadingUnit.GrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + 100)
+            {
+                throw new ArgumentException($"Load Unit with Overload (Id={loadingUnit.Id})");
             }
 
             if (luDb.CellId.HasValue &&
@@ -487,7 +497,19 @@ namespace Ferretto.VW.MAS.DataLayer
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == id);
 
-                loadingUnit.GrossWeight = (loadingUnitGrossWeight >= elevatorWeight) ? loadingUnitGrossWeight - elevatorWeight : 0;
+                // we limit the gross weight just to prevent mechanical crashes, errors for user are still active
+                if (loadingUnitGrossWeight < elevatorWeight)
+                {
+                    loadingUnit.GrossWeight = 0;
+                }
+                else if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevatorWeight + 100)
+                {
+                    loadingUnit.GrossWeight = loadingUnit.MaxNetWeight + loadingUnit.Tare + 100;
+                }
+                else
+                {
+                    loadingUnit.GrossWeight = loadingUnitGrossWeight - elevatorWeight;
+                }
 
                 this.dataContext.SaveChanges();
             }
