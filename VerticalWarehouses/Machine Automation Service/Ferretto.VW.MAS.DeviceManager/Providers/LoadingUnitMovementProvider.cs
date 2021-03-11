@@ -578,7 +578,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return true;
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId, bool fastDeposit = true)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? targetCellId, int? targetBayPositionId, int? sourceCellId, int? sourceBayPositionId, bool fastDeposit = true)
         {
             try
             {
@@ -591,7 +591,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     measure,
                     requestingBay,
                     sender,
-                    sourceBayPositionId: positionId,
+                    targetCellId,
+                    targetBayPositionId,
+                    sourceCellId,
+                    sourceBayPositionId,
                     fastDeposit: fastDeposit);
             }
             catch (InvalidOperationException ex)

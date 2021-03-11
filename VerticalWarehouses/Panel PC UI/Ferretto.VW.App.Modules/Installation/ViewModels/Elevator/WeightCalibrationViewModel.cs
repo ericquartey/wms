@@ -86,6 +86,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBusyLoadingFromBay;
 
+        private bool isCalibrationOk;
+
         private bool isEnabledForwards;
 
         private DelegateCommand loadFromBayCommand;
@@ -287,7 +289,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                            ??
            (this.saveCommand = new DelegateCommand(
                async () => await this.SaveAsync(),
-               this.CanBaseExecute));
+               this.CanSave));
 
         public LoadingUnit SelectedLoadingUnit
         {
@@ -369,6 +371,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.isCalibrationOk = false;
             this.SubscribeToEvents();
 
             if ((this.MachineService.Bay.IsDouble && this.MachineStatus.LoadingUnitPositionUpInBay != null) ||
@@ -605,6 +608,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    conditionOnExternalBay;
         }
 
+        private bool CanSave()
+        {
+            return this.CanBaseExecute() && this.isCalibrationOk;
+        }
+
         private async Task ChangeUnitAsync()
         {
             try
@@ -816,6 +824,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async void SetMeasureConst()
         {
+            this.isCalibrationOk = false;
             var elevatorWeight = await this.machineElevatorWebService.GetWeightAsync();
 
             var orderList = this.unitsWeighing.OrderBy(s => s.NetWeight).ToList();
@@ -828,6 +837,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             foreach (var units in this.unitsWeighing)
             {
+                if (orderList.Any(x => Math.Abs(x.Current - units.Current) < 0.1 && x.Step != units.Step))
+                {
+                    this.ShowNotification(
+                           "Invalid current values - all three must be different!",
+                           Services.Models.NotificationSeverity.Error);
+                    return;
+                }
+                if (orderList.Any(x => Math.Abs(x.NetWeight - units.NetWeight) < 20 && x.Step != units.Step))
+                {
+                    this.ShowNotification(
+                           "Invalid weight values - all three must be different!",
+                           Services.Models.NotificationSeverity.Error);
+                    return;
+                }
                 ParameterCalculator.AddPoints(units.Current, units.NetWeight + units.LUTare + elevatorWeight);
                 this.Logger.Debug($"Current {units.Current} net weight {units.NetWeight} total weight {units.NetWeight + units.LUTare + elevatorWeight} ");
             }
@@ -839,6 +862,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.MeasureConst2 = Math.Round(ParameterCalculator.aTerm(), 4);
 
             this.Logger.Debug($"Weight parameters Const2 {this.MeasureConst2} Const1 {this.MeasureConst1} Const0 {this.MeasureConst0}");
+            this.isCalibrationOk = true;
+            this.saveCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task StopAsync()
