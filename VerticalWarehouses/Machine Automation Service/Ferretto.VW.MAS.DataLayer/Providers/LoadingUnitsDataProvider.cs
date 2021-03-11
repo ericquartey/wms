@@ -487,7 +487,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == id);
 
-                loadingUnit.GrossWeight = loadingUnitGrossWeight - elevatorWeight;
+                loadingUnit.GrossWeight = (loadingUnitGrossWeight >= elevatorWeight) ? loadingUnitGrossWeight - elevatorWeight : 0;
 
                 this.dataContext.SaveChanges();
             }
