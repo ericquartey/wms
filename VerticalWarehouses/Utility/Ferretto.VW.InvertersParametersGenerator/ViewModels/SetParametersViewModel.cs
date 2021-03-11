@@ -40,6 +40,8 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         public static readonly IList<short> parameterToIgnore = new ReadOnlyCollection<short>(new List<short> { 1202, 1203, 1204, 1206, 1352, 1399 });
 
+        public static readonly IList<short> parameterToIgnoreAGL = new ReadOnlyCollection<short>(new List<short> { 371, 376, 443, 531, 613, 616, 623, 631, 654, 781, 1389, 1503, 1510, 1511, 1520, 1534, 1542, 1543, 1550, 1551, 1552 });
+
         private readonly ConfigurationService configurationService;
 
         private readonly IParentActionChanged parentActionChanged;
@@ -386,6 +388,12 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                         continue;
                     }
 
+                    //skip current parameters
+                    if (inverterType == InverterType.Agl && parameterToIgnoreAGL.Any(s => s == code))
+                    {
+                        continue;
+                    }
+
                     var inverterVersionParameter = new ParameterInfo(code, desc, type, um, data.isReadonly);
 
                     parametersInfo.Add(inverterVersionParameter);
@@ -450,13 +458,13 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     }
                     else if (inverterType == InverterType.Agl)
                     {
-                        writeCode = GetANGWriteReadCode(parameter.Code).writeCode;
-                        readCode = GetANGWriteReadCode(parameter.Code).readCode;
+                        writeCode = GetAGLWriteReadCode(parameter.Code).writeCode;
+                        readCode = GetAGLWriteReadCode(parameter.Code).readCode;
                     }
                     else if (inverterType == InverterType.Acu)
                     {
-                        writeCode = GetANGWriteReadCode(parameter.Code).writeCode;
-                        readCode = GetANGWriteReadCode(parameter.Code).readCode;
+                        writeCode = GetACUWriteReadCode(parameter.Code).writeCode;
+                        readCode = GetACUWriteReadCode(parameter.Code).readCode;
                     }
 
                     var newPara = new InverterParameter
@@ -555,7 +563,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             return parameters;
         }
 
-        //these data were taken from an excel file of the inverter mapping provided by Bonfiglioli
         private static (short readCode, short writeCode) GetANGWriteReadCode(short code)
         {
             switch (code)
@@ -630,6 +637,139 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                 case 1395:
                 case 1396:
                 case 1397:
+                    return (1378, 1377);
+
+                case 1422:
+                    return (1421, 1420);
+
+                case 1429:
+                case 1430:
+                    return (1428, 1427);
+
+                default:
+                    return (0, 0);
+            }
+        }
+
+        private static (short readCode, short writeCode) GetACUWriteReadCode(short code)
+        {
+            switch (code)
+            {
+                case 1202:
+                case 1203:
+                case 1204:
+                case 1205:
+                case 1206:
+                case 1207:
+                case 1208:
+                case 1209:
+                case 1210:
+                case 1211:
+                case 1212:
+                case 1213:
+                case 1214:
+                case 1215:
+                case 1216:
+                case 1217:
+                case 1218:
+                case 1219:
+                    return (1201, 1200);
+
+                case 1247:
+                case 1248:
+                    return (1201, 1200);
+
+                case 1252:
+                case 1253:
+                    return (1251, 1250);
+
+                case 1260:
+                case 1261:
+                case 1262:
+                case 1263:
+                case 1264:
+                case 1265:
+                    return (1201, 1200);
+
+                case 1343:
+                case 1344:
+                case 1345:
+                case 1346:
+                case 1347:
+                case 1348:
+                case 1349:
+                case 1350:
+                case 1351:
+                case 1352:
+                    return (1342, 1341);
+
+                case 1362:
+                    return (1361, 1360);
+
+                case 1379:
+                case 1380:
+                case 1381:
+                case 1382:
+                case 1383:
+                case 1384:
+                case 1385:
+                case 1386:
+                case 1387:
+                case 1388:
+                case 1389:
+                case 1390:
+                case 1391:
+                case 1392:
+                case 1393:
+                case 1394:
+                case 1395:
+                case 1396:
+                case 1397:
+                    return (1378, 1377);
+
+                case 1422:
+                    return (1421, 1420);
+
+                case 1429:
+                case 1430:
+                    return (1428, 1427);
+
+                default:
+                    return (0, 0);
+            }
+        }
+
+        private static (short readCode, short writeCode) GetAGLWriteReadCode(short code)
+        {
+            switch (code)
+            {
+                case 1252:
+                case 1253:
+                    return (1251, 1250);
+
+                case 1343:
+                case 1344:
+                case 1345:
+                case 1346:
+                case 1347:
+                case 1348:
+                case 1349:
+                case 1350:
+                case 1351:
+                case 1352:
+                    return (1342, 1341);
+
+                case 1362:
+                    return (1361, 1360);
+
+                case 1379:
+                case 1380:
+                case 1381:
+                case 1382:
+                case 1388:
+                case 1389:
+                case 1390:
+                case 1391:
                     return (1378, 1377);
 
                 case 1422:
