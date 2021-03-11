@@ -177,7 +177,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.UpdateLoadingUnitLocation();
             }
 
-            if (this.machineData.MessageData.AxisMovement is Axis.Vertical)
+            if (this.machineData.MessageData.AxisMovement is Axis.Vertical
+                && this.stateData.StopRequestReason == StopRequestReason.NoReason
+                )
             {
                 this.PersistElevatorPosition(
                     this.machineData.MessageData.TargetBayPositionId,

@@ -296,6 +296,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.reasons;
             set => this.SetProperty(ref this.reasons, value);
         }
+        public bool IsBusyConfirmingOperation { get; private set; }
 
         public ICommand RequestItemPickCommand =>
             this.requestItemPickCommand
@@ -409,22 +410,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return this.Reasons?.Any() == true;
         }
 
-        public async Task CommandUserActionAsync(UserActionEventArgs e)
+        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
-            if (e is null)
+            if (userAction is null)
             {
                 return;
             }
 
-            switch (e.UserAction)
+            switch (userAction.UserAction)
             {
                 case UserAction.FilterItems:
-                    await this.ShowItemDetailsByBarcodeAsync(e);
+                    await this.ShowItemDetailsByBarcodeAsync(userAction);
 
                     break;
 
                 case UserAction.PickItem:
-                    await this.PickItemByBarcodeAsync(e);
+                    await this.PickItemByBarcodeAsync(userAction);
 
                     break;
             }
@@ -533,6 +534,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Appear = false;
             this.InputQuantity = 0;
             this.Reasons = null;
+            this.IsBusyConfirmingOperation = false;
 
             this.productsChangedToken =
               this.productsChangedToken

@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false, bool randomCells = false);
 
+        int FindTopCell(LoadingUnit loadingUnit);
+
         IEnumerable<Cell> GetAll();
 
         Cell GetById(int cellId);
@@ -27,6 +29,8 @@ namespace Ferretto.VW.MAS.DataLayer
         CellStatisticsSummary GetStatistics();
 
         bool IsCellToTest();
+
+        bool IsTopCellAvailable(WarehouseSide side);
 
         void Save(Cell cell);
 

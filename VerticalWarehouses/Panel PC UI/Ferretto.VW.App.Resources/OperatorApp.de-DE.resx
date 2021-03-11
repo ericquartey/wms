@@ -1644,4 +1644,13 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>Dies ist der letzte Vorgang in dieser Schublade, bei dem der Artikel platziert wurde, und drücken Sie OK</value>
   </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Netzwerkkarten</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>IP zusätzlich</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>SubnetMask zusätzlich</value>
+  </data>
 </root>
