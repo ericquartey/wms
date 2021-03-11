@@ -398,6 +398,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.IsWaitingForReason && userAction.UserAction == UserAction.Notes)
             {
                 this.ReasonNotes = userAction.Code;
+                await this.ExecuteOperationAsync();
             }
         }
 
