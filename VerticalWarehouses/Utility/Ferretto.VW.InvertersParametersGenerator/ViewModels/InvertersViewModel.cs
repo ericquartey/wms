@@ -24,7 +24,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
 
         private string selectedFileConfigurationName;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -35,7 +35,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.LoadConfiguration();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
@@ -63,7 +63,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             set => this.SetProperty(ref this.selectedFileConfigurationName, value);
         }
 
-        #endregion
+        #endregion Properties
 
         #region Methods
 
@@ -98,7 +98,7 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
                     inverterParametersData.Add(new InverterParametersDataInfo(bay.Inverter.Type, (byte)bay.Inverter.Index, this.GetShortInverterDescription(bay.Inverter.IpAddress, bay.Inverter.TcpPort)));
                 }
 
-                if (!(bay.Shutter?.Inverter?.Parameters is null))
+                if (!(bay.Shutter?.Inverter is null))
                 {
                     inverterParametersData.Add(new InverterParametersDataInfo(bay.Shutter.Inverter.Type, (byte)bay.Shutter.Inverter.Index, this.GetShortInverterDescription(bay.Shutter.Inverter.IpAddress, bay.Shutter.Inverter.TcpPort)));
                 }
@@ -147,6 +147,6 @@ namespace Ferretto.VW.InvertersParametersGenerator.ViewModels
             this.parentActionChanged.RaiseCanExecuteChanged();
         }
 
-        #endregion
+        #endregion Methods
     }
 }
