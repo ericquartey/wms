@@ -30,6 +30,8 @@
 
             public const string NAVIGATION = "AboutMenuNavigationViewModel";
 
+            public const string NETWORKADAPTERS = "NetworkAdaptersViewModel";
+
             public const string STATISTICS = "StatisticsViewModel";
 
             public const string USER = "UserViewModel";

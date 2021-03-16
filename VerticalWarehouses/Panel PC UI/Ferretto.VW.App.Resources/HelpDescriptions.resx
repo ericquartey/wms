@@ -1114,7 +1114,7 @@
     <comment>Note text</comment>
   </data>
   <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
-    <value>The procedure allows to call the selected drawer in the bay on which the operator is working. The drawers with the red status are not accessible to the user who is working as they are blocked by the WMS or associated with a particular user.</value>
+    <value>The procedure allows you to call the selected drawer in the bay on which the operator is working.</value>
     <comment>Procedure description</comment>
   </data>
   <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">

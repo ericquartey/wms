@@ -27,13 +27,12 @@ namespace Ferretto.VW.App.Services
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
+        private readonly IMachineWmsStatusWebService machineWmsStatusWebService;
+
         private readonly IMachineMissionsWebService missionWebService;
 
         private readonly int pollingDelay = 200;
 
-        /// <summary>
-        /// this semapfore is used to serialize commands to laser and alpha bar, because the devices seem to conflict with each other
-        /// </summary>
         private readonly SemaphoreSlim syncObject = new SemaphoreSlim(1, 1);
 
         private bool isEnabled;
@@ -54,12 +53,15 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             ILaserPointerDriver laserPointerDriver,
             IBayManager bayManager,
-            IMachineMissionsWebService missionWebService)
+            IMachineMissionsWebService missionWebService,
+            IMachineWmsStatusWebService machineWmsStatusWebService
+            )
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.laserPointerDriver = laserPointerDriver ?? throw new ArgumentNullException(nameof(laserPointerDriver));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
+            this.machineWmsStatusWebService = machineWmsStatusWebService ?? throw new ArgumentNullException(nameof(machineWmsStatusWebService));
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
@@ -82,8 +84,6 @@ namespace Ferretto.VW.App.Services
                 }
             }
         }
-
-        public SemaphoreSlim SyncObject => this.syncObject;
 
         #endregion
 
@@ -194,8 +194,12 @@ namespace Ferretto.VW.App.Services
 
                     if (this.isEnabled)
                     {
-                        this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
-                        await this.laserPointerDriver.EnabledAsync(false, false);
+                        var socketLink = await this.machineWmsStatusWebService.SocketLinkIsEnabledAsync();
+                        if (!socketLink)
+                        {
+                            this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
+                            await this.laserPointerDriver.EnabledAsync(false, false);
+                        }
                     }
                     return;
                 }

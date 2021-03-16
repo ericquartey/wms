@@ -11,5 +11,7 @@
         ItemInventory,
 
         ListSearch,
+
+        NoteDescription,
     }
 }

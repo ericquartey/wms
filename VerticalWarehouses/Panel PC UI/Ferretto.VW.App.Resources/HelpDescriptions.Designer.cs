@@ -79,7 +79,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltBurnishingActualPosition.
+        ///   Looks up a localized string similar to Reports the current position of the axis..
         /// </summary>
         public static string BeltBurnishingActualPosition {
             get {
@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltBurnishingCompletedCycles.
+        ///   Looks up a localized string similar to Displays the number of cycles currently completed..
         /// </summary>
         public static string BeltBurnishingCompletedCycles {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltBurnishingDownLimit.
+        ///   Looks up a localized string similar to Indicates the value of the lower quota required by the test. Set the value only if the field is editable..
         /// </summary>
         public static string BeltBurnishingDownLimit {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltBurnishingFunctionDescription.
+        ///   Looks up a localized string similar to The procedure allows to carry out a series of cycles of moving the vertical axis between two points indicated in the input data. The cycle, when started, continues either until the required cycles are reached or the end key is pressed..
         /// </summary>
         public static string BeltBurnishingFunctionDescription {
             get {
@@ -115,7 +115,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltBurnishingRequiredCycles.
+        ///   Looks up a localized string similar to Set the number of cycles required..
         /// </summary>
         public static string BeltBurnishingRequiredCycles {
             get {
@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltBurnishingStartCycle.
+        ///   Looks up a localized string similar to Start the test. The test continues until the required number of cycles is reached or until the stop button is pressed..
         /// </summary>
         public static string BeltBurnishingStartCycle {
             get {
@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltBurnishingStopCycle.
+        ///   Looks up a localized string similar to Stop the test. The cycle stops at the end of the current movement. Pressing the cycle start button resumes test execution until completion..
         /// </summary>
         public static string BeltBurnishingStopCycle {
             get {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BeltBurnishingUpLimit.
+        ///   Looks up a localized string similar to Indicates the value of the upper quota required by the test. Set the value only if the field is editable..
         /// </summary>
         public static string BeltBurnishingUpLimit {
             get {
@@ -169,7 +169,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRAdjust.
+        ///   Looks up a localized string similar to Corrects the current height of the bay-current position by the value indicated in the appropriate field..
         /// </summary>
         public static string HelpBCTRAdjust {
             get {
@@ -178,7 +178,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRCorrectionValue.
+        ///   Looks up a localized string similar to Cumulative value of the correction that will be applied to the height of the selected bay-position..
         /// </summary>
         public static string HelpBCTRCorrectionValue {
             get {
@@ -187,7 +187,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRDescription.
+        ///   Looks up a localized string similar to The procedure allows you to check and possibly correct the height of the various possible positions on the various bays. The procedure is suitable for the type of bay indicated in the document that describes the machine configuration. In the case of several positions on the same bay, the procedure allows multiple checks..
         /// </summary>
         public static string HelpBCTRDescription {
             get {
@@ -196,7 +196,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRMoveToPosition.
+        ///   Looks up a localized string similar to Place the vertical axis at the selected bay-location..
         /// </summary>
         public static string HelpBCTRMoveToPosition {
             get {
@@ -205,7 +205,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRNextPosition.
+        ///   Looks up a localized string similar to If enabled, the button allows you to choose the next position in the currently selected bay. The procedure must be repeated for the new position..
         /// </summary>
         public static string HelpBCTRNextPosition {
             get {
@@ -214,7 +214,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRPositionHeight.
+        ///   Looks up a localized string similar to Displays the elevation of the selected position within the bay under control..
         /// </summary>
         public static string HelpBCTRPositionHeight {
             get {
@@ -223,7 +223,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRSelectedBay.
+        ///   Looks up a localized string similar to Select the bay whose odds you want to check..
         /// </summary>
         public static string HelpBCTRSelectedBay {
             get {
@@ -232,7 +232,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRSelectedPosition.
+        ///   Looks up a localized string similar to Indicates the position inside the selected bay whose heights you want to check. It is set automatically..
         /// </summary>
         public static string HelpBCTRSelectedPosition {
             get {
@@ -241,7 +241,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRStepMeno.
+        ///   Looks up a localized string similar to Decreases the current coordinate of the axis by the value indicated by the step..
         /// </summary>
         public static string HelpBCTRStepMeno {
             get {
@@ -250,7 +250,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRStepPiu.
+        ///   Looks up a localized string similar to Increases the current coordinate of the axis by the value indicated by the step..
         /// </summary>
         public static string HelpBCTRStepPiu {
             get {
@@ -259,7 +259,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpBCTRStepValue.
+        ///   Looks up a localized string similar to Step value applied to the current coordinate of the axis each time the movement buttons are pressed..
         /// </summary>
         public static string HelpBCTRStepValue {
             get {
@@ -268,7 +268,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVApplyCorrection.
+        ///   Looks up a localized string similar to Step value applied to the current coordinate of the axis each time the movement buttons are pressed..
         /// </summary>
         public static string HelpCCVApplyCorrection {
             get {
@@ -277,7 +277,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVAttualPosition.
+        ///   Looks up a localized string similar to Current value of the axis coordinate..
         /// </summary>
         public static string HelpCCVAttualPosition {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVCellPosition.
+        ///   Looks up a localized string similar to Indicates the dimension of the currently selected cell..
         /// </summary>
         public static string HelpCCVCellPosition {
             get {
@@ -295,7 +295,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVCorrectionValue.
+        ///   Looks up a localized string similar to Total value of the correction to be applied..
         /// </summary>
         public static string HelpCCVCorrectionValue {
             get {
@@ -304,7 +304,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVDescription.
+        ///   Looks up a localized string similar to The procedure allows you to check and possibly correct the dimension of the selected cell. The correction is applied to the selected cell only..
         /// </summary>
         public static string HelpCCVDescription {
             get {
@@ -313,7 +313,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVSelectedCell.
+        ///   Looks up a localized string similar to Set the cell whose dimension you want to check..
         /// </summary>
         public static string HelpCCVSelectedCell {
             get {
@@ -322,7 +322,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVSetPosition.
+        ///   Looks up a localized string similar to Place the vertical axis at the selected cell..
         /// </summary>
         public static string HelpCCVSetPosition {
             get {
@@ -331,7 +331,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVStepMeno.
+        ///   Looks up a localized string similar to Decreases the current coordinate of the axis by the value indicated by the step..
         /// </summary>
         public static string HelpCCVStepMeno {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVStepPiu.
+        ///   Looks up a localized string similar to Increases the current coordinate of the axis by the value indicated by the step..
         /// </summary>
         public static string HelpCCVStepPiu {
             get {
@@ -349,7 +349,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCCVStepValue.
+        ///   Looks up a localized string similar to Value of the change in height during the adjustment phase..
         /// </summary>
         public static string HelpCCVStepValue {
             get {
@@ -358,7 +358,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsButtonOther.
+        ///   Looks up a localized string similar to The button allows access to the storage space compaction procedure..
         /// </summary>
         public static string HelpCellsStatisticsButtonOther {
             get {
@@ -367,7 +367,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsCellsAnt.
+        ///   Looks up a localized string similar to Total number of cells present on the front of the machine..
         /// </summary>
         public static string HelpCellsStatisticsCellsAnt {
             get {
@@ -376,7 +376,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsCellsPost.
+        ///   Looks up a localized string similar to Total number of cells present on the rear side of the machine..
         /// </summary>
         public static string HelpCellsStatisticsCellsPost {
             get {
@@ -385,7 +385,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsCellsTot.
+        ///   Looks up a localized string similar to Total number of cells present in the machine..
         /// </summary>
         public static string HelpCellsStatisticsCellsTot {
             get {
@@ -394,7 +394,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsDescription.
+        ///   Looks up a localized string similar to The procedure shows the statistical data relating to the cells present inside the machine. In addition to the global data relating to the front and rear side, the data relating to the number of cells in the various states provided for both the front and rear sides are displayed..
         /// </summary>
         public static string HelpCellsStatisticsDescription {
             get {
@@ -403,7 +403,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsGridPercTotAnt.
+        ///   Looks up a localized string similar to Indicates the percentage of cells that have the status indicated in the first column of the grid referring to the front side..
         /// </summary>
         public static string HelpCellsStatisticsGridPercTotAnt {
             get {
@@ -412,7 +412,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsGridPercTotPost.
+        ///   Looks up a localized string similar to Indicates the percentage of cells that have the status indicated in the first column of the grid referring to the back side..
         /// </summary>
         public static string HelpCellsStatisticsGridPercTotPost {
             get {
@@ -421,7 +421,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsGridStatus.
+        ///   Looks up a localized string similar to Reports the status of the cell to which the row data refers..
         /// </summary>
         public static string HelpCellsStatisticsGridStatus {
             get {
@@ -430,7 +430,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsGridTotAnt.
+        ///   Looks up a localized string similar to Shows the total of the cells that have the status indicated in the first column of the grid referring to the front side..
         /// </summary>
         public static string HelpCellsStatisticsGridTotAnt {
             get {
@@ -439,7 +439,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsGridTotPost.
+        ///   Looks up a localized string similar to Shows the total of the cells that have the status indicated in the first column of the grid referring to the front side..
         /// </summary>
         public static string HelpCellsStatisticsGridTotPost {
             get {
@@ -448,7 +448,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCellsStatisticsTotalOccupiedCells.
+        ///   Looks up a localized string similar to Shows the percentage of occupied cells referred to the total of cells present..
         /// </summary>
         public static string HelpCellsStatisticsTotalOccupiedCells {
             get {
@@ -457,7 +457,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonConfirm.
+        ///   Looks up a localized string similar to Confirm that the current operation has been completed..
         /// </summary>
         public static string HelpCommonConfirm {
             get {
@@ -466,7 +466,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonDetail.
+        ///   Looks up a localized string similar to The button allows you to enter the page that shows further details relating to the operation in progress..
         /// </summary>
         public static string HelpCommonDetail {
             get {
@@ -475,7 +475,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonDown.
+        ///   Looks up a localized string similar to Move the pointer to the next item. Double-pressing moves to the end of the list..
         /// </summary>
         public static string HelpCommonDown {
             get {
@@ -484,7 +484,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonGridColumnHeader.
+        ///   Looks up a localized string similar to Column description of the table..
         /// </summary>
         public static string HelpCommonGridColumnHeader {
             get {
@@ -493,7 +493,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonItem.
+        ///   Looks up a localized string similar to Indicates the code of the item involved in the operation in progress..
         /// </summary>
         public static string HelpCommonItem {
             get {
@@ -502,7 +502,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonItemDescription.
+        ///   Looks up a localized string similar to The description of the item that is the subject of the current operation is displayed..
         /// </summary>
         public static string HelpCommonItemDescription {
             get {
@@ -511,7 +511,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonList.
+        ///   Looks up a localized string similar to The code of the list associated with the procedure in progress is indicated..
         /// </summary>
         public static string HelpCommonList {
             get {
@@ -520,7 +520,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonListDescription.
+        ///   Looks up a localized string similar to Shows the description of the list associated with the operation in progress..
         /// </summary>
         public static string HelpCommonListDescription {
             get {
@@ -529,7 +529,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonListType.
+        ///   Looks up a localized string similar to Indicates the type of list selected according to the following code: P: Pick V: put I: Inventory..
         /// </summary>
         public static string HelpCommonListType {
             get {
@@ -538,7 +538,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonNote.
+        ///   Looks up a localized string similar to Any notes associated with the operation to be performed are shown to the operator..
         /// </summary>
         public static string HelpCommonNote {
             get {
@@ -547,7 +547,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonPosition.
+        ///   Looks up a localized string similar to The field indicates the position in which the compartment object of the operation in progress is located, mapped according to the coding adopted..
         /// </summary>
         public static string HelpCommonPosition {
             get {
@@ -556,7 +556,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCommonUp.
+        ///   Looks up a localized string similar to Move the pointer to the previous item. Double pressing moves to the beginning of the list..
         /// </summary>
         public static string HelpCommonUp {
             get {
@@ -565,7 +565,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCSCApplyCorrection.
+        ///   Looks up a localized string similar to Apply the correction to the selected cell group..
         /// </summary>
         public static string HelpCSCApplyCorrection {
             get {
@@ -574,7 +574,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCSCCorrection.
+        ///   Looks up a localized string similar to Set the desired value of the correction that will be applied to the selected cell group..
         /// </summary>
         public static string HelpCSCCorrection {
             get {
@@ -583,7 +583,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCSCDescription.
+        ///   Looks up a localized string similar to The procedure allows you to modify a block of cells between the first and last selected. The selected side is automatically indicated based on the starting cell number depending on whether it is odd or even..
         /// </summary>
         public static string HelpCSCDescription {
             get {
@@ -592,7 +592,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCSCFinalCell.
+        ///   Looks up a localized string similar to Set the number of the final cell of the block..
         /// </summary>
         public static string HelpCSCFinalCell {
             get {
@@ -601,7 +601,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCSCInitialCell.
+        ///   Looks up a localized string similar to Set the starting cell number of the block..
         /// </summary>
         public static string HelpCSCInitialCell {
             get {
@@ -610,7 +610,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpCSCSelectedSide.
+        ///   Looks up a localized string similar to Shows the side you are editing on. The side is automatically determined based on the selected starting cell number if even or odd..
         /// </summary>
         public static string HelpCSCSelectedSide {
             get {
@@ -619,7 +619,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDetailListsInWaitDescription.
+        ///   Looks up a localized string similar to The page shows the detail of the selected list. Within all the displayed lines it is possible to execute only those which are highlighted because the article is contained in the machine on which you are working. The &quot;Run list&quot; button is active only if there is at least one executable line in the machine you are working on..
         /// </summary>
         public static string HelpDetailListsInWaitDescription {
             get {
@@ -628,7 +628,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDetailListsInWaitGridItem.
+        ///   Looks up a localized string similar to Indicate the article code..
         /// </summary>
         public static string HelpDetailListsInWaitGridItem {
             get {
@@ -637,7 +637,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDetailListsInWaitGridItemDescription.
+        ///   Looks up a localized string similar to Report the description of the item..
         /// </summary>
         public static string HelpDetailListsInWaitGridItemDescription {
             get {
@@ -646,7 +646,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDetailListsInWaitGridQuantity.
+        ///   Looks up a localized string similar to Indicates the required quantity of that item..
         /// </summary>
         public static string HelpDetailListsInWaitGridQuantity {
             get {
@@ -655,7 +655,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDetailListsInWaitGridRow.
+        ///   Looks up a localized string similar to Shows the row number of the displayed list..
         /// </summary>
         public static string HelpDetailListsInWaitGridRow {
             get {
@@ -664,7 +664,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDetailListsInWaitListExecute.
+        ///   Looks up a localized string similar to Allows the execution of the highlighted list lines. The button is enabled only if at least one row of the selected list can be executed on the machine you are working on..
         /// </summary>
         public static string HelpDetailListsInWaitListExecute {
             get {
@@ -673,7 +673,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDetailListsInWaitMachine.
+        ///   Looks up a localized string similar to The column shows the machine or machines on which the article is currently present..
         /// </summary>
         public static string HelpDetailListsInWaitMachine {
             get {
@@ -682,7 +682,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTBay.
+        ///   Looks up a localized string similar to Enter the number of the bay on which you want to perform the test..
         /// </summary>
         public static string HelpDLUTBay {
             get {
@@ -691,7 +691,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTChain.
+        ///   Looks up a localized string similar to It reports the current position of the chain axis as a value relative to the starting height..
         /// </summary>
         public static string HelpDLUTChain {
             get {
@@ -700,7 +700,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTCycleCompleted.
+        ///   Looks up a localized string similar to Reports the number of complete cycles currently performed..
         /// </summary>
         public static string HelpDLUTCycleCompleted {
             get {
@@ -709,7 +709,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTCyclesRequired.
+        ///   Looks up a localized string similar to Enter the number of test cycles required..
         /// </summary>
         public static string HelpDLUTCyclesRequired {
             get {
@@ -718,7 +718,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTDescription.
+        ///   Looks up a localized string similar to The procedure allows you to carry out a series of boarding and disembarking tests of a drawer using the bay selected in the appropriate input fields. For the test it is possible to vary the acceleration, deceleration and speed feed rate according to what is indicated in the appropriate field. The test continues until the required number of cycles is reached or until the stop button is pressed..
         /// </summary>
         public static string HelpDLUTDescription {
             get {
@@ -727,7 +727,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTFeedRate.
+        ///   Looks up a localized string similar to Enter the feed rate required for the test. The reduction also affects the acceleration and deceleration values..
         /// </summary>
         public static string HelpDLUTFeedRate {
             get {
@@ -736,7 +736,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTGotoPosition.
+        ///   Looks up a localized string similar to Moves the vertical axis to the position inside the selected bay. The fee takes into account the boarding offset..
         /// </summary>
         public static string HelpDLUTGotoPosition {
             get {
@@ -745,7 +745,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTPosition.
+        ///   Looks up a localized string similar to Enter the position inside the bay on which you want to perform the test..
         /// </summary>
         public static string HelpDLUTPosition {
             get {
@@ -754,7 +754,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTStart.
+        ///   Looks up a localized string similar to Start the test procedure. The button is active only after the vertical axis is at the required position in the bay..
         /// </summary>
         public static string HelpDLUTStart {
             get {
@@ -763,7 +763,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDLUTStop.
+        ///   Looks up a localized string similar to Stop the test cycle..
         /// </summary>
         public static string HelpDLUTStop {
             get {
@@ -772,7 +772,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityInventoryDescription.
+        ///   Looks up a localized string similar to The page presents the main data relating to the inventory operation to be carried out on the various items allocated in the drawer in the bay. The procedure, once the compartment containing the requested item has been indicated, waits for the operator to insert the quantity of pieces currently in stock..
         /// </summary>
         public static string HelpDrawerActivityInventoryDescription {
             get {
@@ -781,7 +781,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityInventoryDetailDescription.
+        ///   Looks up a localized string similar to The page provides the operator with further details on the inventory operation currently in progress..
         /// </summary>
         public static string HelpDrawerActivityInventoryDetailDescription {
             get {
@@ -790,7 +790,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityInventoryDetailLotto.
+        ///   Looks up a localized string similar to Reports the production batch of the item in the inventory phase..
         /// </summary>
         public static string HelpDrawerActivityInventoryDetailLotto {
             get {
@@ -799,7 +799,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityInventoryDetailMaterialStatus.
+        ///   Looks up a localized string similar to Indicates the material status of the item being inventory..
         /// </summary>
         public static string HelpDrawerActivityInventoryDetailMaterialStatus {
             get {
@@ -808,7 +808,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityInventoryDetailPackaging.
+        ///   Looks up a localized string similar to Report the type of packaging used for the item being inventory..
         /// </summary>
         public static string HelpDrawerActivityInventoryDetailPackaging {
             get {
@@ -817,7 +817,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityInventoryDetailProductionDate.
+        ///   Looks up a localized string similar to Reports the production date of the item currently in inventory..
         /// </summary>
         public static string HelpDrawerActivityInventoryDetailProductionDate {
             get {
@@ -826,7 +826,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityInventoryQtyStored.
+        ///   Looks up a localized string similar to The field shows the quantity of pieces currently in stock counted by the operator..
         /// </summary>
         public static string HelpDrawerActivityInventoryQtyStored {
             get {
@@ -835,7 +835,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingDescription.
+        ///   Looks up a localized string similar to The procedure provides all the detailed information relating to the withdrawal operation scheduled on the drawer present in the bay where the user operates. The drawing, if present, shows the division of the drawer and the highlighted area indicates the compartment on which to operate. If present, the image of the item being handled is also shown..
         /// </summary>
         public static string HelpDrawerActivityPickingDescription {
             get {
@@ -844,7 +844,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingDetailBoxType.
+        ///   Looks up a localized string similar to Provides indication of the type of packaging of the item being picked..
         /// </summary>
         public static string HelpDrawerActivityPickingDetailBoxType {
             get {
@@ -853,7 +853,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingDetailDescription.
+        ///   Looks up a localized string similar to The window shows a series of additional information to those present in the picking window. Detailed information is displayed both for the item being picked and for any associated packing list. If present, the article image is also displayed..
         /// </summary>
         public static string HelpDrawerActivityPickingDetailDescription {
             get {
@@ -862,7 +862,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingDetailListRow.
+        ///   Looks up a localized string similar to Shows the row of the list to which the withdrawal operation in progress refers..
         /// </summary>
         public static string HelpDrawerActivityPickingDetailListRow {
             get {
@@ -871,7 +871,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingDetailLotto.
+        ///   Looks up a localized string similar to If present, the production lot of the item being picked is indicated..
         /// </summary>
         public static string HelpDrawerActivityPickingDetailLotto {
             get {
@@ -880,7 +880,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingMaterialStatus.
+        ///   Looks up a localized string similar to If required, the state of the material subject to withdrawal is indicated..
         /// </summary>
         public static string HelpDrawerActivityPickingDetailMaterialStatus {
             get {
@@ -889,7 +889,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingDetailPackListCode.
+        ///   Looks up a localized string similar to If applicable, it indicates the packing list where information relating to the various items being picked is collected..
         /// </summary>
         public static string HelpDrawerActivityPickingDetailPackListCode {
             get {
@@ -898,7 +898,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingDetailPackListDescription.
+        ///   Looks up a localized string similar to If present, it indicates the description of the packing list that unites the materials being picked..
         /// </summary>
         public static string HelpDrawerActivityPickingDetailPackListDescription {
             get {
@@ -907,7 +907,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingDetailProductionDate.
+        ///   Looks up a localized string similar to The production date of the item being picked is indicated..
         /// </summary>
         public static string HelpDrawerActivityPickingDetailProductionDate {
             get {
@@ -916,7 +916,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingDetailQtyRequest.
+        ///   Looks up a localized string similar to The quantity of the item to be removed from the highlighted compartment is displayed..
         /// </summary>
         public static string HelpDrawerActivityPickingDetailQtyRequest {
             get {
@@ -925,7 +925,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingQtyPicked.
+        ///   Looks up a localized string similar to The user can change the quantity actually withdrawn in the event that the stock is not sufficient. Under normal conditions the field is already filled with the required quantity..
         /// </summary>
         public static string HelpDrawerActivityPickingQtyPicked {
             get {
@@ -934,7 +934,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityPickingQtyRequest.
+        ///   Looks up a localized string similar to The quantity of the item to be removed from the highlighted compartment is displayed..
         /// </summary>
         public static string HelpDrawerActivityPickingQtyRequest {
             get {
@@ -943,7 +943,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingDescription.
+        ///   Looks up a localized string similar to The procedure makes it possible to refill the compartment that contains the item with the same characteristics as the one in payment. The procedure allows to update the maximum capacity of the compartment if the recorded value is wrong..
         /// </summary>
         public static string HelpDrawerActivityRefillingDescription {
             get {
@@ -952,7 +952,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingDetailDescription.
+        ///   Looks up a localized string similar to The page shows the details of the deposit operation currently in progress. More details about the operations to be performed are provided on the basic page..
         /// </summary>
         public static string HelpDrawerActivityRefillingDetailDescription {
             get {
@@ -961,7 +961,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingDetailListRow.
+        ///   Looks up a localized string similar to Indicates the row of the list involved in the operation in progress..
         /// </summary>
         public static string HelpDrawerActivityRefillingDetailListRow {
             get {
@@ -970,7 +970,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingDetailLotto.
+        ///   Looks up a localized string similar to Indicates the row of the list involved in the operation in progress..
         /// </summary>
         public static string HelpDrawerActivityRefillingDetailLotto {
             get {
@@ -979,7 +979,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingDetailMaterialStatus.
+        ///   Looks up a localized string similar to Shows the material status of the item being paid..
         /// </summary>
         public static string HelpDrawerActivityRefillingDetailMaterialStatus {
             get {
@@ -988,7 +988,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingDetailPackaging.
+        ///   Looks up a localized string similar to Indicates the type of packaging of the item being paid..
         /// </summary>
         public static string HelpDrawerActivityRefillingDetailPackaging {
             get {
@@ -997,7 +997,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingDetailProductionDate.
+        ///   Looks up a localized string similar to Reports from the item&apos;s production date..
         /// </summary>
         public static string HelpDrawerActivityRefillingDetailProductionDate {
             get {
@@ -1006,7 +1006,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingDetailQtyToRefill.
+        ///   Looks up a localized string similar to Amount to be poured into the indicated compartment..
         /// </summary>
         public static string HelpDrawerActivityRefillingDetailQtyToRefill {
             get {
@@ -1015,7 +1015,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingQtyRefilled.
+        ///   Looks up a localized string similar to Allows you to set the amount actually poured into the selected compartment..
         /// </summary>
         public static string HelpDrawerActivityRefillingQtyRefilled {
             get {
@@ -1024,7 +1024,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingQtyToRefill.
+        ///   Looks up a localized string similar to Amount to pour into the selected compartment..
         /// </summary>
         public static string HelpDrawerActivityRefillingQtyToRefill {
             get {
@@ -1033,7 +1033,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerActivityRefillingUpdateMaxQty.
+        ///   Looks up a localized string similar to Opens the page for managing the update of the maximum capacity of the compartment..
         /// </summary>
         public static string HelpDrawerActivityRefillingUpdateMaxQty {
             get {
@@ -1042,7 +1042,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingCompactFront.
+        ///   Looks up a localized string similar to Activates the compaction procedure for the front side of the machine. The button is active if it is possible to recover the required space..
         /// </summary>
         public static string HelpDrawerCompactingCompactFront {
             get {
@@ -1051,7 +1051,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingCompactRear.
+        ///   Looks up a localized string similar to Activates the compaction procedure for the rear side of the machine. The button is active if it is possible to recover the required space..
         /// </summary>
         public static string HelpDrawerCompactingCompactRear {
             get {
@@ -1060,7 +1060,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDescription.
+        ///   Looks up a localized string similar to Activates the compaction procedure for the rear side of the machine. The button is active if it is possible to recover the required space..
         /// </summary>
         public static string HelpDrawerCompactingDescription {
             get {
@@ -1069,7 +1069,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailCurrentStep.
+        ///   Looks up a localized string similar to It reports the current phase of the handling cycle of the various drawers..
         /// </summary>
         public static string HelpDrawerCompactingDetailCurrentStep {
             get {
@@ -1078,7 +1078,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailDescription.
+        ///   Looks up a localized string similar to The page shows the progress of the compaction procedure. The drawer being moved and from which cell it is withdrawn and to which cell it is destined is indicated. The progress of the procedure is also shown with an indication of the fragments and the space to be recovered in addition to the space already recovered..
         /// </summary>
         public static string HelpDrawerCompactingDetailDescription {
             get {
@@ -1087,7 +1087,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailDestinationCell.
+        ///   Looks up a localized string similar to Indicates the cell number where the drawer will be moved during handling..
         /// </summary>
         public static string HelpDrawerCompactingDetailDestinationCell {
             get {
@@ -1096,7 +1096,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailDrawer.
+        ///   Looks up a localized string similar to Indicates the code of the drawer currently being moved..
         /// </summary>
         public static string HelpDrawerCompactingDetailDrawer {
             get {
@@ -1105,7 +1105,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailFragmentRemaining.
+        ///   Looks up a localized string similar to Indicates the number of fragments still to be packed..
         /// </summary>
         public static string HelpDrawerCompactingDetailFragmentRemaining {
             get {
@@ -1114,7 +1114,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailOrizzontalPosition.
+        ///   Looks up a localized string similar to Indicates the current position of the horizontal axis..
         /// </summary>
         public static string HelpDrawerCompactingDetailOrizzontalPosition {
             get {
@@ -1123,7 +1123,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailRecoveredSpace.
+        ///   Looks up a localized string similar to Indicates the total space currently reclaimed..
         /// </summary>
         public static string HelpDrawerCompactingDetailRecoveredSpace {
             get {
@@ -1132,7 +1132,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailSourceCell.
+        ///   Looks up a localized string similar to Indicates the source cell where the drawer being handled was stored..
         /// </summary>
         public static string HelpDrawerCompactingDetailSourceCell {
             get {
@@ -1141,7 +1141,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailSpaceToRecover.
+        ///   Looks up a localized string similar to Reports the space required to be recovered after which the procedure ends..
         /// </summary>
         public static string HelpDrawerCompactingDetailSpaceToRecover {
             get {
@@ -1150,7 +1150,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingDetailVerticalPosition.
+        ///   Looks up a localized string similar to Shows the current position of the vertical axis..
         /// </summary>
         public static string HelpDrawerCompactingDetailVerticalPosition {
             get {
@@ -1159,7 +1159,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingFragment.
+        ///   Looks up a localized string similar to Indicates the number of lost fragments present on the current side..
         /// </summary>
         public static string HelpDrawerCompactingFragment {
             get {
@@ -1168,7 +1168,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingSide.
+        ///   Looks up a localized string similar to Indicates the side of the machine to which the data provided refers..
         /// </summary>
         public static string HelpDrawerCompactingSide {
             get {
@@ -1177,7 +1177,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingSpaceRecoverable.
+        ///   Looks up a localized string similar to Report the maximum space that can be recovered on the current side..
         /// </summary>
         public static string HelpDrawerCompactingSpaceRecoverable {
             get {
@@ -1186,7 +1186,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerCompactingSpaceToRecover.
+        ///   Looks up a localized string similar to Space to recover. By default it is set to the maximum value of recoverable space..
         /// </summary>
         public static string HelpDrawerCompactingSpaceToRecover {
             get {
@@ -1195,7 +1195,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerSpaceSaturationDescription.
+        ///   Looks up a localized string similar to Space to recover. By default it is set to the maximum value of recoverable space..
         /// </summary>
         public static string HelpDrawerSpaceSaturationDescription {
             get {
@@ -1204,7 +1204,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerSpaceSaturationDimension.
+        ///   Looks up a localized string similar to Shows the size of the drawers stored inside the machine..
         /// </summary>
         public static string HelpDrawerSpaceSaturationDimension {
             get {
@@ -1213,7 +1213,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerSpaceSaturationGridCompartments.
+        ///   Looks up a localized string similar to Indicates the number of mapped compartments, present inside the drawer regardless of their status..
         /// </summary>
         public static string HelpDrawerSpaceSaturationGridCompartments {
             get {
@@ -1222,7 +1222,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerSpaceSaturationGridDrawer.
+        ///   Looks up a localized string similar to Indicates the drawer number..
         /// </summary>
         public static string HelpDrawerSpaceSaturationGridDrawer {
             get {
@@ -1231,7 +1231,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerSpaceSaturationGridMissions.
+        ///   Looks up a localized string similar to Indicates the number of missions the drawer has been subject to..
         /// </summary>
         public static string HelpDrawerSpaceSaturationGridMissions {
             get {
@@ -1240,7 +1240,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerSpaceSaturationMachineFilling.
+        ///   Looks up a localized string similar to Indicates, in both graphic and numerical form, the total filling degree of the machine..
         /// </summary>
         public static string HelpDrawerSpaceSaturationMachineFilling {
             get {
@@ -1249,7 +1249,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerSpaceSaturationTotalDrawer.
+        ///   Looks up a localized string similar to Reports the total number of drawers allocated in the machine..
         /// </summary>
         public static string HelpDrawerSpaceSaturationTotalDrawer {
             get {
@@ -1258,7 +1258,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerSpaceSaturationWeightAnalisys.
+        ///   Looks up a localized string similar to Allows access to the statistical analysis procedure relating to the weight allocated in the various drawers..
         /// </summary>
         public static string HelpDrawerSpaceSaturationWeightAnalisys {
             get {
@@ -1267,7 +1267,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWaitDescription.
+        ///   Looks up a localized string similar to The page indicates that the system has completed the operations planned on the last drawer arrived in the bay. It is awaiting the arrival of the next drawer which will cause the opening of the page dedicated to the planned operations..
         /// </summary>
         public static string HelpDrawerWaitDescription {
             get {
@@ -1276,7 +1276,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWaitNote.
+        ///   Looks up a localized string similar to The note reports the current situation of the system..
         /// </summary>
         public static string HelpDrawerWaitNote {
             get {
@@ -1285,7 +1285,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWaitScheduledOperations.
+        ///   Looks up a localized string similar to The field reports the number of operations currently scheduled towards the bay on which the operator works..
         /// </summary>
         public static string HelpDrawerWaitScheduledOperations {
             get {
@@ -1294,7 +1294,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationDescription.
+        ///   Looks up a localized string similar to The procedure provides data on the weight allocated in the various drawers and, globally, inside the machine. For each drawer, further information is provided, including the current height, the maximum weight that can be loaded for each drawer, the tare, the current total weight, as well as the percentage of the current weight compared to the maximum provided both in graphical and numerical form. A global indication valid for the whole machine is also provided..
         /// </summary>
         public static string HelpDrawerWeightSaturationDescription {
             get {
@@ -1303,7 +1303,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationGridActualWeight.
+        ///   Looks up a localized string similar to Reports the current weight of the drawer..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridActualWeight {
             get {
@@ -1312,7 +1312,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationGridDrawer.
+        ///   Looks up a localized string similar to Indicates the drawer number..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridDrawer {
             get {
@@ -1321,7 +1321,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationGridGross.
+        ///   Looks up a localized string similar to Indicates the weight of the empty drawer..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridGross {
             get {
@@ -1330,7 +1330,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationGridHeight.
+        ///   Looks up a localized string similar to Current drawer height..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridHeight {
             get {
@@ -1339,7 +1339,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationGridMaxWeight.
+        ///   Looks up a localized string similar to Indicates the maximum weight allowed for the drawer..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridMaxWeight {
             get {
@@ -1348,7 +1348,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationGridWeightPercent.
+        ///   Looks up a localized string similar to Indicates the percentage of weight used referred to the maximum possible..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridWeightPercent {
             get {
@@ -1357,7 +1357,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationGrossCapacityMax.
+        ///   Looks up a localized string similar to Shows the maximum gross capacity of the machine..
         /// </summary>
         public static string HelpDrawerWeightSaturationGrossCapacityMax {
             get {
@@ -1366,7 +1366,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationGrossLoaded.
+        ///   Looks up a localized string similar to Indicates the gross weight loaded..
         /// </summary>
         public static string HelpDrawerWeightSaturationGrossLoaded {
             get {
@@ -1375,7 +1375,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationNetCapacity.
+        ///   Looks up a localized string similar to Maximum net flow allowed by the machine..
         /// </summary>
         public static string HelpDrawerWeightSaturationNetCapacity {
             get {
@@ -1384,7 +1384,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationNetLoaded.
+        ///   Looks up a localized string similar to Indicates the net weight currently loaded..
         /// </summary>
         public static string HelpDrawerWeightSaturationNetLoaded {
             get {
@@ -1393,7 +1393,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationTotalDrawers.
+        ///   Looks up a localized string similar to Indicates the maximum number of drawers allocated in the machine..
         /// </summary>
         public static string HelpDrawerWeightSaturationTotalDrawers {
             get {
@@ -1402,7 +1402,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpDrawerWeightSaturationWeightPercent.
+        ///   Looks up a localized string similar to Shows the current percentage of loaded weight referred to the maximum allowed weight..
         /// </summary>
         public static string HelpDrawerWeightSaturationWeightPercent {
             get {
@@ -1411,7 +1411,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpErrorsStatisticsDescription.
+        ///   Looks up a localized string similar to The procedure allows you to access the error statistics display page relating to the machine you are working on. The statistics covers the entire period from the moment of installation to the moment of consultation..
         /// </summary>
         public static string HelpErrorsStatisticsDescription {
             get {
@@ -1420,7 +1420,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpErrorsStatisticsErrorDescription.
+        ///   Looks up a localized string similar to The complete description of the error selected in the table is displayed..
         /// </summary>
         public static string HelpErrorsStatisticsErrorDescription {
             get {
@@ -1429,7 +1429,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpErrorsStatisticsGridError.
+        ///   Looks up a localized string similar to The column of the table shows the list of error codes generated by the machine on which you are working..
         /// </summary>
         public static string HelpErrorsStatisticsGridError {
             get {
@@ -1447,7 +1447,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpErrorsStatisticsGridTotal.
+        ///   Looks up a localized string similar to The percentage incidence of each individual error is indicated in relation to the total errors counted..
         /// </summary>
         public static string HelpErrorsStatisticsGridTotal {
             get {
@@ -1456,7 +1456,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpErrorsStatisticsReliability.
+        ///   Looks up a localized string similar to The system calculates the reliability coefficient of the machine as the ratio between the number of errors counted and the total of the moved drawers..
         /// </summary>
         public static string HelpErrorsStatisticsReliability {
             get {
@@ -1465,7 +1465,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpErrorsStatisticsTotalDrawersMoved.
+        ///   Looks up a localized string similar to The field shows the total number of drawers handled since the beginning of the installation. A drawer is considered to be moved when moved from a source to a destination..
         /// </summary>
         public static string HelpErrorsStatisticsTotalDrawersMoved {
             get {
@@ -1474,7 +1474,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpErrorsStatisticsTotalDrawersNoError.
+        ///   Looks up a localized string similar to The field shows a statistical data calculated by the system that refers to the average of the drawers moved without errors..
         /// </summary>
         public static string HelpErrorsStatisticsTotalDrawersNoError {
             get {
@@ -1483,7 +1483,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpErrorsStatisticsTotaleErrors.
+        ///   Looks up a localized string similar to The total number of errors that the machine has counted since installation is displayed..
         /// </summary>
         public static string HelpErrorsStatisticsTotaleErrors {
             get {
@@ -1492,7 +1492,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGCCompleted.
+        ///   Looks up a localized string similar to Indicates the number of cycles currently completed..
         /// </summary>
         public static string HelpGCCompleted {
             get {
@@ -1501,7 +1501,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGCDelay.
+        ///   Looks up a localized string similar to Set the delay time between two consecutive cycles..
         /// </summary>
         public static string HelpGCDelay {
             get {
@@ -1510,7 +1510,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGCDescription.
+        ///   Looks up a localized string similar to It allows to carry out a series of repetitive tests for the closing damper of the selected bay. It is possible to set a waiting time between two consecutive movements. The procedure ends when the set number of cycles is reached or at the exit..
         /// </summary>
         public static string HelpGCDescription {
             get {
@@ -1519,7 +1519,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGCRequiredCycles.
+        ///   Looks up a localized string similar to Set the number of cycles required..
         /// </summary>
         public static string HelpGCRequiredCycles {
             get {
@@ -1528,7 +1528,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGCSensorA.
+        ///   Looks up a localized string similar to Status of sensor A of the barrier..
         /// </summary>
         public static string HelpGCSensorA {
             get {
@@ -1537,7 +1537,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGCSensorB.
+        ///   Looks up a localized string similar to Status of sensor B of the barrier..
         /// </summary>
         public static string HelpGCSensorB {
             get {
@@ -1546,7 +1546,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGCStartButton.
+        ///   Looks up a localized string similar to Start the start of the required tests. The button is active if the number of required cycles is greater than zero..
         /// </summary>
         public static string HelpGCStartButton {
             get {
@@ -1555,7 +1555,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGCStopButton.
+        ///   Looks up a localized string similar to Stops the loop when the current move is complete. The next press of the start button resumes the test from the cycle following the one stopped..
         /// </summary>
         public static string HelpGCStopButton {
             get {
@@ -1564,7 +1564,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoButtonCompacting.
+        ///   Looks up a localized string similar to Allows access to the management page of the storage space compaction procedures..
         /// </summary>
         public static string HelpGeneralInfoButtonCompacting {
             get {
@@ -1573,7 +1573,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoButtonDrawerCall.
+        ///   Looks up a localized string similar to View the page dedicated to immediate call by drawer..
         /// </summary>
         public static string HelpGeneralInfoButtonDrawerCall {
             get {
@@ -1582,7 +1582,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoButtonMaintenance.
+        ///   Looks up a localized string similar to Opens the page dedicated to the maintenance operations foreseen for the machine on which you are working..
         /// </summary>
         public static string HelpGeneralInfoButtonMaintenance {
             get {
@@ -1591,7 +1591,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoButtonStastistics.
+        ///   Looks up a localized string similar to Allows you to access the section dedicated to the statistical information relating to the machine you are working on..
         /// </summary>
         public static string HelpGeneralInfoButtonStastistics {
             get {
@@ -1600,7 +1600,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoDescription.
+        ///   Looks up a localized string similar to The page presents a series of general information relating to the machine on which you are working. Among other information, the date of the next maintenance is also displayed. In case there are more maintenances due, the most recent date is displayed..
         /// </summary>
         public static string HelpGeneralInfoDescription {
             get {
@@ -1609,7 +1609,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoInstallationDate.
+        ///   Looks up a localized string similar to Reports the machine installation date..
         /// </summary>
         public static string HelpGeneralInfoInstallationDate {
             get {
@@ -1618,7 +1618,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoLastMaintenanceDate.
+        ///   Looks up a localized string similar to Indicates the date of the last maintenance..
         /// </summary>
         public static string HelpGeneralInfoLastMaintenanceDate {
             get {
@@ -1627,7 +1627,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoMachineStatus.
+        ///   Looks up a localized string similar to Reports the current maintenance status of the machine..
         /// </summary>
         public static string HelpGeneralInfoMachineStatus {
             get {
@@ -1636,7 +1636,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoModel.
+        ///   Looks up a localized string similar to Shows the model of the machine you are working on..
         /// </summary>
         public static string HelpGeneralInfoModel {
             get {
@@ -1645,7 +1645,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoNextMaintenanceDate.
+        ///   Looks up a localized string similar to Indicates the estimated date of the next maintenance..
         /// </summary>
         public static string HelpGeneralInfoNextMaintenanceDate {
             get {
@@ -1654,7 +1654,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoSerial.
+        ///   Looks up a localized string similar to Indicates the serial number of the machine you are working on..
         /// </summary>
         public static string HelpGeneralInfoSerial {
             get {
@@ -1663,7 +1663,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoSwRelease.
+        ///   Looks up a localized string similar to Shows the release of the SW currently installed on the machine..
         /// </summary>
         public static string HelpGeneralInfoSwRelease {
             get {
@@ -1672,7 +1672,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoTotalDrawers.
+        ///   Looks up a localized string similar to Total number of drawers inserted in the machine..
         /// </summary>
         public static string HelpGeneralInfoTotalDrawers {
             get {
@@ -1681,7 +1681,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGeneralInfoWmsStatus.
+        ///   Looks up a localized string similar to The field reports the current status of the WMS, if present, which controls the machine you are working on..
         /// </summary>
         public static string HelpGeneralInfoWmsStatus {
             get {
@@ -1690,7 +1690,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCBarrierCorrection.
+        ///   Looks up a localized string similar to Indicates the correction to be applied to the barrier. The plus sign requires to raise the barrier, the minus sign to lower it by the indicated value..
         /// </summary>
         public static string HelpGHCBarrierCorrection {
             get {
@@ -1699,7 +1699,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCCurrentPosition.
+        ///   Looks up a localized string similar to Returns the current position of the chain axis..
         /// </summary>
         public static string HelpGHCCurrentPosition {
             get {
@@ -1708,7 +1708,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCDescription.
+        ///   Looks up a localized string similar to The procedure allows you to adjust the drawer height detection barrier. The height reached signal must also be used in the pre-positioning phase of the test template..
         /// </summary>
         public static string HelpGHCDescription {
             get {
@@ -1717,7 +1717,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCFinalResult.
+        ///   Looks up a localized string similar to Report the final test result..
         /// </summary>
         public static string HelpGHCFinalResult {
             get {
@@ -1726,7 +1726,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCHeightReached.
+        ///   Looks up a localized string similar to Indicates the activation of the beam used as a height verification element..
         /// </summary>
         public static string HelpGHCHeightReached {
             get {
@@ -1735,7 +1735,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCStart.
+        ///   Looks up a localized string similar to The button starts the check procedure..
         /// </summary>
         public static string HelpGHCStart {
             get {
@@ -1744,7 +1744,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCStop.
+        ///   Looks up a localized string similar to The button stops the check procedure..
         /// </summary>
         public static string HelpGHCStop {
             get {
@@ -1753,7 +1753,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCSystemError.
+        ///   Looks up a localized string similar to Indicates the system error resulting from the set calibration speed and the system scan time. Reduce the speed to decrease the error..
         /// </summary>
         public static string HelpGHCSystemError {
             get {
@@ -1762,7 +1762,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCTollerance.
+        ///   Looks up a localized string similar to Sets the maximum tolerance allowed in the measurement. The test fails if the result exceeds the required value..
         /// </summary>
         public static string HelpGHCTollerance {
             get {
@@ -1771,7 +1771,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpGHCVelocity.
+        ///   Looks up a localized string similar to Set the speed to be used during the calibration phase..
         /// </summary>
         public static string HelpGHCVelocity {
             get {
@@ -1780,7 +1780,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpImmediateDrawerCallDescription.
+        ///   Looks up a localized string similar to The procedure allows you to call the selected drawer in the bay on which the operator is working..
         /// </summary>
         public static string HelpImmediateDrawerCallDescription {
             get {
@@ -1789,7 +1789,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpImmediateDrawerCallDrawerCall.
+        ///   Looks up a localized string similar to The button allows you to recall the drawer currently selected in the grid. The button is active if the drawer can be called up by the current user..
         /// </summary>
         public static string HelpImmediateDrawerCallDrawerCall {
             get {
@@ -1798,7 +1798,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpImmediateDrawerCallGridCell.
+        ///   Looks up a localized string similar to Indicates the cell in which it is stored in the drawer..
         /// </summary>
         public static string HelpImmediateDrawerCallGridCell {
             get {
@@ -1807,7 +1807,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpImmediateDrawerCallGridDrawer.
+        ///   Looks up a localized string similar to Indicates the number of the drawer to which the grid data refers..
         /// </summary>
         public static string HelpImmediateDrawerCallGridDrawer {
             get {
@@ -1816,7 +1816,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpImmediateDrawerCallGridHeight.
+        ///   Looks up a localized string similar to Current height of the selected drawer..
         /// </summary>
         public static string HelpImmediateDrawerCallGridHeight {
             get {
@@ -1825,7 +1825,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpImmediateDrawerCallGridSide.
+        ///   Looks up a localized string similar to Indicates the side of the machine where the drawer is stored..
         /// </summary>
         public static string HelpImmediateDrawerCallGridSide {
             get {
@@ -1834,7 +1834,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpImmediateDrawerCallGridStatus.
+        ///   Looks up a localized string similar to Reports the current status of the drawer. The red color indicates that the drawer cannot be recalled by the currently connected user..
         /// </summary>
         public static string HelpImmediateDrawerCallGridStatus {
             get {
@@ -1843,7 +1843,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpImmediateDrawerCallGridWeight.
+        ///   Looks up a localized string similar to Indicates the current weight of the selected drawer..
         /// </summary>
         public static string HelpImmediateDrawerCallGridWeight {
             get {
@@ -1852,7 +1852,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpImmediateDrawerCallRequestedDrawer.
+        ///   Looks up a localized string similar to Shows the number of the drawer to be recalled..
         /// </summary>
         public static string HelpImmediateDrawerCallRequestedDrawer {
             get {
@@ -1861,7 +1861,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpInstallationStateDescription.
+        ///   Looks up a localized string similar to Displays the current status of the installation. The parts already completed are highlighted in green while those to be completed or to be done are in gray. Some procedures are possible only after having correctly completed the preparatory ones..
         /// </summary>
         public static string HelpInstallationStateDescription {
             get {
@@ -1870,7 +1870,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpInstallationStateDone.
+        ///   Looks up a localized string similar to The green indicator indicates a successful procedure..
         /// </summary>
         public static string HelpInstallationStateDone {
             get {
@@ -1879,7 +1879,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpInstallationStateToDo.
+        ///   Looks up a localized string similar to The gray indicator indicates a procedure still to be done.
         /// </summary>
         public static string HelpInstallationStateToDo {
             get {
@@ -1888,7 +1888,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGButton.
+        ///   Looks up a localized string similar to List of buttons to access the installation functions..
         /// </summary>
         public static string HelpIPGButton {
             get {
@@ -1897,7 +1897,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGDescription.
+        ///   Looks up a localized string similar to The main menu allows access to all the functions foreseen for the machine commissioning phase..
         /// </summary>
         public static string HelpIPGDescription {
             get {
@@ -1906,7 +1906,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGDown.
+        ///   Looks up a localized string similar to Allows you to scroll down the list of buttons for accessing the various functions..
         /// </summary>
         public static string HelpIPGDown {
             get {
@@ -1915,7 +1915,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGError.
+        ///   Looks up a localized string similar to Indicates, when visible, the presence of an error. Pressing the button opens the window dedicated to restoring the situation..
         /// </summary>
         public static string HelpIPGError {
             get {
@@ -1924,7 +1924,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGHeder.
+        ///   Looks up a localized string similar to Main menu..
         /// </summary>
         public static string HelpIPGHeder {
             get {
@@ -1933,7 +1933,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGHelp.
+        ///   Looks up a localized string similar to If pressed, opens the contextual menu for the currently selected function..
         /// </summary>
         public static string HelpIPGHelp {
             get {
@@ -1942,7 +1942,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGInstaller.
+        ///   Looks up a localized string similar to Indicates the name of the user currently logged in. If pressed, it allows you to log out of the system..
         /// </summary>
         public static string HelpIPGInstaller {
             get {
@@ -1951,7 +1951,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGOff.
+        ///   Looks up a localized string similar to The Off status of this button indicates the disabling of the machine movements..
         /// </summary>
         public static string HelpIPGOff {
             get {
@@ -1960,7 +1960,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGOn.
+        ///   Looks up a localized string similar to The On state of this button indicates that the machine is enabled to move..
         /// </summary>
         public static string HelpIPGOn {
             get {
@@ -1969,7 +1969,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpIPGUp.
+        ///   Looks up a localized string similar to Allows you to scroll up the list of buttons for accessing the various functions..
         /// </summary>
         public static string HelpIPGUp {
             get {
@@ -1987,7 +1987,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchDetailAverageWeight.
+        ///   Looks up a localized string similar to Average unit weight expressed in the unit of measurement indicated..
         /// </summary>
         public static string HelpItemSearchDetailAverageWeight {
             get {
@@ -1996,7 +1996,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchDetailCategory.
+        ///   Looks up a localized string similar to Categoria di appartenenza dell&apos;articolo..
         /// </summary>
         public static string HelpItemSearchDetailCategory {
             get {
@@ -2005,7 +2005,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchDetailClasse.
+        ///   Looks up a localized string similar to Handling class of the selected item..
         /// </summary>
         public static string HelpItemSearchDetailClasse {
             get {
@@ -2014,7 +2014,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchDetailDescription.
+        ///   Looks up a localized string similar to The page displays the main data of the selected article. More detailed information can be viewed at the management WMS level..
         /// </summary>
         public static string HelpItemSearchDetailDescription {
             get {
@@ -2023,7 +2023,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchDetailFifoPeriod.
+        ///   Looks up a localized string similar to Indicates the Fifo period of the article, expressed in the unit of measurement indicated..
         /// </summary>
         public static string HelpItemSearchDetailFifoPeriod {
             get {
@@ -2032,7 +2032,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchDetailMangementType.
+        ///   Looks up a localized string similar to Indicates how to manage the article..
         /// </summary>
         public static string HelpItemSearchDetailMangementType {
             get {
@@ -2041,7 +2041,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchDetailMeasurementUnit.
+        ///   Looks up a localized string similar to Unit of measure selected for the item..
         /// </summary>
         public static string HelpItemSearchDetailMeasurementUnit {
             get {
@@ -2050,7 +2050,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchGridItem.
+        ///   Looks up a localized string similar to It shows the list of article codes that match the search criteria..
         /// </summary>
         public static string HelpItemSearchGridItem {
             get {
@@ -2059,7 +2059,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchGridItemDescription.
+        ///   Looks up a localized string similar to It shows the description of the article codes that match the search criteria..
         /// </summary>
         public static string HelpItemSearchGridItemDescription {
             get {
@@ -2068,7 +2068,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchGridMachine.
+        ///   Looks up a localized string similar to Indicates the list of machines that contain the item indicated in the row. An article can be present in one or more machines..
         /// </summary>
         public static string HelpItemSearchGridMachine {
             get {
@@ -2077,7 +2077,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchItemCall.
+        ///   Looks up a localized string similar to Allows you to request the selected item in the required quantity. The button is enabled only if the item is available on the machine where you are working..
         /// </summary>
         public static string HelpItemSearchItemCall {
             get {
@@ -2086,7 +2086,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchQtyAvailable.
+        ///   Looks up a localized string similar to Indicates the available quantity of the selected item inside the machine you are working on..
         /// </summary>
         public static string HelpItemSearchQtyAvailable {
             get {
@@ -2095,7 +2095,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchQtyRequired.
+        ///   Looks up a localized string similar to The field is enabled only if the quantity available for the selected item is greater than zero. It is possible to insert a value not exceeding the available quantity..
         /// </summary>
         public static string HelpItemSearchQtyRequired {
             get {
@@ -2104,7 +2104,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpItemSearchTextToFind.
+        ///   Looks up a localized string similar to Enter the sequence of characters to search for in the code and item description fields in the field..
         /// </summary>
         public static string HelpItemSearchTextToFind {
             get {
@@ -2113,7 +2113,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLDRDescription.
+        ///   Looks up a localized string similar to The procedure allows you to insert the empty drawers inside the machine at the end of the commissioning procedure. The drawers are inserted inside the free blocks choosing them according to the lowest priority..
         /// </summary>
         public static string HelpLDRDescription {
             get {
@@ -2122,7 +2122,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLDRDrawerToInsert.
+        ///   Looks up a localized string similar to Number of the drawer being inserted. It can be generated by the appropriate button or inserted in the appropriate field..
         /// </summary>
         public static string HelpLDRDrawerToInsert {
             get {
@@ -2131,7 +2131,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLDRInsertedDrawers.
+        ///   Looks up a localized string similar to Drawers already inserted in the car..
         /// </summary>
         public static string HelpLDRInsertedDrawers {
             get {
@@ -2140,7 +2140,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLDRMaxLoad.
+        ///   Looks up a localized string similar to Indicates the maximum capacity allowed for the drawer currently being inserted..
         /// </summary>
         public static string HelpLDRMaxLoad {
             get {
@@ -2149,7 +2149,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLDRNextDrawer.
+        ///   Looks up a localized string similar to The button sets the next drawer to be inserted. the number is the one following the last one entered..
         /// </summary>
         public static string HelpLDRNextDrawer {
             get {
@@ -2158,7 +2158,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLDRStart.
+        ///   Looks up a localized string similar to Starts the procedure for inserting the selected drawer..
         /// </summary>
         public static string HelpLDRStart {
             get {
@@ -2167,7 +2167,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLDRTotalDrawers.
+        ///   Looks up a localized string similar to Total number of drawers to be inserted..
         /// </summary>
         public static string HelpLDRTotalDrawers {
             get {
@@ -2176,7 +2176,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLFDCellInTest.
+        ///   Looks up a localized string similar to Number of the cell currently being tested..
         /// </summary>
         public static string HelpLFDCellInTest {
             get {
@@ -2185,7 +2185,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLFDDescription.
+        ///   Looks up a localized string similar to The procedure allows you to use the drawer selected in the appropriate input field to test the lower and upper cells of the machine as well as the cells below and above the cell blocks indicated as disabled. The purpose of the procedure is to verify that there is no mechanical interference in these areas..
         /// </summary>
         public static string HelpLFDDescription {
             get {
@@ -2194,7 +2194,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLFDDrawerNumber.
+        ///   Looks up a localized string similar to Number of the drawer being inserted..
         /// </summary>
         public static string HelpLFDDrawerNumber {
             get {
@@ -2203,7 +2203,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLFDInsertDrawer.
+        ///   Looks up a localized string similar to Start the drawer insertion procedure. The procedure ends when the planned cycles are completed..
         /// </summary>
         public static string HelpLFDInsertDrawer {
             get {
@@ -2212,7 +2212,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLFDMaxLoad.
+        ///   Looks up a localized string similar to Maximum capacity of the drawer during loading..
         /// </summary>
         public static string HelpLFDMaxLoad {
             get {
@@ -2221,7 +2221,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLFDRecallDrawer.
+        ///   Looks up a localized string similar to Recall the drawer used for the test in the bay..
         /// </summary>
         public static string HelpLFDRecallDrawer {
             get {
@@ -2230,7 +2230,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLFDTestedCells.
+        ///   Looks up a localized string similar to Indicates the number of cells currently tested..
         /// </summary>
         public static string HelpLFDTestedCells {
             get {
@@ -2239,7 +2239,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLFDTotalCells.
+        ///   Looks up a localized string similar to Indicates the total number of cells to be tested..
         /// </summary>
         public static string HelpLFDTotalCells {
             get {
@@ -2248,7 +2248,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpListsInWaitDescription.
+        ///   Looks up a localized string similar to The procedure allows you to view all the lists pending execution by the WMS system. The machines involved are indicated for each list. It is possible to execute only the portion of lists that have some article to be taken present in the machine from which the procedure is being used..
         /// </summary>
         public static string HelpListsInWaitDescription {
             get {
@@ -2257,7 +2257,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpListsInWaitGridDescription.
+        ///   Looks up a localized string similar to The column of the grid presents the description of the lists awaiting execution..
         /// </summary>
         public static string HelpListsInWaitGridDescription {
             get {
@@ -2266,7 +2266,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpListsInWaitGridList.
+        ///   Looks up a localized string similar to The grid column presents the codes of the lists awaiting execution..
         /// </summary>
         public static string HelpListsInWaitGridList {
             get {
@@ -2275,7 +2275,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpListsInWaitGridMachine.
+        ///   Looks up a localized string similar to The column shows, for each list, the list of machines involved for its execution..
         /// </summary>
         public static string HelpListsInWaitGridMachine {
             get {
@@ -2284,7 +2284,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpListsInWaitGridType.
+        ///   Looks up a localized string similar to It indicates the type of list according to the following code: P: pick V: put I: Inventory.
         /// </summary>
         public static string HelpListsInWaitGridType {
             get {
@@ -2293,7 +2293,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpListsInWaitListsDetail.
+        ///   Looks up a localized string similar to The button allows you to access the detail page of the list where you can see the list of articles present..
         /// </summary>
         public static string HelpListsInWaitListsDetail {
             get {
@@ -2302,7 +2302,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpListsInWaitListsExecute.
+        ///   Looks up a localized string similar to The button, if active, allows you to execute the list currently selected for the portion present in the machine you are working on..
         /// </summary>
         public static string HelpListsInWaitListsExecute {
             get {
@@ -2311,7 +2311,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLSMTActualPosition.
+        ///   Looks up a localized string similar to Indicates the current position or status for those parts that only have discrete positions..
         /// </summary>
         public static string HelpLSMTActualPosition {
             get {
@@ -2320,7 +2320,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLSMTComandMode.
+        ///   Looks up a localized string similar to It reports the mode currently enabled for manual commands. Extended stroke mode is automatically set after commissioning is complete..
         /// </summary>
         public static string HelpLSMTComandMode {
             get {
@@ -2329,7 +2329,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLSMTDescription.
+        ///   Looks up a localized string similar to It allows to carry out the movement of the various axes at low speed. A small movement space in both directions is set. The text of the buttons changes according to the required movement. Once the machine has been tested, it will be possible to control all the various axes at low speed without interlocks and for unlimited strokes..
         /// </summary>
         public static string HelpLSMTDescription {
             get {
@@ -2338,7 +2338,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLSMTMoveDown.
+        ///   Looks up a localized string similar to Button for moving backward, downward or closed according to the selected part.
         /// </summary>
         public static string HelpLSMTMoveDown {
             get {
@@ -2347,7 +2347,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLSMTMoveUp.
+        ///   Looks up a localized string similar to Button for forward movement, upward movement or opening according to the selected part.
         /// </summary>
         public static string HelpLSMTMoveUp {
             get {
@@ -2356,7 +2356,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpLSMTTitle.
+        ///   Looks up a localized string similar to Low speed manual controls..
         /// </summary>
         public static string HelpLSMTTitle {
             get {
@@ -2365,7 +2365,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsBay1.
+        ///   Looks up a localized string similar to The field shows the total number of drawers that have affected bay n. 2. The count increases when a drawer is brought into the bay and then returned to the warehouse..
         /// </summary>
         public static string HelpMachineStatisticsBay1 {
             get {
@@ -2374,7 +2374,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsBay2.
+        ///   Looks up a localized string similar to The field shows the total number of drawers that have affected bay n. 2. The count increases when a drawer is brought into the bay and then returned to the warehouse..
         /// </summary>
         public static string HelpMachineStatisticsBay2 {
             get {
@@ -2383,7 +2383,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsBay3.
+        ///   Looks up a localized string similar to The field shows the total number of drawers that have affected bay n. 3. The count increases when a drawer is brought into the bay and then returned to the warehouse..
         /// </summary>
         public static string HelpMachineStatisticsBay3 {
             get {
@@ -2392,7 +2392,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsDescription.
+        ///   Looks up a localized string similar to The procedure provides statistical data of the main parts of the machine. The data provided refer to what the machine has done during its life cycle from the moment of installation..
         /// </summary>
         public static string HelpMachineStatisticsDescription {
             get {
@@ -2401,7 +2401,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsHorizontalCycles.
+        ///   Looks up a localized string similar to The field shows the total number of cycles carried out by the chain on the machine lift since installation. A cycle is an embarkation or disembarkation operation..
         /// </summary>
         public static string HelpMachineStatisticsHorizontalCycles {
             get {
@@ -2410,7 +2410,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsShutter.
+        ///   Looks up a localized string similar to It reports the total number of cycles performed by the shutter that equips bay n. 1. A cycle is a total or intermediate opening or closing operation..
         /// </summary>
         public static string HelpMachineStatisticsShutter {
             get {
@@ -2419,7 +2419,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsShutter1.
+        ///   Looks up a localized string similar to It reports the total number of cycles performed by the shutter that equips bay n. 1. A cycle is a total or intermediate opening or closing operation..
         /// </summary>
         public static string HelpMachineStatisticsShutter1 {
             get {
@@ -2428,7 +2428,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsShutter2.
+        ///   Looks up a localized string similar to It reports the total number of cycles performed by the shutter that equips bay n. 2. A cycle is a total or intermediate opening or closing operation..
         /// </summary>
         public static string HelpMachineStatisticsShutter2 {
             get {
@@ -2437,7 +2437,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsShutter3.
+        ///   Looks up a localized string similar to It reports the total number of cycles performed by the shutter that equips bay n. 3. A cycle is a total or intermediate opening or closing operation..
         /// </summary>
         public static string HelpMachineStatisticsShutter3 {
             get {
@@ -2446,7 +2446,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsVerticalCycles.
+        ///   Looks up a localized string similar to Indicates the total number of cycles performed by the vertical axis. A cycle is equivalent to a shift between two points..
         /// </summary>
         public static string HelpMachineStatisticsVerticalCycles {
             get {
@@ -2455,7 +2455,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMachineStatisticsVerticalKm.
+        ///   Looks up a localized string similar to It reports the totalisation of the Km. Traveled by the vertical axis from the moment of installation..
         /// </summary>
         public static string HelpMachineStatisticsVerticalKm {
             get {
@@ -2464,7 +2464,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailCyclesBetweenTwoMaint.
+        ///   Looks up a localized string similar to Indicates the number of cycles that can be carried out between two maintenance operations..
         /// </summary>
         public static string HelpMaintenanceDetailCyclesBetweenTwoMaint {
             get {
@@ -2473,7 +2473,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailCyclesFromLastMaint.
+        ///   Looks up a localized string similar to Reports the number of cycles performed since the last maintenance..
         /// </summary>
         public static string HelpMaintenanceDetailCyclesFromLastMaint {
             get {
@@ -2482,7 +2482,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailCyclesTotal.
+        ///   Looks up a localized string similar to Total number of cycles completed since the machine was installed..
         /// </summary>
         public static string HelpMaintenanceDetailCyclesTotal {
             get {
@@ -2491,7 +2491,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailDescription.
+        ///   Looks up a localized string similar to The page allows you to view the data on which the maintenance of the selected kit is based. All the information used by the system to determine scheduled maintenance operations is displayed..
         /// </summary>
         public static string HelpMaintenanceDetailDescription {
             get {
@@ -2500,7 +2500,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailElementStatus.
+        ///   Looks up a localized string similar to It reports the status of the kit with the convention that the orange color indicates the approach of maintenance and the red that the maintenance is expired..
         /// </summary>
         public static string HelpMaintenanceDetailElementStatus {
             get {
@@ -2509,7 +2509,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailGridDescription.
+        ///   Looks up a localized string similar to Reports the description of the component used in the selected kit..
         /// </summary>
         public static string HelpMaintenanceDetailGridDescription {
             get {
@@ -2518,7 +2518,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailGridElement.
+        ///   Looks up a localized string similar to Shows the part number used by the selected maintenance kit..
         /// </summary>
         public static string HelpMaintenanceDetailGridElement {
             get {
@@ -2527,7 +2527,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailGridQuantity.
+        ///   Looks up a localized string similar to Indicates the number of pieces of the element required in the selected kit..
         /// </summary>
         public static string HelpMaintenanceDetailGridQuantity {
             get {
@@ -2536,7 +2536,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailHoursRequired.
+        ///   Looks up a localized string similar to Indicates the number of hours required to carry out the required maintenance operation..
         /// </summary>
         public static string HelpMaintenanceDetailHoursRequired {
             get {
@@ -2545,7 +2545,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailPlatformRequired.
+        ///   Looks up a localized string similar to Indicates whether the use of a platform for work at height is necessary for the maintenance operation to be carried out..
         /// </summary>
         public static string HelpMaintenanceDetailPlatformRequired {
             get {
@@ -2554,7 +2554,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceDetailSendRequestContact.
+        ///   Looks up a localized string similar to It allows you to send an email to the assistance office asking to be contacted to arrange a maintenance intervention..
         /// </summary>
         public static string HelpMaintenanceDetailSendRequestContact {
             get {
@@ -2563,7 +2563,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageGridDescription.
+        ///   Looks up a localized string similar to The column shows the description of the various kits..
         /// </summary>
         public static string HelpMaintenanceMainPageGridDescription {
             get {
@@ -2572,7 +2572,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageGridKit.
+        ///   Looks up a localized string similar to The column shows the kit code for the selected component..
         /// </summary>
         public static string HelpMaintenanceMainPageGridKit {
             get {
@@ -2581,7 +2581,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageGridRequest.
+        ///   Looks up a localized string similar to The column indicates that a request for intervention has already been made to the maintenance staff for a specific kit..
         /// </summary>
         public static string HelpMaintenanceMainPageGridRequest {
             get {
@@ -2590,7 +2590,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageGridState.
+        ///   Looks up a localized string similar to Indicates the current status of the kit. the orange color indicates the approach of maintenance, the red period expired and therefore maintenance required..
         /// </summary>
         public static string HelpMaintenanceMainPageGridState {
             get {
@@ -2599,7 +2599,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageInstallation.
+        ///   Looks up a localized string similar to Reports the machine installation date..
         /// </summary>
         public static string HelpMaintenanceMainPageInstallation {
             get {
@@ -2608,7 +2608,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageLastMaintenance.
+        ///   Looks up a localized string similar to Indicates the date on which the last maintenance was performed..
         /// </summary>
         public static string HelpMaintenanceMainPageLastMaintenance {
             get {
@@ -2617,7 +2617,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageMachineStatus.
+        ///   Looks up a localized string similar to Indicates the current status of the kit. the orange color indicates the approach of maintenance, the red period expired and therefore maintenance required..
         /// </summary>
         public static string HelpMaintenanceMainPageMachineStatus {
             get {
@@ -2626,7 +2626,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageModel.
+        ///   Looks up a localized string similar to Show the machine model..
         /// </summary>
         public static string HelpMaintenanceMainPageModel {
             get {
@@ -2635,7 +2635,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageNextMaintenance.
+        ///   Looks up a localized string similar to Indicates the estimated date for the next maintenance..
         /// </summary>
         public static string HelpMaintenanceMainPageNextMaintenance {
             get {
@@ -2644,7 +2644,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpMaintenanceMainPageSerial.
+        ///   Looks up a localized string similar to Report the serial number of the machine..
         /// </summary>
         public static string HelpMaintenanceMainPageSerial {
             get {
@@ -2653,7 +2653,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainAuto.
+        ///   Looks up a localized string similar to Indicates the automatic condition. The machine manages the commands coming from the control system..
         /// </summary>
         public static string HelpOpMainAuto {
             get {
@@ -2662,7 +2662,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainDrawerOp.
+        ///   Looks up a localized string similar to The button opens the page for managing the operations scheduled on the drawer in the bay..
         /// </summary>
         public static string HelpOpMainDrawerOp {
             get {
@@ -2671,7 +2671,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainError.
+        ///   Looks up a localized string similar to An error occurred while the machine was running. Pressing this button opens the page for managing the recovery procedures..
         /// </summary>
         public static string HelpOpMainError {
             get {
@@ -2680,7 +2680,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainHelp.
+        ///   Looks up a localized string similar to The button opens the help page contextual to the procedure you are using..
         /// </summary>
         public static string HelpOpMainHelp {
             get {
@@ -2689,7 +2689,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainItem.
+        ///   Looks up a localized string similar to The button opens the page that allows you to search for an article code..
         /// </summary>
         public static string HelpOpMainItem {
             get {
@@ -2698,7 +2698,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainLists.
+        ///   Looks up a localized string similar to The button opens the display page of the lists pending execution scheduled by the WMS..
         /// </summary>
         public static string HelpOpMainLists {
             get {
@@ -2707,7 +2707,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainManu.
+        ///   Looks up a localized string similar to Indicates the manual condition. The automatic cycle is suspended..
         /// </summary>
         public static string HelpOpMainManu {
             get {
@@ -2716,7 +2716,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainOff.
+        ///   Looks up a localized string similar to The power to the motors is disabled. Movements are not possible in any mode..
         /// </summary>
         public static string HelpOpMainOff {
             get {
@@ -2725,7 +2725,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainOn.
+        ///   Looks up a localized string similar to The power to the motors is enabled. The machine is able to make movements..
         /// </summary>
         public static string HelpOpMainOn {
             get {
@@ -2734,7 +2734,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainOther.
+        ///   Looks up a localized string similar to Allows access to additional functions..
         /// </summary>
         public static string HelpOpMainOther {
             get {
@@ -2743,7 +2743,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainPageDescription.
+        ///   Looks up a localized string similar to The main menu allows you to check the machine status using the appropriate buttons at the top of the screen. On the left side, using the navigation buttons, it is possible to access the various functions..
         /// </summary>
         public static string HelpOpMainPageDescription {
             get {
@@ -2752,7 +2752,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainPageHeadr.
+        ///   Looks up a localized string similar to First page..
         /// </summary>
         public static string HelpOpMainPageHeadr {
             get {
@@ -2761,7 +2761,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainServiceAdvice.
+        ///   Looks up a localized string similar to The system signals that some parts of the machine are approaching the time for scheduled maintenance..
         /// </summary>
         public static string HelpOpMainServiceAdvice {
             get {
@@ -2770,7 +2770,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainServiceAllert.
+        ///   Looks up a localized string similar to The system signals that some parts of the machine have reached the end of the scheduled period between two maintenance operations. Maintenance required!.
         /// </summary>
         public static string HelpOpMainServiceAllert {
             get {
@@ -2779,7 +2779,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpOpMainUser.
+        ///   Looks up a localized string similar to Reports the name of the currently logged in operator. Pressing the button allows you to log off..
         /// </summary>
         public static string HelpOpMainUser {
             get {
@@ -2788,7 +2788,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCDescription.
+        ///   Looks up a localized string similar to The procedure allows you to save or recover configuration files on the external device..
         /// </summary>
         public static string HelpSRCDescription {
             get {
@@ -2797,7 +2797,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCLoadAbortButton.
+        ///   Looks up a localized string similar to Cancel the file upload procedure..
         /// </summary>
         public static string HelpSRCLoadAbortButton {
             get {
@@ -2806,7 +2806,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCLoadButton.
+        ///   Looks up a localized string similar to Start the configuration files upload procedure. Any files already present will be overwritten..
         /// </summary>
         public static string HelpSRCLoadButton {
             get {
@@ -2815,7 +2815,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCLoadConfirmButton.
+        ///   Looks up a localized string similar to Confirm the file upload procedure..
         /// </summary>
         public static string HelpSRCLoadConfirmButton {
             get {
@@ -2824,7 +2824,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCLoadSide.
+        ///   Looks up a localized string similar to Configuration restore procedure..
         /// </summary>
         public static string HelpSRCLoadSide {
             get {
@@ -2833,7 +2833,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCPageHeader.
+        ///   Looks up a localized string similar to Cancel the file saving procedure..
         /// </summary>
         public static string HelpSRCPageHeader {
             get {
@@ -2842,7 +2842,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCSaveAbortButton.
+        ///   Looks up a localized string similar to Cancel the file saving procedure..
         /// </summary>
         public static string HelpSRCSaveAbortButton {
             get {
@@ -2851,7 +2851,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCSaveButton.
+        ///   Looks up a localized string similar to Start the procedure for saving the configuration files. Any files already present will be overwritten..
         /// </summary>
         public static string HelpSRCSaveButton {
             get {
@@ -2860,7 +2860,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCSaveConfirmButton.
+        ///   Looks up a localized string similar to Confirm the file saving procedure..
         /// </summary>
         public static string HelpSRCSaveConfirmButton {
             get {
@@ -2869,7 +2869,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCSaveFolder.
+        ///   Looks up a localized string similar to Indicates the automatically created folder where the configuration files will be saved..
         /// </summary>
         public static string HelpSRCSaveFolder {
             get {
@@ -2878,7 +2878,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSRCSaveSide.
+        ///   Looks up a localized string similar to Configuration saving procedure..
         /// </summary>
         public static string HelpSRCSaveSide {
             get {
@@ -2887,7 +2887,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSSDescription.
+        ///   Looks up a localized string similar to The gray color indicates the inactive state of the sensor..
         /// </summary>
         public static string HelpSSDescription {
             get {
@@ -2896,7 +2896,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSSStateOff.
+        ///   Looks up a localized string similar to The gray color indicates the inactive state of the sensor..
         /// </summary>
         public static string HelpSSStateOff {
             get {
@@ -2905,7 +2905,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSSStateOn.
+        ///   Looks up a localized string similar to The green color indicates the active state of the sensor..
         /// </summary>
         public static string HelpSSStateOn {
             get {
@@ -2914,7 +2914,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpSSTitle.
+        ///   Looks up a localized string similar to Sensor status display.
         /// </summary>
         public static string HelpSSTitle {
             get {
@@ -2923,7 +2923,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataAutomaticTotalTime.
+        ///   Looks up a localized string similar to Indicates the ratio between the total time elapsed in automatic mode and the switch-on time from the moment of installation..
         /// </summary>
         public static string HelpStatisticsGeneralDataAutomaticTotalTime {
             get {
@@ -2932,7 +2932,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataButtonCellsStatistics.
+        ///   Looks up a localized string similar to Activate the cell statistics display page..
         /// </summary>
         public static string HelpStatisticsGeneralDataButtonCellsStatistics {
             get {
@@ -2941,7 +2941,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataButtonDrawersStatistics.
+        ///   Looks up a localized string similar to Displays the statistical data page of the various drawers present in the machine..
         /// </summary>
         public static string HelpStatisticsGeneralDataButtonDrawersStatistics {
             get {
@@ -2950,7 +2950,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataButtonErrorsStatistics.
+        ///   Looks up a localized string similar to Activates the page for displaying the statistical data relating to errors generated by the machine since installation..
         /// </summary>
         public static string HelpStatisticsGeneralDataButtonErrorsStatistics {
             get {
@@ -2959,7 +2959,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataButtonMachineStatistics.
+        ///   Looks up a localized string similar to Allows access to the display page of the statistical data of the machine..
         /// </summary>
         public static string HelpStatisticsGeneralDataButtonMachineStatistics {
             get {
@@ -2968,7 +2968,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataDescription.
+        ///   Looks up a localized string similar to The page displays some statistical information relating to the use of the drawer area and the total weight loaded in relation to the characteristics of the machine. Information on the use of the machine is also displayed..
         /// </summary>
         public static string HelpStatisticsGeneralDataDescription {
             get {
@@ -2977,7 +2977,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataLoadedWeight.
+        ///   Looks up a localized string similar to Total number of drawers moved since the start of installation..
         /// </summary>
         public static string HelpStatisticsGeneralDataLoadedWeight {
             get {
@@ -2986,7 +2986,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataMovedDrawers.
+        ///   Looks up a localized string similar to Total number of drawers moved since the start of installation..
         /// </summary>
         public static string HelpStatisticsGeneralDataMovedDrawers {
             get {
@@ -2995,7 +2995,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataOccupiedArea.
+        ///   Looks up a localized string similar to Indicates the percentage of area occupied inside the machine referred to the total space available..
         /// </summary>
         public static string HelpStatisticsGeneralDataOccupiedArea {
             get {
@@ -3004,7 +3004,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataPowerOnTotalTime.
+        ///   Looks up a localized string similar to Reports the total power on time since the machine was installed..
         /// </summary>
         public static string HelpStatisticsGeneralDataPowerOnTotalTime {
             get {
@@ -3013,7 +3013,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpStatisticsGeneralDataUseRatio.
+        ///   Looks up a localized string similar to The utilization coefficient indicates the ratio between the time spent in automatic moving drawers and that of ignition..
         /// </summary>
         public static string HelpStatisticsGeneralDataUseRatio {
             get {
@@ -3022,7 +3022,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVACDescription.
+        ///   Looks up a localized string similar to The procedure allows you to make the origin of the vertical axis at the end of which the current position indicated by the offset value is set. The procedure is preparatory for the realization of other functions that require the axis movement to height..
         /// </summary>
         public static string HelpVACDescription {
             get {
@@ -3031,7 +3031,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVACDownLimit.
+        ///   Looks up a localized string similar to Lower movement limit..
         /// </summary>
         public static string HelpVACDownLimit {
             get {
@@ -3040,7 +3040,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVACFinalResult.
+        ///   Looks up a localized string similar to Report the final outcome of the procedure..
         /// </summary>
         public static string HelpVACFinalResult {
             get {
@@ -3049,7 +3049,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVACOffset.
+        ///   Looks up a localized string similar to Current offset value. At the end of the axis origin, the current quota is set to this value..
         /// </summary>
         public static string HelpVACOffset {
             get {
@@ -3058,7 +3058,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVACResolution.
+        ///   Looks up a localized string similar to Current resolution of the axis..
         /// </summary>
         public static string HelpVACResolution {
             get {
@@ -3067,7 +3067,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVacStart.
+        ///   Looks up a localized string similar to Starts the vertical axis origin procedure..
         /// </summary>
         public static string HelpVacStart {
             get {
@@ -3076,7 +3076,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVACStop.
+        ///   Looks up a localized string similar to Stops the vertical axis origin procedure..
         /// </summary>
         public static string HelpVACStop {
             get {
@@ -3085,7 +3085,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVACUpLimit.
+        ///   Looks up a localized string similar to Upper movement limit..
         /// </summary>
         public static string HelpVACUpLimit {
             get {
@@ -3094,7 +3094,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCActualOffset.
+        ///   Looks up a localized string similar to Current value of the vertical axis offset..
         /// </summary>
         public static string HelpVOCActualOffset {
             get {
@@ -3103,7 +3103,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCActualPosition.
+        ///   Looks up a localized string similar to Current position of the vertical axis..
         /// </summary>
         public static string HelpVOCActualPosition {
             get {
@@ -3112,7 +3112,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCAdjustedOffset.
+        ///   Looks up a localized string similar to New offset value..
         /// </summary>
         public static string HelpVOCAdjustedOffset {
             get {
@@ -3121,7 +3121,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCApplyCorrection.
+        ///   Looks up a localized string similar to Updates the vertical axis offset to the indicated value..
         /// </summary>
         public static string HelpVOCApplyCorrection {
             get {
@@ -3130,7 +3130,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCCellPosition.
+        ///   Looks up a localized string similar to Current elevation of the selected cell.
         /// </summary>
         public static string HelpVOCCellPosition {
             get {
@@ -3139,7 +3139,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCDescription.
+        ///   Looks up a localized string similar to The procedure allows you to correct the offset of the vertical axis in order to align the height of the various cells with the reference system of the vertical axis..
         /// </summary>
         public static string HelpVOCDescription {
             get {
@@ -3148,7 +3148,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCGoToCell.
+        ///   Looks up a localized string similar to Moves the vertical axis in to the dimension of the selected cell..
         /// </summary>
         public static string HelpVOCGoToCell {
             get {
@@ -3157,7 +3157,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCSelectedCell.
+        ///   Looks up a localized string similar to Cell selected for checking..
         /// </summary>
         public static string HelpVOCSelectedCell {
             get {
@@ -3166,7 +3166,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCStepMeno.
+        ///   Looks up a localized string similar to Decreases the current height of the vertical axis by the set step value..
         /// </summary>
         public static string HelpVOCStepMeno {
             get {
@@ -3175,7 +3175,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCStepPiu.
+        ///   Looks up a localized string similar to Increases the current height of the vertical axis by the set step value..
         /// </summary>
         public static string HelpVOCStepPiu {
             get {
@@ -3184,7 +3184,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVOCStepValue.
+        ///   Looks up a localized string similar to Value of the change in height to be applied each time the axis movement keys are pressed..
         /// </summary>
         public static string HelpVOCStepValue {
             get {
@@ -3193,7 +3193,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMActualPanel.
+        ///   Looks up a localized string similar to Indicates the currently selected panel that is being checked..
         /// </summary>
         public static string HelpVPPMActualPanel {
             get {
@@ -3202,7 +3202,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMActualPosition.
+        ///   Looks up a localized string similar to Indicates the current position of the axis. It is changed by the action of the step buttons..
         /// </summary>
         public static string HelpVPPMActualPosition {
             get {
@@ -3211,7 +3211,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMApplyCorrection.
+        ///   Looks up a localized string similar to Apply the correction to the group of cells in the currently selected panel..
         /// </summary>
         public static string HelpVPPMApplyCorrection {
             get {
@@ -3220,7 +3220,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMCorrectionValue.
+        ///   Looks up a localized string similar to Total value of the correction that will be applied to the dimension of the selected cell..
         /// </summary>
         public static string HelpVPPMCorrectionValue {
             get {
@@ -3229,7 +3229,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMDescription.
+        ///   Looks up a localized string similar to The procedure allows you to check the correct positioning of the various shelf door panels. Any correction is applied to all the cells belonging to the panel being tested..
         /// </summary>
         public static string HelpVPPMDescription {
             get {
@@ -3238,7 +3238,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMGoToCell.
+        ///   Looks up a localized string similar to Place the axis at the selected cell..
         /// </summary>
         public static string HelpVPPMGoToCell {
             get {
@@ -3247,7 +3247,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMNextPanel.
+        ///   Looks up a localized string similar to Allows you to go to the next panel to check..
         /// </summary>
         public static string HelpVPPMNextPanel {
             get {
@@ -3256,7 +3256,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMSelectedCell.
+        ///   Looks up a localized string similar to Selected cell from which the panel to control is derived. Odd or even numbers select the front or back side..
         /// </summary>
         public static string HelpVPPMSelectedCell {
             get {
@@ -3265,7 +3265,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMSelectedCellPosition.
+        ///   Looks up a localized string similar to Dimension of the selected cell..
         /// </summary>
         public static string HelpVPPMSelectedCellPosition {
             get {
@@ -3274,7 +3274,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMStepMeno.
+        ///   Looks up a localized string similar to Decreases the current coordinate of the axis by the value indicated by the step..
         /// </summary>
         public static string HelpVPPMStepMeno {
             get {
@@ -3283,7 +3283,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMStepPiu.
+        ///   Looks up a localized string similar to Increases the current coordinate of the axis by the value indicated by the step..
         /// </summary>
         public static string HelpVPPMStepPiu {
             get {
@@ -3292,7 +3292,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMStepValue.
+        ///   Looks up a localized string similar to Step value to use when modifying the dimension..
         /// </summary>
         public static string HelpVPPMStepValue {
             get {
@@ -3301,7 +3301,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpVPPMTotalPanels.
+        ///   Looks up a localized string similar to Indicates the total number of panels on the side selected by the reference cell..
         /// </summary>
         public static string HelpVPPMTotalPanels {
             get {
@@ -3310,7 +3310,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpWCDescription.
+        ///   Looks up a localized string similar to The procedure allows you to verify that the weight measurement falls within the expected tolerance. For the measurement, sample weights are used in the quantity indicated in the appropriate field..
         /// </summary>
         public static string HelpWCDescription {
             get {
@@ -3319,7 +3319,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpWCFinalResult.
+        ///   Looks up a localized string similar to Report the final outcome of the procedure. The result will be positive if the measured weight falls within the set tolerance..
         /// </summary>
         public static string HelpWCFinalResult {
             get {
@@ -3328,7 +3328,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpWCStart.
+        ///   Looks up a localized string similar to Start the test procedure..
         /// </summary>
         public static string HelpWCStart {
             get {
@@ -3337,7 +3337,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpWCStop.
+        ///   Looks up a localized string similar to Stop the test procedure..
         /// </summary>
         public static string HelpWCStop {
             get {
@@ -3346,7 +3346,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpWCTestRun.
+        ///   Looks up a localized string similar to Indicates the run performed at low speed during which the samples of the delivered current are carried out..
         /// </summary>
         public static string HelpWCTestRun {
             get {
@@ -3355,7 +3355,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpWCWeightInserted.
+        ///   Looks up a localized string similar to Indicates the sample weight entered for the test..
         /// </summary>
         public static string HelpWCWeightInserted {
             get {
@@ -3364,7 +3364,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpWCWeightMeasured.
+        ///   Looks up a localized string similar to Indicates the weight measured by the system..
         /// </summary>
         public static string HelpWCWeightMeasured {
             get {
@@ -3373,7 +3373,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HelpWCWeightTollerance.
+        ///   Looks up a localized string similar to Indicates the tolerance required by the measure..
         /// </summary>
         public static string HelpWCWeightTollerance {
             get {
@@ -3382,7 +3382,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationAcceptNewResolution.
+        ///   Looks up a localized string similar to Replaces the previous resolution value with the new calculated value..
         /// </summary>
         public static string ResolutionCalibrationAcceptNewResolution {
             get {
@@ -3400,7 +3400,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationCloseProcedure.
+        ///   Looks up a localized string similar to Make the origin of the axis and close the procedure..
         /// </summary>
         public static string ResolutionCalibrationCloseProcedure {
             get {
@@ -3409,7 +3409,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationFinalPositionHelp.
+        ///   Looks up a localized string similar to If the field is editable, set the final quota required..
         /// </summary>
         public static string ResolutionCalibrationFinalPositionHelp {
             get {
@@ -3418,7 +3418,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationFinalPosizionStartHelp.
+        ///   Looks up a localized string similar to The button starts moving the axis to the final position previously set..
         /// </summary>
         public static string ResolutionCalibrationFinalPosizionStartHelp {
             get {
@@ -3427,7 +3427,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationFinalReadValueHelp.
+        ///   Looks up a localized string similar to Final value of the current position read by the meter..
         /// </summary>
         public static string ResolutionCalibrationFinalReadValueHelp {
             get {
@@ -3436,7 +3436,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationFunctionDescription.
+        ///   Looks up a localized string similar to The vertical axis resolution calibration function allows you to calibrate the correct value by measuring in the field, then updating the default value proposed by the system. The procedure operates in successive steps until successful completion..
         /// </summary>
         public static string ResolutionCalibrationFunctionDescription {
             get {
@@ -3445,7 +3445,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationGoToInitialPosizion.
+        ///   Looks up a localized string similar to Return the axis to its initial position..
         /// </summary>
         public static string ResolutionCalibrationGoToInitialPosizion {
             get {
@@ -3454,7 +3454,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationInitialPositionHelp.
+        ///   Looks up a localized string similar to If the field is editable, set the required initial quota..
         /// </summary>
         public static string ResolutionCalibrationInitialPositionHelp {
             get {
@@ -3463,7 +3463,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationInitialReadValueHelp.
+        ///   Looks up a localized string similar to Initial value of the current position read by the meter..
         /// </summary>
         public static string ResolutionCalibrationInitialReadValueHelp {
             get {
@@ -3472,7 +3472,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationInitialStartHelp.
+        ///   Looks up a localized string similar to Indicates the measured travel from the start to the end position..
         /// </summary>
         public static string ResolutionCalibrationInitialStartHelp {
             get {
@@ -3481,7 +3481,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationMeasuredeValueHelp.
+        ///   Looks up a localized string similar to Indicates the measured travel from the start to the end position..
         /// </summary>
         public static string ResolutionCalibrationMeasuredeValueHelp {
             get {
@@ -3490,7 +3490,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ResolutionCalibrationNewResolutionHelp.
+        ///   Looks up a localized string similar to Displays the new resolution value calculated by the procedure..
         /// </summary>
         public static string ResolutionCalibrationNewResolutionHelp {
             get {
@@ -3499,7 +3499,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VerticalResolutionCalibrationStep1.
+        ///   Looks up a localized string similar to Step 1: place axis at the initial position.
         /// </summary>
         public static string VerticalResolutionCalibrationStep1 {
             get {
@@ -3508,7 +3508,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VerticalResolutionCalibrationStep2.
+        ///   Looks up a localized string similar to Step 2: place axis at the final dimension.
         /// </summary>
         public static string VerticalResolutionCalibrationStep2 {
             get {
@@ -3517,7 +3517,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VerticalResolutionCalibrationStep3.
+        ///   Looks up a localized string similar to Step 3: Update the resolution to the new value.
         /// </summary>
         public static string VerticalResolutionCalibrationStep3 {
             get {
@@ -3526,7 +3526,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VerticalResolutionCalibrationStep4.
+        ///   Looks up a localized string similar to Step 4: reposition axis and close the procedure.
         /// </summary>
         public static string VerticalResolutionCalibrationStep4 {
             get {

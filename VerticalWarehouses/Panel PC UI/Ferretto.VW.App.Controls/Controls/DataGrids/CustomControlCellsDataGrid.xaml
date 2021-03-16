@@ -70,6 +70,7 @@
                     <ScrollBar x:Name="PART_VerticalScrollBar"
                                Grid.Row="1"
                                Grid.Column="2"
+                               ContextMenuService.IsEnabled="False"
                                Maximum="{TemplateBinding ScrollableHeight}"
                                Orientation="Vertical"
                                Style="{DynamicResource MyScrollBar}"
@@ -84,6 +85,7 @@
                       </Grid.ColumnDefinitions>
                       <ScrollBar x:Name="PART_HorizontalScrollBar"
                                  Grid.Column="1"
+                                 ContextMenuService.IsEnabled="False"
                                  Maximum="{TemplateBinding ScrollableWidth}"
                                  Orientation="Horizontal"
                                  Style="{DynamicResource MyScrollBar}"

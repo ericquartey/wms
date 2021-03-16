@@ -120,13 +120,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public string ActiveContextName => OperationalContext.ItemInventory.ToString();
+        public string ActiveContextName => this.IsWaitingForReason ? OperationalContext.NoteDescription.ToString() : OperationalContext.ItemInventory.ToString();
 
         public ICommand CancelReasonCommand =>
-      this.cancelReasonCommand
-      ??
-      (this.cancelReasonCommand = new DelegateCommand(
-          this.CancelReason));
+            this.cancelReasonCommand
+            ??
+            (this.cancelReasonCommand = new DelegateCommand(
+                this.CancelReason));
 
         public bool CanInputQuantity
         {
@@ -234,6 +234,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
             }
         }
+
+        public bool IsWaitingForReason { get; private set; }
 
         public string MeasureUnit
         {
@@ -392,6 +394,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputBoxCode = userAction.Code;
                 return;
             }
+
+            if (this.IsWaitingForReason && userAction.UserAction == UserAction.Notes)
+            {
+                this.ReasonNotes = userAction.Code;
+                await this.ExecuteOperationAsync();
+            }
         }
 
         public async Task GetLoadingUnitsAsync()
@@ -470,6 +478,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         false);
 
             this.Reasons = null;
+            this.IsWaitingForReason = false;
 
             Task.Run(async () =>
             {
@@ -592,6 +601,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Reasons = null;
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
+            this.IsWaitingForReason = false;
         }
 
         private bool CanConfirmOperation()
@@ -712,6 +722,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var waitForReason = await this.CheckReasonsAsync();
 
+            this.IsWaitingForReason = waitForReason;
+
             if (!waitForReason)
             {
                 await this.ExecuteOperationAsync();
@@ -815,6 +827,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (!noteError)
                 {
                     this.IsWaitingForResponse = false;
+                    this.IsWaitingForReason = false;
                     this.Reasons = null;
                     this.RaiseCanExecuteChanged();
                 }

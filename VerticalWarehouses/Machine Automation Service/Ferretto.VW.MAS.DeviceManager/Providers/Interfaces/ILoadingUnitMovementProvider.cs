@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore);
 
-        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId, bool fastDeposit = true);
+        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? targetCellId, int? targetBayPositionId, int? sourceCellId, int? sourceBayPositionId, bool fastDeposit = true);
 
         MessageStatus MoveLoadingUnitStatus(NotificationMessage message);
 

@@ -578,7 +578,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return true;
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? positionId, bool fastDeposit = true)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? targetCellId, int? targetBayPositionId, int? sourceCellId, int? sourceBayPositionId, bool fastDeposit = true)
         {
             try
             {
@@ -591,7 +591,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     measure,
                     requestingBay,
                     sender,
-                    sourceBayPositionId: positionId,
+                    targetCellId,
+                    targetBayPositionId,
+                    sourceCellId,
+                    sourceBayPositionId,
                     fastDeposit: fastDeposit);
             }
             catch (InvalidOperationException ex)
@@ -708,13 +711,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 .Steps
                 .OrderBy(s => s.Number);
             var compensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - horizontalAxis.LastIdealPosition);
-            var distance = profileSteps.Last().Position - compensation + Math.Abs(horizontalAxis.ChainOffset);
-            if (distance > profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset))
+            var center = horizontalAxis.Center;
+            if (profileType == MovementProfileType.ShortDeposit || profileType == MovementProfileType.ShortPickup)
             {
-                distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset);
-                highSpeed = false;
+                center *= -1;
             }
-            else if (distance <= 0)
+            var distance = profileSteps.Last().Position - compensation + center;
+            if (distance > profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset)
+                || distance <= 0
+                )
             {
                 distance = profileSteps.Last().Position + Math.Abs(horizontalAxis.ChainOffset);
                 highSpeed = false;

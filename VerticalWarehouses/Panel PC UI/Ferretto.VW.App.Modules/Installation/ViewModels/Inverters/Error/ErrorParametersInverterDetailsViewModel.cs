@@ -45,6 +45,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        public static readonly IList<short> acuActualValues = new ReadOnlyCollection<short>(new List<short> { 259, 269, 273, 1247, 275, 249, 244, 245, 222, 223, 255, 256, 250, 243, 277, 251, 253, 228, 282, 283, 229, 254,
+                                                                                                              257, 266, 242, 237, 231, 232, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 301, 302, 1121, 29, 0, 1, 12, 16});
+
+        public static readonly IList<short> acuError = new ReadOnlyCollection<short>(new List<short> { 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 362, 363, 330, 331, 332, 335, 336,
+                                                                                                       337, 338, 339, 340, 341, 342, 343, 344, 346, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 367, 403});
+
+        public static readonly IList<short> aglActualValues = new ReadOnlyCollection<short>(new List<short> { 259, 269, 273, 275, 1533, 249, 244, 245, 222, 223, 255, 256, 246, 250, 243, 277, 279, 251, 253, 252, 258, 228, 283, 229, 230, 254,
+                                                                                                              257, 278, 1530, 210, 224, 211, 212, 238, 226, 213, 214, 239, 240, 241, 242, 231, 232, 287, 288, 289, 290, 291, 292, 298, 299, 293, 294, 295, 296 ,297, 301, 302});
+
+        public static readonly IList<short> aglError = new ReadOnlyCollection<short>(new List<short> { 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 362, 363, 330, 331, 332, 335, 336,
+                                                                                                       337, 338, 339, 340, 341, 342, 343, 344, 346, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 367, 403});
+
         public static readonly IList<short> angActualValues = new ReadOnlyCollection<short>(new List<short> { 259, 269, 273, 1247, 275, 249, 244, 245, 222, 223, 255, 256, 250, 243, 277, 251, 253, 228, 282, 283, 229, 254,
                                                                                                               257, 266, 242, 237, 231, 232, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 301, 302, 1121, 29, 0, 1, 12, 16});
 
@@ -356,9 +368,179 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             else if (this.inverterParameters.Type == InverterType.Agl)
             {
+                foreach (var parameter in this.inverterParameters.Parameters)
+                {
+                    if (aglError.Any(s => s == parameter.Code))
+                    {
+                        if (parameter.DecimalCount > 0)
+                        {
+                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                        }
+
+                        parameter.StringValue += " " + parameter.Um;
+                        this.error.Add(parameter);
+
+                        if (this.errorParameters.Any(s => s.Code == parameter.Code))
+                        {
+                            var parameterError = this.errorParameters.SingleOrDefault(s => s.Code == parameter.Code);
+                            this.errorParameters.Remove(parameterError);
+
+                            switch (parameter.DataSet)
+                            {
+                                case 0:
+                                    parameterError.DataSet0 = parameter.StringValue;
+                                    break;
+
+                                case 1:
+                                    parameterError.DataSet1 = parameter.StringValue;
+                                    break;
+
+                                case 2:
+                                    parameterError.DataSet2 = parameter.StringValue;
+                                    break;
+
+                                case 3:
+                                    parameterError.DataSet3 = parameter.StringValue;
+                                    break;
+
+                                case 4:
+                                    parameterError.DataSet4 = parameter.StringValue;
+                                    break;
+                            }
+
+                            this.errorParameters.Add(parameterError);
+                        }
+                        else
+                        {
+                            var parameterToAdd = new InverterParameters();
+                            parameterToAdd.Code = (short)parameter.Code;
+                            parameterToAdd.Description = parameter.Description;
+
+                            switch (parameter.DataSet)
+                            {
+                                case 0:
+                                    parameterToAdd.DataSet0 = parameter.StringValue;
+                                    break;
+
+                                case 1:
+                                    parameterToAdd.DataSet1 = parameter.StringValue;
+                                    break;
+
+                                case 2:
+                                    parameterToAdd.DataSet2 = parameter.StringValue;
+                                    break;
+
+                                case 3:
+                                    parameterToAdd.DataSet3 = parameter.StringValue;
+                                    break;
+
+                                case 4:
+                                    parameterToAdd.DataSet4 = parameter.StringValue;
+                                    break;
+                            }
+
+                            this.errorParameters.Add(parameterToAdd);
+                        }
+                    }
+                    else if (aglActualValues.Any(s => s == parameter.Code))
+                    {
+                        if (parameter.DecimalCount > 0)
+                        {
+                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                        }
+
+                        parameter.StringValue += " " + parameter.Um;
+                        this.actualValueParameters.Add(parameter);
+                    }
+                }
             }
             else if (this.inverterParameters.Type == InverterType.Acu)
             {
+                foreach (var parameter in this.inverterParameters.Parameters)
+                {
+                    if (acuError.Any(s => s == parameter.Code))
+                    {
+                        if (parameter.DecimalCount > 0)
+                        {
+                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                        }
+
+                        parameter.StringValue += " " + parameter.Um;
+                        this.error.Add(parameter);
+
+                        if (this.errorParameters.Any(s => s.Code == parameter.Code))
+                        {
+                            var parameterError = this.errorParameters.SingleOrDefault(s => s.Code == parameter.Code);
+                            this.errorParameters.Remove(parameterError);
+
+                            switch (parameter.DataSet)
+                            {
+                                case 0:
+                                    parameterError.DataSet0 = parameter.StringValue;
+                                    break;
+
+                                case 1:
+                                    parameterError.DataSet1 = parameter.StringValue;
+                                    break;
+
+                                case 2:
+                                    parameterError.DataSet2 = parameter.StringValue;
+                                    break;
+
+                                case 3:
+                                    parameterError.DataSet3 = parameter.StringValue;
+                                    break;
+
+                                case 4:
+                                    parameterError.DataSet4 = parameter.StringValue;
+                                    break;
+                            }
+
+                            this.errorParameters.Add(parameterError);
+                        }
+                        else
+                        {
+                            var parameterToAdd = new InverterParameters();
+                            parameterToAdd.Code = (short)parameter.Code;
+                            parameterToAdd.Description = parameter.Description;
+
+                            switch (parameter.DataSet)
+                            {
+                                case 0:
+                                    parameterToAdd.DataSet0 = parameter.StringValue;
+                                    break;
+
+                                case 1:
+                                    parameterToAdd.DataSet1 = parameter.StringValue;
+                                    break;
+
+                                case 2:
+                                    parameterToAdd.DataSet2 = parameter.StringValue;
+                                    break;
+
+                                case 3:
+                                    parameterToAdd.DataSet3 = parameter.StringValue;
+                                    break;
+
+                                case 4:
+                                    parameterToAdd.DataSet4 = parameter.StringValue;
+                                    break;
+                            }
+
+                            this.errorParameters.Add(parameterToAdd);
+                        }
+                    }
+                    else if (acuActualValues.Any(s => s == parameter.Code))
+                    {
+                        if (parameter.DecimalCount > 0)
+                        {
+                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                        }
+
+                        parameter.StringValue += " " + parameter.Um;
+                        this.actualValueParameters.Add(parameter);
+                    }
+                }
             }
 
             this.RaisePropertyChanged(nameof(this.ActualValueParameters));
