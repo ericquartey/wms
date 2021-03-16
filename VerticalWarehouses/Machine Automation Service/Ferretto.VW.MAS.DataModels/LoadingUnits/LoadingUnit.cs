@@ -66,6 +66,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsIntoMachine { get; set; }
 
+        public bool IsLaserOffset => this.LaserOffset > 0;
+
+        /// <summary>
+        /// distance to subtract to the ZOffset of the LaserPointer for all products in this LU
+        /// </summary>
+        public double LaserOffset { get; set; }
+
         /// <summary>
         /// Gets or sets the maximum weight,in kilograms, that the loading unit can carry.
         /// </summary>
