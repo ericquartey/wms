@@ -1649,4 +1649,19 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>Questa é l'ultima operazione su questo cassetto depostita l'articolo e premi OK</value>
   </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>Segnalazione difetto</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Qta pezza totale</value>
+  </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Qta buona di tessuto prima del difetto</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>Qta scarto</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>Segnala difetto</value>
+  </data>
 </root>

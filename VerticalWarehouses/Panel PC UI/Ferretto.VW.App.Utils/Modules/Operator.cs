@@ -59,6 +59,10 @@
 
             public const string WAIT = "ItemOperationWaitViewModel";
 
+            public static string DRAPERYCONFIRM = "ItemDraperyConfirmViewModel";
+
+            public static string SIGNALLINGDEFECT = "ItemSignallingDefectViewModel";
+
             public static string WEIGHT = "ItemWeightViewModel";
 
             public static string WEIGHT_UPDATE = "ItemWeightUpdateViewModel";

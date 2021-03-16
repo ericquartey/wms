@@ -11,188 +11,207 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-  <UserControl.Resources>
-    <converter:ImageToSourceConverter x:Key="ITSC" />
+    <UserControl.Resources>
+        <converter:ImageToSourceConverter x:Key="ITSC" />
 
-    <converter:BoolToBrushConverter x:Key="BoolToGreenRedConverter"
-                                    FalseBrush="{StaticResource FerrettoRed}"
-                                    TrueBrush="{StaticResource FerrettoGreen}" />
+        <converter:BoolToBrushConverter x:Key="BoolToGreenRedConverter"
+                                        FalseBrush="{StaticResource FerrettoRed}"
+                                        TrueBrush="{StaticResource FerrettoGreen}" />
 
-    <converter:BoolToIconKindConverter x:Key="BoolToValidationIconConverter"
-                                       FalseKind="AlertCircle"
-                                       TrueKind="CheckboxMarkedCircle" />
-  </UserControl.Resources>
+        <converter:BoolToIconKindConverter x:Key="BoolToValidationIconConverter"
+                                           FalseKind="AlertCircle"
+                                           TrueKind="CheckboxMarkedCircle" />
+    </UserControl.Resources>
 
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="*" />
-    </Grid.ColumnDefinitions>
-
-    <ctrls:PpcImage Grid.Row="0"
-                    Grid.Column="0"
-                    Width="180"
-                    Height="180"
-                    Margin="0,0,15,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Path="{Binding ItemId}"
-                    Stretch="Uniform" />
-
-    <Grid Grid.Row="0"
-          Grid.Column="1">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
-
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition />
-        <ColumnDefinition />
-        <ColumnDefinition />
-      </Grid.ColumnDefinitions>
-
-      <controls:PpcLabeledText Grid.Row="0"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="3"
-                               MaxHeight="65"
-                               Margin="0,0,0,10"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Top"
-                               ContentText="{Binding MissionOperation.ItemDescription}"
-                               LabelText="{resources:Loc OperatorApp.CommonItemDescription}" />
-
-      <controls:PpcLabeledText Grid.Row="1"
-                               Grid.Column="0"
-                               Margin="0,0,0,10"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               ContentText="{Binding MissionOperation.ItemListCode}"
-                               LabelText="{resources:Loc OperatorApp.CommonListCode}" />
-
-      <controls:PpcLabeledText Grid.Row="1"
-                               Grid.Column="1"
-                               Margin="0,0,0,10"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               ContentText="{Binding MissionOperation.ItemListRowCode}"
-                               LabelText="{resources:Loc OperatorApp.CommonListRow}" />
-
-      <StackPanel Grid.Row="1"
-                  Grid.Column="2"
-                  Margin="0,0,0,10"
-                  Orientation="Horizontal">
-        <controls:PpcLabeledText HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding MissionOperation.Lot}"
-                                 LabelText="{resources:Loc OperatorApp.CommonLot}" />
-        <Border Visibility="{Binding MissionOperation.Lot, Converter={StaticResource RTVC}}">
-          <iconPacks:PackIconMaterial Width="18"
-                                      Height="18"
-                                      Margin="5"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top"
-                                      Foreground="{Binding IsItemLotValid, Converter={StaticResource BoolToGreenRedConverter}}"
-                                      Kind="{Binding IsItemLotValid, Converter={StaticResource BoolToValidationIconConverter}}"
-                                      Visibility="{Binding InputLot, Converter={StaticResource RTVC}}" />
-        </Border>
-      </StackPanel>
-
-
-
-      <StackPanel Grid.Row="2"
-                  Grid.Column="2"
-                  Margin="0,0,0,10"
-                  Orientation="Horizontal">
-        <controls:PpcLabeledText HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding MissionOperation.SerialNumber}"
-                                 LabelText="{resources:Loc OperatorApp.SerialNumber}" />
-
-        <Border Visibility="{Binding MissionOperation.SerialNumber, Converter={StaticResource RTVC}}">
-          <iconPacks:PackIconMaterial Width="18"
-                                      Height="18"
-                                      Margin="5"
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top"
-                                      Foreground="{Binding IsItemSerialNumberValid, Converter={StaticResource BoolToGreenRedConverter}}"
-                                      Kind="{Binding IsItemSerialNumberValid, Converter={StaticResource BoolToValidationIconConverter}}"
-                                      Visibility="{Binding InputSerialNumber, Converter={StaticResource RTVC}}" />
-        </Border>
-      </StackPanel>
-
-      <controls:PpcLabeledText Grid.Row="2"
-                               Grid.Column="0"
-                               MaxHeight="40"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               ContentText="{Binding MissionOperation.ItemListDescription}"
-                               LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
-
-      <controls:PpcLabeledText Grid.Row="2"
-                               Grid.Column="1"
-                               MaxHeight="40"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               ContentText="{Binding SelectedCompartmentDetail.Stock}"
-                               LabelText="{resources:Loc OperatorApp.ItemStock}" />
-
-    </Grid>
-
-    <controls:PpcLabeledText Grid.Row="1"
-                             Grid.Column="0"
-                             Grid.ColumnSpan="2"
-                             MaxHeight="65"
-                             Margin="0,5,0,0"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             ContentText="{Binding MissionOperation.ItemNotes}"
-                             LabelText="{resources:Loc OperatorApp.CommonNote}" />
-
-    <Border Grid.Row="1"
-            Grid.Column="2"
-            Width="230"
-            Height="90"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Background="{DynamicResource PpcBackground}"
-            Visibility="{Binding IsBoxEnabled, Converter={StaticResource BTVC}}">
-      <Border BorderBrush="{DynamicResource FerrettoBlue}"
-              BorderThickness="{DynamicResource PpcBorderThickness}">
-        <Grid>
-
-          <Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-          </Grid.RowDefinitions>
+        </Grid.RowDefinitions>
 
-          <TextBlock x:Name="ItemCodeLabel"
-                     Margin="8,4"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Center"
-                     FontSize="{StaticResource FontSize_Normal}"
-                     FontWeight="Normal"
-                     Foreground="{DynamicResource Text_Foreground}"
-                     Text="{resources:Loc OperatorApp.BoxCode}" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-          <TextBlock x:Name="ItemCodeValue"
-                     Grid.Row="1"
-                     Margin="4,0,4,4"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Center"
-                     FontSize="{StaticResource FontSize_Very_High}"
-                     Foreground="{DynamicResource PpcForeground}"
-                     Text="{Binding SelectedCompartment.Barcode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
-                     TextWrapping="Wrap" />
+        <ctrls:PpcImage Grid.Row="0"
+                        Grid.Column="0"
+                        Width="180"
+                        Height="180"
+                        Margin="0,0,15,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Path="{Binding ItemId}"
+                        Stretch="Uniform" />
+
+        <Grid Grid.Row="0"
+              Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="3"
+                                     MaxHeight="65"
+                                     Margin="0,0,0,10"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemDescription}"
+                                     LabelText="{resources:Loc OperatorApp.CommonItemDescription}" />
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="0"
+                                     Margin="0,0,0,10"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListCode}"
+                                     LabelText="{resources:Loc OperatorApp.CommonListCode}" />
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="1"
+                                     Margin="0,0,0,10"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListRowCode}"
+                                     LabelText="{resources:Loc OperatorApp.CommonListRow}" />
+
+            <StackPanel Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="0,0,0,10"
+                        Orientation="Horizontal">
+                <controls:PpcLabeledText HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding MissionOperation.Lot}"
+                                         LabelText="{resources:Loc OperatorApp.CommonLot}" />
+                <Border Visibility="{Binding MissionOperation.Lot, Converter={StaticResource RTVC}}">
+                    <iconPacks:PackIconMaterial Width="18"
+                                                Height="18"
+                                                Margin="5"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top"
+                                                Foreground="{Binding IsItemLotValid, Converter={StaticResource BoolToGreenRedConverter}}"
+                                                Kind="{Binding IsItemLotValid, Converter={StaticResource BoolToValidationIconConverter}}"
+                                                Visibility="{Binding InputLot, Converter={StaticResource RTVC}}" />
+                </Border>
+            </StackPanel>
+
+
+
+            <StackPanel Grid.Row="2"
+                        Grid.Column="2"
+                        Margin="0,0,0,10"
+                        Orientation="Horizontal">
+                <controls:PpcLabeledText HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding MissionOperation.SerialNumber}"
+                                         LabelText="{resources:Loc OperatorApp.SerialNumber}" />
+
+                <Border Visibility="{Binding MissionOperation.SerialNumber, Converter={StaticResource RTVC}}">
+                    <iconPacks:PackIconMaterial Width="18"
+                                                Height="18"
+                                                Margin="5"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top"
+                                                Foreground="{Binding IsItemSerialNumberValid, Converter={StaticResource BoolToGreenRedConverter}}"
+                                                Kind="{Binding IsItemSerialNumberValid, Converter={StaticResource BoolToValidationIconConverter}}"
+                                                Visibility="{Binding InputSerialNumber, Converter={StaticResource RTVC}}" />
+                </Border>
+            </StackPanel>
+
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="0"
+                                     MaxHeight="40"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListDescription}"
+                                     LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
+
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="1"
+                                     MaxHeight="40"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding SelectedCompartmentDetail.Stock}"
+                                     LabelText="{resources:Loc OperatorApp.ItemStock}" />
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Grid.Column="0"
+                                     MaxHeight="40"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemBarcode}"
+                                     LabelText="Barcode"
+                                     Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Grid.Column="1"
+                                     MaxHeight="40"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemHeight}"
+                                     LabelText="Height"
+                                     Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
+
         </Grid>
-      </Border>
-    </Border>
 
-  </Grid>
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="0"
+                                 Grid.ColumnSpan="2"
+                                 MaxHeight="65"
+                                 Margin="0,5,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemNotes}"
+                                 LabelText="{resources:Loc OperatorApp.CommonNote}" />
+
+        <Border Grid.Row="1"
+                Grid.Column="2"
+                Width="230"
+                Height="90"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="{DynamicResource PpcBackground}"
+                Visibility="{Binding IsBoxEnabled, Converter={StaticResource BTVC}}">
+            <Border BorderBrush="{DynamicResource FerrettoBlue}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="ItemCodeLabel"
+                               Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource Text_Foreground}"
+                               Text="{resources:Loc OperatorApp.BoxCode}" />
+
+                    <TextBlock x:Name="ItemCodeValue"
+                               Grid.Row="1"
+                               Margin="4,0,4,4"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding SelectedCompartment.Barcode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
+                               TextWrapping="Wrap" />
+                </Grid>
+            </Border>
+        </Border>
+
+    </Grid>
 </UserControl>

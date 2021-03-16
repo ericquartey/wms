@@ -78,6 +78,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyConfirmingPartialOperation;
 
+        private bool isCurrentDraperyItem = false;
+
         private bool isInputQuantityEnabled;
 
         private bool isInputQuantityValid;
@@ -109,6 +111,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private CompartmentDetails selectedCompartmentDetail;
 
         private DelegateCommand showDetailsCommand;
+
+        private DelegateCommand signallingDefectCommand;
 
         private DelegateCommand weightCommand;
 
@@ -205,7 +209,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync("0"),
+                async () => await this.ConfirmOperation_New_Async("0"),    // await this.ConfirmOperationAsync()
                 this.CanConfirmOperation));
 
         public ICommand ConfirmPartialOperationCommand =>
@@ -219,7 +223,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmPresentOperationCommand
             ??
             (this.confirmPresentOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmPresentOperationAsync(),
+                async () => await this.ConfirmPresentOperationAsync(),   // await this.ConfirmPresentOperation_New_Async()
                 this.CanConfirmPresentOperation));
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -300,6 +304,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isBusyConfirmingPartialOperation, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsCurrentDraperyItem
+        {
+            get => this.isCurrentDraperyItem;
+            set => this.SetProperty(ref this.isCurrentDraperyItem, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsInputQuantityEnabled
         {
             get => this.isInputQuantityEnabled;
@@ -340,6 +350,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isOperationCanceled, value);
         }
 
+        public IMachineItemsWebService ItemsWebService => this.itemsWebService;
+
         public double LoadingUnitDepth
         {
             get => this.loadingUnitDepth;
@@ -375,8 +387,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.showDetailsCommand = new DelegateCommand(this.ShowOperationDetails));
 
+        public ICommand SignallingDefectCommand =>
+            this.signallingDefectCommand
+            ??
+            (this.signallingDefectCommand = new DelegateCommand(
+                /*async*/ () => /*await*/ this.SignallingDefect(),
+                this.CanOpenSignallingDefect));
+
         public ICommand WeightCommand =>
-            this.weightCommand
+                    this.weightCommand
             ??
             (this.weightCommand = new DelegateCommand(
                 () => this.Weight(),
@@ -648,6 +667,73 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public async Task ConfirmOperation_New_Async(string barcode)
+        {
+            System.Diagnostics.Debug.Assert(
+                this.InputQuantity.HasValue,
+                "The input quantity should have a value");
+
+            if (this.IsCurrentDraperyItem)
+            {
+                this.ShowDraperyItemConfirmView(
+                    this.MissionOperation.ItemBarcode,
+                    isPartiallyConfirmOperation: false);
+
+                return;
+            }
+
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                this.IsOperationConfirmed = true;
+
+                bool canComplete = false;
+
+                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
+                {
+                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
+                if (canComplete)
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                }
+                else
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                    this.navigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+
+                //this.navigationService.GoBackTo(
+                //    nameof(Utils.Modules.Operator),
+                //    Utils.Modules.Operator.ItemOperations.WAIT);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+                this.IsOperationConfirmed = false;
+            }
+            finally
+            {
+                // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
+            }
+        }
+
         public async Task ConfirmOperationAsync(string barcode)
         {
             System.Diagnostics.Debug.Assert(
@@ -889,6 +975,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.showDetailsCommand?.RaiseCanExecuteChanged();
             this.confirmOperationCanceledCommand?.RaiseCanExecuteChanged();
             this.weightCommand?.RaiseCanExecuteChanged();
+            this.signallingDefectCommand?.RaiseCanExecuteChanged();
         }
 
         protected void ShowOperationCanceledMessage()
@@ -956,6 +1043,71 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return this.CanConfirmPresent;
         }
 
+        private bool CanOpenSignallingDefect()
+        {
+            return this.IsCurrentDraperyItem;
+        }
+
+        private async Task ConfirmPresentOperation_New_Async()
+        {
+            System.Diagnostics.Debug.Assert(
+                this.InputQuantity.HasValue,
+                "The present quantity should have a value");
+
+            if (this.IsCurrentDraperyItem)
+            {
+                this.ShowDraperyItemConfirmView(
+                    this.MissionOperation.ItemBarcode,
+                    isPartiallyConfirmOperation: false);
+
+                return;
+            }
+
+            try
+            {
+                //this.IsBusyConfirmingPartialOperation = true;
+                //this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                this.IsOperationConfirmed = true;
+
+                //var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Inventory);
+
+                await this.compartmentsWebService.UpdateItemStockAsync(
+                        this.selectedCompartment.Id,
+                        this.selectedCompartmentDetail.ItemId.Value,
+                        this.availableQuantity.Value,
+                        reasons.First().Id,
+                        "update present quantity");
+
+                //await this.MissionOperationsService.RecallLoadingUnitAsync(this.loadingUnitId.Value);
+
+                //this.NavigationService.GoBack();
+                //this.operatorNavigationService.NavigateToDrawerViewConfirmPresent();
+
+                this.ShowNotification(Localized.Get("OperatorApp.UpdatedValue"), Services.Models.NotificationSeverity.Info);
+
+                await this.MissionOperationsService.RefreshAsync();
+                await this.GetLoadingUnitDetailsAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                //this.IsBusyConfirmingPartialOperation = false;
+                //this.IsOperationConfirmed = false;
+            }
+            finally
+            {
+                // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
+
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
+            }
+        }
+
         private async Task ConfirmPresentOperationAsync()
         {
             System.Diagnostics.Debug.Assert(
@@ -1014,6 +1166,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Compartments = null;
                 this.SelectedCompartment = null;
                 this.AvailableQuantity = null;
+                this.IsCurrentDraperyItem = false;
             }
             else
             {
@@ -1038,6 +1191,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.CanInputAvailableQuantity = true;
                     this.CanInputQuantity = true;
                     this.AvailableQuantity = null;
+                }
+
+                try
+                {
+                    var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                    //this.IsCurrentDraperyItem = item.IsDraperyItem;  // ---->  Uncomment this code       **//**//**//**
+                    this.IsCurrentDraperyItem = true;
+                }
+                catch (Exception)
+                {
+                    this.IsCurrentDraperyItem = false;
                 }
             }
 
@@ -1115,6 +1279,42 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputItemCode = null;
             this.InputQuantity = this.MissionRequestedQuantity;
             //this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
+        }
+
+        private void ShowDraperyItemConfirmView(string barcode, bool isPartiallyConfirmOperation)
+        {
+            this.Logger.Debug($"Show the confirm view for drapery item {this.ItemId}, description {this.MissionOperation.ItemDescription}");
+
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.DRAPERYCONFIRM,
+                new ItemDraperyDataConfirm
+                {
+                    MissionId = this.MissionOperation.Id,
+                    ItemDescription = this.MissionOperation.ItemDescription,
+                    AvailableQuantity = this.AvailableQuantity.Value,
+                    MissionRequestedQuantity = this.MissionRequestedQuantity,
+                    InputQuantity = this.InputQuantity,
+                    CanInputQuantity = this.CanInputQuantity,
+                    QuantityIncrement = this.QuantityIncrement,
+                    QuantityTolerance = this.QuantityTolerance,
+                    MeasureUnitTxt = string.Empty,
+                    Barcode = barcode,
+                    IsPartiallyCompleteOperation = isPartiallyConfirmOperation,
+                },
+                trackCurrentView: true);
+        }
+
+        private /*async Task*/ void SignallingDefect()
+        {
+            this.Logger.Debug("Signalling defect call....");
+
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.SIGNALLINGDEFECT,
+                this.MissionOperation);
+            //this.MissionOperation,
+            //trackCurrentView: true);
         }
 
         private void Weight()

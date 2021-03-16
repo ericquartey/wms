@@ -1644,4 +1644,19 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>Toto je poslední operace v této zásuvce umístěná na článek a stiskněte OK</value>
   </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>Drapery defect</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Total quantity</value>
+  </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Good quantity before defect</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>Wasted quantity</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>Signalling defect</value>
+  </data>
 </root>
