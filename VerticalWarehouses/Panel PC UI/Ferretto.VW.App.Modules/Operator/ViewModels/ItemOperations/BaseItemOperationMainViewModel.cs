@@ -1292,7 +1292,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     MissionId = this.MissionOperation.Id,
                     ItemDescription = this.MissionOperation.ItemDescription,
-                    AvailableQuantity = this.AvailableQuantity.Value,
+                    AvailableQuantity = this.AvailableQuantity,
                     MissionRequestedQuantity = this.MissionRequestedQuantity,
                     InputQuantity = this.InputQuantity,
                     CanInputQuantity = this.CanInputQuantity,

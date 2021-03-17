@@ -2031,4 +2031,16 @@
     <value>Signalling defect</value>
     <comment>Button</comment>
   </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Confirm drapery picking</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Signalling defect failed</value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Item is deleted</value>
+    <comment>Information Message</comment>
+  </data>
 </root>

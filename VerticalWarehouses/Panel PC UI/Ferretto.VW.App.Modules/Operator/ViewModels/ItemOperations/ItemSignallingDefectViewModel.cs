@@ -53,48 +53,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #endregion
 
-        //public ItemSignallingDefectViewModel(
-        //    IMachineIdentityWebService machineIdentityWebService,
-        //    INavigationService navigationService,
-        //    IOperatorNavigationService operatorNavigationService,
-        //    IMachineLoadingUnitsWebService loadingUnitsWebService,
-        //    IMachineCompartmentsWebService compartmentsWebService,
-        //    IMachineMissionOperationsWebService missionOperationsWebService,
-        //    IMachineItemsWebService itemsWebService,
-        //    IMissionOperationsService missionOperationsService,
-        //    IEventAggregator eventAggregator,
-        //    IBayManager bayManager,
-        //    IDialogService dialogService)
-        //    : base(
-        //          machineIdentityWebService,
-        //          navigationService,
-        //          operatorNavigationService,
-        //          loadingUnitsWebService,
-        //          itemsWebService,
-        //          compartmentsWebService,
-        //          missionOperationsWebService,
-        //          bayManager,
-        //          eventAggregator,
-        //          missionOperationsService,
-        //          dialogService)
-        //{
-        //}
-
-        /*
-        public ItemSignallingDefectViewModel(
-            IMachineMissionOperationsWebService missionOperationsWebService,
-            IMissionOperationsService missionOperationsService,
-            IMachineLoadingUnitsWebService loadingUnitsWebService,
-            IMachineItemsWebService itemsWebService)
-            : base(PresentationMode.Operator)
-        {
-            this.itemsWebService = itemsWebService;
-            this.missionOperationsWebService = missionOperationsWebService;
-            this.loadingUnitsWebService = loadingUnitsWebService;
-            this.missionOperationsService = missionOperationsService;
-        }
-        */
-
         #region Constructors
 
         public ItemSignallingDefectViewModel(
@@ -258,15 +216,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             // Notification messages
             if (!bResult)
             {
-                this.ShowNotification($"Signalling defect failed for item {this.itemId}.", Services.Models.NotificationSeverity.Error);
-                //string message = Localized.Get("OperatorApp.SignallingDefectFailed") ==> "Signalling defect failed"
+                this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectFailed"), Services.Models.NotificationSeverity.Error);
+                // string message => "Signalling defect failed"
             }
             else
             {
                 if (isItemDeleted)
                 {
-                    this.ShowNotification($"Item {this.itemId} will be deleted.", Services.Models.NotificationSeverity.Warning);
-                    //string message = Localized.Get("OperatorApp.ItemOnDeleting") ==> "Item will be deleted"
+                    this.ShowNotification(Localized.Get("OperatorApp.ItemIsDeleted"), Services.Models.NotificationSeverity.Warning);
+                    // string message => "Item is deleted"
                 }
             }
 
@@ -306,7 +264,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.DraperyItemDescription = string.Empty;
                 this.AvailableQuantity = 0;
                 this.AvailableQuantity = 500;
-                this.QuantityTolerance = 5;
+                this.QuantityTolerance = 1;
             }
         }
 

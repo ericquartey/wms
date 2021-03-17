@@ -4,7 +4,7 @@
     {
         #region Properties
 
-        public double AvailableQuantity { get; set; }
+        public double? AvailableQuantity { get; set; }
 
         public string Barcode { get; set; }
 

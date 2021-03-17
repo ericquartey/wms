@@ -1673,4 +1673,13 @@
   <data name="SignallingDefectDrapery" xml:space="preserve">
     <value>Segnala difetto</value>
   </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Conferma prelievo pezza</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Segnala difetto fallita</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Articolo é cancellato</value>
+  </data>
 </root>
