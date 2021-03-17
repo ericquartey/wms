@@ -799,6 +799,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm drapery picking.
+        /// </summary>
+        public static string ConfirmDraperyPickingPageHeader {
+            get {
+                return ResourceManager.GetString("ConfirmDraperyPickingPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm row.
         /// </summary>
         public static string ConfirmInstruction {
@@ -2244,6 +2253,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ItemDetailWeight {
             get {
                 return ResourceManager.GetString("ItemDetailWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item is deleted.
+        /// </summary>
+        public static string ItemIsDeleted {
+            get {
+                return ResourceManager.GetString("ItemIsDeleted", resourceCulture);
             }
         }
         
@@ -3963,6 +3981,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SignallingDefectDrapery {
             get {
                 return ResourceManager.GetString("SignallingDefectDrapery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signalling defect failed.
+        /// </summary>
+        public static string SignallingDefectFailed {
+            get {
+                return ResourceManager.GetString("SignallingDefectFailed", resourceCulture);
             }
         }
         

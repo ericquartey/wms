@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMissionOperationsService missionOperationsService;
 
-        private double availableQuantity;
+        private double? availableQuantity;
 
         private bool canInputQuantity;
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int? quantityTolerance;
 
-        private double? wastedDraperyQuantity;
+        private double wastedDraperyQuantity;
 
         #endregion
 
@@ -57,7 +57,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public double AvailableQuantity
+        public double? AvailableQuantity
         {
             get => this.availableQuantity;
             set => this.SetProperty(ref this.availableQuantity, value);
@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.quantityTolerance, value);
         }
 
-        public double? WastedDraperyQuantity
+        public double WastedDraperyQuantity
         {
             get => this.wastedDraperyQuantity;
             set => this.SetProperty(ref this.wastedDraperyQuantity, value, this.RaiseCanExecuteChanged);
@@ -139,6 +139,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
+
+            this.WastedDraperyQuantity = 0;
+            this.CanInputWastedDraperyQuantity = true;
+            this.QuantityTolerance = 1;
+            this.QuantityIncrement = 0.1;
 
             if (this.Data is ItemDraperyDataConfirm itemDraperyData)
             {
@@ -155,11 +160,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Barcode = itemDraperyData.Barcode;
                 this.IsPartiallyCompleteOperation = itemDraperyData.IsPartiallyCompleteOperation;
             }
+            else
+            {
+                this.CanInputQuantity = false;
+                this.QuantityIncrement = 0.1;
+                this.QuantityTolerance = 1;
+                this.DraperyItemDescription = "No description available";
+                this.AvailableQuantity = null;
+                this.MissionRequestedQuantity = 0;
+                this.InputQuantity = null;
+                this.MeasureUnitTxt = string.Empty;
+                this.Barcode = string.Empty;
+                this.IsPartiallyCompleteOperation = false;
+            }
         }
 
         private bool CanConfirmDraperyItemButton()
         {
-            return this.InputQuantity + this.WastedDraperyQuantity < this.AvailableQuantity;
+            bool canConfirm;
+            if (!this.InputQuantity.HasValue ||
+                !this.AvailableQuantity.HasValue)
+            {
+                canConfirm = false;
+            }
+            else
+            {
+                canConfirm = this.InputQuantity.Value + this.wastedDraperyQuantity < this.AvailableQuantity.Value;
+            }
+
+            return canConfirm;
         }
 
         private async Task ConfirmOperationAsync()

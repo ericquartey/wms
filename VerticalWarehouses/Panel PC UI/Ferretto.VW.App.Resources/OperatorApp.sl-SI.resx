@@ -1662,4 +1662,13 @@
   <data name="SignallingDefectDrapery" xml:space="preserve">
     <value>Signalling defect</value>
   </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Confirm drapery picking</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Signalling defect failed</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Item is deleted</value>
+  </data>
 </root>

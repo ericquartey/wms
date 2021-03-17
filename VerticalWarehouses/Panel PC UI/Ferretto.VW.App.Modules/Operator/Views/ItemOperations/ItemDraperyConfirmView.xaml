@@ -19,6 +19,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -26,8 +27,8 @@
                    Margin="10,10,15,10"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Confirm picking" />
-        <!--  text: "{resources:Loc OperatorApp.ConfirmPickingPageHeader}"  -->
+                   Text="{resources:Loc OperatorApp.ConfirmDraperyPickingPageHeader}" />
+        <!--  text: "Confirm picking"  -->
 
         <controls:PpcLabeledText Grid.Row="1"
                                  MaxHeight="65"
@@ -41,7 +42,7 @@
                 Width="230"
                 Height="90"
                 MinHeight="90"
-                Margin="15,8,15,0"
+                Margin="15,4,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -85,7 +86,7 @@
                 Width="230"
                 Height="90"
                 MinHeight="90"
-                Margin="15,8,15,0"
+                Margin="15,4,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -123,83 +124,38 @@
             </Border>
         </Border>
 
-        <!--
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Width="230"
-                           Height="90"
-                           Margin="15,8,15,0"
-                           EditValue="{Binding GoodDraperyQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static resources:General.TargetNullValue}}"
-                           Increment="{Binding QuantityIncrement}"
-                           IsEnabled="{Binding CanInputGoodDraperyQuantity}"
-                           LabelText="{resources:Loc OperatorApp.GoodQuantity}"
-                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                           MinValue="0" />-->
-
-        <Border Grid.Row="4"
-                Height="120"
-                MinHeight="120"
-                Margin="15,8,15,8">
-            <Border>
-                <Grid Grid.Column="8"
-                      Grid.ColumnSpan="4">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <ctrls:PpcSpinEdit Grid.Row="0"
-                                       Grid.Column="0"
-                                       Width="230"
-                                       Height="90"
-                                       Margin="15,8,15,0"
-                                       EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                       Increment="{Binding QuantityIncrement}"
-                                       IsEnabled="{Binding CanInputQuantity}"
-                                       LabelText="{Binding MeasureUnitTxt, Mode=OneWay}"
-                                       Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                                       MinValue="0" />
-                    <!--  LabelText= "Qta buona di tessuto prima del difetto"  -->
-
-                    <ctrls:PpcSpinEdit Grid.Row="0"
-                                       Grid.Column="1"
-                                       Height="90"
-                                       Margin="80,8,15,0"
-                                       EditValue="{Binding WastedDraperyQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static resources:General.TargetNullValue}}"
-                                       Increment="{Binding QuantityIncrement}"
-                                       IsEnabled="{Binding CanInputWastedDraperyQuantity}"
-                                       LabelText="{resources:Loc OperatorApp.WastedQuantityDrapery}"
-                                       Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                                       MinValue="0" />
-
-                    <!--  LabelText= "Qta scarto"  -->
-
-                </Grid>
-            </Border>
-        </Border>
-
-        <!--  <== text: "Good textile before defect" (/"Q.tà di tessuto buona prima del difetto") :: Translation  -->
-        <!--
-
         <ctrls:PpcSpinEdit Grid.Row="4"
                            Width="230"
                            Height="90"
-                           Margin="15,8,15,0"
+                           Margin="15,4,15,0"
+                           EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           Increment="{Binding QuantityIncrement}"
+                           IsEnabled="{Binding CanInputQuantity}"
+                           LabelText="{Binding MeasureUnitTxt, Mode=OneWay}"
+                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                           MinValue="0" />
+
+        <!--  LabelText= "Qta buona di tessuto prima del difetto"  -->
+
+        <ctrls:PpcSpinEdit Grid.Row="5"
+                           Width="230"
+                           Height="90"
+                           Margin="15,4,15,0"
                            EditValue="{Binding WastedDraperyQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static resources:General.TargetNullValue}}"
                            Increment="{Binding QuantityIncrement}"
                            IsEnabled="{Binding CanInputWastedDraperyQuantity}"
-                           LabelText="{resources:Loc OperatorApp.WastedQuantity}"
+                           LabelText="{resources:Loc OperatorApp.WastedQuantityDrapery}"
                            Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                           MinValue="0" />-->
+                           MinValue="0" />
 
-        <!--  <== text: "Wasted:" (/"Q.tà di scarto") :: Translation  -->
+        <!--  LabelText= "Qta scarto"  -->
 
-        <controls:PpcButton Grid.Row="5"
+        <controls:PpcButton Grid.Row="6"
                             Margin="15,8,15,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding ConfirmDraperyItemCommand}"
-                            Content="{resources:Loc OperatorApp.ConfirmPresent}"
+                            Content="{resources:Loc OperatorApp.Confirm}"
                             Style="{StaticResource ConfirmButton}" />
 
         <!--  {Binding IsConfirmSignallingDefectButtonEnabled}"  -->

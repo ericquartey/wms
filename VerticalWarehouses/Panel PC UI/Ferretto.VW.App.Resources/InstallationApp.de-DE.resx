@@ -2089,10 +2089,10 @@
     <value>In Maschine</value>
   </data>
   <data name="MaxNetWeight" xml:space="preserve">
-    <value>Max Nettogew. (kg)</value>
+    <value>Max Net. gew. (kg)</value>
   </data>
   <data name="MissionsCount" xml:space="preserve">
-    <value>Zählung Aufgaben</value>
+    <value>Missionen</value>
   </data>
   <data name="Tare" xml:space="preserve">
     <value>Tara (kg)</value>
