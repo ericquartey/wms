@@ -1653,6 +1653,9 @@
   <data name="SubnetMask_Additional" xml:space="preserve">
     <value>SubnetMask dodatno</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Dodajte</value>
+  </data>
   <data name="WastedQuantityDrapery" xml:space="preserve">
     <value>Wasted quantity</value>
   </data>

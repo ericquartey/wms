@@ -1667,6 +1667,9 @@
   <data name="SubnetMask_Additional" xml:space="preserve">
     <value>SubnetMask aggiuntivo</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Aggiungi</value>
+  </data>
   <data name="WastedQuantityDrapery" xml:space="preserve">
     <value>Qta scarto</value>
   </data>

@@ -184,7 +184,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             // TEST
             //this.barcodeReaderService.SimulateRead("\\$RIENTROUDC\r");
-            //this.barcodeReaderService.SimulateRead("000prova01\r");
+            this.barcodeReaderService.SimulateRead("000prova01\r");
             //this.barcodeReaderService.SimulateRead("TEST010000100001\r");
             //this.barcodeReaderService.SimulateRead("VMC1000001\r");
             //this.barcodeReaderService.SimulateRead("1805_B_F_01\r");
@@ -215,11 +215,11 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             //string text = $"{measureConst2}, {measureConst1}, {measureConst0}";
 
             // NO TEST
-            this.NavigationService.Appear(
-                    nameof(Utils.Modules.Menu),
-                    Utils.Modules.Menu.MAIN_MENU,
-                    data: this.Data,
-                    trackCurrentView: true);
+            //this.NavigationService.Appear(
+            //        nameof(Utils.Modules.Menu),
+            //        Utils.Modules.Menu.MAIN_MENU,
+            //        data: this.Data,
+            //        trackCurrentView: true);
         }
 
         #endregion

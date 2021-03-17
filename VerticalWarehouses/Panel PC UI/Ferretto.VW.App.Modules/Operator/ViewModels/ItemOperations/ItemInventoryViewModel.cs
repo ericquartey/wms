@@ -11,6 +11,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemInventoryViewModel(
+            IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
             INavigationService navigationService,
             IOperatorNavigationService operatorNavigationService,
@@ -23,6 +24,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBayManager bayManager,
             IDialogService dialogService)
             : base(
+                  areasWebService,
                   machineIdentityWebService,
                   navigationService,
                   operatorNavigationService,

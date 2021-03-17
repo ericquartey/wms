@@ -34,6 +34,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPickViewModel(
+            IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
             INavigationService navigationService,
             IOperatorNavigationService operatorNavigationService,
@@ -46,6 +47,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBayManager bayManager,
             IDialogService dialogService)
             : base(
+                  areasWebService,
                   machineIdentityWebService,
                   navigationService,
                   operatorNavigationService,
@@ -154,6 +156,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsAddItem = false;
             this.CanInputAvailableQuantity = true;
             this.CanInputQuantity = true;
             this.CloseLine = true;
@@ -211,6 +214,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
+            this.emptyOperationCommand?.RaiseCanExecuteChanged();
             this.emptyOperationCommand.RaiseCanExecuteChanged();
 
             //this.signallingDefectCommand.RaiseCanExecuteChanged();

@@ -2011,6 +2011,9 @@
   <data name="SubnetMask_Additional" xml:space="preserve">
     <value>SubnetMask additional</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="DraperyDefectPageHeader" xml:space="preserve">
     <value>Drapery defect</value>
     <comment>Page header</comment>
