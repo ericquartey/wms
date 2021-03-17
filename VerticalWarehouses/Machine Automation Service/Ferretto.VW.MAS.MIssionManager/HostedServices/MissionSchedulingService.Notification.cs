@@ -58,10 +58,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.OnDataLayerReadyAsync(serviceProvider);
                     break;
 
-                case MessageType.TimePeriodElapsed:
-                    this.OnTimePeriodElapsed(serviceProvider);
-                    break;
-
                 case MessageType.ShutterPositioning:
                     await this.OnShutterPositioning(message, serviceProvider);
                     break;

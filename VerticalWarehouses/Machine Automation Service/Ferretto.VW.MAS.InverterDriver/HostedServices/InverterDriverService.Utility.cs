@@ -58,31 +58,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private bool refreshTargetTable = false;
 
-        private DateTime timePeriodElapsed = DateTime.UtcNow;
-
         #endregion
 
         #region Methods
-
-        private void CheckTimePeriodElapsed()
-        {
-            if (DateTime.UtcNow.Subtract(this.timePeriodElapsed).TotalMinutes >= 60)
-            {
-                this.timePeriodElapsed = DateTime.UtcNow;
-                var notificationMessage = new NotificationMessage(
-                    null,
-                    $"Time period elapsed",
-                    MessageActor.Any,
-                    MessageActor.InverterDriver,
-                    MessageType.TimePeriodElapsed,
-                    BayNumber.None,
-                    BayNumber.None,
-                    MessageStatus.OperationStart);
-
-                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
-                this.Logger.LogTrace($"Time period elapsed");
-            }
-        }
 
         private void ConfigureTimer(IInverterSetTimerFieldMessageData updateData)
         {
@@ -1227,8 +1205,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     //this.Logger.LogTrace($"2.RequestHeartBeat={heartBeatMessage}");
 
                     this.isHeartBeatOn = !this.isHeartBeatOn;
-
-                    this.CheckTimePeriodElapsed();
                 }
                 else
                 {
