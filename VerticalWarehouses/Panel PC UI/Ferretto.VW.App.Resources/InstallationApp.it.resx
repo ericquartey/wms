@@ -2091,10 +2091,10 @@
     <value>In macchina</value>
   </data>
   <data name="MaxNetWeight" xml:space="preserve">
-    <value>Max peso netto (kg)</value>
+    <value>Max p. netto (kg)</value>
   </data>
   <data name="MissionsCount" xml:space="preserve">
-    <value>Conteggio missioni</value>
+    <value>Missioni</value>
   </data>
   <data name="Tare" xml:space="preserve">
     <value>Tara (kg)</value>
@@ -2447,5 +2447,8 @@
   </data>
   <data name="MovingMachine" xml:space="preserve">
     <value>Macchina in movimento</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Offset Laser</value>
   </data>
 </root>
