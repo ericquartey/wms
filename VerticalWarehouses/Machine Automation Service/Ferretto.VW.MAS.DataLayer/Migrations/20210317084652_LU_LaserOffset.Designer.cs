@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20210316173738_LU_LaserOffset")]
+    [Migration("20210317084652_LU_LaserOffset")]
     partial class LU_LaserOffset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

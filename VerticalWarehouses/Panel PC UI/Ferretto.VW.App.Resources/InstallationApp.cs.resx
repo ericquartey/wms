@@ -2092,7 +2092,7 @@
     <value>Max čistá hmot (kg)</value>
   </data>
   <data name="MissionsCount" xml:space="preserve">
-    <value>Počítání misí</value>
+    <value>Mise</value>
   </data>
   <data name="Tare" xml:space="preserve">
     <value>Tára (kg)</value>

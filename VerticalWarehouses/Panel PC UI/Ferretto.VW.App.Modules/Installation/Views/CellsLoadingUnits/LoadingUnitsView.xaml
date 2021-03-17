@@ -75,7 +75,8 @@
           <ColumnDefinition />
           <ColumnDefinition />
           <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          </Grid.ColumnDefinitions>
 
         <controls:PpcTextBox Grid.Column="0"
                              HorizontalAlignment="Stretch"
@@ -235,8 +236,16 @@
                              LabelText="{res:Loc InstallationApp.NetWeight}" />
         <!--  LabelText="NetWeight" />  -->
 
+                <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="7"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedLU.LaserOffset, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsEnabledEditing}"
+                             LabelText="{res:Loc InstallationApp.LaserOffset}" />
+                <!--  LabelText="LaserOffser" />  -->
 
-      </Grid>
+            </Grid>
     </Border>
 
     <Grid Grid.Row="4"

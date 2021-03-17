@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         private double height;
 
+        private double laserOffset;
+
         private double maxNetWeight;
 
         private int missionsCount;
@@ -71,7 +73,19 @@ namespace Ferretto.VW.MAS.DataModels
         /// <summary>
         /// distance to subtract to the ZOffset of the LaserPointer for all products in this LU
         /// </summary>
-        public double LaserOffset { get; set; }
+        public double LaserOffset
+        {
+            get => this.laserOffset;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new System.ArgumentOutOfRangeException(nameof(value));
+                }
+
+                this.laserOffset = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the maximum weight,in kilograms, that the loading unit can carry.
