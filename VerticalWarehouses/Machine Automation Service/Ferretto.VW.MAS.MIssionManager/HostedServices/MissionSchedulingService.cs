@@ -1191,15 +1191,24 @@ namespace Ferretto.VW.MAS.MissionManager
                             }
                         }
                         else if (bay.IsExternal
-                            && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
-                            && position.LoadingUnit is null)
+                            && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
                         {
-                            errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+                            if (position.LoadingUnit is null)
+                            {
+                                errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
 
-                            //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                            this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);
-                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                            return true;
+                                //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                                this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);
+                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                return true;
+                            }
+                            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id))
+                            {
+                                this.Logger.LogInformation($"Insert load unit {position.LoadingUnit.Id} from {position.Location} to cell");
+                                var missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.IN : MissionType.LoadUnitOperation;
+                                moveLoadingUnitProvider.InsertToCell(missionType, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
+                                return true;
+                            }
                         }
                     }
                 }
