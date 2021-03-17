@@ -30,6 +30,8 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
+        private const int CleanupTimeout = 60 * 60 * 1000;  // one hour expressed in milliseconds
+
         private readonly Timer CleanupTimer;
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
@@ -525,11 +527,6 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-
-            missionsDataProvider.PurgeMissions();
-
-            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-            errorsProvider.PurgeErrors();
 
             var missions = missionsDataProvider.GetAllMissions().ToList();
             foreach (var mission in missions)
@@ -1243,15 +1240,17 @@ namespace Ferretto.VW.MAS.MissionManager
             var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             loadUnitsDataProvider.UpdateWeightStatistics();
 
+            this.OnTimePeriodElapsed(null);
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.RestoreFullTest(serviceProvider);
 
             this.dataLayerIsReady = true;
+
             this.Logger.LogDebug("InvokeSchedulerAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
-            this.Logger.LogTrace("OnDataLayerReady end");
+            this.CleanupTimer.Change(CleanupTimeout, CleanupTimeout);
 
-            this.CleanupTimer.Change(0, 60 * 60 * 1000);
+            this.Logger.LogTrace("OnDataLayerReady end");
         }
 
         private async Task OnHoming(NotificationMessage message, IServiceProvider serviceProvider)
@@ -1466,7 +1465,6 @@ namespace Ferretto.VW.MAS.MissionManager
                 || !this.firstCleanupExecuted
                 )
             {
-                this.firstCleanupExecuted = true;
                 this.Logger.LogInformation($"OnTimePeriodElapsed: clean up missions and errors and schedule homing");
                 var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
 
@@ -1494,6 +1492,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     var machineModeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
                     machineModeProvider.RequestChange(MachineMode.Manual);
                 }
+                this.firstCleanupExecuted = true;
             }
 
             // actions executed every hour
