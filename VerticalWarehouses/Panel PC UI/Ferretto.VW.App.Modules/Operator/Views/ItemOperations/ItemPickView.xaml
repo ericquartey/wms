@@ -98,10 +98,10 @@
                          ShowBackground="False"
                          ShowRuler="False" />
 
-                <localControls:ItemInfoView Grid.Row="1"
-                                            Height="50"
-                                            Margin="0,0,0,0"
-                                            VerticalAlignment="Top" />
+        <localControls:ItemInfoView Grid.Row="1"
+                                    Height="50"
+                                    Margin="0,0,0,0"
+                                    VerticalAlignment="Top" />
 
       </Grid>
 
@@ -453,54 +453,58 @@
                          Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                          MinValue="0" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Width="78"
-                                Margin="15,8,15,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding ShowDetailsCommand}"
-                                Content="{resources:Loc OperatorApp.Details}"
-                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+      <controls:PpcButton Grid.Row="4"
+                          Width="78"
+                          Height="50"
+                          Margin="15,8,15,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ShowDetailsCommand}"
+                          Content="{resources:Loc OperatorApp.Details}"
+                          Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Width="78"
-                                Margin="15,8,15,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding WeightCommand}"
-                                Content="{resources:Loc OperatorApp.Weight}"
-                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+      <controls:PpcButton Grid.Row="4"
+                          Width="78"
+                          Height="50"
+                          Margin="15,8,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding WeightCommand}"
+                          Content="{resources:Loc OperatorApp.Weight}"
+                          Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Width="120"
-                                Margin="15,8,15,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding ConfirmOperationCanceledCommand}"
-                                Content="{resources:Loc OperatorApp.CancelPick}"
-                                IsBusy="{Binding IsBusyConfirmingOperation}"
-                                Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
+      <controls:PpcButton Grid.Row="4"
+                          Width="120"
+                          Height="50"
+                          Margin="15,8,15,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ConfirmOperationCanceledCommand}"
+                          Content="{resources:Loc OperatorApp.CancelPick}"
+                          IsBusy="{Binding IsBusyConfirmingOperation}"
+                          Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Width="78"
-                                Margin="0,8,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding SignallingDefectCommand}"
-                                Content="{resources:Loc OperatorApp.SignallingDefectDrapery}"
-                                Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
+      <controls:PpcButton Grid.Row="4"
+                          Width="78"
+                          Height="50"
+                          Margin="0,8,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding SignallingDefectCommand}"
+                          Content="{resources:Loc OperatorApp.SignallingDefectDrapery}"
+                          Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
 
-            <!-- Content="Signalling defect" /* Signalling defect <==> Segnala difetto */ -->
+      <!-- Content="Signalling defect" /* Signalling defect <==> Segnala difetto */ -->
 
-            <controls:PpcButton Grid.Row="5"
-                                Margin="15,8,15,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding EmptyOperationCommand}"
-                                Content="{resources:Loc OperatorApp.ConfirmOnEmpty}"
-                                IsBusy="{Binding IsBusyConfirmingOperation}"
-                                Style="{StaticResource ConfirmButton}"
-                                Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
+      <controls:PpcButton Grid.Row="5"
+                          Margin="15,8,15,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding EmptyOperationCommand}"
+                          Content="{resources:Loc OperatorApp.ConfirmOnEmpty}"
+                          IsBusy="{Binding IsBusyConfirmingOperation}"
+                          Style="{StaticResource ConfirmButton}"
+                          Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
 
       <controls:PpcButton Grid.Row="5"
                           Height="50"
@@ -567,7 +571,7 @@
                               IsChecked="{Binding CloseLine, Mode=TwoWay}" />
       </StackPanel>
 
-        </Grid>
     </Grid>
+  </Grid>
 
 </ctrls:View>

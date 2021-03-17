@@ -1085,7 +1085,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (this.IsAddItemVisible)
                 {
-                    //some code
                 }
                 else
                 {
