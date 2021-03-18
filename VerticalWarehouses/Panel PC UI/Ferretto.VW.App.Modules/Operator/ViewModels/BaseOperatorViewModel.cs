@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool noteEnabled;
 
+        private LoadingUnit selectedUnitUnit;
+
         private DelegateCommand selectOperationOnBayCommand;
 
         #endregion
@@ -44,6 +46,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.noteEnabled;
             set => this.SetProperty(ref this.noteEnabled, value);
+        }
+
+        public LoadingUnit SelectedLoadingUnit
+        {
+            get => this.selectedUnitUnit;
+            set
+            {
+                if (this.SetProperty(ref this.selectedUnitUnit, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public ICommand SelectOperationOnBayCommand =>

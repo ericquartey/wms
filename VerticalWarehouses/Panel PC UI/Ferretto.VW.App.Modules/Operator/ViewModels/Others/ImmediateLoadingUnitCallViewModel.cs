@@ -29,13 +29,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand callLoadingUnitCommand;
 
+        private DelegateCommand changeLaserOffsetCommand;
+
+        private bool isEnabledLaser;
+
         private DelegateCommand loadingUnitsMissionsCommand;
 
         private SubscriptionToken positioningMessageReceivedToken;
 
         private SubscriptionToken receiveHomingUpdateToken;
-
-        private LoadingUnit selectedUnitUnit;
 
         #endregion
 
@@ -55,6 +57,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Properties
+
+        public ICommand ChangLaserOffsetCommand =>
+            this.changeLaserOffsetCommand
+            ??
+            (this.changeLaserOffsetCommand = new DelegateCommand(this.ChangeLaserOffsetAppear, this.CanChangeLaserOffset));
+
+        public bool IsEnabledLaser
+        {
+            get => this.isEnabledLaser;
+            set => this.SetProperty(ref this.isEnabledLaser, value, this.RaiseCanExecuteChanged);
+        }
 
         public override bool IsWaitingForResponse
         {
@@ -85,27 +98,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
 
-        public LoadingUnit SelectedLoadingUnit
-        {
-            get => this.selectedUnitUnit;
-            set
-            {
-                if (this.SetProperty(ref this.selectedUnitUnit, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         #endregion
 
         #region Methods
 
         public async Task CallLoadingUnitAsync()
         {
-            this.Logger.Debug($"CallLoadingUnitAsync: loadingUnitId {this.selectedUnitUnit.Id} ");
+            this.Logger.Debug($"CallLoadingUnitAsync: loadingUnitId {this.SelectedLoadingUnit.Id} ");
 
-            if (this.selectedUnitUnit == null)
+            if (this.SelectedLoadingUnit == null)
             {
                 this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
                 return;
@@ -115,7 +116,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.selectedUnitUnit.Id);
+                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.SelectedLoadingUnit.Id);
 
                 this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.SelectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }
@@ -140,6 +141,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.LoadingUnits.Any())
             {
                 this.SelectedLoadingUnit = this.LoadingUnits.FirstOrDefault();
+
+                var bay = this.MachineService.Bays?.FirstOrDefault(b => b.Number == this.MachineService.BayNumber);
+                this.IsEnabledLaser = bay?.Accessories?.LaserPointer?.IsEnabledNew ?? false;
+                this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -163,6 +168,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //!this.IsWaitingForResponse
             //&&
             //this.loadingUnits.Any(l => l.Id == this.loadingUnitId);
+        }
+
+        private bool CanChangeLaserOffset()
+        {
+            return this.IsEnabledLaser && this.SelectedLoadingUnit != null && this.SelectedLoadingUnit.Id > 0;
+        }
+
+        private void ChangeLaserOffsetAppear()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.Others.CHANGELASEROFFSET,
+                null,
+                trackCurrentView: true);
         }
 
         private void LoadingUnitsMissionsAppear()

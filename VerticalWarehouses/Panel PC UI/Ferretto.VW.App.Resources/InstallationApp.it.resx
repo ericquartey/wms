@@ -2449,6 +2449,6 @@
     <value>Macchina in movimento</value>
   </data>
   <data name="LaserOffset" xml:space="preserve">
-    <value>Offset Laser</value>
+    <value>Offset Laser (mm)</value>
   </data>
 </root>

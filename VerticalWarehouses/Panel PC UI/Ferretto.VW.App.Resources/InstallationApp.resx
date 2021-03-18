@@ -2509,4 +2509,7 @@
   <data name="LaserOffset" xml:space="preserve">
     <value>Laser offset (mm)</value>
   </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
 </root>

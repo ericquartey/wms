@@ -1480,7 +1480,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.machineVolatileDataProvider.IsHomingExecuted = false;
 
                 var bayDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null))
+                foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null || b.IsExternal))
                 {
                     this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
                 }

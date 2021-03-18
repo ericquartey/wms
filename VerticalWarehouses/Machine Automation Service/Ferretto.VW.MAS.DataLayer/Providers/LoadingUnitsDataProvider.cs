@@ -471,6 +471,24 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetLaserOffset(int id, double laserOffset)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException($"Load Unit ID={id}");
+                }
+                loadingUnit.LaserOffset = laserOffset;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetStatus(int id, LoadingUnitStatus status)
         {
             lock (this.dataContext)
