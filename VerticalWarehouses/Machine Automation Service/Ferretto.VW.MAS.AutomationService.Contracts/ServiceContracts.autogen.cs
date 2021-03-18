@@ -3898,6 +3898,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsIntoMachine", Required = Newtonsoft.Json.Required.Always)]
         public bool IsIntoMachine { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsLaserOffset", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsLaserOffset { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LaserOffset", Required = Newtonsoft.Json.Required.Always)]
+        public double LaserOffset { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("MaxNetWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxNetWeight { get; set; }
     

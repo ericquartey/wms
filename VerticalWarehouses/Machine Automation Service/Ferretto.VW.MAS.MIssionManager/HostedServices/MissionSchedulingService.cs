@@ -21,6 +21,7 @@ using Ferretto.VW.MAS.MachineManager;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using System.Threading;
 //using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.MAS.MissionManager
@@ -29,11 +30,17 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
+        private const int CleanupTimeout = 60 * 60 * 1000;  // one hour expressed in milliseconds
+
+        private readonly Timer CleanupTimer;
+
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IServicingProvider servicingProvider;
 
         private bool dataLayerIsReady;
+
+        private bool firstCleanupExecuted;
 
         private LoadingUnitLocation loadUnitSource;
 
@@ -51,6 +58,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.servicingProvider = servicingProvider ?? throw new ArgumentNullException(nameof(servicingProvider));
+            this.CleanupTimer = new Timer(this.OnTimePeriodElapsed, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
@@ -519,11 +527,6 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-
-            missionsDataProvider.PurgeMissions();
-
-            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-            errorsProvider.PurgeErrors();
 
             var missions = missionsDataProvider.GetAllMissions().ToList();
             foreach (var mission in missions)
@@ -1170,7 +1173,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     foreach (var position in bay.Positions.OrderBy(b => b.Location))
                     {
-                        if (sensorProvider.IsLoadingUnitInLocation(position.Location))
+                        if (sensorProvider.IsLoadingUnitInLocation(position.Location)
+                            || (bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                            )
                         {
                             if (position.LoadingUnit is null)
                             {
@@ -1189,17 +1194,6 @@ namespace Ferretto.VW.MAS.MissionManager
                                 moveLoadingUnitProvider.InsertToCell(missionType, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
                                 return true;
                             }
-                        }
-                        else if (bay.IsExternal
-                            && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
-                            && position.LoadingUnit is null)
-                        {
-                            errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
-
-                            //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                            this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);
-                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                            return true;
                         }
                     }
                 }
@@ -1246,12 +1240,17 @@ namespace Ferretto.VW.MAS.MissionManager
             var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             loadUnitsDataProvider.UpdateWeightStatistics();
 
+            this.OnTimePeriodElapsed(null);
             GetPersistedMissions(serviceProvider, this.EventAggregator);
             this.RestoreFullTest(serviceProvider);
 
             this.dataLayerIsReady = true;
+
             this.Logger.LogDebug("InvokeSchedulerAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
+
+            this.CleanupTimer.Change(CleanupTimeout, CleanupTimeout);
+
             this.Logger.LogTrace("OnDataLayerReady end");
         }
 
@@ -1457,43 +1456,47 @@ namespace Ferretto.VW.MAS.MissionManager
 
         /// <summary>
         /// we get this message every hour
-        /// </summary>
-        /// <param name="serviceProvider"></param>
         /// <returns></returns>
-        private void OnTimePeriodElapsed(IServiceProvider serviceProvider)
+        private void OnTimePeriodElapsed(object state)
         {
+            var scope = this.ServiceScopeFactory.CreateScope();
+
             // at midnight it is time to do some housework
-            if (DateTime.Now.Hour == 0)
+            if (DateTime.Now.Hour == 4
+                || !this.firstCleanupExecuted
+                )
             {
                 this.Logger.LogInformation($"OnTimePeriodElapsed: clean up missions and errors and schedule homing");
-                var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
 
                 // clean missions
                 missionsDataProvider.PurgeMissions();
 
                 // clean errors
-                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
                 errorsProvider.PurgeErrors();
 
                 // elevator and bay chain homing every new day
                 this.machineVolatileDataProvider.IsHomingExecuted = false;
 
-                var bayDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var bayDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                 foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null))
                 {
                     this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
                 }
 
                 // try to fix missions not starting in the morning because of "Bay chain not calibrated"
-                if (this.machineVolatileDataProvider.Mode == MachineMode.Automatic
-                    && !missionsDataProvider.GetAllActiveMissions().Any()
-                    )
-                {
-                    var machineModeProvider = serviceProvider.GetRequiredService<IMachineModeProvider>();
-                    machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Manual);
-                }
+                //if (this.machineVolatileDataProvider.Mode == MachineMode.Automatic
+                //    && !missionsDataProvider.GetAllActiveMissions().Any()
+                //    )
+                //{
+                //    var machineModeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
+                //    machineModeProvider.RequestChange(MachineMode.Manual);
+                //}
+                this.firstCleanupExecuted = true;
             }
 
+            // actions executed every hour
             this.servicingProvider.UpdateServiceStatus();
         }
 

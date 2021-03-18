@@ -175,6 +175,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsBusyConfirmingOperation { get; private set; }
+
         public bool IsBusyLoadingNextPage
         {
             get => this.isBusyLoadingNextPage;
@@ -296,7 +298,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.reasons;
             set => this.SetProperty(ref this.reasons, value);
         }
-        public bool IsBusyConfirmingOperation { get; private set; }
 
         public ICommand RequestItemPickCommand =>
             this.requestItemPickCommand
@@ -335,6 +336,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (value is null)
                 {
                     this.RaisePropertyChanged();
+                    this.selectedItemTxt = Resources.Localized.Get("OperatorApp.RequestedQuantityBase");
+                    this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                     return;
                 }
 
@@ -542,6 +545,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
               this.EventAggregator
                   .GetEvent<PubSubEvent<ProductsChangedEventArgs>>()
                   .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
+
+            if (this.selectedItem is null)
+            {
+                this.selectedItemTxt = Resources.Localized.Get("OperatorApp.RequestedQuantityBase");
+                this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
+            }
 
             await base.OnAppearedAsync();
 

@@ -2148,7 +2148,7 @@
     <value>Max net weight (kg)</value>
   </data>
   <data name="MissionsCount" xml:space="preserve">
-    <value>Missions count</value>
+    <value>Missions</value>
   </data>
   <data name="Tare" xml:space="preserve">
     <value>Tare (kg)</value>
@@ -2505,5 +2505,8 @@
   </data>
   <data name="MovingMachine" xml:space="preserve">
     <value>Moving machine</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Laser offset (mm)</value>
   </data>
 </root>
