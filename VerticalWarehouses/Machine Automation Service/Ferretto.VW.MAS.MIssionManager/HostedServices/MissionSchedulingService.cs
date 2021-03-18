@@ -1248,6 +1248,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             this.Logger.LogDebug("InvokeSchedulerAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
+
             this.CleanupTimer.Change(CleanupTimeout, CleanupTimeout);
 
             this.Logger.LogTrace("OnDataLayerReady end");
@@ -1461,7 +1462,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var scope = this.ServiceScopeFactory.CreateScope();
 
             // at midnight it is time to do some housework
-            if (DateTime.Now.Hour == 0
+            if (DateTime.Now.Hour == 4
                 || !this.firstCleanupExecuted
                 )
             {
@@ -1485,13 +1486,13 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
 
                 // try to fix missions not starting in the morning because of "Bay chain not calibrated"
-                if (this.machineVolatileDataProvider.Mode == MachineMode.Automatic
-                    && !missionsDataProvider.GetAllActiveMissions().Any()
-                    )
-                {
-                    var machineModeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
-                    machineModeProvider.RequestChange(MachineMode.Manual);
-                }
+                //if (this.machineVolatileDataProvider.Mode == MachineMode.Automatic
+                //    && !missionsDataProvider.GetAllActiveMissions().Any()
+                //    )
+                //{
+                //    var machineModeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
+                //    machineModeProvider.RequestChange(MachineMode.Manual);
+                //}
                 this.firstCleanupExecuted = true;
             }
 
