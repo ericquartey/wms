@@ -228,13 +228,21 @@ namespace Ferretto.VW.App.Services
 
                         if (bayPosition is null)
                         {
+                            this.logger.Trace($"Load unit {e.WmsMission.LoadingUnit.Id} not in Bay");
                             return;
                         }
 
                         var compartmentSelected = e.WmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == e.WmsOperation.CompartmentId);
 
+                        // itemHeight priority is:
+                        // first check Load Unit Laser offset
+                        // only if it is not defined check wms database for Item height
                         double itemHeight = 0;
-                        if (e.WmsOperation.ItemHeight != null)
+                        if (bayPosition.LoadingUnit != null && bayPosition.LoadingUnit.IsLaserOffset)
+                        {
+                            itemHeight = bayPosition.LoadingUnit.LaserOffset;
+                        }
+                        else if (e.WmsOperation.ItemHeight != null)
                         {
                             itemHeight = e.WmsOperation.ItemHeight.Value;
                         }

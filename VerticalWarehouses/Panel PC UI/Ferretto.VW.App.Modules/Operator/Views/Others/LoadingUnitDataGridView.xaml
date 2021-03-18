@@ -321,7 +321,26 @@
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
-      </DataGrid.Columns>
+                <DataGridTextColumn x:Name="Column7"
+                            Width="1*"
+                            Binding="{Binding Path=LaserOffset, StringFormat={}{0:F0}}"
+                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderLaser}"
+                            SortDirection="Ascending"
+                            SortMemberPath="LaserOffset">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
     </DataGrid>
   </Border>
 </UserControl>

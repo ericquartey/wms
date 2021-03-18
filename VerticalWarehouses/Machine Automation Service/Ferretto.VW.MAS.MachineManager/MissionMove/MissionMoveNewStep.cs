@@ -226,7 +226,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         if ((mission.MissionType != MissionType.Manual
-                            || this.Mission.MissionType != MissionType.ScaleCalibration)
+                                || this.Mission.MissionType != MissionType.ScaleCalibration)
                             && !this.CheckBayHeight(destinationBay, destination, mission, out var canRetry)
                             )
                         {
@@ -774,6 +774,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 returnValue = this.SensorsProvider.IsLoadingUnitInLocation(messageData.Source);
+                if (!returnValue)
+                {
+                    var bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
+                    if (bay != null && bay.IsExternal)
+                    {
+                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+                    }
+                }
             }
             if (!returnValue && showErrors)
             {
@@ -975,7 +983,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     if (unitToMove == null)
                     {
-                        unitToMove = null;
                         if (showErrors)
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, requestingBay);
@@ -997,49 +1004,55 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentInCell);
                         }
                     }
+                    else
+                    {
+                        bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
 #if CHECK_BAY_SENSOR
-                    else if (!this.SensorsProvider.IsLoadingUnitInLocation(messageData.Source))
-                    {
-                        unitToMove = null;
-                        if (showErrors)
-                        {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, requestingBay);
-                        }
-                        else
-                        {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceBay);
-                        }
-                    }
-#endif
-                    else if ((bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source)) != null)
-                    {
-                        if (bay.Shutter != null
-                            && bay.Shutter.Type != ShutterType.NotSpecified
-                            && messageData.InsertLoadUnit
-                            && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed
-                            && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Half
+                        if (!this.SensorsProvider.IsLoadingUnitInLocation(messageData.Source)
+                            && !(bay != null && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
                             )
                         {
                             unitToMove = null;
                             if (showErrors)
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, requestingBay);
                             }
                             else
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen);
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceBay);
                             }
                         }
-                        else if (bay.Positions.FirstOrDefault(b => b.Location == messageData.Source).IsBlocked)
+#endif
+                        if (unitToMove != null && bay != null)
                         {
-                            unitToMove = null;
-                            if (showErrors)
+                            if (bay.Shutter != null
+                                && bay.Shutter.Type != ShutterType.NotSpecified
+                                && messageData.InsertLoadUnit
+                                && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed
+                                && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Half
+                                )
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.BayPositionDisabled, requestingBay);
+                                unitToMove = null;
+                                if (showErrors)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen);
+                                }
                             }
-                            else
+                            else if (bay.Positions.FirstOrDefault(b => b.Location == messageData.Source).IsBlocked)
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.BayPositionDisabled);
+                                unitToMove = null;
+                                if (showErrors)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.BayPositionDisabled, requestingBay);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.BayPositionDisabled);
+                                }
                             }
                         }
                     }

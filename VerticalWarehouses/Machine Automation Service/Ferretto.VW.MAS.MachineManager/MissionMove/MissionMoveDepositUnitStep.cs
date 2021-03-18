@@ -32,10 +32,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
-            this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
-
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.DepositUnit;
+            this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
@@ -156,6 +155,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
+                this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition(), Orientation.Vertical);
+
                 this.Logger.LogInformation($"MoveLoadingUnit start: direction {this.Mission.Direction}, openShutter {this.Mission.OpenShutterPosition} Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction, false, this.Mission.OpenShutterPosition, false, MessageActor.MachineManager, bayNumber, this.Mission.LoadUnitId, this.Mission.DestinationCellId, targetBayPositionId, this.Mission.LoadUnitCellSourceId, sourceBayPositionId);
             }

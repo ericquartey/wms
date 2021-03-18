@@ -586,7 +586,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsNewOperationAvailable =
                    this.MissionOperationsService.ActiveWmsMission.Operations.Any(o =>
-                        o.Status != MissionOperationStatus.Completed
+                        o.Status == MissionOperationStatus.Executing
                         &&
                         o.Id != this.MissionOperationsService.ActiveWmsOperation.Id
                         &&

@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20210317084652_LU_LaserOffset")]
+    partial class LU_LaserOffset
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1408,8 +1410,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("LoadUnitSource")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<TimeSpan>("MissionTime");
 
                     b.Property<string>("MissionType")
                         .IsRequired()

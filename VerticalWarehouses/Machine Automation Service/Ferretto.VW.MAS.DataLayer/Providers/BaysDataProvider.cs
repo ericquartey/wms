@@ -1322,7 +1322,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.logger.LogWarning("InsertLoadingUnit, loading unit is null, try do instance a newer");
             var loadingUnits = new LoadingUnit();
 
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
             lock (this.dataContext)
             {
                 loadingUnits = new LoadingUnit

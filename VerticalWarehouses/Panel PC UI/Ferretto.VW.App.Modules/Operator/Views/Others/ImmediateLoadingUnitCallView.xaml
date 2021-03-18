@@ -113,7 +113,14 @@
                           Command="{Binding LoadingUnitsMissionsCommand}"
                           Content="{Resources:Loc OperatorApp.MissionsList}" />
 
-      <controls:PpcButton Grid.Row="4"
+            <controls:PpcButton Grid.Row="3"
+                          Margin="15,15,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ChangLaserOffsetCommand}"
+                          Content="{Resources:Loc OperatorApp.LaserOffset}" />
+
+            <controls:PpcButton Grid.Row="4"
                           Margin="15,15,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"

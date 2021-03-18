@@ -1658,4 +1658,7 @@
   <data name="SubnetMask_Additional" xml:space="preserve">
     <value>SubnetMask aggiuntivo</value>
   </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
 </root>

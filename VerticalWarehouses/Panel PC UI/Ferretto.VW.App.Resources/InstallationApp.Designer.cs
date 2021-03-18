@@ -3589,6 +3589,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Laser.
+        /// </summary>
+        public static string Laser {
+            get {
+                return ResourceManager.GetString("Laser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laser offset (mm).
+        /// </summary>
+        public static string LaserOffset {
+            get {
+                return ResourceManager.GetString("LaserOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to left.
         /// </summary>
         public static string Left {
@@ -4192,7 +4210,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Missions count.
+        ///   Looks up a localized string similar to Missions.
         /// </summary>
         public static string MissionsCount {
             get {

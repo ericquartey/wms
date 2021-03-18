@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(id);
                 }
 
-                var machine = this.machineProvider.Get();
+                var machine = this.machineProvider.GetMinMaxHeight();
 
                 if (loadingUnit.GrossWeight < MinimumLoadOnBoard)
                 {
@@ -288,7 +288,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void Insert(int loadingUnitsId)
         {
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
             lock (this.dataContext)
             {
                 var loadingUnits = new LoadingUnit
@@ -380,7 +380,7 @@ namespace Ferretto.VW.MAS.DataLayer
             if (luDb.CellId.HasValue &&
                 (luDb.CellId != loadingUnit.CellId ||
                 luDb.Height != loadingUnit.Height ||
-                loadingUnit.Status == DataModels.Enumerations.LoadingUnitStatus.InElevator))
+                loadingUnit.Status == LoadingUnitStatus.InElevator))
             {
                 cellIdOld = luDb.CellId.Value;
                 luHeightOld = luDb.Height;
@@ -423,7 +423,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 luDb.MaxNetWeight = loadingUnit.MaxNetWeight;
                 luDb.Tare = loadingUnit.Tare;
                 luDb.Height = loadingUnit.Height;
-                if (originalStatus != DataModels.Enumerations.LoadingUnitStatus.InElevator
+                luDb.LaserOffset = loadingUnit.LaserOffset;
+
+                if (originalStatus != LoadingUnitStatus.InElevator
                     && loadingUnit.Status != LoadingUnitStatus.Undefined
                     )
                 {
@@ -431,7 +433,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 else if (luDb.CellId != null)
                 {
-                    luDb.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
+                    luDb.Status = LoadingUnitStatus.InLocation;
                 }
 
                 this.dataContext.SaveChanges();
@@ -439,7 +441,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (loadingUnit.CellId.HasValue &&
                 luDb.CellId != loadingUnit.CellId &&
-                originalStatus != DataModels.Enumerations.LoadingUnitStatus.InElevator)
+                originalStatus != LoadingUnitStatus.InElevator)
             {
                 this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
             }
@@ -465,6 +467,24 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     loadingUnit.Height = Math.Max(loadingUnit.Height, height);
                 }
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SetLaserOffset(int id, double laserOffset)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException($"Load Unit ID={id}");
+                }
+                loadingUnit.LaserOffset = laserOffset;
+
                 this.dataContext.SaveChanges();
             }
         }
@@ -520,7 +540,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var lu = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnitId));
             if (lu is null)
             {
-                var machine = this.machineProvider.Get();
+                var machine = this.machineProvider.GetMinMaxHeight();
                 lock (this.dataContext)
                 {
                     var loadingUnits = new LoadingUnit

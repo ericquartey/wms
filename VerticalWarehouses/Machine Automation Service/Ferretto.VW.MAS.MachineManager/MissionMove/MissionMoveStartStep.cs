@@ -32,7 +32,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
-            this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
+            // do not count mission time before start step
+            //this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
 
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.Start;
@@ -202,7 +203,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 if (this.Mission.NeedHomingAxis == Axis.None)
                 {
-                    var machine = this.MachineProvider.Get();
+                    var machine = this.MachineProvider.GetMinMaxHeight();
                     if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
                         || this.LoadingUnitMovementProvider.GetCyclesFromCalibration() >= machine.HorizontalCyclesToCalibrate
                         )

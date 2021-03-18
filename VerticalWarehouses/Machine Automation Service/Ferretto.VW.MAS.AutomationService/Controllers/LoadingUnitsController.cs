@@ -266,7 +266,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("insert-loading-unit-db")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult InsertLoadingUnitOnlyDb(int loadingUnitId)
         {
             this.loadingUnitsDataProvider.Insert(loadingUnitId);
@@ -439,6 +438,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
             }
 
+            return this.Accepted();
+        }
+
+        [HttpPost("set-loading-unit-offset")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetLoadingUnitOffset(int loadingUnitId, double laserOffset)
+        {
+            this.loadingUnitsDataProvider.SetLaserOffset(loadingUnitId, laserOffset);
             return this.Accepted();
         }
 

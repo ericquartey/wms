@@ -207,6 +207,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Machine GetMinMaxHeight()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault();
+            }
+        }
+
         public MachineStatistics GetPresentStatistics()
         {
             lock (this.dataContext)

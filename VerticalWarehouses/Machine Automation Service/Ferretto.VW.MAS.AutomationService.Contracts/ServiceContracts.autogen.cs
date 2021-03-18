@@ -1302,6 +1302,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task SaveLoadUnitAsync(LoadingUnit loadingUnit, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetLoadingUnitOffsetAsync(int loadingUnitId, double laserOffset);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetLoadingUnitOffsetAsync(int loadingUnitId, double laserOffset, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3033,6 +3040,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("LoadUnitSource", Required = Newtonsoft.Json.Required.Always)]
         public LoadingUnitLocation LoadUnitSource { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("MissionTime", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.TimeSpan MissionTime { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("MissionType", Required = Newtonsoft.Json.Required.Always)]
         public MissionType MissionType { get; set; }
     
@@ -3893,6 +3904,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsIntoMachine", Required = Newtonsoft.Json.Required.Always)]
         public bool IsIntoMachine { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsLaserOffset", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsLaserOffset { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LaserOffset", Required = Newtonsoft.Json.Required.Always)]
+        public double LaserOffset { get; set; }
     
         [Newtonsoft.Json.JsonProperty("MaxNetWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxNetWeight { get; set; }

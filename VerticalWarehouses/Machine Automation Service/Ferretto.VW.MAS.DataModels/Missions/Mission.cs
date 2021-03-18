@@ -38,6 +38,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public LoadingUnitLocation LoadUnitSource { get; set; }
 
+        public TimeSpan MissionTime { get; set; }
+
         public MissionType MissionType { get; set; }
 
         public Axis NeedHomingAxis { get; set; }
