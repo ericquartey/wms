@@ -39,12 +39,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private SubscriptionToken receiveHomingUpdateToken;
 
+        private LoadingUnit selectedUnitUnit;
+
         #endregion
 
         #region Constructors
 
         public ImmediateLoadingUnitCallViewModel(
-            IMachineService machineService,
+                    IMachineService machineService,
             IEventAggregator eventAggregator,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
             : base(PresentationMode.Operator)
@@ -97,6 +99,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.loadingUnitsMissionsCommand
             ??
             (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
+
+        public LoadingUnit SelectedLoadingUnit
+        {
+            get => this.selectedUnitUnit;
+            set
+            {
+                if (this.SetProperty(ref this.selectedUnitUnit, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         #endregion
 
@@ -180,7 +194,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.Others.CHANGELASEROFFSET,
-                null,
+                this.SelectedLoadingUnit,
                 trackCurrentView: true);
         }
 

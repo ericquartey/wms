@@ -24,12 +24,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand saveLaserOffsetCommand;
 
+        private LoadingUnit selectedUnitUnit;
+
         #endregion
 
         #region Constructors
 
         public ChangeLaserOffsetViewModel(IMachineLoadingUnitsWebService machineWebService)
-            : base(PresentationMode.Operator)
+                    : base(PresentationMode.Operator)
         {
             this.machineWebService = machineWebService ?? throw new ArgumentNullException(nameof(machineWebService));
         }
@@ -56,6 +58,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.saveLaserOffsetCommand = new DelegateCommand(
                 async () => await this.SaveLaserOffsetAsync(),
                 this.CanSave));
+
+        public LoadingUnit SelectedLoadingUnit
+        {
+            get => this.selectedUnitUnit;
+            set
+            {
+                if (this.SetProperty(ref this.selectedUnitUnit, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         #endregion
 
@@ -86,6 +100,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.isBusy = true;
+                this.SelectedLoadingUnit = this.Data as LoadingUnit;
                 this.LoadUnitId = this.SelectedLoadingUnit?.Id ?? 0;
                 this.LaserOffset = (int)(this.SelectedLoadingUnit?.LaserOffset ?? 0);
             }
