@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var displacement = this.invertersProvider.ComputeDisplacement(this.VerticalPosition, grossWeight);
             displacement *= (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null) ? -1 : +1;
-            this.logger.LogDebug($"Combined movement: Vertical displacement: {displacement} mm [targetPosition: {this.VerticalPosition + displacement} mm], weight load unit: {grossWeight} kg");
+            this.logger.LogDebug($"Combined movement: Vertical displacement: {displacement:0.00} mm [targetPosition: {this.VerticalPosition + displacement:0.00} mm], weight load unit: {grossWeight:0.00} kg");
 
             var manualVerticalParameters = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
 
@@ -327,7 +327,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 grossWeight = loadUnit.GrossWeight;
             }
 
-            this.logger.LogDebug($"Combined movement: Vertical displacement: {verticalDisplacement} mm [targetPosition: {this.VerticalPosition + verticalDisplacement} mm], weight load unit: {grossWeight} kg");
+            this.logger.LogDebug($"Combined movement: Vertical displacement: {verticalDisplacement:0.00} mm [targetPosition: {this.VerticalPosition + verticalDisplacement:0.00} mm], weight load unit: {grossWeight:0.00} kg");
 
             var time = Math.Abs(horizontalTargetPosition) / horizontalSpeed[0];  // Calculate the time = space / speed [s]
 
