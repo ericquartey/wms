@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly ILogger<DataLayerService> logger;
 
+        private readonly IMachineProvider machineProvider;
+
         #endregion
 
         #region Constructors
@@ -38,7 +40,8 @@ namespace Ferretto.VW.MAS.DataLayer
             IErrorsProvider errorProvider,
             IBaysDataProvider baysDataProvider,
             IEventAggregator eventAggregator,
-            ILogger<DataLayerService> logger)
+            ILogger<DataLayerService> logger,
+            IMachineProvider machineProvider)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
@@ -46,6 +49,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.errorProvider = errorProvider ?? throw new ArgumentNullException(nameof(errorProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
         }
 
         #endregion
@@ -120,8 +124,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 this.logger.LogInformation("Completing mission {id}", id);
-
-                mission.Status = MissionStatus.Completed;
+                if (mission.Status != MissionStatus.Completed)
+                {
+                    mission.Status = MissionStatus.Completed;
+                    mission.MissionTime.Add(DateTime.UtcNow - mission.StepTime);
+                    this.machineProvider.UpdateMissionTime(mission.MissionTime);
+                }
 
                 if (this.baysDataProvider.IsMissionInBay(mission))
                 {

@@ -39,11 +39,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             // Transition of step: MissionMoveToTargetStep -> MissionMoveWaitDepositBayStep -> MissionMoveDepositUnitStep
 
-            this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
-
             this.Mission.EjectLoadUnit = false;
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.WaitDepositBay;
+            this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.StopReason = StopRequestReason.NoReason;

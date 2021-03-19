@@ -157,7 +157,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
 
             var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
             this.bayPositionId = bay.Positions.First(p => p.IsUpper).Id;
-            this.minHeight = this.machineProvider.Get().LoadUnitMinHeight;
+            this.minHeight = this.machineProvider.GetMinMaxHeight().LoadUnitMinHeight;
 
             var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
             var ioCommandMessage = new FieldCommandMessage(

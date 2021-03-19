@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(id);
                 }
 
-                var machine = this.machineProvider.Get();
+                var machine = this.machineProvider.GetMinMaxHeight();
 
                 if (loadingUnit.GrossWeight < MinimumLoadOnBoard)
                 {
@@ -288,7 +288,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void Insert(int loadingUnitsId)
         {
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
             lock (this.dataContext)
             {
                 var loadingUnits = new LoadingUnit
@@ -471,6 +471,24 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetLaserOffset(int id, double laserOffset)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException($"Load Unit ID={id}");
+                }
+                loadingUnit.LaserOffset = laserOffset;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetStatus(int id, LoadingUnitStatus status)
         {
             lock (this.dataContext)
@@ -522,7 +540,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var lu = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnitId));
             if (lu is null)
             {
-                var machine = this.machineProvider.Get();
+                var machine = this.machineProvider.GetMinMaxHeight();
                 lock (this.dataContext)
                 {
                     var loadingUnits = new LoadingUnit

@@ -690,6 +690,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var dTmp = this.invertersProvider.ComputeDisplacement(verticalAxis.LastIdealPosition, grossWeight);
             var factor = Math.Abs(this.elevatorDataProvider.VerticalPosition - verticalAxis.LastIdealPosition) / Math.Abs(dTmp);
+            if (factor > 1)
+            {
+                factor = 0.5;
+            }
             var verticalDisplacement = dTmp * factor;
             verticalDisplacement *= (this.elevatorDataProvider.GetLoadingUnitOnBoard() == null) ? -1.0d : +1.0d;
             var b = (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null);
@@ -743,8 +747,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId.Value);
                 grossWeight = loadUnit.GrossWeight;
             }
-            var dTmp = this.invertersProvider.ComputeDisplacement(verticalAxis.LastIdealPosition, grossWeight);
+            var dTmp = this.invertersProvider.ComputeDisplacement(this.elevatorDataProvider.VerticalPosition, grossWeight);
             var factor = 1.0d - (Math.Abs(this.elevatorDataProvider.VerticalPosition - verticalAxis.LastIdealPosition) / Math.Abs(dTmp));
+            if (factor < 0)
+            {
+                factor = 0.5;
+            }
             var verticalDisplacement = dTmp * factor;
             verticalDisplacement *= (this.elevatorDataProvider.GetLoadingUnitOnBoard() == null) ? +1.0d : -1.0d;
             var b = (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null);

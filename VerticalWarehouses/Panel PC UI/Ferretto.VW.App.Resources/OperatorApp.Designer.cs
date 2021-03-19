@@ -2428,6 +2428,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LaserOffset.
+        /// </summary>
+        public static string LaserOffset {
+            get {
+                return ResourceManager.GetString("LaserOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is the last operation on this drawer placed the article and press OK.
         /// </summary>
         public static string LastOperationMessage {
@@ -3621,6 +3630,15 @@ namespace Ferretto.VW.App.Resources {
         public static string OtherDrawerDataGridHeaderHeight {
             get {
                 return ResourceManager.GetString("OtherDrawerDataGridHeaderHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Laser.
+        /// </summary>
+        public static string OtherDrawerDataGridHeaderLaser {
+            get {
+                return ResourceManager.GetString("OtherDrawerDataGridHeaderLaser", resourceCulture);
             }
         }
         

@@ -89,6 +89,8 @@
         {
             #region Fields
 
+            public const string CHANGELASEROFFSET = "ChangeLaserOffsetViewModel";
+
             public const string IMMEDIATELOADINGUNITCALL = "ImmediateLoadingUnitCallViewModel";
 
             public const string LOADINGUNITSMISSIONS = "LoadingUnitsMissionsViewModel";

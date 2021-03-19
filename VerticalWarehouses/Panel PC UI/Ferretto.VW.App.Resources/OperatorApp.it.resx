@@ -1685,4 +1685,7 @@
   <data name="ItemIsDeleted" xml:space="preserve">
     <value>Articolo é cancellato</value>
   </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
 </root>
