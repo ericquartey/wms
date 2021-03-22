@@ -1,4 +1,18 @@
-﻿## Nuove Funzionalità 1.0.7 rispetto la 1.0.6
+﻿## Nuove Funzionalità 1.0.8 rispetto la 1.0.7
+- Aggiunto parametro OffsetLaser per cassetto: quando esiste sostituisce l'altezza articolo
+
+## Bug Risolti
+- Migliorati tempi di cambio passo missione
+- Ripristino missione con BES da posizione intermedia
+- Ripristino missione con portata 990kg (fuga verticale con cassetto sporgente) 
+- Mancata pulizia dati giornalieri
+- Eliminati alcuni casi di "Nuove operazioni disponibili"
+
+## Compatibile con adapter 0.4.15 e 0.4.16
+
+<details><summary>Versione 1.07</summary>
+
+## Nuove Funzionalità 1.0.7 rispetto la 1.0.6
 - Aggiunta visualizzazione delle schede di rete nel menu Informazioni
 
 ## Bug Risolti
@@ -9,6 +23,7 @@
 - Nelle macchine da 1000kg i movimenti guidati non perdono più la posizione logica 
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+</details>
 
 <details><summary>Versione 1.06</summary>
 
