@@ -213,8 +213,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                         {
                             this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
-                            this.IsStartPartiallyOnBoard = !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle
-                                || this.machineData.MachineSensorStatus.IsSensorZeroOnCradle);
+                            this.IsStartPartiallyOnBoard = !(this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                                || this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle);
                         }
                         else if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
                         {

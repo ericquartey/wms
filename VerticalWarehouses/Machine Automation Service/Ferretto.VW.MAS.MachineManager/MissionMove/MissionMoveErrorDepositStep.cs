@@ -375,6 +375,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.Logger.LogDebug($"loadUnit {this.Mission.LoadUnitId} already deposited! Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                    this.MachineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay] = false;
                     this.DepositUnitEnd(restore: true);
                     return;
                 }
