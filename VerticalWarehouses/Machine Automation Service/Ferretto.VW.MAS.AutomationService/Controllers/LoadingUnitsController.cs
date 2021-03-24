@@ -278,6 +278,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> MoveToBayAsync(
             int id,
+            string userName,
             [FromServices] IWmsSettingsProvider wmsSettingsProvider,
             [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
@@ -295,7 +296,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber);
+                    await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber, userName);
                 }
                 catch (Exception ex)
                 {

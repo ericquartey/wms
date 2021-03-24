@@ -54,7 +54,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null)
+        public async Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, string userName = null)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
@@ -74,6 +74,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     RunImmediately = true,
                     ReasonId = reasonId,
                     ReasonNotes = reasonNotes,
+                    UserName = userName,
                 });
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -82,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null)
+        public async Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, string userName = null)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
@@ -102,6 +103,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     RunImmediately = true,
                     ReasonId = reasonId,
                     ReasonNotes = reasonNotes,
+                    UserName = userName,
                 });
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

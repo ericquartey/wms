@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IMachineItemsWebService itemsWebService;
@@ -104,7 +106,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IOperatorNavigationService operatorNavigationService,
             IMachineMissionOperationsWebService missionOperationsWebService,
             IEventAggregator eventAggregator,
-            IWmsDataProvider wmsDataProvider)
+            IWmsDataProvider wmsDataProvider,
+            IAuthenticationService authenticationService)
             : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
@@ -114,6 +117,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -745,7 +749,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem.ItemId.Value,
                         this.InputQuantity.Value,
                         this.reasonId,
-                        this.reasonNotes);
+                        this.reasonNotes,
+                        this.authenticationService.UserName);
                 }
                 else if (this.IsPutVisible)
                 {
@@ -755,7 +760,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem.ItemId.Value,
                         this.InputQuantity.Value,
                         this.reasonId,
-                        this.reasonNotes);
+                        this.reasonNotes,
+                        this.authenticationService.UserName);
                 }
                 else if (this.IsAdjustmentVisible)
                 {

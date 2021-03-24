@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineAreasWebService areasWebService;
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IBarcodeReaderService barcodeReaderService;
 
         private readonly IBayManager bayManager;
@@ -122,7 +124,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineAreasWebService areasWebService,
             IMachineItemsWebService itemsWebService,
             IMachineMissionOperationsWebService missionOperationsWebService,
-            IBarcodeReaderService barcodeReaderService)
+            IBarcodeReaderService barcodeReaderService,
+            IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
@@ -132,6 +135,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
 
             this.maxKnownIndexSelection = ItemsVisiblePageSize;
         }
@@ -469,7 +473,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.itemToPickId.Value,
                     this.InputQuantity.Value,
                     this.reasonId,
-                    this.reasonNotes);
+                    this.reasonNotes,
+                    this.authenticationService.UserName);
 
                 this.Reasons = null;
 
@@ -506,7 +511,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.itemToPickId.Value,
                     this.InputQuantity.Value,
                     this.reasonId,
-                    this.reasonNotes);
+                    this.reasonNotes,
+                    this.authenticationService.UserName);
 
                 this.Reasons = null;
 

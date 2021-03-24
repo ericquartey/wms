@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineItemListsWebService itemListsWebService;
@@ -46,11 +48,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public WaitingListDetailViewModel(
             IMachineIdentityWebService identityService,
-            IMachineItemListsWebService itemListsWebService)
+            IMachineItemListsWebService itemListsWebService,
+            IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
 
             this.listRows = new List<ItemListRow>();
         }
@@ -139,7 +143,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                await this.itemListsWebService.ExecuteAsync(this.list.Id, this.areaId.Value, null);
+                await this.itemListsWebService.ExecuteAsync(this.list.Id, this.areaId.Value, null, this.authenticationService.UserName);
                 await this.LoadListRowsAsync();
                 this.ShowNotification(
                     string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), this.list.Code),

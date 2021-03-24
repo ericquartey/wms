@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineAreasWebService areasWebService;
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IBayManager bayManager;
 
         private readonly IMachineIdentityWebService identityService;
@@ -50,13 +52,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineIdentityWebService identityService,
             IMachineItemListsWebService itemListsWebService,
             IMachineAreasWebService areasWebService,
-            IBayManager bayManager)
+            IBayManager bayManager,
+            IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -141,7 +145,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, bay.Id);
+                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, bay.Id, this.authenticationService.UserName);
                 await this.LoadListsAsync();
                 this.ShowNotification(
                     string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code),

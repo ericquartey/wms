@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
@@ -35,11 +37,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public ItemSearchUnitsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            IMachineItemsWebService itemsWebService)
+            IMachineItemsWebService itemsWebService,
+            IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -99,7 +103,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.SelectedItemUnits.LoadingUnitId);
+                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.SelectedItemUnits.LoadingUnitId, this.authenticationService.UserName);
 
                 this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.SelectedItemUnits.LoadingUnitId), Services.Models.NotificationSeverity.Success);
             }

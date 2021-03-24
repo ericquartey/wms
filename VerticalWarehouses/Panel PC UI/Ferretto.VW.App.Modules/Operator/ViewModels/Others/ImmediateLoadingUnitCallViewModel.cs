@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
@@ -48,12 +50,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ImmediateLoadingUnitCallViewModel(
                     IMachineService machineService,
             IEventAggregator eventAggregator,
-            IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -130,7 +134,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.SelectedLoadingUnit.Id);
+                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.SelectedLoadingUnit.Id, this.authenticationService.UserName);
 
                 this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.SelectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }
