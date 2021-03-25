@@ -273,7 +273,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                                 if (bytes <= 0 || !this.IsResponseOk(sendMessage, responseMessage))
                                 {
                                     this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")},{responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-                                    if (errors++ > 10)
+                                    if (errors++ > 5)
                                     {
                                         this.ClearCommands();
                                         this.logger.Error($"ExecuteCommands: too many errors!");
