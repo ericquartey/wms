@@ -174,4 +174,7 @@
   <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
     <value>Vertical origin calibration must be performed before attempting to move the elevator to a given position.</value>
   </data>
+  <data name="VerticalCompensationDistanceOutOfBounds" xml:space="preserve">
+    <value>The vertical compensation distance is out of bounds</value>
+  </data>
 </root>
