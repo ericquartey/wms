@@ -58,45 +58,111 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
-        public MachineErrorCode CanElevatorDeposit(BayNumber bayNumber)    /*BayPosition bayPosition*/
+        public MachineErrorCode CanElevatorDeposit(BayNumber bayNumber, bool isPositionUpper)
         {
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            /*var bayNumber = bayPosition.Bay.Number;*/
             var returnValue = MachineErrorCode.NoError;
-            // Check the zero sensor
-            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+
+            if (bay.IsDouble)
             {
-                returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                if (isPositionUpper)
+                {
+                    // Check the zero sensor
+                    if (!this.machineResourcesProvider.IsSensorZeroTopOnBay(bayNumber))
+                    {
+                        returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                    }
+                    // Check if bay is fully
+                    if (this.machineResourcesProvider.IsDrawerInBayInternalTop(bayNumber) ||
+                        this.machineResourcesProvider.IsDrawerInBayTop(bayNumber))
+                    {
+                        returnValue = MachineErrorCode.ExternalBayOccupied;
+                    }
+                }
+                else
+                {
+                    // Check the zero sensor
+                    if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+                    {
+                        returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                    }
+                    // Check if bay is fully
+                    if (this.machineResourcesProvider.IsDrawerInBayInternalBottom(bayNumber) ||
+                        this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber))
+                    {
+                        returnValue = MachineErrorCode.ExternalBayOccupied;
+                    }
+                }
             }
             else
             {
-                // Check if bay is fully
-                if (this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble) ||
-                    this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber))
+                // Check the zero sensor
+                if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
                 {
-                    returnValue = MachineErrorCode.ExternalBayOccupied;
+                    returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                }
+                else
+                {
+                    // Check if bay is fully
+                    if (this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble) ||
+                        this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber, bay.IsExternal && bay.IsDouble))
+                    {
+                        returnValue = MachineErrorCode.ExternalBayOccupied;
+                    }
                 }
             }
 
             return returnValue;
         }
 
-        public MachineErrorCode CanElevatorPickup(BayNumber bayNumber)   /*BayPosition bayPosition*/
+        public MachineErrorCode CanElevatorPickup(BayNumber bayNumber, bool isPositionUpper)
         {
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            /*var bayNumber = bayPosition.Bay.Number;*/
             var returnValue = MachineErrorCode.NoError;
-            // Check the zero sensor
-            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+
+            if (bay.IsDouble)
             {
-                returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                if (isPositionUpper)
+                {
+                    // Check the zero sensor
+                    if (!this.machineResourcesProvider.IsSensorZeroTopOnBay(bayNumber))
+                    {
+                        returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                    }
+                    // Check if bay is emptied
+                    if (!this.machineResourcesProvider.IsDrawerInBayInternalTop(bayNumber))
+                    {
+                        returnValue = MachineErrorCode.ExternalBayEmpty;
+                    }
+                }
+                else
+                {
+                    // Check the zero sensor
+                    if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+                    {
+                        returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                    }
+                    // Check if bay is emptied
+                    if (!this.machineResourcesProvider.IsDrawerInBayInternalBottom(bayNumber))
+                    {
+                        returnValue = MachineErrorCode.ExternalBayEmpty;
+                    }
+                }
             }
             else
             {
-                // Check if bay is emptied
-                if (!this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble))
+                // Check the zero sensor
+                if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
                 {
-                    returnValue = MachineErrorCode.ExternalBayEmpty;
+                    returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                }
+                else
+                {
+                    // Check if bay is emptied
+                    if (!this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble))
+                    {
+                        returnValue = MachineErrorCode.ExternalBayEmpty;
+                    }
                 }
             }
 
@@ -122,7 +188,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // Check the position of loading unit onto the bay and the given movement direction
-            var isLoadingUnitInExternalPosition = this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber);
+            var isLoadingUnitInExternalPosition = this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber, bay.IsExternal && bay.IsDouble);
             var isLoadingUnitInInternalPosition = this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
 
             switch (direction)
@@ -168,6 +234,107 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return ActionPolicy.Allowed;
         }
 
+        public ActionPolicy CanMoveExtDouble(ExternalBayMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory, bool isPositionUp)
+        {
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            if (bay is null)
+            {
+                return new ActionPolicy { Reason = "The bay is null!" };
+            }
+            if (bay.External is null)
+            {
+                return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheSpecifiedBayIsNotAnExternalBay", CommonUtils.Culture.Actual) };
+            }
+
+            // Always allow the manual movements
+            if (movementCategory == MovementCategory.Manual)
+            {
+                return ActionPolicy.Allowed;
+            }
+
+            // Check the position of loading unit onto the bay and the given movement direction
+            var isLoadingUnitInExternalUpPosition = this.machineResourcesProvider.IsDrawerInBayTop(bayNumber);
+            var isLoadingUnitInExternalDownPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber);
+            var isLoadingUnitInInternalUpPosition = this.machineResourcesProvider.IsDrawerInBayInternalTop(bayNumber);
+            var isLoadingUnitInInternalDownPosition = this.machineResourcesProvider.IsDrawerInBayInternalBottom(bayNumber);
+
+            switch (direction)
+            {
+                case ExternalBayMovementDirection.TowardMachine:
+                    if (isPositionUp)
+                    {
+                        if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayChainIsNotInZeroPosition", CommonUtils.Culture.Actual) };
+                        }
+                        if (!isLoadingUnitInExternalUpPosition && isLoadingUnitInInternalUpPosition)
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", CommonUtils.Culture.Actual) };
+                        }
+                    }
+                    else
+                    {
+                        if (!this.machineResourcesProvider.IsSensorZeroTopOnBay(bayNumber))
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayChainIsNotInZeroPosition", CommonUtils.Culture.Actual) };
+                        }
+                        if (!isLoadingUnitInExternalDownPosition && isLoadingUnitInInternalDownPosition)
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", CommonUtils.Culture.Actual) };
+                        }
+                    }
+
+                    break;
+
+                case ExternalBayMovementDirection.TowardOperator:
+                    if (isPositionUp)
+                    {
+                        if (!this.machineResourcesProvider.IsSensorZeroTopOnBay(bayNumber))
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayChainIsNotInZeroPosition", CommonUtils.Culture.Actual) };
+                        }
+                        if (!isLoadingUnitInInternalUpPosition && isLoadingUnitInExternalUpPosition)
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", CommonUtils.Culture.Actual) };
+                        }
+                    }
+                    else
+                    {
+                        if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayChainIsNotInZeroPosition", CommonUtils.Culture.Actual) };
+                        }
+                        if (!isLoadingUnitInInternalDownPosition && isLoadingUnitInExternalDownPosition)
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", CommonUtils.Culture.Actual) };
+                        }
+                    }
+
+                    break;
+
+                default:
+                    throw new InvalidEnumArgumentException(nameof(direction), (int)direction, typeof(ExternalBayMovementDirection));
+            }
+
+            // Not admitted the movement toward machine and the presence of zero sensor (mechanical constraints)
+            //if (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) &&
+            //    movementCategory != MovementCategory.Manual &&
+            //    direction == ExternalBayMovementDirection.TowardMachine)
+            //{
+            //    return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual) };
+            //}
+
+            // Not admitted the automatic movement if bay does not contain a loading unit
+            if ((movementCategory == MovementCategory.Automatic) &&
+            bay.Positions.FirstOrDefault().LoadingUnit != null &&
+            !isLoadingUnitInInternalUpPosition && !isLoadingUnitInExternalUpPosition && !isLoadingUnitInInternalDownPosition && !isLoadingUnitInExternalDownPosition)
+            {
+                return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual) };
+            }
+
+            return ActionPolicy.Allowed;
+        }
+
         public double GetPosition(BayNumber bayNumber)
         {
             return this.baysDataProvider.GetChainPosition(bayNumber);
@@ -188,8 +355,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsExternalPositionOccupied(BayNumber bayNumber)
         {
-            var val = this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var val = this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber, bay.IsExternal && bay.IsDouble);
             return val;
+        }
+
+        public bool IsExternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation)
+        {
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var isDestinationUp = loadingUnitLocation == LoadingUnitLocation.InternalBay1Up || loadingUnitLocation == LoadingUnitLocation.InternalBay2Up || loadingUnitLocation == LoadingUnitLocation.InternalBay3Up;
+
+            if (isDestinationUp)
+            {
+                return this.machineResourcesProvider.IsDrawerInBayTop(bay.Number);
+            }
+            else
+            {
+                return this.machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
+            }
         }
 
         public bool IsInternalPositionOccupied(BayNumber bayNumber)
@@ -199,6 +384,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var val = this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) &&
                 this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
             return val;
+        }
+
+        public bool IsInternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation)
+        {
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var isDestinationUp = loadingUnitLocation == LoadingUnitLocation.InternalBay1Up || loadingUnitLocation == LoadingUnitLocation.InternalBay2Up || loadingUnitLocation == LoadingUnitLocation.InternalBay3Up;
+
+            if (isDestinationUp)
+            {
+                return this.machineResourcesProvider.IsDrawerInBayInternalTop(bay.Number);
+            }
+            else
+            {
+                return this.machineResourcesProvider.IsDrawerInBayInternalBottom(bay.Number);
+            }
         }
 
         public void Move(ExternalBayMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender)
@@ -234,6 +435,80 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (loadUnitId.HasValue)
             {
                 messageData.LoadingUnitId = loadUnitId;
+            }
+
+            if (direction == ExternalBayMovementDirection.TowardMachine)
+            {
+                messageData.SourceBayPositionId = bay.Positions.SingleOrDefault().Id;
+            }
+            else
+            {
+                messageData.TargetBayPositionId = bay.Positions.SingleOrDefault().Id;
+            }
+
+            this.logger.LogDebug(
+                $"Move External Bay " +
+                $"bayNumber: {bayNumber}; " +
+                $"direction: {direction}; " +
+                $"LoadUnitId: {loadUnitId}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"Direction: {direction}; " +
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
+
+            this.PublishCommand(
+                messageData,
+                $"Execute External {Axis.BayChain} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.None);
+        }
+
+        public void MoveExtDouble(ExternalBayMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender, bool isUpper)
+        {
+            // For automatic movements
+
+            var policy = this.CanMoveExtDouble(direction, bayNumber, MovementCategory.Automatic, isUpper);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            // Target position is positive with TowardOperator movement direction, otherwise is negative
+            var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.External.Race : -bay.External.Race;
+
+            var speed = new[] { bay.FullLoadMovement.Speed };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Relative,
+                MovementMode.ExtBayChain,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
+
+            if (loadUnitId.HasValue)
+            {
+                messageData.LoadingUnitId = loadUnitId;
+            }
+
+            if (direction == ExternalBayMovementDirection.TowardMachine)
+            {
+                messageData.SourceBayPositionId = bay.Positions.SingleOrDefault(s => s.IsUpper == isUpper).Id;
+            }
+            else
+            {
+                messageData.TargetBayPositionId = bay.Positions.SingleOrDefault(s => s.IsUpper == isUpper).Id;
             }
 
             this.logger.LogDebug(
@@ -305,18 +580,107 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 switchPosition,
                 direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
 
+            if (direction == ExternalBayMovementDirection.TowardMachine)
+            {
+                messageData.SourceBayPositionId = bay.Positions.SingleOrDefault().Id;
+            }
+            else
+            {
+                messageData.TargetBayPositionId = bay.Positions.SingleOrDefault().Id;
+            }
+
             this.logger.LogDebug(
-                $"Move External Bay Assisted " +
-                $"bayNumber: {bayNumber}; " +
-                $"direction: {direction}; " +
-                $"targetPosition: {targetPosition}; " +
-                $"current bay axis position: {this.baysDataProvider.GetChainPosition(bayNumber)}; " +
-                $"chain offset parameter: {bay.ChainOffset}; " +
-                $"Direction: {direction}; " +
-                $"feedrate: {procedureParameters.FeedRate}; " +
-                $"speed: {speed[0]:0.00}; " +
-                $"acceleration: {acceleration[0]:0.00}; " +
-                $"deceleration: {deceleration[0]:0.00};");
+            $"Move External Bay Assisted " +
+            $"bayNumber: {bayNumber}; " +
+            $"direction: {direction}; " +
+            $"targetPosition: {targetPosition}; " +
+            $"current bay axis position: {this.baysDataProvider.GetChainPosition(bayNumber)}; " +
+            $"chain offset parameter: {bay.ChainOffset}; " +
+            $"Direction: {direction}; " +
+            $"feedrate: {procedureParameters.FeedRate}; " +
+            $"speed: {speed[0]:0.00}; " +
+            $"acceleration: {acceleration[0]:0.00}; " +
+            $"deceleration: {deceleration[0]:0.00};");
+
+            this.PublishCommand(
+                messageData,
+                $"Execute external {Axis.BayChain} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.None);
+        }
+
+        public void MoveAssistedExtDouble(ExternalBayMovementDirection direction, BayNumber bayNumber, MessageActor sender, bool isUpper)
+        {
+            // For assisted movements
+
+            var policy = this.CanMoveExtDouble(direction, bayNumber, MovementCategory.Assisted, isUpper);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var race = bay.External.Race;
+
+            var distance = race;
+
+            // Be careful: the distance value is used in a relative position mode
+            switch (direction)
+            {
+                case ExternalBayMovementDirection.TowardOperator:
+                    distance = race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) - bay.ChainOffset;
+                    break;
+
+                case ExternalBayMovementDirection.TowardMachine:
+                    distance = bay.ChainOffset - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber));
+                    break;
+            }
+
+            //var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? race + bay.ChainOffset : bay.ChainOffset; // for .Absolute
+            var targetPosition = distance;
+
+            var procedureParameters = this.baysDataProvider.GetAssistedMovementsExternalBay(bayNumber);
+
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Relative,  //.Absolute,
+                MovementMode.ExtBayChain,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
+
+            if (direction == ExternalBayMovementDirection.TowardMachine)
+            {
+                messageData.SourceBayPositionId = bay.Positions.SingleOrDefault(s => s.IsUpper == isUpper).Id;
+            }
+            else
+            {
+                messageData.TargetBayPositionId = bay.Positions.SingleOrDefault(s => s.IsUpper == isUpper).Id;
+            }
+
+            this.logger.LogDebug(
+            $"Move External Bay Assisted " +
+            $"bayNumber: {bayNumber}; " +
+            $"direction: {direction}; " +
+            $"targetPosition: {targetPosition}; " +
+            $"current bay axis position: {this.baysDataProvider.GetChainPosition(bayNumber)}; " +
+            $"chain offset parameter: {bay.ChainOffset}; " +
+            $"Direction: {direction}; " +
+            $"feedrate: {procedureParameters.FeedRate}; " +
+            $"speed: {speed[0]:0.00}; " +
+            $"acceleration: {acceleration[0]:0.00}; " +
+            $"deceleration: {deceleration[0]:0.00};");
 
             this.PublishCommand(
                 messageData,
@@ -335,6 +699,87 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (!bypassConditions)
             {
                 var policy = this.CanMove(direction, bayNumber, MovementCategory.Manual);
+                if (!policy.IsAllowed)
+                {
+                    throw new InvalidOperationException(policy.Reason);
+                }
+            }
+
+            this.machineVolatileDataProvider.IsBayHomingExecuted[bayNumber] = false;
+
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var targetPosition = bay.External.Race;    // USE for .Relative
+            // Check the module of distance to be moved
+            const double EXT_RACE_FOR_EXTRACTION = 250.0d;
+            if (distance > 0 && distance < bay.External.Race + Math.Abs(bay.ChainOffset) + EXT_RACE_FOR_EXTRACTION)
+            {
+                targetPosition = distance;
+            }
+
+            // Target position is positive with TowardOperator movement direction, otherwise position is negative
+            targetPosition *= direction is ExternalBayMovementDirection.TowardOperator ? 1 : -1;
+
+            // Use this for .Absolute
+            //const double EXT_RACE_FOR_EXTRACTION = 250.0d;
+            //const double INTERNAL_LIMIT = -150.0d;
+            //var targetPosition = (direction is ExternalBayMovementDirection.TowardOperator) ?
+            //    bay.External.Race + EXT_RACE_FOR_EXTRACTION :
+            //    INTERNAL_LIMIT;
+
+            var procedureParameters = this.baysDataProvider.GetManualMovementsExternalBay(bayNumber);
+
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Relative,    //.Absolute,
+                MovementMode.ExtBayChainManual,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
+
+            if (loadUnitId.HasValue)
+            {
+                messageData.LoadingUnitId = loadUnitId;
+            }
+            messageData.BypassConditions = bypassConditions;
+
+            this.logger.LogDebug(
+                $"Move External Bay Manual " +
+                $"bayNumber: {bayNumber}; " +
+                $"direction: {direction}; " +
+                $"LoadUnitId: {loadUnitId}; " +
+                $"bypass: {bypassConditions}; " +
+                $"targetPosition: {targetPosition:0.00}; " +
+                $"Direction: {direction}; " +
+                $"feedrate: {procedureParameters.FeedRate}; " +
+                $"speed: {speed[0]:0.00}; " +
+                $"acceleration: {acceleration[0]:0.00}; " +
+                $"deceleration: {deceleration[0]:0.00};");
+
+            this.PublishCommand(
+                messageData,
+                $"Execute External {Axis.BayChain} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.None);
+        }
+
+        public void MoveManualExtDouble(ExternalBayMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender)
+        {
+            // For manual movements
+
+            if (!bypassConditions)
+            {
+                var policy = this.CanMoveExtDouble(direction, bayNumber, MovementCategory.Manual, false);
                 if (!policy.IsAllowed)
                 {
                     throw new InvalidOperationException(policy.Reason);

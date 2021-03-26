@@ -88,6 +88,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsSensorZeroOnElevator { get; }
 
+        bool IsSensorZeroTopOnBay1 { get; }
+
+        bool IsSensorZeroTopOnBay2 { get; }
+
+        bool IsSensorZeroTopOnBay3 { get; }
+
         #endregion
 
         #region Methods
@@ -98,15 +104,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerInBayBottom(BayNumber bayNumber);
 
-        bool IsDrawerInBayExternalPosition(BayNumber bayNumber);
+        bool IsDrawerInBayExternalPosition(BayNumber bayNumber, bool isExternalDoubleBay);
+
+        bool IsDrawerInBayInternalBottom(BayNumber bayNumber);
 
         bool IsDrawerInBayInternalPosition(BayNumber bayNumber, bool isDouble);
+
+        bool IsDrawerInBayInternalTop(BayNumber bayNumber);
 
         bool IsDrawerInBayTop(BayNumber bayNumber);
 
         bool IsProfileCalibratedBay(BayNumber bayNumber);
 
         bool IsSensorZeroOnBay(BayNumber bayNumber);
+
+        bool IsSensorZeroTopOnBay(BayNumber bayNumber);
 
         void OnFaultStateChanged(StatusUpdateEventArgs e);
 

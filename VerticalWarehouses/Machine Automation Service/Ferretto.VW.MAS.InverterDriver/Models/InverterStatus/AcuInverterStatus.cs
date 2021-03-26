@@ -35,8 +35,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public bool ACU_EncoderChannelB => this.Inputs?[(int)InverterSensors.ACU_EncoderChannelB] ?? false;
 
-        public bool ACU_EncoderChannelZ => this.Inputs?[(int)InverterSensors.ACU_EncoderChannelZ] ?? false;
-
         public bool ACU_FreeSensor1 => this.Inputs?[(int)InverterSensors.ACU_FreeSensor1] ?? false;
 
         public bool ACU_FreeSensor2 => this.Inputs?[(int)InverterSensors.ACU_FreeSensor2] ?? false;
@@ -46,6 +44,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         public bool ACU_HardwareSensorSTO => this.Inputs?[(int)InverterSensors.ACU_HardwareSensorSTO] ?? false;
 
         public bool ACU_ZeroSensor => this.Inputs?[(int)InverterSensors.ACU_ZeroSensor] ?? false;
+
+        public bool ACU_ZeroSensorTop => this.Inputs?[(int)InverterSensors.ACU_ZeroSensorTop] ?? false;
         //public bool ACU_HardwareSensorSTOB => this.Inputs?[(int)InverterSensors.ACU_HardwareSensorSTOB] ?? false;
 
         public int CurrentPosition => this.currentPosition;

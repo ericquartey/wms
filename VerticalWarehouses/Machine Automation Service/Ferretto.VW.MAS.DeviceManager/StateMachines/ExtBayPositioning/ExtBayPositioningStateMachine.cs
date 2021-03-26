@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -167,9 +168,31 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                     ExternalBayMovementDirection.TowardOperator :
                     ExternalBayMovementDirection.TowardMachine;
 
-                ok = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator ?
-                    !this.machineData.MachineSensorStatus.IsDrawerInBayExternalPosition(this.machineData.TargetBay) :
-                    !this.machineData.MachineSensorStatus.IsDrawerInBayInternalPosition(this.machineData.TargetBay, bay.IsDouble));
+                if (bay.IsDouble)
+                {
+                    var isUpper = externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator ? bay.Positions.SingleOrDefault(s => s.Id == this.machineData.MessageData.TargetBayPositionId).IsUpper :
+                        bay.Positions.SingleOrDefault(s => s.Id == this.machineData.MessageData.SourceBayPositionId).IsUpper;
+
+                    if (isUpper)
+                    {
+                        ok = externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator ?
+                       !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay) :
+                       !this.machineData.MachineSensorStatus.IsDrawerInBayInternalTop(this.machineData.TargetBay);
+                    }
+                    else
+                    {
+                        ok = externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator ?
+                            !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay) :
+                        !this.machineData.MachineSensorStatus.IsDrawerInBayInternalBottom(this.machineData.TargetBay);
+                    }
+                }
+                else
+                {
+                    ok = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator ?
+                        !this.machineData.MachineSensorStatus.IsDrawerInBayExternalPosition(this.machineData.TargetBay, bay.IsExternal && bay.IsDouble) :
+                        !this.machineData.MachineSensorStatus.IsDrawerInBayInternalPosition(this.machineData.TargetBay, bay.IsDouble));
+                }
+
                 if (!ok)
                 {
                     errorText = ErrorDescriptions.ExternalBayOccupied;

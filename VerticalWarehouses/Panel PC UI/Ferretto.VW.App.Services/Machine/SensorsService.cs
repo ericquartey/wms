@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Services
 
         private bool bayZeroChainIsVisible;
 
+        private bool bayZeroChainUpIsVisible;
+
         private SubscriptionToken healthProbeToken;
 
         private SubscriptionToken sensorsToken;
@@ -98,7 +100,7 @@ namespace Ferretto.VW.App.Services
             private set => this.SetProperty(ref this.bayPositionUpHeight, value);
         }
 
-        public bool BayZeroChain
+        public bool BayRobotOption
         {
             get
             {
@@ -109,28 +111,20 @@ namespace Ferretto.VW.App.Services
 
                 if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
                 {
-                    return this.Sensors.ACUBay1S3IND;
+                    return this.Sensors.RobotOptionBay1;
                 }
                 else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
                 {
-                    return this.Sensors.ACUBay2S3IND;
+                    return this.Sensors.RobotOptionBay2;
                 }
                 else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
                 {
-                    return this.Sensors.ACUBay3S3IND;
+                    return this.Sensors.RobotOptionBay3;
                 }
 
                 return false;
             }
         }
-
-        public bool BEDInternalBayTop => this.BayTrolleyOption;
-
-        public bool BEDInternalBayBottom => this.BayRobotOption;
-
-        public bool BEDExternalBayTop => this.IsLoadingUnitInBay;
-
-        public bool BEDExternalBayBottom => this.IsLoadingUnitInMiddleBottomBay;
 
         public bool BayTrolleyOption
         {
@@ -158,7 +152,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public bool BayRobotOption
+        public bool BayZeroChain
         {
             get
             {
@@ -169,15 +163,15 @@ namespace Ferretto.VW.App.Services
 
                 if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
                 {
-                    return this.Sensors.RobotOptionBay1;
+                    return this.Sensors.ACUBay1S3IND;
                 }
                 else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
                 {
-                    return this.Sensors.RobotOptionBay2;
+                    return this.Sensors.ACUBay2S3IND;
                 }
                 else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
                 {
-                    return this.Sensors.RobotOptionBay3;
+                    return this.Sensors.ACUBay3S3IND;
                 }
 
                 return false;
@@ -189,6 +183,46 @@ namespace Ferretto.VW.App.Services
             get => this.bayZeroChainIsVisible;
             set => this.SetProperty(ref this.bayZeroChainIsVisible, value);
         }
+
+        public bool BayZeroChainUp
+        {
+            get
+            {
+                if (this.Bay is null)
+                {
+                    return false;
+                }
+
+                if (this.BayNumber is BayNumber.BayOne)
+                {
+                    return this.Sensors.ACUBay1S6IND;
+                }
+                else if (this.BayNumber is BayNumber.BayTwo)
+                {
+                    return this.Sensors.ACUBay2S6IND;
+                }
+                else if (this.BayNumber is BayNumber.BayThree)
+                {
+                    return this.Sensors.ACUBay3S6IND;
+                }
+
+                return false;
+            }
+        }
+
+        public bool BayZeroChainUpIsVisible
+        {
+            get => this.bayZeroChainUpIsVisible;
+            set => this.SetProperty(ref this.bayZeroChainUpIsVisible, value);
+        }
+
+        public bool BEDExternalBayBottom => this.IsLoadingUnitInMiddleBottomBay;
+
+        public bool BEDExternalBayTop => this.IsLoadingUnitInBay;
+
+        public bool BEDInternalBayBottom => this.BayRobotOption;
+
+        public bool BEDInternalBayTop => this.BayTrolleyOption;
 
         public bool IsExtraVertical => this.sensors.ElevatorOverrun;
 
@@ -369,6 +403,8 @@ namespace Ferretto.VW.App.Services
 
                     this.BayZeroChainIsVisible = this.Bay.IsExternal || this.Bay.Carousel != null;
 
+                    this.BayZeroChainUpIsVisible = this.Bay.IsExternal && this.Bay.IsDouble;
+
                     this.shutterSensors.HasShutter = this.Bay.Shutter != null && this.Bay.Shutter.Type != ShutterType.NotSpecified;
                 }
             }
@@ -434,6 +470,8 @@ namespace Ferretto.VW.App.Services
             this.RaisePropertyChanged(nameof(this.IsZeroVertical));
             this.RaisePropertyChanged(nameof(this.BayZeroChain));
             this.RaisePropertyChanged(nameof(this.BayZeroChainIsVisible));
+            this.RaisePropertyChanged(nameof(this.BayZeroChainUp));
+            this.RaisePropertyChanged(nameof(this.BayZeroChainUpIsVisible));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInMiddleBottomBay));

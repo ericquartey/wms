@@ -372,6 +372,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 // Retrieve properties of bay: check if it is an internal double bay
                 var bay = await this.machineBaysWebService.GetByNumberAsync(this.bayNumber);
                 var isInternalDoubleBay = bay.IsDouble && (bay.Carousel == null);
+                var isExternalDoubleBay = bay.IsDouble && bay.IsExternal;
 
                 // Retrieve the machine missions
                 var machineMissions = await this.missionsWebService.GetAllAsync();
@@ -396,6 +397,19 @@ namespace Ferretto.VW.App.Modules.Operator
                         m.ErrorCode == MachineErrorCode.NoError)
                         .OrderBy(o => o.LoadUnitDestination);
                 }
+                else if (isExternalDoubleBay)
+                {
+                    activeMissions = machineMissions.Where(m =>
+                        m.Step is MissionStep.WaitPick
+                        &&
+                        m.TargetBay == this.bayNumber
+                        &&
+                        m.Status == MissionStatus.Waiting
+                        &&
+                        m.ErrorCode == MachineErrorCode.NoError)
+                        .OrderBy(o => o.LoadUnitDestination);
+                }
+
                 //else
                 //{
                 //    // Retrieve the active missions according to the enlisted condition.

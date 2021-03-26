@@ -1653,4 +1653,13 @@
   <data name="SubnetMask_Additional" xml:space="preserve">
     <value>SubnetMask dodatni</value>
   </data>
+  <data name="MissionStateDoubleExtBay" xml:space="preserve">
+    <value>Dvostruka vanjska uvala</value>
+  </data>
+  <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
+    <value>Pričekajte polog vanjskog ležišta</value>
+  </data>
+  <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
+    <value>Pričekajte polog u unutarnjem ležištu</value>
+  </data>
 </root>

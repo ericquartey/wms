@@ -141,6 +141,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
 
+                case MissionStep.DoubleExtBay:
+                    if (this.Mission.ErrorMovements == MissionErrorMovements.None)
+                    {
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        this.RestoreDoubleExtBay();
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    }
+                    break;
+
                 case MissionStep.BayChain:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
@@ -182,6 +194,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionStep.ToTarget:
                 case MissionStep.BackToBay:
                 case MissionStep.WaitDepositCell:
+                case MissionStep.WaitDepositExternalBay:
+                case MissionStep.WaitDepositInternalBay:
                 case MissionStep.WaitDepositBay:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
@@ -338,6 +352,41 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
+        private void RestoreDoubleExtBay()
+        {
+            IMissionMoveBase newStep;
+            this.Mission.StopReason = StopRequestReason.NoReason;
+            var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+            var destination = bay.Positions.FirstOrDefault();
+
+            var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
+            var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+            if (bay.Shutter != null
+                && bay.Shutter.Type != ShutterType.NotSpecified
+                && shutterPosition != ShutterPosition.Closed
+                && shutterPosition != ShutterPosition.Opened
+                )
+            {
+                this.Mission.RestoreConditions = true;
+                this.Mission.OpenShutterPosition = ShutterPosition.Opened;
+                this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start Mission:Id={this.Mission.Id}");
+                this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, destination.Location);
+                this.LoadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.Mission.OpenShutterPosition, this.Mission.TargetBay, true);
+                this.Mission.ErrorMovements = MissionErrorMovements.MoveShutterOpen;
+                this.Mission.ErrorMovements |= MissionErrorMovements.MoveShutterClosed;
+                this.MissionsDataProvider.Update(this.Mission);
+            }
+            else
+            {
+                this.Mission.RestoreConditions = true;
+                this.Mission.RestoreStep = MissionStep.NotDefined;
+                this.Mission.NeedMovingBackward = false;
+
+                newStep = new MissionMoveDoubleExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
+            }
+        }
+
         private void RestoreExtBay()
         {
             IMissionMoveBase newStep;
@@ -424,6 +473,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.RestoreExtBay();
                     return;
 
+                case MissionStep.DoubleExtBay:
+                    this.RestoreDoubleExtBay();
+                    return;
+
                 case MissionStep.BayChain:
                     this.RestoreBayChain();
                     return;
@@ -448,6 +501,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MissionStep.WaitDepositCell:
                     newStep = new MissionMoveWaitDepositCellStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    break;
+
+                case MissionStep.WaitDepositExternalBay:
+                    newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    break;
+
+                case MissionStep.WaitDepositInternalBay:
+                    newStep = new MissionMoveWaitDepositInternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     break;
 
                 case MissionStep.WaitDepositBay:

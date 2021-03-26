@@ -129,6 +129,24 @@
                     </DataTrigger>
                     <DataTrigger Binding="{Binding Step}">
                       <DataTrigger.Value>
+                        <model:MissionStep>DoubleExtBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateDoubleExtBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitDepositExternalBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDepositExternalBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitDepositInternalBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDepositInternalBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
                         <model:MissionStep>ExtBay</model:MissionStep>
                       </DataTrigger.Value>
                       <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateExtBay}" />

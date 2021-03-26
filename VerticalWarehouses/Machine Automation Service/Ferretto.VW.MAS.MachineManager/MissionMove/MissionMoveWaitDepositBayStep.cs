@@ -72,33 +72,68 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var lowerBayPosition = bay.Positions.FirstOrDefault(p => !p.IsUpper);
             var isLoadingUnitOnLowerBayPosition = (lowerBayPosition.LoadingUnit != null);
 
-            if ((isLoadingUnitOnUpperBayPosition || isLoadingUnitOnLowerBayPosition)
-                && this.IsWaitingRequested(bay))
+            if (bay.IsDouble && bay.IsExternal)
             {
-                var reasonDescription = "";
-                if (isLoadingUnitOnLowerBayPosition)
+                this.SendMoveNotification(bay.Number, this.Mission.Step.ToString(), MessageStatus.OperationWaitResume);
+
+                if (this.IsWaitingGoInternalBay(bay))
                 {
-                    reasonDescription = $"Reason: {lowerBayLocation} is occupied";
+                    var reasonDescription = "";
+                    if (isLoadingUnitOnLowerBayPosition)
+                    {
+                        reasonDescription = $"Reason: {lowerBayLocation} is occupied";
+                    }
+                    if (isLoadingUnitOnUpperBayPosition)
+                    {
+                        reasonDescription = $"Reason: {upperBayLocation} is occupied";
+                    }
+                    var description = $"Deposit on Bay {bay.Number} not allowed at the moment in bay." + $" {reasonDescription}" + " Wait for internal bay resume";
+
+                    // we don't send the current LU in bay while operator is working on other position
+                    this.Logger.LogInformation(description);
+                    this.Mission.Status = MissionStatus.Waiting;
+
+                    this.MissionsDataProvider.Update(this.Mission);
+
+                    this.SendMoveNotification(
+                        this.Mission.TargetBay,
+                        this.Mission.Step.ToString(),
+                        MessageStatus.OperationEnd
+                    );
+
+                    return true;
                 }
-                if (isLoadingUnitOnUpperBayPosition)
+            }
+            else
+            {
+                if ((isLoadingUnitOnUpperBayPosition || isLoadingUnitOnLowerBayPosition)
+                && this.IsWaitingRequested(bay))
                 {
-                    reasonDescription = $"Reason: {upperBayLocation} is occupied";
+                    var reasonDescription = "";
+                    if (isLoadingUnitOnLowerBayPosition)
+                    {
+                        reasonDescription = $"Reason: {lowerBayLocation} is occupied";
+                    }
+                    if (isLoadingUnitOnUpperBayPosition)
+                    {
+                        reasonDescription = $"Reason: {upperBayLocation} is occupied";
+                    }
+                    var description = $"Deposit on Bay {bay.Number} not allowed at the moment in bay." + $" {reasonDescription}" + " Wait for resume";
+
+                    // we don't send the current LU in bay while operator is working on other position
+                    this.Logger.LogInformation(description);
+                    this.Mission.Status = MissionStatus.Waiting;
+
+                    this.MissionsDataProvider.Update(this.Mission);
+
+                    this.SendMoveNotification(
+                        this.Mission.TargetBay,
+                        this.Mission.Step.ToString(),
+                        MessageStatus.OperationEnd
+                    );
+
+                    return true;
                 }
-                var description = $"Deposit on Bay {bay.Number} not allowed at the moment in bay." + $" {reasonDescription}" + " Wait for resume";
-
-                // we don't send the current LU in bay while operator is working on other position
-                this.Logger.LogInformation(description);
-                this.Mission.Status = MissionStatus.Waiting;
-
-                this.MissionsDataProvider.Update(this.Mission);
-
-                this.SendMoveNotification(
-                    this.Mission.TargetBay,
-                    this.Mission.Step.ToString(),
-                    MessageStatus.OperationEnd
-                );
-
-                return true;
             }
 
             // No need to wait
@@ -122,17 +157,46 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             // get the (target) bay
             var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
 
-            // are there waiting mission on the bay?
-            if (!bay.Positions.Any(x => x.LoadingUnit != null)
-                || !this.IsWaitingRequested(bay)
-                )
+            if (bay.IsExternal && bay.IsDouble)
             {
-                this.Mission.Status = MissionStatus.Executing;
+                // are there waiting mission on the bay?
+                if (!this.IsWaitingGoInternalBay(bay)
+                    )
+                {
+                    this.Mission.Status = MissionStatus.Executing;
 
-                // No need to wait, go ahead with no worries
-                var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                newStep.OnEnter(null);
+                    // No need to wait, go ahead with no worries
+                    var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+                }
             }
+            else
+            {
+                // are there waiting mission on the bay?
+                if (!bay.Positions.Any(x => x.LoadingUnit != null)
+                    || !this.IsWaitingRequested(bay)
+                    )
+                {
+                    this.Mission.Status = MissionStatus.Executing;
+
+                    // No need to wait, go ahead with no worries
+                    var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+                }
+            }
+        }
+
+        private bool IsWaitingGoInternalBay(Bay bay)
+        {
+            // List of waiting mission on the bay
+            var waitMissions = this.MissionsDataProvider.GetAllActiveMissions()
+                .Where(m =>
+                    m.TargetBay == this.Mission.TargetBay &&
+                    ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitDepositInternalBay)
+                        || m.Status == MissionStatus.New
+                        )
+                );
+            return waitMissions.Any();
         }
 
         private bool IsWaitingRequested(Bay bay)

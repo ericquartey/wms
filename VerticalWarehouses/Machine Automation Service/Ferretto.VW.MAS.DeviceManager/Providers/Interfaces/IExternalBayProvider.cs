@@ -8,11 +8,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
-        MachineErrorCode CanElevatorDeposit(BayNumber bayNumber);
+        MachineErrorCode CanElevatorDeposit(BayNumber bayNumber, bool isPositionUpper);
 
-        MachineErrorCode CanElevatorPickup(BayNumber bayNumber);
+        MachineErrorCode CanElevatorPickup(BayNumber bayNumber, bool isPositionUpper);
 
         ActionPolicy CanMove(ExternalBayMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory);
+
+        ActionPolicy CanMoveExtDouble(ExternalBayMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory, bool isPositionUp);
 
         double GetPosition(BayNumber bayNumber);
 
@@ -20,13 +22,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsExternalPositionOccupied(BayNumber bayNumber);
 
+        bool IsExternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation);
+
         bool IsInternalPositionOccupied(BayNumber bayNumber);
+
+        bool IsInternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation);
 
         void Move(ExternalBayMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
 
         void MoveAssisted(ExternalBayMovementDirection direction, BayNumber bayNumber, MessageActor sender);
 
+        void MoveAssistedExtDouble(ExternalBayMovementDirection direction, BayNumber bayNumber, MessageActor sender, bool isUpper);
+
+        void MoveExtDouble(ExternalBayMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender, bool isUpper);
+
         void MoveManual(ExternalBayMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
+
+        void MoveManualExtDouble(ExternalBayMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
 
         void MovementForExtraction(int? loadUnitId, BayNumber bayNumber, MessageActor sender);
 

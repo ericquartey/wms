@@ -4,8 +4,10 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -13,6 +15,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
     public class MissionMoveStartStep : MissionMoveBase
     {
+        #region Fields
+
+        private readonly IMachineResourcesProvider machineResourcesProvider;
+
+        #endregion
+
         #region Constructors
 
         public MissionMoveStartStep(Mission mission,
@@ -20,6 +28,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             IEventAggregator eventAggregator)
             : base(mission, serviceProvider, eventAggregator)
         {
+            this.machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
         }
 
         #endregion
@@ -361,7 +370,45 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 // Retrieve the bay related to the source location (if exists)
                                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
 
-                                if (bay != null && bay.IsExternal)
+                                if (bay != null && bay.IsExternal && bay.IsDouble)
+                                {
+                                    var isPositionUpper = this.Mission.LoadUnitSource == LoadingUnitLocation.InternalBay1Up ||
+                                        this.Mission.LoadUnitSource == LoadingUnitLocation.InternalBay2Up ||
+                                        this.Mission.LoadUnitSource == LoadingUnitLocation.InternalBay3Up;
+
+                                    var LUInExternalPosition = isPositionUpper ? this.machineResourcesProvider.IsDrawerInBayTop(bay.Number) : this.machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
+
+                                    var isDoubleExternalBayMovementRequested = bay.IsExternal &&
+                                        bay.IsDouble &&
+                                        LUInExternalPosition;
+
+                                    var missions = this.MissionsDataProvider.GetAllActiveMissionsByBay(bay.Number);
+
+                                    if ((!this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
+                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.ExternalBayEmpty, notification.RequestingBay);
+                                        throw new StateMachineException(ErrorDescriptions.ExternalBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);
+                                    }
+
+                                    if (missions.Any(s => s.Status > MissionStatus.New && s.LoadUnitId != this.Mission.LoadUnitId))
+                                    {
+                                        var newStep = new MissionMoveWaitDepositInternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        newStep.OnEnter(null);
+                                    }
+                                    else if (isDoubleExternalBayMovementRequested)
+                                    {
+                                        // Move the external bay
+                                        var newStep = new MissionMoveDoubleExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        newStep.OnEnter(null);
+                                    }
+                                    else
+                                    {
+                                        var newStep = new MissionMoveLoadElevatorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                        newStep.OnEnter(null);
+                                    }
+                                }
+                                else if (bay != null && bay.IsExternal)
                                 {
                                     // Handle the external bay with a proper step
                                     var isExternalBayMovementRequested = bay.IsExternal &&
