@@ -2436,4 +2436,10 @@
   <data name="MovingMachine" xml:space="preserve">
     <value>Pokretni stroj</value>
   </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Nulti lanac poz. visoko</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Nulti lanac poz. niska</value>
+  </data>
 </root>

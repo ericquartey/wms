@@ -7045,6 +7045,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zero chain pos. low.
+        /// </summary>
+        public static string ZeroChainDown {
+            get {
+                return ResourceManager.GetString("ZeroChainDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zero chain pos. high.
+        /// </summary>
+        public static string ZeroChainUp {
+            get {
+                return ResourceManager.GetString("ZeroChainUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Zero Pawl Sensor.
         /// </summary>
         public static string ZeroPawlSensor {

@@ -2512,4 +2512,10 @@
   <data name="Laser" xml:space="preserve">
     <value>Laser</value>
   </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Zero chain pos. high</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Zero chain pos. low</value>
+  </data>
 </root>

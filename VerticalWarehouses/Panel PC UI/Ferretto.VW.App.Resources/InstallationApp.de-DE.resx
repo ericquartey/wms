@@ -2436,4 +2436,10 @@
   <data name="MovingMachine" xml:space="preserve">
     <value>Maschine bewegen</value>
   </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Nullkette pos. hoch</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Nullkette pos. niedrig</value>
+  </data>
 </root>
