@@ -1,4 +1,16 @@
-﻿## Nuove Funzionalità 1.0.8 rispetto la 1.0.7
+﻿## Nuove Funzionalità 1.0.9 rispetto la 1.0.8
+- nessuna
+
+## Bug Risolti
+- Limitati messaggi spediti alla barra alfanumerica
+- Deposito in baia a bassa velocità
+- Missioni di ripristino in fase di recupero catena
+
+## Compatibile con adapter 0.4.15 e 0.4.16
+
+<details><summary>Versione 1.07</summary>
+
+## Nuove Funzionalità 1.0.8 rispetto la 1.0.7
 - Aggiunto parametro OffsetLaser per cassetto: quando esiste sostituisce l'altezza articolo
 
 ## Bug Risolti
@@ -9,6 +21,7 @@
 - Eliminati alcuni casi di "Nuove operazioni disponibili"
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+</details>
 
 <details><summary>Versione 1.07</summary>
 
