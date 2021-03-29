@@ -1042,17 +1042,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private void SetSelectedItem()
-        {
-            if (this.items.Count == 0)
-            {
-                this.SelectedItem = null;
-                return;
-            }
-
-            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
-        }
-
         private void ShowItemDetails(ItemInfo item)
         {
             this.NavigationService.Appear(

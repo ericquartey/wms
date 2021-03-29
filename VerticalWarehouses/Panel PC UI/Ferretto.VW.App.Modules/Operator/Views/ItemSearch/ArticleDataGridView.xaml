@@ -6,104 +6,106 @@
              xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:extensionsNamespace="clr-namespace:Ferretto.VW.App.Controls.Extensions;assembly=Ferretto.VW.App.Controls">
 
-    <DataGrid Name="DataGrid"
-              extensionsNamespace:DataGridExtensions.ScrollChangedCommand="{Binding ScrollCommand}"
-              ItemsSource="{Binding Items}"
-              RowHeight="50"
-              SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
-        <DataGrid.Resources>
-            <ctrls:BindingProxy x:Key="proxy"
-                                Data="{Binding}" />
-        </DataGrid.Resources>
+  <ctrls:PpcDataGrid Name="DataGrid"
+                     extensionsNamespace:DataGridExtensions.ScrollChangedCommand="{Binding ScrollCommand}"
+                     IsHitTestVisible="True"
+                     ItemsSource="{Binding Items}"
+                     RowHeight="50"
+                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                     VerticalScrollBarVisibility="Auto">
+    <ctrls:PpcDataGrid.Resources>
+      <ctrls:BindingProxy x:Key="proxy"
+                          Data="{Binding}" />
+    </ctrls:PpcDataGrid.Resources>
 
-        <DataGrid.Columns>
-            <DataGridTextColumn x:Name="Column1"
-                                Width="2*"
-                                Binding="{Binding Path=Code}"
-                                Header="{Resources:Loc OperatorApp.Code}">
-                <DataGridTextColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="1,0,0,0" />
-                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                    </Style>
-                </DataGridTextColumn.CellStyle>
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column2"
-                                Width="4*"
-                                Binding="{Binding Path=Description}"
-                                Header="{Resources:Loc OperatorApp.Description}">
-                <DataGridTextColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                    </Style>
-                </DataGridTextColumn.CellStyle>
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Left" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="Margin" Value="5,0,5,0" />
-                        <Setter Property="TextWrapping" Value="Wrap" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTemplateColumn x:Name="Column3"
-                                    Width="100"
-                                    Header="{Resources:Loc OperatorApp.ListAvailable}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <Rectangle Width="30"
-                                   Height="30"
-                                   Fill="{DynamicResource FerrettoGreen}"
-                                   Visibility="{Binding IsQtyOnMachine, Converter={StaticResource BTVC}}" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-            <DataGridTextColumn x:Name="Column4"
-                                Width="100"
-                                Binding="{Binding Path=Lot}"
-                                Header="{Resources:Loc OperatorApp.Lot}"
-                                Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsGroupbyLot, Converter={StaticResource BTVC}}">
-                <DataGridTextColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                    </Style>
-                </DataGridTextColumn.CellStyle>
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Left" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="Margin" Value="5,0,5,0" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column5"
-                                Width="100"
-                                Binding="{Binding Path=SerialNumber}"
-                                Header="{Resources:Loc OperatorApp.SerialNumber}"
-                                Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsDistinctBySerialNumber, Converter={StaticResource BTVC}}">
-                <DataGridTextColumn.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="0" />
+    <ctrls:PpcDataGrid.Columns>
+      <DataGridTextColumn x:Name="Column1"
+                          Width="2*"
+                          Binding="{Binding Path=Code}"
+                          Header="{Resources:Loc OperatorApp.Code}">
+        <DataGridTextColumn.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="1,0,0,0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+          </Style>
+        </DataGridTextColumn.CellStyle>
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column2"
+                          Width="4*"
+                          Binding="{Binding Path=Description}"
+                          Header="{Resources:Loc OperatorApp.Description}">
+        <DataGridTextColumn.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+          </Style>
+        </DataGridTextColumn.CellStyle>
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTemplateColumn x:Name="Column3"
+                              Width="100"
+                              Header="{Resources:Loc OperatorApp.ListAvailable}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <Rectangle Width="30"
+                       Height="30"
+                       Fill="{DynamicResource FerrettoGreen}"
+                       Visibility="{Binding IsQtyOnMachine, Converter={StaticResource BTVC}}" />
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+      <DataGridTextColumn x:Name="Column4"
+                          Width="100"
+                          Binding="{Binding Path=Lot}"
+                          Header="{Resources:Loc OperatorApp.Lot}"
+                          Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsGroupbyLot, Converter={StaticResource BTVC}}">
+        <DataGridTextColumn.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+          </Style>
+        </DataGridTextColumn.CellStyle>
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column5"
+                          Width="100"
+                          Binding="{Binding Path=SerialNumber}"
+                          Header="{Resources:Loc OperatorApp.SerialNumber}"
+                          Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsDistinctBySerialNumber, Converter={StaticResource BTVC}}">
+        <DataGridTextColumn.CellStyle>
+          <Style TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0" />
 
-                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                    </Style>
-                </DataGridTextColumn.CellStyle>
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Left" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="Margin" Value="5,0,5,0" />
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-        </DataGrid.Columns>
-    </DataGrid>
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+          </Style>
+        </DataGridTextColumn.CellStyle>
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5,0,5,0" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+    </ctrls:PpcDataGrid.Columns>
+  </ctrls:PpcDataGrid>
 </UserControl>
