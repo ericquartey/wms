@@ -341,6 +341,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return;
                 }
 
+                if (this.IsKeyboardOpened)
+                {
+                    this.Logger.Info("Tastiera aperta");
+                    return;
+                }
+
                 this.SetProperty(ref this.selectedItem, value);
 
                 var machineId = this.bayManager.Identity.Id;

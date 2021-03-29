@@ -10,9 +10,8 @@
              d:DesignWidth="800"
              DataContext="{Binding Path=., RelativeSource={RelativeSource Mode=Self}}"
              PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
-             PreviewTouchDown="UserControl_PreviewTouchDown"
+             TouchDown="UserControl_TouchUp"
              mc:Ignorable="d">
-  <!--  TouchUp="UserControl_TouchUp"  -->
   <UserControl.Resources>
     <Style TargetType="icons:PackIconFontAwesome">
       <Setter Property="Width" Value="24" />
