@@ -599,7 +599,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanApply()
         {
             return this.CanBaseExecute() &&
-                !this.isCalibrationNotCompleted;
+                (!this.isCalibrationNotCompleted ||
+                this.isNewErrorValueVisible);
         }
 
         private bool CanBaseExecute()
@@ -716,8 +717,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.MachineError != null)
                 {
                     this.IsChainOffsetVisible = false;
-                    this.IsNewErrorValueVisible = false;
+                    this.IsNewErrorValueVisible = true;
                     this.IsCalibrationNotCompleted = true;
+                    this.NewErrorValue = 0;
+                    this.IsCalibrationCompletedOrStopped = true;
                 }
 
                 return;
