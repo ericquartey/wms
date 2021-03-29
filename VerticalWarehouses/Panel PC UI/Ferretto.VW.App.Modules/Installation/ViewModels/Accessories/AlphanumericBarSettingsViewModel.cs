@@ -365,9 +365,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     await this.deviceDriver.TestAsync(false);
                 }
 
-                this.deviceDriver.GetOffsetArrowAndMessage(offset, message, out var offsetArrow, out var offsetMessage);
+                this.deviceDriver.GetOffsetArrowAndMessage(offset, message, out var offsetArrow, out var offsetMessage, out var scrollEnd);
                 await this.deviceDriver.SetAndWriteArrowAsync(offsetArrow, true);
-                return await this.deviceDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                if (scrollEnd > 0)
+                {
+                    return await this.deviceDriver.SetAndWriteMessageScrollAsync(message, offsetMessage, scrollEnd, false);
+                }
+                else
+                {
+                    return await this.deviceDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                }
             }
             catch (Exception ex)
             {
