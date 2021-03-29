@@ -56,9 +56,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPut("alpha-numeric-bar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public IActionResult UpdateAlphaNumericBar(bool isEnabled, string ipAddress, int port)
+        public IActionResult UpdateAlphaNumericBar(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size)
         {
-            this.accessoriesDataProvider.UpdateAlphaNumericBar(this.BayNumber, isEnabled, ipAddress, port);
+            this.accessoriesDataProvider.UpdateAlphaNumericBar(this.BayNumber, isEnabled, ipAddress, port, size);
 
             return this.Ok();
         }
