@@ -19,7 +19,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         public const int PORT_DEFAULT = 2020;
 
-        private const int MAX_MESSAGE_LENGTH = 127;
+        private const int MAX_MESSAGE_LENGTH = 125;
 
         private const string NEW_LINE = "\r\n";
 
@@ -425,7 +425,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return result;
         }
 
-        public bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage)
+        public bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage, out int scrollEnd)
         {
             var result = false;
 
@@ -438,7 +438,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 x = this.loadingUnitWidth;
             }
 
-            // set the arro offset
+            // set the arrow offset
             offsetArrow = (int)Math.Round(((int)this.Size) * 8 / this.loadingUnitWidth * x) - 2;     // note, sub 2 because the arrow is in the middle
 
             if (offsetArrow < this.ledHideOnLeftSide)
@@ -473,16 +473,29 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 offsetMessage = this.ledHideOnLeftSide;
             }
+
+            if (offsetMessage > offsetArrow && this.NumberOfLeds < offsetMessage + (message.Length * LED_INTO_CHAR))
+            {
+                scrollEnd = this.NumberOfLeds / LED_INTO_CHAR;
+            }
+            else if (offsetMessage < offsetArrow && offsetArrow < offsetMessage + (message.Length * LED_INTO_CHAR))
+            {
+                scrollEnd = offsetArrow / LED_INTO_CHAR;
+            }
+            else
+            {
+                scrollEnd = 0;
+            }
             return result;
         }
 
-        public bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, double loadingUnitWidth, WarehouseSide side, out int offsetArrow, out int offsetMessage)
+        public bool GetOffsetArrowAndMessageFromCompartment(double compartmentWidth, double itemXPosition, string message, double loadingUnitWidth, WarehouseSide side, out int offsetArrow, out int offsetMessage, out int scrollEnd)
         {
             var frontPosition = (compartmentWidth / 2) + itemXPosition;
             var arrowPosition = (side == WarehouseSide.Back) ?
                     loadingUnitWidth - frontPosition :
                     frontPosition;
-            return this.GetOffsetArrowAndMessage(arrowPosition, message, out offsetArrow, out offsetMessage);
+            return this.GetOffsetArrowAndMessage(arrowPosition, message, out offsetArrow, out offsetMessage, out scrollEnd);
         }
 
         public bool GetOffsetMessage(double x, string message, out int offsetMessage)
@@ -879,7 +892,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 }
 
                 // trim long messages
-                if (result.Length + escapedChar.Length <= maxLen)
+                if (maxLen <= 0 || result.Length + escapedChar.Length <= maxLen)
                 {
                     result += escapedChar;
                 }
