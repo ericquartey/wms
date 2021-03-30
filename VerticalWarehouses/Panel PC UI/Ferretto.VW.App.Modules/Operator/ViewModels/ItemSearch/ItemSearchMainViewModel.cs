@@ -333,28 +333,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (value is null)
                 {
-                    this.RaisePropertyChanged();
+                    //this.RaisePropertyChanged();
                     this.selectedItemTxt = Resources.Localized.Get("OperatorApp.RequestedQuantityBase");
                     this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                     return;
                 }
 
-                if (this.IsKeyboardOpened)
-                {
-                    this.Logger.Info("Tastiera aperta");
-                    return;
-                }
-
-                if (this.IsBusyRequestingItemPut || this.IsBusyRequestingItemPick)
-                {
-                    this.Logger.Info("Richiesta di prelievo o versamento in corso");
-                    return;
-                }
+                this.Logger.Debug($"selectedItem id {value.Id}, code {value.Code}");
 
                 this.SetProperty(ref this.selectedItem, value);
 
                 var machineId = this.bayManager.Identity.Id;
-                this.AvailableQuantity = this.SelectedItem.AvailableQuantity;
+                this.AvailableQuantity = this.selectedItem.AvailableQuantity;
                 this.InputQuantity = 0;
                 //this.itemToPickId = value.Id;
                 //this.itemToPickCode = value.Code;
@@ -453,6 +443,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.productsChangedToken?.Dispose();
             this.productsChangedToken = null;
+
+            this.IsBusyConfirmingOperation = false;
+            this.IsBusyRequestingItemPut = false;
+            this.IsBusyRequestingItemPick = false;
+            this.IsWaitingForResponse = false;
+            this.IsBusyLoadingNextPage = false;
         }
 
         public async Task ExecuteItemAsync()
@@ -641,6 +637,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task RequestItemPickAsync(int itemId, string itemCode)
         {
+            this.Logger.Debug($"Pick method id {itemId}, code {itemCode}");
+
             this.IsBusyRequestingItemPick = true;
             this.IsWaitingForResponse = true;
 

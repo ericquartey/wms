@@ -151,7 +151,6 @@ namespace Ferretto.VW.App.Controls.Keyboards
                 || e.CommandKey == System.Windows.Input.Key.Enter)
             {
                 this.ViewModel.IsClosed = true;
-                this.Close();
             }
         }
 
