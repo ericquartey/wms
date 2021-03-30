@@ -49,6 +49,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int? quantityTolerance;
 
+        private int selectedCompartmentId;
+
         private double? wastedDraperyQuantity;
 
         #endregion
@@ -206,6 +208,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var isItemDeleted = this.GoodDraperyQuantity + this.WastedDraperyQuantity == this.availableQuantity;
 
+            // Also add the selected compartment Id as argument to method :: this.selectedCompartmentId
             //var bResult = await this.ItemsWebService.SignallingDefectOnDraperyItemAsync(
             //    this.ItemId,
             //    this.GoodDraperyQuantity,
@@ -246,6 +249,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var compartments = MapCompartments(this.mission.LoadingUnit.Compartments);
                 var selectedCompartment = compartments.SingleOrDefault(c =>
                     c.Id == this.missionOperation.CompartmentId);
+                this.selectedCompartmentId = selectedCompartment.Id;
 
                 var loadingUnitId = this.mission.LoadingUnit.Id;
                 //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
