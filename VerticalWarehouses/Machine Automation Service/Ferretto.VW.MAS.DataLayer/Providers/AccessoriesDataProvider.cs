@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port)
+        public void UpdateAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size)
         {
             lock (this.dataContext)
             {
@@ -70,6 +70,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 barBay.Accessories.AlphaNumericBar.IsEnabledNew = isEnabled;
                 barBay.Accessories.AlphaNumericBar.IpAddress = IPAddress.Parse(ipAddress);
                 barBay.Accessories.AlphaNumericBar.TcpPort = port;
+                barBay.Accessories.AlphaNumericBar.Size = size;
 
                 this.dataContext.Accessories.Update(barBay.Accessories.AlphaNumericBar);
                 this.dataContext.SaveChanges();

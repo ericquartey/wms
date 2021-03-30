@@ -158,7 +158,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition(), Orientation.Vertical);
 
                 this.Logger.LogInformation($"MoveLoadingUnit start: direction {this.Mission.Direction}, openShutter {this.Mission.OpenShutterPosition} Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction, false, this.Mission.OpenShutterPosition, false, MessageActor.MachineManager, bayNumber, this.Mission.LoadUnitId, this.Mission.DestinationCellId, targetBayPositionId, this.Mission.LoadUnitCellSourceId, sourceBayPositionId);
+                this.LoadingUnitMovementProvider.MoveLoadingUnit(this.Mission.Direction,
+                    moveToCradle: false,
+                    this.Mission.OpenShutterPosition,
+                    measure: false,
+                    MessageActor.MachineManager,
+                    bayNumber,
+                    this.Mission.LoadUnitId,
+                    this.Mission.DestinationCellId, targetBayPositionId,
+                    this.Mission.LoadUnitCellSourceId,
+                    sourceBayPositionId,
+                    fastDeposit);
             }
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);

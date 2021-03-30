@@ -2512,4 +2512,10 @@
   <data name="Laser" xml:space="preserve">
     <value>Laser</value>
   </data>
+  <data name="InvalidCurrentValues" xml:space="preserve">
+    <value>Invalid current values - all three must be different!</value>
+  </data>
+  <data name="InvalidWeightValues" xml:space="preserve">
+    <value>Invalid weight values - all three must be different!</value>
+  </data>
 </root>

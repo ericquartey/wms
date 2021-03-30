@@ -184,7 +184,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void ManualMovementEnd(NotificationMessage notification)
         {
-            if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
+            if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward)
+                && !this.SensorsProvider.IsSensorZeroOnCradle
+                )
             {
                 this.Mission.NeedMovingBackward = false;
                 var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
@@ -214,6 +216,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveForward;
+                if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
+                {
+                    this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveBackward;
+                }
                 this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
                 this.DepositUnitEnd(restore: true);
             }
@@ -375,6 +382,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.Logger.LogDebug($"loadUnit {this.Mission.LoadUnitId} already deposited! Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                    this.Mission.NeedHomingAxis = Axis.Horizontal;
                     this.DepositUnitEnd(restore: true);
                     return;
                 }

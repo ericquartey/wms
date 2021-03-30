@@ -231,6 +231,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             try
             {
                 this.ClearConcurrentQueue(this.messagesReceivedQueue);
+                int errors = 0;
 
                 while (!this.messagesToBeSendQueue.IsEmpty)
                 {
@@ -272,6 +273,14 @@ namespace Ferretto.VW.Devices.LaserPointer
                                 if (bytes <= 0 || !this.IsResponseOk(sendMessage, responseMessage))
                                 {
                                     this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")},{responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                                    if (errors++ > 5)
+                                    {
+                                        this.ClearCommands();
+                                        this.logger.Error($"ExecuteCommands: too many errors!");
+                                        this.Disconnect();
+                                        Thread.Sleep(400);
+                                        break;
+                                    }
                                 }
                                 else
                                 {
@@ -300,6 +309,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                         if (ackReceived)
                         {
                             this.messagesToBeSendQueue.TryDequeue(out _);
+                            errors = 0;
                         }
                     }
                     else

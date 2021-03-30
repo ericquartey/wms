@@ -840,14 +840,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (orderList.Any(x => Math.Abs(x.Current - units.Current) < 0.1 && x.Step != units.Step))
                 {
                     this.ShowNotification(
-                           "Invalid current values - all three must be different!",
+                           VW.App.Resources.Localized.Get("InstallationApp.InvalidCurrentValues"),
                            Services.Models.NotificationSeverity.Error);
                     return;
                 }
                 if (orderList.Any(x => Math.Abs(x.NetWeight - units.NetWeight) < 20 && x.Step != units.Step))
                 {
                     this.ShowNotification(
-                           "Invalid weight values - all three must be different!",
+                           VW.App.Resources.Localized.Get("InstallationApp.InvalidWeightValues"),
                            Services.Models.NotificationSeverity.Error);
                     return;
                 }
