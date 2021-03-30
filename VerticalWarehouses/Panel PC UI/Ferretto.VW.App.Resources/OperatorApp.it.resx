@@ -1680,12 +1680,15 @@
     <value>Conferma prelievo pezza</value>
   </data>
   <data name="SignallingDefectFailed" xml:space="preserve">
-    <value>Segnala difetto fallita</value>
+    <value>Segnalazione difetto fallita</value>
   </data>
   <data name="ItemIsDeleted" xml:space="preserve">
     <value>Articolo é cancellato</value>
   </data>
   <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
     <value>Laser</value>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Segnalazione difetto con successo</value>
   </data>
 </root>

@@ -229,10 +229,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.ItemIsDeleted"), Services.Models.NotificationSeverity.Warning);
                     // string message => "Item is deleted"
                 }
+                else
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectSuccess"), Services.Models.NotificationSeverity.Success);
+                    // string message => "Signalling defect successful"
+                }
             }
 
             // Go back to the Pick view
-            this.NavigationService.GoBack();
+            //this.NavigationService.GoBack();
         }
 
         private async Task LoadItemDataAsync(int itemId)

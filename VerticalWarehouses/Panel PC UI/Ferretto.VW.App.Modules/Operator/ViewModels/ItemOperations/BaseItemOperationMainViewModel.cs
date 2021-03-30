@@ -104,7 +104,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyLoading;
 
-        private bool isCurrentDraperyItem = false;
+        private bool isCurrentDraperyItem;
 
         private bool isInputQuantityEnabled;
 
@@ -156,9 +156,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand showDetailsCommand;
 
-        private CancellationTokenSource tokenSource;
-
         private DelegateCommand signallingDefectCommand;
+
+        private CancellationTokenSource tokenSource;
 
         private DelegateCommand weightCommand;
 
@@ -531,11 +531,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.signallingDefectCommand
             ??
             (this.signallingDefectCommand = new DelegateCommand(
-                /*async*/ () => /*await*/ this.SignallingDefect(),
+                () => this.SignallingDefect(),
                 this.CanOpenSignallingDefect));
 
         public ICommand WeightCommand =>
-                    this.weightCommand
+            this.weightCommand
             ??
             (this.weightCommand = new DelegateCommand(
                 () => this.Weight(),
@@ -1403,9 +1403,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return this.CanConfirmPresent;
         }
 
+        private bool CanLoadItems()
+        {
+            try
+            {
+                return this.MissionOperation != null
+                        &&
+                        !this.IsWaitingForResponse
+                        &&
+                        !this.IsBusyAbortingOperation
+                        &&
+                        !this.IsBusyConfirmingOperation
+                        &&
+                        this.CanInputQuantity;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         private bool CanOpenSignallingDefect()
         {
             return this.IsCurrentDraperyItem;
+        }
+
+        private async Task ConfirmItemOperationAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            //some code
         }
 
         private async Task ConfirmPresentOperation_New_Async()
@@ -1466,33 +1493,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
             }
-        }
-
-        private bool CanLoadItems()
-        {
-            try
-            {
-                return this.MissionOperation != null
-                        &&
-                        !this.IsWaitingForResponse
-                        &&
-                        !this.IsBusyAbortingOperation
-                        &&
-                        !this.IsBusyConfirmingOperation
-                        &&
-                        this.CanInputQuantity;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        private async Task ConfirmItemOperationAsync()
-        {
-            this.IsWaitingForResponse = true;
-
-            //some code
         }
 
         private async Task ConfirmPresentOperationAsync()
@@ -1583,8 +1583,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 try
                 {
                     var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
-                    //this.IsCurrentDraperyItem = item.IsDraperyItem;  // ---->  Uncomment this code       **//**//**//**
-                    this.IsCurrentDraperyItem = true;
+                    this.IsCurrentDraperyItem = item.IsDraperyItem; // check if current item is a drapery item
                 }
                 catch (Exception)
                 {
@@ -1636,7 +1635,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     break;
             }
         }
-
 
         private async Task OnAppearItem()
         {
@@ -1747,31 +1745,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task TriggerSearchAsync()
-        {
-            this.tokenSource?.Cancel(false);
-
-            this.tokenSource = new CancellationTokenSource();
-
-            try
-            {
-                const int callDelayMilliseconds = 500;
-
-                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
-                await this.ReloadAllItems(this.tokenSource.Token);
-                await this.SearchItemAsync(0, this.tokenSource.Token);
-            }
-            catch (TaskCanceledException)
-            {
-                // do nothing
-            }
-        }
-
         private void ShowDraperyItemConfirmView(string barcode, bool isPartiallyConfirmOperation)
         {
             this.Logger.Debug($"Show the confirm view for drapery item {this.ItemId}, description {this.MissionOperation.ItemDescription}");
 
-            this.NavigationService.Appear(
+            this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemOperations.DRAPERYCONFIRM,
                 new ItemDraperyDataConfirm
@@ -1791,16 +1769,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 trackCurrentView: true);
         }
 
-        private /*async Task*/ void SignallingDefect()
+        private void SignallingDefect()
         {
             this.Logger.Debug("Signalling defect call....");
 
-            this.NavigationService.Appear(
+            this.navigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemOperations.SIGNALLINGDEFECT,
                 this.MissionOperation);
-            //this.MissionOperation,
-            //trackCurrentView: true);
+        }
+
+        private async Task TriggerSearchAsync()
+        {
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 500;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
+                await this.ReloadAllItems(this.tokenSource.Token);
+                await this.SearchItemAsync(0, this.tokenSource.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
         }
 
         private void Weight()

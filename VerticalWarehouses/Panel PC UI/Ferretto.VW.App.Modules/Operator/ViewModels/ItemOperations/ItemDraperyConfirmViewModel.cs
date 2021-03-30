@@ -60,7 +60,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double? AvailableQuantity
         {
             get => this.availableQuantity;
-            set => this.SetProperty(ref this.availableQuantity, value);
+            set => this.SetProperty(ref this.availableQuantity, value, this.RaiseCanExecuteChanged);
         }
 
         public string Barcode { get; set; }
@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double? InputQuantity
         {
             get => this.inputQuantity;
-            set => this.SetProperty(ref this.inputQuantity, value);
+            set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsPartiallyCompleteOperation { get; set; }
@@ -115,13 +115,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double QuantityIncrement
         {
             get => this.quantityIncrement;
-            set => this.SetProperty(ref this.quantityIncrement, value);
+            set => this.SetProperty(ref this.quantityIncrement, value, this.RaiseCanExecuteChanged);
         }
 
         public int? QuantityTolerance
         {
             get => this.quantityTolerance;
-            set => this.SetProperty(ref this.quantityTolerance, value);
+            set => this.SetProperty(ref this.quantityTolerance, value, this.RaiseCanExecuteChanged);
         }
 
         public double WastedDraperyQuantity
@@ -173,6 +173,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Barcode = string.Empty;
                 this.IsPartiallyCompleteOperation = false;
             }
+
+            this.confirmDraperyItemCommand?.RaiseCanExecuteChanged();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.confirmDraperyItemCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanConfirmDraperyItemButton()
@@ -241,12 +250,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     else
                     {
                         this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
-                        this.NavigationService.GoBack();
+                        //this.NavigationService.GoBack();
                     }
 
-                    //this.navigationService.GoBackTo(
+                    //this.NavigationService.GoBackTo(
                     //    nameof(Utils.Modules.Operator),
                     //    Utils.Modules.Operator.ItemOperations.WAIT);
+
+                    this.NavigationService.GoBack();
                 }
                 catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                 {

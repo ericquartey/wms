@@ -1671,4 +1671,7 @@
   <data name="ItemIsDeleted" xml:space="preserve">
     <value>Item is deleted</value>
   </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Signalling defect successful</value>
+  </data>
 </root>

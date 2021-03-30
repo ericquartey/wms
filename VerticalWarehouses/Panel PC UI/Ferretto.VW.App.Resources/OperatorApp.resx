@@ -2053,4 +2053,8 @@
     <value>Item is deleted</value>
     <comment>Information Message</comment>
   </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Signalling defect successful</value>
+    <comment>Information Message</comment>
+  </data>
 </root>
