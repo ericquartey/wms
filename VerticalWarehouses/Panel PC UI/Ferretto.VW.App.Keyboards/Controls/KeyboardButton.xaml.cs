@@ -65,14 +65,6 @@ namespace Ferretto.VW.App.Keyboards.Controls
             ((KeyboardButton)d).SynchronizeLayout();
         }
 
-        private void UserControl_TouchUp(object sender, TouchEventArgs e)
-        {
-            // e.Handled = true;
-            this.ExecuteKeyCommand();
-
-            // how to avoid .IsMouseOver trigger?
-        }
-
         private void UserControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.StylusDevice == null)
@@ -98,7 +90,28 @@ namespace Ferretto.VW.App.Keyboards.Controls
             this.KeyCommand = command;
         }
 
+        private void UserControl_PreviewTouchDown(object sender, TouchEventArgs e)
+        {
+
+        }
+
+        private void UserControl_PreviewTouchUp(object sender, TouchEventArgs e)
+        {
+
+        }
+
+        private void UserControl_TouchDown(object sender, TouchEventArgs e)
+        {
+
+        }
+
+        private void UserControl_TouchUp(object sender, TouchEventArgs e)
+        {
+            this.ExecuteKeyCommand();
+        }
+
         #endregion
+
 
     }
 }
