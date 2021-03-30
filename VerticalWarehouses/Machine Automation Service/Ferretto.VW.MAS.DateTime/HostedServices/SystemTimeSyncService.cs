@@ -134,29 +134,26 @@ namespace Ferretto.VW.MAS.TimeManagement
                         var syncIntervalMilliseconds = wmsSettingsProvider.TimeSyncIntervalMilliseconds;
                         try
                         {
-                            this.logger.LogDebug($"Attempting sync time with WMS. Device manager busy {machineVolatileDataProvider.IsDeviceManagerBusy}");
+                            this.logger.LogInformation($"Attempting sync time with WMS. Device manager busy {machineVolatileDataProvider.IsDeviceManagerBusy}");
                             if (!machineVolatileDataProvider.IsDeviceManagerBusy)
                             {
                                 var utcTimeWmsWebService = scope.ServiceProvider.GetRequiredService<IUtcTimeWmsWebService>();
                                 var remoteUtcTime = await utcTimeWmsWebService.GetAsync(cancellationToken);
-                                var machineUtcTime = DateTimeOffset.Now;
+                                var machineTime = DateTime.Now;
 
-                                var timeDifference = machineUtcTime - remoteUtcTime;
+                                var timeDifference = machineTime - remoteUtcTime.DateTime;
 
-                                this.logger.LogTrace("Machine (UTC offset): '{time}'.", machineUtcTime);
-                                this.logger.LogTrace("Remote  (UTC offset): '{time}' .", remoteUtcTime);
-                                this.logger.LogTrace("Time difference: '{timespan}'.", machineUtcTime - remoteUtcTime);
-
-                                this.logger.LogTrace("Machine (local time): '{time}'.", machineUtcTime.LocalDateTime);
-                                this.logger.LogTrace("Remote  (local time): '{time}' .", remoteUtcTime.LocalDateTime);
+                                this.logger.LogTrace("Machine: '{time}'.", machineTime);
+                                this.logger.LogTrace("Remote: '{time}' .", remoteUtcTime.DateTime);
+                                this.logger.LogTrace("Time difference: '{timespan}'.", timeDifference);
 
                                 var timeDifferenceMilliseconds = Math.Abs(timeDifference.TotalMilliseconds);
                                 if (timeDifferenceMilliseconds > SyncToleranceMilliseconds)
                                 {
                                     var systemTimeProvider = scope.ServiceProvider.GetRequiredService<IInternalSystemTimeProvider>();
-                                    systemTimeProvider.SetUtcTime(remoteUtcTime.UtcDateTime);
+                                    systemTimeProvider.SetUtcTime(remoteUtcTime.DateTime);
 
-                                    this.logger.LogInformation("Time synced successfully. from time '{machine}' to time '{remote}'", machineUtcTime.LocalDateTime, remoteUtcTime.LocalDateTime);
+                                    this.logger.LogInformation("Time synced successfully. from time '{machine}' to time '{remote}'", machineTime, remoteUtcTime.DateTime);
                                 }
 
                                 wmsSettingsProvider.LastWmsSyncTime = DateTimeOffset.UtcNow;
