@@ -339,8 +339,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return;
                 }
 
-                this.Logger.Debug($"selectedItem id {value.Id}, code {value.Code}");
-
                 this.SetProperty(ref this.selectedItem, value);
 
                 var machineId = this.bayManager.Identity.Id;
@@ -637,8 +635,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task RequestItemPickAsync(int itemId, string itemCode)
         {
-            this.Logger.Debug($"Pick method id {itemId}, code {itemCode}");
-
             this.IsBusyRequestingItemPick = true;
             this.IsWaitingForResponse = true;
 
