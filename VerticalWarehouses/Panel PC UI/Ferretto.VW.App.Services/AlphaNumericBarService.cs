@@ -276,7 +276,7 @@ namespace Ferretto.VW.App.Services
 
                             await this.alphaNumericBarDriver.EnabledAsync(false);
 
-                            this.alphaNumericBarDriver.GetOffsetArrowAndMessageFromCompartment(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value, message, e.WmsMission.LoadingUnit.Width, bay.Side, out offsetArrow, out offsetMessage);
+                            this.alphaNumericBarDriver.GetOffsetArrowAndMessageFromCompartment(compartmentSelected.Width.Value, compartmentSelected.XPosition.Value, message, e.WmsMission.LoadingUnit.Width, bay.Side, out offsetArrow, out offsetMessage, out var scrollEnd);
 
                             if (!await this.alphaNumericBarDriver.SetAndWriteArrowAsync(offsetArrow, true))
                             {
@@ -286,7 +286,14 @@ namespace Ferretto.VW.App.Services
 
                             if (message.Length > 0)
                             {
-                                await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                                if (scrollEnd > 0)
+                                {
+                                    await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, offsetMessage, scrollEnd, false);
+                                }
+                                else
+                                {
+                                    await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                                }
                                 this.alphaNumericBarDriver.SelectedMessage = message;
                             }
                         }
@@ -370,7 +377,7 @@ namespace Ferretto.VW.App.Services
 
                     case 2: // switch on and show arrow down at the start of the text
                         message = this.alphaNumericBarDriver.NormalizeMessageCharacters(socketLinkMessage.Data.TextMessage);
-                        this.alphaNumericBarDriver.GetOffsetArrowAndMessage(socketLinkMessage.Data.X, message, out offsetArrow, out offsetMessage);
+                        this.alphaNumericBarDriver.GetOffsetArrowAndMessage(socketLinkMessage.Data.X, message, out offsetArrow, out offsetMessage, out var scrollEnd);
 
                         this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; set arrow {offsetArrow}");
                         await this.alphaNumericBarDriver.EnabledAsync(false);
@@ -379,7 +386,14 @@ namespace Ferretto.VW.App.Services
                         if (message.Length > 0)
                         {
                             this.logger.Debug($"OnSocketLinkAlphaNumericBarChangeAsync; position {socketLinkMessage.Data.X}; message {message}");
-                            await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                            if (scrollEnd > 0)
+                            {
+                                await this.alphaNumericBarDriver.SetAndWriteMessageScrollAsync(message, offsetMessage, scrollEnd, false);
+                            }
+                            else
+                            {
+                                await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
+                            }
                         }
 
                         break;

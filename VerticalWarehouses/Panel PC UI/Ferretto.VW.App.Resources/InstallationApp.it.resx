@@ -2451,4 +2451,10 @@
   <data name="LaserOffset" xml:space="preserve">
     <value>Offset Laser (mm)</value>
   </data>
+  <data name="InvalidCurrentValues" xml:space="preserve">
+    <value>Valori di corrente errati - devono essere tutti e 3 diversi!</value>
+  </data>
+  <data name="InvalidWeightValues" xml:space="preserve">
+    <value>Valori di peso errati - devono essere tutti e 3 diversi!</value>
+  </data>
 </root>
