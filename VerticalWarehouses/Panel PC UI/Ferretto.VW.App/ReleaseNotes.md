@@ -1,14 +1,27 @@
-﻿## Nuove Funzionalità 1.0.9 rispetto la 1.0.8
+﻿## Nuove Funzionalità 1.0.10 rispetto la 1.0.9
 - nessuna
 
 ## Bug Risolti
-- Limitati messaggi spediti alla barra alfanumerica
-- Deposito in baia a bassa velocità
-- Missioni di ripristino in fase di recupero catena
+- I messaggi della barra alfanumerica scorrono se sono più lunghi dello spazio disponibile
+- La procedura di calibrazione della giostra non si blocca in caso di errore
+- Corretto aggiornamento orario da WMS
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
 
-<details><summary>Versione 1.07</summary>
+<details><summary>Versione 1.09</summary>
+
+  ## Nuove Funzionalità 1.0.9 rispetto la 1.0.8
+  - nessuna
+
+  ## Bug Risolti
+  - Limitati messaggi spediti alla barra alfanumerica
+  - Deposito in baia a bassa velocità
+  - Missioni di ripristino in fase di recupero catena
+
+  ## Compatibile con adapter 0.4.15 e 0.4.16
+</details>
+
+<details><summary>Versione 1.08</summary>
 
 ## Nuove Funzionalità 1.0.8 rispetto la 1.0.7
 - Aggiunto parametro OffsetLaser per cassetto: quando esiste sostituisce l'altezza articolo
