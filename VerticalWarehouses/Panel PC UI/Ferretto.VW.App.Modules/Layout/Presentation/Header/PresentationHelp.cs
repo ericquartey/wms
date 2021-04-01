@@ -15,17 +15,21 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly IRegionManager regionManager;
 
+        private readonly ISessionService sessionService;
+
         #endregion
 
         #region Constructors
 
         public PresentationHelp(
             IRegionManager regionManager,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            ISessionService sessionService)
             : base(PresentationTypes.Help)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
         #endregion
@@ -40,11 +44,15 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             //   null,
             //   trackCurrentView: true);
 
-            this.navigationService.Appear(
-               nameof(Utils.Modules.Installation),
-               Utils.Modules.Installation.RELEASE,
-               null,
-               trackCurrentView: true);
+            if(this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Operator)
+            {
+
+                this.navigationService.Appear(
+                   nameof(Utils.Modules.Installation),
+                   Utils.Modules.Installation.RELEASE,
+                   null,
+                   trackCurrentView: true);
+            }
 
             return Task.CompletedTask;
         }
