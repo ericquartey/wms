@@ -7,6 +7,7 @@
 - Corretto aggiornamento orario da WMS
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 [Versione 1.09](#id109)
 
@@ -40,6 +41,7 @@
   - Missioni di ripristino in fase di recupero catena
 
   ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 <a id="id108"></a>
 
@@ -54,6 +56,7 @@
 - Eliminati alcuni casi di "Nuove operazioni disponibili"
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 <a id="id107"></a>
 
@@ -68,6 +71,7 @@
 - Nelle macchine da 1000kg i movimenti guidati non perdono più la posizione logica 
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 <a id="id106"></a>
 
@@ -83,6 +87,7 @@
 - Eliminato menù contestuale dalle liste a scorrimento
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 <a id="id105"></a>
 
@@ -97,9 +102,9 @@
 - Aggiunta segnalazione di macchina in movimento nelle pagine di Celle e Cassetti
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 <a id="id104"></a>
-
 
 ## Nuove Funzionalità 1.0.4 rispetto la 1.0.3
 - Aggiunti i sensori della Baia Esterna Doppia
@@ -111,9 +116,9 @@
 - Corretto un errore di aggiornamento dei parametri dei profili orizzontali
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 <a id="id103"></a>
-
 
 ## Nuove Funzionalità 1.0.3 rispetto la 1.0.2
 - Spostato database della telemetria sul disco E:
@@ -130,9 +135,9 @@
 - La compattazione non può partire con un cassetto a bordo elevatore
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 <a id="id102"></a>
-
 
 ## Nuove Funzionalità 1.0.2 rispetto la 1.0.1
 - Aggiunto salvataggio del database sul pc di Ejlog
@@ -149,9 +154,9 @@
 - Corrette traduzioni nel menu Accessori
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 <a id="id101"></a>
-
 
 ## Nuove Funzionalità 1.0.1 rispetto la 1.0.0
 - Nessuna 
@@ -163,9 +168,9 @@
 - Ripristini automatici: se la posizione della catena orizzontale non è valida si chiude la missione
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
 <a id="id100"></a>
-
 
 ## Nuove Funzionalità 1.0.0 rispetto la 0.28.39
 - Gestione parametri inverter: completata lettura e scrittura per l'inverter principale 
@@ -176,4 +181,5 @@
 - Corretti vari errori nelle procedure di installazione
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
+***
 
