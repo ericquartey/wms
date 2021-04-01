@@ -12,33 +12,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     [Warning(WarningsArea.Information)]
     internal sealed class ReleaseViewModel : BaseAboutMenuViewModel
     {
-        #region Fields
-
-        private readonly IAuthenticationService authenticationService;
-
-        private readonly IBarcodeReaderService barcodeReaderService;
-
-        private readonly IMachineErrorsService machineErrorsService;
-
-        private readonly ISessionService sessionService;
-
-        #endregion
 
         #region Constructors
 
-        public ReleaseViewModel(
-            ISessionService sessionService,
-            IMachineErrorsService machineErrorsService,
-            IAuthenticationService authenticationService,
-            IBarcodeReaderService barcodeReaderService)
+        public ReleaseViewModel()
             : base()
         {
-            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
-            this.machineErrorsService = machineErrorsService;
-            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
-            this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
         }
 
+        #endregion
+
+        #region Properties
         #endregion
 
         #region Methods
@@ -51,8 +35,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-
-            this.ReadNotes();
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -62,13 +44,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
-        }
-
-        private void ReadNotes()
-        {
-            var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-
-            var notes = File.ReadAllText(path + "\\ReleaseNotes.html");
         }
 
         #endregion
