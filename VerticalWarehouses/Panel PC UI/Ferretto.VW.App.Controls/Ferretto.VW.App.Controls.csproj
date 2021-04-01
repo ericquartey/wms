@@ -18,7 +18,7 @@
     <PackageReference Include="DevExpress.Wpf.PropertyGrid" Version="20.2.6" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2016Black" Version="20.2.6" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2016White" Version="20.2.6" />
-    <PackageReference Include="MahApps.Metro.IconPacks" Version="3.2.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
