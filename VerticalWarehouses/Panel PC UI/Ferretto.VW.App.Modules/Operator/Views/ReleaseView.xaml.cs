@@ -14,12 +14,11 @@ namespace Ferretto.VW.App.Modules.Operator.Views
 
             string curDir = Directory.GetCurrentDirectory();
 
-            this.recRelease.BehaviorOptions.ShowPopupMenu = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
+            this.ppcWebBrowser.Source = new Uri(curDir + "\\ReleaseNotes.html");
+            //this.recRelease.LoadDocument(curDir + "\\ReleaseNotes.html", DevExpress.XtraRichEdit.DocumentFormat.Html);
 
-            this.recRelease.LoadDocument(curDir + "\\ReleaseNotes.html", DevExpress.XtraRichEdit.DocumentFormat.Html);
-
-            this.recRelease.HyperlinkOptions.ModifierKeys = System.Windows.Forms.Keys.LButton;
-            this.recRelease.HyperlinkOptions.ShowToolTip = false;
+            //this.recRelease.BehaviorOptions.ShowPopupMenu = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
+            //this.recRelease.HyperlinkOptions.ShowToolTip = false;
         }
 
         #endregion

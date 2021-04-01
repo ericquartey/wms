@@ -17,11 +17,11 @@
             mc:Ignorable="d">
 
   <Grid>
-    <!--<WebBrowser Name="ppcWebBrowser"/>-->
-    <dxre:RichEditControl Name="recRelease"
-                          CommandBarStyle="Empty"
+    <WebBrowser Name="ppcWebBrowser"/>
+    <!--<dxre:RichEditControl Name="recRelease"
+                          CommandBarStyle="Empty"                          
                           HorizontalScrollBarVisibility="Collapsed"
-                          ReadOnly="True" />
+                          ReadOnly="True" />-->
   </Grid>
 
 </ctrls:View>
