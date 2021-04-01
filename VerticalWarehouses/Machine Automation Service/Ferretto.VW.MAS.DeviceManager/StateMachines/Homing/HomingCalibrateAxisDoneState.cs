@@ -155,6 +155,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
+            if (this.machineData.AxisToCalibrate == Axis.Horizontal)
+            {
+                var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                elevatorDataProvider.UpdateLastIdealPosition(0);
+                elevatorDataProvider.UpdateLastCalibrationCycles();
+            }
+            else if (this.machineData.AxisToCalibrate == Axis.Vertical)
+            {
+                var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                var machineVolatileDataProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                elevatorDataProvider.UpdateLastIdealPosition(machineVolatileDataProvider.ElevatorVerticalPosition, Orientation.Vertical);
+            }
+
             var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrate, this.machineData.NumberOfExecutedSteps, this.machineData.MaximumSteps, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
