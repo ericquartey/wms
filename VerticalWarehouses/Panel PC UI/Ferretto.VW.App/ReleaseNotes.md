@@ -8,7 +8,28 @@
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
 
-<details><summary>Versione 1.09</summary>
+[Versione 1.09](#id109)
+
+[Versione 1.08](#id108)
+
+[Versione 1.07](#id107)
+
+[Versione 1.06](#id106)
+
+[Versione 1.05](#id105)
+
+[Versione 1.04](#id104)
+
+[Versione 1.03](#id103)
+
+[Versione 1.02](#id102)
+
+[Versione 1.01](#id101)
+
+[Versione 1.00](#id100)
+***
+
+<a id="id109"></a>
 
   ## Nuove Funzionalità 1.0.9 rispetto la 1.0.8
   - nessuna
@@ -19,9 +40,8 @@
   - Missioni di ripristino in fase di recupero catena
 
   ## Compatibile con adapter 0.4.15 e 0.4.16
-</details>
 
-<details><summary>Versione 1.08</summary>
+<a id="id108"></a>
 
 ## Nuove Funzionalità 1.0.8 rispetto la 1.0.7
 - Aggiunto parametro OffsetLaser per cassetto: quando esiste sostituisce l'altezza articolo
@@ -34,9 +54,8 @@
 - Eliminati alcuni casi di "Nuove operazioni disponibili"
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
-</details>
 
-<details><summary>Versione 1.07</summary>
+<a id="id107"></a>
 
 ## Nuove Funzionalità 1.0.7 rispetto la 1.0.6
 - Aggiunta visualizzazione delle schede di rete nel menu Informazioni
@@ -49,9 +68,8 @@
 - Nelle macchine da 1000kg i movimenti guidati non perdono più la posizione logica 
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
-</details>
 
-<details><summary>Versione 1.06</summary>
+<a id="id106"></a>
 
 ## Nuove Funzionalità 1.0.6 rispetto la 1.0.5
 - nessuna
@@ -65,9 +83,8 @@
 - Eliminato menù contestuale dalle liste a scorrimento
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
-</details>
 
-<details><summary>Versione 1.05</summary>
+<a id="id105"></a>
 
 ## Nuove Funzionalità 1.0.5 rispetto la 1.0.4
 - nessuna
@@ -80,10 +97,9 @@
 - Aggiunta segnalazione di macchina in movimento nelle pagine di Celle e Cassetti
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
-</details>
 
+<a id="id104"></a>
 
-<details><summary>Versione 1.04</summary>
 
 ## Nuove Funzionalità 1.0.4 rispetto la 1.0.3
 - Aggiunti i sensori della Baia Esterna Doppia
@@ -96,9 +112,8 @@
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
 
-</details>
+<a id="id103"></a>
 
-<details><summary>Versione 1.03</summary>
 
 ## Nuove Funzionalità 1.0.3 rispetto la 1.0.2
 - Spostato database della telemetria sul disco E:
@@ -115,9 +130,9 @@
 - La compattazione non può partire con un cassetto a bordo elevatore
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
-</details>
 
-<details><summary>Versione 1.02</summary>
+<a id="id102"></a>
+
 
 ## Nuove Funzionalità 1.0.2 rispetto la 1.0.1
 - Aggiunto salvataggio del database sul pc di Ejlog
@@ -135,9 +150,8 @@
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
 
-</details>
+<a id="id101"></a>
 
-<details><summary>Versione 1.01</summary>
 
 ## Nuove Funzionalità 1.0.1 rispetto la 1.0.0
 - Nessuna 
@@ -150,9 +164,8 @@
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
 
-</details>
+<a id="id100"></a>
 
-<details><summary>Versione 1.00</summary>
 
 ## Nuove Funzionalità 1.0.0 rispetto la 0.28.39
 - Gestione parametri inverter: completata lettura e scrittura per l'inverter principale 
@@ -163,4 +176,4 @@
 - Corretti vari errori nelle procedure di installazione
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
-</details>
+
