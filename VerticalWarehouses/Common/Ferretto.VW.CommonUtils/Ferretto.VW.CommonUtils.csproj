@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.7.5" />
+    <PackageReference Include="NLog" Version="4.7.9" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>

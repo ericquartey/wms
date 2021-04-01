@@ -28,7 +28,7 @@
     <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.11" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.14" />
     <PackageReference Include="Otp.NET" Version="1.2.2" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
