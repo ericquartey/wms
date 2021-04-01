@@ -34,11 +34,17 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override Task ExecuteAsync()
         {
-            // this.navigationService.Appear(
-            //    nameof(Utils.Modules.Installation),
-            //    $"Help{this.GetActiveView()}",
-            //    null,
-            //    trackCurrentView: true);
+            //this.navigationService.Appear(
+            //   nameof(Utils.Modules.Installation),
+            //   $"Help{this.GetActiveView()}",
+            //   null,
+            //   trackCurrentView: true);
+
+            this.navigationService.Appear(
+               nameof(Utils.Modules.Installation),
+               Utils.Modules.Installation.RELEASE,
+               null,
+               trackCurrentView: true);
 
             return Task.CompletedTask;
         }
