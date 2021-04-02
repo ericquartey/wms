@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Modules.Operator.Views
         {
             this.InitializeComponent();
 
-            string curDir = Directory.GetCurrentDirectory();
+            string curDir = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
             this.ppcWebBrowser.Source = new Uri(curDir + "\\ReleaseNotes.html");
         }
