@@ -30,7 +30,7 @@
 
     <!-- begin: these references are included to ensure dynamic module dependencies can be resolved -->
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.8.0" />
-    <PackageReference Include="System.Management" Version="4.7.0" />
+    <PackageReference Include="System.Management" Version="5.0.0" />
     <PackageReference Include="WpfAnimatedGif" Version="2.0.0" />
     <!-- end -->
   </ItemGroup>
