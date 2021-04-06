@@ -1113,6 +1113,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     else
                     {
                         this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
+                        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                     }
                 }
                 //else

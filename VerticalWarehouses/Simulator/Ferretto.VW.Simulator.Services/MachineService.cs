@@ -508,6 +508,7 @@ namespace Ferretto.VW.Simulator.Services
                                                 this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
                                                 this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value;
                                             }
                                         }
                                     }
@@ -539,6 +540,7 @@ namespace Ferretto.VW.Simulator.Services
                                                 this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = false;
                                                 this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                                             }
                                         }
                                     }
@@ -574,6 +576,7 @@ namespace Ferretto.VW.Simulator.Services
                                                 this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
                                                 this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value;
                                             }
                                         }
                                     }
@@ -604,6 +607,7 @@ namespace Ferretto.VW.Simulator.Services
                                                 this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = false;
                                                 this.RemoteIOs02.Inputs[(int)IoPorts.HookTrolley].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                                             }
                                         }
                                     }
@@ -639,6 +643,7 @@ namespace Ferretto.VW.Simulator.Services
                                                 this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
                                                 this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value;
                                             }
                                         }
                                     }
@@ -669,6 +674,7 @@ namespace Ferretto.VW.Simulator.Services
                                                 this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = false;
                                                 this.RemoteIOs03.Inputs[(int)IoPorts.HookTrolley].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                                             }
                                         }
                                     }
