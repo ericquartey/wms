@@ -253,6 +253,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Logger.LogDebug($"Acquired the {notificationStatus} of {notification.Type}");
                                 this.Mission.NeedHomingAxis = Axis.None;
 
+                                this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
+
                                 if (isLoadUnitDestinationInBay)
                                 {
                                     this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);

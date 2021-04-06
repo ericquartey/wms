@@ -129,9 +129,9 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public async Task SetAlphaNumericBarAsync(bool isEnabled, IPAddress ipAddress, int port)
+        public async Task SetAlphaNumericBarAsync(bool isEnabled, IPAddress ipAddress, int port, AlphaNumericBarSize size)
         {
-            await this.accessoriesWebService.UpdateAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port);
+            await this.accessoriesWebService.UpdateAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port, size);
         }
 
         public async Task SetLaserPointerAsync(bool isEnabled, IPAddress ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)

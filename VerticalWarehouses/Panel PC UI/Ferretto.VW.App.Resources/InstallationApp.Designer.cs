@@ -3355,6 +3355,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid current values - all three must be different!.
+        /// </summary>
+        public static string InvalidCurrentValues {
+            get {
+                return ResourceManager.GetString("InvalidCurrentValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid destination choice type.
         /// </summary>
         public static string InvalidDestinationChoiceType {
@@ -3396,6 +3405,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InvalidSourceChoiceType {
             get {
                 return ResourceManager.GetString("InvalidSourceChoiceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid weight values - all three must be different!.
+        /// </summary>
+        public static string InvalidWeightValues {
+            get {
+                return ResourceManager.GetString("InvalidWeightValues", resourceCulture);
             }
         }
         

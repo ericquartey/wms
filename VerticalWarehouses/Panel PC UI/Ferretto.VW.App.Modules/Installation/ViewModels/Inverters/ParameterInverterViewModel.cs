@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private const string RESETDATA = "reset";
 
+        private readonly List<FileInfo> importableFiles = new List<FileInfo>();
+
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
@@ -40,8 +42,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand goToExport;
 
         private DelegateCommand goToImport;
-
-        private List<FileInfo> importableFiles = new List<FileInfo>();
 
         private string importFolderPath;
 

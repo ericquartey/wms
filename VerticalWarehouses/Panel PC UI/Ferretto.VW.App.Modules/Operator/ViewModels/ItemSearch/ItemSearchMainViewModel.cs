@@ -77,11 +77,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private List<ItemInfo> items = new List<ItemInfo>();
 
-        private string itemToPickCode;
+        //private string itemToPickCode;
 
-        private int? itemToPickId;
-
-        //private string lastSearchItem;
+        //private int? itemToPickId;
 
         private int maxKnownIndexSelection;
 
@@ -339,7 +337,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (value is null)
                 {
-                    this.RaisePropertyChanged();
+                    //this.RaisePropertyChanged();
                     this.selectedItemTxt = Resources.Localized.Get("OperatorApp.RequestedQuantityBase");
                     this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                     return;
@@ -348,13 +346,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SetProperty(ref this.selectedItem, value);
 
                 var machineId = this.bayManager.Identity.Id;
-                this.AvailableQuantity = this.SelectedItem.AvailableQuantity;
+                this.AvailableQuantity = this.selectedItem.AvailableQuantity;
                 this.InputQuantity = 0;
-                this.itemToPickId = value.Id;
-                this.itemToPickCode = value.Code;
+                //this.itemToPickId = value.Id;
+                //this.itemToPickCode = value.Code;
 
-                var selectedItemId = this.SelectedItem?.Id;
-                this.SetCurrentIndex(selectedItemId);
+                this.SetCurrentIndex(this.selectedItem?.Id);
                 this.selectedItemTxt = string.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.selectedItem.MeasureUnit);
                 this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                 Task.Run(async () => await this.SelectNextItemAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
@@ -448,21 +445,67 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.productsChangedToken?.Dispose();
             this.productsChangedToken = null;
+
+            this.IsBusyConfirmingOperation = false;
+            this.IsBusyRequestingItemPut = false;
+            this.IsBusyRequestingItemPick = false;
+            this.IsWaitingForResponse = false;
+            this.IsBusyLoadingNextPage = false;
         }
 
         public async Task ExecuteItemAsync()
         {
             if (this.isBusyRequestingItemPick)
             {
-                await this.ExecuteItemPickAsync();
+                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code);
             }
             else
             {
-                await this.ExecuteItemPutAsync();
+                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code);
             }
+
+            this.selectedItem = null;
+            this.RaisePropertyChanged(nameof(this.SelectedItem));
         }
 
-        public async Task ExecuteItemPickAsync()
+        //public async Task ExecuteItemPickAsync()
+        //{
+        //    try
+        //    {
+        //        this.IsWaitingForResponse = true;
+        //        this.IsBusyRequestingItemPick = true;
+
+        //        await this.wmsDataProvider.PickAsync(
+        //            this.itemToPickId.Value,
+        //            this.InputQuantity.Value,
+        //            this.reasonId,
+        //            this.reasonNotes);
+
+        //        this.Reasons = null;
+
+        //        this.ShowNotification(
+        //            string.Format(
+        //                Resources.Localized.Get("OperatorApp.PickRequestWasAccepted"),
+        //                this.itemToPickCode,
+        //                this.InputQuantity),
+        //            Services.Models.NotificationSeverity.Success);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        this.ShowNotification(ex);
+        //    }
+        //    finally
+        //    {
+        //        this.InputQuantity = 0;
+        //        this.IsBusyRequestingItemPick = false;
+        //        this.IsWaitingForResponse = false;
+
+        //        this.itemToPickCode = null;
+        //        this.itemToPickId = null;
+        //    }
+        //}
+
+        public async Task ExecuteItemPickAsync(int itemId, string itemCode)
         {
             try
             {
@@ -470,7 +513,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsBusyRequestingItemPick = true;
 
                 await this.wmsDataProvider.PickAsync(
-                    this.itemToPickId.Value,
+                    itemId,
                     this.InputQuantity.Value,
                     this.reasonId,
                     this.reasonNotes,
@@ -481,7 +524,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ShowNotification(
                     string.Format(
                         Resources.Localized.Get("OperatorApp.PickRequestWasAccepted"),
-                        this.itemToPickCode,
+                        itemCode,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
             }
@@ -494,13 +537,47 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = 0;
                 this.IsBusyRequestingItemPick = false;
                 this.IsWaitingForResponse = false;
-
-                this.itemToPickCode = null;
-                this.itemToPickId = null;
             }
         }
 
-        public async Task ExecuteItemPutAsync()
+        //public async Task ExecuteItemPutAsync()
+        //{
+        //    try
+        //    {
+        //        this.IsWaitingForResponse = true;
+        //        this.IsBusyRequestingItemPut = true;
+
+        //        await this.wmsDataProvider.PutAsync(
+        //            this.itemToPickId.Value,
+        //            this.InputQuantity.Value,
+        //            this.reasonId,
+        //            this.reasonNotes);
+
+        //        this.Reasons = null;
+
+        //        this.ShowNotification(
+        //            string.Format(
+        //                Resources.Localized.Get("OperatorApp.PutRequestWasAccepted"),
+        //                this.itemToPickCode,
+        //                this.InputQuantity),
+        //            Services.Models.NotificationSeverity.Success);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        this.ShowNotification(ex);
+        //    }
+        //    finally
+        //    {
+        //        this.InputQuantity = 0;
+        //        this.IsBusyRequestingItemPut = false;
+        //        this.IsWaitingForResponse = false;
+
+        //        this.itemToPickCode = null;
+        //        this.itemToPickId = null;
+        //    }
+        //}
+
+        public async Task ExecuteItemPutAsync(int itemId, string itemCode)
         {
             try
             {
@@ -508,7 +585,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsBusyRequestingItemPut = true;
 
                 await this.wmsDataProvider.PutAsync(
-                    this.itemToPickId.Value,
+                    itemId,
                     this.InputQuantity.Value,
                     this.reasonId,
                     this.reasonNotes,
@@ -519,7 +596,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ShowNotification(
                     string.Format(
                         Resources.Localized.Get("OperatorApp.PutRequestWasAccepted"),
-                        this.itemToPickCode,
+                        itemCode,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
             }
@@ -532,9 +609,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = 0;
                 this.IsBusyRequestingItemPut = false;
                 this.IsWaitingForResponse = false;
-
-                this.itemToPickCode = null;
-                this.itemToPickId = null;
             }
         }
 
@@ -567,11 +641,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task RequestItemPickAsync(int itemId, string itemCode)
         {
-            this.IsWaitingForResponse = true;
             this.IsBusyRequestingItemPick = true;
+            this.IsWaitingForResponse = true;
 
-            this.itemToPickId = itemId;
-            this.itemToPickCode = itemCode;
+            //this.itemToPickId = itemId;
+            //this.itemToPickCode = itemCode;
 
             this.NoteEnabled = false;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
@@ -580,20 +654,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (!waitForReason)
             {
-                await this.ExecuteItemPickAsync();
+                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code);
+                this.selectedItem = null;
+                this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
-
-            this.selectedItem = null;
-            this.RaisePropertyChanged(nameof(this.SelectedItem));
         }
 
         public async Task RequestItemPutAsync(int itemId, string itemCode)
         {
-            this.IsWaitingForResponse = true;
             this.IsBusyRequestingItemPut = true;
+            this.IsWaitingForResponse = true;
 
-            this.itemToPickId = itemId;
-            this.itemToPickCode = itemCode;
+            //this.itemToPickId = itemId;
+            //this.itemToPickCode = itemCode;
 
             this.NoteEnabled = false;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
@@ -602,11 +675,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (!waitForReason)
             {
-                await this.ExecuteItemPutAsync();
+                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code);
+                this.selectedItem = null;
+                this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
-
-            this.selectedItem = null;
-            this.RaisePropertyChanged(nameof(this.SelectedItem));
         }
 
         public async Task SearchItemAsync(int skip, CancellationToken cancellationToken)
@@ -775,6 +847,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.unitsPageCommand?.RaiseCanExecuteChanged();
 
             this.confirmReasonCommand?.RaiseCanExecuteChanged();
+            this.cancelReasonCommand?.RaiseCanExecuteChanged();
         }
 
         private void AdjustItemsAppearance()
@@ -802,6 +875,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void CancelReason()
         {
             this.Reasons = null;
+            this.IsBusyConfirmingOperation = false;
+            this.IsBusyRequestingItemPut = false;
+            this.IsBusyRequestingItemPick = false;
+            this.IsWaitingForResponse = false;
         }
 
         private bool CanExecuteItemPick()
@@ -1040,17 +1117,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.currentItemIndex = 0;
                 this.maxKnownIndexSelection = 0;
             }
-        }
-
-        private void SetSelectedItem()
-        {
-            if (this.items.Count == 0)
-            {
-                this.SelectedItem = null;
-                return;
-            }
-
-            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
         }
 
         private void ShowItemDetails(ItemInfo item)

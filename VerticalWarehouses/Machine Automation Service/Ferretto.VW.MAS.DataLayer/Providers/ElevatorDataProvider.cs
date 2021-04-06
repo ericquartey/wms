@@ -488,22 +488,25 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                this.cache.Remove(GetAxisCacheKey(orientation));
-
-                var posAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
-
-                posAxis.LastIdealPosition = position;
-
-                this.dataContext.ElevatorAxes.Update(posAxis);
-                this.dataContext.SaveChanges();
-                this.logger.LogDebug($"Elevator axis {orientation} last position save {position}");
-
-                // reload cache
-                _ = this.GetAxis(orientation);
-
-                if (orientation == Orientation.Horizontal)
+                if (Math.Abs(position - this.GetAxis(orientation).LastIdealPosition) > 1)
                 {
-                    this.NotifyElevatorPositionChanged(useCachedValue: true);
+                    this.cache.Remove(GetAxisCacheKey(orientation));
+
+                    var posAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
+
+                    posAxis.LastIdealPosition = position;
+
+                    this.dataContext.ElevatorAxes.Update(posAxis);
+                    this.dataContext.SaveChanges();
+                    this.logger.LogDebug($"Elevator axis {orientation} last position save {position}");
+
+                    // reload cache
+                    _ = this.GetAxis(orientation);
+
+                    if (orientation == Orientation.Horizontal)
+                    {
+                        this.NotifyElevatorPositionChanged(useCachedValue: true);
+                    }
                 }
             }
         }
