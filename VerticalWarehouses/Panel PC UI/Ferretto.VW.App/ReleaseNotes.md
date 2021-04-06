@@ -1,4 +1,26 @@
-﻿## Nuove Funzionalità 1.0.11 rispetto la 1.0.10
+﻿<style>
+    a:link {
+      color: red;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    a:visited {
+      color: coral;
+      background-color: transparent;
+      text-decoration: none;
+    }
+    a:hover, a:active {
+      color: red;
+      background-color: transparent;
+      text-decoration: underline;
+    }
+    body{
+      background-color: #282828;
+      color: #C5C7C4;
+    }
+</style>
+
+## Nuove Funzionalità 1.0.11 rispetto la 1.0.10
 - Il pulsate "?" visualizza le release notes
 
 ## Bug Risolti
