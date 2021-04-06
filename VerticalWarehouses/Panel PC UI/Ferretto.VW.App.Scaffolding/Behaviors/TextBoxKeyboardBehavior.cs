@@ -8,11 +8,42 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
 {
     public class TextBoxKeyboardBehavior : TogglableBehavior<TextBox>
     {
-        protected override void OnDetaching()
+        #region Fields
+
+        public static readonly DependencyProperty IsDoubleClickTriggerEnabledProperty
+                    = DependencyProperty.RegisterAttached(nameof(IsDoubleClickTriggerEnabled), typeof(bool), typeof(TextBoxKeyboardBehavior), new PropertyMetadata(true));
+
+        public static readonly DependencyProperty KeyboardCaptionProperty
+                    = DependencyProperty.RegisterAttached(nameof(KeyboardCaption), typeof(string), typeof(TextBoxKeyboardBehavior));
+
+        public static readonly DependencyProperty KeyboardProperty
+                    = DependencyProperty.RegisterAttached("Keyboard", typeof(KeyboardType), typeof(TextBoxKeyboardBehavior), new PropertyMetadata(KeyboardType.QWERTY));
+
+        #endregion
+
+        #region Properties
+
+        public bool IsDoubleClickTriggerEnabled
         {
-            this.AssociatedObject.TouchDown -= this.TextBox_TouchDown;
-            base.OnDetaching();
+            get => (bool)this.GetValue(IsDoubleClickTriggerEnabledProperty);
+            set => this.SetValue(IsDoubleClickTriggerEnabledProperty, value);
         }
+
+        public KeyboardType Keyboard
+        {
+            get => (KeyboardType)this.GetValue(KeyboardProperty);
+            set => this.SetValue(KeyboardProperty, value);
+        }
+
+        public string KeyboardCaption
+        {
+            get => (string)this.GetValue(KeyboardCaptionProperty);
+            set => this.SetValue(KeyboardCaptionProperty, value);
+        }
+
+        #endregion
+
+        #region Methods
 
         protected override void OnAttached()
         {
@@ -21,17 +52,11 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
             this.AssociatedObject.MouseDoubleClick += this.TextBox_MouseDoubleClick;
         }
 
-        private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        protected override void OnDetaching()
         {
-            if (this.IsDoubleClickTriggerEnabled)
-            {
-                this.OnOpenKeyboard(e);
-            }
-        }
-
-        private void TextBox_TouchDown(object sender, TouchEventArgs e)
-        {
-            this.OnOpenKeyboard(e);
+            this.AssociatedObject.TouchDown -= this.TextBox_TouchDown;
+            this.AssociatedObject.MouseDoubleClick -= this.TextBox_MouseDoubleClick;
+            base.OnDetaching();
         }
 
         private void OnOpenKeyboard(RoutedEventArgs e)
@@ -98,31 +123,19 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
             }
         }
 
-        public static readonly DependencyProperty KeyboardProperty
-                    = DependencyProperty.RegisterAttached("Keyboard", typeof(KeyboardType), typeof(TextBoxKeyboardBehavior), new PropertyMetadata(KeyboardType.QWERTY));
-
-        public KeyboardType Keyboard
+        private void TextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            get => (KeyboardType)this.GetValue(KeyboardProperty);
-            set => this.SetValue(KeyboardProperty, value);
+            if (this.IsDoubleClickTriggerEnabled)
+            {
+                this.OnOpenKeyboard(e);
+            }
         }
 
-        public static readonly DependencyProperty KeyboardCaptionProperty
-                    = DependencyProperty.RegisterAttached(nameof(KeyboardCaption), typeof(string), typeof(TextBoxKeyboardBehavior));
-
-        public string KeyboardCaption
+        private void TextBox_TouchDown(object sender, TouchEventArgs e)
         {
-            get => (string)this.GetValue(KeyboardCaptionProperty);
-            set => this.SetValue(KeyboardCaptionProperty, value);
+            this.OnOpenKeyboard(e);
         }
 
-        public static readonly DependencyProperty IsDoubleClickTriggerEnabledProperty
-                    = DependencyProperty.RegisterAttached(nameof(IsDoubleClickTriggerEnabled), typeof(bool), typeof(TextBoxKeyboardBehavior), new PropertyMetadata(true));
-
-        public bool IsDoubleClickTriggerEnabled
-        {
-            get => (bool)this.GetValue(IsDoubleClickTriggerEnabledProperty);
-            set => this.SetValue(IsDoubleClickTriggerEnabledProperty, value);
-        }
+        #endregion
     }
 }

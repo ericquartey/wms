@@ -254,6 +254,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
+                if (this.SensorsProvider.IsSensorZeroOnCradle
+                    || this.SensorsProvider.IsDrawerPartiallyOnCradle
+                    )
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.InvalidPresenceSensors, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
                 this.Mission.ErrorMovements = MissionErrorMovements.None;
                 this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
                 this.LoadUnitEnd(restore: true);
@@ -458,6 +465,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void RestoreOriginalStep()
         {
+            if (!this.SensorsProvider.IsSensorZeroOnCradle
+                || this.SensorsProvider.IsDrawerPartiallyOnCradle
+                )
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.InvalidPresenceSensors, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             this.Mission.NeedMovingBackward = false;
             this.Mission.RestoreConditions = true;
