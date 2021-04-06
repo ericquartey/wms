@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 
 namespace Ferretto.VW.App.Modules.Operator.Views
 {
@@ -12,9 +10,9 @@ namespace Ferretto.VW.App.Modules.Operator.Views
         {
             this.InitializeComponent();
 
-            string curDir = Directory.GetCurrentDirectory();
+            string curDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            this.ppcWebBrowser.Source = new Uri(curDir + "\\ReleaseNotes.html");
+            this.ppcWebBrowser.Source = new Uri(curDir + "ReleaseNotes.html");
         }
 
         #endregion
