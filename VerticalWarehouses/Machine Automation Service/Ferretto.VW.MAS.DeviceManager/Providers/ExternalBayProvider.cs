@@ -381,9 +381,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
-            var val = this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) &&
-                this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
-            return val;
+            if(bay.IsDouble)
+            {
+                return this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
+            }
+            else
+            {
+                return this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) &&
+                    this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
+            }
         }
 
         public bool IsInternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation)

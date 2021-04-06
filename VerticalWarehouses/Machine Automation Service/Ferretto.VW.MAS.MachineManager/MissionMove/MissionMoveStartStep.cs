@@ -384,8 +384,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                                     var missions = this.MissionsDataProvider.GetAllActiveMissionsByBay(bay.Number);
 
-                                    if ((!this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
-                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
+                                    if (!this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number, this.Mission.LoadUnitSource) &&
+                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, this.Mission.LoadUnitSource))
                                     {
                                         this.ErrorsProvider.RecordNew(MachineErrorCode.ExternalBayEmpty, notification.RequestingBay);
                                         throw new StateMachineException(ErrorDescriptions.ExternalBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);

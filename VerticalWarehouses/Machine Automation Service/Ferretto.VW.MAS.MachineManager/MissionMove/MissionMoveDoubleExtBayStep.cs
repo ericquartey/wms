@@ -46,10 +46,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override bool OnEnter(CommandMessage command, bool showErrors = true)
         {
-            this.MachineProvider.UpdateMissionTime(DateTime.UtcNow - this.Mission.StepTime);
-
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.DoubleExtBay;
+            this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.OpenShutterPosition = ShutterPosition.NotSpecified;
@@ -302,6 +301,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Logger.LogDebug($"Acquired the {notificationStatus} of {notification.Type}");
                                 this.Mission.NeedHomingAxis = Axis.None;
 
+                                this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
+
                                 if (isLoadUnitDestinationInBay)
                                 {
                                     if ((!destination.IsUpper && isLoadingUnitInExternalDownPosition) ||
@@ -546,7 +547,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 switch (this.Mission.LoadUnitDestination)
                 {
-
                     case LoadingUnitLocation.InternalBay1Down:
                     case LoadingUnitLocation.InternalBay2Down:
                     case LoadingUnitLocation.InternalBay3Down:
@@ -584,7 +584,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             //{
             //    switch (this.Mission.LoadUnitSource)
             //    {
-
             //        case LoadingUnitLocation.InternalBay1Down:
             //        case LoadingUnitLocation.InternalBay2Down:
             //        case LoadingUnitLocation.InternalBay3Down:
