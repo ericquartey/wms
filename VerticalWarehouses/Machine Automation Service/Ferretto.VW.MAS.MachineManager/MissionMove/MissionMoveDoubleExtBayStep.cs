@@ -579,43 +579,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         return null;
                 }
             }
-
-            //if (this.Mission.MissionType == MissionType.IN && this.Mission.LoadUnitSource != LoadingUnitLocation.Cell)
-            //{
-            //    switch (this.Mission.LoadUnitSource)
-            //    {
-            //        case LoadingUnitLocation.InternalBay1Down:
-            //        case LoadingUnitLocation.InternalBay2Down:
-            //        case LoadingUnitLocation.InternalBay3Down:
-            //            return currentBay.Positions.SingleOrDefault(s => !s.IsUpper);
-
-            //        case LoadingUnitLocation.InternalBay1Up:
-            //        case LoadingUnitLocation.InternalBay2Up:
-            //        case LoadingUnitLocation.InternalBay3Up:
-            //            return currentBay.Positions.SingleOrDefault(s => s.IsUpper);
-
-            //        default:
-            //            return null;
-            //    }
-            //}
-            //else
-            //{
-            //    switch (this.Mission.LoadUnitDestination)
-            //    {
-            //        case LoadingUnitLocation.InternalBay1Down:
-            //        case LoadingUnitLocation.InternalBay2Down:
-            //        case LoadingUnitLocation.InternalBay3Down:
-            //            return currentBay.Positions.SingleOrDefault(s => !s.IsUpper);
-
-            //        case LoadingUnitLocation.ExternalBay1Up:
-            //        case LoadingUnitLocation.ExternalBay2Up:
-            //        case LoadingUnitLocation.ExternalBay3Up:
-            //            return currentBay.Positions.SingleOrDefault(s => s.IsUpper);
-
-            //        default:
-            //            return null;
-            //    }
-            //}
         }
 
         private void SetErrorMoveExtBayChain(Bay bay, BayPosition position)

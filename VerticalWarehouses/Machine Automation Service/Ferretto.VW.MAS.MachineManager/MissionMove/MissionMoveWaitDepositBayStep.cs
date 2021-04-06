@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.SendMoveNotification(bay.Number, this.Mission.Step.ToString(), MessageStatus.OperationWaitResume);
 
-                if (this.IsWaitingGoInternalBay(bay))
+                if (this.IsWaitingGoInternalBay())
                 {
                     var reasonDescription = "";
                     if (isLoadingUnitOnLowerBayPosition)
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (bay.IsExternal && bay.IsDouble)
             {
                 // are there waiting mission on the bay?
-                if (!this.IsWaitingGoInternalBay(bay)
+                if (!this.IsWaitingGoInternalBay()
                     )
                 {
                     this.Mission.Status = MissionStatus.Executing;
@@ -186,14 +186,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
-        private bool IsWaitingGoInternalBay(Bay bay)
+        private bool IsWaitingGoInternalBay()
         {
             // List of waiting mission on the bay
             var waitMissions = this.MissionsDataProvider.GetAllActiveMissions()
                 .Where(m =>
                     m.TargetBay == this.Mission.TargetBay &&
                     ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitDepositInternalBay)
-                        || m.Status == MissionStatus.New
+                        || (m.Status == MissionStatus.New && (m.MissionType == MissionType.IN || m.MissionType == MissionType.FullTestIN))
                         )
                 );
             return waitMissions.Any();
