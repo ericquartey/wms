@@ -169,7 +169,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex} Axis:{this.machineData.MessageData.AxisMovement} StopRequestReason {this.stateData.StopRequestReason} MovementType {this.machineData.MessageData.MovementType}");
+            this.Logger.LogDebug($"Start {this.GetType().Name} " +
+                $"Inverter {this.machineData.CurrentInverterIndex} " +
+                $"Axis:{this.machineData.MessageData.AxisMovement} " +
+                $"StopRequestReason {this.stateData.StopRequestReason} " +
+                $"MovementType {this.machineData.MessageData.MovementType}" +
+                $"LoadUnitId={this.machineData.MessageData.LoadingUnitId}");
             if (this.machineData.MessageData.AxisMovement is Axis.Horizontal
                 || this.machineData.MessageData.AxisMovement is Axis.BayChain
                 )

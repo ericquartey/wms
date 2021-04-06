@@ -390,14 +390,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (!this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward) && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
             {
-                if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
-                {
-                    this.RestoreOriginalStep();
-                }
-                else
-                {
-                    this.RestoreOriginalStep();
-                }
+                this.RestoreOriginalStep();
             }
             else
             {
@@ -407,6 +400,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void RestoreOriginalStep()
         {
+            if (this.SensorsProvider.IsSensorZeroOnCradle
+                || this.SensorsProvider.IsDrawerPartiallyOnCradle
+                )
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.InvalidPresenceSensors, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             this.Mission.NeedMovingBackward = false;
             this.Mission.RestoreConditions = true;
