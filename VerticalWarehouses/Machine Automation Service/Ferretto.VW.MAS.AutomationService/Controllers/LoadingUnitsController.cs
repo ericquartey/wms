@@ -317,7 +317,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber);
+                    await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber, null);
                 }
                 catch (Exception ex)
                 {
