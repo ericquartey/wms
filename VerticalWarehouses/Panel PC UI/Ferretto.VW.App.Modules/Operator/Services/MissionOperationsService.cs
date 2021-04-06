@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         #region Methods
 
-        public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null)
+        public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0)
         {
             this.logger.Debug($"User requested to complete operation '{operationId}'.");
 
@@ -97,7 +97,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     operationId,
                     quantity,
                     labelPrinterName,
-                    barcode);
+                    barcode,
+                    wastedQuantity);
 
                 await this.RefreshActiveMissionAsync();
 
@@ -126,7 +127,7 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.isRecallUnit;
         }
 
-        public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity)
+        public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity = 0)
         {
             this.logger.Debug($"User requested to partially complete operation '{operationId}' with quantity {quantity}.");
             var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
@@ -137,7 +138,8 @@ namespace Ferretto.VW.App.Modules.Operator
                 await this.missionOperationsWebService.PartiallyCompleteAsync(
                     operationId,
                     quantity,
-                    labelPrinterName);
+                    labelPrinterName,
+                    wastedQuantity);
 
                 await this.RefreshActiveMissionAsync();
 

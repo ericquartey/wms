@@ -150,7 +150,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemBarcode}"
-                                     LabelText="Barcode"
+                                     LabelText="{resources:Loc OperatorApp.BarcodeLabel}"
                                      Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
 
             <controls:PpcLabeledText Grid.Row="3"
@@ -158,10 +158,10 @@
                                      MaxHeight="40"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding MissionOperation.ItemHeight}"
-                                     LabelText="Height"
+                                     ContentText="{Binding CurrentItemHeight}"
+                                     LabelText="{resources:Loc OperatorApp.Height}"
                                      Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
-
+            <!--  {Binding MissionOperation.ItemHeight}  -->
         </Grid>
 
         <controls:PpcLabeledText Grid.Row="1"

@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool canInputQuantity;
 
+        private string currentItemHeight;
+
         private string measureUnit;
 
         private string measureUnitDescription;
@@ -62,6 +64,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.canInputQuantity;
             protected set => this.SetProperty(ref this.canInputQuantity, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string CurrentItemHeight
+        {
+            get => this.currentItemHeight;
+            set => this.SetProperty(ref this.currentItemHeight, value);
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -167,6 +175,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.Mission = this.MissionOperationsService.ActiveWmsMission;
             this.MissionOperation = this.MissionOperationsService.ActiveWmsOperation;
+
+            if (this.MissionOperation.ItemHeight.HasValue)
+            {
+                this.CurrentItemHeight = this.MissionOperation.ItemHeight.Value.ToString();
+            }
+            else
+            {
+                this.CurrentItemHeight = "--";
+            }
 
             if (this.missionOperation.Type == MissionOperationType.LoadingUnitCheck)
             {

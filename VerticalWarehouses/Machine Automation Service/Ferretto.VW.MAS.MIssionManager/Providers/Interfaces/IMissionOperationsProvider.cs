@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         Task AbortAsync(int id);
 
-        Task CompleteAsync(int wmsId, double quantity, string printerName, string barcode = null);
+        Task CompleteAsync(int wmsId, double quantity, string printerName, string barcode = null, double wastedQuantity = 0);
 
         Task<MissionOperation> GetByIdAsync(int wmsId);
 
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         int GetUnitId(int missionId, BayNumber bayNumber);
 
-        Task PartiallyCompleteAsync(int wmsId, double quantity, string printerName);
+        Task PartiallyCompleteAsync(int wmsId, double quantity, string printerName, double wastedQuantity = 0);
 
         #endregion
     }

@@ -1683,4 +1683,7 @@
   <data name="SignallingDefectSuccess" xml:space="preserve">
     <value>Signalling defect successful</value>
   </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
 </root>

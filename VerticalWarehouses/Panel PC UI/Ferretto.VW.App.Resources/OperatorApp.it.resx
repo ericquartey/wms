@@ -1691,4 +1691,7 @@
   <data name="SignallingDefectSuccess" xml:space="preserve">
     <value>Segnalazione difetto con successo</value>
   </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Codice a barre</value>
+  </data>
 </root>

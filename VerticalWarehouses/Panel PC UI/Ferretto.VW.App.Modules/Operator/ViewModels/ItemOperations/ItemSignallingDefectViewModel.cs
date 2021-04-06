@@ -211,6 +211,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             // Also add the selected compartment Id as argument to method :: this.selectedCompartmentId
             //var bResult = await this.ItemsWebService.SignallingDefectOnDraperyItemAsync(
             //    this.ItemId,
+            //    this.selectedCompartmentId,
             //    this.GoodDraperyQuantity,
             //    this.WastedDraperyQuantity);
 

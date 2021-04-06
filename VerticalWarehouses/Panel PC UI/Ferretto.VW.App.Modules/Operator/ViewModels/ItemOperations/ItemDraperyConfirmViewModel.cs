@@ -77,8 +77,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set => this.SetProperty(ref this.canInputWastedDraperyQuantity, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool CloseLine { get; set; }
+
         public ICommand ConfirmDraperyItemCommand =>
-                  this.confirmDraperyItemCommand
+                          this.confirmDraperyItemCommand
                   ??
                   (this.confirmDraperyItemCommand = new DelegateCommand(
                       async () => await this.ConfirmOperationAsync(),
@@ -159,6 +161,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MeasureUnitTxt = itemDraperyData.MeasureUnitTxt;
                 this.Barcode = itemDraperyData.Barcode;
                 this.IsPartiallyCompleteOperation = itemDraperyData.IsPartiallyCompleteOperation;
+                this.CloseLine = itemDraperyData.CloseLine;
             }
             else
             {
@@ -172,6 +175,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MeasureUnitTxt = string.Empty;
                 this.Barcode = string.Empty;
                 this.IsPartiallyCompleteOperation = false;
+                this.CloseLine = true;
             }
 
             this.confirmDraperyItemCommand?.RaiseCanExecuteChanged();
@@ -208,12 +212,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 try
                 {
-                    var canComplete = await this.missionOperationsService.PartiallyCompleteAsync(this.MissionId, this.InputQuantity.Value);
-                    if (!canComplete)
+                    bool canComplete;
+
+                    if (this.CloseLine)
+                    {
+                        canComplete = await this.missionOperationsService.PartiallyCompleteAsync(this.MissionId, this.InputQuantity.Value, this.WastedDraperyQuantity);
+                    }
+                    else
+                    {
+                        canComplete = await this.missionOperationsService.CompleteAsync(this.MissionId, this.InputQuantity.Value, this.Barcode, this.WastedDraperyQuantity);
+                    }
+
+                    if (canComplete)
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                    }
+                    else
                     {
                         this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
-                        this.NavigationService.GoBack();
                     }
+
+                    this.NavigationService.GoBack();
                 }
                 catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                 {
@@ -235,8 +254,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     if (this.Barcode != null)
                     {
-                        this.ShowNotification(Localized.Get("OperatorApp.BarcodeOperationConfirmed") + this.Barcode, Services.Models.NotificationSeverity.Success);
-                        canComplete = await this.missionOperationsService.CompleteAsync(this.MissionId, this.InputQuantity.Value, this.Barcode);
+                        //x this.ShowNotification(Localized.Get("OperatorApp.BarcodeOperationConfirmed") + this.Barcode, Services.Models.NotificationSeverity.Success);
+                        canComplete = await this.missionOperationsService.CompleteAsync(this.MissionId, this.InputQuantity.Value, this.Barcode, this.WastedDraperyQuantity);
                     }
                     else
                     {

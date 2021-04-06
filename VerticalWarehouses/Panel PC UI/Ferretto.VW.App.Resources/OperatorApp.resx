@@ -2057,4 +2057,8 @@
     <value>Signalling defect successful</value>
     <comment>Information Message</comment>
   </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Barcode</value>
+    <comment>Label</comment>
+  </data>
 </root>

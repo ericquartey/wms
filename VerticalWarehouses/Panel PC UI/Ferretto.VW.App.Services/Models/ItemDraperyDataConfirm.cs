@@ -10,6 +10,8 @@
 
         public bool CanInputQuantity { get; set; }
 
+        public bool CloseLine { get; set; }
+
         public double? InputQuantity { get; set; }
 
         public bool IsPartiallyCompleteOperation { get; set; }

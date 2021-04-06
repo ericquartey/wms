@@ -70,6 +70,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpGet("{id}/signal-defect")]
+        public async Task<ActionResult<bool>> SignallingDefectOnDraperyItem(int id, int compartmentId, double goodQuantity, double wastedQuantity)
+        {
+            return this.Ok(await this.itemsWmsWebService.SignallingDefectOnDraperyItemAsync(id, compartmentId, goodQuantity, wastedQuantity));
+        }
+
         [HttpPut("{id}/average-weight")]
         public async Task<IActionResult> UpdateAverageWeight(int id, double weight)
         {

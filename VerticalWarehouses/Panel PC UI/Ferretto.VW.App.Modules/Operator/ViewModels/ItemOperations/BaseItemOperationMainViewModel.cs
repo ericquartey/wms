@@ -286,7 +286,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmPartialOperationCommand
             ??
             (this.confirmPartialOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmPartialOperationAsync(),
+                async () => await this.ConfirmPartialOperation_New_Async(),     // await this.ConfirmPartialOperationAsync()
                 this.CanConfirmPartialOperationCommand));
 
         public ICommand ConfirmPresentOperationCommand =>
@@ -975,6 +975,73 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public async Task ConfirmPartialOperation_New_Async()
+        {
+            System.Diagnostics.Debug.Assert(
+                this.InputQuantity.HasValue,
+                "The input quantity should have a value");
+
+            if (this.IsCurrentDraperyItem)
+            {
+                this.ShowDraperyItemConfirmView(
+                    this.MissionOperation.ItemBarcode,
+                    isPartiallyConfirmOperation: true);
+
+                return;
+            }
+
+            try
+            {
+                this.IsBusyConfirmingPartialOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                this.IsOperationConfirmed = true;
+                bool canComplete;
+
+                if (this.closeLine)
+                {
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
+                if (canComplete)
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                }
+                else
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                }
+
+                this.navigationService.GoBackTo(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.WAIT);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.IsBusyConfirmingPartialOperation = false;
+                this.IsOperationConfirmed = false;
+            }
+            catch (Exception ex2)
+            {
+                this.ShowNotification(ex2);
+            }
+            finally
+            {
+                // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
+
+                //this.lastMissionOperation = null;
+                //this.lastMissionOperation = null;
+            }
+        }
+
         public async Task ConfirmPartialOperationAsync()
         {
             System.Diagnostics.Debug.Assert(
@@ -1435,6 +1502,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //some code
         }
 
+        // DELETE THIS!!!
         private async Task ConfirmPresentOperation_New_Async()
         {
             System.Diagnostics.Debug.Assert(
@@ -1765,6 +1833,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     MeasureUnitTxt = string.Empty,
                     Barcode = barcode,
                     IsPartiallyCompleteOperation = isPartiallyConfirmOperation,
+                    CloseLine = this.closeLine,
                 },
                 trackCurrentView: true);
         }
