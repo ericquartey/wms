@@ -43,6 +43,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
+            if (this.Mission.NeedHomingAxis == Axis.Horizontal)
+            {
+                this.MachineVolatileDataProvider.IsHomingExecuted = false;
+            }
+
             if (this.Mission.StopReason == StopRequestReason.NoReason)
             {
                 this.Logger.LogInformation($"End Move load unit {this.Mission.LoadUnitId} to {this.Mission.LoadUnitDestination} {this.Mission.DestinationCellId} on bay {this.Mission.TargetBay} ");

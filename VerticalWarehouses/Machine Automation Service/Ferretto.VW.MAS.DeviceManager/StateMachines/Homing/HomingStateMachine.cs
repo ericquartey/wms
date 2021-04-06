@@ -274,7 +274,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     )
                 {
                     ok = false;
-                    errorText = "Invalid presence sensors";
+                    errorText = $"Invalid presence sensors: zero {this.machineData.MachineSensorStatus.IsSensorZeroOnCradle}, completely on board {this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle}";
                 }
                 else if (this.machineData.CalibrationType == Calibration.FindSensor
                     && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
@@ -324,7 +324,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         && !bay.IsExternal)
                     {
                         ok = false;
-                        errorText = "Find Zero not possible: Invalid Zero sensor";
+                        errorText = "Find Zero not possible: Invalid Bay Zero sensor";
                     }
 
 #if CHECK_BAY_SENSOR

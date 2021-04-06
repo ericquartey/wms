@@ -403,19 +403,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     if (bay.Positions.Count() == 1)
                     {
-                        if (bay.External != null &&
-                            !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number])
-                        {
-                            if (showErrors)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationBayNotCalibrated, this.Mission.TargetBay);
-                            }
-                            else
-                            {
-                                this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated);
-                            }
-                            return false;
-                        }
                         // always check upper position
                         returnValue = this.CheckBayDestination(messageData, bay.Number, bay.Positions.First().Location, mission, showErrors);
                         if (returnValue)

@@ -180,13 +180,13 @@
                    Grid.ColumnSpan="2"
                    Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
                    Text="{res:Loc InstallationApp.SelectDirectionAndApply}"
-                   Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
+                   Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVC}}" />
 
         <TextBlock Grid.Row="1"
                    Grid.ColumnSpan="2"
                    Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
                    Text="{res:Loc InstallationApp.RepeteProcedure}"
-                   Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVC}}" />
+                   Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVIC}}" />
 
         <controls:PpcButton Grid.Row="2"
                             Grid.RowSpan="5"
@@ -195,7 +195,7 @@
                             Command="{Binding RepeatCalibrationCommand}"
                             Content="{res:Loc InstallationApp.Repeat}"
                             Style="{StaticResource WizardConfirmButton}"
-                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVC}}" />
+                            Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVIC}}" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.ColumnSpan="2"
@@ -228,7 +228,7 @@
                      GroupName="test"
                      IsChecked="{Binding IsErrorNegative, Mode=TwoWay}"
                      IsEnabled="true"
-                     Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
+                     Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVC}}">
           <RadioButton.Content>
             <TextBlock Style="{StaticResource VWAPP_ViewRadioButtonTitleTextBlockStyle}"
                        Text="-" />
@@ -242,7 +242,7 @@
                      GroupName="test"
                      IsChecked="{Binding IsErrorPositive, Mode=TwoWay}"
                      IsEnabled="true"
-                     Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
+                     Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVC}}">
           <RadioButton.Content>
             <TextBlock Style="{StaticResource VWAPP_ViewRadioButtonTitleTextBlockStyle}"
                        Text="+" />
@@ -257,7 +257,7 @@
                             Command="{Binding ApplyCommand}"
                             Content="{res:Loc InstallationApp.ApplyCorrection}"
                             Style="{DynamicResource WizardIntoButton}"
-                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
+                            Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVC}}" />
 
         <controls:PpcButton Grid.Row="4"
                             Grid.Column="0"

@@ -53,6 +53,8 @@
 
         public const string PROFILEHEIGHTCHECKVIEW = "ProfileHeightCheckViewModel";
 
+        public const string RELEASE = "ReleaseViewModel";
+
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
         public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
