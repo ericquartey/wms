@@ -171,7 +171,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsWmsWebService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity, printerName);
+                await this.missionOperationsWmsWebService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity, printerName: printerName);
 
                 var messageData = new MissionOperationCompletedMessageData
                 {
