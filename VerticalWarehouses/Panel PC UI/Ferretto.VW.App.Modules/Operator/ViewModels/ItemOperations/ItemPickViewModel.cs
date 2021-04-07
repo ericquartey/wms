@@ -300,7 +300,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, false, false);
                 if (!canComplete)
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));

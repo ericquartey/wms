@@ -1661,4 +1661,7 @@
   <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
     <value>Laser</value>
   </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>Scomparto pieno</value>
+  </data>
 </root>

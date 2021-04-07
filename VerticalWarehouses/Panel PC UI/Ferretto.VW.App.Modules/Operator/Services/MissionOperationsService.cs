@@ -126,7 +126,7 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.isRecallUnit;
         }
 
-        public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity)
+        public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment)
         {
             this.logger.Debug($"User requested to partially complete operation '{operationId}' with quantity {quantity}.");
             var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
@@ -137,7 +137,10 @@ namespace Ferretto.VW.App.Modules.Operator
                 await this.missionOperationsWebService.PartiallyCompleteAsync(
                     operationId,
                     quantity,
-                    labelPrinterName);
+                    wastedQuantity,
+                    labelPrinterName,
+                    emptyCompartment,
+                    fullCompartment);
 
                 await this.RefreshActiveMissionAsync();
 

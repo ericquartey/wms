@@ -1780,6 +1780,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full compartment.
+        /// </summary>
+        public static string FullCompartment {
+            get {
+                return ResourceManager.GetString("FullCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string General {

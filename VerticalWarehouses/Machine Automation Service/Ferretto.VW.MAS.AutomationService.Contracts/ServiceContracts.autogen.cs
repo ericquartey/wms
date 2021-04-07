@@ -2306,11 +2306,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<int> GetUnitIdAsync(int missionId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName);
+        System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment, System.Threading.CancellationToken cancellationToken);
     
     }
     

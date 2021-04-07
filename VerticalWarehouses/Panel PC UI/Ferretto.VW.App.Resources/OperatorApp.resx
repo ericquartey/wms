@@ -2018,4 +2018,7 @@
   <data name="LaserOffset" xml:space="preserve">
     <value>LaserOffset</value>
   </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>Full compartment</value>
+  </data>
 </root>

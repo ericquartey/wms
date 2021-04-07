@@ -25673,14 +25673,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName)
+        public System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment)
         {
-            return PartiallyCompleteAsync(id, quantity, printerName, System.Threading.CancellationToken.None);
+            return PartiallyCompleteAsync(id, quantity, wastedQuantity, printerName, emptyCompartment, fullCompartment, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, string printerName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -25688,11 +25688,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (quantity == null)
                 throw new System.ArgumentNullException("quantity");
     
+            if (wastedQuantity == null)
+                throw new System.ArgumentNullException("wastedQuantity");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/mission-operations/{id}/partially-complete?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append(System.Uri.EscapeDataString("quantity") + "=").Append(System.Uri.EscapeDataString(ConvertToString(quantity, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("wastedQuantity") + "=").Append(System.Uri.EscapeDataString(ConvertToString(wastedQuantity, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("printerName") + "=").Append(System.Uri.EscapeDataString(printerName != null ? ConvertToString(printerName, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            if (emptyCompartment != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("emptyCompartment") + "=").Append(System.Uri.EscapeDataString(ConvertToString(emptyCompartment, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (fullCompartment != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("fullCompartment") + "=").Append(System.Uri.EscapeDataString(ConvertToString(fullCompartment, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

@@ -62,6 +62,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand confirmPresentOperationCommand;
 
+        private bool fullCompartment;
+
         private string inputItemCode;
 
         private string inputLot;
@@ -230,6 +232,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this[nameof(this.InputLot)],
                     this[nameof(this.InputItemCode)],
                     this[nameof(this.InputSerialNumber)]);
+
+        public bool FullCompartment
+        {
+            get => this.fullCompartment;
+            set => this.SetProperty(ref this.fullCompartment, value, this.RaiseCanExecuteChanged);
+        }
 
         public string InputItemCode
         {
@@ -754,7 +762,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.closeLine)
                 {
-                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, false, false);
                 }
                 else
                 {
@@ -877,6 +885,48 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await this.MissionOperationsService.RefreshAsync();
             await this.GetLoadingUnitDetailsAsync();
+        }
+
+        public async Task PartiallyCompleteOnFullCompartmentAsync()
+        {
+            this.IsWaitingForResponse = true;
+            this.IsOperationConfirmed = true;
+
+            try
+            {
+                bool canComplete;
+
+                if (this.closeLine)
+                {
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, false, true);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
+                if (!canComplete)
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                    this.NavigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+                else if (this.fullCompartment)
+                {
+                    //await this.compartmentsWebService.UpdateFillPercentageAsync(this.MissionOperation.CompartmentId, 100);
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.IsOperationConfirmed = false;
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
