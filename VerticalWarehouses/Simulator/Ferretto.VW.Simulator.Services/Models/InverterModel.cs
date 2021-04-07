@@ -1512,7 +1512,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     // simulate positioning error
                     //this.AxisPosition += (short)(new Random().Next(-3, 3));
-                    //OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = !this.IsStartedOnBoard });
+                    if (!this.machine.Bays.Any(s => s.IsExternal && s.Positions.Count() == 2))
+                    {
+                        OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = !this.IsStartedOnBoard });
+                    }
                 }
                 else if (this.InverterRole > InverterRole.ElevatorChain)
                 {
