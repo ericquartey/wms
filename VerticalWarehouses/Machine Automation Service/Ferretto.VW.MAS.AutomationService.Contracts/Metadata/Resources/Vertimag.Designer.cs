@@ -331,7 +331,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DistanBelt tension block distance.
+        ///   Looks up a localized string similar to Belt tension block distance.
         /// </summary>
         public static string BeltSpacing {
             get {
@@ -520,7 +520,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reading profile distance 6a ftc.
+        ///   Looks up a localized string similar to Reading profile distance 6th beam.
         /// </summary>
         public static string ElevatorAxis_ProfileCalibratePosition {
             get {

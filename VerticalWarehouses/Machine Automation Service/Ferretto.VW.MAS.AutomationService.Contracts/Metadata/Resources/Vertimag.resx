@@ -208,7 +208,7 @@
     <value>Belt Rigidity</value>
   </data>
   <data name="BeltSpacing" xml:space="preserve">
-    <value>DistanBelt tension block distance</value>
+    <value>Belt tension block distance</value>
   </data>
   <data name="Carousel" xml:space="preserve">
     <value>Carousel</value>
@@ -259,7 +259,7 @@
     <value>Profile calibration max distance</value>
   </data>
   <data name="ElevatorAxis_ProfileCalibratePosition" xml:space="preserve">
-    <value>Reading profile distance 6a ftc</value>
+    <value>Reading profile distance 6th beam</value>
   </data>
   <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
     <value>Profile Calibration Speed</value>

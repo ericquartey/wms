@@ -195,9 +195,6 @@
   <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
     <value>Presenza UDC in culla lato operatore</value>
   </data>
-  <data name="MicroCarterLeftSide" xml:space="preserve">
-    <value>Micro carter lato sinistro</value>
-  </data>
   <data name="MicroCarterRightSide" xml:space="preserve">
     <value>Micro carter lato destro</value>
   </data>
