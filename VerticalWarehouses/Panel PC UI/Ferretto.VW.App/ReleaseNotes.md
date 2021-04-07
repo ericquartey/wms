@@ -1,5 +1,5 @@
 ﻿## Nuove Funzionalità 1.0.11 rispetto la 1.0.10
-- Il pulsate "?" visualizza le release notes
+- Il pulsante "?" visualizza le release notes
 
 ## Bug Risolti
 - Aggiunti controlli di Sensori non validi nelle missioni di ripristino
