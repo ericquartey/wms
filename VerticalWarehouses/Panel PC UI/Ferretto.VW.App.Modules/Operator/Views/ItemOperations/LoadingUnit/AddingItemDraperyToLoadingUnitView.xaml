@@ -1,0 +1,85 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.AddingItemDraperyToLoadingUnitView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Margin="10,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="Caricamento pezza" />
+        <!--  text: "Load drapery"  -->
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Margin="0,0,0,10"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding DraperyItemCode}"
+                                 LabelText="Articolo/Codice" />
+        <!--  text: "Item"  -->
+
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Margin="0,0,0,10"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding DraperyItemDescription}"
+                                 LabelText="Descrizione" />
+        <!--  text: "Description"  -->
+
+        <controls:PpcLabeledText Grid.Row="6"
+                                 Margin="0,0,0,10"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding DraperyId}"
+                                 LabelText="Pezza" />
+        <!--  text: "Drapery"  -->
+
+        <Grid Grid.Row="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <controls:PpcLabeledText Grid.Column="0"
+                                     Margin="0,0,0,10"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding DraperyQuantity}"
+                                     LabelText="Qta" />
+            <!--  text: "Quantity"  -->
+
+            <controls:PpcLabeledText Grid.Column="1"
+                                     Margin="0,0,0,10"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding DraperyHeight}"
+                                     LabelText="Altezza" />
+            <!--  text: "Height"  -->
+
+        </Grid>
+
+    </Grid>
+
+</ctrls:View>
