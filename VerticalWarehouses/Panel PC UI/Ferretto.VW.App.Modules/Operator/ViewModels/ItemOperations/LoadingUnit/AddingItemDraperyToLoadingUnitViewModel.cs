@@ -70,6 +70,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.draperyQuantity, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsAddingAnErrorOperation { get; set; }
+
+        public string MessageToShow { get; set; }
+
         #endregion
 
         #region Methods
@@ -77,6 +81,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.IsAddingAnErrorOperation = false;
+            this.MessageToShow = "Add a message";
+
+            this.ClearNotifications();
+            this.ShowNotification(this.MessageToShow, this.IsAddingAnErrorOperation ? Services.Models.NotificationSeverity.Error : Services.Models.NotificationSeverity.Success);
         }
 
         protected override void RaiseCanExecuteChanged()
