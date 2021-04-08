@@ -12,8 +12,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
         [Column(Order = (int)InverterSensors.ACU_EncoderChannelB)]
         bool ACU_EncoderChannelB { get; }
 
-        [Column(Order = (int)InverterSensors.ACU_EncoderChannelZ)]
-        bool ACU_EncoderChannelZ { get; }
+        [Column(Order = (int)InverterSensors.ACU_ZeroSensorTop)]
+        bool ACU_ZeroSensorTop { get; }
 
         [Column(Order = (int)InverterSensors.ACU_FreeSensor1)]
         bool ACU_FreeSensor1 { get; }

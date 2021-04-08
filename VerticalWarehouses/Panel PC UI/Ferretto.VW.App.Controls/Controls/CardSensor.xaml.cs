@@ -56,6 +56,9 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty CardSensorLabel5Property =
             DependencyProperty.Register(nameof(CardSensorLabel5), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
+        public static readonly DependencyProperty CardSensorLabel6Property =
+            DependencyProperty.Register(nameof(CardSensorLabel6), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+
         public static readonly DependencyProperty CardTextProperty =
             DependencyProperty.Register(nameof(CardText), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
@@ -93,6 +96,9 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty Sensor5Property =
             DependencyProperty.Register(nameof(Sensor5), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty Sensor6Property =
+            DependencyProperty.Register(nameof(Sensor6), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
+
         #endregion
 
         #region Constructors
@@ -122,6 +128,8 @@ namespace Ferretto.VW.App.Controls.Controls
             Axis,
 
             Bay,
+
+            BED,
 
             Drawer,
 
@@ -224,6 +232,12 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(CardSensorLabel5Property, value);
         }
 
+        public string CardSensorLabel6
+        {
+            get => (string)this.GetValue(CardSensorLabel6Property);
+            set => this.SetValue(CardSensorLabel6Property, value);
+        }
+
         public string CardText
         {
             get => (string)this.GetValue(CardTextProperty);
@@ -283,6 +297,12 @@ namespace Ferretto.VW.App.Controls.Controls
         }
 
         public bool Sensor5
+        {
+            get => (bool)this.GetValue(Sensor1Property);
+            set => this.SetValue(Sensor1Property, value);
+        }
+
+        public bool Sensor6
         {
             get => (bool)this.GetValue(Sensor1Property);
             set => this.SetValue(Sensor1Property, value);

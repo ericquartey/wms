@@ -2424,4 +2424,10 @@
   <data name="MovingMachine" xml:space="preserve">
     <value>Pohybující se stroj</value>
   </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Nulový řetěz poz. vysoký</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Nulový řetěz poz. nízký</value>
+  </data>
 </root>

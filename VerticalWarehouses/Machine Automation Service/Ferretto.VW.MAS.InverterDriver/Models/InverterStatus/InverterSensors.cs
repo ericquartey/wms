@@ -150,7 +150,7 @@
         /// <summary>
         /// S6IND-Encoder canale A
         /// </summary>
-        ACU_EncoderChannelZ = 5,
+        ACU_ZeroSensorTop = 5,
 
         /// <summary>
         /// MF1IND-Libero

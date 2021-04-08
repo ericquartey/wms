@@ -2457,4 +2457,10 @@
   <data name="InvalidWeightValues" xml:space="preserve">
     <value>Valori di peso errati - devono essere tutti e 3 diversi!</value>
   </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Zero catena pos. alta</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Zero catena pos. bassa</value>
+  </data>
 </root>

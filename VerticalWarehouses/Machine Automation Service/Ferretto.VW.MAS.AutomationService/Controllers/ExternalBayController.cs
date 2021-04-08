@@ -50,6 +50,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.externalBayProvider.CanMove(direction, this.BayNumber, movementCategory));
         }
 
+        [HttpPost("can-move-ext-double")]
+        public ActionResult<ActionPolicy> CanMoveExternalDouble(ExternalBayMovementDirection direction, MovementCategory movementCategory, bool isPositionUpper)
+        {
+            return this.Ok(this.externalBayProvider.CanMoveExtDouble(direction, this.BayNumber, movementCategory, isPositionUpper));
+        }
+
         [HttpPost("find-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -98,6 +104,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult MoveAssisted(ExternalBayMovementDirection direction)
         {
             this.externalBayProvider.MoveAssisted(direction, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("move-assisted-ext-bay")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public IActionResult MoveAssistedExternalBay(ExternalBayMovementDirection direction, bool isPositionUpper)
+        {
+            this.externalBayProvider.MoveAssistedExtDouble(direction, this.BayNumber, MessageActor.AutomationService, isPositionUpper);
 
             return this.Accepted();
         }

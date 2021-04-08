@@ -30,15 +30,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bay1HasShutter;
 
-        private bool bay1ZeroChainisVisible;
+        private bool bay1ZeroChainIsVisible;
+
+        private bool bay1ZeroChainUpIsVisible;
 
         private bool bay2HasShutter;
 
         private bool bay2ZeroChainIsVisible;
 
+        private bool bay2ZeroChainUpIsVisible;
+
         private bool bay3HasShutter;
 
         private bool bay3ZeroChainIsVisible;
+
+        private bool bay3ZeroChainUpIsVisible;
 
         private bool isBay1ExternalDoublePresent;
 
@@ -99,15 +105,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool Bay1HasShutter { get => this.bay1HasShutter; private set => this.SetProperty(ref this.bay1HasShutter, value); }
 
-        public bool Bay1ZeroChainIsVisible { get => this.bay1ZeroChainisVisible; private set => this.SetProperty(ref this.bay1ZeroChainisVisible, value); }
+        public bool Bay1ZeroChainIsVisible { get => this.bay1ZeroChainIsVisible; private set => this.SetProperty(ref this.bay1ZeroChainIsVisible, value); }
+
+        public bool Bay1ZeroChainUpIsVisible { get => this.bay1ZeroChainUpIsVisible; private set => this.SetProperty(ref this.bay1ZeroChainUpIsVisible, value); }
 
         public bool Bay2HasShutter { get => this.bay2HasShutter; private set => this.SetProperty(ref this.bay2HasShutter, value); }
 
         public bool Bay2ZeroChainIsVisible { get => this.bay2ZeroChainIsVisible; private set => this.SetProperty(ref this.bay2ZeroChainIsVisible, value); }
 
+        public bool Bay2ZeroChainUpIsVisible { get => this.bay2ZeroChainUpIsVisible; private set => this.SetProperty(ref this.bay2ZeroChainUpIsVisible, value); }
+
         public bool Bay3HasShutter { get => this.bay3HasShutter; private set => this.SetProperty(ref this.bay3HasShutter, value); }
 
         public bool Bay3ZeroChainIsVisible { get => this.bay3ZeroChainIsVisible; private set => this.SetProperty(ref this.bay3ZeroChainIsVisible, value); }
+
+        public bool Bay3ZeroChainUpIsVisible { get => this.bay3ZeroChainUpIsVisible; private set => this.SetProperty(ref this.bay3ZeroChainUpIsVisible, value); }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -253,6 +265,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.Bay3ZeroChainIsVisible = bays
                 .Where(b => b.Number == BayNumber.BayThree)
                 .Select(b => b.Carousel != null || b.IsExternal)
+                .SingleOrDefault();
+
+            this.Bay1ZeroChainUpIsVisible = bays
+                .Where(b => b.Number == BayNumber.BayOne)
+                .Select(b => b.IsDouble && b.IsExternal)
+                .SingleOrDefault();
+
+            this.Bay2ZeroChainUpIsVisible = bays
+                .Where(b => b.Number == BayNumber.BayTwo)
+                .Select(b => b.IsDouble && b.IsExternal)
+                .SingleOrDefault();
+
+            this.Bay3ZeroChainUpIsVisible = bays
+                .Where(b => b.Number == BayNumber.BayThree)
+                .Select(b => b.IsDouble && b.IsExternal)
                 .SingleOrDefault();
         }
 

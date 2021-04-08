@@ -18,6 +18,7 @@
                     CardSensorLabel3="{Binding CardSensorLabel3}"
                     CardSensorLabel4="{Binding CardSensorLabel4}"
                     CardSensorLabel5="{Binding CardSensorLabel5}"
+                    CardSensorLabel6="{Binding CardSensorLabel6}"
                     CardText="{Binding BayNumber}"
                     CardValue="{Binding MachineStatus.BayChainPosition, StringFormat={}{0:F2}}"
                     Sensor1="{Binding SensorsService.BayZeroChain}"
@@ -25,6 +26,7 @@
                     Sensor3="{Binding Sensor3}"
                     Sensor4="{Binding Sensor4}"
                     Sensor5="{Binding Sensor5}"
-                    Type="Bay" />
+                    Sensor6="{Binding SensorsService.BayZeroChainUp}"
+                    Type="{Binding Type}" />
 
 </UserControl>

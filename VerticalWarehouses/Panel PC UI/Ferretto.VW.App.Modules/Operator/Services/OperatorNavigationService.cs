@@ -214,6 +214,15 @@ namespace Ferretto.VW.App.Modules.Operator
                     this.lastActiveUnitId = loadingUnit.Id;
                     this.NavigateToLoadingUnitDetails(loadingUnit.Id);
                 }
+                else if (this.machineService.Bay.IsDouble &&
+                    this.machineService.Bay.IsExternal &&
+                    loadingUnit != null &&
+                   currentMission != null &&
+                   this.machineService.MachineStatus.LoadingUnitPositionDownInBay?.Id == loadingUnit.Id)
+                {
+                    this.lastActiveUnitId = loadingUnit.Id;
+                    this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                }
                 else if (missions != null &&
                     loadingUnitInBay != null &&
                     currentMission != null &&

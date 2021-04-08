@@ -653,5 +653,14 @@ namespace Ferretto.VW.Simulator.Resources {
                 return ResourceManager.GetString("ZeroPosition", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zero Position Up.
+        /// </summary>
+        public static string ZeroPositionUp {
+            get {
+                return ResourceManager.GetString("ZeroPositionUp", resourceCulture);
+            }
+        }
     }
 }
