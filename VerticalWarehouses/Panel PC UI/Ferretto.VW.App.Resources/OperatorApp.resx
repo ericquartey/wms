@@ -1741,7 +1741,7 @@
     <value>Vertical axis</value>
   </data>
   <data name="ConfirmPartial" xml:space="preserve">
-    <value>Partial Confirmation</value>
+    <value>Change</value>
   </data>
   <data name="ConfirmPresent" xml:space="preserve">
     <value>Confirm Present</value>
@@ -2019,6 +2019,9 @@
     <value>LaserOffset</value>
   </data>
   <data name="FullCompartment" xml:space="preserve">
-    <value>Full compartment</value>
+    <value>Full</value>
+  </data>
+  <data name="EmptyCompartment" xml:space="preserve">
+    <value>Empty</value>
   </data>
 </root>

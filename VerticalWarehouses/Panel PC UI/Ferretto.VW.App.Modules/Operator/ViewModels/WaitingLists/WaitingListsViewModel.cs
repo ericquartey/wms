@@ -145,7 +145,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, bay.Id, this.authenticationService.UserName);
+                await this.itemListsWebService.ExecuteNumAsync(itemList.Code, this.areaId.Value, bay.Id, this.authenticationService.UserName);
                 await this.LoadListsAsync();
                 this.ShowNotification(
                     string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code),
@@ -202,31 +202,52 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return this.SelectedList != null;
         }
 
+        //private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
+        //{
+        //    var listId = e.GetListId();
+        //    if (!listId.HasValue)
+        //    {
+        //        return;
+        //    }
+
+        //    try
+        //    {
+        //        var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
+        //        await this.ExecuteListAsync(new ItemListExecution(list, this.bayManager.Identity.Id));
+        //    }
+        //    catch
+        //    {
+        //        this.ShowNotification(
+        //            string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listId.Value),
+        //            Services.Models.NotificationSeverity.Error);
+        //    }
+        //}
+
         private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
         {
-            var listId = e.GetListId();
-            if (!listId.HasValue)
+            var listCode = e.GetListCode();
+            if (listCode is null || listCode.Length == 0)
             {
                 return;
             }
 
             try
             {
-                var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
-                await this.ExecuteListAsync(new ItemListExecution(list, this.bayManager.Identity.Id));
+                var list = await this.itemListsWebService.GetByNumAsync(listCode);
+                await this.ExecuteListAsync(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
             }
             catch
             {
                 this.ShowNotification(
-                    string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listId.Value),
+                    string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listCode),
                     Services.Models.NotificationSeverity.Error);
             }
         }
 
         private async Task FilterListsByBarcodeAsync(UserActionEventArgs e)
         {
-            var listId = e.GetListId();
-            if (!listId.HasValue)
+            var listCode = e.GetListCode();
+            if (listCode is null || listCode.Length == 0)
             {
                 this.ShowNotification(
                    string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheListId"), e.Code),
@@ -237,9 +258,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
+                var list = await this.itemListsWebService.GetByNumAsync(listCode);
 
-                this.ShowDetails(new ItemListExecution(list, this.bayManager.Identity.Id));
+                this.ShowDetails(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
             }
             catch
             {

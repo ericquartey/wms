@@ -62,6 +62,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand confirmPresentOperationCommand;
 
+        private bool emptyCompartment;
+
         private bool fullCompartment;
 
         private string inputItemCode;
@@ -223,6 +225,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.confirmPresentOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmPresentOperationAsync(),
                 this.CanConfirmPresentOperation));
+
+        public bool EmptyCompartment
+        {
+            get => this.emptyCompartment;
+            set => this.SetProperty(ref this.emptyCompartment, value, this.RaiseCanExecuteChanged);
+        }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -762,7 +770,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.closeLine)
                 {
-                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, false, false);
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
                 }
                 else
                 {
@@ -898,7 +906,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.closeLine)
                 {
-                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, false, true);
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
                 }
                 else
                 {
@@ -911,10 +919,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.WAIT);
-                }
-                else if (this.fullCompartment)
-                {
-                    //await this.compartmentsWebService.UpdateFillPercentageAsync(this.MissionOperation.CompartmentId, 100);
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

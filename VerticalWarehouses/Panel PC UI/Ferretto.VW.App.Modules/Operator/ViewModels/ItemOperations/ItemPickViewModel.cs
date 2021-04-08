@@ -148,6 +148,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.CanInputAvailableQuantity = true;
             this.CanInputQuantity = true;
             this.CloseLine = true;
+            this.FullCompartment = false;
+            this.EmptyCompartment = false;
             this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
             this.RaisePropertyChanged(nameof(this.CanInputQuantity));
 
@@ -259,6 +261,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     !this.CanPickBox;
 
                 this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
+
             }
             catch (Exception)
             {

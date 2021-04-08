@@ -276,6 +276,7 @@
                           Command="{Binding FullOperationCommand}"
                           Content="{resources:Loc OperatorApp.ConfirmPartial}"
                           IsBusy="{Binding IsBusyConfirmingOperation}"
+                          Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}" />
 
             <StackPanel Grid.Row="4"
@@ -329,7 +330,7 @@
             <StackPanel Grid.Row="5"
                         Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
                 <TextBlock Grid.Row="5"
-                           Margin="15,5,15,0"
+                           Margin="15,5,30,0"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Top"
                            FontSize="{StaticResource FontSize_Small}"

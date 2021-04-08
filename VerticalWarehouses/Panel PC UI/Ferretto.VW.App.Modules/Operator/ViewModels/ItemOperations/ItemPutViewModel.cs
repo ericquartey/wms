@@ -95,14 +95,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmPartialOperationCommand
             ??
             (this.confirmPartialOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync("0"),
+                async () => await this.ConfirmPartialOperationAsync(),
                 this.CanConfirmPartialOperationPut));
 
         public ICommand FullOperationCommand =>
                     this.fullOperationCommand
             ??
             (this.fullOperationCommand = new DelegateCommand(
-                async () => await this.PartiallyCompleteOnFullCompartmentAsync(),
+                async () => await this.ConfirmPartialOperationAsync(),
                 this.CanPartiallyCompleteOnFullCompartment));
 
         public ICommand PutBoxCommand =>
@@ -125,7 +125,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsOperationCanceled;
 
                 this.confirmPartialOperation = this.MissionOperation != null &&
-                    this.InputQuantity.Value > this.MissionRequestedQuantity &&
+                    this.InputQuantity.Value >= 0 &&
+                    this.InputQuantity.Value != this.MissionRequestedQuantity &&
                     !this.IsOperationCanceled;
 
                 this.RaisePropertyChanged(nameof(this.ConfirmOperation));
@@ -147,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                &&
                this.InputQuantity.HasValue
                &&
-               this.InputQuantity.Value >= this.MissionRequestedQuantity
+               this.InputQuantity.Value == this.MissionRequestedQuantity
                &&
                !this.CanPutBox;
         }
@@ -165,7 +166,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                &&
                this.InputQuantity.HasValue
                &&
-               this.InputQuantity.Value > this.MissionRequestedQuantity
+               this.InputQuantity.Value != this.MissionRequestedQuantity
                &&
                !this.canPutBox;
         }
@@ -270,6 +271,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.CloseLine = true;
             this.FullCompartment = false;
+            this.EmptyCompartment = false;
             await base.OnAppearedAsync();
 
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
@@ -343,7 +345,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value >= 0
                 &&
-                this.InputQuantity.Value < this.MissionRequestedQuantity
+                this.InputQuantity.Value != this.MissionRequestedQuantity
                 &&
                 !this.CanPutBox;
             this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));

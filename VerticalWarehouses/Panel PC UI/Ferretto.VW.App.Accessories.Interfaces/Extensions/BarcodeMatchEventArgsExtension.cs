@@ -97,6 +97,21 @@
             return null;
         }
 
+        public static string GetListCode(this UserActionEventArgs eventArgs)
+        {
+            if (eventArgs is null)
+            {
+                throw new System.ArgumentNullException(nameof(eventArgs));
+            }
+
+            if (eventArgs.Parameters.TryGetValue(BarcodeToken.ListId.ToString(), out var listIdString))
+            {
+                return listIdString;
+            }
+
+            return null;
+        }
+
         public static int? GetListId(this UserActionEventArgs eventArgs)
         {
             if (eventArgs is null)

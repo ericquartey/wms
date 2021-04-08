@@ -35,10 +35,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpGet("{id}/execute-num")]
+        public async Task<ActionResult<ItemListDetails>> ExecuteNumAsync(string id, int areaId, int? bayId = null, string userName = null)
+        {
+            await this.itemListsWmsWebService.ExecuteNumAsync(id, areaId, bayId, userName);
+            return this.Ok();
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemListDetails>> GetByIdAsync(int id)
         {
             return this.Ok(await this.itemListsWmsWebService.GetByIdAsync(id));
+        }
+
+        [HttpGet("{code}/num")]
+        public async Task<ActionResult<IEnumerable<ItemListDetails>>> GetByNumAsync(string code)
+        {
+            return this.Ok(await this.itemListsWmsWebService.GetAllAsync(where: code));
         }
 
         [HttpGet("{id}/rows")]
