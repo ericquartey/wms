@@ -312,8 +312,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.lightCommand = new DelegateCommand(
                 async () => await this.LightAsync(),
-                () => !this.IsMoving &&
-                      (this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Degraded)));
+                () => this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == Services.HealthStatus.Degraded));
 
         public string LightIcon
         {
