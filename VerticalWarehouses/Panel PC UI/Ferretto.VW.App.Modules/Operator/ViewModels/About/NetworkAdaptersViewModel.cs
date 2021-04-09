@@ -241,6 +241,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
                 p.StartInfo.FileName = "cmd.exe";
                 p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -248,13 +249,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 p.StartInfo.Arguments = "/c uwfmgr.exe get-config";
                 p.Start();
 
-                string output = p.StandardOutput.ReadToEnd();
-                var res = output.Contains("Stato filtro: ATTIVATA");
-
-                if (res)
+                var rawOutput = p.StandardOutput.ReadToEnd().ToCharArray();
+                var output = string.Empty;
+                foreach (var singleChar in rawOutput)
                 {
-                    this.IsFilterEnabled = output.Contains("Filter state : ON");
+                    if (char.IsLetterOrDigit(singleChar))
+                    {
+                        output += singleChar;
+                    }
                 }
+
+                //this.Logger.Debug(output);
+                this.IsFilterEnabled = output.Contains("StatofiltroATTIVATA");
 
                 p.WaitForExit();
             }
@@ -266,6 +272,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ClearNotifications();
                 this.ShowNotification("Filtro UWF attivo", Services.Models.NotificationSeverity.Warning);
+            }
+            else
+            {
+                this.ClearNotifications();
+                this.ShowNotification("Filtro UWF NON attivo", Services.Models.NotificationSeverity.Warning);
             }
         }
 
