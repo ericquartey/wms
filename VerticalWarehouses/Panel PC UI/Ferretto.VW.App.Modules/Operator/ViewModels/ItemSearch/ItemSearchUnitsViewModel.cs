@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -23,11 +24,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly IWmsDataProvider wmsDataProvider;
+
         private DelegateCommand callLoadingUnitCommand;
+
+        private DelegateCommand checkProductCommand;
 
         private ItemInfo item;
 
-        private IEnumerable<Compartment> itemUnits;
+        private ObservableCollection<Compartment> itemUnits;
 
         private Compartment selectedItemUnits;
 
@@ -38,12 +43,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ItemSearchUnitsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineItemsWebService itemsWebService,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IWmsDataProvider wmsDataProvider
+            )
             : base(PresentationMode.Operator)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
         }
 
         #endregion
@@ -51,6 +59,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public string ActiveContextName => OperationalContext.ItemsSearch.ToString();
+
+        public ICommand CheckProductCommand =>
+            this.checkProductCommand
+            ??
+            (this.checkProductCommand = new DelegateCommand(
+                async () => await this.CheckProductAsync(),
+                this.CanCheckProduct));
 
         public ItemInfo Item
         {
@@ -67,7 +82,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public IEnumerable<Compartment> ItemUnits
+        public ObservableCollection<Compartment> ItemUnits
         {
             get => this.itemUnits;
             set => this.SetProperty(ref this.itemUnits, value, this.RaiseCanExecuteChanged);
@@ -118,6 +133,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public async Task CheckProductAsync()
+        {
+            try
+            {
+                if (this.SelectedItemUnits?.Id != null)
+                {
+                    await this.wmsDataProvider.CheckAsync(
+                        this.Item.Id,
+                        this.SelectedItemUnits.Id,
+                        this.Item.Lot,
+                        this.Item.SerialNumber,
+                        this.authenticationService.UserName);
+
+                    this.ShowNotification(
+                        Resources.Localized.Get("OperatorApp.OperationConfirmed"),
+                        Services.Models.NotificationSeverity.Success);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         public override void Disappear()
         {
             this.Item = null;
@@ -137,8 +180,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.Item = this.Data as ItemInfo;
+            var compartments = await this.itemsWebService.GetCompartmentsAsync(this.Item.Id);
 
-            this.ItemUnits = await this.itemsWebService.GetCompartmentsAsync(this.Item.Id);
+            // filter ItemUnits by lot and serialNumber
+            this.ItemUnits = new ObservableCollection<Compartment>();
+
+            foreach (var compartment in compartments)
+            {
+                if (this.Item.Lot != null || this.Item.SerialNumber != null)
+                {
+                    var itemsCompartments = await this.machineLoadingUnitsWebService.GetCompartmentsAsync(compartment.LoadingUnitId);
+                    var filteredCompartments = itemsCompartments.Where(c => (c.ItemId == this.Item.Id)
+                        //&& ((this.Item.Lot != null && c.Lot == this.Item.Lot) || (this.Item.SerialNumber != null && c.ItemSerialNumber == this.Item.SerialNumber))
+                        );
+
+                    if (filteredCompartments != null)
+                    {
+                        foreach (var filteredCompartment in filteredCompartments)
+                        {
+                            compartment.Lot = this.Item.Lot; // filteredCompartment.Lot;
+                            compartment.Sub1 = this.Item.SerialNumber; // filteredCompartment.ItemSerialNumber;
+                            this.ItemUnits.Add(compartment);
+                        }
+                    }
+                }
+                else
+                {
+                    this.ItemUnits.Add(compartment);
+                }
+            }
 
             this.RaisePropertyChanged(nameof(this.ItemUnits));
 
@@ -154,9 +224,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
+
+            this.checkProductCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanCallLoadingUnit()
+        {
+            return
+                this.SelectedItemUnits?.LoadingUnitId != null
+                &&
+                !this.IsWaitingForResponse;
+        }
+
+        private bool CanCheckProduct()
         {
             return
                 this.SelectedItemUnits?.LoadingUnitId != null

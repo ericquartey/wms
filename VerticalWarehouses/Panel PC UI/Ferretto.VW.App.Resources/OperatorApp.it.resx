@@ -1667,4 +1667,7 @@
   <data name="EmptyCompartment" xml:space="preserve">
     <value>Vuoto</value>
   </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>Visione</value>
+  </data>
 </root>

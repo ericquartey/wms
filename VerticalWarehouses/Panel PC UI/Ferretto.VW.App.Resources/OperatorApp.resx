@@ -2024,4 +2024,7 @@
   <data name="EmptyCompartment" xml:space="preserve">
     <value>Empty</value>
   </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>Check product</value>
+  </data>
 </root>

@@ -41,6 +41,35 @@ namespace Ferretto.VW.App.Modules.Operator
 
         #region Methods
 
+        public async Task CheckAsync(int itemId, int compartmentId, string lot = null, string serialNumber = null, string userName = null)
+        {
+            if (!this.bayManager.Identity.AreaId.HasValue)
+            {
+                throw new InvalidOperationException(Resources.Localized.Get("General.AreaMachineUnknow"));
+            }
+
+            try
+            {
+                var bay = await this.bayManager.GetBayAsync();
+
+                await this.itemWebService.CheckAsync(itemId, new ItemOptions
+                {
+                    AreaId = this.bayManager.Identity.AreaId.Value,
+                    BayId = bay.Id,
+                    MachineId = this.bayManager.Identity.Id,
+                    RunImmediately = true,
+                    Lot = lot,
+                    CompartmentId = compartmentId,
+                    SerialNumber = serialNumber,
+                    UserName = userName,
+                });
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                // do nothing
+            }
+        }
+
         public async Task<string> GetItemImagePathAsync(int itemId)
         {
             try

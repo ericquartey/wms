@@ -592,6 +592,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check product.
+        /// </summary>
+        public static string CheckProduct {
+            get {
+                return ResourceManager.GetString("CheckProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close line.
         /// </summary>
         public static string CloseLine {
