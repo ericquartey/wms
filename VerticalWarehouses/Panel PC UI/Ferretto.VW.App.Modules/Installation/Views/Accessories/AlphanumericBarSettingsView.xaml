@@ -297,6 +297,7 @@
 
     <localControl:BrowserView Grid.RowSpan="7"
                               Grid.ColumnSpan="4"
+                              IsOpen="{Binding IsBrowserOpened}"
                               Url="{Binding IpAddress}"
                               Visibility="{Binding IsBrowserOpened, Converter={StaticResource BTVC}}" />
 

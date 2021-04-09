@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              x:Name="Browser">
+
   <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
 
     <Grid.RowDefinitions>
@@ -16,7 +17,8 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Click="PpcButton_Click"
-                        Content="Ricarica" />
+                        Content="Ricarica"
+                        TouchUp="PpcButton_TouchUp" />
 
     <WebBrowser Name="MyWebBrowser"
                 Grid.Row="1" />
