@@ -414,7 +414,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //wait 1s
             Thread.Sleep(1000);
 
-            var psi = new ProcessStartInfo("shutdown", "/s /t 0");
+            var psi = new ProcessStartInfo("shutdown", "/r /t 0");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             Process.Start(psi);
