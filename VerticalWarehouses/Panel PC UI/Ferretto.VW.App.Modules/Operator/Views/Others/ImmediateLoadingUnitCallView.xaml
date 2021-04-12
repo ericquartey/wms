@@ -2,15 +2,9 @@
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
-            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-            xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
-            xmlns:in="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-            xmlns:keyboardBehaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:views="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
@@ -113,14 +107,14 @@
                           Command="{Binding LoadingUnitsMissionsCommand}"
                           Content="{Resources:Loc OperatorApp.MissionsList}" />
 
-            <controls:PpcButton Grid.Row="3"
+      <controls:PpcButton Grid.Row="3"
                           Margin="15,15,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding ChangLaserOffsetCommand}"
                           Content="{Resources:Loc OperatorApp.LaserOffset}" />
 
-            <controls:PpcButton Grid.Row="4"
+      <controls:PpcButton Grid.Row="4"
                           Margin="15,15,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"

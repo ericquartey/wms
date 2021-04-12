@@ -39,17 +39,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private SubscriptionToken receiveHomingUpdateToken;
 
-        private LoadingUnit selectedUnitUnit;
+        private LoadingUnit selectedLoadingUnit;
 
         #endregion
 
         #region Constructors
 
         public ImmediateLoadingUnitCallViewModel(
-                    IMachineService machineService,
-            IEventAggregator eventAggregator,
-            IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
-            : base(PresentationMode.Operator)
+                IMachineService machineService,
+                IEventAggregator eventAggregator,
+                IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
+                : base(PresentationMode.Operator)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
@@ -102,14 +102,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public LoadingUnit SelectedLoadingUnit
         {
-            get => this.selectedUnitUnit;
-            set
-            {
-                if (this.SetProperty(ref this.selectedUnitUnit, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            get => this.selectedLoadingUnit;
+            set => this.SetProperty(ref this.selectedLoadingUnit, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -118,23 +112,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task CallLoadingUnitAsync()
         {
-            this.Logger.Debug($"CallLoadingUnitAsync: loadingUnitId {this.SelectedLoadingUnit.Id} ");
-
-            if (this.SelectedLoadingUnit == null)
+            if (this.selectedLoadingUnit == null)
             {
                 this.ShowNotification(Resources.Localized.Get("General.IdLoadingUnitNotExists"), Services.Models.NotificationSeverity.Warning);
                 return;
             }
 
+            this.Logger.Debug($"CallLoadingUnitAsync: loadingUnitId {this.selectedLoadingUnit.Id} ");
+
             try
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.SelectedLoadingUnit.Id);
+                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.selectedLoadingUnit.Id);
 
-                this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.SelectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.selectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }
-            catch (Exception ex) //when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex) // when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -186,7 +180,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanChangeLaserOffset()
         {
-            return this.IsEnabledLaser && this.SelectedLoadingUnit != null && this.SelectedLoadingUnit.Id > 0;
+            return this.IsEnabledLaser && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0;
         }
 
         private void ChangeLaserOffsetAppear()
