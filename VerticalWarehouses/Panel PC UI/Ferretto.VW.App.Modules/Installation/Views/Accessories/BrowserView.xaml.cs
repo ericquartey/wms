@@ -23,15 +23,11 @@ namespace Ferretto.VW.App.Modules.Installation.Views
         public BrowserView()
         {
             this.InitializeComponent();
-
-            Instance = this;
         }
 
         #endregion
 
         #region Properties
-
-        public static BrowserView Instance { get; private set; }
 
         public bool IsOpen
         {
@@ -51,20 +47,22 @@ namespace Ferretto.VW.App.Modules.Installation.Views
 
         private static void OnIsOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            var istance = d as BrowserView;
             if ((bool)e.NewValue == false)
             {
-                if (!string.IsNullOrEmpty(Instance.Url))
+                if (!string.IsNullOrEmpty(istance.Url))
                 {
-                    Instance.MyWebBrowser.Navigate("http://" + Instance.Url);
+                    istance.MyWebBrowser.Navigate("http://" + istance.Url);
                 }
             }
         }
 
         private static void OnUrlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            var istance = d as BrowserView;
             if (!string.IsNullOrEmpty(e.NewValue.ToString()))
             {
-                Instance.MyWebBrowser.Navigate("http://" + e.NewValue.ToString());
+                istance.MyWebBrowser.Navigate("http://" + e.NewValue.ToString());
             }
         }
 
