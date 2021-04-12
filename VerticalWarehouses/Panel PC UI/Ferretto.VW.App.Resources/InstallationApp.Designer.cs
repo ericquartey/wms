@@ -1231,6 +1231,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close browser.
+        /// </summary>
+        public static string CloseBrowser {
+            get {
+                return ResourceManager.GetString("CloseBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Closed.
         /// </summary>
         public static string Closed {
@@ -4714,6 +4723,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open browser.
+        /// </summary>
+        public static string OpenBrowser {
+            get {
+                return ResourceManager.GetString("OpenBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run the command to open the shutter.
         /// </summary>
         public static string OpenShutterCommand {
@@ -5079,6 +5097,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ReferenceCellHeight {
             get {
                 return ResourceManager.GetString("ReferenceCellHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload.
+        /// </summary>
+        public static string Reload {
+            get {
+                return ResourceManager.GetString("Reload", resourceCulture);
             }
         }
         

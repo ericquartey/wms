@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AirFiltersCheck" xml:space="preserve">
+    <value>Έλεγχος φίλτρων αέρα</value>
+  </data>
+  <data name="BearingsCheck" xml:space="preserve">
+    <value>Έλεγχος ρουλεμάν</value>
+  </data>
+  <data name="BearingsGrease" xml:space="preserve">
+    <value>Γρασάρισμα ρουλεμάν</value>
+  </data>
+  <data name="BeltAdjust" xml:space="preserve">
+    <value>Προσαρμογή ιμάντα</value>
+  </data>
+  <data name="BeltFasten" xml:space="preserve">
+    <value>Πρόσδεση ιμάντα</value>
+  </data>
+  <data name="BeltSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση ιμάντα</value>
+  </data>
+  <data name="CableChainCheck" xml:space="preserve">
+    <value>Έλεγχος αλυσίδας καλωδίου</value>
+  </data>
+  <data name="CablesCheck" xml:space="preserve">
+    <value>Έλεγχος καλωδίων</value>
+  </data>
+  <data name="ChainAdjust" xml:space="preserve">
+    <value>Προσαρμογή αλυσίδας</value>
+  </data>
+  <data name="ChainGrease" xml:space="preserve">
+    <value>Γρασάρισμα αλυσίδας</value>
+  </data>
+  <data name="ChainSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση αλυσίδας</value>
+  </data>
+  <data name="ContactorsSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση διακοπτών</value>
+  </data>
+  <data name="ElectricalComponentsCheck" xml:space="preserve">
+    <value>Έλεγχος ηλεκτρικών εξαρτημάτων</value>
+  </data>
+  <data name="FirstCellCheck" xml:space="preserve">
+    <value>Πρώτος έλεγχος κυψέλης</value>
+  </data>
+  <data name="GuidesCheck" xml:space="preserve">
+    <value>Έλεγχος οδηγών</value>
+  </data>
+  <data name="GuidesSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση οδηγών</value>
+  </data>
+  <data name="LampsCheck" xml:space="preserve">
+    <value>Έλεγχος λαμπτήρων</value>
+  </data>
+  <data name="LinkCheck" xml:space="preserve">
+    <value>Έλεγχος συνδέσμου</value>
+  </data>
+  <data name="LinksGrease" xml:space="preserve">
+    <value>Γρασάρισμα συνδέσμου</value>
+  </data>
+  <data name="LinkSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση συνδέσμου</value>
+  </data>
+  <data name="MicroSwitchesCheck" xml:space="preserve">
+    <value>Έλεγχος διακοπτών αισθητήρα</value>
+  </data>
+  <data name="MicroSwitchesMount" xml:space="preserve">
+    <value>Συναρμολόγηση διακοπτών αισθητήρα</value>
+  </data>
+  <data name="MicroSwitchesSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση διακοπτών αισθητήρα</value>
+  </data>
+  <data name="MotorChainAdjust" xml:space="preserve">
+    <value>Προσαρμογή αλυσίδας κινητήρα</value>
+  </data>
+  <data name="MotorChainGrease" xml:space="preserve">
+    <value>Γρασάρισμα αλυσίδας κινητήρα</value>
+  </data>
+  <data name="MotorChainSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση αλυσίδας κινητήρα</value>
+  </data>
+  <data name="MotorGearOil" xml:space="preserve">
+    <value>Λάδι γραναζιού κινητήρα</value>
+  </data>
+  <data name="MotorGearSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση γραναζιού κινητήρα</value>
+  </data>
+  <data name="OpticalSensorsClean" xml:space="preserve">
+    <value>Καθαρισμός οπτικών αισθητήρων</value>
+  </data>
+  <data name="OpticalSensorsMount" xml:space="preserve">
+    <value>Συναρμολόγηση οπτικών αισθητήρων</value>
+  </data>
+  <data name="PinPawlFastenersCheck" xml:space="preserve">
+    <value>Έλεγχος σύνδεσης μάνδαλου</value>
+  </data>
+  <data name="PinPawlFastenersGrease" xml:space="preserve">
+    <value>Γρασάρισμα σύνδεσης μάνδαλου πείρου</value>
+  </data>
+  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση σύνδεσης μάνδαλου πείρου</value>
+  </data>
+  <data name="PlasticCamsCheck" xml:space="preserve">
+    <value>Έλεγχος πλαστικών έκκεντρων</value>
+  </data>
+  <data name="RandomCellCheck" xml:space="preserve">
+    <value>Τυχαίος έλεγχος κυψέλης</value>
+  </data>
+  <data name="SensorCheck" xml:space="preserve">
+    <value>Έλεγχος αισθητήρα</value>
+  </data>
+  <data name="SensorsClean" xml:space="preserve">
+    <value>Καθαρισμός αισθητήρων</value>
+  </data>
+  <data name="SensorsMount" xml:space="preserve">
+    <value>Συναρμολόγηση αισθητήρων</value>
+  </data>
+  <data name="ShaftCheck" xml:space="preserve">
+    <value>Έλεγχος άξονα</value>
+  </data>
+  <data name="SupportsCheck" xml:space="preserve">
+    <value>Έλεγχος στηριγμάτων</value>
+  </data>
+  <data name="WheelsCheck" xml:space="preserve">
+    <value>Έλεγχος τροχών</value>
+  </data>
+  <data name="WheelsSubstitute" xml:space="preserve">
+    <value>Αντικατάσταση τροχών</value>
+  </data>
+</root>

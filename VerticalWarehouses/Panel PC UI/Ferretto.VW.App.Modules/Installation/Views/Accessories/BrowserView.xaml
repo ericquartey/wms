@@ -22,7 +22,8 @@
                         TouchUp="PpcButton_TouchUp" />
 
     <WebBrowser Name="MyWebBrowser"
-                Grid.Row="1" />
+                Grid.Row="1"
+                Navigating="MyWebBrowser_Navigating" />
 
     <controls:PpcButton Grid.Row="2"
                         Margin="0,10,0,0"
