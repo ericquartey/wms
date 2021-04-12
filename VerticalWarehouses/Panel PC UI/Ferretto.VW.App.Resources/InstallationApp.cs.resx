@@ -2430,4 +2430,13 @@
   <data name="ZeroChainDown" xml:space="preserve">
     <value>Nulový řetěz poz. nízký</value>
   </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Znovu načíst</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Zavřete prohlížeč</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Otevřete prohlížeč</value>
+  </data>
 </root>

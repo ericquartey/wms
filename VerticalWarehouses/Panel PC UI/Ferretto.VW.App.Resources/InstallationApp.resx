@@ -2524,4 +2524,13 @@
   <data name="ZeroChainDown" xml:space="preserve">
     <value>Zero chain pos. low</value>
   </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Close browser</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Open browser</value>
+  </data>
 </root>

@@ -2436,4 +2436,13 @@
   <data name="ZeroChainDown" xml:space="preserve">
     <value>Zero veriga poz. nizka</value>
   </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Ponovno naloži</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Zaprite brskalnik</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Odprite brskalnik</value>
+  </data>
 </root>
