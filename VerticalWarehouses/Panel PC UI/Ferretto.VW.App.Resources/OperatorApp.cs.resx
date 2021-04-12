@@ -1686,4 +1686,13 @@
   <data name="BarcodeLabel" xml:space="preserve">
     <value>Barcode</value>
   </data>
+  <data name="MissionStateDoubleExtBay" xml:space="preserve">
+    <value>Dvojitá externí pozice</value>
+  </data>
+  <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
+    <value>Počkejte vklad externí pozice</value>
+  </data>
+  <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
+    <value>Počkejte vklad ve vnitřní pozici</value>
+  </data>
 </root>

@@ -153,4 +153,10 @@
   <data name="Zero" xml:space="preserve">
     <value>Nula</value>
   </data>
+  <data name="Internal" xml:space="preserve">
+    <value>Int.</value>
+  </data>
+  <data name="External" xml:space="preserve">
+    <value>Vanj.</value>
+  </data>
 </root>

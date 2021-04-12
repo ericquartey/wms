@@ -27,7 +27,13 @@
 
         WaitDepositCell,   // change in WaitDepositInCell
 
+        WaitDepositExternalBay,
+
+        WaitDepositInternalBay,
+
         WaitDepositBay,
+
+        DoubleExtBay,
 
         ExtBay,
 

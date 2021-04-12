@@ -62,6 +62,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusy;
 
+        private bool isFilterEnabled;
+
         private NetworkAdapter networkAdapter0;
 
         private NetworkAdapter networkAdapter1;
@@ -69,6 +71,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand saveNetworkAdapter0;
 
         private DelegateCommand saveNetworkAdapter1;
+
+        private DelegateCommand uwfOffCommand;
+
+        private DelegateCommand uwfOnCommand;
 
         #endregion
 
@@ -90,6 +96,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public bool IsEditEnabled => this.sessionService.UserAccessLevel >= MAS.AutomationService.Contracts.UserAccessLevel.Installer;
+
+        public bool IsFilterEnabled
+        {
+            get => this.isFilterEnabled;
+            set => this.SetProperty(ref this.isFilterEnabled, value);
+        }
 
         public NetworkAdapter NetworkAdapter0
         {
@@ -113,6 +125,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   (this.saveNetworkAdapter1 = new DelegateCommand(
                       () => this.SetConfig(this.networkAdapter1)));
 
+        public ICommand UwfOffCommand => this.uwfOffCommand
+                                          ??
+                  (this.uwfOffCommand = new DelegateCommand(
+                      () => this.SetUWF(false)));
+
+        public ICommand UwfOnCommand => this.uwfOnCommand
+                          ??
+                  (this.uwfOnCommand = new DelegateCommand(
+                      () => this.SetUWF(true)));
+
         #endregion
 
         #region Methods
@@ -130,6 +152,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.GetNetworkAdapters();
 
             this.IsBusy = false;
+
+            this.CheckUwf();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -138,6 +162,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.saveNetworkAdapter0.RaiseCanExecuteChanged();
             this.saveNetworkAdapter1.RaiseCanExecuteChanged();
+            this.uwfOffCommand.RaiseCanExecuteChanged();
+            this.uwfOnCommand.RaiseCanExecuteChanged();
         }
 
         private static NetworkAdapter SetData(NetworkInterface networkInterface)
@@ -205,6 +231,42 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             return networkAdapter;
+        }
+
+        private void CheckUwf()
+        {
+            try
+            {
+                Process p = new Process();
+
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                p.StartInfo.Verb = "runas";
+                p.StartInfo.Arguments = "/c uwfmgr.exe get-config";
+                p.Start();
+
+                string output = p.StandardOutput.ReadToEnd();
+                var res = output.Contains("Stato filtro: ATTIVATA");
+
+                if (res)
+                {
+                    this.IsFilterEnabled = output.Contains("Filter state : ON");
+                }
+
+                p.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            if (this.isFilterEnabled)
+            {
+                this.ClearNotifications();
+                this.ShowNotification("Filtro UWF attivo", Services.Models.NotificationSeverity.Warning);
+            }
         }
 
         private void GetNetworkAdapters()
@@ -325,6 +387,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.GetNetworkAdapters();
 
             this.IsBusy = false;
+        }
+
+        private void SetUWF(bool on)
+        {
+            if (on)
+            {
+                this.SendPromptCommand("/c uwfmgr.exe filter enable");
+            }
+            else
+            {
+                this.SendPromptCommand("/c uwfmgr.exe filter disable");
+            }
+
+            //wait 1s
+            Thread.Sleep(1000);
+
+            var psi = new ProcessStartInfo("shutdown", "/s /t 0");
+            psi.CreateNoWindow = true;
+            psi.UseShellExecute = false;
+            Process.Start(psi);
         }
 
         #endregion

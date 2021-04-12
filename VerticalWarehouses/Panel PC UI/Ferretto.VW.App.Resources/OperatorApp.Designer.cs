@@ -3148,6 +3148,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double external bay.
+        /// </summary>
+        public static string MissionStateDoubleExtBay {
+            get {
+                return ResourceManager.GetString("MissionStateDoubleExtBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 13.End.
         /// </summary>
         public static string MissionStateEnd {
@@ -3252,6 +3261,24 @@ namespace Ferretto.VW.App.Resources {
         public static string MissionStateWaitDepositCell {
             get {
                 return ResourceManager.GetString("MissionStateWaitDepositCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait deposit in external bay.
+        /// </summary>
+        public static string MissionStateWaitDepositExternalBay {
+            get {
+                return ResourceManager.GetString("MissionStateWaitDepositExternalBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait deposit in internal bay.
+        /// </summary>
+        public static string MissionStateWaitDepositInternalBay {
+            get {
+                return ResourceManager.GetString("MissionStateWaitDepositInternalBay", resourceCulture);
             }
         }
         

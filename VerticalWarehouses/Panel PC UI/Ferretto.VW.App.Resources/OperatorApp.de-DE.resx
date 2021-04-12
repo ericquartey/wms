@@ -1686,4 +1686,13 @@
   <data name="BarcodeLabel" xml:space="preserve">
     <value>Barcode</value>
   </data>
+  <data name="MissionStateDoubleExtBay" xml:space="preserve">
+    <value>Doppelte Außenbucht</value>
+  </data>
+  <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
+    <value>Warten auf Lagerung Außenschacht</value>
+  </data>
+  <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
+    <value>Warten auf den internen Lagerplatz</value>
+  </data>
 </root>

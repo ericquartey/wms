@@ -2430,4 +2430,10 @@
   <data name="MovingMachine" xml:space="preserve">
     <value>Premični stroj</value>
   </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Zero veriga poz. visoko</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Zero veriga poz. nizka</value>
+  </data>
 </root>

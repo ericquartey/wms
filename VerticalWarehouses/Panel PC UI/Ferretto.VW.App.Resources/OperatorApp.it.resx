@@ -1694,4 +1694,13 @@
   <data name="BarcodeLabel" xml:space="preserve">
     <value>Codice a barre</value>
   </data>
+  <data name="MissionStateDoubleExtBay" xml:space="preserve">
+    <value>Baia esterna doppia</value>
+  </data>
+  <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
+    <value>Attesa deposito baia esterna</value>
+  </data>
+  <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
+    <value>Attendere il deposito baia interna</value>
+  </data>
 </root>

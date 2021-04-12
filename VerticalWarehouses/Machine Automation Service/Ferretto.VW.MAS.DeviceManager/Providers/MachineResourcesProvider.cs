@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private const int REMOTEIO_INPUTS = 16;
 
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
+
         private readonly ILogger<MachineResourcesProvider> logger;
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
@@ -44,8 +46,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public MachineResourcesProvider(
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IServiceScopeFactory serviceScopeFactory,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
             ILogger<MachineResourcesProvider> logger)
         {
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.logger = logger;
@@ -156,6 +160,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsSensorZeroOnElevator => this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
 
+        public bool IsSensorZeroTopOnBay1 => this.sensorStatus[(int)IOMachineSensors.ACUBay1S6IND];
+
+        public bool IsSensorZeroTopOnBay2 => this.sensorStatus[(int)IOMachineSensors.ACUBay2S6IND];
+
+        public bool IsSensorZeroTopOnBay3 => this.sensorStatus[(int)IOMachineSensors.ACUBay3S6IND];
+
         #endregion
 
         #region Methods
@@ -211,19 +221,56 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public bool IsDrawerInBayExternalPosition(BayNumber bayNumber)
+        public bool IsDrawerInBayExternalPosition(BayNumber bayNumber, bool isExternalDoubleBay)
+        {
+            if (isExternalDoubleBay)
+            {
+                switch (bayNumber)
+                {
+                    default:
+                    case BayNumber.BayOne:
+                        return this.IsDrawerInBay1Top ||
+                            this.IsDrawerInBay1Bottom;
+
+                    case BayNumber.BayTwo:
+                        return this.IsDrawerInBay2Top ||
+                            this.IsDrawerInBay2Bottom;
+
+                    case BayNumber.BayThree:
+                        return this.IsDrawerInBay3Top ||
+                            this.IsDrawerInBay3Bottom;
+                }
+            }
+            else
+            {
+                switch (bayNumber)
+                {
+                    default:
+                    case BayNumber.BayOne:
+                        return this.IsDrawerInBay1ExternalPosition;
+
+                    case BayNumber.BayTwo:
+                        return this.IsDrawerInBay2ExternalPosition;
+
+                    case BayNumber.BayThree:
+                        return this.IsDrawerInBay3ExternalPosition;
+                }
+            }
+        }
+
+        public bool IsDrawerInBayInternalBottom(BayNumber bayNumber)
         {
             switch (bayNumber)
             {
                 default:
                 case BayNumber.BayOne:
-                    return this.IsDrawerInBay1ExternalPosition;
+                    return this.IsDrawerInBay1InternalBottom;
 
                 case BayNumber.BayTwo:
-                    return this.IsDrawerInBay2ExternalPosition;
+                    return this.IsDrawerInBay2InternalBottom;
 
                 case BayNumber.BayThree:
-                    return this.IsDrawerInBay3ExternalPosition;
+                    return this.IsDrawerInBay3InternalBottom;
             }
         }
 
@@ -258,6 +305,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     case BayNumber.BayThree:
                         return this.IsDrawerInBay3InternalPosition;
                 }
+            }
+        }
+
+        public bool IsDrawerInBayInternalTop(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsDrawerInBay1InternalTop;
+
+                case BayNumber.BayTwo:
+                    return this.IsDrawerInBay2InternalTop;
+
+                case BayNumber.BayThree:
+                    return this.IsDrawerInBay3InternalTop;
             }
         }
 
@@ -438,6 +501,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
+        public bool IsSensorZeroTopOnBay(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsSensorZeroTopOnBay1;
+
+                case BayNumber.BayTwo:
+                    return this.IsSensorZeroTopOnBay2;
+
+                case BayNumber.BayThree:
+                    return this.IsSensorZeroTopOnBay3;
+            }
+        }
+
         public void OnFaultStateChanged(StatusUpdateEventArgs e)
         {
             //if (e.NewState != this.IsMachineInFaultState)
@@ -561,6 +640,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             {
                                 if (this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun] != newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
                                     && newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
+                                    && this.digitalDevicesDataProvider.GetInverterTypeByIndex((InverterIndex)ioIndex) == InverterType.Ang
                                     )
                                 {
                                     var errorCode = (newSensorStatus[(int)InverterSensors.ANG_ZeroElevatorSensor]) ? MachineErrorCode.ElevatorUnderrunDetected : MachineErrorCode.ElevatorOverrunDetected;

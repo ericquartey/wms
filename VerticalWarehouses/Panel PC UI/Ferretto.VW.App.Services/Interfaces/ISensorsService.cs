@@ -19,6 +19,10 @@ namespace Ferretto.VW.App.Services
 
         bool BayZeroChain { get; }
 
+        bool BayZeroChainUp { get; }
+
+        bool BayZeroChainUpIsVisible { get; set; }
+
         bool BEDExternalBayBottom { get; }
 
         bool BEDExternalBayTop { get; }

@@ -2518,4 +2518,10 @@
   <data name="InvalidWeightValues" xml:space="preserve">
     <value>Invalid weight values - all three must be different!</value>
   </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Zero chain pos. high</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Zero chain pos. low</value>
+  </data>
 </root>

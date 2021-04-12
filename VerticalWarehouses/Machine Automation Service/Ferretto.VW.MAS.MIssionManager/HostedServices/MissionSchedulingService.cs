@@ -297,6 +297,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 else if (
                     (mission.Status is MissionStatus.Waiting && mission.Step is MissionStep.BayChain)
                     || (mission.Status is MissionStatus.Executing && mission.Step is MissionStep.WaitDepositCell)
+                    || (mission.Status is MissionStatus.Waiting && mission.Step is MissionStep.WaitDepositExternalBay)
+                    || (mission.Status is MissionStatus.Waiting && mission.Step is MissionStep.WaitDepositInternalBay)
                     )
                 {
                     var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
@@ -1169,13 +1171,14 @@ namespace Ferretto.VW.MAS.MissionManager
                 var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
                 var loadUnitMovementProvider = serviceProvider.GetRequiredService<ILoadingUnitMovementProvider>();
                 var bays = bayProvider.GetAll();
+                var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
                 foreach (var bay in bays)
                 {
                     foreach (var position in bay.Positions.OrderBy(b => b.Location))
                     {
                         if (sensorProvider.IsLoadingUnitInLocation(position.Location)
-                            || (bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
-                            )
+                            || (!bay.IsDouble && bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                            || (bay.IsDouble && bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
                         {
                             if (position.LoadingUnit is null)
                             {

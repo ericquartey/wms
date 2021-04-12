@@ -84,6 +84,9 @@ namespace Ferretto.VW.Simulator.Services
 
             this.Inverters00.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
             this.Inverters01.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
+            this.Inverters03.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
+            this.Inverters05.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
+            this.Inverters07.OnHorizontalMovementComplete += this.OnHorizontalMovementCompleted;
 
             this.MinTorqueCurrent = 72;
             this.MaxTorqueCurrent = 120;
@@ -137,6 +140,7 @@ namespace Ferretto.VW.Simulator.Services
 
                         case Models.InverterType.Acu:
                             inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!inverter.IsExternal) ? true : false;
+                            inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                             break;
 
                         case Models.InverterType.Agl:
@@ -469,9 +473,11 @@ namespace Ferretto.VW.Simulator.Services
                     var isCarousel = bay.Carousel != null;
                     var isExternal = bay.IsExternal;
                     var isDouble = bay.IsDouble;
+                    var inverter = sender as InverterModel;
 
                     // Retrieve bay position (upper/lower position)
                     var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 5);
+
                     if (bayPosition != null)
                     {
                         // Set/Reset bay presence
@@ -486,10 +492,25 @@ namespace Ferretto.VW.Simulator.Services
                                     {
                                         this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                     }
-                                    else if (isExternal && isDouble)
+                                    else if (isDouble && isExternal)
                                     {
-                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
-                                        this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value = !e.IsLoading;
+                                        var oldHook = this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value;
+                                        var oldLUUp = this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value;
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = !e.IsLoadingExternal;
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value = e.IsLoading;
+
+                                        //ext to int
+                                        if (!oldHook && this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value &&
+                                            !oldLUUp && !this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
+                                        {
+                                            if (this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value)
+                                            {
+                                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                                                this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value;
+                                            }
+                                        }
                                     }
                                     else
                                     {
@@ -502,10 +523,26 @@ namespace Ferretto.VW.Simulator.Services
                                 }
                                 else
                                 {
-                                    if (isExternal && isDouble)
+                                    if (isDouble && isExternal)
                                     {
-                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoading;
-                                        this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value = !e.IsLoading;
+                                        var oldRobot = this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value;
+                                        var oldLULow = this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value;
+
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value = e.IsLoading;
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoadingExternal;
+
+                                        //ext to int
+                                        if (!oldRobot && this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value &&
+                                            oldLULow && !this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value)
+                                        {
+                                            if (this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value)
+                                            {
+                                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = false;
+                                                this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
+                                            }
+                                        }
                                     }
                                     else
                                     {
@@ -523,10 +560,25 @@ namespace Ferretto.VW.Simulator.Services
                                     {
                                         this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                     }
-                                    else if(isExternal && isDouble)
+                                    else if (isDouble && isExternal)
                                     {
-                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
-                                        this.RemoteIOs02.Inputs[(int)IoPorts.HookTrolley].Value = !e.IsLoading;
+                                        var oldHook = this.RemoteIOs02.Inputs[(int)IoPorts.HookTrolley].Value;
+                                        var oldLUUp = this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value;
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = !e.IsLoadingExternal;
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.HookTrolley].Value = e.IsLoading;
+
+                                        //ext to int
+                                        if (!oldHook && this.RemoteIOs02.Inputs[(int)IoPorts.HookTrolley].Value &&
+                                            !oldLUUp && !this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
+                                        {
+                                            if (this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value)
+                                            {
+                                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                                                this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value;
+                                            }
+                                        }
                                     }
                                     else
                                     {
@@ -538,10 +590,26 @@ namespace Ferretto.VW.Simulator.Services
                                 }
                                 else
                                 {
-                                    if(isExternal && isDouble)
+                                    if (isDouble && isExternal)
                                     {
-                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoading;
-                                        this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value = !e.IsLoading;
+                                        var oldRobot = this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value;
+                                        var oldLULow = this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value;
+
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value = e.IsLoading;
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoadingExternal;
+
+                                        //ext to int
+                                        if (!oldRobot && this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value &&
+                                            oldLULow && !this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value)
+                                        {
+                                            if (this.RemoteIOs02.Inputs[(int)IoPorts.HookTrolley].Value)
+                                            {
+                                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInBay].Value = false;
+                                                this.RemoteIOs02.Inputs[(int)IoPorts.HookTrolley].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
+                                            }
+                                        }
                                     }
                                     else
                                     {
@@ -559,10 +627,25 @@ namespace Ferretto.VW.Simulator.Services
                                     {
                                         this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
                                     }
-                                    else if (isExternal && isDouble)
+                                    else if (isDouble && isExternal)
                                     {
-                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = e.IsLoading;
-                                        this.RemoteIOs03.Inputs[(int)IoPorts.HookTrolley].Value = !e.IsLoading;
+                                        var oldHook = this.RemoteIOs03.Inputs[(int)IoPorts.HookTrolley].Value;
+                                        var oldLUUp = this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value;
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = !e.IsLoadingExternal;
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.HookTrolley].Value = e.IsLoading;
+
+                                        //ext to int
+                                        if (!oldHook && this.RemoteIOs03.Inputs[(int)IoPorts.HookTrolley].Value &&
+                                            !oldLUUp && !this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value)
+                                        {
+                                            if (this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value)
+                                            {
+                                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                                                this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value;
+                                            }
+                                        }
                                     }
                                     else
                                     {
@@ -574,10 +657,26 @@ namespace Ferretto.VW.Simulator.Services
                                 }
                                 else
                                 {
-                                    if (isExternal && isDouble)
+                                    if (isDouble && isExternal)
                                     {
-                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoading;
-                                        this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value = !e.IsLoading;
+                                        var oldRobot = this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value;
+                                        var oldLULow = this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value;
+
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value = e.IsLoading;
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoadingExternal;
+
+                                        //ext to int
+                                        if (!oldRobot && this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value &&
+                                            oldLULow && !this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value)
+                                        {
+                                            if (this.RemoteIOs03.Inputs[(int)IoPorts.HookTrolley].Value)
+                                            {
+                                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInBay].Value = false;
+                                                this.RemoteIOs03.Inputs[(int)IoPorts.HookTrolley].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                                                inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
+                                            }
+                                        }
                                     }
                                     else
                                     {
