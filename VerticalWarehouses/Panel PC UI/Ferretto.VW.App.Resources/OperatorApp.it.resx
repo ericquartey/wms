@@ -493,7 +493,7 @@
     <value>Descrizione packing list</value>
   </data>
   <data name="CommonNote" xml:space="preserve">
-    <value>Note</value>
+    <value>Note:</value>
   </data>
   <data name="CommonUp" xml:space="preserve">
     <value>Su</value>
@@ -508,7 +508,7 @@
     <value>Q.tà in giacenza</value>
   </data>
   <data name="CommonCompartmentPosition" xml:space="preserve">
-    <value>Posizione</value>
+    <value>Posizione:</value>
   </data>
   <data name="CommonButtonConfirm" xml:space="preserve">
     <value>Conferma</value>
@@ -1551,7 +1551,7 @@
     <value>Aggiorna peso unitario</value>
   </data>
   <data name="ConfirmMeasuredQty" xml:space="preserve">
-    <value>Conferma quantità rilevata</value>
+    <value>Conferma quantità rilevata </value>
   </data>
   <data name="ConfirmRequestedQty" xml:space="preserve">
     <value>Conferma quantità richiesta</value>
