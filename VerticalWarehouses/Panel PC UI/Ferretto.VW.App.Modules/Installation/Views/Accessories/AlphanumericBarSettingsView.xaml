@@ -284,7 +284,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Command="{Binding BrowserOpenCommand}"
-                        Content="Apri browser"
+                        Content="{res:Loc InstallationApp.OpenBrowser}"
                         IsBusy="{Binding IsWaitingForResponse}" />
 
     <controls:PpcButton Grid.Row="6"

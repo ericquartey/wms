@@ -7,11 +7,8 @@ using Ferretto.VW.Utils.Enumerators;
 using System.Diagnostics;
 using Prism.Commands;
 using System.Windows.Input;
-using System.Management;
-using System.Collections.Generic;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Resources;
-using System.Timers;
 using System.Threading;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
@@ -241,6 +238,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
                 p.StartInfo.FileName = "cmd.exe";
                 p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -248,13 +246,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 p.StartInfo.Arguments = "/c uwfmgr.exe get-config";
                 p.Start();
 
-                string output = p.StandardOutput.ReadToEnd();
-                var res = output.Contains("Stato filtro: ATTIVATA");
-
-                if (res)
+                // standard output contains many null chars: remove them!
+                var rawOutput = p.StandardOutput.ReadToEnd().ToCharArray();
+                var output = string.Empty;
+                foreach (var singleChar in rawOutput)
                 {
-                    this.IsFilterEnabled = output.Contains("Filter state : ON");
+                    if (char.IsLetterOrDigit(singleChar))
+                    {
+                        output += singleChar;
+                    }
                 }
+
+                output = output.ToUpperInvariant();
+
+                //this.Logger.Debug(output);
+                this.IsFilterEnabled = output.Contains("STATOFILTROATTIVATA") || output.Contains("FILTERSTATEON");
 
                 p.WaitForExit();
             }
@@ -262,10 +268,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
             }
 
+            this.ClearNotifications();
             if (this.isFilterEnabled)
             {
-                this.ClearNotifications();
                 this.ShowNotification("Filtro UWF attivo", Services.Models.NotificationSeverity.Warning);
+            }
+            else
+            {
+                this.ShowNotification("Filtro UWF NON attivo", Services.Models.NotificationSeverity.Warning);
             }
         }
 
@@ -403,7 +413,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //wait 1s
             Thread.Sleep(1000);
 
-            var psi = new ProcessStartInfo("shutdown", "/s /t 0");
+            var psi = new ProcessStartInfo("shutdown", "/r /t 0");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             Process.Start(psi);

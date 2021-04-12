@@ -2442,4 +2442,13 @@
   <data name="ZeroChainDown" xml:space="preserve">
     <value>Nulti lanac poz. niska</value>
   </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Ponovno učitati</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Zatvorite preglednik</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Otvorite preglednik</value>
+  </data>
 </root>

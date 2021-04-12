@@ -53,7 +53,10 @@ namespace Ferretto.VW.App.Modules.Installation.Views
         {
             if ((bool)e.NewValue == false)
             {
-                Instance.MyWebBrowser.Navigate(("http://" + Instance.Url.ToString()));
+                if (!string.IsNullOrEmpty(Instance.Url))
+                {
+                    Instance.MyWebBrowser.Navigate("http://" + Instance.Url);
+                }
             }
         }
 
@@ -61,7 +64,7 @@ namespace Ferretto.VW.App.Modules.Installation.Views
         {
             if (!string.IsNullOrEmpty(e.NewValue.ToString()))
             {
-                Instance.MyWebBrowser.Navigate(("http://" + e.NewValue.ToString()));
+                Instance.MyWebBrowser.Navigate("http://" + e.NewValue.ToString());
             }
         }
 

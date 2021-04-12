@@ -5,7 +5,7 @@
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrlssc="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:localControl="clr-namespace:Ferretto.VW.App.Modules.Installation.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -82,6 +82,13 @@
                           Grid.Column="0"
                           Grid.ColumnSpan="3" />
 
+    <controls:PpcButton Grid.Row="7"
+                        Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding BrowserOpenCommand}"
+                        Content="{res:Loc InstallationApp.OpenBrowser}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
 
     <controls:PpcButton x:Name="Save"
                         Grid.Row="7"
@@ -92,5 +99,12 @@
                         Command="{Binding SaveCommand}"
                         Content="{res:Loc General.Save}"
                         IsBusy="{Binding IsWaitingForResponse}" />
+
+    <localControl:BrowserView Grid.RowSpan="8"
+                              Grid.ColumnSpan="3"
+                              Margin="0,0,15,0"
+                              IsOpen="{Binding IsBrowserOpened}"
+                              Url="{Binding IpAddress}"
+                              Visibility="{Binding IsBrowserOpened, Converter={StaticResource BTVC}}" />
   </Grid>
 </ctrls:View>
