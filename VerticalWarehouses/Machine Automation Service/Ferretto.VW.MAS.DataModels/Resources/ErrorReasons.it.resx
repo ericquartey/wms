@@ -307,10 +307,10 @@
     <value>Esiste già una missione in esecuzione per questa tipologia di missione.</value>
   </data>
   <data name="BayInvertersBusy" xml:space="preserve">
-    <value>La baia ha già un comando in esecuzione e non può accettarne un altro.</value>
+    <value>La baia ha già un comando in esecuzione e non può accettarne un altro</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>Livello baia bassa  vuoto.</value>
+    <value>Livello baia bassa  vuoto</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
     <value>Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.</value>

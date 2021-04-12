@@ -35,9 +35,15 @@ namespace Ferretto.VW.App.Controls
 
         private SubscriptionToken bayChainPositionChangedToken;
 
+        private DelegateCommand browserOpenCommand;
+
+        private DelegateCommand browserCloseCommand;
+
         private SubscriptionToken healthStatusChangedToken;
 
         private SubscriptionToken homingChangesToken;
+
+        private bool isBrowserOpened;
 
         private bool isEnabled;
 
@@ -74,11 +80,27 @@ namespace Ferretto.VW.App.Controls
 
         #region Properties
 
+        public ICommand BrowserOpenCommand =>
+                            this.browserOpenCommand
+            ??
+            (this.browserOpenCommand = new DelegateCommand(() => { this.IsBrowserOpened = true; }));
+
+        public ICommand BrowserCloseCommand =>
+                            this.browserCloseCommand
+            ??
+            (this.browserCloseCommand = new DelegateCommand(() => { this.IsBrowserOpened = false; }));
+
         public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
         public IEventAggregator EventAggregator => this.eventAggregator;
 
         public IHealthProbeService HealthProbeService => this.healthProbeService;
+
+        public bool IsBrowserOpened
+        {
+            get => this.isBrowserOpened;
+            set => this.SetProperty(ref this.isBrowserOpened, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsEnabled
         {

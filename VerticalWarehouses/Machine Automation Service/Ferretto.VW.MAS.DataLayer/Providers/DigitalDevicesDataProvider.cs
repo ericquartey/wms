@@ -187,6 +187,24 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public InverterType GetInverterTypeByIndex(InverterIndex index)
+        {
+            lock (this.dataContext)
+            {
+                var inverter = this.dataContext.Inverters.Include(i => i.Parameters).SingleOrDefault(i => i.Index == index);
+                if (inverter is null)
+                {
+                    throw new EntityNotFoundException((int)index);
+                }
+
+                if (this.dataContext.Machines?.FirstOrDefault()?.Simulation ?? false)
+                {
+                    inverter.IpAddress = System.Net.IPAddress.Parse("127.0.0.1");
+                }
+                return inverter.Type;
+            }
+        }
+
         public InverterParameter GetParameter(InverterIndex inverterIndex, short code, int dataset)
         {
             lock (this.dataContext)

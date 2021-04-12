@@ -217,7 +217,7 @@ namespace Ferretto.VW.Simulator.Services.Models
         /// <summary>
         /// S6IND-Encoder canale A
         /// </summary>
-        ACU_EncoderChannelZ = 5,
+        ACU_ZeroSensorTop = 5,
 
         /// <summary>
         /// MF1IND-Libero
@@ -286,9 +286,9 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private InverterType inverterType;
 
-        private bool isExternal = false;
-
         private bool isDouble = false;
+
+        private bool isExternal = false;
 
         private MAS.DataModels.Machine machine;
 
@@ -454,6 +454,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.inverterType = value;
         }
 
+        public bool IsDouble
+        {
+            get => this.isDouble;
+            set => this.isDouble = value;
+        }
+
         public bool IsElevatorOverrun
         {
             get => !this.digitalIO[(int)InverterSensors.ANG_ElevatorOverrunSensor].Value;
@@ -463,12 +469,6 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
             get => this.isExternal;
             set => this.isExternal = value;
-        }
-
-        public bool IsDouble
-        {
-            get => this.isDouble;
-            set => this.isDouble = value;
         }
 
         public bool IsFault
@@ -949,7 +949,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     return inverterType == InverterType.Ang ? Inverter.EncoderChannelAElevatorChain : inverterType == InverterType.Agl ? Inverter.Free : Inverter.EncoderChannelA;
 
                 case 5:
-                    return inverterType == InverterType.Ang ? Inverter.ElevatorExtraStroke : inverterType == InverterType.Agl ? Inverter.Free : Inverter.Free;
+                    return inverterType == InverterType.Ang ? Inverter.ElevatorExtraStroke : inverterType == InverterType.Agl ? Inverter.Free : inverterType == InverterType.Acu ? Inverter.ZeroPositionUp : Inverter.Free;
 
                 case 6:
                     return Inverter.Free;
@@ -1113,6 +1113,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     else
                     {
                         this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
+                        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                     }
                 }
                 //else
@@ -1250,6 +1251,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value = true;
+                            OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = true, IsLoadingExternal = false });
                             if (this.InverterType == InverterType.Ang)
                             {
                                 this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
@@ -1257,11 +1259,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                             else
                             {
                                 this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                             }
                         }
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][3])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value = true;
+                            OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = false, IsLoadingExternal = false });
                             if (this.InverterType == InverterType.Ang)
                             {
                                 this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
@@ -1269,6 +1273,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             else
                             {
                                 this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                             }
                         }
                     }
@@ -1278,6 +1283,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value = false;
+                            OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = true, IsLoadingExternal = false });
                             if (this.InverterType == InverterType.Ang)
                             {
                                 this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
@@ -1285,11 +1291,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                             else
                             {
                                 this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.isExternal) ? false : true;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                             }
                         }
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][3])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value = false;
+                            OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = true, IsLoadingExternal = false });
                             if (this.InverterType == InverterType.Ang)
                             {
                                 this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
@@ -1297,6 +1305,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             else
                             {
                                 this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                             }
                         }
                     }
@@ -1319,19 +1328,20 @@ namespace Ferretto.VW.Simulator.Services.Models
                             this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
                         }
                     }
-                    else if(this.isExternal && this.IsDouble)
+                    else if (this.isExternal && this.isDouble)
                     {
-                        // bay chain. simulate the lift process
-                        if (target - this.AxisPosition < 20)
+                        if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) < 20)
                         {
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInBay].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = true;
                         }
-                        else if (target - this.AxisPosition > 20
-                            && this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value
-                            )
+                        if (Math.Abs(this.targetRace_extBay - Math.Abs(this.AxisPosition)) < 20)
                         {
-                            this.ioDeviceBay[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
                         }
+
+                        OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = this.IsStartedOnBoard, IsLoadingExternal = !this.IsStartedOnBoard });
                     }
                     else
                     {
@@ -1378,6 +1388,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value = true;
+                            OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = false, IsLoadingExternal = false });
                             if (this.InverterType == InverterType.Ang)
                             {
                                 this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
@@ -1385,11 +1396,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                             else
                             {
                                 this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                             }
                         }
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][3])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value = true;
+                            OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = false, IsLoadingExternal = false });
                             if (this.InverterType == InverterType.Ang)
                             {
                                 this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
@@ -1397,6 +1410,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             else
                             {
                                 this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                             }
                         }
                     }
@@ -1406,6 +1420,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value = false;
+                            OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = true, IsLoadingExternal = false });
                             if (this.InverterType == InverterType.Ang)
                             {
                                 this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
@@ -1413,11 +1428,13 @@ namespace Ferretto.VW.Simulator.Services.Models
                             else
                             {
                                 this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                             }
                         }
                         if (this.AxisPosition < this.SwitchPositions[this.currentAxis][3])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInOperatorSide].Value = false;
+                            OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = true, IsLoadingExternal = false });
                             if (this.InverterType == InverterType.Ang)
                             {
                                 this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
@@ -1425,6 +1442,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                             else
                             {
                                 this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
+                                this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
                             }
                         }
                     }
@@ -1433,7 +1451,22 @@ namespace Ferretto.VW.Simulator.Services.Models
                     && this.OperationMode == InverterOperationMode.Position
                     && this.Id > 1)
                 {
-                    if (this.isExternal && !this.isDouble)
+                    if (this.isExternal && this.isDouble)
+                    {
+                        if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) < 20)
+                        {
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? true : false;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
+                        }
+                        else
+                        {
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = (!this.IsExternal) ? false : true;
+                            this.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = !this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value;
+                        }
+
+                        OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = !this.IsStartedOnBoard, IsLoadingExternal = this.IsStartedOnBoard });
+                    }
+                    else if (this.isExternal && !this.isDouble)
                     {
                         // external bay, simulate the Backward (TowardMachine) direction
                         if (Math.Abs(this.target0_extBay - Math.Abs(this.AxisPosition)) < 20)
@@ -1479,7 +1512,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                 {
                     // simulate positioning error
                     //this.AxisPosition += (short)(new Random().Next(-3, 3));
-                    OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = !this.IsStartedOnBoard });
+                    if (!this.machine.Bays.Any(s => s.IsExternal && s.Positions.Count() == 2))
+                    {
+                        OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = !this.IsStartedOnBoard });
+                    }
                 }
                 else if (this.InverterRole > InverterRole.ElevatorChain)
                 {

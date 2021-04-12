@@ -214,6 +214,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The vertical compensation distance is out of bounds.
+        /// </summary>
+        public static string VerticalCompensationDistanceOutOfBounds {
+            get {
+                return ResourceManager.GetString("VerticalCompensationDistanceOutOfBounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The vertical axis homing parameters are invalid.
         /// </summary>
         public static string VerticalHomingParametersError {

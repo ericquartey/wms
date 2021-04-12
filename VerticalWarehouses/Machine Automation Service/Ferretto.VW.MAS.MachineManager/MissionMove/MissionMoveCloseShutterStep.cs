@@ -167,7 +167,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.BaysDataProvider.Light(bay.Number, true);
 
-                    if (bay.External != null)
+                    if (bay.External != null && bay.IsDouble)
+                    {
+                        newStep = new MissionMoveDoubleExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
+                    else if (bay.External != null)
                     {
                         newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
@@ -182,7 +186,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && bay.Carousel is null
                         && this.Mission.ErrorCode != MachineErrorCode.NoError)
                     {
-                        if (this.isWaitingMissionOnThisBay(bay))
+                        if (bay.External != null &&
+                            bay.Positions.Count() == 2)
+                        {
+                            // External bay movement
+                            if (this.isWaitingMissionOnThisBay(bay))
+                            {
+                                newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            }
+                            else
+                            {
+                                newStep = new MissionMoveDoubleExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            }
+                        }
+                        else if (this.isWaitingMissionOnThisBay(bay))
                         {
                             this.Logger.LogInformation($"Mission.Id={this.Mission.Id}: Go to WaitPick step, there are waiting missions.");
                             newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);

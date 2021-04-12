@@ -315,4 +315,7 @@
   <data name="ZeroPosition" xml:space="preserve">
     <value>Ničelni položaj</value>
   </data>
+  <data name="ZeroPositionUp" xml:space="preserve">
+    <value>Ničelni položaj navzgor</value>
+  </data>
 </root>

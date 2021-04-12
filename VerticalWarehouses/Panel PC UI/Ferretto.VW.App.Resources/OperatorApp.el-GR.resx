@@ -1,0 +1,1662 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Confirm" xml:space="preserve">
+    <value>Επιβεβαίωση</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Περιγραφή</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Λεπτομέρειες</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Λίστα</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>Μηχανήματα</value>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>Τύπος συσκευασίας</value>
+  </data>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>Ημερομηνία παραγωγής</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Ποσότητα</value>
+  </data>
+  <data name="RequestedQuantity" xml:space="preserve">
+    <value>Απαιτούμενη ποσότητα [{0}]</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>Λειτουργίες συρταριού</value>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>Λίστες αναμονής</value>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>Στοιχείο αναζήτησης</value>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>Ρυθμίσεις</value>
+  </data>
+  <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Λειτουργίες λήψης</value>
+  </data>
+  <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
+    <value>Απαιτούμενη ποσότητα</value>
+  </data>
+  <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
+    <value>Ποσότητα λήψης</value>
+  </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>Αναμονή για νέο συρτάρι</value>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>Προγραμματισμένες λειτουργίες:</value>
+  </data>
+  <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
+    <value>Λήψη λεπτομέρειας στοιχείου</value>
+  </data>
+  <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Ημερομηνία παραγωγής</value>
+  </data>
+  <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Παρτίδα</value>
+  </data>
+  <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Κατάσταση υλικού</value>
+  </data>
+  <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
+    <value>Τύπος συσκευασίας</value>
+  </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>Αναμονή για τη λίστες εκτέλεσης</value>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>Λίστα λεπτομερειών</value>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>Εκτέλεση λίστας</value>
+  </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>Αναζήτηση στοιχείου από κωδικό ή περιγραφή</value>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>Αναζήτηση</value>
+  </data>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Διαθέσιμη ποσότητα [{0}]</value>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>Κλήση στοιχείου</value>
+  </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>Λεπτομέρεια στοιχείου</value>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>Τύπος χειρισμού</value>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>Χρονικό διάστημα FIFO</value>
+  </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>Άμεση κλήση συρταριού</value>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Συρτάρι κλήσης</value>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>Απαιτούμενος δίσκος</value>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>Γενικές πληροφορίες</value>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>Μοντέλο</value>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>Σειριακός αριθμός</value>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>Ποσότητα συρταριού</value>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>Έκδοση λογισμικού</value>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>Αποδοχή ημερομηνίας</value>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Τελευταία υπηρεσία</value>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Επόμενη υπηρεσία</value>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>Λειτουργική κατάσταση μηχανήματος</value>
+  </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>Διαδικασία συμπίεσης συρταριού</value>
+  </data>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+  </data>
+  <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
+    <value>Ποσότητα τεμαχίων</value>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>Μέγιστος ανακτήσιμος χώρος</value>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Χώρος προς ανάκτηση</value>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>Συμπαγής μπροστινή πλευρά</value>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>Συμπαγής πίσω πλευρά</value>
+  </data>
+  <data name="OtherNavigationCompaction" xml:space="preserve">
+    <value>Συμπίεση</value>
+  </data>
+  <data name="OtherNavigationStatistics" xml:space="preserve">
+    <value>Στατιστικά</value>
+  </data>
+  <data name="OtherNavigationMaintenance" xml:space="preserve">
+    <value>Συντήρηση</value>
+  </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>StatisticsGeneralDataHeader</value>
+  </data>
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
+    <value>Μονάδα κίνησης</value>
+  </data>
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
+    <value>Συνολική ισχύς εγκαίρως</value>
+  </data>
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
+    <value>Πλήρωση περιοχής</value>
+  </data>
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
+    <value>Χωρητικότητα βάρους</value>
+  </data>
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
+    <value>Αυτόματος χρόνος</value>
+  </data>
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
+    <value>Χρόνος χρήσης</value>
+  </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>Στατιστικά: κορεσμός χώρου συρταριού.</value>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>Σύνολο μονάδων</value>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>Μέτρηση συρταριού (mm)</value>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>Πλήρωση μηχανήματος</value>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>Ανάλυση χώρου</value>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>Στατιστικά: ανάλυση βάρους μονάδας.</value>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Σύνολο μονάδων</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>Στατιστικά: ανάλυση βάρους μονάδας.</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>Μέγιστη καθαρή ροή (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>Φορτωμένο καθαρό βάρος (%)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>Φορτωμένο καθαρό βάρος (%)</value>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>Φορτωμένο καθαρό βάρος (%)</value>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>Γραμμές εκτελέσιμης λίστας</value>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>Στατιστικά: κυψέλες.</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>Σύνολο κυψελών</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>Σύνολο μπροστινών κυψελών</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>Σύνολο πίσω κυψελών</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>Σύνολο χρησιμοποιημένων κυψελών</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>Άλλα</value>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>Στατιστικά: ανάλυση σφάλματος.</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>Σύνολο κινούμενων μονάδων</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>Σύνολο σφαλμάτων</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>Οι μονάδες μετακινήθηκαν χωρίς σφάλμα</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>Δείκτης αξιοπιστίας</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Περιγραφή σφάλματος</value>
+  </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>Συντήρηση: Vertimag X</value>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>Μοντέλο</value>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>Σειριακός</value>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>Ημερομηνία εγκατάστασης</value>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>Ημερομηνία τελευταίας εγκατάστασης</value>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>Ημερομηνία επόμενης εγκατάστασης</value>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>Κατάσταση μηχανήματος</value>
+  </data>
+  <data name="MaintenanceDetailHeader" xml:space="preserve">
+    <value>Λεπτομέρειες συντήρησης</value>
+  </data>
+  <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
+    <value>Σύνολο κύκλων</value>
+  </data>
+  <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
+    <value>Κύκλοι μεταξύ δύο συντηρήσεων</value>
+  </data>
+  <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
+    <value>Κύκλοι από την τελευταία συντήρηση</value>
+  </data>
+  <data name="MaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Κατάσταση στοιχείου</value>
+  </data>
+  <data name="MaintenanceDetailStopRequired" xml:space="preserve">
+    <value>Απαιτούμενη διακοπή λειτουργίας μηχανήματος [ώρες]</value>
+  </data>
+  <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Πλατφόρμα</value>
+  </data>
+  <data name="MaintenanceDetailContactRequired" xml:space="preserve">
+    <value>Αποστολή αιτήματος επικοινωνίας</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>Κλήση συρταριού</value>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>Μονάδες στατιστικών</value>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>Κυψέλες στατιστικών</value>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>Στατιστικά σφάλματα</value>
+  </data>
+  <data name="DrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Λειτουργία επαναπλήρωσης</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Απαιτούμενη ποσότητα [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Ποσότητα επαναπλήρωσης [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
+    <value>Ενημέρωση μέγιστης χωρητικότητας</value>
+  </data>
+  <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
+    <value>Γραμμή λίστας</value>
+  </data>
+  <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Απαιτούμενη ποσότητα</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
+    <value>Λεπτομέρειες εργασίας επαναπλήρωσης</value>
+  </data>
+  <data name="Lot" xml:space="preserve">
+    <value>Παρτίδα</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Κατάσταση υλικού</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
+    <value>Τύπος συσκευασίας</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Ημερομηνία παραγωγής</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
+    <value>Απαιτούμενη ποσότητα</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Γραμμή λίστας</value>
+  </data>
+  <data name="CommonItemCode" xml:space="preserve">
+    <value>Κωδικός στοιχείου</value>
+  </data>
+  <data name="CommonItemDescription" xml:space="preserve">
+    <value>Περιγραφή στοιχείου</value>
+  </data>
+  <data name="CommonListCode" xml:space="preserve">
+    <value>Λίστα κωδικού</value>
+  </data>
+  <data name="CommonListDescription" xml:space="preserve">
+    <value>Περιγραφή λίστας</value>
+  </data>
+  <data name="CommonPackingListCode" xml:space="preserve">
+    <value>Κωδικός λίστας συσκευασίας</value>
+  </data>
+  <data name="CommonPackingListDescription" xml:space="preserve">
+    <value>Περιγραφή λίστας συσκευασίας</value>
+  </data>
+  <data name="CommonNote" xml:space="preserve">
+    <value>Σημείωση:</value>
+  </data>
+  <data name="CommonUp" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="CommonDown" xml:space="preserve">
+    <value>Κάτω</value>
+  </data>
+  <data name="DrawerActivityInventoryHeader" xml:space="preserve">
+    <value>Εργασία απογραφής</value>
+  </data>
+  <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Αποθηκευμένη ποσότητα</value>
+  </data>
+  <data name="CommonCompartmentPosition" xml:space="preserve">
+    <value>Θέση:</value>
+  </data>
+  <data name="CommonButtonConfirm" xml:space="preserve">
+    <value>Επιβεβαίωση</value>
+  </data>
+  <data name="CommonButtonDetail" xml:space="preserve">
+    <value>Λεπτομέρεια</value>
+  </data>
+  <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
+    <value>Λεπτομέρειες εργασίας απογραφής</value>
+  </data>
+  <data name="ItemDetailCategory" xml:space="preserve">
+    <value>Κατηγορία</value>
+  </data>
+  <data name="ItemDetailClasse" xml:space="preserve">
+    <value>Κλάση</value>
+  </data>
+  <data name="ItemDetailMeasurementUnity" xml:space="preserve">
+    <value>Μονάδα μέτρησης</value>
+  </data>
+  <data name="ItemDetailWeight" xml:space="preserve">
+    <value>Μέσο βάρος [gr]</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>Σύνολο πίσω</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>Σύνολο πίσω %</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>Σύνολο μπροστά</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>Σύνολο μπροστά %</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>Κατάσταση</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>Διαμερίσματα</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>Αναγνωριστικό συρταριού</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>Πλήρωση</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>Πλήρωση %</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>Αποστολές</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>Κυψέλη</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>Συρτάρι</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>Ύψος</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>Πλευρά</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>Κατάσταση</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>Βάρος</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>Σφάλμα</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>ΣΥΝΟΛΟ</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>Σύνολο %</value>
+  </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>Περιγραφή</value>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>Λίστα</value>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>Μηχανήματα</value>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>Τύπος</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>Περιγραφή</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>Κιτ</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>Αίτημα</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>Κατάσταση</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>Τρέχον βάρος</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>Συρτάρι</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>Ύψος</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>Μέγ. %</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>Μέγιστο βάρος</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>Απόβαρο</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Περιγραφή</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>Στοιχείο</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Ποσότητα</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Περιγραφή</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>Στοιχείο</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>Μηχάνημα</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Ποσότητα</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>Σειρά</value>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>Μηχάνημα στατιστικών</value>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>Στατιστικά μηχανήματος</value>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>Δεδομένα κατακόρυφου άξονα.</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Συνολικά χιλιόμετρα κατακόρυφου άξονα</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>Συνολικοί κύκλοι κατακόρυφου άξονα</value>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>Δεδομένα κλείστρου.</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>Συνολικοί κύκλοι κλείστρου 1</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>Συνολικοί κύκλοι κλείστρου 2</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>Συνολικοί κύκλοι κλείστρου 3</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>Δεδομένα άξονα αλυσίδας.</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>Συνολικοί οριζόντιοι κύκλοι</value>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>Πλατφόρμα στατιστικών</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>Τα συρτάρια μεταφέρθηκαν στην πλατφόρμα 1</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>Τα συρτάρια μεταφέρθηκαν στην πλατφόρμα 2</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>Τα συρτάρια μεταφέρθηκαν στην πλατφόρμα 3</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>Στοιχείο</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>Περιγραφή στοιχείου</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>Μηχανήματα</value>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>Τύπος λίστας</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>Κατάσταση WMS</value>
+  </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>Προβολή λεπτομερειών συμπίεσης.</value>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Μετακίνηση συρταριού</value>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Κυψέλη πηγής</value>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Κυψέλη προορισμού</value>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>Πραγματικό βήμα</value>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Θέση κατακόρυφου άξονα</value>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Θέση οριζόντιου άξονα</value>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>Υπόλοιπο τεμάχιο</value>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Χώρος ανάκτησης mm.</value>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Χώρος προς ανάκτηση mm.</value>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>Τέλος συμπίεσης</value>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>DrawerCompactingProcedureStatus</value>
+  </data>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>Κανένα</value>
+  </data>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>Απροσδιόριστο</value>
+  </data>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>Χώρος μόνο</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>Μπλοκαρισμένο</value>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>Υπηρεσίες WMS εκτός σύνδεσης</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>Υπηρεσίες WMS σε σύνδεση</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Έληξε</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>Λήξη</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Άγνωστο</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Έγκυρο</value>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>Μονάδες φόρτωσης στην κυψέλη</value>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>Ανάλυση χώρου</value>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Όγκος</value>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Δεν προσδιορίζεται</value>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Απογραφή</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Λήψη</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Βάλτε</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>NotSpecified</value>
+  </data>
+  <data name="QuantityToPick" xml:space="preserve">
+    <value>Ποσότητα προς λήψη</value>
+  </data>
+  <data name="PickedQuantity" xml:space="preserve">
+    <value>Ποσότητα λήψης [{0}]</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Κατάσταση υλικού</value>
+  </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>Εργασία απογραφής.</value>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>Εντοπισμένη ποσότητα [{0}]</value>
+  </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>Το αίτημα λήψης για στοιχείο {0} (ποσότητα {1}) έγινε αποδεκτό.</value>
+  </data>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Διαθέσιμο</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Σειρά λίστας</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Αναγνωριστικό της μονάδας φόρτωσης</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Μονάδα φόρτωσης</value>
+  </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>Επιβεβαίωση σε άδειο</value>
+  </data>
+  <data name="ConfirmOnFull" xml:space="preserve">
+    <value>Επιβεβαίωση σε γεμάτο</value>
+  </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>Διαθεσιμότητα μηχανημάτων</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Διαγεγραμμένη λειτουργία.</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>Επιβεβαιωμένη λειτουργία.</value>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>Δεν υπάρχουν μονάδες φόρτωσης για να κινηθούν στην πλατφόρμα {0}</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>Υπάρχουν {0} μονάδες φόρτωσης που έχουν σταλεί στην πλατφόρμα {1}</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>Υπάρχει 1 μονάδα φόρτωσης που έχει σταλεί στην πλατφόρμα {0}</value>
+  </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Αφαιρέστε όλα τα χυμένα στοιχεία από το διαμέρισμα.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Αν έχετε μαζέψει στοιχεία, βάλτε τα πίσω στο αρχικό διαμέρισμα.</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Ακυρώστε</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Ακυρώστε τη λήψη</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>Επιβεβαιώθηκε η λειτουργία διαγραφής.</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>Διαγεγραμμένη εργασίας απογραφής.</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Αποστολές</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Λίστα αποστολών</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Ημερομηνία</value>
+  </data>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Βήμα</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Πλατφόρμα</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>Όλα</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Ανελκυστήρας πλατφόρμας</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>Τρεις πλατφόρμες</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>Δύο πλατφόρμες</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>Καμία πλατφόρμα</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>Εκτέλεση</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>Νέο</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>Αναμονή</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Ολοκληρωμένο</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>Αποβολή</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>Ολοκλήρωση</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>Μία πλατφόρμα</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Τύπος αποστολής</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Κατάσταση</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>Πλατφόρμα</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>1.Νέο</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>2.Εκκίνηση</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>3.Ανελκυστήρας φορτίου</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>4.Σε στόχευση</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>5.Μονάδα εναπόθεσης</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>6.Αναμονή ενέργειας χειριστή</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>7.Αλυσίδα πλατφόρμας</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>8.Κλείστρο κλειστό</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>13.Τέλος</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>101.Σφάλμα</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>Κανένας τύπος</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Χειροκίνητα</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>Wms</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>Μέσα</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Έξω</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Συμπαγές</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Δεν προσδιορίζεται</value>
+  </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>σε πλατφόρμα</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Ανάκληση συρταριού</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>pcs</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Λήψη</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Βάλτε</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>Προσαρμογή</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Απόθεμα</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Περιγραφή στοιχείου</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Κωδικός στοιχείου</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Διαμέρισμα</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Ποσότητα προσαρμογής [{0}]</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Τοποθέτηση ποσότητας [{0}]</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Λήψη ποσότητας [{0}]</value>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>Διαθέσιμες νέες λειτουργίες</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Επιβεβαίωση και νέες διαθέσιμες λειτουργίες</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Απόθεμα</value>
+  </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>Υπάρχει μονάδας φόρτωσης</value>
+  </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Επιλογή διαμερίσματος</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
+    <value>PICK</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
+    <value>Λήψη</value>
+  </data>
+  <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
+    <value>ΣΤΟΙΧΕΙΟ</value>
+  </data>
+  <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
+    <value>Αναζήτηση και αίτημα στοιχείων</value>
+  </data>
+  <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
+    <value>ΛΙΣΤΑ</value>
+  </data>
+  <data name="NavigationMainMenuListsDescription" xml:space="preserve">
+    <value>Εκτέλεση / αναστολή λιστών</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
+    <value>DRAW</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Λειτουργίες συρταριού</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Συμπίεση</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>Απαιτείται δοκιμή</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Κωδικός</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>Δεν υπάρχει διαθέσιμος κωδικός '{0}' με στοιχείο</value>
+  </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Εκκίνηση ενημέρωσης</value>
+  </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Συναγερμοί</value>
+  </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Συμπίεση σε εξέλιξη</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>Διάγνωση</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Γενικά</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>Γενικές πληροφορίες</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Αριθμός μονάδας</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Σειριακός</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Στατιστικά</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Σύνολο km διαδρομής</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Συνολικό βάρος μηχανήματος</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Συνολικές αποστολές</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Σύνολο μονάδων</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Αναμονή</value>
+  </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Μετρητές</value>
+  </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>Δεν υπάρχει κανένα στοιχείο στο επιλεγμένο διαμέρισμα.</value>
+  </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>Πρώτη δοκιμή</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>Πλήρης δοκιμή ΜΕΣΑ</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>Πλήρης δοκιμή ΕΞΩ</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>Λειτουργία μονάδας φόρτωσης</value>
+  </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Παρτίδα</value>
+  </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>Συναγερμοί λίστας μηχανήματος</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Αριθμός πλατφόρμας</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Κωδικός λεπτομερειών</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Αναγνωριστικό</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>Δείκτης αντιστροφέα</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>Ημερομηνία συμβάντος</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Ημερομηνία ανάλυσης</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Σειριακός</value>
+  </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Τεμάχιο πίσω</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Τεμάχιο μπροστά</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Σύνολο τεμαχίων</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>Δεν είναι δυνατή η εκτέλεση της λίστας.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Άκυρη λειτουργία {0}</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Χρήστες</value>
+  </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>έξω από την πλατφόρμα</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>Μονάδα</value>
+  </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Πρόσθετες πληροφορίες</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>Μονάδα n.</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Ύψος</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Βάρος</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>Πάρα πολύ υψηλός τεμαχισμός: εκτελέστε μια διαδικασία συμπίεσης</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση Καρουζέλ σε εξέλιξη</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Οριζόντια βαθμονόμηση σε εξέλιξη</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>Διαθέσιμη ποσότητα</value>
+  </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Φιλτραρισμένα στοιχεία με κωδικό.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>Ο γραμμωτός κωδικός '{0}' δεν περιέχει τον κωδικό στοιχείου.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>Ο γραμμωτός κωδικός '{0}' δεν περιέχει την ποσότητα στοιχείου.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>Ο γραμμωτός κωδικός '{0}' δεν περιέχει το αναγνωριστικό λίστας.</value>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>Δεν βρέθηκε καμία λίστα '{0}' με αναγνωριστικό.</value>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>Έγινε αποδεκτή '{0}' η εκτέλεση της λίστας.</value>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>Κυψέλες απασχολημένες</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>Ελεύθερες κυψέλες</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Ελεύθερες κυψέλες για στήριξη</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Ελεύθερες κυψέλες μόνο χώρου</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Μπλοκαρισμένες κυψέλες</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Σύνολο κυψελών</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Μονάδες σε πλατφόρμα</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Μονάδες σε κυψέλη</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Μονάδες σε ανελκυστήρα</value>
+  </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>Επιβεβαιώστε την υπηρεσία</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>Ημερομηνία εγκατάστασης</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>Ημερομηνία τελευταίας υπηρεσίας</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>Ημερομηνία επόμενης υπηρεσίας</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>Κατάσταση υπηρεσίας</value>
+  </data>
+  <data name="IsDone" xml:space="preserve">
+    <value>IsDone</value>
+  </data>
+  <data name="IsToDo" xml:space="preserve">
+    <value>IsToDo</value>
+  </data>
+  <data name="MaxDays" xml:space="preserve">
+    <value>MaxDays</value>
+  </data>
+  <data name="MaxRelativeCount" xml:space="preserve">
+    <value>MaxRelativeCount</value>
+  </data>
+  <data name="MaxTotalCount" xml:space="preserve">
+    <value>MaxTotalCount</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>Συνολικός ενεργός χρόνος αποστολής</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>Km Πλατφόρμα 1</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>Km Πλατφόρμα 2</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>Km Πλατφόρμα 3</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>Km ανελκυστήρα οριζόντιου άξονα</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Km ανύψωσης κατακόρυφου άξονα</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>Μονάδες σε πλατφόρμα 1</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>Μονάδες σε πλατφόρμα 2</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>Μονάδες σε πλατφόρμα 3</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(Τα δεδομένα υπολογίζονται από την τελευταία συντήρηση σε σύγκριση με τη συνολική τιμή)</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Συντήρηση:</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>Ενεργός χρόνος αποστολών</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Πλατφόρμα 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Πλατφόρμα 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Πλατφόρμα 3</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>Ανελκυστήρας οριζόντιου άξονα</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>Ανελκυστήρας κατακόρυφου άξονα</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>Πλατφόρμες Km από την τελευταία συντήρηση / σύνολο</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>Άξονες ανύψωσης Km από την τελευταία συντήρηση / σύνολο</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>Συνολικός αριθμός ενεργών αποστολών από την τελευταία συντήρηση / σύνολο</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>Μονάδες σε πλατφόρμες από την τελευταία συντήρηση / σύνολο</value>
+  </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>Απαιτούμενη ποσότητα</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Επιβεβαίωση σειράς</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Άξονας</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>Όνομα μετρητή</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Κατάσταση σειράς</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Κατάσταση</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Εκτέλεση σειράς</value>
+  </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>Είστε βέβαιοι ότι θέλετε να επιβεβαιώσετε αυτήν την υπηρεσία;</value>
+  </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Κύκλοι ανελκυστήρα Km από την τελευταία συντήρηση / σύνολο</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Οριζόντιος άξονας</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Κατακόρυφος άξονας</value>
+  </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>Μερική επιβεβαίωση</value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>Παρούσα επιβεβαίωση</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Παρούσα ποσότητα</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Στοιχείο: </value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Μονάδες</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Μονάδα</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Ολοκληρωμένο</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Κάτω του βάρους</value>
+  </data>
+  <data name="TotalMissionsHeader" xml:space="preserve">
+    <value>Συνολικές αποστολές</value>
+  </data>
+  <data name="CloseLine" xml:space="preserve">
+    <value>Κλείσιμο γραμμής</value>
+  </data>
+  <data name="UpdatedValue" xml:space="preserve">
+    <value>Ενημερωμένη τιμή</value>
+  </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Διαγραφή αποστολής</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>Προορισμός μονάδας φόρτωσης</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>Πηγή μονάδας φόρτωσης</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>Id Wms</value>
+  </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>Καρουζέλ πλατφόρμα 1 κάτω</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>Καρουζέλ πλατφόρμα 1 επάνω</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>Καρουζέλ πλατφόρμα 2 κάτω</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>Καρουζέλ πλατφόρμα 2 επάνω</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>Καρουζέλ πλατφόρμα 3 κάτω</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>Καρουζέλ πλατφόρμα 3 επάνω</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Κυψέλη</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Κάτω</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Ανελκυστήρας</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>Εξωτερική πλατφόρμα 1 κάτω</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>Εξωτερική πλατφόρμα 1 επάνω</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>Εξωτερική πλατφόρμα 2 κάτω</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>Εξωτερική πλατφόρμα 2 επάνω</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>Εξωτερική πλατφόρμα 3 κάτω</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>Εξωτερική πλατφόρμα 3 επάνω</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>Εσωτερική πλατφόρμα 1 κάτω</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>Εσωτερική πλατφόρμα 1 επάνω</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>Εσωτερική πλατφόρμα 2 κάτω</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>Εσωτερική πλατφόρμα 2 επάνω</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>Εσωτερική πλατφόρμα 3 κάτω</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>Εσωτερική πλατφόρμα 3 επάνω</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>Μονάδα φορτίου</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>Καμία τοποθεσία</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Άγνωστο</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>Πίσω στην πλατφόρμα</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>Σφάλμα εναπόθεσης</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>Φόρτωση σφάλματος</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>Πλατφόρμα εξόδου</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>Αναμονή αλυσίδας</value>
+  </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>Δεν επιτρέπεται η παρουσία της μονάδας στην πλατφόρμα συμπίεσης</value>
+  </data>
+  <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
+    <value>Ενημέρωση μέσου μοναδιαίου βάρους</value>
+  </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>Πραγματικό μέσο μοναδιαίο βάρος [g]</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>Πρωτότυπο μέσο μοναδιαίο βάρος [g]</value>
+  </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>Μέτρηση βάρους και μέτρηση τεμαχίων</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Επαναφορά</value>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>Μετρημένη ποσότητα</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>Ενημέρωση μονάδας βάρους</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>Επιβεβαίωση μετρημένης ποσότητας </value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>Επιβεβαίωση απαιτούμενης ποσότητας</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Βάρος μονάδας [g]</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>Επιβεβαιωμένη λειτουργία από τον αναγνώστη γραμμωτού κώδικα</value>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>Μερικά μέρη του γραμμωτού κώδικα '{0}' δεν ταιριάζουν στο στοιχείο.</value>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>Μερικά μέρη του γραμμωτού κώδικα '{0}' δεν ταιριάζουν στο στοιχείο. Επανεκκίνηση.</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>Ποσότητα που απουσιάζει πριν την επιβεβαίωση.</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Δεν αναγνωρίζεται '{0}' ο γραμμωτός κωδικός.</value>
+  </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>Το αίτημα τοποθέτησης για στοιχείο {0} (ποσότητα {1}) έγινε αποδεκτό.</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Λειτουργίες λήψης σε μονάδα n.</value>
+  </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Λειτουργίες επαναπλήρωσης σε μονάδα n.</value>
+  </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Λήψη στοιχείου </value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Τοποθέτηση στοιχείου </value>
+  </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>Φόρτωση στοιχείων...</value>
+  </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>Λειτουργίες πλατφόρμας</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Προβολή</value>
+  </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>Μέγιστος διαδοχικός ελεύθερος χώρος πίσω πλευράς</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>Μέγιστος διαδοχικός ελεύθερος χώρος μπροστινής πλευράς</value>
+  </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>Επισημάνετε ως επιλυμένο και πηγαίνετε στη συμπίεση</value>
+  </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Κωδικός κιβωτίου</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Λήψη κιβωτίου</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Τοποθέτηση κιβωτίου</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Κιβώτιο</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Εισαγωγή κιβωτίου</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Αφαίρεση κιβωτίου</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Σημείωση</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Επιλογή αιτίας</value>
+  </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Αναμονή εναπόθεσης στην κυψέλη</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Αναμονή εναπόθεσης πλατφόρμας</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Δεν επιβεβαιώθηκε η άκυρη λειτουργία του πεδίου των σημειώσεων</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Προειδοποίηση</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>Αυτή είναι η τελευταία λειτουργία σε αυτό το συρτάρι τοποθέτησης στοιχείου και πατήστε ΟΚ.</value>
+  </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Κάρτες δικτύου</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>Επιπρόσθετο IP</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>Επιπρόσθετο SubnetMask</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>Λέιζερ</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Μετατόπιση λέιζερ</value>
+  </data>
+</root>

@@ -7,11 +7,8 @@ using Ferretto.VW.Utils.Enumerators;
 using System.Diagnostics;
 using Prism.Commands;
 using System.Windows.Input;
-using System.Management;
-using System.Collections.Generic;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Resources;
-using System.Timers;
 using System.Threading;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
@@ -62,6 +59,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusy;
 
+        private bool isFilterEnabled;
+
         private NetworkAdapter networkAdapter0;
 
         private NetworkAdapter networkAdapter1;
@@ -69,6 +68,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand saveNetworkAdapter0;
 
         private DelegateCommand saveNetworkAdapter1;
+
+        private DelegateCommand uwfOffCommand;
+
+        private DelegateCommand uwfOnCommand;
 
         #endregion
 
@@ -90,6 +93,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public bool IsEditEnabled => this.sessionService.UserAccessLevel >= MAS.AutomationService.Contracts.UserAccessLevel.Installer;
+
+        public bool IsFilterEnabled
+        {
+            get => this.isFilterEnabled;
+            set => this.SetProperty(ref this.isFilterEnabled, value);
+        }
 
         public NetworkAdapter NetworkAdapter0
         {
@@ -113,6 +122,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   (this.saveNetworkAdapter1 = new DelegateCommand(
                       () => this.SetConfig(this.networkAdapter1)));
 
+        public ICommand UwfOffCommand => this.uwfOffCommand
+                                          ??
+                  (this.uwfOffCommand = new DelegateCommand(
+                      () => this.SetUWF(false)));
+
+        public ICommand UwfOnCommand => this.uwfOnCommand
+                          ??
+                  (this.uwfOnCommand = new DelegateCommand(
+                      () => this.SetUWF(true)));
+
         #endregion
 
         #region Methods
@@ -130,6 +149,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.GetNetworkAdapters();
 
             this.IsBusy = false;
+
+            this.CheckUwf();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -138,6 +159,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.saveNetworkAdapter0.RaiseCanExecuteChanged();
             this.saveNetworkAdapter1.RaiseCanExecuteChanged();
+            this.uwfOffCommand.RaiseCanExecuteChanged();
+            this.uwfOnCommand.RaiseCanExecuteChanged();
         }
 
         private static NetworkAdapter SetData(NetworkInterface networkInterface)
@@ -205,6 +228,55 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             return networkAdapter;
+        }
+
+        private void CheckUwf()
+        {
+            try
+            {
+                Process p = new Process();
+
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.FileName = "cmd.exe";
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                p.StartInfo.Verb = "runas";
+                p.StartInfo.Arguments = "/c uwfmgr.exe get-config";
+                p.Start();
+
+                // standard output contains many null chars: remove them!
+                var rawOutput = p.StandardOutput.ReadToEnd().ToCharArray();
+                var output = string.Empty;
+                foreach (var singleChar in rawOutput)
+                {
+                    if (char.IsLetterOrDigit(singleChar))
+                    {
+                        output += singleChar;
+                    }
+                }
+
+                output = output.ToUpperInvariant();
+
+                //this.Logger.Debug(output);
+                this.IsFilterEnabled = output.Contains("STATOFILTROATTIVATA") || output.Contains("FILTERSTATEON");
+
+                p.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            this.ClearNotifications();
+            if (this.isFilterEnabled)
+            {
+                this.ShowNotification("Filtro UWF attivo", Services.Models.NotificationSeverity.Warning);
+            }
+            else
+            {
+                this.ShowNotification("Filtro UWF NON attivo", Services.Models.NotificationSeverity.Warning);
+            }
         }
 
         private void GetNetworkAdapters()
@@ -325,6 +397,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.GetNetworkAdapters();
 
             this.IsBusy = false;
+        }
+
+        private void SetUWF(bool on)
+        {
+            if (on)
+            {
+                this.SendPromptCommand("/c uwfmgr.exe filter enable");
+            }
+            else
+            {
+                this.SendPromptCommand("/c uwfmgr.exe filter disable");
+            }
+
+            //wait 1s
+            Thread.Sleep(1000);
+
+            var psi = new ProcessStartInfo("shutdown", "/r /t 0");
+            psi.CreateNoWindow = true;
+            psi.UseShellExecute = false;
+            Process.Start(psi);
         }
 
         #endregion

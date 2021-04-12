@@ -1,0 +1,543 @@
+{
+  "Zones": [
+    {
+      "Id": "Figures",
+      "ColumnSpan": 2
+    },
+    {
+      "Id": "1stRow",
+      "Row": 1
+    },
+    {
+      "Id": "Enter",
+      "RowSpan": 2,
+      "Column": 1,
+      "Row": 1,
+      "Width": "Auto"
+    },
+    {
+      "Id": "2ndRow",
+      "Row": 2
+    },
+    {
+      "Id": "3rdRow",
+      "Row": 3,
+      "ColumnSpan": 2
+    },
+    {
+      "Id": "4thRow",
+      "Row": 4,
+      "ColumnSpan": 2
+    }
+  ],
+  "Sets": [
+    {
+      "Zone": "Figures",
+      "Cells": [
+        {
+          "Width": "2*",
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "esc",
+              "CommandText": "{Escape}"
+            }
+          }
+        },
+        //{
+        //  "Key": {
+        //    "Command": {
+        //      "CommandText": "\\"
+        //    }
+        //  }
+        //},
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "1"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "2"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "3"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "4"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "5"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "6"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "7"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "8"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "9"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "0"
+            }
+          },
+          "Width": "Auto"
+        },
+        //{
+        //  "Key": {
+        //    "Command": {
+        //      "CommandText": "'"
+        //    }
+        //  }
+        //},
+        {
+          "Width": "3*",
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "{icon:BackspaceSolid}",
+              "CommandText": "{Back}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Zone": "1stRow",
+      "Cells": [
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u0398"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u03a9"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u0395"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u03A1"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u03A4"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u03A8"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u03A5"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u0399"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u039f"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u03a0"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ""
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ""
+            }
+          }
+        }
+      ],
+      "HorizontalAlignment": "Left"
+    },
+    {
+      "Zone": "2ndRow",
+      "Cells": [
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u0391"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u03a3"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u0394"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u03a6"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u0393"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u0397"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u039e"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u039a"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u039b"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ""
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ""
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ""
+            }
+          }
+        }
+      ],
+      "HorizontalAlignment": "Right"
+    },
+    {
+      "Zone": "Enter",
+      "Cells": [
+        {
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "KeyMinWidth": 100,
+          "Key": {
+            "Command": {
+              "CommandText": "{Enter}",
+              "Caption": "{icon:LevelDownAltSolid:90}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Zone": "3rdRow",
+      "Cells": [
+        {
+          "KeyMinWidth": 60,
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "{icon:CaretSquareUpSolid}",
+              "CommandText": "{layout:Lowercase}"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u0396"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u03a7"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u039e"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u039d"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u0392"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u039d"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u039c"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "-"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "_"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "<"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": ">"
+            }
+          },
+          "Width": "Auto"
+        },
+        {
+          "Width": "147",
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "{icon:CaretSquareUpSolid}",
+              "CommandText": "{layout:Lowercase}"
+            }
+          }
+        }
+      ],
+      "HorizontalAlignment": "Left"
+    },
+    {
+      "Zone": "4thRow",
+      "Cells": [
+        {
+          "Width": "110",
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "&123",
+              "CommandText": "{layout:Numeric}"
+            }
+          }
+        },
+        {
+          "Width": "Auto",
+          "Key": {
+            "Command": {
+              "CommandText": ","
+            }
+          }
+        },
+        {
+          "Width": "Auto",
+          "Key": {
+            "Command": {
+              "CommandText": ";"
+            }
+          }
+        },
+        {
+          "Width": "420",
+          "Key": {
+            "Command": {
+              "Caption": " ",
+              "CommandText": "{Space}"
+            }
+          }
+        },
+        {
+          "Width": "Auto",
+          "Key": {
+            "Command": {
+              "CommandText": "."
+            }
+          }
+        },
+        {
+          "Width": "Auto",
+          "Key": {
+            "Command": {
+              "CommandText": ":"
+            }
+          }
+        },
+        {
+          "Width": "Auto",
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "{icon:ArrowLeftSolid}",
+              "CommandText": "{Left}"
+            }
+          }
+        },
+        {
+          "Width": "Auto",
+          "KeyStyleResource": "AccentKeyboardButtonStyle",
+          "Key": {
+            "Command": {
+              "Caption": "{icon:ArrowRightSolid}",
+              "CommandText": "{Right}"
+            }
+          }
+        }
+      ],
+      "HorizontalAlignment": "Left"
+    }
+  ],
+  "KeyMargin": "5",
+  "KeyPadding": "5,0",
+  "KeyMinHeight": 60
+}

@@ -11,6 +11,8 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public DataTemplate EnumBay { get; set; }
 
+        public DataTemplate EnumBED { get; set; }
+
         public DataTemplate EnumDrawer { get; set; }
 
         public DataTemplate EnumPosition { get; set; }
@@ -31,6 +33,9 @@ namespace Ferretto.VW.App.Controls.Controls
 
                 case CardSensor.CardType.Bay:
                     return this.EnumBay;
+
+                case CardSensor.CardType.BED:
+                    return this.EnumBED;
 
                 case CardSensor.CardType.Drawer:
                     return this.EnumDrawer;

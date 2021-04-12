@@ -141,13 +141,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             else if (bay.External != null)
             {
-                if (deposit)
+                if (bay.IsDouble)
                 {
-                    return this.externalBayProvider.CanElevatorDeposit(bay.Number);
+                    var isUpper = loadingUnitPosition == LoadingUnitLocation.InternalBay1Up || loadingUnitPosition == LoadingUnitLocation.InternalBay2Up || loadingUnitPosition == LoadingUnitLocation.InternalBay3Up;
+                    if (deposit)
+                    {
+                        return this.externalBayProvider.CanElevatorDeposit(bay.Number, isUpper);
+                    }
+                    else
+                    {
+                        return this.externalBayProvider.CanElevatorPickup(bay.Number, isUpper);
+                    }
                 }
                 else
                 {
-                    return this.externalBayProvider.CanElevatorPickup(bay.Number);
+                    if (deposit)
+                    {
+                        return this.externalBayProvider.CanElevatorDeposit(bay.Number, false);
+                    }
+                    else
+                    {
+                        return this.externalBayProvider.CanElevatorPickup(bay.Number, false);
+                    }
                 }
             }
             else
@@ -487,9 +502,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.externalBayProvider.IsExternalPositionOccupied(bayNumber);
         }
 
+        public bool IsExternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation)
+        {
+            return this.externalBayProvider.IsExternalPositionOccupied(bayNumber, loadingUnitLocation);
+        }
+
         public bool IsInternalPositionOccupied(BayNumber bayNumber)
         {
             return this.externalBayProvider.IsInternalPositionOccupied(bayNumber);
+        }
+
+        public bool IsInternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation)
+        {
+            return this.externalBayProvider.IsInternalPositionOccupied(bayNumber, loadingUnitLocation);
         }
 
         public bool IsOnlyBottomPositionOccupied(BayNumber bayNumber)
@@ -530,6 +555,52 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     throw new StateMachineException(ex.Message, requestingBay, sender);
                 }
             }
+        }
+
+        public bool MoveDoubleExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore, bool isPositionUpper)
+        {
+            if (restore)
+            {
+                var bay = this.baysDataProvider.GetByNumber(requestingBay);
+                var distance = bay.External.Race;
+                switch (direction)
+                {
+                    case ExternalBayMovementDirection.TowardMachine:
+                        distance = this.baysDataProvider.GetChainPosition(requestingBay) - bay.ChainOffset;
+                        break;
+
+                    case ExternalBayMovementDirection.TowardOperator:
+                        distance -= this.baysDataProvider.GetChainPosition(requestingBay) - bay.ChainOffset;
+                        break;
+                }
+                if (distance < Math.Abs(bay.ChainOffset / 4))
+                {
+                    return false;
+                }
+
+                try
+                {
+                    this.externalBayProvider.MoveManualExtDouble(direction, distance, loadUnitId, bypassConditions: false, requestingBay, sender);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    this.errorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, requestingBay, ex.Message);
+                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                }
+            }
+            else
+            {
+                try
+                {
+                    this.externalBayProvider.MoveExtDouble(direction, loadUnitId, requestingBay, sender, isPositionUpper);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    this.errorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, requestingBay, ex.Message);
+                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                }
+            }
+            return true;
         }
 
         public bool MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore)

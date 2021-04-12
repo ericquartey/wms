@@ -5,6 +5,7 @@
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrlssc="clr-namespace:Ferretto.VW.App.Scaffolding.Controls;assembly=Ferretto.VW.App.Scaffolding"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:localControl="clr-namespace:Ferretto.VW.App.Modules.Installation.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -257,11 +258,25 @@
     </Border>
 
     <controls:PpcButton Grid.Row="6"
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding BrowserOpenCommand}"
+                        Content="{res:Loc InstallationApp.OpenBrowser}"
+                        IsBusy="{Binding IsWaitingForResponse}" />
+
+    <controls:PpcButton Grid.Row="6"
                         Grid.Column="3"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Command="{Binding SaveCommand}"
                         Content="{res:Loc General.Save}"
                         IsBusy="{Binding IsWaitingForResponse}" />
+
+    <localControl:BrowserView Grid.RowSpan="7"
+                              Grid.ColumnSpan="4"
+                              IsOpen="{Binding IsBrowserOpened}"
+                              Url="{Binding IpAddress}"
+                              Visibility="{Binding IsBrowserOpened, Converter={StaticResource BTVC}}" />
   </Grid>
 </ctrls:View>

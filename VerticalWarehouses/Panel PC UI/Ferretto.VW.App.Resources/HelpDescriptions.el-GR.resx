@@ -1,0 +1,1278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>Υποδεικνύει την τιμή του ανώτατου ορίου που απαιτείται από τη δοκιμή. Ορίστε την τιμή μόνο αν το πεδίο είναι επεξεργάσιμο.</value>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>Υποδεικνύει την τιμή του κατώτατου ορίου που απαιτείται από τη δοκιμή. Ορίστε την τιμή μόνο αν το πεδίο είναι επεξεργάσιμο.</value>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>Ορίστε τον αριθμό των κύκλων που απαιτούνται.</value>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>Εμφανίζει τον αριθμό των κύκλων που έχουν ολοκληρωθεί.</value>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>Αναφέρει την τρέχουσα θέση του άξονα.</value>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>Εκκίνηση της δοκιμής. Η δοκιμή συνεχίζεται έως ότου επιτευχθεί ο απαιτούμενος αριθμός των κύκλων ή μέχρι να πατηθεί το κουμπί διακοπής.</value>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>Διακοπή της δοκιμής. Ο κύκλος διακόπτεται στο τέλος της τρέχουσας κίνησης. Πατώντας το κουμπί εκκίνησης του κύκλου συνεχίζεται η εκτέλεση της δοκιμής έως ότου ολοκληρωθεί.</value>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>Η διαδικασία επιτρέπει την εκτέλεση μιας σειράς κύκλων κίνησης του κατακόρυφου άξονα μεταξύ δύο σημείων που υποδεικνύονται στα δεδομένα εισαγωγής. Ο κύκλος, όταν αρχίσει, συνεχίζεται ακόμη και όταν οι απαιτούμενοι κύκλοι έχουν επιτευχθεί ή έχει πατηθεί το κουμπί τερματισμού.</value>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>Η λειτουργία βαθμονόμησης ανάλυσης του κατακόρυφου άξονα σας επιτρέπει να βαθμονομείτε τη σωστή τιμή κάνοντας τη μέτρηση στο πεδίο. Κατόπιν ενημερώστε την τιμή της προεπιλογής που προτείνεται από το σύστημα. Η διαδικασία λειτουργεί σε διαδοχικά βήματα μέχρι να ολοκληρωθεί επιτυχώς.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Αν το πεδίο είναι επεξεργάσιμο, ορίστε το απαιτούμενο αρχικό όριο.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>Υποδεικνύει τη μετρούμενη διαδρομή από την εκκίνηση έως τη θέση τερματισμού.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Αν το πεδίο είναι επεξεργάσιμο, ορίστε το απαιτούμενο τελικό όριο.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>Το κουμπί αρχίζει να κινεί τον άξονα στην τελική θέση που έχει οριστεί.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>Υποδεικνύει τη μετρούμενη διαδρομή από την εκκίνηση έως τη θέση τερματισμού.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>Βήμα 1: τοποθετήστε τον άξονα στην αρχική θέση</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>Βήμα 2: τοποθετήστε τον άξονα στην τελική διάσταση</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>Βήμα 3: Ενημερώστε την ανάλυση με την νέα τιμή</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>Βήμα 4: επανατοποθετήστε τον άξονα και κλείστε τη διαδικασία</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>ResolutionCalibrationActualResolutionHelp</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Εμφανίζει την νέα τιμή ανάλυσης που υπολογίζεται από τη διαδικασία.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Αντικαθιστά την προηγούμενη τιμή ανάλυσης με τη νέα υπολογισμένη τιμή.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Επιστροφή του άξονα στην αρχική του θέση.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Εκτελέστε την προέλευση του άξονα και κλείστε τη διαδικασία.</value>
+  </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>Εμφανίζει την τρέχουσα κατάσταση της εγκατάστασης. Τα μέρη που έχουν ήδη ολοκληρωθεί επισημαίνονται με πράσινο χρώμα ενώ εκείνα που πρόκειται να ολοκληρωθούν ή να εκτελεστούν είναι με γκρι. Μερικές διαδικασίες είναι εφικτές μόνο εφόσον έχουν ολοκληρωθεί σωστά οι προπαρασκευαστικές.</value>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>Ο γκρι δείκτης δείχνει μια διαδικασία που είναι ακόμη προς εκτέλεση</value>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>Ο πράσινος δείκτης δείχνει μια επιτυχή διαδικασία.</value>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>Εμφάνιση της κατάστασης του αισθητήρα</value>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>Το γκρι χρώμα δείχνει την ανενεργή κατάσταση του αισθητήρα.</value>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>Το πράσινο χρώμα δείχνει την ενεργή κατάσταση του αισθητήρα.</value>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>Το γκρι χρώμα δείχνει την ανενεργή κατάσταση του αισθητήρα.</value>
+  </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>Χειροκίνητοι έλεγχοι χαμηλής ταχύτητας.</value>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>Επιτρέπει την εκτέλεση της κίνησης των διαφόρων αξόνων σε χαμηλή ταχύτητα, Ορίζεται ένας μικρός χώρος κίνησης και στις δύο κατευθύνσεις. Το κείμενο των κουμπιών αλλάζει σύμφωνα με την απαιτούμενη κίνηση. Όταν το μηχάνημα έχει δοκιμαστεί, θα είναι δυνατόν να ελέγξετε όλους τους διάφορους άξονες σε χαμηλή ταχύτητα χωρίς αλληλοσυνδέσεις και για απεριόριστες διαδρομές.</value>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>Υποδεικνύει την τρέχουσα θέση ή κατάσταση για εκείνα τα μέρη που έχουν μόνο διακριτές θέσεις.</value>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>Κουμπί για την κίνηση προς τα εμπρός, την κίνηση προς τα επάνω ή άνοιγμα σύμφωνα με το επιλεγμένο μέρος.</value>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>Κουμπί για την κίνηση προς τα πίσω, προς τα κάτω ή κλείσιμο σύμφωνα με το επιλεγμένο μέρος</value>
+  </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>Επιτρέπει την εκτέλεση μιας σειράς επαναλαμβανόμενων δοκιμών για το κλείσιμο του αποσβεστήρα της επιλεγμένης πλατφόρμας. Είναι δυνατό να ορίσετε ένα χρόνο αναμονής μεταξύ δύο διαδοχικών κινήσεων. Η διαδικασία τελειώνει όταν ο καθορισμένος αριθμός κύκλων έχει επιτευχθεί ή κατά την έξοδο.</value>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>Ορίστε τον αριθμό των κύκλων που απαιτούνται.</value>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>Ορίστε το χρόνο μεταξύ δύο διαδοχικών κύκλων.</value>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό των κύκλων που έχουν ολοκληρωθεί.</value>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>Κατάσταση αισθητήρα A του φράγματος.</value>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>Κατάσταση αισθητήρα Β του φράγματος.</value>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>Εκκινήστε την έναρξη των απαιτούμενων δοκιμών. Το κουμπί είναι ενεργό αν ο αριθμός των απαιτούμενων κύκλων είναι μεγαλύτερος από μηδέν.</value>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>Σταματά το βρόχο όταν ολοκληρωθεί η τρέχουσα κίνηση. Το επόμενο πάτημα του κουμπιού εκκίνησης συνεχίζει τη δοκιμή από τον κύκλο που ακολουθεί μετά από εκείνον που σταμάτησε.</value>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να κάνετε την αρχή του κατακόρυφου άξονα στο τέλος του οποίου ορίζεται η τρέχουσα θέση που υποδεικνύεται από την τιμή μετατόπισης. Η διαδικασία είναι προπαρασκευαστική για την εκτέλεση άλλων λειτουργιών που απαιτούν την κίνηση του άξονα κατά ύψος.</value>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>Χαμηλότερο όριο κίνησης.</value>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>Ανώτερο όριο κίνησης.</value>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>Τρέχουσα τιμή μετατόπισης. Στο τέλος της προέλευσης του άξονα, το τρέχον όριο ορίζεται σε αυτήν την τιμή.</value>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>Τρέχουσα ανάλυση του άξονα.</value>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>Αναφορά του τελικού αποτελέσματος της διαδικασίας.</value>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>Εκκίνηση της διαδικασίας προέλευσης του κατακόρυφου άξονα.</value>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>Διακοπή της διαδικασίας προέλευσης του κατακόρυφου άξονα.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>Αρχική τιμή της τρέχουσας θέσης που διαβάζεται από το μετρητή.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>Τελική τιμή της τρέχουσας θέσης που διαβάζεται από το μετρητή.</value>
+  </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να ελέγξετε και πιθανώς να διορθώσετε τη διάσταση της επιλεγμένης κυψέλης. Η διόρθωση εφαρμόζεται μόνο στην επιλεγμένη κυψέλη.</value>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>Ορίστε την κυψέλη της οποίας θέλετε να ελέγξετε τη διάσταση.</value>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>Υποδεικνύει τη διάσταση της τρέχουσας επιλεγμένης κυψέλης.</value>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>Τιμή αλλαγής σε ύψος κατά τη διάρκεια της φάσης προσαρμογής.</value>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>Τρέχουσα τιμή της συντεταγμένης του άξονα.</value>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>Συνολική τιμή της διόρθωσης που πρόκειται να εφαρμοστεί.</value>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>Τοποθετήστε τον κατακόρυφο άξονα στην επιλεγμένη κυψέλη.</value>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>Αυξάνει την τρέχουσα συντεταγμένη του άξονα με την τιμή που υποδεικνύεται από το βήμα.</value>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>Μειώνει την τρέχουσα συντεταγμένη του άξονα με την τιμή που υποδεικνύεται από το βήμα.</value>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>Τιμή βήματος που εφαρμόζεται στην τρέχουσα συντεταγμένη του άξονα κάθε φορά που πατιούνται τα κουμπιά κίνησης.</value>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να ελέγξετε τη σωστή τοποθέτηση των διαφόρων πινάκων της θύρας ραφιού. Εφαρμόζεται οποιαδήποτε διόρθωση σε όλες τις κυψέλες που ανήκουν στον πίνακα που δοκιμάζεται.</value>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>Υποδεικνύει το συνολικό αριθμό των πινάκων στην πλευρά που επιλέγεται από την κυψέλη αναφοράς.</value>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>Υποδεικνύει τον τρέχων επιλεγμένο πίνακα που έχει ελεγχθεί.</value>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>Επιλεγμένη κυψέλη από την οποία προέρχεται ο πίνακας προς έλεγχο. Οι μονοί ή ζυγοί αριθμοί επιλέγουν την εμπρόσθια ή οπίσθια πλευρά.</value>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>Διάσταση της επιλεγμένης κυψέλης.</value>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>Υποδεικνύει την τρέχουσα θέση του άξονα. Μπορεί να αλλάξει από τα κουμπιά βήματος.</value>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>Τιμή βήματος που χρησιμοποιείται όταν τροποποιείται η διάσταση.</value>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>Συνολική τιμή της διόρθωσης που μπορεί να εφαρμοστεί στη διάσταση της επιλεγμένης κυψέλης.</value>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>Σας επιτρέπει να μεταβείτε στον επόμενο πίνακα προς έλεγχο.</value>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>Τοποθετήστε τον άξονα στην επιλεγμένη κυψέλη.</value>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>Αυξάνει την τρέχουσα συντεταγμένη του άξονα με την τιμή που υποδεικνύεται από το βήμα.</value>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>Μειώνει την τρέχουσα συντεταγμένη του άξονα με την τιμή που υποδεικνύεται από το βήμα.</value>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>Εφαρμόστε τη διόρθωση στην ομάδα των κυψελών στον τρέχων επιλεγμένο πίνακα.</value>
+  </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να προσαρμόσετε το φράγμα ανίχνευσης ύψους συρταριού. Το σήμα που φθάνει το ύψος πρέπει επίσης να χρησιμοποιείται στη φάση προ-τοποθέτησης του προτύπου δοκιμής.</value>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>Ορίστε την ταχύτητα που πρόκειται να χρησιμοποιήσετε κατά τη διάρκεια της φάσης βαθμονόμησης.</value>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>Υποδεικνύει το σφάλμα του συστήματος που προέρχεται από την καθορισμένη ταχύτητα βαθμονόμησης και το χρόνο σάρωσης του συστήματος. Μειώστε την ταχύτητα για να μειώσετε το σφάλμα.</value>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>Ορίζει τη μέγιστη ανοχή που επιτρέπεται στη μέτρηση. Η δοκιμή αποτυχαίνει αν το αποτέλεσμα υπερβαίνει την απαιτούμενη τιμή.</value>
+  </data>
+  <data name="HelpGHCHeightReached" xml:space="preserve">
+    <value>Υποδεικνύει την ενεργοποίηση της δέσμης που χρησιμοποιείται ως στοιχείο επαλήθευσης ύψους.</value>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>Επιστρέφει την τρέχουσα θέση του άξονα αλυσίδας.</value>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>Υποδεικνύει τη διόρθωση που εφαρμόζεται στο φράγμα. Το σύμβολο πρόσθεσης απαιτεί την ανύψωση του φράγματος, το σύμβολο αφαίρεσης το χαμήλωμα με την τιμή που υποδεικνύεται.</value>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>Αναφορά του τελικού αποτελέσματος δοκιμής.</value>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>Το κουμπί αρχίζει να ελέγχει τη διαδικασία.</value>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>Το κουμπί σταματά να ελέγχει τη διαδικασία.</value>
+  </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να επαληθεύετε ότι η μέτρηση βάρους εμπίπτει στην αναμενόμενη ανοχή. Για τη μέτρηση, χρησιμοποιούνται βάρη δείγματος στην ποσότητα που υποδεικνύεται στο κατάλληλο πεδίο.</value>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>Υποδεικνύει τη λειτουργία που εκτελείται σε χαμηλή ταχύτητα κατά τη διάρκεια της οποίας εκτελούνται τα δείγματα του παραδιδόμενου ρεύματος.</value>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>Υποδεικνύει το βάρος δείγματος που εισέρχεται για τη δοκιμή.</value>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>Υποδεικνύει την ανοχή που απαιτείται από τη μέτρηση.</value>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>Υποδεικνύει το βάρος που μετριέται από το σύστημα.</value>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>Αναφορά του τελικού αποτελέσματος της διαδικασίας. Το αποτέλεσμα θα είναι θετικό αν το μετρούμενο βάρος εμπίπτει εντός της καθορισμένης ανοχής.</value>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>Εκκίνηση της διαδικασίας δοκιμής.</value>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>Διακοπή της διαδικασίας δοκιμής.</value>
+  </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να διορθώσετε τη μετατόπιση του κατακόρυφου άξονα ούτως ώστε να ευθυγραμμίσετε το ύψος των διαφόρων κυττάρων με το σύστημα αναφοράς του κατακόρυφου άξονα.</value>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>Κυψέλη που επιλέχθηκε για τον έλεγχο.</value>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>Τρέχουσα ανύψωση της επιλεγμένης κυψέλης</value>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>Τιμή αλλαγής σε ύψος που πρέπει να εφαρμόζεται κάθε φορά που πατιούνται τα κουμπιά κίνησης του άξονα.</value>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>Τρέχουσα θέση του κατακόρυφου άξονα.</value>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>Τρέχουσα τιμή μετατόπισης του κατακόρυφου άξονα.</value>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>Νέα τιμή μετατόπισης.</value>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>Κινεί τον κατακόρυφο άξονα στη διάσταση της επιλεγμένης κυψέλης.</value>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>Αυξάνει το τρέχον ύψος του κατακόρυφου άξονα από τον ορισμό της τιμής του βήματος.</value>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>Μειώνει το τρέχον ύψος του κατακόρυφου άξονα από τον ορισμό της τιμής του βήματος.</value>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>Ενημερώνει τη μετατόπιση του κατακόρυφου άξονα στην τιμή που υποδεικνύεται.</value>
+  </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να τροποποιήσετε ένα μπλοκ κυψελών μεταξύ της πρώτης και τελευταίας που επιλέξατε. Η επιλεγμένη πλευρά υποδεικνύεται αυτόματα με βάση τον αρχικό αριθμό της κυψέλης ανάλογα με το αν είναι μονός ή ζυγός.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Ορίστε τον αριθμό των κυψελών εκκίνησης του μπλοκ.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Ορίστε τον αριθμό της τελικής κυψέλης του μπλοκ.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Ορίστε την επιθυμητή τιμή της διόρθωσης που μπορεί να εφαρμοστεί στην ομάδα της επιλεγμένης κυψέλης.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Εμφανίζει την πλευρά όπου κάνετε την επεξεργασία. Η πλευρά καθορίζεται αυτόματα με βάση τον επιλεγμένο αρχικό αριθμό της κυψέλης, αν είναι ζυγός ή μονός.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Εφαρμόστε τη διόρθωση στην επιλεγμένη ομάδα κυψέλης.</value>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>Υποδεικνύει το συνολικό αριθμό των κυψελών που πρέπει να δοκιμαστούν.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό των κυψελών που δοκιμάστηκαν.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>Αριθμός της τρέχουσας κυψέλης που δοκιμάστηκε.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>Αριθμός του συρταριού που εισήχθηκε.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>Μέγιστη χωρητικότητα του συρταριού κατά τη φόρτωση.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Εκκίνηση της διαδικασίας εισαγωγής συρταριού. Η διαδικασία τελειώνει όταν έχουν ολοκληρωθεί οι προγραμματισμένοι κύκλοι.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Ανακαλέστε το συρτάρι που χρησιμοποιήθηκε για τη δοκιμή στην πλατφόρμα.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να χρησιμοποιήσετε το επιλεγμένο συρτάρι στο κατάλληλο πεδίο εισαγωγής για τη δοκιμή των κάτω και επάνω κυψελών του μηχανήματος όπως επίσης τις κυψέλες κάτω και επάνω από τα μπλοκ κυψελών που υποδείχθηκαν ως απενεργοποιημένα. Σκοπός της διαδικασίας είναι να επαληθευτεί ότι δεν υπάρχει καμιά μηχανική παρεμβολή στις περιοχές αυτές.</value>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να εισάγετε τα άδεια συρτάρια μέσα στο μηχάνημα στο τέλος της διαδικασίας θέσης σε λειτουργία. Τα συρτάρια εισάγονται μέσα στα ελεύθερα μπλοκ που επιλέγονται σύμφωνα με τη χαμηλότερη προτεραιότητα.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>Συνολικός αριθμός συρταριών που πρέπει να εισαχθεί.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>Συρτάρια που έχουν ήδη εισαχθεί στο αυτοκίνητο.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>Αριθμός του συρταριού που εισήχθηκε. Μπορεί να δημιουργηθεί από το κατάλληλο κουμπί ή να εισαχθεί στο κατάλληλο πεδίο.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>Υποδεικνύει τη μέγιστη χωρητικότητα που επιτρέπεται για το τρέχον συρτάρι που εισάγεται.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>Το κουμπί ορίζει το επόμενο συρτάρι που πρόκειται να εισαχθεί. Ο αριθμός είναι εκείνος που ακολουθεί τον τελευταίο που εισάγεται.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Εκκινεί τη διαδικασία για την εισαγωγή του επιλεγμένου συρταριού.</value>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να ελέγξετε και πιθανώς να διορθώσετε το ύψος των διαφόρων πιθανών θέσεων στις διάφορες πλατφόρμες. Η διαδικασία είναι κατάλληλη για τον τύπο της πλατφόρμας που υποδεικνύεται στο έγγραφο που περιγράφει τη διαμόρφωση του μηχανήματος. Σε περίπτωση αρκετών θέσεων στην ίδια πλατφόρμα, η διαδικασία σας επιτρέπει πολλαπλούς ελέγχους.</value>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>Επιλέξτε την πλατφόρμα της οποίας θέλετε να ελέγξετε τις πιθανότητες.</value>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>Υποδεικνύει τη θέση μέσα στην επιλεγμένη πλατφόρμα της οποίας τα ύψη θέλετε να ελέγξετε. Ρυθμίζεται αυτόματα.</value>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>Εμφανίζει την ανύψωση της επιλεγμένης θέσης εντός της πλατφόρμας υπό έλεγχο.</value>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>Τιμή βήματος που εφαρμόζεται στην τρέχουσα συντεταγμένη του άξονα κάθε φορά που πατιούνται τα κουμπιά κίνησης.</value>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>Αθροιστική τιμή της διόρθωσης που μπορεί να εφαρμοστεί στο ύψος της επιλεγμένης θέσης πλατφόρμας.</value>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>Τοποθετήστε τον κατακόρυφο άξονα στην επιλεγμένη τοποθεσία πλατφόρμας.</value>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>Αυξάνει την τρέχουσα συντεταγμένη του άξονα με την τιμή που υποδεικνύεται από το βήμα.</value>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>Μειώνει την τρέχουσα συντεταγμένη του άξονα με την τιμή που υποδεικνύεται από το βήμα.</value>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>Διορθώνει το τρέχον ύψος της τρέχουσας θέσης της πλατφόρμας από την τιμή που υποδεικνύεται στο κατάλληλο πεδίο.</value>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>Αν ενεργοποιείται, το κουμπί σας επιτρέπει να επιλέξετε την επόμενη θέση στην τρέχουσα επιλεγμένη πλατφόρμα. Η διαδικασία πρέπει να επαναληφθεί για τη νέα θέση.</value>
+  </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>Το κύριο μενού σας επιτρέπει την πρόσβαση σε όλες τις λειτουργίες που προβλέπονται για τη φάση της θέσης σε λειτουργία του μηχανήματος.</value>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>Κύριο μενού.</value>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>Υποδεικνύει, όταν φαίνεται, την παρουσία κάποιου σφάλματος. Πατώντας το κουμπί ανοίγει το παράθυρο που προορίζεται για την αποκατάσταση της κατάστασης.</value>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>Η Off κατάσταση αυτού του κουμπιού υποδεικνύει την απενεργοποίηση των κινήσεων του μηχανήματος.</value>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>Η On κατάσταση αυτού του κουμπιού υποδεικνύει ότι το μηχάνημα είναι ενεργοποιημένο για το χειρισμό.</value>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>Υποδεικνύει το όνομα του τρέχοντος χρήστη που έχει συνδεθεί. Αν πατηθεί, σας επιτρέπει να αποσυνδεθείτε από το σύστημα.</value>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>Αν πατηθεί, ανοίγει το εννοιολογικό μενού για την τρέχουσα επιλεγμένη λειτουργία.</value>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>Σας επιτρέπει να κυλήσετε τη λίστα των κουμπιών για πρόσβαση στις διάφορες λειτουργίες.</value>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>Λίστα των κουμπιών για πρόσβαση στις λειτουργίες εγκατάστασης.</value>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>Σας επιτρέπει να κυλήσετε προς τα κάτω τη λίστα των κουμπιών για πρόσβαση στις διάφορες λειτουργίες.</value>
+  </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να εκτελέσετε μια σειρά δοκιμών επιβίβασης και αποβίβασης ενός συρταριού χρησιμοποιώντας την πλατφόρμα που έχει επιλεγεί στα κατάλληλα πεδία εισαγωγής. Για τη δοκιμή είναι δυνατόν να διαφοροποιηθεί η επιτάχυνση, επιβράδυνση και ταχύτητα του ρυθμού τροφοδοσίας σύμφωνα με τα όσα υποδεικνύονται στο κατάλληλο πεδίο. Η δοκιμή συνεχίζεται έως ότου επιτευχθεί ο απαιτούμενος αριθμός των κύκλων ή μέχρι να πατηθεί το κουμπί διακοπής.</value>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>Εισάγετε τον αριθμό της πλατφόρμας πάνω στην οποία θέλετε να εκτελέσετε τη δοκιμή.</value>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>Εισάγετε τη θέση μέσα στην πλατφόρμα πάνω στην οποία θέλετε να εκτελέσετε τη δοκιμή.</value>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>Εισάγετε το ρυθμό τροφοδοσίας που απαιτείται για τη δοκιμή. Η μείωση επηρεάζει επίσης τις τιμές επιτάχυνσης και επιβράδυνσης.</value>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>Αναφέρει την τρέχουσα θέση του άξονα αλυσίδας ως τιμή σχετική με το ύψος εκκίνησης.</value>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>Εισάγετε τον αριθμό των κύκλων που απαιτούνται.</value>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>Αναφέρει τον αριθμό των ολοκληρωμένων κύκλων που εκτελούνται.</value>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>Κινήστε τον κατακόρυφο άξονα στη θέση μέσα στην επιλεγμένη πλατφόρμα. Το τέλος λαμβάνει υπόψη τη μετατόπιση του μηχανήματος</value>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>Εκκίνηση της διαδικασίας δοκιμής. Το κουμπί είναι ενεργό μόνο όταν ο κατακόρυφος άξονας είναι στην απαιτούμενη θέση στην πλατφόρμα.</value>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>Διακοπή του κύκλου δοκιμής.</value>
+  </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>Αναφέρει τη λειτουργία που είναι ενεργοποιημένη επί του παρόντος για τις χειροκίνητες εντολές. Η λειτουργία παρατεταμένης διαδρομής ορίζεται αυτόματα μετά την ολοκλήρωση της θέσης σε λειτουργία.</value>
+  </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>Ακυρώστε τη διαδικασία αποθήκευσης αρχείου.</value>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να αποθηκεύσετε ή να επαναφέρετε αρχεία διαμόρφωσης στην εξωτερική διάταξη.</value>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>Διαδικασία αποθήκευσης διαμόρφωσης.</value>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>Υποδεικνύει την αυτόματη δημιουργία φακέλου όπου τα αρχεία διαμόρφωσης θα αποθηκευτούν.</value>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>Ξεκινήστε τη διαδικασία για την αποθήκευση των αρχείων διαμόρφωσης. Οποιοδήποτε αρχείο που ήδη υπάρχει θα αντικατασταθεί.</value>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>Επιβεβαιώστε τη διαδικασία αποθήκευσης αρχείου.</value>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>Ακυρώστε τη διαδικασία αποθήκευσης αρχείου.</value>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>Διαδικασία αποκατάστασης διαμόρφωσης.</value>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>Αρχίστε τη διαδικασία μεταφόρτωσης των αρχείων διαμόρφωσης. Οποιοδήποτε αρχείο που ήδη υπάρχει θα αντικατασταθεί.</value>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>Επιβεβαιώστε τη διαδικασία μεταφόρτωσης αρχείου.</value>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>Ακυρώστε τη διαδικασία μεταφόρτωσης αρχείου.</value>
+  </data>
+  <data name="HelpOpMainPageHeadr" xml:space="preserve">
+    <value>Πρώτη σελίδα.</value>
+  </data>
+  <data name="HelpOpMainPageDescription" xml:space="preserve">
+    <value>Το κύριο μενού σας επιτρέπει να ελέγχετε την κατάσταση του μηχανήματος που χρησιμοποιώντας τα κατάλληλα κουμπιά στο επάνω μέρος της οθόνης. Στην αριστερή πλευρά, χρησιμοποιώντας τα κουμπιά πλοήγησης, μπορείτε να έχετε πρόσβαση στις διάφορες λειτουργίες.</value>
+  </data>
+  <data name="HelpOpMainManu" xml:space="preserve">
+    <value>Υποδεικνύει τη χειροκίνητη κατάσταση. Ανεστάλη ο αυτόματος κύκλος.</value>
+  </data>
+  <data name="HelpOpMainAuto" xml:space="preserve">
+    <value>Υποδεικνύει την αυτόματη κατάσταση. Το μηχάνημα χειρίζεται τις εντολές που προέρχονται από το σύστημα ελέγχου.</value>
+  </data>
+  <data name="HelpOpMainOff" xml:space="preserve">
+    <value>Η ισχύς των κινητήρων είναι απενεργοποιημένη. Οι κινήσεις δεν μπορούν να γίνουν με κανένα τρόπο.</value>
+  </data>
+  <data name="HelpOpMainOn" xml:space="preserve">
+    <value>Η ισχύς στους κινητήρες ενεργοποιήθηκε. Το μηχάνημα είναι σε θέση να εκτελεί κινήσεις.</value>
+  </data>
+  <data name="HelpOpMainServiceAdvice" xml:space="preserve">
+    <value>Τα σύστημα επισημαίνει ότι μερικά μέρη του μηχανήματος πρέπει να υποβληθούν στην προγραμματισμένη συντήρηση.</value>
+  </data>
+  <data name="HelpOpMainServiceAllert" xml:space="preserve">
+    <value>Το σύστημα επισημαίνει ότι μερικά μέρη του μηχανήματος έχουν φθάσει στο τέλος της προγραμματισμένης περιόδου μεταξύ των δύο εργασιών συντήρησης. Απαιτούμενη συντήρηση!</value>
+  </data>
+  <data name="HelpOpMainError" xml:space="preserve">
+    <value>Επισημάνθηκε κάποιο σφάλμα κατά τη λειτουργία του μηχανήματος. Πατώντας αυτό το κουμπί ανοίγει η σελίδα για τη διαχείριση των διαδικασιών επαναφοράς.</value>
+  </data>
+  <data name="HelpOpMainUser" xml:space="preserve">
+    <value>Αναφέρει το όνομα του τρέχοντος χειριστή που έχει συνδεθεί. Πατώντας το κουμπί σας επιτρέπεται να αποσυνδεθείτε.</value>
+  </data>
+  <data name="HelpOpMainHelp" xml:space="preserve">
+    <value>Το κουμπί ανοίγει τη σελίδα βοήθειας ανάλογα με τη διαδικασία που χρησιμοποιείτε.</value>
+  </data>
+  <data name="HelpOpMainDrawerOp" xml:space="preserve">
+    <value>Το κουμπί ανοίγει τη σελίδα για τη διαχείριση των λειτουργιών που έχουν προγραμματιστεί στο συρτάρι της πλατφόρμας.</value>
+  </data>
+  <data name="HelpOpMainItem" xml:space="preserve">
+    <value>Το κουμπί ανοίγει τη σελίδα που σας επιτρέπει να αναζητήσετε έναν κωδικό στοιχείου.</value>
+  </data>
+  <data name="HelpOpMainLists" xml:space="preserve">
+    <value>Το κουμπί ανοίγει τη σελίδα προβολής των λιστών που είναι σε εκκρεμότητα για την προγραμματισμένη εκτέλεση των WMS.</value>
+  </data>
+  <data name="HelpOpMainOther" xml:space="preserve">
+    <value>Επιτρέπει την πρόσβαση στις συμπληρωματικές λειτουργίες.</value>
+  </data>
+  <data name="HelpDrawerWaitDescription" xml:space="preserve">
+    <value>Η σελίδα υποδεικνύει ότι το σύστημα έχει ολοκληρώσει τις λειτουργίες που έχουν προγραμματιστεί στο τελευταίο συρτάρι που έφθασε στην πλατφόρμα. Αναμένεται η άφιξη του επόμενου συρταριού το οποίο θα προκαλέσει το άνοιγμα της σελίδας που προορίζεται για τις προγραμματισμένες λειτουργίες.</value>
+  </data>
+  <data name="HelpDrawerWaitNote" xml:space="preserve">
+    <value>Η σημείωση αναφέρει την τρέχουσα κατάσταση του συστήματος.</value>
+  </data>
+  <data name="HelpDrawerWaitScheduledOperations" xml:space="preserve">
+    <value>Το πεδίο αναφέρει τον αριθμό των προγραμματισμένων λειτουργιών επί του παρόντος προς την πλατφόρμα όπου εργάζεται ο χειριστής.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
+    <value>Η διαδικασία παρέχει όλες τις λεπτομερείς πληροφορίες σχετικά με τη λειτουργία απόσυρσης που έχει προγραμματιστεί στο συρτάρι που υπάρχει στην πλατφόρμα όπου ενεργεί ο χρήστης. Ο σχεδιασμός, αν υπάρχει, δείχνει το διαχωρισμό του συρταριού και την επισημασμένη περιοχή που υποδεικνύει το διαμέρισμα στο οποίο θα γίνουν οι εργασίες. Αν υπάρχει, εμφανίζεται επίσης η εικόνα του στοιχείου χειρισμού.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
+    <value>Εμφανίζεται η ποσότητα του στοιχείου που πρόκειται να αφαιρεθεί από το επισημασμένο διαμέρισμα.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
+    <value>Ο χρήστης μπορεί να αλλάξει την ποσότητα που πραγματικά ανακλήθηκε αν το απόθεμα δεν είναι επαρκές. Υπό κανονικές συνθήκες το πεδίο είναι ήδη γεμάτο με την απαιτούμενη ποσότητα.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
+    <value>Το παράθυρο εμφανίζει μια σειρά από πληροφορίες επιπρόσθετες σε εκείνες που υπάρχουν στο παράθυρο λήψης. Εμφανίζονται λεπτομερείς πληροφορίες τόσο για το στοιχείο που λαμβάνεται όσο και για κάθε σχετική λίστα συσκευασίας. Αν υπάρχει, εμφανίζεται επίσης η εικόνα του στοιχείου.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
+    <value>Εμφανίζει τη σειρά της λίστας στην οποία αναφέρεται η λειτουργία ανάκλησης σε εξέλιξη.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Υποδεικνύεται η ημερομηνία παραγωγής του στοιχείου που λαμβάνεται.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Αν υπάρχει, υποδεικνύεται η παρτίδα παραγωγής του στοιχείου που λαμβάνεται.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Αν απαιτείται, υποδεικνύεται η κατάσταση του υλικού που υπόκειται σε ανάκληση.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
+    <value>Αν ισχύει, υποδεικνύει τη λίστα συσκευασίας όπου συλλέγονται οι πληροφορίες σχετικά με τα διάφορα στοιχεία που λαμβάνονται.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
+    <value>Αν υπάρχει, υποδεικνύει την περιγραφή της λίστας συσκευασίας που ενώνει τα υλικά που λαμβάνονται.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
+    <value>Παρέχει υποδείξεις για τον τύπο της συσκευασίας του στοιχείου που επιλέγεται.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Εμφανίζεται η ποσότητα του στοιχείου που πρόκειται να αφαιρεθεί από το επισημασμένο διαμέρισμα.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
+    <value>Η σελίδα δείχνει τις λεπτομέρειες της τρέχουσας λειτουργίας εναπόθεσης σε εξέλιξη Περισσότερες λεπτομέρειες για τις λειτουργίες που πρόκειται να εκτελεστούν παρέχονται στη βασική σελίδα.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Υποδεικνύει τη σειρά της λίστας που συμμετέχει στη λειτουργία σε εξέλιξη.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Αναφέρει από την ημερομηνία παραγωγής του στοιχείου.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Εμφανίζει την κατάσταση του υλικού του στοιχείου που πληρώνεται.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
+    <value>Υποδεικνύει τη σειρά της λίστας που συμμετέχει στη λειτουργία σε εξέλιξη.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
+    <value>Υποδεικνύει τον τύπο της συσκευασίας του στοιχείου που πληρώνεται.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
+    <value>Ποσότητα που πρόκειται να χυθεί στο υποδεικνυόμενο διαμέρισμα.</value>
+  </data>
+  <data name="HelpCommonList" xml:space="preserve">
+    <value>Υποδεικνύεται ο κωδικός της λίστας που έχει σχέση με τη διαδικασία σε εξέλιξη.</value>
+  </data>
+  <data name="HelpCommonListDescription" xml:space="preserve">
+    <value>Εμφανίζει την περιγραφή της λίστας που έχει σχέση με τη λειτουργία σε εξέλιξη.</value>
+  </data>
+  <data name="HelpCommonItem" xml:space="preserve">
+    <value>Υποδεικνύει τον κωδικό του στοιχείου που συμμετέχει στη λειτουργία σε εξέλιξη.</value>
+  </data>
+  <data name="HelpCommonItemDescription" xml:space="preserve">
+    <value>Εμφανίζεται η περιγραφή του στοιχείου που είναι το αντικείμενο της τρέχουσας λειτουργίας.</value>
+  </data>
+  <data name="HelpCommonPosition" xml:space="preserve">
+    <value>Το πεδίο υποδεικνύει τη θέση όπου βρίσκεται το αντικείμενο του διαμερίσματος της λειτουργίας σε εξέλιξη, χαρτογραφημένο σύμφωνα με την κωδικοποίηση που έχει υιοθετηθεί.</value>
+  </data>
+  <data name="HelpCommonNote" xml:space="preserve">
+    <value>Εμφανίζονται στο χειριστή οι σημειώσεις που έχουν σχέση με τη λειτουργία που πρόκειται να εκτελεστεί.</value>
+  </data>
+  <data name="HelpCommonDetail" xml:space="preserve">
+    <value>Το κουμπί σας επιτρέπει να εισέλθετε στη σελίδα που εμφανίζει περαιτέρω λεπτομέρειες σχετικά με τη λειτουργία σε εξέλιξη.</value>
+  </data>
+  <data name="HelpCommonConfirm" xml:space="preserve">
+    <value>Επιβεβαιώνει ότι έχει ολοκληρωθεί η τρέχουσα λειτουργία.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
+    <value>Η διαδικασία κάνει δυνατή την αναπλήρωση του διαμερίσματος που περιέχει το στοιχείο με τα ίδια χαρακτηριστικά όπως εκείνο της πληρωμής. Η διαδικασία επιτρέπει την ενημέρωση της μέγιστης χωρητικότητας του διαμερίσματος αν η καταγεγραμμένη τιμή είναι εσφαλμένη.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Ποσότητα που πρόκειται να χυθεί στο επιλεγμένο διαμέρισμα.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
+    <value>Ανοίγει τη σελίδα διαχείρισης της ενημέρωσης της μέγιστης χωρητικότητας του διαμερίσματος.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Σας επιτρέπει να ορίσετε την ποσότητα που χύνεται επί του παρόντος στο επιλεγμένο διαμέρισμα.</value>
+  </data>
+  <data name="HelpCommonGridColumnHeader" xml:space="preserve">
+    <value>Περιγραφή στήλης του πίνακα.</value>
+  </data>
+  <data name="HelpCommonUp" xml:space="preserve">
+    <value>Μετακινήστε το δείκτη στο προηγούμενο στοιχείο. Πατώντας δύο φορές μεταφέρει στην αρχή της λίστας.</value>
+  </data>
+  <data name="HelpCommonDown" xml:space="preserve">
+    <value>Μετακινήστε το δείκτη στο επόμενο στοιχείο. Πατώντας δύο φορές μεταφέρει στο τέλος της λίστας.</value>
+  </data>
+  <data name="HelpListsInWaitDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να προβάλετε όλες τις λίστες που περιμένουν να εκτελεστούν από το σύστημα WMS. Τα μηχανήματα που συμμετέχουν υποδεικνύονται για κάθε λίστα. Είναι δυνατό να εκτελέσετε μόνο το μέρος των λιστών που έχουν μερικά στοιχεία που πρόκειται να ληφθούν υπόψη στο μηχάνημα από το οποίο χρησιμοποιείται η διαδικασία.</value>
+  </data>
+  <data name="HelpListsInWaitGridList" xml:space="preserve">
+    <value>Η στήλη του πλέγματος παρουσιάζει τους κωδικούς των λιστών που περιμένουν να εκτελεστούν.</value>
+  </data>
+  <data name="HelpListsInWaitGridDescription" xml:space="preserve">
+    <value>Η στήλη του πλέγματος παρουσιάζει την περιγραφή των λιστών που περιμένουν να εκτελεστούν.</value>
+  </data>
+  <data name="HelpListsInWaitGridMachine" xml:space="preserve">
+    <value>Η στήλη εμφανίζει, για κάθε λίστα, τη λίστα των μηχανημάτων που συμμετέχουν για την εκτέλεσή της.</value>
+  </data>
+  <data name="HelpListsInWaitListsDetail" xml:space="preserve">
+    <value>Το κουμπί σας επιτρέπει να έχετε πρόσβαση στη σελίδα λεπτομερειών της λίστας όπου μπορείτε να δείτε τη λίστα των στοιχείων που υπάρχουν.</value>
+  </data>
+  <data name="HelpListsInWaitListsExecute" xml:space="preserve">
+    <value>Το κουμπί, αν ενεργοποιηθεί, σας επιτρέπει να εκτελέσετε τη λίστα που επιλέχθηκε επί του παρόντος για το τμήμα που υπάρχει στο μηχάνημα όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
+    <value>Δείχνει τη σειρά των αριθμών της εμφανιζόμενης λίστας.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
+    <value>Υποδεικνύει τον κωδικό του στοιχείου.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
+    <value>Αναφέρει την περιγραφή του στοιχείου.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
+    <value>Υποδεικνύει την απαιτούμενη ποσότητα εκείνου του στοιχείου.</value>
+  </data>
+  <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
+    <value>Η σελίδα εμφανίζει τις λεπτομέρειες της επιλεγμένης λίστας. Εντός όλων των εμφανιζόμενων γραμμών μπορείτε να εκτελέσετε μόνο εκείνα που επισημαίνονται διότι το στοιχείο περιέχεται στο μηχάνημα όπου εργάζεστε. Το κουμπί "Run list" (Λίστα εκτέλεσης) είναι ενεργό μόνο αν υπάρχει τουλάχιστον μια εκτελέσιμη γραμμή στο μηχάνημα όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να αναζητήσετε ένα στοιχείο χρησιμοποιώντας τόσο τον κωδικό όσο και τις στήλες περιγραφής. Το κείμενο που είναι καταχωρημένο στο πεδίο αναζήτησης χρησιμοποιείται αυτόματα για να βρει ότι απαιτείται χρησιμοποιώντας τα περιεχόμενα των δύο στηλών. Το αποτέλεσμα εμφανίζεται στο πλέγμα.</value>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>Εμφανίζει τη λίστα κωδικών των στοιχείων που ταιριάζουν με τα κριτήρια αναζήτησης.</value>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>Εμφανίζει την περιγραφή του στοιχείου που ταιριάζει με τα κριτήρια αναζήτησης.</value>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>Υποδεικνύει τη λίστα των μηχανημάτων που περιέχουν το στοιχείο που υποδεικνύεται στη σειρά. Μπορεί να υπάρχει ένα στοιχείο σε ένα ή περισσότερα μηχανήματα.</value>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>Καταχωρήστε την ακολουθία των χαρακτήρων προς αναζήτηση στα πεδία περιγραφής κωδικού και στοιχείου στο πεδίο.</value>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>Υποδεικνύει τη διαθέσιμη ποσότητα του επιλεγμένου στοιχείου μέσα στο μηχάνημα στο οποίο εργάζεστε.</value>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>Το πεδίο ενεργοποιείται μόνο αν η ποσότητα που διατίθεται για το επιλεγμένο στοιχείο είναι μεγαλύτερη από μηδέν. Μπορείτε να καταχωρήσετε μια τιμή που δεν υπερβαίνει τη διαθέσιμη ποσότητα.</value>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>Σας επιτρέπει να ζητήσετε το επιλεγμένο στοιχείο στην απαιτούμενη ποσότητα. Το κουμπί είναι ενεργό μόνο αν το στοιχείο είναι διαθέσιμο στο μηχάνημα όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>Η σελίδα εμφανίζει τα κύρια δεδομένα του επιλεγμένου στοιχείου. Περισσότερες λεπτομερείς πληροφορίες μπορούν να προβληθούν στο επίπεδο διαχείρισης WMS.</value>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>Υποδεικνύει τον τρόπο διαχείρισης του στοιχείου.</value>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>Υποδεικνύει την περίοδο Fifo του στοιχείου, που εκφράζεται στη μονάδα μέτρησης που υποδεικνύεται.</value>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>Κατηγορία στην οποία ανήκει το στοιχείο.</value>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>Κλάση χειρισμού του επιλεγμένου στοιχείου.</value>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>Μονάδα μέτρησης που επιλέχθηκε για το στοιχείο.</value>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>Μέσο μοναδιαίο βάρος που εκφράζεται στη μονάδα μέτρησης που υποδεικνύεται.</value>
+  </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>Επιτρέπει την εκτέλεση των επισημασμένων γραμμών της λίστας. Το κουμπί ενεργοποιείται μόνο αν τουλάχιστον μια σειρά της επιλεγμένης λίστας μπορεί να εκτελεστεί στο μηχάνημα όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>Η στήλη εμφανίζει το μηχάνημα ή τα μηχανήματα όπου υπάρχει επί του παρόντος το στοιχείο.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να καλέσετε το επιλεγμένο συρτάρι στην πλατφόρμα όπου εργάζεται ο χειριστής.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό του συρταριού στο οποίο αναφέρονται τα δεδομένα του πλέγματος.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
+    <value>Τρέχον ύψος του επιλεγμένου συρταριού.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
+    <value>Υποδεικνύει το τρέχον βάρος του επιλεγμένου συρταριού.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
+    <value>Υποδεικνύει την κυψέλη όπου αποθηκεύεται το συρτάρι.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
+    <value>Υποδεικνύει την πλευρά του μηχανήματος όπου είναι αποθηκευμένο το συρτάρι.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
+    <value>Αναφέρει την τρέχουσα κατάσταση του συρταριού. Το κόκκινο χρώμα υποδεικνύει ότι το συρτάρι δεν μπορεί να ανακληθεί από τον τρέχων συνδεδεμένο χρήστη.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
+    <value>Εμφανίζει τον αριθμό του συρταριού που πρόκειται να ανακληθεί.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Το κουμπί σας επιτρέπει να ανακαλέσετε το συρτάρι που επιλέξατε στο πλέγμα. Το κουμπί είναι ενεργό αν το συρτάρι μπορεί να κληθεί από τον τρέχοντα χρήστη.</value>
+  </data>
+  <data name="HelpDrawerCompactingDescription" xml:space="preserve">
+    <value>Ενεργοποιεί τη διαδικασία συμπίεσης για την πίσω πλευρά του μηχανήματος. Το κουμπί είναι ενεργό αν είναι δυνατή η ανάκτηση του απαιτούμενου χώρου.</value>
+  </data>
+  <data name="HelpDrawerCompactingSide" xml:space="preserve">
+    <value>Υποδεικνύει την πλευρά του μηχανήματος στην οποία αναφέρονται τα παρεχόμενα δεδομένα.</value>
+  </data>
+  <data name="HelpDrawerCompactingFragment" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό των χαμένων τεμαχίων που υπάρχουν στην τρέχουσα πλευρά.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
+    <value>Αναφέρετε το μέγιστο χώρο που μπορεί να ανακτηθεί στην τρέχουσα πλευρά.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Χώρος προς ανάκτηση. Από την προεπιλογή ορίζεται στη μέγιστη τιμή του ανακτήσιμου χώρου.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
+    <value>Ενεργοποιεί τη διαδικασία συμπίεσης για τη μπροστινή πλευρά του μηχανήματος. Το κουμπί είναι ενεργό αν είναι δυνατή η ανάκτηση του απαιτούμενου χώρου.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
+    <value>Ενεργοποιεί τη διαδικασία συμπίεσης για την πίσω πλευρά του μηχανήματος. Το κουμπί είναι ενεργό αν είναι δυνατή η ανάκτηση του απαιτούμενου χώρου.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>Χώρος προς ανάκτηση. Από την προεπιλογή ορίζεται στη μέγιστη τιμή του ανακτήσιμου χώρου.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό του συρταριού.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό των αποστολών στις οποίες υπόκειται το συρτάρι.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό των χαρτογραφημένων διαμερισμάτων που υπάρχουν μέσα στο συρτάρι ανεξάρτητα από την κατάστασή τους.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>Αναφέρει το συνολικό αριθμό των συρταριών που βρίσκονται στο μηχάνημα.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>Εμφανίζει το μέγεθος των συρταριών που αποθηκεύτηκαν μέσα στο μηχάνημα.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>Υποδεικνύει, τόσο γραφικά όσο και αριθμητικά, το συνολικό βαθμό πλήρωσης του μηχανήματος.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>Επιτρέπει την πρόσβαση στη διαδικασία στατιστικής ανάλυσης σε σχέση με το βάρος που βρίσκεται στα διάφορα συρτάρια.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>Η διαδικασία παρέχει δεδομένα σχετικά με το βάρος που κατανέμεται στα διάφορα συρτάρια και, συνολικά, μέσα στο μηχάνημα. Για κάθε συρτάρι, παρέχονται περαιτέρω πληροφορίες, συμπεριλαμβανομένου του τρέχοντος ύψους, του μέγιστου βάρους που μπορεί να φορτωθεί για κάθε συρτάρι, του απόβαρου, του τρέχοντος συνολικού βάρους, καθώς επίσης και το ποσοστό του τρέχοντος βάρους σε σύγκριση με το μέγιστο που παρέχεται τόσο στη γραφική όσο και στην αριθμητική μορφή. Παρέχεται επίσης μια συνολική υπόδειξη που ισχύει για όλο το μηχάνημα.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό του συρταριού.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>Τρέχον ύψος συρταριού.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>Υποδεικνύει το μέγιστο βάρος που επιτρέπεται για το συρτάρι.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>Υποδεικνύει το βάρος του άδειου συρταριού.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>Αναφέρει το τρέχον βάρος του συρταριού.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>Υποδεικνύει το ποσοστό βάρους που χρησιμοποιείται σε σχέση με το μέγιστο δυνατό.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Υποδεικνύει το μέγιστο αριθμό των συρταριών που βρίσκονται στο μηχάνημα.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>Εμφανίζει τη μέγιστη μεικτή χωρητικότητα του μηχανήματος.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>Υποδεικνύει το μέγιστο μεικτό βάρος φόρτωσης.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>Μέγιστη καθαρή ροή που επιτρέπεται στο μηχάνημα.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>Υποδεικνύει το τρέχον καθαρό βάρος φόρτωσης.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>Εμφανίζει το τρέχον ποσοστό του φορτωμένου βάρους σχετικά με το μέγιστο επιτρεπόμενο βάρος.</value>
+  </data>
+  <data name="HelpMachineStatisticsDescription" xml:space="preserve">
+    <value>Η διαδικασία παρέχει στατιστικά δεδομένα των κυρίων μερών του μηχανήματος. Τα δεδομένα που παρέχονται αναφέρονται σε ότι έχει εκτελέσει το μηχάνημα κατά τη διάρκεια του κύκλου ζωής του από τη στιγμή της εγκατάστασης.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
+    <value>Υποδεικνύει το συνολικό αριθμό των κύκλων που εκτελούνται από τον κατακόρυφο άξονα. Ένας κύκλος ισοδυναμεί με μια μετατόπιση μεταξύ δύο σημείων.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
+    <value>Αναφέρει το άθροισμα των Km. Μεταφέρθηκε με τον κατακόρυφο άξονα από τη στιγμή της εγκατάστασης.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
+    <value>Αναφέρει το συνολικό αριθμό των κύκλων που εκτελούνται από το κλείστρο που εξοπλίζει την πλατφόρμα n. 1. Ένας κύκλος είναι μια ολική ή ενδιάμεση λειτουργία ανοίγματος ή κλεισίματος.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
+    <value>Αναφέρει το συνολικό αριθμό των κύκλων που εκτελούνται από το κλείστρο που εξοπλίζει την πλατφόρμα n. 2. Ένας κύκλος είναι μια ολική ή ενδιάμεση λειτουργία ανοίγματος ή κλεισίματος.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
+    <value>Αναφέρει το συνολικό αριθμό των κύκλων που εκτελούνται από το κλείστρο που εξοπλίζει την πλατφόρμα n. 3. Ένας κύκλος είναι μια ολική ή ενδιάμεση λειτουργία ανοίγματος ή κλεισίματος.</value>
+  </data>
+  <data name="HelpMachineStatisticsHorizontalCycles" xml:space="preserve">
+    <value>Το πεδίο εμφανίζει το συνολικό αριθμό των κύκλων που εκτελούνται από το ανυψωτικό μηχάνημα μετά την εγκατάσταση. Ένας κύκλος είναι μια λειτουργία επιβίβασης ή αποβίβασης.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay1" xml:space="preserve">
+    <value>Το πεδίο εμφανίζει το συνολικό αριθμό των συρταριών που έχουν επηρεάσει την πλατφόρμα n. 2. Η μέτρηση αυξάνεται όταν το συρτάρι μεταφέρεται μέσα στην πλατφόρμα και στη συνέχεια επιστρέφει στην αποθήκη.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay2" xml:space="preserve">
+    <value>Το πεδίο εμφανίζει το συνολικό αριθμό των συρταριών που έχουν επηρεάσει την πλατφόρμα n. 2. Η μέτρηση αυξάνεται όταν το συρτάρι μεταφέρεται μέσα στην πλατφόρμα και στη συνέχεια επιστρέφει στην αποθήκη.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay3" xml:space="preserve">
+    <value>Το πεδίο εμφανίζει το συνολικό αριθμό των συρταριών που έχουν επηρεάσει την πλατφόρμα n. 3. Η μέτρηση αυξάνεται όταν το συρτάρι μεταφέρεται μέσα στην πλατφόρμα και στη συνέχεια επιστρέφει στην αποθήκη.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
+    <value>Η στήλη εμφανίζει τον κωδικό του κιτ για το επιλεγμένο εξάρτημα.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
+    <value>Η στήλη εμφανίζει την περιγραφή των διαφόρων κιτ.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
+    <value>Υποδεικνύει την τρέχουσα κατάσταση του κιτ. Το πορτοκαλί χρώμα υποδεικνύει την προσέγγιση συντήρησης, το κόκκινο την περίοδο λήξης και για το λόγο αυτό της απαιτούμενης συντήρησης.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
+    <value>Η στήλη υποδεικνύει ότι έχει γίνει ήδη ένα αίτημα παρέμβασης στο προσωπικό συντήρησης για το συγκεκριμένο κιτ</value>
+  </data>
+  <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
+    <value>Εμφανίζει το μοντέλο του μηχανήματος.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
+    <value>Αναφέρει το σειριακό αριθμό του μηχανήματος.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
+    <value>Αναφέρει την ημερομηνία εγκατάστασης του μηχανήματος.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
+    <value>Υποδεικνύει την ημερομηνία κατά την οποία εκτελέστηκε η τελευταία συντήρηση.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
+    <value>Υποδεικνύει την εκτιμώμενη ημερομηνία για την επόμενη συντήρηση.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
+    <value>Υποδεικνύει την τρέχουσα κατάσταση του κιτ. Το πορτοκαλί χρώμα υποδεικνύει την προσέγγιση συντήρησης, το κόκκινο την περίοδο λήξης και για το λόγο αυτό της απαιτούμενης συντήρησης.</value>
+  </data>
+  <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
+    <value>Η σελίδα σας επιτρέπει να προβάλετε τα δεδομένα στα οποία βασίζεται η συντήρηση του επιλεγμένου κιτ. Εμφανίζονται όλες οι πληροφορίες που χρησιμοποιούνται από το σύστημα για τον καθορισμό της προγραμματισμένης συντήρησης.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
+    <value>Εμφανίζει τον αριθμό του εξαρτήματος που χρησιμοποιείται από το επιλεγμένο κιτ συντήρησης.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
+    <value>Αναφέρει την περιγραφή του εξαρτήματος που χρησιμοποιείται στο επιλεγμένο κιτ.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό των κομματιών του στοιχείου που απαιτείται στο επιλεγμένο κιτ.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
+    <value>Συνολικός αριθμός κύκλων που ολοκληρώθηκαν από την εγκατάσταση του μηχανήματος.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
+    <value>Αναφέρει τον αριθμό των κύκλων που εκτελέστηκαν από την τελευταία συντήρηση.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό των κύκλων που μπορεί να εκτελείται μεταξύ δύο εργασιών συντήρησης.</value>
+  </data>
+  <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Αναφέρει την κατάσταση του κιτ με τη σύμβαση ότι το πορτοκαλί χρώμα υποδεικνύει την προσέγγιση συντήρησης και το κόκκινο τη λήξη της συντήρησης.</value>
+  </data>
+  <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό των ωρών που απαιτούνται για την εκτέλεση των απαιτούμενων εργασιών συντήρησης.</value>
+  </data>
+  <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Υποδεικνύει αν είναι αναγκαία η χρήση ενός μπαλκονιού πρόσβασης για εργασίες σε ύψος για τη συντήρηση που πρόκειται να εκτελεστεί.</value>
+  </data>
+  <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
+    <value>Σας επιτρέπει να στείλετε ένα email στο γραφείο τεχνικής υποστήριξης ζητώντας μια επέμβαση συντήρησης.</value>
+  </data>
+  <data name="HelpGeneralInfoDescription" xml:space="preserve">
+    <value>Η σελίδα παρουσιάζει μια σειρά από γενικές πληροφορίες σχετικά με το μηχάνημα όπου εργάζεστε. Μεταξύ των άλλων πληροφοριών, εμφανίζεται επίσης η ημερομηνία της επόμενης συντήρησης. Σε περίπτωση που απαιτούνται περισσότερες συντηρήσεις, εμφανίζεται η πιο πρόσφατη ημερομηνία.</value>
+  </data>
+  <data name="HelpGeneralInfoModel" xml:space="preserve">
+    <value>Εμφανίζει το μοντέλο του μηχανήματος όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpGeneralInfoSerial" xml:space="preserve">
+    <value>Υποδεικνύει το σειριακό αριθμό του μηχανήματος όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
+    <value>Εμφανίζει την έκδοση του τρέχοντος SW που εγκαταστάθηκε στο μηχάνημα.</value>
+  </data>
+  <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
+    <value>Συνολικός αριθμός συρταριών που έχουν εισαχθεί στο μηχάνημα.</value>
+  </data>
+  <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
+    <value>Αναφέρει την ημερομηνία εγκατάστασης του μηχανήματος.</value>
+  </data>
+  <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Υποδεικνύει την ημερομηνία της τελευταίας συντήρησης.</value>
+  </data>
+  <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Υποδεικνύει την εκτιμώμενη ημερομηνία της επόμενης συντήρησης.</value>
+  </data>
+  <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
+    <value>Αναφέρει την τρέχουσα κατάσταση συντήρησης του μηχανήματος.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
+    <value>Η σελίδα εμφανίζει μερικές στατιστικές πληροφορίες σχετικά με τη χρήση της περιοχής του συρταριού και το συνολικό βάρος που έχει φορτωθεί με βάση τα χαρακτηριστικά του μηχανήματος. Εμφανίζονται επίσης πληροφορίες σχετικά με τη χρήση του μηχανήματος.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
+    <value>Συνολικός αριθμός συρταριών που έχουν μετακινηθεί από την αρχή της εγκατάστασης.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
+    <value>Υποδεικνύει το ποσοστό της κατειλημμένης περιοχής μέσα στο μηχάνημα που αναφέρεται στο διαθέσιμο συνολικό χώρο.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
+    <value>Συνολικός αριθμός συρταριών που έχουν μετακινηθεί από την αρχή της εγκατάστασης.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
+    <value>Αναφέρει τη συνολική ισχύ εγκαίρως από την εγκατάσταση του μηχανήματος.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
+    <value>Υποδεικνύει τη σχέση μεταξύ του συνολικού χρόνου που παρήλθε στην αυτόματη λειτουργία και του χρόνου ενεργοποίησης από τη στιγμή της εγκατάστασης.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
+    <value>Ο συντελεστής χρήσης υποδεικνύει τη σχέση μεταξύ του χρόνου που δαπανάται σε συρτάρια αυτόματης κίνησης και εκείνου της ανάφλεξης.</value>
+  </data>
+  <data name="HelpCellsStatisticsDescription" xml:space="preserve">
+    <value>Η διαδικασία δείχνει τα στατιστικά δεδομένα σε σχέση με τις κυψέλες που υπάρχουν μέσα στο μηχάνημα. Παράλληλα με τα συνολικά δεδομένα σχετικά με τη μπροστινή και πίσω πλευρά, εμφανίζονται τα δεδομένα που σχετίζονται με τον αριθμό των κυψελών στις διάφορες καταστάσεις που παρέχονται τόσο για τις μπροστινές όσο και τις πίσω πλευρές.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
+    <value>Αναφέρει την κατάσταση της κυψέλης στην οποία αναφέρονται τα δεδομένα της σειράς.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
+    <value>Δείχνει το σύνολο των κυψελών που έχουν την κατάσταση που υποδεικνύεται στην πρώτη στήλη του πλέγματος σχετικά με τη μπροστινή πλευρά.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
+    <value>Υποδεικνύει το ποσοστό των κυψελών που έχουν την κατάσταση που υποδεικνύεται στην πρώτη στήλη του πλέγματος σχετικά με τη μπροστινή πλευρά.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
+    <value>Δείχνει το σύνολο των κυψελών που έχουν την κατάσταση που υποδεικνύεται στην πρώτη στήλη του πλέγματος σχετικά με τη μπροστινή πλευρά.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
+    <value>Υποδεικνύει το ποσοστό των κυψελών που έχουν την κατάσταση που υποδεικνύεται στην πρώτη στήλη του πλέγματος σχετικά με την πίσω πλευρά.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
+    <value>Συνολικός αριθμός κυψελών που υπάρχουν στο μηχάνημα.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
+    <value>Συνολικός αριθμός κυψελών που υπάρχουν στο μπροστινό μέρος του μηχανήματος.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
+    <value>Συνολικός αριθμός κυψελών που υπάρχουν στην πίσω πλευρά του μηχανήματος.</value>
+  </data>
+  <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
+    <value>Εμφανίζει το ποσοστό των κατειλημμένων κυψελών που αναφέρεται στο σύνολο των κυψελών που υπάρχουν.</value>
+  </data>
+  <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
+    <value>Το κουμπί επιτρέπει την πρόσβαση στη διαδικασία συμπίεσης του χώρου αποθήκευσης.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonCellsStatistics" xml:space="preserve">
+    <value>Ενεργοποιήστε τη σελίδα εμφάνισης στατιστικών κυψέλης.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonDrawersStatistics" xml:space="preserve">
+    <value>Εμφανίζει τη σελίδα των στατιστικών δεδομένων των διαφόρων συρταριών που υπάρχουν στο μηχάνημα.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonMachineStatistics" xml:space="preserve">
+    <value>Επιτρέπει την πρόσβαση στη σελίδα προβολής των στατιστικών δεδομένων του μηχανήματος.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonErrorsStatistics" xml:space="preserve">
+    <value>Ενεργοποιεί τη σελίδα για την εμφάνιση των στατιστικών δεδομένων σχετικά με τα σφάλματα του μηχανήματος από την εγκατάσταση.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonDrawerCall" xml:space="preserve">
+    <value>Εμφανίζει τη σελίδα που προορίζεται για την άμεση κλήση του συρταριού.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonCompacting" xml:space="preserve">
+    <value>Επιτρέπει την πρόσβαση στη σελίδα διαχείρισης των διαδικασιών συμπίεσης του χώρου αποθήκευσης.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonStastistics" xml:space="preserve">
+    <value>Σας επιτρέπει να κάνετε πρόσβαση στην ενότητα που προορίζεται για τις στατιστικές πληροφορίες σχετικά με το μηχάνημα όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonMaintenance" xml:space="preserve">
+    <value>Ανοίγει τη σελίδα που προορίζεται για τις εργασίες συντήρησης που προβλέπονται για το μηχάνημα όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpErrorsStatisticsDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει την πρόσβαση στη σελίδα εμφάνισης στατιστικών σφαλμάτων σχετικά με το μηχάνημα όπου εργάζεστε. Τα στατιστικά καλύπτουν ολόκληρη την περίοδο από τη στιγμή της εγκατάστασης έως τη στιγμή της διαβούλευσης.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridError" xml:space="preserve">
+    <value>Η στήλη του πίνακα εμφανίζει τη λίστα των κωδικών σφάλματος που δημιουργείται από το μηχάνημα όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridTotal" xml:space="preserve">
+    <value>Το ποσοστό επίπτωσης κάθε ξεχωριστού σφάλματος υποδεικνύεται σε σχέση με τη μέτρηση των συνολικών σφαλμάτων.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridPercTotal" xml:space="preserve">
+    <value>HelpErrorsStatisticsGridPercTotal</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersMoved" xml:space="preserve">
+    <value>Το πεδίο εμφανίζει το συνολικό αριθμό των συρταριών που έχουν διαχειριστεί από την αρχή της εγκατάστασης. Ένα συρτάρι θεωρείται ότι κινείται όταν κινείται από μια πηγή σε έναν προορισμό.</value>
+  </data>
+  <data name="HelpErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Εμφανίζεται η πλήρης περιγραφή του σφάλματος που επιλέγεται στον πίνακα.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotaleErrors" xml:space="preserve">
+    <value>Εμφανίζεται ο συνολικός αριθμός σφαλμάτων που έχει μετρήσει το μηχάνημα από την εγκατάσταση.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersNoError" xml:space="preserve">
+    <value>Το πεδίο εμφανίζει τα στατιστικά δεδομένα που έχουν υπολογιστεί από το σύστημα που αναφέρεται στο μέσο όρο των συρταριών που κινούνται χωρίς σφάλματα.</value>
+  </data>
+  <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
+    <value>Το σύστημα υπολογίζει το συντελεστή αξιοπιστίας του μηχανήματος ως τη σχέση μεταξύ του αριθμού των σφαλμάτων που μετρήθηκαν και το σύνολο των κινούμενων συρταριών.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
+    <value>Η σελίδα παρουσιάζει τα κύρια δεδομένα σε σχέση με τη λειτουργία απογραφής που πρόκειται να εκτελεστεί στα διάφορα στοιχεία που βρίσκονται στο συρτάρι της πλατφόρμας. Η διαδικασία, όταν υποδειχθεί το διαμέρισμα που περιέχει το στοιχείο που ζητήθηκε, περιμένει από το χειριστή να καταχωρήσει την ποσότητα των κομματιών που υπάρχουν επί του παρόντος σε απόθεμα.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Το πεδίο εμφανίζει την ποσότητα των κομματιών που είναι επί του παρόντος σε απόθεμα που μετρήθηκε από το χειριστή.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
+    <value>Η σελίδα παρέχει στο χειριστή περαιτέρω λεπτομέρειες σχετικά με την τρέχουσα πράξη απογραφής που είναι σε εξέλιξη.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
+    <value>Αναφέρει την ημερομηνία παραγωγής του στοιχείου επί του παρόντος στην απογραφή.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
+    <value>Υποδεικνύει την κατάσταση του υλικού του στοιχείου που είναι στην απογραφή.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
+    <value>Αναφέρει την παρτίδα παραγωγής του στοιχείου στη φάση της απογραφής.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
+    <value>Αναφέρει τον τύπο της συσκευασίας που χρησιμοποιήθηκε για το στοιχείο της απογραφής.</value>
+  </data>
+  <data name="HelpListsInWaitGridType" xml:space="preserve">
+    <value>Υποδεικνύει τον τύπο της λίστας σύμφωνα με τον ακόλουθο κωδικό: P: λήψη V: τοποθέτηση I: Απογραφή</value>
+  </data>
+  <data name="HelpCommonListType" xml:space="preserve">
+    <value>Υποδεικνύει τον τύπο της λίστας που επιλέχθηκε σύμφωνα με τον ακόλουθο κωδικό: P: Λήψη V: τοποθέτηση I: Απογραφή.</value>
+  </data>
+  <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
+    <value>Το πεδίο αναφέρει την τρέχουσα κατάσταση των WMS, αν υπάρχει, που ελέγχει το μηχάνημα όπου εργάζεστε.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
+    <value>Η σελίδα εμφανίζει την εξέλιξη της διαδικασίας συμπίεσης. Υποδεικνύεται το συρτάρι που μετακινήθηκε και από ποια κυψέλη ανακλήθηκε και σε ποια κυψέλη προορίζεται. Η εξέλιξη της διαδικασίας εμφανίζεται επίσης με μια ένδειξη των τεμαχίων και το χώρο που πρέπει να ανακτηθεί μαζί με το χώρο που έχει ήδη ανακτηθεί.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Υποδεικνύει τον κωδικό του συρταριού που κινείται επί του παρόντος.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Υποδεικνύει την κυψέλη πηγής όπου το συρτάρι χειρισμού αποθηκεύτηκε.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό κυψέλης όπου το συρτάρι θα κινηθεί κατά το χειρισμό.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
+    <value>Αναφέρει την τρέχουσα φάση του κύκλου χειρισμού των διαφόρων συρταριών.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Εμφανίζει την τρέχουσα θέση του κατακόρυφου άξονα.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Εμφανίζει την τρέχουσα θέση του οριζόντιου άξονα.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
+    <value>Υποδεικνύει τον αριθμό των τεμαχίων που ακόμη πρόκειται να συσκευαστούν.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Υποδεικνύει το συνολικό χώρο που έχει ανακτηθεί επί του παρόντος.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Αναφέρει τον απαιτούμενο χώρο που πρόκειται να ανακτηθεί μετά το τέλος της διαδικασίας.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter" xml:space="preserve">
+    <value>Αναφέρει το συνολικό αριθμό των κύκλων που εκτελούνται από το κλείστρο που εξοπλίζει την πλατφόρμα n. 1. Ένας κύκλος είναι μια ολική ή ενδιάμεση λειτουργία ανοίγματος ή κλεισίματος.</value>
+  </data>
+  <data name="CarouselCalibrationFunctionDescription" xml:space="preserve">
+    <value>Η λειτουργία βαθμονόμησης καρουζέλ σας επιτρέπει να βαθμονομείτε τη σωστή τιμή εκτελώντας μια σειρά από διαδοχικές αυτόματες κινήσεις. Κατόπιν ενημερώστε την τιμή της προεπιλογής που προτείνεται από το σύστημα. Η διαδικασία λειτουργεί σε διαδοχικά βήματα μέχρι να ολοκληρωθεί σωστά.</value>
+  </data>
+  <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
+    <value>Η λειτουργία βαθμονόμησης της εξωτερικής πλατφόρμας σας επιτρέπει να βαθμονομείτε τη σωστή τιμή εκτελώντας μια σειρά από διαδοχικές αυτόματες κινήσεις. Κατόπιν ενημερώστε την τιμή της προεπιλογής που προτείνεται από το σύστημα. Η διαδικασία λειτουργεί σε διαδοχικά βήματα μέχρι να ολοκληρωθεί σωστά.</value>
+  </data>
+  <data name="BayOperationsDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να εμφανίσετε τον τύπο των δυνατών λειτουργιών στην τρέχουσα πλατφόρμα </value>
+  </data>
+  <data name="BayOperationsDescriptionWarning" xml:space="preserve">
+    <value>ΠΡΟΣΟΧΗ: Αν ένας τύπος λειτουργίας είναι απενεργοποιημένος, οι λίστες που αποστέλλονται από το WMS θα απορριφθούν </value>
+  </data>
+</root>

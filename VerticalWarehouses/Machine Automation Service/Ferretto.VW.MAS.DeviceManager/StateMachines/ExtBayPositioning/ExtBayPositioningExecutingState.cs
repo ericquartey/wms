@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.ExtBayPositioning;
 using Ferretto.VW.MAS.DeviceManager.ExtBayPositioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -274,18 +276,46 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                 ExternalBayMovementDirection.TowardMachine;
 
             var failed = false;
+
             switch (externalBayMovementDirection)
             {
                 case ExternalBayMovementDirection.TowardOperator:
                     {
-                        failed = !this.machineData.MachineSensorStatus.IsDrawerInBayExternalPosition(this.machineData.RequestingBay);
+                        if (bay.IsDouble)
+                        {
+                            if (bay.Positions.FirstOrDefault(s => s.Id == this.machineData.MessageData.TargetBayPositionId).IsUpper)
+                            {
+                                failed = !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay);
+                            }
+                            else
+                            {
+                                failed = !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.RequestingBay);
+                            }
+                        }
+                        else
+                        {
+                            failed = !this.machineData.MachineSensorStatus.IsDrawerInBayExternalPosition(this.machineData.RequestingBay, bay.IsExternal && bay.IsDouble);
+                        }
                         break;
                     }
 
                 case ExternalBayMovementDirection.TowardMachine:
                     {
-                        failed = !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay) &&
-                            !this.machineData.MachineSensorStatus.IsDrawerInBayInternalPosition(this.machineData.RequestingBay, bay.IsDouble);
+                        if (bay.IsDouble)
+                        {
+                            if (bay.Positions.FirstOrDefault(s => s.Id == this.machineData.MessageData.SourceBayPositionId).IsUpper)
+                            {
+                                failed = !this.machineData.MachineSensorStatus.IsDrawerInBayInternalTop(this.machineData.RequestingBay);
+                            }
+                            else
+                            {
+                                failed = !this.machineData.MachineSensorStatus.IsDrawerInBayInternalBottom(this.machineData.RequestingBay);
+                            }
+                        }
+                        else
+                        {
+                            failed = !this.machineData.MachineSensorStatus.IsDrawerInBayInternalPosition(this.machineData.RequestingBay, bay.IsDouble);
+                        }
                         break;
                     }
             }

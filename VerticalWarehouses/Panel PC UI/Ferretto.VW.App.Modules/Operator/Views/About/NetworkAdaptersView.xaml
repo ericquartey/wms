@@ -46,6 +46,7 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
 
       <Grid Grid.Row="0">
@@ -238,6 +239,23 @@
                             IsEnabled="{Binding IsEditEnabled}" />
 
       </Grid>
+
+      <controls:PpcButton Grid.Row="3"
+                          Margin="0,0,5,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding UwfOnCommand}"
+                          Content="Uwf On"
+                          Visibility="{Binding IsFilterEnabled, Converter={StaticResource BTVIC}}" />
+
+      <controls:PpcButton Grid.Row="3"
+                          Margin="0,0,5,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding UwfOffCommand}"
+                          Content="Uwf Off"
+                          Visibility="{Binding IsFilterEnabled, Converter={StaticResource BTVC}}" />
+
     </Grid>
   </Grid>
 </ctrls:View>

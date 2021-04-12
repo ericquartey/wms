@@ -15,6 +15,10 @@
     <None Remove="Resources\de-numeric.json" />
     <None Remove="Resources\de-numpad.json" />
     <None Remove="Resources\de-uppercase.json" />
+    <None Remove="Resources\el-lowercase.json" />
+    <None Remove="Resources\el-numeric.json" />
+    <None Remove="Resources\el-numpad.json" />
+    <None Remove="Resources\el-uppercase.json" />
     <None Remove="Resources\en-lowercase.json" />
     <None Remove="Resources\en-numeric.json" />
     <None Remove="Resources\en-numpad.json" />
@@ -58,8 +62,12 @@
     <Resource Include="Resources\hr-numeric.json" />
     <Resource Include="Resources\hr-numpad.json" />
     <Resource Include="Resources\hr-uppercase.json" />
+    <Resource Include="Resources\el-lowercase.json" />
+    <Resource Include="Resources\el-numeric.json" />
+    <Resource Include="Resources\el-numpad.json" />
     <Resource Include="Resources\it-numpad.json" />
     <Resource Include="Resources\it-numeric.json" />
+    <Resource Include="Resources\el-uppercase.json" />
     <Resource Include="Resources\it-uppercase.json" />
     <Resource Include="Resources\it-lowercase.json" />
     <Resource Include="Resources\sl-lowercase.json" />
