@@ -66,6 +66,16 @@ namespace Ferretto.VW.App.Modules.Installation.Views
             }
         }
 
+        private void MyWebBrowser_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)
+        {
+            if (!e.Uri.ToString().Contains("http://" + this.Url) &&
+                e.Uri.AbsolutePath != "location.reload();" &&
+                e.Uri.AbsolutePath != "clickRefresh()")
+            {
+                e.Cancel = true;
+            }
+        }
+
         private void PpcButton_Click(object sender, RoutedEventArgs e)
         {
             this.MyWebBrowser.Refresh();
