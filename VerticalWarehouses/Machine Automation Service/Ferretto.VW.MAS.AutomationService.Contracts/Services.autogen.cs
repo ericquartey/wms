@@ -25128,21 +25128,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<bool> SignallingDefectOnDraperyItemAsync(int id, int compartmentId, double goodQuantity, double wastedQuantity)
+        public System.Threading.Tasks.Task<bool> SignallingDefectOnDraperyItemAsync(string code, double goodQuantity, double wastedQuantity)
         {
-            return SignallingDefectOnDraperyItemAsync(id, compartmentId, goodQuantity, wastedQuantity, System.Threading.CancellationToken.None);
+            return SignallingDefectOnDraperyItemAsync(code, goodQuantity, wastedQuantity, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<bool> SignallingDefectOnDraperyItemAsync(int id, int compartmentId, double goodQuantity, double wastedQuantity, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<bool> SignallingDefectOnDraperyItemAsync(string code, double goodQuantity, double wastedQuantity, System.Threading.CancellationToken cancellationToken)
         {
-            if (id == null)
-                throw new System.ArgumentNullException("id");
-    
-            if (compartmentId == null)
-                throw new System.ArgumentNullException("compartmentId");
-    
             if (goodQuantity == null)
                 throw new System.ArgumentNullException("goodQuantity");
     
@@ -25150,9 +25144,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 throw new System.ArgumentNullException("wastedQuantity");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/items/{id}/signal-defect?");
-            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Append(System.Uri.EscapeDataString("compartmentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(compartmentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/items/{code}/signal-defect?");
+            urlBuilder_.Replace("{code}", System.Uri.EscapeDataString(ConvertToString(code, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append(System.Uri.EscapeDataString("goodQuantity") + "=").Append(System.Uri.EscapeDataString(ConvertToString(goodQuantity, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("wastedQuantity") + "=").Append(System.Uri.EscapeDataString(ConvertToString(wastedQuantity, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
