@@ -162,9 +162,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await this.wmsDataProvider.PickAsync(
                     this.Item.Id,
                     this.InputQuantity.Value,
-                    null,
-                    null,
-                    this.authenticationService.UserName);
+                    reasonId: null,
+                    reasonNotes: null,
+                    lot: this.Item.Lot,
+                    serialNumber: this.Item.SerialNumber,
+                    userName: this.authenticationService.UserName);
 
                 this.ShowNotification(
                     string.Format(
@@ -197,9 +199,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await this.wmsDataProvider.PutAsync(
                     this.item.Id,
                     this.InputQuantity.Value,
-                    null,
-                    null,
-                    this.authenticationService.UserName);
+                    reasonId: null,
+                    reasonNotes: null,
+                    lot: this.Item.Lot,
+                    serialNumber: this.Item.SerialNumber,
+                    userName: this.authenticationService.UserName);
 
                 this.ShowNotification(
                    string.Format(

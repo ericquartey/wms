@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, string userName = null)
+        public async Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, int? compartmentId = null, string lot = null, string serialNumber = null, string userName = null)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
@@ -103,6 +103,9 @@ namespace Ferretto.VW.App.Modules.Operator
                     RunImmediately = true,
                     ReasonId = reasonId,
                     ReasonNotes = reasonNotes,
+                    CompartmentId = compartmentId,
+                    Lot = lot,
+                    SerialNumber = serialNumber,
                     UserName = userName,
                 });
             }
@@ -112,7 +115,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, string userName = null)
+        public async Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, int? compartmentId = null, string lot = null, string serialNumber = null, string userName = null)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
@@ -132,6 +135,9 @@ namespace Ferretto.VW.App.Modules.Operator
                     RunImmediately = true,
                     ReasonId = reasonId,
                     ReasonNotes = reasonNotes,
+                    CompartmentId = compartmentId,
+                    Lot = lot,
+                    SerialNumber = serialNumber,
                     UserName = userName,
                 });
             }

@@ -750,7 +750,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputQuantity.Value,
                         this.reasonId,
                         this.reasonNotes,
-                        this.authenticationService.UserName);
+                        this.SelectedItemCompartment.Id,
+                        this.SelectedItem.Lot,
+                        this.SelectedItem.ItemSerialNumber,
+                        userName: this.authenticationService.UserName);
                 }
                 else if (this.IsPutVisible)
                 {
@@ -761,7 +764,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputQuantity.Value,
                         this.reasonId,
                         this.reasonNotes,
-                        this.authenticationService.UserName);
+                        this.SelectedItemCompartment.Id,
+                        this.SelectedItem.Lot,
+                        this.SelectedItem.ItemSerialNumber,
+                        userName: this.authenticationService.UserName);
                 }
                 else if (this.IsAdjustmentVisible)
                 {

@@ -457,11 +457,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.isBusyRequestingItemPick)
             {
-                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code);
+                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
             }
             else
             {
-                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code);
+                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
             }
 
             this.selectedItem = null;
@@ -505,7 +505,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //    }
         //}
 
-        public async Task ExecuteItemPickAsync(int itemId, string itemCode)
+        public async Task ExecuteItemPickAsync(int itemId, string itemCode, string lot, string serialNumber)
         {
             try
             {
@@ -517,7 +517,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.Value,
                     this.reasonId,
                     this.reasonNotes,
-                    this.authenticationService.UserName);
+                    lot: lot,
+                    serialNumber: serialNumber,
+                    userName: this.authenticationService.UserName);
 
                 this.Reasons = null;
 
@@ -577,7 +579,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //    }
         //}
 
-        public async Task ExecuteItemPutAsync(int itemId, string itemCode)
+        public async Task ExecuteItemPutAsync(int itemId, string itemCode, string lot, string serialNumber)
         {
             try
             {
@@ -589,7 +591,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.Value,
                     this.reasonId,
                     this.reasonNotes,
-                    this.authenticationService.UserName);
+                    lot: lot,
+                    serialNumber: serialNumber,
+                    userName: this.authenticationService.UserName);
 
                 this.Reasons = null;
 
