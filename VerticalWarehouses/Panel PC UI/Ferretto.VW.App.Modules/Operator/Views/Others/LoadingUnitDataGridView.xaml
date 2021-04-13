@@ -24,7 +24,6 @@
               ItemsSource="{Binding ItemsSource}"
               RowHeight="45"
               SelectedItem="{Binding SelectedItem}"
-              SelectionChanged="DataGrid_SelectionChanged"
               SelectionMode="Single"
               Sorting="DataGridName_Sorting"
               VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
