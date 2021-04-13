@@ -179,6 +179,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.loadingUnits = this.MachineService.Loadunits.ToList();
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
+
+                this.selectedLoadingUnit = null;
             }
 
             this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
