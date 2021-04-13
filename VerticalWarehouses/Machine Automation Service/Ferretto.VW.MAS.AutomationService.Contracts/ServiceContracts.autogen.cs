@@ -946,6 +946,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(ExternalBayMovementDirection direction, MovementCategory movementCategory, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionPolicy> CanMoveExternalDoubleAsync(ExternalBayMovementDirection direction, MovementCategory movementCategory, bool isPositionUpper);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionPolicy> CanMoveExternalDoubleAsync(ExternalBayMovementDirection direction, MovementCategory movementCategory, bool isPositionUpper, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -986,6 +993,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAssistedAsync(ExternalBayMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveAssistedExternalBayAsync(ExternalBayMovementDirection direction, bool isPositionUpper);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveAssistedExternalBayAsync(ExternalBayMovementDirection direction, bool isPositionUpper, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction);
@@ -3537,11 +3551,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         WaitDepositCell = 11,
     
-        WaitDepositBay = 12,
+        WaitDepositExternalBay = 12,
     
-        ExtBay = 13,
+        WaitDepositInternalBay = 13,
     
-        End = 14,
+        WaitDepositBay = 14,
+    
+        DoubleExtBay = 15,
+    
+        ExtBay = 16,
+    
+        End = 17,
     
         Error = 101,
     

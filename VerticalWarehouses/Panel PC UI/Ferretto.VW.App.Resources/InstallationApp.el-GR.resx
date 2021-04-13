@@ -1,0 +1,2454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Auto" xml:space="preserve">
+    <value>Αυτόματο</value>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>Στίλβωση ιμάντα</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Κάτω</value>
+  </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Προς τα εμπρός</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Αποσύνδεση</value>
+  </data>
+  <data name="Shutter" xml:space="preserve">
+    <value>Κλείστρο</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Κατακόρυφος άξονας</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Χειροκίνητα</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Προέλευση κατακόρυφου άξονα</value>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>Δεν ορίστηκε η προέλευση του κατακόρυφου άξονα.</value>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Κάτω όριο [mm]</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Μετατόπιση [mm]</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Έξοδος</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Ανάλυση</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Εκκίνηση</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Διακοπή</value>
+  </data>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Επάνω όριο [mm]</value>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Πλατφόρμες και έλεγχος ύψους</value>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Βάση</value>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Αντιδιαρρηκτική πύλη</value>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Επιλεγμένος κινητήρας βάσης</value>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Επιλεγμένος κινητήρας ανελκυστήρα</value>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Εκτέλεση τέλους έκτακτης ανάγκης</value>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>Παρουσία LU στην πλευρά της βάσης του μηχανήματος</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>Παρουσία LU στην πλευρά της βάσης του χειριστή</value>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Περίβλημα αισθητήρα αριστερής πλευράς</value>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Περίβλημα αισθητήρα δεξιάς πλευράς</value>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Κουμπί μανιτάρι έκτακτης ανάγκης</value>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Ενεργή λειτουργία ασφάλειας</value>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Αισθητήρας μηδενικού μάνδαλου</value>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Μηδενικός κατακόρυφος αισθητήρας</value>
+  </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Δοκιμή κλείστρου</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Κίνηση</value>
+  </data>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Μετάβαση στην κυψέλη</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Αρχική θέση [mm]</value>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>Νέα ανάλυση (imp/mm)</value>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Τρέχουσα ανάλυση (imp/mm)</value>
+  </data>
+  <data name="MeasuredMovement" xml:space="preserve">
+    <value>Μετρημένη κίνηση [mm]</value>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση κατακόρυφης ανάλυσης</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Κλειστό</value>
+  </data>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Εκτελεσμένοι κύκλοι (συνεδρία)</value>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Τρέχουσα θέση [mm]</value>
+  </data>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Καθυστέρηση μεταξύ των κύκλων [s]</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Ανοιχτό</value>
+  </data>
+  <data name="RequiredCycles" xml:space="preserve">
+    <value>Απαιτούμενοι κύκλοι</value>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Έλεγχος πύλης 1</value>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Τρέχον ύψος [mm]</value>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Διόρθωση πύλης [mm]</value>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Έλεγχος ύψους πύλης 1</value>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Ταχύτητα [mm/s]</value>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>Σφάλμα συστήματος [mm]</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Ανοχή (+/-) [mm]</value>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση μετατόπισης κατακόρυφα</value>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Έλεγχος βάρους</value>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Αποδεκτή ανοχή βάρους (%)</value>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Καταχωρημένο βάρος (kg)</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Μετρημένο βάρος (kg)</value>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Εκτέλεση δοκιμής</value>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Προσαρμοσμένη μετατόπιση [mm]</value>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Τρέχουσα τιμή μετατόπισης [mm]</value>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Διαδικασία κλεισίματος</value>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Θέση κυψέλης αναφοράς [mm]</value>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Τιμή βήματος [mm]</value>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Ύψος κυψέλης [mm]</value>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Τρέχουσα κυψέλη</value>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Τρέχων πίνακας</value>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Διόρθωση πίνακα [mm]</value>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Συνολικοί πίνακες</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Πίσω</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Μπροστά</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Σωστό</value>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Κατάσταση εγκατάστασης</value>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Στίλβωση ιμάντα</value>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Βαθμονόμηση κατακόρυφης προέλευσης</value>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Κατακόρυφη ανάλυση</value>
+  </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Έλεγχος θέσης κυψέλης</value>
+  </data>
+  <data name="MeasuredInitialPosition" xml:space="preserve">
+    <value>Μετρημένη αρχική θέση [mm]</value>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Μετακίνηση στη θέση</value>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Διόρθωση ύψους κυψέλης [mm]</value>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Επαληθευμένη μετατόπιση κατακόρυφα</value>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Αισθητήρας κλείστρου A</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Αισθητήρας κλείστρου Β</value>
+  </data>
+  <data name="FinalPosition" xml:space="preserve">
+    <value>Τελική θέση</value>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Διαδικασία εκκίνησης</value>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Διαδικασία κλεισίματος</value>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Επόμενος πίνακας</value>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Διαδικασία ελέγχου πίνακα</value>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>ReadFinalPosition</value>
+  </data>
+  <data name="Gate1HeightReached" xml:space="preserve">
+    <value>Επίτευξη ύψους</value>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>Ανελκυστήρας</value>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Τροποποίηση θέσης ομάδας κυψέλης</value>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>Αρχική κυψέλη</value>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Τελική κυψέλη</value>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>Απαιτούμενη διόρθωση [mm]</value>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Επιλεγμένη πλευρά</value>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Συρτάρια φορτίου</value>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Σύνολο συρταριών</value>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Μέγιστη μεταφορά βάρους (kg)</value>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Εισαγόμενα συρτάρια</value>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Συρτάρια που πρόκειται να εισαχθούν</value>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Επόμενο συρτάρι</value>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Εκκίνηση εισαγωγής</value>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>Φόρτωση πρώτου συρταριού και κυψέλες δοκιμής</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Σύνολο κυψελών προς δοκιμή</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Σύνολο δοκιμασμένων κυψελών</value>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>Κυψέλη δοκιμής</value>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Συρτάρια που πρόκειται να εισαχθούν</value>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>Μέγιστη μεταφορά βάρους συρταριού (kg)</value>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Συρτάρι εισαγωγής</value>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Συρτάρι κλήσης</value>
+  </data>
+  <data name="BayHeightCheck" xml:space="preserve">
+    <value>Έλεγχος ύψους θέσης πλατφόρμας</value>
+  </data>
+  <data name="BayHeightCheckSelectedPosition" xml:space="preserve">
+    <value>Θέση σε πλατφόρμα</value>
+  </data>
+  <data name="BayHeight" xml:space="preserve">
+    <value>Ύψος πλατφόρμας [mm]</value>
+  </data>
+  <data name="BayHeightCheckActualHeight" xml:space="preserve">
+    <value>Τρέχουσα θέση [mm]</value>
+  </data>
+  <data name="BayHeightCheckCorrectionValue" xml:space="preserve">
+    <value>Τιμή διόρθωσης [mm]</value>
+  </data>
+  <data name="BayHeightCheckNextPosition" xml:space="preserve">
+    <value>Επόμενη θέση</value>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Εναπόθεση / Λήψη στη δοκιμαστική πλατφόρμα</value>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>Ρυθμός τροφοδοσίας %</value>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>Απαιτούμενοι κύκλοι</value>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Τρέχουσα θέση αλυσίδας</value>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Ολοκληρωμένοι κύκλοι</value>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Κύκλος διακοπής</value>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Κύκλος εκκίνησης</value>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>Προειδοποίηση</value>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>Χειροκίνητοι έλεγχοι που είναι διαθέσιμοι επί του παρόντος για μη μπλοκαρισμένες κινήσεις χαμηλής ταχύτητας</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>Αποθήκευση αρχείων διαμόρφωσης</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>Αποκατάσταση αρχείων διαμόρφωσης</value>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>Επιλεγμένος φάκελος</value>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>Αποθήκευση διαμόρφωσης</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>Επιβεβαίωση αποθήκευσης</value>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>Διαγραφή αποθήκευσης</value>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>Διαμόρφωση φορτίου</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>Επιβεβαίωση φορτίου</value>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>Διαγραφή φορτίου</value>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Ολοκληρώθηκε το Homing οριζοντίως</value>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Εκτέλεση Homing οριζοντίως ({0} {1})</value>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Εκκίνηση Homing οριζοντίως</value>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Ολοκληρώθηκε ο διακόπτης κινητήρα</value>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Εκκίνηση διακόπτη κινητήρα</value>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Εκτέλεση Homing κατακόρυφα ({0} {1})</value>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Εκκίνηση Homing κατακόρυφα</value>
+  </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Σφάλμα Homing κατακόρυφα ({0} {1})</value>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Σφάλμα Homing οριζοντίως ({0} {1})</value>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Σφάλμα διακόπτη κινητήρα</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Εκκίνηση ανάκλησης από την κυψέλη στην πλατφόρμα</value>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Εκκίνηση αποθήκευσης από την πλατφόρμα στην κυψέλη</value>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Αποθήκευση συρταριού και ανάκληση συρταριού</value>
+  </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Αρχικοποίηση ...</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Πλατφόρμα 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Πλατφόρμα 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Πλατφόρμα 3</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Δοκιμή αντοχής κλείστρου για πλατφόρμα</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Κλειστό</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>Ενδιάμεσα</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Ανοιχτό</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Βήμα 1</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Βήμα 2</value>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Πλευρά κυψέλης</value>
+  </data>
+  <data name="BayPositionDown" xml:space="preserve">
+    <value>Θέση κάτω</value>
+  </data>
+  <data name="BayPositionUp" xml:space="preserve">
+    <value>Θέση επάνω</value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Μετατόπιση</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Εξωτερική πλατφόρμα</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Εφαρμογή διόρθωσης</value>
+  </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>Εισάγετε το επιθυμητό αναγνωριστικό της μονάδας φόρτωσης</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Επαλήθευση</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Πλευρά</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Πλατφόρμα</value>
+  </data>
+  <data name="BayPosition" xml:space="preserve">
+    <value>Θέση πλατφόρμας</value>
+  </data>
+  <data name="ElevatorVerticalPosition" xml:space="preserve">
+    <value>Κατακόρυφη θέση [mm]</value>
+  </data>
+  <data name="TrayInBay" xml:space="preserve">
+    <value>Δίσκος σε πλατφόρμα</value>
+  </data>
+  <data name="GoToBay" xml:space="preserve">
+    <value>Μετάβαση σε πλατφόρμα</value>
+  </data>
+  <data name="Cells" xml:space="preserve">
+    <value>Κυψέλες</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Ανελκυστήρας</value>
+  </data>
+  <data name="LoadedTray" xml:space="preserve">
+    <value>Δίσκος φόρτωσης</value>
+  </data>
+  <data name="TrayWeight" xml:space="preserve">
+    <value>Βάρος δίσκου (kg)</value>
+  </data>
+  <data name="ElevatorHorizontalPosition" xml:space="preserve">
+    <value>Οριζόντια θέση [mm]</value>
+  </data>
+  <data name="ProcedureWasStopped" xml:space="preserve">
+    <value>Η διαδικασία σταμάτησε.</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Επαναφορά</value>
+  </data>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Εκτελεσμένος κύκλος (αθροιστικός)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Επόμενο</value>
+  </data>
+  <data name="WeightAnalysis" xml:space="preserve">
+    <value>Ανάλυση βάρους</value>
+  </data>
+  <data name="TrayTare" xml:space="preserve">
+    <value>Απόβαρο δίσκου (kg)</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Καθαρό βάρος (kg)</value>
+  </data>
+  <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
+    <value>Το αντιπυρικό διάφραγμα είναι ενεργοποιημένο σε αυτό το τερματικό.</value>
+  </data>
+  <data name="ProcedureCompleted" xml:space="preserve">
+    <value>Η διαδικασία ολοκληρώθηκε.</value>
+  </data>
+  <data name="GoToPosition" xml:space="preserve">
+    <value>Μετάβαση στη θέση</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Θέση</value>
+  </data>
+  <data name="ConfirmationOperation" xml:space="preserve">
+    <value>Θέλετε να επιβεβαιώσετε τη λειτουργία;</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Αναγνωριστικό της μονάδας φόρτωσης</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση πλατφόρμας</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>Καρουζέλ κάτω</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>Καρουζέλ επάνω</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση αλυσίδας</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Αριθμός συρταριού</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Κλείστρο κλειστό</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Κλείστρο ανοιχτό</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>Μετάβαση στο συρτάρι</value>
+  </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>Παρουσία LU στην πλευρά του μηχανήματος</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>Παρουσία LU στην πλευρά του χειριστή</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>Οι πληροφορίες ενημερώθηκαν.</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Επιτυχής αποθήκευση</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Αναγνωριστικό κελιού προορισμού</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Καταχωρήστε τη μονάδα φόρτωσης από την πλατφόρμα στην κυψέλη</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Μηδενική αλυσίδα</value>
+  </data>
+  <data name="LoadingUnitFromCellToCell" xml:space="preserve">
+    <value>Μετακινήστε τη μονάδα φόρτωσης από κυψέλη σε κυψέλη</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
+    <value>Μετακινήστε τη μονάδα φόρτωσης από κυψέλη σε πλατφόρμα</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Επιβεβαιώστε τη μονάδα φόρτωσης εξώθησης</value>
+  </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Δοκιμή κλείστρου</value>
+  </data>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Κάτω τοποθέτηση ύψους πλατφόρμας [mm]</value>
+  </data>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>Επάνω τοποθέτηση ύψους πλατφόρμας [mm]</value>
+  </data>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Δίσκος σε θέση κάτω</value>
+  </data>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Δίσκος σε θέση επάνω</value>
+  </data>
+  <data name="LoadingUnitCodePositionUp" xml:space="preserve">
+    <value>Θέση κωδικού μονάδας φόρτωσης επάνω</value>
+  </data>
+  <data name="LoadingUnitCodePositionDown" xml:space="preserve">
+    <value>Θέση κωδικού μονάδας φόρτωσης κάτω</value>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Κωδικός της μονάδας φόρτωσης</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Κυψέλη</value>
+  </data>
+  <data name="RestoreSuccessful" xml:space="preserve">
+    <value>Επιτυχής αποκατάσταση</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Αποκατάσταση</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Εξαγωγή</value>
+  </data>
+  <data name="DeviceFileFound" xml:space="preserve">
+    <value>Βρέθηκε το αρχείο της διάταξης</value>
+  </data>
+  <data name="InsertDeviceWithFileConfiguration" xml:space="preserve">
+    <value>Εισάγετε διάταξη με διαμόρφωση αρχείου - {0} -</value>
+  </data>
+  <data name="FileReadError" xml:space="preserve">
+    <value>Σφάλμα ανάγνωσης αρχείου</value>
+  </data>
+  <data name="ExportSuccessful" xml:space="preserve">
+    <value>Επιτυχής εξαγωγή</value>
+  </data>
+  <data name="ConfirmFileOverwrite" xml:space="preserve">
+    <value>Θέλετε να επιβεβαιώσετε την αντικατάσταση του αρχείου;</value>
+  </data>
+  <data name="FileIsAlreadyPresent" xml:space="preserve">
+    <value>Υπάρχει ήδη ένα αρχείο στη διάταξη.</value>
+  </data>
+  <data name="ConfirmRestore" xml:space="preserve">
+    <value>Επιβεβαίωση αποκατάστασης</value>
+  </data>
+  <data name="RestoreConfiguration" xml:space="preserve">
+    <value>Αποκατάσταση διαμόρφωσης</value>
+  </data>
+  <data name="SureToApplyConfiguration" xml:space="preserve">
+    <value>Είστε βέβαιοι ότι θέλετε να εφαρμόσετε τη διαμόρφωση;</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Άγνωστο</value>
+  </data>
+  <data name="CompletedTest" xml:space="preserve">
+    <value>Η δοκιμή ολοκληρώθηκε επιτυχώς</value>
+  </data>
+  <data name="Rear" xml:space="preserve">
+    <value>Πίσω</value>
+  </data>
+  <data name="UseWeightControl" xml:space="preserve">
+    <value>Εκτελέστε το ζύγισμα</value>
+  </data>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Εκτελέστε τη μέτρηση</value>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Φορτίο</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Εκφόρτωση</value>
+  </data>
+  <data name="ElevatorLogicalPosition" xml:space="preserve">
+    <value>Θέση</value>
+  </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>Κυψέλη {0}</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>σε πλατφόρμα {0}</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Δοκιμή</value>
+  </data>
+  <data name="MovementsGuided" xml:space="preserve">
+    <value>Καθοδηγούμενες κινήσεις</value>
+  </data>
+  <data name="MovementsManual" xml:space="preserve">
+    <value>Χειροκίνητες κινήσεις</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Βαθμονόμηση</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Επίτευξη ύψους</value>
+  </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Επαναφορά μηχανήματος</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>Επιτυχής επαναφορά μηχανήματος.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Κλείστρο κάτω</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Κλείστρο επάνω</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Κάτω</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Up</value>
+  </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση φράγματος</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Ασφάλεια</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Αισθητήρες ασφαλείας</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Ώρα</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Έτος</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Μήνας</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Ημέρα</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Λεπτά</value>
+  </data>
+  <data name="SystemDateTime" xml:space="preserve">
+    <value>4.7.5 Ώρα ημερομηνία συστήματος</value>
+  </data>
+  <data name="WMSAutoSync" xml:space="preserve">
+    <value>WMS auto sync</value>
+  </data>
+  <data name="SetManualSystemDateTime" xml:space="preserve">
+    <value>Ορίστε χειροκίνητα ώρα ημερομηνία συστήματος</value>
+  </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>Η ημερομηνία ή/και ώρα που καταχωρήθηκε είναι άκυρη.</value>
+  </data>
+  <data name="ConfirmUpdateVer" xml:space="preserve">
+    <value>Θέλετε να επιβεβαιώσετε την ενημέρωση σε {0} '{1}' ;</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>Επιβεβαίωση ενημέρωσης</value>
+  </data>
+  <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
+    <value>Ολοκληρώθηκε με επιτυχία η ενημέρωση.</value>
+  </data>
+  <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
+    <value>Σφάλμα κατά την αρχική φάση ενημέρωσης.</value>
+  </data>
+  <data name="ConfigurationDetected" xml:space="preserve">
+    <value>Εντοπίστηκε "{0}" εισαγόμενη διαμόρφωση.</value>
+  </data>
+  <data name="ExportableDeviceDetected" xml:space="preserve">
+    <value>Εντοπίστηκε διάταξη για εξαγωγή διαμόρφωσης.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Εισαγωγή</value>
+  </data>
+  <data name="MultipleConfigurationsDetected" xml:space="preserve">
+    <value>Εντοπίστηκαν {0} εισαγόμενες διαμορφώσεις.</value>
+  </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>Η διάταξη δεν είναι πλέον διαθέσιμη.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>ΔΕΝ είναι δυνατή η αποκατάσταση από το αρχείο {0}.</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>Είναι δυνατή η αποκατάσταση από το αρχείο {0}.</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Πηγή</value>
+  </data>
+  <data name="InstallerAppStartedSuccessfully" xml:space="preserve">
+    <value>Η εφαρμογή προγράμματος εγκαταστάτης άρχισε επιτυχώς.</value>
+  </data>
+  <data name="ErrorExecutingInstallerApp" xml:space="preserve">
+    <value>Σφάλμα κατά την εκτέλεση της εφαρμογής του προγράμματος εγκατάστασης.</value>
+  </data>
+  <data name="CellNotValid" xml:space="preserve">
+    <value>Άκυρη κυψέλη</value>
+  </data>
+  <data name="InputFormCellIdMustBePositive" xml:space="preserve">
+    <value>Το αναγνωριστικό της κυψέλης της φόρμας εισαγωγής πρέπει να είναι θετικό.</value>
+  </data>
+  <data name="InputFormCellIdRequired" xml:space="preserve">
+    <value>Απαιτείται αναγνωριστικό κυψέλης μορφής.</value>
+  </data>
+  <data name="InputToCellIdMustBePositive" xml:space="preserve">
+    <value>Το αναγνωριστικό εισαγωγής σε κυψέλη πρέπει να είναι θετικό.</value>
+  </data>
+  <data name="InputToCellIdRequired" xml:space="preserve">
+    <value>Απαιτείται αναγνωριστικό εισόδου στην κυψέλη.</value>
+  </data>
+  <data name="StepMustBePositive" xml:space="preserve">
+    <value>Το βήμα πρέπει να είναι θετική</value>
+  </data>
+  <data name="StepRequired" xml:space="preserve">
+    <value>Απαιτείται βήμα.</value>
+  </data>
+  <data name="SuccessfullChange" xml:space="preserve">
+    <value>Επιτυχής αλλαγή</value>
+  </data>
+  <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
+    <value>Ενημερωμένη μετατόπιση κατακόρυφου άξονα</value>
+  </data>
+  <data name="BeltBreakIn" xml:space="preserve">
+    <value>Θραύση ιμάντα</value>
+  </data>
+  <data name="CellInsertedNotFree" xml:space="preserve">
+    <value>Η εισαγόμενη κυψέλη δεν είναι ελεύθερη</value>
+  </data>
+  <data name="CellSelectedNotPresent" xml:space="preserve">
+    <value>Δεν υπάρχει η επιλεγμένη κυψέλη.</value>
+  </data>
+  <data name="CellSelectedRequired" xml:space="preserve">
+    <value>Απαιτείται η επιλεγμένη κυψέλη.</value>
+  </data>
+  <data name="ChecksumCompleted" xml:space="preserve">
+    <value>Ολοκληρώθηκε επιτυχώς ο έλεγχος των αρχείων αθροίσματος ελέγχου.</value>
+  </data>
+  <data name="ClearTempFolder" xml:space="preserve">
+    <value>Απαλοιφή πρότυπου φακέλου '{0}'.</value>
+  </data>
+  <data name="DestinationPositionMustBePositive" xml:space="preserve">
+    <value>Η θέση προορισμού πρέπει να είναι αυστηρά θετική.</value>
+  </data>
+  <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Θέση προορισμού εκτός του εύρους του άξονα ({0}).</value>
+  </data>
+  <data name="DestinationPositionRequired" xml:space="preserve">
+    <value>Απαιτείται η θέση προορισμού.</value>
+  </data>
+  <data name="DrawerIdExtracted" xml:space="preserve">
+    <value>Εξήχθη το αναγνωριστικό {0} συρταριού</value>
+  </data>
+  <data name="ErrorCheckFile" xml:space="preserve">
+    <value>Σφάλμα κατά τον έλεγχο του αρχείου {0}</value>
+  </data>
+  <data name="ErrorChecksum" xml:space="preserve">
+    <value>Σφάλμα κατά τον έλεγχο του αθροίσματος ελέγχου αρχείων:</value>
+  </data>
+  <data name="ErrorChecksumNotFound" xml:space="preserve">
+    <value>Σφάλμα κατά τον έλεγχο του αρχείου '{0}'. Δεν βρέθηκαν αθροίσματα ελέγχου.</value>
+  </data>
+  <data name="ErrorClearTempFolder" xml:space="preserve">
+    <value>Σφάλμα στην απαλοιφή του πρότυπου φακέλου:</value>
+  </data>
+  <data name="ErrorExtractingFiles" xml:space="preserve">
+    <value>Σφάλμα κατά την εξαγωγή αρχείων:</value>
+  </data>
+  <data name="ErrorOnStarting" xml:space="preserve">
+    <value>Σφάλμα κατά την εκκίνηση:</value>
+  </data>
+  <data name="ExtractingFilesCompleted" xml:space="preserve">
+    <value>Ολοκληρώθηκε επιτυχώς η εξαγωγή.</value>
+  </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Μετάβαση στην ελεύθερη κυψέλη</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Κίνηση οριζόντιου άξονα σε εξέλιξη</value>
+  </data>
+  <data name="InputDelayBetweenCyclesMustBePositive" xml:space="preserve">
+    <value>Το InputDelayBetweenCycles πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
+    <value>Απαιτείται InputDelayBetweenCycles.</value>
+  </data>
+  <data name="InputDisplacementMustBePositive" xml:space="preserve">
+    <value>Το InputDisplacement πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="InputDisplacementRequired" xml:space="preserve">
+    <value>Απαιτείται InputDisplacement.</value>
+  </data>
+  <data name="InputNetWeightMustBePositive" xml:space="preserve">
+    <value>Το InputNetWeight πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="InputNetWeightRequired" xml:space="preserve">
+    <value>Απαιτείται InputNetWeight.</value>
+  </data>
+  <data name="InputWeightMustBePositive" xml:space="preserve">
+    <value>Το InputWeightRequired πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="InputWeightMustBeSpecified" xml:space="preserve">
+    <value>Το InputWeightRequired πρέπει να καθορίζεται.</value>
+  </data>
+  <data name="InvalidCellIdEntered" xml:space="preserve">
+    <value>Έχει εισαχθεί άκυρο αναγνωριστικό κυψέλης</value>
+  </data>
+  <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
+    <value>Άκυρο αναγνωριστικό κυψέλης στο καταχωρημένο συρτάρι </value>
+  </data>
+  <data name="InvalidDestinationChoiceType" xml:space="preserve">
+    <value>Άκυρος τύπος επιλογής προορισμού</value>
+  </data>
+  <data name="InvalidDrawerIdInBay" xml:space="preserve">
+    <value>Άκυρο αναγνωριστικό συρταριού στην πλατφόρμα</value>
+  </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>Επιλέχθηκε άκυρο αναγνωριστικό συρταριού</value>
+  </data>
+  <data name="InvalidEnteredDrawerId" xml:space="preserve">
+    <value>Άκυρη εισαγωγή αναγνωριστικού συρταριού</value>
+  </data>
+  <data name="InvalidSourceChoiceType" xml:space="preserve">
+    <value>Άκυρος τύπος επιλογής πηγής</value>
+  </data>
+  <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
+    <value>Το αναγνωριστικό της μονάδας φόρτωσης πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="LoadingUnitIdRequired" xml:space="preserve">
+    <value>Απαιτείται αναγνωριστικό μονάδας φόρτωσης.</value>
+  </data>
+  <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Θέση μέτρησης εκτός του εύρους του άξονα ({0}).</value>
+  </data>
+  <data name="OperationAborted" xml:space="preserve">
+    <value>Αποβολή λειτουργίας.</value>
+  </data>
+  <data name="RequiredCyclesCompleted" xml:space="preserve">
+    <value>Ολοκληρώθηκε η απαιτούμενη ποσότητα των κύκλων.</value>
+  </data>
+  <data name="StartChecksum" xml:space="preserve">
+    <value>Εκκίνηση ελέγχου του αθροίσματος ελέγχου αρχείων '{0}'.</value>
+  </data>
+  <data name="StartExtractingFiles" xml:space="preserve">
+    <value>Εκκίνηση εξαγωγής αρχείων '{0}'.</value>
+  </data>
+  <data name="StartingApplication" xml:space="preserve">
+    <value>Εκκίνηση εφαρμογής '{0}'.</value>
+  </data>
+  <data name="StartPositionMustBePositive" xml:space="preserve">
+    <value>Η θέση εκκίνησης πρέπει να είναι αυστηρά θετική.</value>
+  </data>
+  <data name="StartPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Θέση εκκίνησης εκτός του εύρους του άξονα ({0}).</value>
+  </data>
+  <data name="TestToRunMustBePositive" xml:space="preserve">
+    <value>Το TestToRunmust πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Κίνηση κατακόρυφου άξονα σε εξέλιξη</value>
+  </data>
+  <data name="WeightToleranceMustBePositive" xml:space="preserve">
+    <value>Η ανοχή βάρους πρέπει να είναι αυστηρά θετική.</value>
+  </data>
+  <data name="ModeLoadUnitOperations" xml:space="preserve">
+    <value>Εργασίες μονάδας φόρτωσης</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Συμπαγές</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση καρουζέλ</value>
+  </data>
+  <data name="InputDelayMustBePositive" xml:space="preserve">
+    <value>Το InputDelay πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
+    <value>Το InputLowerBound πρέπει να είναι μεγαλύτερο από το InputUpperBound.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>Το InputLowerBound πρέπει να είναι μεγαλύτερο από {0}.</value>
+  </data>
+  <data name="InputLowerBoundMustBePositive" xml:space="preserve">
+    <value>Το InputLowerBound πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="InputLowerBoundRequired" xml:space="preserve">
+    <value>Απαιτείται InputLowerBound.</value>
+  </data>
+  <data name="InputRequiredCyclesMustBePositive" xml:space="preserve">
+    <value>Το InputRequiredCycles πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="InputRequiredCyclesRequired" xml:space="preserve">
+    <value>Απαιτείται InputRequiredCycles.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanLower" xml:space="preserve">
+    <value>Το InputUpperBound πρέπει να είναι μεγαλύτερο από το InputLowerBound.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>Το InputUpperBound πρέπει να είναι μεγαλύτερο από {0}.</value>
+  </data>
+  <data name="InputUpperBoundMustBePositive" xml:space="preserve">
+    <value>Το InputUpperrBound πρέπει να είναι αυστηρά θετικό.</value>
+  </data>
+  <data name="InputUpperBoundRequired" xml:space="preserve">
+    <value>Απαιτείται InputUpperBound.</value>
+  </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>Έλεγχος υψηλής θέσης</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Κινήστε τον ανελκυστήρα στο ύψος της πλατφόρμας και ανοίξτε το κλείστρο.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Κάτω τοποθέτηση νέου ύψους πλατφόρμας [mm]</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Επάνω τοποθέτηση νέου ύψους πλατφόρμας [mm]</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Ελέγξτε την ευθυγράμμιση μεταξύ της πλατφόρμας και του ανελκυστήρα. Αν δεν είναι ευθυγραμμισμένα, διορθώστε τη θέση του ανελκυστήρα.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Επιβεβαιώστε τις αλλαγές σας.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Έλεγχος κάτω θέσης</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Μετακινήστε τον ανελκυστήρα</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Δεν υπάρχουν αλλαγές.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Ελέγξτε τις νέες διαστάσεις και πατήστε αποθήκευσης για να εκτελέσετε τις πραγματικές αλλαγές.</value>
+  </data>
+  <data name="Interaxle" xml:space="preserve">
+    <value>Ενδιάμεσος άξονας [mm]</value>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Επόμενο</value>
+  </data>
+  <data name="FirstTest" xml:space="preserve">
+    <value>Πρώτη δοκιμή</value>
+  </data>
+  <data name="CellSelectedBlocked" xml:space="preserve">
+    <value>Η επιλεγμένη κυψέλη είναι μπλοκαρισμένη.</value>
+  </data>
+  <data name="BeforeStart" xml:space="preserve">
+    <value>Πριν αρχίσετε</value>
+  </data>
+  <data name="CalibrationInProgress" xml:space="preserve">
+    <value>Βαθμονόμηση σε εξέλιξη ...</value>
+  </data>
+  <data name="CalibrationProcedureRequired" xml:space="preserve">
+    <value>Εκτελέστε τη διαδικασία βαθμονόμησης πλατφόρμας για να κινήσετε το ράφι στον αισθητήρα.</value>
+  </data>
+  <data name="CheckDrawersThenStart" xml:space="preserve">
+    <value>Ελέγξτε ότι δεν υπάρχουν συρτάρια στην πλατφόρμα πριν την εκκίνηση. Πατήστε START (ΕΚΚΙΝΗΣΗ) για να αρχίσει η διαδικασία</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Πλήρες</value>
+  </data>
+  <data name="ConfirmAdjustment" xml:space="preserve">
+    <value>Επιβεβαίωση προσαρμογής</value>
+  </data>
+  <data name="ErrorInMillimiters" xml:space="preserve">
+    <value>Σφάλμα (mm)</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Υπολειπόμενος χρόνος</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Επανάληψη</value>
+  </data>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Πατήστε Repeat (Επανάληψη) για να εκτελέσετε ξανά την διαδικασία.</value>
+  </data>
+  <data name="SelectDirectionAndApply" xml:space="preserve">
+    <value>Επιλέξτε + αν είστε επάνω από τον αισθητήρα ή - αν είστε κάτω και εφαρμόστε τη διόρθωση πατώντας την εφαρμογή της διόρθωσης.</value>
+  </data>
+  <data name="StopInProgress" xml:space="preserve">
+    <value>Διακοπή σε εξέλιξη</value>
+  </data>
+  <data name="StopProcedure" xml:space="preserve">
+    <value>Διαδικασία διακοπής</value>
+  </data>
+  <data name="RaisingsPerformed" xml:space="preserve">
+    <value>Εκτελέστηκαν οι ανυψώσεις</value>
+  </data>
+  <data name="ConfirmSetup" xml:space="preserve">
+    <value>Επιβεβαιώστε τη ρύθμιση</value>
+  </data>
+  <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
+    <value>Η διαδικασία μετακινεί ένα δίσκο από μια κυψέλη πηγής προς την κυψέλη προορισμού. Για να αρχίσει η διαδικασία εισάγετε το αναγνωριστικό του συρταριού, το αναγνωριστικό της κυψέλης προορισμού και στη συνέχεια πατήστε εκκίνηση.</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να μετακινήσετε ένα συρτάρι από την πλατφόρμα πηγής προς την κυψέλη προορισμού. Για να αρχίσετε τη διαδικασία, εισάγετε το αναγνωριστικό του συρταριού και στη συνέχεια πατήστε εκκίνηση.</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Επιλέξτε τη θέση λήψης συρταριού</value>
+  </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>Μετακίνηση συρταριού από πλατφόρμα σε πλατφόρμα</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να μετακινήσετε ένα συρτάρι από την πλατφόρμα πηγής προς εκείνη αυτή του προορισμού. Για να αρχίσετε τη διαδικασία, εισάγετε το αναγνωριστικό του συρταριού και στη συνέχεια πατήστε εκκίνηση.</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value>Επιλέξτε την τοποθεσία στόχου του συρταριού</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>Η διαδικασία σας επιτρέπει να αφαιρέσετε ένα συρτάρι. Για να αρχίσετε τη διαδικασία, εισάγετε το αναγνωριστικό του συρταριού και στη συνέχεια πατήστε εκκίνηση.</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>Χειρισμός συρταριού</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Επιλέξτε την τοποθεσία στόχου του συρταριού</value>
+  </data>
+  <data name="ConfirmNewOffset" xml:space="preserve">
+    <value>Επιβεβαίωση νέας μετατόπισης</value>
+  </data>
+  <data name="CorrectElevatorPositionNext" xml:space="preserve">
+    <value>Διορθώστε τη θέση του ανελκυστήρα έως ότου είναι τέλεια ευθυγραμμισμένος και πατήστε επόμενο.</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Ρεύμα [A]</value>
+  </data>
+  <data name="ExecuteCellMeasurement" xml:space="preserve">
+    <value>Εκτελέστε τη μέτρηση μιας κυψέλης</value>
+  </data>
+  <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
+    <value>Εκτελέστε την τοποθέτηση του ανελκυστήρα μπροστά από μία κυψέλη.</value>
+  </data>
+  <data name="ExecuteOriginCalibration" xml:space="preserve">
+    <value>Εκτέλεση βαθμονόμησης προέλευσης</value>
+  </data>
+  <data name="MoveElevatorToPlaceMeter" xml:space="preserve">
+    <value>Μετακινήστε τον ανελκυστήρα σε ένα ύψος που σας επιτρέπει να συνδέσετε το μετρητή.</value>
+  </data>
+  <data name="MoveToElevatorPosition" xml:space="preserve">
+    <value>Μετακινήστε προς τη θέση ανελκυστήρα</value>
+  </data>
+  <data name="MoveToQuote" xml:space="preserve">
+    <value>Μετακινήστε σε παράθεση</value>
+  </data>
+  <data name="NewOffset" xml:space="preserve">
+    <value>Νέα μετατόπιση (mm)</value>
+  </data>
+  <data name="PlaceMeter" xml:space="preserve">
+    <value>Τοποθετήστε το μετρητή</value>
+  </data>
+  <data name="RemoveCarterRestore" xml:space="preserve">
+    <value>Προχωρήστε στην αφαίρεση ενός από τα περιβλήματα και τοποθετήστε το μετρητή. Ολοκληρώστε επανατοποθετώντας το περίβλημα και αποκαθιστώντας την κατάσταση ενεργοποίησης του μηχανήματος.</value>
+  </data>
+  <data name="RepeatOriginCalibration" xml:space="preserve">
+    <value>Λόγω της αλλαγής μετατόπισης που μόλις εκτελέστηκε, απαιτείται ξανά η βαθμονόμηση προέλευσης του κατακόρυφου άξονα. Πατήστε εκκίνηση για να ξεκινήσετε.</value>
+  </data>
+  <data name="SelectedCell" xml:space="preserve">
+    <value>Επιλεγμένη κυψέλη</value>
+  </data>
+  <data name="StartQuote" xml:space="preserve">
+    <value>Εκκίνηση παράθεσης</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Ώρα [s]</value>
+  </data>
+  <data name="VerifyConfirmWarn" xml:space="preserve">
+    <value>Ελέγξτε τη νέα υπολογισμένη τιμή μετατόπισης και πατήστε αποθήκευση για να εκτελέσετε την αλλαγή. Όλες οι μετέπειτα τοποθετήσεις θα επηρεαστούν από τη διόρθωση.</value>
+  </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Πλήρης δοκιμή</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>Η διαδικασία επιτρέπει την πλήρη δοκιμή όλων των συρταριών που υπάρχουν στο μηχάνημα. Για να αρχίσετε τη διαδικασία, εισάγετε τον αριθμό των κύκλων και στη συνέχεια πατήστε εκκίνηση</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Κύκλοι συνεδρίας</value>
+  </data>
+  <data name="ApplyCorrectionMessage" xml:space="preserve">
+    <value>Θέλετε πραγματικά να εφαρμόσετε τη διόρθωση;</value>
+  </data>
+  <data name="AttachMeter" xml:space="preserve">
+    <value>Συνδέστε το μετρητή:</value>
+  </data>
+  <data name="ConfirmCalibrationProcedure" xml:space="preserve">
+    <value>Θέλετε να επιβεβαιώσετε τη διαδικασία βαθμονόμησης;</value>
+  </data>
+  <data name="ConfirmNewResolution" xml:space="preserve">
+    <value>Επιβεβαίωση νέας ανάλυσης:</value>
+  </data>
+  <data name="DestinationPosition" xml:space="preserve">
+    <value>Στόχος προορισμού</value>
+  </data>
+  <data name="ElevatorHighAttachMeter" xml:space="preserve">
+    <value>Τοποθετήστε τον ανελκυστήρα σε ένα ύψος που σας επιτρέπει να συνδέσετε το μετρητή.</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart1" xml:space="preserve">
+    <value>Λάβετε την πρώτη μέτρηση (1/2):</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart2" xml:space="preserve">
+    <value>Λάβετε την πρώτη μέτρηση (2/2):</value>
+  </data>
+  <data name="IndicateMisuredPosition" xml:space="preserve">
+    <value>Υποδείξτε το ύψος που μετρήθηκε με το μετρητή και πατήστε επόμενο</value>
+  </data>
+  <data name="MisuredPosition" xml:space="preserve">
+    <value>Μετρημένο ύψος</value>
+  </data>
+  <data name="ModifyLowerBoundDialog" xml:space="preserve">
+    <value>Το ακόλουθο ύψος θα αλλάξει την τιμή κάτω ορίου του μηχανήματος, θέλετε να συνεχίσετε;</value>
+  </data>
+  <data name="ResetTotalCyclesNumber" xml:space="preserve">
+    <value>Θέλετε πραγματικά να επαναφέρετε το συνολικό αριθμό των τελειωμένων κύκλων;</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Αποθήκευση</value>
+  </data>
+  <data name="StartProcedureMessage" xml:space="preserve">
+    <value>Θέλετε να αρχίσετε τη διαδικασία</value>
+  </data>
+  <data name="TestStopped" xml:space="preserve">
+    <value>Διακοπή δοκιμής σε φάση</value>
+  </data>
+  <data name="VerifyNewCalcolatedValue" xml:space="preserve">
+    <value>Ελέγξτε τη νέα υπολογισμένη τιμή ανάλυσης και πατήστε αποθήκευση για να εκτελέσετε την αλλαγή</value>
+  </data>
+  <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
+    <value>Νέα ανάλυση</value>
+  </data>
+  <data name="ConfirmRestoreToPreviousVersion" xml:space="preserve">
+    <value>Θέλετε να επιβεβαιώσετε την αποκατάσταση της προηγούμενης έκδοσης;</value>
+  </data>
+  <data name="RestoreInProgress" xml:space="preserve">
+    <value>Αποκατάσταση σε εξέλιξη...</value>
+  </data>
+  <data name="RestoreEndedWithErrors" xml:space="preserve">
+    <value>Η αποκατάσταση ολοκληρώθηκε με σφάλματα</value>
+  </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>Διαγράψτε το αρχείο στιγμιότυπου του προγράμματος εγκατάστασης '{0}'.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Σφάλμα κατά τη διαγραφή του αρχείου στιγμιότυπου.</value>
+  </data>
+  <data name="DrawerManagement" xml:space="preserve">
+    <value>Χειρισμός συρταριού</value>
+  </data>
+  <data name="AverageCurrent" xml:space="preserve">
+    <value>Μέσο ρεύμα [A]</value>
+  </data>
+  <data name="CallUnit" xml:space="preserve">
+    <value>Μονάδα κλήσης</value>
+  </data>
+  <data name="CarouselCalibrationDescription" xml:space="preserve">
+    <value>Περιμένετε για τον τερματισμό της διαδικασίας, αν χρειάζεται, το κουμπί 'STOP' διακοπής για μια άμεση διακοπή και 'STOP PROCEDURE' (ΔΙΑΚΟΠΗ ΔΙΑΔΙΚΑΣΙΑΣ) για μια διακοπή σε φάση.</value>
+  </data>
+  <data name="CellEditing" xml:space="preserve">
+    <value>Επεξεργασία κυψέλης</value>
+  </data>
+  <data name="CellManagement" xml:space="preserve">
+    <value>Χειρισμός κυψέλης</value>
+  </data>
+  <data name="CellPanelsCheckDescription" xml:space="preserve">
+    <value>Βεβαιωθείτε για την προσαρμογή του φωτοκύτταρου παρουσίας συρταριού, αν δεν είναι προσαρμοσμένο, ο ανελκυστήρας θα μπορούσε να μπλοκάρει στο επάνω μέρος του μηχανήματος.</value>
+  </data>
+  <data name="CellPanelsCheckPanel" xml:space="preserve">
+    <value>Πίνακας ελέγχου:</value>
+  </data>
+  <data name="CellPanelsCheckPhotocells" xml:space="preserve">
+    <value>Έλεγχος φωτοκύτταρου:</value>
+  </data>
+  <data name="DeleteUnit" xml:space="preserve">
+    <value>Μονάδα διαγραφής</value>
+  </data>
+  <data name="ElevatorBack" xml:space="preserve">
+    <value>Ανελκυστήρας πίσω</value>
+  </data>
+  <data name="ElevatorDown" xml:space="preserve">
+    <value>Ανελκυστήρας κάτω</value>
+  </data>
+  <data name="ElevatorForwards" xml:space="preserve">
+    <value>Ανελκυστήρας προς τα εμπρός</value>
+  </data>
+  <data name="ElevatorUp" xml:space="preserve">
+    <value>Ανελκυστήρας επάνω</value>
+  </data>
+  <data name="FallsUnit" xml:space="preserve">
+    <value>Συρτάρι που πέφτει</value>
+  </data>
+  <data name="GoToCell" xml:space="preserve">
+    <value>Μετάβαση στην κυψέλη</value>
+  </data>
+  <data name="InsertUnit" xml:space="preserve">
+    <value>Μονάδα εισαγωγής</value>
+  </data>
+  <data name="ProcedureNotCompleted" xml:space="preserve">
+    <value>Η διαδικασία δεν ολοκληρώθηκε.</value>
+  </data>
+  <data name="RepeteProcedure" xml:space="preserve">
+    <value>Επαναλάβετε τη διαδικασία σαν να μην έχει τελειώσει σωστά</value>
+  </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>Μονάδα αποθήκευσης</value>
+  </data>
+  <data name="TestedPanels" xml:space="preserve">
+    <value>Δοκιμασμένοι πίνακες</value>
+  </data>
+  <data name="TotalCyclesCompleted" xml:space="preserve">
+    <value>Σύνολο κύκλων ολοκληρωμένο</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Μονάδα</value>
+  </data>
+  <data name="UnitEditing" xml:space="preserve">
+    <value>Επεξεργασία της μονάδας</value>
+  </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>Βαθμονόμηση φράγματος</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Μέτρηση πλατφόρμας</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>Βαθμονόμηση αριστερής πλευράς (mm)</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Αποτέλεσμα βαθμονόμησης:</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>Βαθμονόμηση δεξιάς πλευράς (mm)</value>
+  </data>
+  <data name="DataBePositive" xml:space="preserve">
+    <value>Τα δεδομένα πρέπει να είναι θετικά.</value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Ανελκυστήρας στη θέση του:</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Διόρθωση πύλης</value>
+  </data>
+  <data name="InstallationFileFound" xml:space="preserve">
+    <value>{0} βρέθηκαν τα αρχεία εγκατάστασης</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>αριστερά</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Μέτρηση αριστερής πλευράς</value>
+  </data>
+  <data name="MaxValue9" xml:space="preserve">
+    <value>Η επιτρεπόμενη μέγιστη τιμή είναι 9.</value>
+  </data>
+  <data name="MissValue" xml:space="preserve">
+    <value>Λείπει η τιμή.</value>
+  </data>
+  <data name="NoInstallationFileFound" xml:space="preserve">
+    <value>Δεν βρέθηκε το αρχείο εγκατάστασης</value>
+  </data>
+  <data name="OneInstallationFileFound" xml:space="preserve">
+    <value>Βρέθηκε ένα αρχείο εγκατάστασης</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>Στο τέλος της διαδικασίας η σελίδα θα αλλάξει αυτόματα.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>Τρέχουσα έκδοση PanelPc</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Πίνακες</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Παράμετροι</value>
+  </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Τοποθετήστε τον ανελκυστήρα στο ύψος της πλατφόρμας.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Τοποθέτηση του προτύπου σε</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>Με βάση το αποτέλεσμα βαθμονόμησης, μπορείτε να αποφασίσετε αν θα ολοκληρώσετε τη λειτουργία, έχοντας αποτέλεσμα μικρότερο από 1 mm.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>Αν η βαθμονόμηση υπερβαίνει το 1 mm, πρέπει να εφαρμόζονται οι προτεινόμενες τροποποιήσεις και να επαναλαμβάνεται η μέτρηση.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Φορτώστε μια μονάδα πλατφόρμας ή ανακαλέστε μία για να αρχίσει ο οδηγός βαθμονόμησης της πλατφόρμας.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Τοποθετήστε το πρότυπο προσαρμογής στην επάνω δεξιά γωνία του συρταριού στην πλατφόρμα και βεβαιωθείτε για την τοποθέτηση των μαγνητών έτσι ώστε να παραμένει σταθερά πάνω στο συρτάρι. Στη συνέχεια ανοίξτε το κλείστρο.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Τοποθετήστε το πρότυπο προσαρμογής στην επάνω αριστερή γωνία του συρταριού στην πλατφόρμα και βεβαιωθείτε για την τοποθέτηση των μαγνητών έτσι ώστε να παραμένει σταθερά πάνω στο συρτάρι.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>Επαναλάβετε τη βαθμονόμηση</value>
+  </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>Αποκατάσταση</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>δεξιά</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Μέτρηση δεξιάς πλευράς</value>
+  </data>
+  <data name="RepositoryPath" xml:space="preserve">
+    <value>Διαδρομή χώρου εναπόθεσης</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Στατιστικά</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>Σφάλμα συστήματος</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>Όταν το πρότυπο έχει τοποθετηθεί, ανοίξτε το κλείστρο και πατήστε το κουμπί MEASUREMENT (ΜΕΤΡΗΣΗΣ) που θα αρχίσει τη μέτρηση.</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Δεδομένα δοκιμής</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Απαιτούμενη ανοχή</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Μονάδα σε πλατφόρμα:</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Μονάδα σε ψηλή θέση</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Μονάδα σε χαμηλή θέση</value>
+  </data>
+  <data name="SoftwareUpdate" xml:space="preserve">
+    <value>Ενημέρωση λογισμικού.</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Διαχείριση χρήστη</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Αναμονή...</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Περιμένετε έως ότου τελειώσει η αυτόματη διαδικασία.</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Κάντε τη δειγματοληψία των τρεχουσών τιμών ​για απόκτηση βάρους</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Ανάλυση προφίλ βάρους</value>
+  </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Επιτρέπει την προσαρμογή του φράγματος ανίχνευσης ύψους συρταριού</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Βαθμονόμηση φράγματος</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>Σας επιτρέπει να ελέγχετε και να διορθώνετε το υψόμετρο των διαφόρων θέσεων στις πλατφόρμες.</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Έλεγχος πύλης</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>Εκτελεί μια σειρά κύκλων κίνησης του κατακόρυφου άξονα.</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Θραύση ιμάντα</value>
+  </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Είστε βέβαιοι ότι θέλετε να παρακάμψετε αυτή τη δοκιμή;</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>Βαθμονομήστε την καρουζέλ</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Βαθμονόμηση καρουζέλ</value>
+  </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Χειρισμός κυψέλης</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Φόρτωση πρώτου συρταριού και κυψέλες δοκιμής</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Δοκιμή συνοριακών κυψελών</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Εφαρμόστε μια διόρθωση σε μια ομάδα κυψελών</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Αλλάξτε το μπλοκ κυψελών (απαρχαιωμένο)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Ελέγξτε την κατακόρυφη θέση των κυψελών, μία για κάθε πίνακα, σημειώνοντας κάθε ελεγμένο πίνακα</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Ελέγξτε τις κατακόρυφες θέσεις της κυψέλης</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Ελέγξτε το όριο ενός ή περισσοτέρων κυψελών</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Ελέγξτε τα όρια των κυψελών (απαρχαιωμένο)</value>
+  </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Ολοκληρώστε τις δοκιμές στις άλλες πλατφόρμες</value>
+  </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Ολοκληρωμένη δοκιμή</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Θέλετε να επιβεβαιώσετε την ολοκλήρωση της δοκιμής;</value>
+  </data>
+  <data name="DateTimeMenuDescription" xml:space="preserve">
+    <value>Ρύθμιση ημερομηνίας και ώρας συστήματος</value>
+  </data>
+  <data name="DateTimeMenuTitle" xml:space="preserve">
+    <value>Ημερομηνία και ώρα</value>
+  </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Επιβίβαση / αποβίβαση</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>Επιτρέπει την εκτέλεση μιας σειράς επαναλαμβανόμενων δοκιμών για την πύλη</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Δοκιμή κλείστρου</value>
+  </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>Νέα διαδικασία εισαγωγής μονάδας</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>Εισαγωγή</value>
+  </data>
+  <data name="InverterParameterizationMenuDescription" xml:space="preserve">
+    <value>Φορτώστε την παραμετροποίηση του αντιστροφέα με πρότυπες παραμέτρους</value>
+  </data>
+  <data name="InverterParameterizationMenuTitle" xml:space="preserve">
+    <value>Παραμετροποίηση αντιστροφέα</value>
+  </data>
+  <data name="manageUserMenuDescription" xml:space="preserve">
+    <value>Τοπική διαχείριση χρήστη</value>
+  </data>
+  <data name="ManageUserMenuTitle" xml:space="preserve">
+    <value>Διαχείριση χρήστη</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>Διαδικασία για τη μετακίνηση της μονάδας από πλατφόρμα σε πλατφόρμα</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Μετακίνηση από πλατφόρμα σε πλατφόρμα</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>Διαδικασία για τη μετακίνηση της μονάδας από κυψέλη σε κυψέλη</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Μετακίνηση από κυψέλη σε κυψέλη</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Βαθμονομήστε τη μετατόπιση του κατακόρυφου άξονα</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Μετατόπιση κατακόρυφου άξονα</value>
+  </data>
+  <data name="ParametersMenuDescription" xml:space="preserve">
+    <value>Τροποποίηση, εισαγωγή και εξαγωγή των παραμέτρων του μηχανήματος</value>
+  </data>
+  <data name="ParametersMenuTitle" xml:space="preserve">
+    <value>Παράμετροι</value>
+  </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>Διαδικασία αφαίρεσης μονάδας</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>Αφαίρεση</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Βαθμονομήστε την ανάλυση του κατακόρυφου άξονα</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Ανάλυση κατακόρυφου άξονα</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Διαχείριση μονάδας</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>Βαθμονομήστε την προέλευση του κατακόρυφου άξονα</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Προέλευση κατακόρυφου άξονα</value>
+  </data>
+  <data name="WMSComunicationMenuDescription" xml:space="preserve">
+    <value>Ρυθμίστε τις παραμέτρους επικοινωνίας με το WMS</value>
+  </data>
+  <data name="WMSComunicationMenuTitle" xml:space="preserve">
+    <value>Επικοινωνία WMS</value>
+  </data>
+  <data name="WmsOn" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="WmsOff" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="BeltMustBeTight" xml:space="preserve">
+    <value>Σφίξτε τον ιμάντα στα 56 hz</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Ελέγξτε την κατάσταση</value>
+  </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>Ολοκληρώθηκε η κατάσταση εγκατάστασης.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>Δεν ολοκληρώθηκε η κατάσταση εγκατάστασης. Εκτελέστε τις {0} / {1} διαδικασίες.</value>
+  </data>
+  <data name="CorrectDistance" xml:space="preserve">
+    <value>Διορθώστε την απόσταση</value>
+  </data>
+  <data name="TemplateInclination" xml:space="preserve">
+    <value>Κλίση προτύπου</value>
+  </data>
+  <data name="TemplateLenght" xml:space="preserve">
+    <value>Μήκος προτύπου</value>
+  </data>
+  <data name="SaveParameters" xml:space="preserve">
+    <value>Αποθήκευση παραμέτρων</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Εγκατάσταση</value>
+  </data>
+  <data name="WmsSetting" xml:space="preserve">
+    <value>Ρύθμιση WMS</value>
+  </data>
+  <data name="WmsHostAddress" xml:space="preserve">
+    <value>Διεύθυνση κεντρικού υπολογιστή</value>
+  </data>
+  <data name="HorizontalChainCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση αλυσίδας οριζοντίως</value>
+  </data>
+  <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
+    <value>Εκτελέστε την οριζόντια βαθμονόμηση της αλυσίδας</value>
+  </data>
+  <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
+    <value>Εκτελέστε τη διαδικασία βαθμονόμησης της αλυσίδας. Ο μηδενικός οριζόντιος αισθητήρας πρέπει να είναι ενεργός.</value>
+  </data>
+  <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
+    <value>Η λειτουργία βαθμονόμησης της οριζόντιας αλυσίδας σας επιτρέπει να βαθμονομείτε τη σωστή τιμή μέσω της ειδικής διαδικασίας της. Η διαδικασία λειτουργεί σε διαδοχικά βήματα μέχρι να ολοκληρωθεί σωστά.</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Οριζόντια βαθμονόμηση</value>
+  </data>
+  <data name="ConfirmProcedure" xml:space="preserve">
+    <value>Επιβεβαιώστε τη διαδικασία</value>
+  </data>
+  <data name="MisurationDone" xml:space="preserve">
+    <value>Η μέτρηση εκτελέστηκε</value>
+  </data>
+  <data name="MisurationDoneDescription" xml:space="preserve">
+    <value>Εφαρμόστε τις ακόλουθες μετρήσεις στο μηχάνημα</value>
+  </data>
+  <data name="RetryProcedure" xml:space="preserve">
+    <value>Διαδικασία επαναπροσπάθειας</value>
+  </data>
+  <data name="ResetSession" xml:space="preserve">
+    <value>Επαναφορά συνεδρίας</value>
+  </data>
+  <data name="ResetTotal" xml:space="preserve">
+    <value>Συνολικές επαναφορές</value>
+  </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Διακοπή δοκιμής</value>
+  </data>
+  <data name="CallUnitDescription" xml:space="preserve">
+    <value>Επιλέξτε τη μονάδα για να καλέσετε στην πλατφόρμα</value>
+  </data>
+  <data name="CloseShutterCommand" xml:space="preserve">
+    <value>Εκτελέστε την εντολή για να κλείσετε το κλείστρο</value>
+  </data>
+  <data name="OpenShutterCommand" xml:space="preserve">
+    <value>Εκτελέστε την εντολή για να ανοίξετε το κλείστρο</value>
+  </data>
+  <data name="DeposiAndPickUpDescription" xml:space="preserve">
+    <value>Η λειτουργία της μονάδας φόρτωσης / εκφόρτωσης σας επιτρέπει να δοκιμάσετε τη σωστή λειτουργία των χειρισμών της μονάδας μέσω μιας σειράς κύκλων. Η διαδικασία για τα επόμενα βήματα μέχρι να ολοκληρωθεί σωστά.</value>
+  </data>
+  <data name="TestDone" xml:space="preserve">
+    <value>Επιτεύχθηκε η δοκιμή</value>
+  </data>
+  <data name="TestDoneDescription" xml:space="preserve">
+    <value>Εδώ είναι ο αριθμός των κύκλων που έχουν εκτελεστεί</value>
+  </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>Κύκλοι</value>
+  </data>
+  <data name="CycleDescription" xml:space="preserve">
+    <value>Εισάγετε τον αριθμό των κύκλων που θέλετε να εκτελέσετε</value>
+  </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>WMS εκτός σύνδεσης</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Έλεγχος σε εξέλιξη</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Εκτός σύνδεσης</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Σε σύνδεση</value>
+  </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Ολοκληρώστε τη δοκιμή</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Αναγνωριστικό</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Σύνολο δεδομένων</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Τύπος</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Τιμή</value>
+  </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Προσθέστε όλη τη μονάδα για δοκιμή</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Προσθέστε τη μονάδα για δοκιμή</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Αφαιρέστε όλη τη μονάδα δοκιμής</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Αφαιρέστε μονάδα δοκιμής</value>
+  </data>
+  <data name="InverterProgrammingStarted" xml:space="preserve">
+    <value>Άρχισε ο προγραμματισμός του αντιστροφέα</value>
+  </data>
+  <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
+    <value>Ο προγραμματισμός του αντιστροφέα τερμάτισε επιτυχώς</value>
+  </data>
+  <data name="InvertersProgrammingStarted" xml:space="preserve">
+    <value>Άρχισε ο προγραμματισμός των αντιστροφέων</value>
+  </data>
+  <data name="InvertersProgrammingStopped" xml:space="preserve">
+    <value>Διακόπηκε ο προγραμματισμός του αντιστροφέα</value>
+  </data>
+  <data name="InverterProgrammingEndedErrors" xml:space="preserve">
+    <value>Ο προγραμματισμός του αντιστροφέα τερμάτισε με σφάλματα</value>
+  </data>
+  <data name="InverterProgrammingNext" xml:space="preserve">
+    <value>Εκκίνηση προγραμματισμού επόμενου αντιστροφέα</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Μόνο ανάγνωση</value>
+  </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>Προς το μηχάνημα</value>
+  </data>
+  <data name="AccessoryEnabled" xml:space="preserve">
+    <value>Ενεργοποιημένο</value>
+  </data>
+  <data name="ConfigureDevice" xml:space="preserve">
+    <value>Διάταξη διαμόρφωσης</value>
+  </data>
+  <data name="SystemPorts" xml:space="preserve">
+    <value>Θύρες συστήματος</value>
+  </data>
+  <data name="NoSerialPortDetected" xml:space="preserve">
+    <value>Δεν εντοπίστηκαν σειριακές θύρες. Βεβαιωθείτε ότι η διάταξη είναι συνδεδεμένη με τον πίνακα.</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
+    <value>Βάλτε αυτούς τους γραμμωτούς κωδικούς σε ακολουθία για να διασφαλίσετε ότι ο αναγνώστης του γραμμωτού κώδικα είναι ρυθμισμένος ως προσομοίωση θύρας USB COM.</value>
+  </data>
+  <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
+    <value>Δεν μπορείτε να βρείτε τη σειριακή θύρα του αναγνώστη γραμμωτού κώδικα; Διαμορφώστε τη διάταξη.</value>
+  </data>
+  <data name="AccessoriesBarcodeEnableComEmulation" xml:space="preserve">
+    <value>Ενεργοποίηση προσομοίωσης COM</value>
+  </data>
+  <data name="AccessoriesBarcodeEnterSetup" xml:space="preserve">
+    <value>Εισαγωγή ρύθμισης</value>
+  </data>
+  <data name="AccessoriesBarcodeExitSetup" xml:space="preserve">
+    <value>Έξοδος ρύθμισης</value>
+  </data>
+  <data name="FirmwareVersion" xml:space="preserve">
+    <value>Έκδοση υλικολογισμικού</value>
+  </data>
+  <data name="ManufactureDate" xml:space="preserve">
+    <value>Ημερομηνία κατασκευής</value>
+  </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>Αριθμός μοντέλου</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Σειριακός αριθμός</value>
+  </data>
+  <data name="AlphaNumericBarSizeL" xml:space="preserve">
+    <value>Μεγάλος</value>
+  </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>Προς το χειριστή</value>
+  </data>
+  <data name="AlphaNumericBarSizeM" xml:space="preserve">
+    <value>Μεσαίο</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση εξωτερικής πλατφόρμας</value>
+  </data>
+  <data name="AlphaNumericBarSizeS" xml:space="preserve">
+    <value>Μικρό</value>
+  </data>
+  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
+    <value>Πολύ μεγάλο</value>
+  </data>
+  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
+    <value>Πολύ μικρό</value>
+  </data>
+  <data name="LoadFile" xml:space="preserve">
+    <value>Εισαγωγή στη μνήμη </value>
+  </data>
+  <data name="ImportSuccessful" xml:space="preserve">
+    <value>Επιτυχής εισαγωγή</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Εισαγωγή αρχείου διαμόρφωσης </value>
+  </data>
+  <data name="DefaultConfigurationLoaded" xml:space="preserve">
+    <value>Φόρτωση διαμόρφωσης προεπιλογής</value>
+  </data>
+  <data name="BayHomingStarted" xml:space="preserve">
+    <value>Εκκίνηση Homing αλυσίδας πλατφόρμας</value>
+  </data>
+  <data name="UnitExternalPosition" xml:space="preserve">
+    <value>Μονάδα σε εξωτερική θέση</value>
+  </data>
+  <data name="UnitInternalPosition" xml:space="preserve">
+    <value>Μονάδα σε εσωτερική θέση</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>Βαθμονομήστε την εξωτερική πλατφόρμα</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>Βαθμονόμηση εξωτερικής πλατφόρμας</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>Εκτελέστε τη διαδικασία βαθμονόμησης πλατφόρμας για να τοποθετήσετε αντίστοιχα από τον αισθητήρα</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Εκτελεσμένοι χειρισμοί</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Εκτέλεση (mm)</value>
+  </data>
+  <data name="StartProcedure" xml:space="preserve">
+    <value>Πατήστε START (ΕΚΚΙΝΗΣΗ) για να αρχίσει η διαδικασία</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>Δεν βρέθηκε '{0}' η διαδρομή του συστήματος</value>
+  </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Πρότυπο που ταιριάζει (regex)</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Δοκιμή εκκίνησης</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Αποκτήθηκε σύμβολο</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Αναγνωρίστηκε ο κωδικός.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>Αποθηκεύστε τις αλλαγές πριν αρχίσετε τη δοκιμή.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Χρησιμοποιήστε την κάρτα στον αναγνώστη κάρτας.</value>
+  </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Ελήφθη ο γραμμωτός κώδικας</value>
+  </data>
+  <data name="CheckSerialPorts" xml:space="preserve">
+    <value>Ελέγξτε τις σειριακές θύρες</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Χειριστής</value>
+  </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Όνομα εκτυπωτή</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Κωδικός</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Ύψος</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Κατάσταση</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Βάρος</value>
+  </data>
+  <data name="LoadingUnitStatus_InBay" xml:space="preserve">
+    <value>Σε πλατφόρμα</value>
+  </data>
+  <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
+    <value>Σε ανελκυστήρα</value>
+  </data>
+  <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
+    <value>Σε τοποθεσία</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
+    <value>Κίνηση σε πλατφόρμα</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
+    <value>Μεταφορά</value>
+  </data>
+  <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
+    <value>Απροσδιόριστο</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Περιγραφή</value>
+  </data>
+  <data name="GrossWeight" xml:space="preserve">
+    <value>Μεικτό βάρος (kg)</value>
+  </data>
+  <data name="IsIntoMachine" xml:space="preserve">
+    <value>Στο μηχάνημα</value>
+  </data>
+  <data name="MaxNetWeight" xml:space="preserve">
+    <value>Μέγιστο καθαρό βάρος (kg)</value>
+  </data>
+  <data name="MissionsCount" xml:space="preserve">
+    <value>Αποστολές</value>
+  </data>
+  <data name="Tare" xml:space="preserve">
+    <value>Απόβαρο (kg)</value>
+  </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Επίπεδο μπλοκ</value>
+  </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Ενεργοποιημένος αισθητήρας</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Απενεργοποιημένος αισθητήρας</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>Ψεύτικο</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Λεζάντα</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Ελεύθερο</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>Αναγνωριστικό πίνακα</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Προτεραιότητα</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Αλήθεια</value>
+  </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>BayChain</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Οριζοντίως</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>Οριζοντίως και κατακόρυφα</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Κανένα</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Κατακόρυφα</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Ανελκυστήρας πλατφόρμας</value>
+  </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>Συνολικές μονάδες φόρτωσης σε πλατφόρμα 1</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>Συνολικές μονάδες φόρτωσης σε πλατφόρμα 2</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>Συνολικές μονάδες φόρτωσης σε πλατφόρμα 3</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Συνολικές αποστολές</value>
+  </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Συναρμολόγηση κάμερας</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Μετακινήστε την κάμερα στη σωστή θέση</value>
+  </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Αποστείλετε στιγμιότυπο οθόνης</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Αποστολή αρχείων καταγραφής</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Στιγμιότυπο οθόνης</value>
+  </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Κυψέλη αποθήκευσης</value>
+  </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Ανανέωση ώρας</value>
+  </data>
+  <data name="RemovableDevicesCount" xml:space="preserve">
+    <value>Μέτρηση αφαιρούμενων διατάξεων</value>
+  </data>
+  <data name="AvailablePackages" xml:space="preserve">
+    <value>Διαθέσιμες συσκευασίες</value>
+  </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Αποθήκευση αρχείων καταγραφής</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Αποθήκευση αρχείων καταγραφής</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Φόρτωση αρχείων καταγραφής από την υπηρεσία τηλεμετρίας...</value>
+  </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>Αρχεία καταγραφής από την φορτωμένη υπηρεσία τηλεμετρίας</value>
+  </data>
+  <data name="Accessories" xml:space="preserve">
+    <value>Εξαρτήματα</value>
+  </data>
+  <data name="WeightingScaleTare" xml:space="preserve">
+    <value>Απόβαρο</value>
+  </data>
+  <data name="NoDriveSelected" xml:space="preserve">
+    <value>Δεν επιλέχθηκε καμία μονάδα κίνησης.</value>
+  </data>
+  <data name="ZeroChainCarousel" xml:space="preserve">
+    <value>Καρουζέλ μηδενικής αλυσίδας</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Υποστήριξη εξ αποστάσεως</value>
+  </data>
+  <data name="DeleteUnitDialog" xml:space="preserve">
+    <value>Αυτό θα αφαιρέσει το συρτάρι από το χάρτη της αποθήκης</value>
+  </data>
+  <data name="ExtBayMovementForExtraction" xml:space="preserve">
+    <value>Επιπλέον κίνηση προς το χειριστή</value>
+  </data>
+  <data name="ExtBayMovementForInsertion" xml:space="preserve">
+    <value>Επιπλέον κίνηση προς τον ανελκυστήρα</value>
+  </data>
+  <data name="InverterInFault" xml:space="preserve">
+    <value>Σφάλμα αντιστροφέων</value>
+  </data>
+  <data name="ScreenCastDurationExpire" xml:space="preserve">
+    <value>Έληξε ο κατοπτρισμός του βίντεο</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Ολοκληρωμένο</value>
+  </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Εξοικονόμηση ενέργειας</value>
+  </data>
+  <data name="ExternalBayShort" xml:space="preserve">
+    <value>Έξοδος</value>
+  </data>
+  <data name="InternalBayShort" xml:space="preserve">
+    <value>Είσοδος</value>
+  </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Σειριακός αριθμός συμβόλου</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Επιλέξτε το μοντέλο</value>
+  </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Εμπλοκή μονάδας</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Απεμπλοκή μονάδας</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Μπλοκαρισμένο</value>
+  </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Ενημέρωση απόβαρου</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Διαδικασία ενημέρωσης απόβαρου συρταριού</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Θέλετε να επιβεβαιώσετε ότι το επιλεγμένο συρτάρι είναι άδειο;</value>
+  </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση βάρους</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>Η λειτουργία βαθμονόμησης βάρους σας επιτρέπει να μεταβάλλετε την ανάγνωση του βάρους χρησιμοποιώντας βάρη δείγματος</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>Φορτώστε ένα συρτάρι στην πλατφόρμα ή καλέστε ένα για να αρχίσει ο οδηγός βαθμονόμησης βάρους</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Ζύγιση με άδεια μονάδα</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Πατήστε το κουμπί για να έχετε τα τρέχοντα δεδομένα κινώντας το συρτάρι και εισάγετε το καθαρό του βάρος. Όταν τελειώσετε, πατήστε Next (Επόμενο) για να επιβεβαιώσετε τη λειτουργία</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>Απορροφούμενο ρεύμα</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>Πρώτη ζύγιση με ενδιάμεσο βάρος</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Ζύγιση με πλήρη μονάδα</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Αλλάξτε μονάδα</value>
+  </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Αλλάξτε αριθμό μονάδας</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Αναγνωριστικό νέου μηχανήματος</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>Αλλαγή αναγνωριστικού</value>
+  </data>
+  <data name="StartCalibrationButton" xml:space="preserve">
+    <value>Πατήστε εκκίνηση για να ξεκινήσετε τη βαθμονόμηση</value>
+  </data>
+  <data name="CallUnitWeight" xml:space="preserve">
+    <value>Κλήση συρταριού: Περιμένετε έως ότου το προηγούμενο συρτάρι έχει εισέλθει στην κυψέλη, κατόπιν επιλέξτε το συρτάρι που θέλετε και πατήστε κλήση συρταριού. Όταν το συρτάρι θα φθάσει στην πλατφόρμα θα ανοίξει ξανά η διαδικασία της βαθμονόμησης βάρους</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Εκφόρτωση</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Φορτίο</value>
+  </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Βαθμονόμηση ανελκυστήρα</value>
+  </data>
+  <data name="SoftwareUpdateDescription" xml:space="preserve">
+    <value>Εισάγετε τη μνήμη USB</value>
+  </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Η ανάγνωση του αντιστροφέα ολοκληρώθηκε με επιτυχία</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Η ανάγνωση του αντιστροφέα τερμάτισε με σφάλματα</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Διακόπηκε η ανάγνωση του αντιστροφέα</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Ξεκινήστε από την ανάγνωση του επόμενου αντιστροφέα</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Γράψτε τον κωδικό</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Διαβάστε τον κωδικό</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Δεκαδικός αριθμός</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Άρχισε η ανάγνωση του αντιστροφέα</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Διαβάστε τα όλα</value>
+  </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Εισάγετε τη δομή</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Αντικαταστήστε το αρχείο στόχου</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Αποθηκεύστε τη διαμόρφωση του αντιστροφέα</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Γράψτε ένα</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Γράψτε τα όλα</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Η εντολή εστάλη</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Σφάλματα και πραγματικές τιμές</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Σφάλματα</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Πραγματικές τιμές</value>
+  </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Εισαγωγή και αποθήκευση</value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Πριν το τέλος</value>
+  </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Εφεδρική αντιγραφή βάσης δεδομένων μηχανήματος</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Εσωτερικό αντίγραφο</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>Επί του διακομιστή</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>Στην τηλεμετρία</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Ρυθμίσεις εφεδρικής αντιγραφής βάσης δεδομένων</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Υπάρχουν ενεργά σφάλματα</value>
+  </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>Εγχειρίδιο 2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>Εγχειρίδιο 3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Δοκιμή 2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Δοκιμή 3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Συμπαγές 2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Συμπαγές 3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Εργασίες μονάδας φόρτωσης 2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Εργασίες μονάδας φόρτωσης 3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Απενεργοποιήστε τις πρώτες 30 κυψέλες πάνω από την αντίστοιχη πλατφόρμα</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Ανάθεση τυχαίων κυψελών </value>
+  </data>
+  <data name="InternalDown" xml:space="preserve">
+    <value>Είσοδος κάτω</value>
+  </data>
+  <data name="InternalUp" xml:space="preserve">
+    <value>Είσοδος επάνω</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Μονάδα σε εσωτερική υψηλή θέση</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Μονάδα σε εσωτερική χαμηλή θέση</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Διπλή εξωτερική πλατφόρμα 1</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Διπλή εξωτερική πλατφόρμα 2</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Διπλή εξωτερική πλατφόρμα 3</value>
+  </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Μετακίνηση μηχανήματος</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Μετατόπιση λέιζερ (mm)</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Λέιζερ</value>
+  </data>
+</root>

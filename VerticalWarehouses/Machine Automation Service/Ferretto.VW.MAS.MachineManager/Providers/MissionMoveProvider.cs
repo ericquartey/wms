@@ -226,9 +226,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             var waitMission = missionsDataProvider.GetAllMissions()
                 .FirstOrDefault(m => m.LoadUnitId == mission.LoadUnitId
                     && m.Id != mission.Id
-                    && ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                    && ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick && m.Step != MissionStep.WaitDepositExternalBay)
                         || m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
                 );
+
             if (waitMission != null)
             {
                 try
@@ -290,7 +291,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
             // Check the type of bay and apply the waiting routine only with double bay
             var bay = baysDataProvider.GetByNumber(mission.TargetBay);
-            if (!bay.IsDouble)
+            if (!bay.IsDouble || (bay.IsDouble && bay.IsExternal))
             {
                 // No mission to check
                 this.Logger.LogTrace($"Bay is NOT double... No check waiting missions");

@@ -2457,4 +2457,19 @@
   <data name="InvalidWeightValues" xml:space="preserve">
     <value>Valori di peso errati - devono essere tutti e 3 diversi!</value>
   </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Zero catena pos. alta</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Zero catena pos. bassa</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Ricarica</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Chiudi browser</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Apri browser</value>
+  </data>
 </root>

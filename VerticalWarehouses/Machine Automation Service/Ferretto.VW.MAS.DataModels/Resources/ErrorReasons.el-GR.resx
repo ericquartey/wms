@@ -1,0 +1,429 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Βεβαιωθείτε ότι το μάνδαλο είναι στο μηδέν ή ότι η μονάδα φόρτωσης είναι πλήρως φορτωμένη στον ανελκυστήρα.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Βεβαιωθείτε ότι τα μανιτάρια έκτακτης ανάγκης είναι απενεργοποιημένα και ότι είναι απενεργοποιημένοι όλοι οι αισθητήρες.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Η μονάδα φόρτωσης μπορεί να έχει κολλήσει.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Η μονάδα φόρτωσης δεν φαίνεται να είναι πλήρως στον ανελκυστήρα μετά τη φάση φόρτωσης.</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Η μονάδα φόρτωσης δεν φαίνεται να είναι πλήρως έξω από τον ανελκυστήρα μετά τη φάση φόρτωσης.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Ο ανελκυστήρας είναι γεμάτος μετά την εναπόθεση.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Ο ανελκυστήρας είναι άδειος μετά τη λήψη.</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Βεβαιωθείτε ότι τα κουμπιά έκτακτης ανάγκης είναι απενεργοποιημένα και ότι είναι απενεργοποιημένοι όλοι οι αισθητήρες.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Επαληθεύστε ότι η κυψέλη στόχου της μονάδας φόρτωσης μέσα στη βάση δεδομένων έχει διαμορφωθεί σωστά</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Βεβαιωθείτε ότι είναι άδεια η βάση ανύψωσης. Ελέγξτε τη σωστή λειτουργία της αισθητήρων παρουσίας της μονάδας φόρτωσης στη βάση.</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Ελέγξτε ότι η θέση πηγής της μονάδας φόρτωσης μέσα στη βάση δεδομένων έχει διαμορφωθεί σωστά</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Βεβαιωθείτε ότι η μονάδα φόρτωσης υπάρχει στην πλατφόρμα και ότι οι αισθητήρες που υπάρχουν λειτουργούν σωστά</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Αν η μονάδα φόρτωσης έχει αφαιρεθεί, ελέγξτε τους αισθητήρες παρουσίας της μονάδας φόρτωσης στην πλατφόρμα, διαφορετικά αφαιρέστε τη μονάδα φόρτωσης από την πλατφόρμα.</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Επαληθεύστε ότι η πλατφόρμα προορισμού του συρταριού είναι πραγματικά άδεια. Ελέγξτε ότι οι αισθητήρες της μονάδας φόρτωσης της πλατφόρμας λειτουργούν σωστά.</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Η επιλεγμένη μονάδα φόρτωσης δεν είναι διαθέσιμη. Ελέγξτε τον εισαγόμενο αριθμό της μονάδας φόρτωσης και τη λογική θέση της μονάδας φόρτωσης.</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Η επιλεγμένη μονάδα φόρτωσης υπάρχει στη βάση δεδομένων αλλά δεν φορτώθηκε στην αποθήκη. Ελέγξτε τη διαμόρφωση της βάσης δεδομένων.</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Ελέγξτε ότι η μονάδα φόρτωσης υπάρχει πράγματι στην πλατφόρμα της πηγής. Ελέγξτε ότι οι αισθητήρες της μονάδας φόρτωσης της πλατφόρμας λειτουργούν σωστά.</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Ελέγξτε ότι η κυψέλη πηγής της μονάδας φόρτωσης μέσα στη βάση δεδομένων έχει διαμορφωθεί σωστά</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Η χαμηλότερη θέση της πλατφόρμας είναι ήδη κατειλημμένη από τη μονάδα φόρτωσης.</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Άκυροι αισθητήρες παρουσίας ανελκυστήρα.</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Παρουσία στον ανελκυστήρα με εκφορτωμένο λογικά τον ανελκυστήρα.</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Είναι ενεργοποιημένος ο μηδενικός αισθητήρας αλλά ο ανελκυστήρας είναι άδειος.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Σφάλμα αισθητήρα. Ο μηδενικός αισθητήρας πλατφόρμας δεν είναι ενεργοποιημένος.</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Η ανώτερη θέση της πλατφόρμας είναι ήδη κατειλημμένη από ένα συρτάρι.</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Ο μηδενικός αισθητήρας αλυσίδας ανελκυστήρα είναι ενεργοποιημένος αλλά ο ανελκυστήρας είναι πλήρης.</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Εκφορτώστε τη μονάδα φόρτωσης στην πλατφόρμα και αφαιρέστε το υπερβολικό βάρος. Στη συνέχεια ρυθμίστε την αυτόματη λειτουργία.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Το κλείστρο δεν είναι ανοιχτό. Ελέγξτε τους αισθητήρες του κλείστρου.</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Το κλείστρο είναι ανοιχτό. Ελέγξτε τους αισθητήρες του κλείστρου.</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Ο κατακόρυφος προορισμός είναι κάτω του κατώτερου ορίου. Ελέγξτε τις παραμέτρους του μηχανήματος.</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>Η πλατφόρμα εκτελεί ήδη μια εντολή και δεν μπορεί να επεξεργαστεί άλλες</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Ο κατακόρυφος προορισμός υπερβαίνει το ανώτερο όριο. Ελέγξτε τις παραμέτρους του μηχανήματος.</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Σφάλμα διάταξης I/O.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Η μονάδα φόρτωσης είναι μέσα στην αποθήκη</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Η απαιτούμενη εντολή δεν είναι έγκυρη στην παρούσα λειτουργία του μηχανήματος.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Ελέγξτε όλα τα φράγματα ασφαλείας.</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Ελέγξτε όλα τα κουμπιά ασφαλείας.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Η μονάδα φόρτωσης είναι σε μια άλλη πλατφόρμα.</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Η μονάδα φόρτωσης επί του μηχανήματος είναι άγνωστη</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Το κάτω επίπεδο της πλατφόρμας είναι άδειο</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Το επάνω επίπεδο της πλατφόρμας είναι άδειο.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Μια άλλη αποστολή είναι ενεργοποιημένη για αυτήν την πλατφόρμα</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Μια άλλη αποστολή είναι ενεργοποιημένη για αυτήν τη μονάδα φόρτωσης</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Μια άλλη αποστολή αυτού του τύπου είναι ενεργοποιημένη</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Κανένα σφάλμα</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Το βάρος της μονάδας φόρτωσης είναι κάτω της ελάχιστης τιμής.  Στη συνέχεια ρυθμίστε την αυτόματη λειτουργία.</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Το άθροισμα των συνολικών βαρών της μονάδας φόρτωσης υπερβαίνει τη μέγιστη τιμή.</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Η αποθήκη είναι γεμάτη. Δεν είναι δυνατή η εύρεση κάποιας ελεύθερης κυψέλης για τη μονάδα φόρτωσης.</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Ελέγξτε το αναγνωριστικό της μονάδας φόρτωσης στην πλατφόρμα. Ελέγξτε ότι οι αισθητήρες παρουσίας της μονάδας φόρτωσης λειτουργούν σωστά. Βάλτε το μηχάνημα στο αυτόματο.</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Ελέγξτε το αναγνωριστικό της μονάδας φόρτωσης στον ανελκυστήρα. Ελέγξτε ότι οι αισθητήρες παρουσίας της μονάδας φόρτωσης επί του ανελκυστήρα λειτουργούν σωστά. Βάλτε το μηχάνημα στο αυτόματο.</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Σφάλμα σύνδεσης αντιστροφέα. Ελέγξτε τις συνδέσεις ethernet</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Σφάλμα σύνδεσης διάταξης I/O. Ελέγξτε τις συνδέσεις ethernet.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Σφάλμα σύνδεσης λέιζερ. Ελέγξτε τις συνδέσεις ethernet.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>Η {0} επιτάχυνση της κίνησης του άξονα {1} είναι άκυρη: Επιτάχυνση άδειου φορτίου χαμηλότερη από την επιτάχυνση του πλήρους φορτίου</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>Η {0} ταχύτητα της κίνησης του άξονα {1} είναι άκυρη: Ταχύτητα άδειου φορτίου χαμηλότερη από την ταχύτητα του πλήρους φορτίου</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Ελέγξτε τους αισθητήρες ανελκυστήρα και πλατφόρμας</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Ο τύπος προορισμού δεν είναι έγκυρος</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Απροσδιόριστη θέση κάτω πλατφόρμας</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Απροσδιόριστη θέση επάνω πλατφόρμας</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Ο τύπος αποστολής δεν είναι έγκυρος</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Αφαιρέστε το υπερβολικό βάρος. Στη συνέχεια κλείστε το σφάλμα.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Η εντολή επιβεβαίωσης λήψης δεν είναι έγκυρη</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Αποτυχημένη ενημέρωση βάσης δεδομένων. Έχουν καταληφθεί λογικά μία ή περισσότερες κυψέλες προορισμού</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Βεβαιωθείτε ότι το μάνδαλο είναι στο μηδέν ή ότι η μονάδα φόρτωσης είναι πλήρως φορτωμένη στον ανελκυστήρα. Ελέγξτε επίσης ότι το κλείστρο δεν είναι κλειστό</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Προσπαθήστε να χαμηλώσετε το ύψος της μονάδας φόρτωσης. Στη συνέχεια ρυθμίστε την αυτόματη λειτουργία.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Το κλείστρο δεν είναι ούτε ανοιχτό ούτε κλειστό. Ελέγξτε τους αισθητήρες του κλείστρου.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Η πλατφόρμα προορισμού χρειάζεται βαθμονόμηση.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Απέτυχε η πρώτη δοκιμή της μονάδας φόρτωσης: Δεν μπορούν να ελεγχθούν όλες οι κυψέλες!</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Η αποθήκη είναι δεν είναι άδεια. Δεν επιτρέπεται η πρώτη δοκιμή της μονάδας φόρτωσης.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Δεν είναι ενεργός ο μηδενικός αισθητήρας πλατφόρμας στο τέλος της τοποθέτησης.</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Η αριστερή πλευρά του πίνακα είναι ανοιχτή. Ελέγξτε ότι όλοι οι πίνακες έχουν τοποθετηθεί και κλειστεί σωστά.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Η δεξιά πλευρά του πίνακα είναι ανοιχτή. Ελέγξτε ότι όλοι οι πλαϊνοί πίνακες έχουν τοποθετηθεί και κλειστεί σωστά.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Η κατακόρυφη θέση άλλαξε μετά την εκκίνηση του μηχανήματος</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Απέτυχε η δοκιμή της πλήρους μονάδας φόρτωσης: Δεν ήταν δυνατή η εκτέλεση όλων των απαιτούμενων βρόχων!</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Η επιλεγμένη πλατφόρμα είναι άκυρη</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Η επιλεγμένη θέση πλατφόρμας είναι άκυρη</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Ο ανελκυστήρας είναι τοποθετημένος στον επάνω αισθητήρα υπέρβασης.</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Η εξωτερική πλατφόρμα είναι κατειλημμένη</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Η εξωτερική πλατφόρμα είναι άδεια</value>
+  </data>
+  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
+    <value>Η {0} επιτάχυνση της κίνησης του άξονα {1} είναι χαμηλότερη από την επιτάχυνση πλήρους φορτίου ή υψηλότερη από την επιτάχυνση άδειου φορτίου</value>
+  </data>
+  <data name="InvalidAxisSpeedRange" xml:space="preserve">
+    <value>Η {0} ταχύτητα της κίνησης του άξονα {1} είναι χαμηλότερη από την ταχύτητα πλήρους φορτίου ή υψηλότερη από την ταχύτητα άδειου φορτίου</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>Το σύστημα WMS απάντησε με έναν κωδικό σφάλματος</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Το ύψος της μονάδας φόρτωσης είναι πάρα πολύ υψηλό για αυτή την πλατφόρμα. Στείλτε το σε μια άλλη πλατφόρμα ή μετακινήστε το χειροκίνητα</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Ο ανελκυστήρας είναι τοποθετημένος στον κάτω αισθητήρα υπέρβασης.</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>Είναι απενεργοποιημένη η θέση της πλατφόρμας</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Άκυροι αισθητήρες παρουσίας πλατφόρμας.</value>
+  </data>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Η κίνηση είναι μπλοκαρισμένη για μεγάλο χρονικό διάστημα</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Προσωρινό σφάλμα. Αν επανεμφανιστεί το πρόβλημα απενεργοποιήστε την τροφοδοσία και ενεργοποιήστε μετά από 15 δευτερόλεπτα.</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>Τέλος χρόνου διάταξης I/O</value>
+  </data>
+</root>

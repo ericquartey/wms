@@ -2518,4 +2518,19 @@
   <data name="InvalidWeightValues" xml:space="preserve">
     <value>Invalid weight values - all three must be different!</value>
   </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Zero chain pos. high</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Zero chain pos. low</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Close browser</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Open browser</value>
+  </data>
 </root>

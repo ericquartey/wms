@@ -315,4 +315,7 @@
   <data name="ZeroPosition" xml:space="preserve">
     <value>Null-Position</value>
   </data>
+  <data name="ZeroPositionUp" xml:space="preserve">
+    <value>Null Position nach oben</value>
+  </data>
 </root>

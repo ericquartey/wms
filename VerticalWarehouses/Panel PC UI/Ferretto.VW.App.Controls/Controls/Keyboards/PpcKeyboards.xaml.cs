@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using Ferretto.VW.App.Resources;
 
 namespace Ferretto.VW.App.Controls.Keyboards
 {
@@ -176,6 +176,8 @@ namespace Ferretto.VW.App.Controls.Keyboards
 
         private void PpcKeyboards_Unloaded(object sender, RoutedEventArgs e)
         {
+            Localized.Instance.CurrentKeyboardCulture = Localized.Instance.CurrentCulture;
+
             this.Unloaded -= this.PpcKeyboards_Unloaded;
             this.textBox.TextChanged -= this.TextBox_TextChanged;
         }

@@ -801,10 +801,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     Debug.WriteLine("-->:RefreshActionPoliciesAsync:external bay");
 
-                    this.moveExtBayTowardOperatorPolicy = await this.machineExternalBayWebService.CanMoveAsync(ExternalBayMovementDirection.TowardOperator, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
+                    if (this.MachineService.Bay.IsDouble)
+                    {
+                        this.moveExtBayTowardOperatorPolicy = await this.machineExternalBayWebService.CanMoveExternalDoubleAsync(ExternalBayMovementDirection.TowardOperator, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted, selectedBayPosition.IsUpper).ConfigureAwait(false);
+                        this.moveExtBayTowardMachinePolicy = await this.machineExternalBayWebService.CanMoveExternalDoubleAsync(ExternalBayMovementDirection.TowardMachine, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted, selectedBayPosition.IsUpper).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        this.moveExtBayTowardOperatorPolicy = await this.machineExternalBayWebService.CanMoveAsync(ExternalBayMovementDirection.TowardOperator, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
+                        this.moveExtBayTowardMachinePolicy = await this.machineExternalBayWebService.CanMoveAsync(ExternalBayMovementDirection.TowardMachine, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
+                    }
                     this.moveExtBayTowardOperatorCommand?.RaiseCanExecuteChanged();
 
-                    this.moveExtBayTowardMachinePolicy = await this.machineExternalBayWebService.CanMoveAsync(ExternalBayMovementDirection.TowardMachine, this.IsMovementsManual ? MovementCategory.Manual : MovementCategory.Assisted).ConfigureAwait(false);
                     this.moveExtBayTowardMachineCommand?.RaiseCanExecuteChanged();
 
                     this.moveExtBayMovementForInsertionCommand?.RaiseCanExecuteChanged();

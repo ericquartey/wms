@@ -32,6 +32,8 @@ namespace Ferretto.VW.App.Resources
 
         private CultureInfo currentCulture = CultureInfo.InstalledUICulture;
 
+        private CultureInfo currentKeyboardCulture = CultureInfo.InstalledUICulture;
+
         #endregion
 
         #region Events
@@ -56,6 +58,25 @@ namespace Ferretto.VW.App.Resources
 
                 {
                     this.currentCulture = value;
+
+                    // string.Empty/null indicates that all properties have changed
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
+                }
+            }
+        }
+
+        public CultureInfo CurrentKeyboardCulture
+
+        {
+            get => this.currentKeyboardCulture;
+
+            set
+
+            {
+                if (this.currentKeyboardCulture != value)
+
+                {
+                    this.currentKeyboardCulture = value;
 
                     // string.Empty/null indicates that all properties have changed
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));

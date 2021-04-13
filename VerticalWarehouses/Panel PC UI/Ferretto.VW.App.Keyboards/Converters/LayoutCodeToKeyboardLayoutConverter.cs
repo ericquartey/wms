@@ -14,8 +14,23 @@ namespace Ferretto.VW.App.Keyboards.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var currentCulture = Localized.Instance.CurrentCulture;
-            var resourceName = string.Concat(currentCulture.TwoLetterISOLanguageName, "-", value, ".json").ToLowerInvariant();
+            var resourceName = string.Empty;
+
+            //keyboard button change cuture
+            if (value.ToString().Contains(".en-EN"))
+            {
+                var currentCulture = CultureInfo.GetCultureInfo("en-EN");
+                var type = value.ToString().Replace(".en-EN", "");
+
+                Localized.Instance.CurrentKeyboardCulture = currentCulture;
+                resourceName = string.Concat(currentCulture.TwoLetterISOLanguageName, "-", type, ".json").ToLowerInvariant();
+            }
+            else
+            {
+                var currentCulture = Localized.Instance.CurrentKeyboardCulture;
+                resourceName = string.Concat(currentCulture.TwoLetterISOLanguageName, "-", value, ".json").ToLowerInvariant();
+            }
+
             var assembly = Assembly.GetAssembly(this.GetType());
             var assemblyName = assembly.GetName().Name;
             var jsonUri = new Uri(string.Concat($"pack://application:,,,/{ assemblyName };component/Resources/", resourceName));

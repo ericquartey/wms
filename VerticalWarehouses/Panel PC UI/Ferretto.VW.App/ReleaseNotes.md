@@ -20,16 +20,19 @@
     }
 </style>
 
-## Nuove Funzionalità 1.0.11 rispetto la 1.0.10
-- Il pulsate "?" visualizza le release notes
+## Nuove Funzionalità 1.0.12 rispetto la 1.0.11
+- Aggiunta gestione della Baia Esterna Doppia
+- Aggiunta lingua greca
+- Aggiunti browser negli accessori con web server
 
 ## Bug Risolti
-- Aggiunti controlli di Sensori non validi nelle missioni di ripristino
-- La baia esterna non si blocca se deve fare la calibrazione
-- Ridotti tempi di cambio passo missione
+- La vista di chiamata cassetto non perde la selezione
+- Il controllo delle luci di baia funziona anche durante i movimenti
 
 ## Compatibile con adapter 0.4.15 e 0.4.16
 ***
+
+[Versione 1.0.11](#id1011)
 
 [Versione 1.0.10](#id1010)
 
@@ -53,6 +56,20 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1011"></a>
+
+### Nuove Funzionalità 1.0.11 rispetto la 1.0.10
+- Il pulsante "?" visualizza le release notes
+
+### Bug Risolti
+- Aggiunti controlli di Sensori non validi nelle missioni di ripristino
+- La baia esterna non si blocca se deve fare la calibrazione
+- Ridotti tempi di cambio passo missione
+
+### Compatibile con adapter 0.4.15 e 0.4.16
+***
+
 <a id="id1010"></a>
 
 ### Nuove Funzionalità 1.0.10 rispetto la 1.0.9

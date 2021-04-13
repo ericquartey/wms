@@ -251,6 +251,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             {
                                 // INFO The ACU_ZeroSensor must be inverted (WORKAROUND)
                                 ioStatuses[2] = !ioStatuses[2];
+                                ioStatuses[5] = !ioStatuses[5];
                             }
 
                             if (acuInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)inverter.SystemIndex])

@@ -126,15 +126,19 @@
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay1}"
                                    Text="{res:Loc InstallationApp.ShutterSensorA}"
-                                   Visibility="{Binding Bay2HasShutter, Converter={StaticResource BTVC}}" />
+                                   Visibility="{Binding Bay1HasShutter, Converter={StaticResource BTVC}}" />
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorBShutterBay1}"
                                    Text="{res:Loc InstallationApp.ShutterSensorB}"
-                                   Visibility="{Binding Bay2HasShutter, Converter={StaticResource BTVC}}" />
+                                   Visibility="{Binding Bay1HasShutter, Converter={StaticResource BTVC}}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay1S6IND}"
+                                   Text="{res:Loc InstallationApp.ZeroChainUp}"
+                                   Visibility="{Binding Bay1ZeroChainUpIsVisible, Converter={StaticResource BTVC}}" />
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay1S3IND}"
-                                   Text="{res:Loc InstallationApp.ZeroChain}"
-                                   Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+                                   Text="{res:Loc InstallationApp.ZeroChainDown}"
+                                   Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
 
       </StackPanel>
 
@@ -142,6 +146,7 @@
                   Grid.Column="1"
                   Orientation="Vertical"
                   Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}">
+
         <StackPanel Grid.Row="1"
                     Orientation="Vertical"
                     Visibility="{Binding IsBay2InternalPresent, Converter={StaticResource BTVC}}">
@@ -172,6 +177,7 @@
                                      Text="{res:Loc InstallationApp.ZeroChainCarousel}"
                                      Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
         </StackPanel>
+
         <StackPanel Grid.Row="1"
                     Orientation="Vertical"
                     Visibility="{Binding IsBay2ExternalPresent, Converter={StaticResource BTVC}}">
@@ -202,6 +208,7 @@
                                      Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
 
         </StackPanel>
+
         <StackPanel Grid.Row="1"
                     Orientation="Vertical"
                     Visibility="{Binding IsBay2ExternalDoublePresent, Converter={StaticResource BTVC}}">
@@ -216,11 +223,11 @@
 
           <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay2}"
                                      Text="{res:Loc InstallationApp.UnitHightPosition}"
-                                     Visibility="{Binding IsBay1PositionUpPresent, Converter={StaticResource BTVC}}" />
+                                     Visibility="{Binding IsBay2PositionUpPresent, Converter={StaticResource BTVC}}" />
 
           <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay2}"
                                      Text="{res:Loc InstallationApp.UnitLowPosition}"
-                                     Visibility="{Binding IsBay1PositionDownPresent, Converter={StaticResource BTVC}}" />
+                                     Visibility="{Binding IsBay2PositionDownPresent, Converter={StaticResource BTVC}}" />
 
           <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay2}"
                                      Text="{res:Loc InstallationApp.BarrierCalibration}" />
@@ -233,16 +240,22 @@
                                      Text="{res:Loc InstallationApp.ShutterSensorB}"
                                      Visibility="{Binding Bay2HasShutter, Converter={StaticResource BTVC}}" />
 
+          <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay2S6IND}"
+                                     Text="{res:Loc InstallationApp.ZeroChainUp}"
+                                     Visibility="{Binding Bay2ZeroChainUpIsVisible, Converter={StaticResource BTVC}}" />
+
           <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay2S3IND}"
-                                     Text="{res:Loc InstallationApp.ZeroChain}"
+                                     Text="{res:Loc InstallationApp.ZeroChainDown}"
                                      Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
 
         </StackPanel>
+
       </StackPanel>
 
       <StackPanel Grid.Row="2"
                   Orientation="Vertical"
                   Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}">
+
         <StackPanel Grid.Row="1"
                     Orientation="Vertical"
                     Visibility="{Binding IsBay3InternalPresent, Converter={StaticResource BTVC}}">
@@ -273,6 +286,7 @@
                                      Text="{res:Loc InstallationApp.ZeroChainCarousel}"
                                      Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
         </StackPanel>
+
         <StackPanel Grid.Row="1"
                     Orientation="Vertical"
                     Visibility="{Binding IsBay3ExternalPresent, Converter={StaticResource BTVC}}">
@@ -303,6 +317,7 @@
                                      Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
 
         </StackPanel>
+
         <StackPanel Grid.Row="1"
                     Orientation="Vertical"
                     Visibility="{Binding IsBay3ExternalDoublePresent, Converter={StaticResource BTVC}}">
@@ -317,28 +332,34 @@
 
           <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentInBay3}"
                                      Text="{res:Loc InstallationApp.UnitHightPosition}"
-                                     Visibility="{Binding IsBay1PositionUpPresent, Converter={StaticResource BTVC}}" />
+                                     Visibility="{Binding IsBay3PositionUpPresent, Converter={StaticResource BTVC}}" />
 
           <controls:PpcSensorControl SensorState="{Binding Sensors.LUPresentMiddleBottomBay3}"
                                      Text="{res:Loc InstallationApp.UnitLowPosition}"
-                                     Visibility="{Binding IsBay1PositionDownPresent, Converter={StaticResource BTVC}}" />
+                                     Visibility="{Binding IsBay3PositionDownPresent, Converter={StaticResource BTVC}}" />
 
           <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay3}"
                                      Text="{res:Loc InstallationApp.BarrierCalibration}" />
 
           <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay3}"
                                      Text="{res:Loc InstallationApp.ShutterSensorA}"
-                                     Visibility="{Binding Bay2HasShutter, Converter={StaticResource BTVC}}" />
+                                     Visibility="{Binding Bay3HasShutter, Converter={StaticResource BTVC}}" />
 
           <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorBShutterBay3}"
                                      Text="{res:Loc InstallationApp.ShutterSensorB}"
-                                     Visibility="{Binding Bay2HasShutter, Converter={StaticResource BTVC}}" />
+                                     Visibility="{Binding Bay3HasShutter, Converter={StaticResource BTVC}}" />
+
+          <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay3S6IND}"
+                                     Text="{res:Loc InstallationApp.ZeroChainUp}"
+                                     Visibility="{Binding Bay3ZeroChainUpIsVisible, Converter={StaticResource BTVC}}" />
 
           <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay3S3IND}"
-                                     Text="{res:Loc InstallationApp.ZeroChain}"
-                                     Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+                                     Text="{res:Loc InstallationApp.ZeroChainDown}"
+                                     Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+
 
         </StackPanel>
+
       </StackPanel>
     </Grid>
 

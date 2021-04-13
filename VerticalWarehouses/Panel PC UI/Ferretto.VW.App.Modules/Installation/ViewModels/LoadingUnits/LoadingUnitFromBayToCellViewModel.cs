@@ -201,7 +201,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.GetLoadingUnits();
 
-            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
+            if ((this.MachineService.Bay.IsDouble && !this.MachineService.Bay.IsExternal) || this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
             {
                 this.SelectBayPositionUp();
             }

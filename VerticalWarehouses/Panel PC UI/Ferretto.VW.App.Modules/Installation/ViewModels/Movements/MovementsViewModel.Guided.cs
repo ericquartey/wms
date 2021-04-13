@@ -1005,7 +1005,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardMachine);
+                if (this.MachineService.Bay.IsDouble)
+                {
+                    //var selectedBayPosition = this.SelectedBayPosition();
+                    await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, this.IsPositionUpSelected);
+                }
+                else
+                {
+                    await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardMachine);
+                }
                 this.IsExternalBayMoving = true;
                 this.IsExecutingProcedure = true;
             }
@@ -1025,7 +1033,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardOperator);
+                if (this.MachineService.Bay.IsDouble)
+                {
+                    //var selectedBayPosition = this.SelectedBayPosition();
+                    await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, this.IsPositionUpSelected);
+                }
+                else
+                {
+                    await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardOperator);
+                }
                 this.IsExternalBayMoving = true;
                 this.IsExecutingProcedure = true;
             }
