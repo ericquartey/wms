@@ -56,11 +56,12 @@ namespace Ferretto.VW.App.Services
                 }
                 else
                 {
-                    if(userAccessLevel == UserAccessLevel.Support)
+                    if (userAccessLevel == UserAccessLevel.Support)
                     {
                         settings[actualLanguageKey].Value = users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault();
 
                         Localized.Instance.CurrentCulture = CultureInfo.GetCultureInfo(users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault());
+                        Localized.Instance.CurrentKeyboardCulture = CultureInfo.GetCultureInfo(users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault());
 
                         this.usersService.SetMASCultureAsync(users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault());
                     }
@@ -69,6 +70,7 @@ namespace Ferretto.VW.App.Services
                         settings[actualLanguageKey].Value = users.Where(s => (UserAccessLevel)s.AccessLevel == userAccessLevel).Select(s => s.Language).FirstOrDefault();
 
                         Localized.Instance.CurrentCulture = CultureInfo.GetCultureInfo(users.Where(s => (UserAccessLevel)s.AccessLevel == userAccessLevel).Select(s => s.Language).FirstOrDefault());
+                        Localized.Instance.CurrentKeyboardCulture = CultureInfo.GetCultureInfo(users.Where(s => (UserAccessLevel)s.AccessLevel == userAccessLevel).Select(s => s.Language).FirstOrDefault());
 
                         this.usersService.SetMASCultureAsync(users.Where(s => (UserAccessLevel)s.AccessLevel == userAccessLevel).Select(s => s.Language).FirstOrDefault());
                     }
@@ -103,6 +105,7 @@ namespace Ferretto.VW.App.Services
                         settings[actualLanguageKey].Value = culture;
 
                         Localized.Instance.CurrentCulture = CultureInfo.GetCultureInfo(culture);
+                        Localized.Instance.CurrentKeyboardCulture = CultureInfo.GetCultureInfo(culture);
 
                         this.usersService.SetMASCultureAsync(culture);
                     }
