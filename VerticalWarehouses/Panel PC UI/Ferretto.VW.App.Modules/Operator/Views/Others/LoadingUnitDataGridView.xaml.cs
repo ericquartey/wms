@@ -16,8 +16,7 @@ namespace Ferretto.VW.App.Modules.Operator.Views
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
             nameof(ItemsSource),
             typeof(IEnumerable<LoadingUnit>),
-            typeof(LoadingUnitDataGridView),
-            new PropertyMetadata(OnItemsSourceChanged));
+            typeof(LoadingUnitDataGridView));
 
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
             nameof(SelectedItem),
@@ -26,11 +25,7 @@ namespace Ferretto.VW.App.Modules.Operator.Views
 
         private string firstSort;
 
-        private string lastCode;
-
         private ListSortDirection lastDirection;
-
-        private Timer reset;
 
         #endregion
 
@@ -41,11 +36,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
             this.InitializeComponent();
             this.DataGrid.DataContext = this;
             this.firstSort = string.Empty;
-            this.lastCode = string.Empty;
-
-            this.reset = new Timer(500);
-            this.reset.Elapsed += new ElapsedEventHandler(this.OnTimerElapsed);
-            this.reset.AutoReset = true;
         }
 
         #endregion
@@ -77,31 +67,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
             foreach (var col in sender.Columns.Where(x => x.SortMemberPath == sortColumn))
             {
                 col.SortDirection = direction;
-            }
-        }
-
-        private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var istance = d as LoadingUnitDataGridView;
-            var selectedItem = istance.DataGrid.SelectedItem as LoadingUnit;
-
-            if (selectedItem != null)
-            {
-                istance.lastCode = selectedItem.Code;
-            }
-        }
-
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(this.lastCode))
-            {
-                var items = this.DataGrid.ItemsSource as List<LoadingUnit>;
-                this.DataGrid.SelectedItem = items.FirstOrDefault(s => s.Code == this.lastCode);
-
-                if (!this.reset.Enabled)
-                {
-                    this.reset.Enabled = true;
-                }
             }
         }
 
@@ -139,11 +104,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
             }
 
             e.Handled = true;
-        }
-
-        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            this.lastCode = string.Empty;
         }
 
         #endregion
