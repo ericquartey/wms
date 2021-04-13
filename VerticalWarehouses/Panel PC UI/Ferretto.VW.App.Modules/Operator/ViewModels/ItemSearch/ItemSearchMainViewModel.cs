@@ -442,6 +442,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.currentItemIndex = 0;
             this.maxKnownIndexSelection = 0;
             this.items = new List<ItemInfo>();
+            this.selectedItem = null;
+            this.inputQuantity = null;
+            this.AvailableQuantity = null;
 
             this.productsChangedToken?.Dispose();
             this.productsChangedToken = null;

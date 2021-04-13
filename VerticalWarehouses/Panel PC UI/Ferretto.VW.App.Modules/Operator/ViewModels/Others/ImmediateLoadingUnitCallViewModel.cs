@@ -35,6 +35,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isEnabledLaser;
 
+        private List<LoadingUnit> loadingUnits;
+
         private DelegateCommand loadingUnitsMissionsCommand;
 
         private SubscriptionToken positioningMessageReceivedToken;
@@ -97,7 +99,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.CallLoadingUnitAsync(),
                 this.CanCallLoadingUnit));
 
-        public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
+        //public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
+
+        public List<LoadingUnit> LoadingUnits
+        {
+            get => this.loadingUnits;
+            set => this.SetProperty(ref this.loadingUnits, value, this.RaiseCanExecuteChanged);
+        }
 
         public ICommand LoadingUnitsMissionsCommand =>
             this.loadingUnitsMissionsCommand
@@ -139,6 +147,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+                this.selectedLoadingUnit = null;
+                this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
             }
         }
 
@@ -149,6 +159,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SubscribeToEvents();
 
             this.IsBackNavigationAllowed = true;
+
+            this.loadingUnits = this.MachineService.Loadunits.ToList();
+            this.RaisePropertyChanged(nameof(this.LoadingUnits));
 
             if (this.LoadingUnits.Any())
             {
@@ -166,7 +179,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
 
-            this.RaisePropertyChanged(nameof(this.LoadingUnits));
+            if (this.selectedLoadingUnit == null)
+            {
+                this.loadingUnits = this.MachineService.Loadunits.ToList();
+                this.RaisePropertyChanged(nameof(this.LoadingUnits));
+
+                this.selectedLoadingUnit = null;
+            }
+
             this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
         }
 
