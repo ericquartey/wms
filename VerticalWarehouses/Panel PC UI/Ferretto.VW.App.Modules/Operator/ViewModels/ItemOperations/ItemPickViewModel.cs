@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineItemsWebService itemsWebService;
+
         private bool canConfirm;
 
         private bool canConfirmOnEmpty;
@@ -56,6 +58,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   missionOperationsService,
                   dialogService)
         {
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
         }
 
         #endregion
@@ -300,6 +303,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
+                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var type = this.MissionOperation.Type;
+                var quantity = this.InputQuantity.Value;
+
                 var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
                 if (!canComplete)
                 {
@@ -307,6 +315,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+                else
+                {
+                    await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

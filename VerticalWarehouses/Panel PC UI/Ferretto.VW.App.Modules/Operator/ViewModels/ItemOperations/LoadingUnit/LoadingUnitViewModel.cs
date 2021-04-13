@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
         private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private readonly IMachineService machineService;
@@ -107,6 +109,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWmsDataProvider wmsDataProvider)
             : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
@@ -773,6 +776,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.reasonId,
                             this.reasonNotes);
 
+                            var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
+                            if (item.AverageWeight != null && item.AverageWeight != 0)
+                            {
+                                var loadingUnit = await this.machineLoadingUnitsWebService.GetByIdAsync(this.SelectedCompartment.LoadingUnitId.Value);
+
+                                var grossWeight = default(double);
+                                var differece = this.SelectedItemCompartment.Stock - this.InputQuantity.Value;
+                                if (differece > 0)
+                                {
+                                    grossWeight = loadingUnit.GrossWeight - (item.AverageWeight.Value * Math.Abs(differece) / 1000);
+                                }
+                                else
+                                {
+                                    grossWeight = loadingUnit.GrossWeight + (item.AverageWeight.Value * Math.Abs(differece) / 1000);
+                                }
+
+                                await this.machineLoadingUnitsWebService.SetLoadingUnitWeightAsync(this.SelectedCompartment.LoadingUnitId.Value, grossWeight);
+                                this.UnitWeight = grossWeight;
+                                this.RaisePropertyChanged(nameof(this.UnitWeight));
+                            }
+
                             this.ShowNotification(Localized.Get("InstallationApp.SuccessfullChange"), Services.Models.NotificationSeverity.Success);
                         }
                         else
@@ -789,6 +813,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.InputQuantity.Value,
                             this.reasonId,
                             this.reasonNotes);
+
+                        var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
+                        if (item.AverageWeight != null && item.AverageWeight != 0)
+                        {
+                            var loadingUnit = await this.machineLoadingUnitsWebService.GetByIdAsync(this.SelectedItemCompartment.LoadingUnitId);
+
+                            var grossWeight = default(double);
+                            var differece = this.SelectedItemCompartment.Stock - this.InputQuantity.Value;
+                            if (differece > 0)
+                            {
+                                grossWeight = loadingUnit.GrossWeight - (item.AverageWeight.Value * Math.Abs(differece) / 1000);
+                            }
+                            else
+                            {
+                                grossWeight = loadingUnit.GrossWeight + (item.AverageWeight.Value * Math.Abs(differece) / 1000);
+                            }
+
+                            await this.machineLoadingUnitsWebService.SetLoadingUnitWeightAsync(this.SelectedItemCompartment.LoadingUnitId, grossWeight);
+                            this.UnitWeight = grossWeight;
+                            this.RaisePropertyChanged(nameof(this.UnitWeight));
+                        }
                     }
 
                     if (!noteError)

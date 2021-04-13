@@ -118,6 +118,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.loadingUnitsDataProvider.GetAllTestUnits());
         }
 
+        [HttpGet("get-unit-by-id")]
+        public ActionResult<DataModels.LoadingUnit> GetById(int id)
+        {
+            return this.Ok(this.loadingUnitsDataProvider.GetById(id));
+        }
+
         [HttpGet("{id}/compartments")]
         public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartmentsAsync(int id, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
@@ -447,6 +453,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SetLoadingUnitOffset(int loadingUnitId, double laserOffset)
         {
             this.loadingUnitsDataProvider.SetLaserOffset(loadingUnitId, laserOffset);
+            return this.Accepted();
+        }
+
+        [HttpPost("set-loading-unit-weight")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetLoadingUnitWeight(int id, double loadingUnitGrossWeight)
+        {
+            this.logger.LogInformation($"Update load unit {id} weight {loadingUnitGrossWeight}kg");
+            this.loadingUnitsDataProvider.SetWeight(id, loadingUnitGrossWeight);
+
             return this.Accepted();
         }
 

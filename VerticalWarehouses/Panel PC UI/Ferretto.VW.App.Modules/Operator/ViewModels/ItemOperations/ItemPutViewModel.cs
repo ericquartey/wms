@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineItemsWebService itemsWebService;
+
         private bool canPutBox;
 
         private bool confirmOperation;
@@ -58,6 +60,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   missionOperationsService,
                   dialogService)
         {
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
         }
 
         #endregion
@@ -221,7 +224,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
 
+                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 bool canComplete = false;
+                var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var type = this.MissionOperation.Type;
+                var quantity = this.InputQuantity.Value;
 
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)//16 => lunghezza matrice
                 {
@@ -235,6 +242,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
+                    if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
+                    {
+                        await this.UpdateWeight(loadingUnitId, 1, item.AverageWeight, type);
+                    }
+                    else
+                    {
+                        await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
+                    }
+
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
                 else
@@ -379,6 +395,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
+                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var type = this.MissionOperation.Type;
+                var quantity = this.InputQuantity.Value;
+
                 var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
                 if (!canComplete)
                 {
@@ -386,6 +407,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+                else
+                {
+                    await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
