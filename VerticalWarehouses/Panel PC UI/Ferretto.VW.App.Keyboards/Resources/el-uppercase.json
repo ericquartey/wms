@@ -156,14 +156,15 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u0398"
+              "Caption": "EN",
+              "CommandText": "{layout:uppercase.en-EN}"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "\u03a9"
+              "CommandText": "\u03c2"
             }
           }
         },
@@ -191,14 +192,14 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u03A8"
+              "CommandText": "\u03A5"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "\u03A5"
+              "CommandText": "\u0398"
             }
           }
         },
@@ -226,14 +227,14 @@
         {
           "Key": {
             "Command": {
-              "CommandText": ""
+              "CommandText": "["
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": ""
+              "CommandText": "]"
             }
           }
         }
@@ -309,21 +310,21 @@
         {
           "Key": {
             "Command": {
-              "CommandText": ""
+              "CommandText": "'"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": ""
+              "CommandText": "\\"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": ""
+              "CommandText": "/"
             }
           }
         }
@@ -377,7 +378,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u039e"
+              "CommandText": "\u03a8"
             }
           },
           "Width": "Auto"
@@ -385,7 +386,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u039d"
+              "CommandText": "\u03a9"
             }
           },
           "Width": "Auto"
