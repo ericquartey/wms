@@ -145,7 +145,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWebService.ExecuteNumAsync(itemList.Code, this.areaId.Value, bay.Id, this.authenticationService.UserName);
+                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, bay.Id, this.authenticationService.UserName);
                 await this.LoadListsAsync();
                 this.ShowNotification(
                     string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code),
@@ -236,8 +236,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var list = await this.itemListsWebService.GetByNumAsync(listCode);
                 await this.ExecuteListAsync(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
             }
-            catch
+            catch (Exception ex)
             {
+                this.Logger.Error(ex);
                 this.ShowNotification(
                     string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listCode),
                     Services.Models.NotificationSeverity.Error);

@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("{code}/num")]
-        public async Task<ActionResult<IEnumerable<ItemListDetails>>> GetByNumAsync(string code)
+        public async Task<ActionResult<IEnumerable<ItemList>>> GetByNumAsync(string code)
         {
             return this.Ok(await this.itemListsWmsWebService.GetAllAsync(where: code));
         }

@@ -544,7 +544,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == 403)
+                {
+                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {

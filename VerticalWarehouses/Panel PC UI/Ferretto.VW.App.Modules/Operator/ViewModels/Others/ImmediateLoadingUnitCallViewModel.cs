@@ -136,7 +136,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.selectedLoadingUnit.Id);
+                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.selectedLoadingUnit.Id, this.authenticationService.UserName);
 
                 this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.selectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }

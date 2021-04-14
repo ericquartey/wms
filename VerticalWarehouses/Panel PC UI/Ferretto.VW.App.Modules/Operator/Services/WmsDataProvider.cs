@@ -66,7 +66,11 @@ namespace Ferretto.VW.App.Modules.Operator
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                // do nothing
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == 403)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
             }
         }
 
@@ -111,7 +115,11 @@ namespace Ferretto.VW.App.Modules.Operator
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                // do nothing
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == 403)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
             }
         }
 
@@ -143,7 +151,11 @@ namespace Ferretto.VW.App.Modules.Operator
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                // do nothing
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == 403)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
             }
         }
 

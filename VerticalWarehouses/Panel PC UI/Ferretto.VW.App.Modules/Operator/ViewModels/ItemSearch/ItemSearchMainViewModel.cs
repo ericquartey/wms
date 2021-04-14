@@ -661,7 +661,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (!waitForReason)
             {
-                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code);
+                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
@@ -682,7 +682,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (!waitForReason)
             {
-                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code);
+                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
