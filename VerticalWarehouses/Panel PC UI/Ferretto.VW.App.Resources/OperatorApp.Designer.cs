@@ -961,6 +961,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable Uwf filter.
+        /// </summary>
+        public static string DisableUwf {
+            get {
+                return ResourceManager.GetString("DisableUwf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Down.
         /// </summary>
         public static string Down {
@@ -1596,6 +1605,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ElevatorVerticalAxis {
             get {
                 return ResourceManager.GetString("ElevatorVerticalAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Uwf filter.
+        /// </summary>
+        public static string EnableUwf {
+            get {
+                return ResourceManager.GetString("EnableUwf", resourceCulture);
             }
         }
         

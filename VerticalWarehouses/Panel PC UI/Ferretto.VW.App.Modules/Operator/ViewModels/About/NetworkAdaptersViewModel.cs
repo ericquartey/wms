@@ -115,26 +115,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ICommand SaveNetworkAdapter0 => this.saveNetworkAdapter0
                                           ??
                   (this.saveNetworkAdapter0 = new DelegateCommand(
-                      () => this.SetConfig(this.networkAdapter0)));
+                      () => this.SetConfig(this.networkAdapter0), this.CanExecuteCommand));
 
         public ICommand SaveNetworkAdapter1 => this.saveNetworkAdapter1
                           ??
                   (this.saveNetworkAdapter1 = new DelegateCommand(
-                      () => this.SetConfig(this.networkAdapter1)));
+                      () => this.SetConfig(this.networkAdapter1), this.CanExecuteCommand));
 
         public ICommand UwfOffCommand => this.uwfOffCommand
                                           ??
                   (this.uwfOffCommand = new DelegateCommand(
-                      () => this.SetUWF(false)));
+                      () => this.SetUWF(false), this.CanExecuteCommand));
 
         public ICommand UwfOnCommand => this.uwfOnCommand
                           ??
                   (this.uwfOnCommand = new DelegateCommand(
-                      () => this.SetUWF(true)));
+                      () => this.SetUWF(true), this.CanExecuteCommand));
 
         #endregion
 
         #region Methods
+
+        private bool CanExecuteCommand()
+        {
+            return this.MachineModeService.MachineMode != MAS.AutomationService.Contracts.MachineMode.Automatic;
+        }
 
         public override async Task OnAppearedAsync()
         {
