@@ -9,6 +9,7 @@ using Prism.Commands;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Resources;
+using System.Timers;
 using System.Threading;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
@@ -64,6 +65,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private NetworkAdapter networkAdapter0;
 
         private NetworkAdapter networkAdapter1;
+
+        private System.Timers.Timer refresh;
 
         private DelegateCommand saveNetworkAdapter0;
 
@@ -136,11 +139,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        private bool CanExecuteCommand()
-        {
-            return this.MachineModeService.MachineMode != MAS.AutomationService.Contracts.MachineMode.Automatic;
-        }
-
         public override async Task OnAppearedAsync()
         {
             this.IsBusy = true;
@@ -156,6 +154,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBusy = false;
 
             this.CheckUwf();
+
+            this.refresh = new System.Timers.Timer(1000);
+            this.refresh.Elapsed += new ElapsedEventHandler(this.OnTimerElapsed);
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -235,6 +236,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return networkAdapter;
         }
 
+        private bool CanExecuteCommand()
+        {
+            return this.MachineModeService.MachineMode != MAS.AutomationService.Contracts.MachineMode.Automatic;
+        }
+
         private void CheckUwf()
         {
             try
@@ -309,6 +315,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.NetworkAdapter1));
 
             this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), Services.Models.NotificationSeverity.Success);
+        }
+
+        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            this.GetNetworkAdapters();
+            this.refresh.Enabled = false;
         }
 
         private void SendPromptCommand(string arg)
@@ -395,13 +407,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
             }
 
-            Thread.Sleep(1000);
-
-            this.IsBusy = true;
-
-            this.GetNetworkAdapters();
-
-            this.IsBusy = false;
+            this.refresh.Enabled = true;
         }
 
         private void SetUWF(bool on)
@@ -415,7 +421,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SendPromptCommand("/c uwfmgr.exe filter disable");
             }
 
-            //wait 1s
+            // wait 1s
             Thread.Sleep(1000);
 
             var psi = new ProcessStartInfo("shutdown", "/r /t 0");
