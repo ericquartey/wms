@@ -40,9 +40,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveManualExtDouble(ExternalBayMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
 
-        void MovementForExtraction(int? loadUnitId, BayNumber bayNumber, MessageActor sender);
+        void MovementForExtraction(int? loadUnitId, BayNumber bayNumber, MessageActor sender, bool isUpper);
 
-        void MovementForInsertion(BayNumber bayNumber, MessageActor sender);
+        void MovementForInsertion(BayNumber bayNumber, MessageActor sender, bool isUpper);
 
         void StartTest(BayNumber bayNumber, MessageActor sender);
 

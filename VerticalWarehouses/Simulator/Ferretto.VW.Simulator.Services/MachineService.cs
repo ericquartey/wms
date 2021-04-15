@@ -496,6 +496,7 @@ namespace Ferretto.VW.Simulator.Services
                                     {
                                         var oldHook = this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value;
                                         var oldLUUp = this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value;
+
                                         this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInBay].Value = !e.IsLoadingExternal;
                                         this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value = e.IsLoading;
 
@@ -505,7 +506,7 @@ namespace Ferretto.VW.Simulator.Services
                                         {
                                             if (this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value)
                                             {
-                                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                                                this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
                                                 this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value;
@@ -529,11 +530,11 @@ namespace Ferretto.VW.Simulator.Services
                                         var oldLULow = this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value;
 
                                         this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value = e.IsLoading;
-                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoadingExternal;
+                                        this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = !e.IsLoadingExternal;
 
                                         //ext to int
                                         if (!oldRobot && this.RemoteIOs01.Inputs[(int)IoPorts.FinePickingRobot].Value &&
-                                            oldLULow && !this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value)
+                                            !oldLULow && this.RemoteIOs01.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value)
                                         {
                                             if (this.RemoteIOs01.Inputs[(int)IoPorts.HookTrolley].Value)
                                             {
@@ -573,7 +574,7 @@ namespace Ferretto.VW.Simulator.Services
                                         {
                                             if (this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value)
                                             {
-                                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                                                this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
                                                 this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value;
@@ -596,11 +597,11 @@ namespace Ferretto.VW.Simulator.Services
                                         var oldLULow = this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value;
 
                                         this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value = e.IsLoading;
-                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoadingExternal;
+                                        this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = !e.IsLoadingExternal;
 
                                         //ext to int
                                         if (!oldRobot && this.RemoteIOs02.Inputs[(int)IoPorts.FinePickingRobot].Value &&
-                                            oldLULow && !this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value)
+                                            !oldLULow && this.RemoteIOs02.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value)
                                         {
                                             if (this.RemoteIOs02.Inputs[(int)IoPorts.HookTrolley].Value)
                                             {
@@ -640,7 +641,7 @@ namespace Ferretto.VW.Simulator.Services
                                         {
                                             if (this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value)
                                             {
-                                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                                                this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = false;
                                                 this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value = false;
                                                 inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = !inverter.DigitalIO[(int)InverterSensors.ACU_ZeroSensorTop].Value;
@@ -663,11 +664,11 @@ namespace Ferretto.VW.Simulator.Services
                                         var oldLULow = this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value;
 
                                         this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value = e.IsLoading;
-                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = e.IsLoadingExternal;
+                                        this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = !e.IsLoadingExternal;
 
                                         //ext to int
                                         if (!oldRobot && this.RemoteIOs03.Inputs[(int)IoPorts.FinePickingRobot].Value &&
-                                            oldLULow && !this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value)
+                                            !oldLULow && this.RemoteIOs03.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value)
                                         {
                                             if (this.RemoteIOs03.Inputs[(int)IoPorts.HookTrolley].Value)
                                             {

@@ -179,6 +179,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                         {
                             this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
                         }
+                        if (hasExternal && bay.IsDouble)
+                        {
+                            this.Inputs[(int)IoPorts.LoadingUnitInLowerBay].Value = true;
+                        }
                     }
                     else
                     {

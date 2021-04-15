@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly bool isCarousel;
 
+        private readonly bool isDoubleBay;
+
         private readonly bool isExternalBay;
 
         private readonly ILogger logger;
@@ -104,6 +106,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.stoppingToken = cancellationToken;
             this.isCarousel = bay.Carousel != null;
             this.isExternalBay = bay.IsExternal;
+            this.isDoubleBay = bay.IsDouble;
             this.bayNumber = bay.Number;
             this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
@@ -415,7 +418,7 @@ namespace Ferretto.VW.MAS.IODriver
                             inputData[(int)IoPorts.LoadingUnitInBay] = !inputData[(int)IoPorts.LoadingUnitInBay];
 
                             // INFO The sensor presence in lower bay must be inverted (NOT for carousel or External bay)
-                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = (this.isCarousel || this.isExternalBay) ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
+                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = (this.isCarousel || (this.isExternalBay && !this.isDoubleBay)) ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
                             if (this.ioStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
                             {
