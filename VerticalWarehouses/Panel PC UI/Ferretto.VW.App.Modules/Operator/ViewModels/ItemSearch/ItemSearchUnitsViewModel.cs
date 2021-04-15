@@ -9,6 +9,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
@@ -124,7 +125,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {
@@ -142,8 +151,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     await this.wmsDataProvider.CheckAsync(
                         this.Item.Id,
                         this.SelectedItemUnits.Id,
-                        this.Item.Lot,
-                        this.Item.SerialNumber,
+                        this.SelectedItemUnits.Lot,
+                        this.SelectedItemUnits.Sub1,
                         this.authenticationService.UserName);
 
                     this.ShowNotification(
@@ -187,27 +196,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             foreach (var compartment in compartments)
             {
-                if (this.Item.Lot != null || this.Item.SerialNumber != null)
-                {
-                    var itemsCompartments = await this.machineLoadingUnitsWebService.GetCompartmentsAsync(compartment.LoadingUnitId);
-                    var filteredCompartments = itemsCompartments.Where(c => (c.ItemId == this.Item.Id)
-                        //&& ((this.Item.Lot != null && c.Lot == this.Item.Lot) || (this.Item.SerialNumber != null && c.ItemSerialNumber == this.Item.SerialNumber))
-                        );
+                var itemsCompartments = await this.machineLoadingUnitsWebService.GetCompartmentsAsync(compartment.LoadingUnitId);
+                //if (this.Item.Lot != null || this.Item.SerialNumber != null)
+                //{
+                var filteredCompartments = itemsCompartments.Where(c => (c.ItemId == this.Item.Id)
+                    && ((this.Item.Lot == null && this.Item.SerialNumber == null)
+                        || (this.Item.Lot != null && c.Lot == this.Item.Lot)
+                        || (this.Item.SerialNumber != null && c.ItemSerialNumber == this.Item.SerialNumber))
+                    );
 
-                    if (filteredCompartments != null)
+                if (filteredCompartments != null)
+                {
+                    foreach (var filteredCompartment in filteredCompartments)
                     {
-                        foreach (var filteredCompartment in filteredCompartments)
+                        var newCompartment = new Compartment()
                         {
-                            compartment.Lot = this.Item.Lot; // filteredCompartment.Lot;
-                            compartment.Sub1 = this.Item.SerialNumber; // filteredCompartment.ItemSerialNumber;
-                            this.ItemUnits.Add(compartment);
-                        }
+                            LoadingUnitId = compartment.LoadingUnitId,
+                            Stock = compartment.Stock,
+                            Id = compartment.Id,
+                            Lot = filteredCompartment.Lot,
+                            Sub1 = filteredCompartment.ItemSerialNumber,
+                        };
+                        this.ItemUnits.Add(newCompartment);
                     }
                 }
-                else
-                {
-                    this.ItemUnits.Add(compartment);
-                }
+                //}
+                //else
+                //{
+                //    this.ItemUnits.Add(compartment);
+                //}
             }
 
             this.RaisePropertyChanged(nameof(this.ItemUnits));

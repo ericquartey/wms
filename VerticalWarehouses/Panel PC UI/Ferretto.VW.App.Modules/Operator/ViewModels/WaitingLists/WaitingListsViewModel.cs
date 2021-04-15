@@ -9,6 +9,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
@@ -153,9 +154,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(
-                    Resources.Localized.Get("OperatorApp.CannotExecuteList"),
-                    Services.Models.NotificationSeverity.Warning);
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(
+                        Resources.Localized.Get("OperatorApp.CannotExecuteList"),
+                        Services.Models.NotificationSeverity.Warning);
+                }
             }
         }
 

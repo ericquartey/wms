@@ -275,6 +275,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/move-to-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesDefaultResponseType]
         public async Task<IActionResult> MoveToBayAsync(
             int id,
@@ -300,6 +301,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
                 catch (Exception ex)
                 {
+                    if (ex is WmsWebApiException webEx
+                        && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                    {
+                        return this.StatusCode(webEx.StatusCode);
+                    }
                     this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
                 }
             }

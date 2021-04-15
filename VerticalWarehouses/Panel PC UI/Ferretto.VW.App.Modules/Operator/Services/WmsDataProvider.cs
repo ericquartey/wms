@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.VW.App.Modules.Operator
 {
@@ -67,7 +68,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 if (ex is MasWebApiException webEx
-                    && webEx.StatusCode == 403)
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
                 {
                     throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
                 }
@@ -116,7 +117,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 if (ex is MasWebApiException webEx
-                    && webEx.StatusCode == 403)
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
                 {
                     throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
                 }
@@ -152,7 +153,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 if (ex is MasWebApiException webEx
-                    && webEx.StatusCode == 403)
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
                 {
                     throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
                 }

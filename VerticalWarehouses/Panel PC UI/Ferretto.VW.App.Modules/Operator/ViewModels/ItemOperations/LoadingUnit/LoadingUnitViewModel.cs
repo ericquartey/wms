@@ -7,6 +7,7 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
 
@@ -545,9 +546,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 if (ex is MasWebApiException webEx
-                    && webEx.StatusCode == 403)
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
                 {
-                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"));
+                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
                 }
                 else
                 {

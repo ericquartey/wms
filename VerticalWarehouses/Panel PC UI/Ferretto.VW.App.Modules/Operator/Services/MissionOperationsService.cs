@@ -286,8 +286,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     newWmsMission = await this.missionsWebService.GetWmsDetailsByIdAsync(newMachineMission.WmsId.Value);
 
                     var sortedOperations = newWmsMission.Operations.OrderBy(o => o.Priority)
-                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition))
-                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition))
+                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition))
+                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition))
                                                                    .ThenBy(o => o.CreationDate);
 
                     newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.Executing);
