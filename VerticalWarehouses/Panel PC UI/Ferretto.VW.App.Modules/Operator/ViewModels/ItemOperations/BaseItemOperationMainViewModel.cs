@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public ItemWeightChangedMessage lastItemQuantityMessage;
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IEventAggregator eventAggregator;
@@ -39,6 +41,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly INavigationService navigationService;
 
         private readonly IOperatorNavigationService operatorNavigationService;
+
+        private readonly IWmsDataProvider wmsDataProvider;
 
         private double? availableQuantity;
 
@@ -131,7 +135,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBayManager bayManager,
             IEventAggregator eventAggregator,
             IMissionOperationsService missionOperationsService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IWmsDataProvider wmsDataProvider,
+            IAuthenticationService authenticationService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
@@ -142,6 +148,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.operatorNavigationService = operatorNavigationService;
             this.navigationService = navigationService;
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
@@ -1027,12 +1035,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
                 var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Inventory);
 
-                await this.compartmentsWebService.UpdateItemStockAsync(
+                await this.wmsDataProvider.UpdateItemStockAsync(
                         this.selectedCompartment.Id,
                         this.selectedCompartmentDetail.ItemId.Value,
                         this.availableQuantity.Value,
                         reasons.First().Id,
-                        "update present quantity");
+                        "update present quantity",
+                        this.selectedCompartmentDetail.Lot,
+                        this.selectedCompartmentDetail.ItemSerialNumber,
+                        this.authenticationService.UserName);
 
                 //await this.MissionOperationsService.RecallLoadingUnitAsync(this.loadingUnitId.Value);
 

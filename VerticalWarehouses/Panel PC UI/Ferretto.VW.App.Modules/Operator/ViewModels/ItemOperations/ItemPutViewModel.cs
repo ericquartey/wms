@@ -44,7 +44,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IWmsDataProvider wmsDataProvider,
+            IAuthenticationService authenticationService)
             : base(
                   machineIdentityWebService,
                   navigationService,
@@ -56,7 +58,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   bayManager,
                   eventAggregator,
                   missionOperationsService,
-                  dialogService)
+                  dialogService,
+                  wmsDataProvider,
+                  authenticationService)
         {
         }
 

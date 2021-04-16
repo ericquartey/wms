@@ -23852,31 +23852,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> UpdateItemStockAsync(int id, int itemId, double stock, int? reasonId, string reasonNotes)
+        public System.Threading.Tasks.Task<FileResponse> BoxToCompartmentAsync(int id, string barcode, int command)
         {
-            return UpdateItemStockAsync(id, itemId, stock, reasonId, reasonNotes, System.Threading.CancellationToken.None);
+            return BoxToCompartmentAsync(id, barcode, command, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> UpdateItemStockAsync(int id, int itemId, double stock, int? reasonId, string reasonNotes, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> BoxToCompartmentAsync(int id, string barcode, int command, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
     
-            if (itemId == null)
-                throw new System.ArgumentNullException("itemId");
-    
-            if (stock == null)
-                throw new System.ArgumentNullException("stock");
+            if (command == null)
+                throw new System.ArgumentNullException("command");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/compartments/{id}/items/{itemId}/stock?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/compartments/{id}/compartment/{barcode}/box?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{itemId}", System.Uri.EscapeDataString(ConvertToString(itemId, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Append(System.Uri.EscapeDataString("stock") + "=").Append(System.Uri.EscapeDataString(ConvertToString(stock, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("reasonId") + "=").Append(System.Uri.EscapeDataString(reasonId != null ? ConvertToString(reasonId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("reasonNotes") + "=").Append(System.Uri.EscapeDataString(reasonNotes != null ? ConvertToString(reasonNotes, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Replace("{barcode}", System.Uri.EscapeDataString(ConvertToString(barcode, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(System.Uri.EscapeDataString("command") + "=").Append(System.Uri.EscapeDataString(ConvertToString(command, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -23935,26 +23930,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> BoxToCompartmentAsync(int id, string barcode, int command)
+        public System.Threading.Tasks.Task<FileResponse> UpdateItemStockAsync(int id, int itemId, double stock, ItemOptions itemOptions)
         {
-            return BoxToCompartmentAsync(id, barcode, command, System.Threading.CancellationToken.None);
+            return UpdateItemStockAsync(id, itemId, stock, itemOptions, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> BoxToCompartmentAsync(int id, string barcode, int command, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> UpdateItemStockAsync(int id, int itemId, double stock, ItemOptions itemOptions, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
     
-            if (command == null)
-                throw new System.ArgumentNullException("command");
+            if (itemId == null)
+                throw new System.ArgumentNullException("itemId");
+    
+            if (stock == null)
+                throw new System.ArgumentNullException("stock");
+    
+            if (itemOptions == null)
+                throw new System.ArgumentNullException("itemOptions");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/compartments/{id}/compartment/{barcode}/box?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/compartments/{id}/items/{itemId}/stock?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Replace("{barcode}", System.Uri.EscapeDataString(ConvertToString(barcode, System.Globalization.CultureInfo.InvariantCulture)));
-            urlBuilder_.Append(System.Uri.EscapeDataString("command") + "=").Append(System.Uri.EscapeDataString(ConvertToString(command, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Replace("{itemId}", System.Uri.EscapeDataString(ConvertToString(itemId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(System.Uri.EscapeDataString("stock") + "=").Append(System.Uri.EscapeDataString(ConvertToString(stock, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -23962,7 +23963,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(itemOptions, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
     

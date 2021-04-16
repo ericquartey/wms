@@ -12,6 +12,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IBayManager bayManager;
 
+        private readonly IMachineCompartmentsWebService compartmentsWebService;
+
         private readonly IMachineItemsWebService itemWebService;
 
         private readonly IMachineWmsStatusWebService wmsStatusWebService;
@@ -25,11 +27,14 @@ namespace Ferretto.VW.App.Modules.Operator
         public WmsDataProvider(
             IBayManager bayManager,
             IMachineItemsWebService itemWebService,
-            IMachineWmsStatusWebService wmsStatusWebService)
+            IMachineWmsStatusWebService wmsStatusWebService,
+            IMachineCompartmentsWebService compartmentsWebService
+            )
         {
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
             this.itemWebService = itemWebService ?? throw new System.ArgumentNullException(nameof(itemWebService));
             this.wmsStatusWebService = wmsStatusWebService ?? throw new System.ArgumentNullException(nameof(wmsStatusWebService));
+            this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
         }
 
         #endregion
@@ -179,6 +184,33 @@ namespace Ferretto.VW.App.Modules.Operator
                     }
                 } while (true);
             });
+        }
+
+        public async Task UpdateItemStockAsync(int compartmentId, int itemId, double stock, int? reasonId = null, string reasonNotes = null, string lot = null, string serialNumber = null, string userName = null)
+        {
+            try
+            {
+                await this.compartmentsWebService.UpdateItemStockAsync(
+                    compartmentId,
+                    itemId,
+                    stock,
+                    new ItemOptions
+                    {
+                        ReasonId = reasonId,
+                        ReasonNotes = reasonNotes,
+                        Lot = lot,
+                        SerialNumber = serialNumber,
+                        UserName = userName,
+                    });
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+            }
         }
 
         #endregion

@@ -787,12 +787,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         if (!string.IsNullOrEmpty(this.reasonNotes) &&
                            this.reasonNotes.Except(" ").Any())
                         {
-                            await this.compartmentsWebService.UpdateItemStockAsync(
-                            this.SelectedItemCompartment.Id,
-                            this.SelectedItemCompartment.ItemId.Value,
-                            this.InputQuantity.Value,
-                            this.reasonId,
-                            this.reasonNotes);
+                            await this.WmsDataProvider.UpdateItemStockAsync(
+                                this.SelectedItemCompartment.Id,
+                                this.SelectedItemCompartment.ItemId.Value,
+                                this.InputQuantity.Value,
+                                this.reasonId,
+                                this.reasonNotes,
+                                this.SelectedItem.Lot,
+                                this.SelectedItem.ItemSerialNumber,
+                                userName: this.authenticationService.UserName);
 
                             this.ShowNotification(Localized.Get("InstallationApp.SuccessfullChange"), Services.Models.NotificationSeverity.Success);
                         }
@@ -804,12 +807,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     else
                     {
-                        await this.compartmentsWebService.UpdateItemStockAsync(
+                        await this.WmsDataProvider.UpdateItemStockAsync(
                             this.SelectedItemCompartment.Id,
                             this.SelectedItemCompartment.ItemId.Value,
                             this.InputQuantity.Value,
                             this.reasonId,
-                            this.reasonNotes);
+                            this.reasonNotes,
+                            this.SelectedItem.Lot,
+                            this.SelectedItem.ItemSerialNumber,
+                            this.authenticationService.UserName);
                     }
 
                     if (!noteError)
