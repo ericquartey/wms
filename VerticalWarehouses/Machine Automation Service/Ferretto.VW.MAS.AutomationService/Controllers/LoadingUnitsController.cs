@@ -294,6 +294,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpGet("{id}/load-drapery-item")]
+        public async Task<ActionResult<DraperyItemInfo>> LoadDraperyItemInfoAsync(int id,
+            string barcode,
+            [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+        {
+            if (loadingUnitsWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
+            }
+
+            try
+            {
+                return this.Ok(await loadingUnitsWmsWebService.LoadDraperyItemAsync(id, barcode));
+            }
+            catch (WmsWebApiException ex)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
+            }
+
+            return this.Ok();
+        }
+
         [HttpPost("{id}/move-to-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

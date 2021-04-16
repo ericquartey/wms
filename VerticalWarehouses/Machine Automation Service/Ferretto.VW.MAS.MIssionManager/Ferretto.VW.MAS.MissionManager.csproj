@@ -12,7 +12,7 @@
   <ItemGroup>
       <PackageReference Include="Prism.Core" Version="7.1.0.431" PrivateAssets="All" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
-      <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.16.16" PrivateAssets="All" />
+      <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.16.17" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

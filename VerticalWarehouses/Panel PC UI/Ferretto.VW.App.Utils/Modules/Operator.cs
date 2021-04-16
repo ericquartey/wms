@@ -43,6 +43,8 @@
         {
             #region Fields
 
+            public const string ADD_DRAPERYITEM_INTO_LOADINGUNIT = "AddingItemDraperyToLoadingUnitViewModel";
+
             public const string INVENTORY = "ItemInventoryViewModel";
 
             public const string INVENTORY_DETAILS = "ItemInventoryDetailsViewModel";

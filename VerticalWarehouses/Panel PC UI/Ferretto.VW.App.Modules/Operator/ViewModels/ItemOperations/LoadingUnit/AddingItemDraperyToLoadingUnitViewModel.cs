@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string draperyItemDescription;
 
+        private DraperyItemInfo draperyItemInfo;
+
         private double draperyQuantity;
 
         #endregion
@@ -84,6 +86,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsAddingAnErrorOperation = false;
             this.MessageToShow = "Add a message";
+
+            if (this.Data is DraperyItemInfo info)
+            {
+                this.draperyItemInfo = info;
+
+                this.DraperyItemCode = this.draperyItemInfo.Item.Id.ToString();
+                this.DraperyItemDescription = this.draperyItemInfo.Description;
+                this.DraperyId = this.draperyItemInfo.Item.Code;
+                this.DraperyQuantity = this.draperyItemInfo.Quantity;
+                this.DraperyHeight = this.draperyItemInfo.Height;
+
+                this.MessageToShow = this.draperyItemInfo.Note;
+            }
 
             this.ClearNotifications();
             this.ShowNotification(this.MessageToShow, this.IsAddingAnErrorOperation ? Services.Models.NotificationSeverity.Error : Services.Models.NotificationSeverity.Success);

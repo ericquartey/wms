@@ -227,6 +227,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.loadingUnitDepth, value);
         }
 
+        public IMachineLoadingUnitsWebService LoadingUnitsWebService => this.loadingUnitsWebService;
+
         public double LoadingUnitWidth
         {
             get => this.loadingUnitWidth;

@@ -208,14 +208,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var isItemDeleted = this.GoodDraperyQuantity + this.WastedDraperyQuantity == this.availableQuantity;
 
-            //
-            //var bResult = await this.ItemsWebService.SignallingDefectOnDraperyItemAsync(
-            //    this.missionOperation.ItemBarcode
-            //    this.GoodDraperyQuantity,
-            //    this.WastedDraperyQuantity);
-            //
-
             var bResult = true;
+
+            bResult = await this.itemsWebService.SignallingDefectOnDraperyItemAsync(
+                this.missionOperation.ItemBarcode,
+                this.GoodDraperyQuantity.Value,
+                this.WastedDraperyQuantity.Value);
 
             // Notification messages
             if (!bResult)

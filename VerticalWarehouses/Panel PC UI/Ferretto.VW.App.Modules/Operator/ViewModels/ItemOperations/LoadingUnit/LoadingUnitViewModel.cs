@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IOperatorNavigationService operatorNavigationService;
 
+        //x private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
         private List<ProductInMachine> allProducts = new List<ProductInMachine>();
 
         private int? areaId;
@@ -987,9 +989,33 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ConfirmItemOperationAsync()
         {
+            if (this.SelectedProduct == null)
+            {
+                this.Logger.Debug($"Invalid selected item");
+                return;
+            }
+
             this.IsWaitingForResponse = true;
 
-            //some code
+            if (this.SelectedProduct.IsDraperyItem)
+            {
+                var loadingUnitId = this.LoadingUnit.Id;
+                var barcode = this.SelectedProduct.Code;
+
+                this.Logger.Debug($"Insert drapery barcode {barcode} into loading unit Id {loadingUnitId}");
+
+                var draperyItemInfo = await this.LoadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
+
+                this.Logger.Debug($"Show the adding view for drapery item [code: {draperyItemInfo.Item.Code}, description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
+
+                this.navigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
+                    draperyItemInfo,
+                    trackCurrentView: true);
+            }
+
+            this.IsWaitingForResponse = false;
         }
 
         private async Task ConfirmOperationAsync()

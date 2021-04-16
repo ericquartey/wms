@@ -1497,9 +1497,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ConfirmItemOperationAsync()
         {
+            if (this.SelectedProduct == null)
+            {
+                this.Logger.Debug($"Invalid selected item");
+                return;
+            }
+
             this.IsWaitingForResponse = true;
 
-            //some code
+            if (this.SelectedProduct.IsDraperyItem)
+            {
+                var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var barcode = this.SelectedProduct.Code;
+
+                var draperyItemInfo = await this.loadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
+
+                this.Logger.Debug($"Show the adding view for drapery item [code: {draperyItemInfo.Item.Code}, description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
+
+                this.navigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
+                    draperyItemInfo,
+                    trackCurrentView: true);
+            }
+
+            this.IsWaitingForResponse = false;
         }
 
         // DELETE THIS!!!
