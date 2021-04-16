@@ -11,6 +11,7 @@ using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
 
@@ -28,11 +29,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineAreasWebService areasWebService;
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineItemsWebService itemsWebService;
+
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineMissionsWebService machineMissionsWebService;
 
@@ -152,10 +157,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IOperatorNavigationService operatorNavigationService,
             IMachineMissionOperationsWebService missionOperationsWebService,
             IEventAggregator eventAggregator,
-            IWmsDataProvider wmsDataProvider)
+            IWmsDataProvider wmsDataProvider,
+            IAuthenticationService authenticationService)
             : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
@@ -164,6 +171,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -702,7 +710,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {
@@ -1002,17 +1018,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var loadingUnitId = this.LoadingUnit.Id;
                 var barcode = this.SelectedProduct.Code;
 
-                this.Logger.Debug($"Insert drapery barcode {barcode} into loading unit Id {loadingUnitId}");
+                try
+                {
+                    this.Logger.Debug($"Insert drapery barcode {barcode} into loading unit Id {loadingUnitId}");
 
-                var draperyItemInfo = await this.LoadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
+                    var draperyItemInfo = await this.LoadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
 
-                this.Logger.Debug($"Show the adding view for drapery item [code: {draperyItemInfo.Item.Code}, description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
+                    if (draperyItemInfo != null)
+                    {
+                        this.Logger.Debug($"Show the adding view for drapery item [code: {draperyItemInfo.Item.Code}, description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
 
-                this.navigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
-                    draperyItemInfo,
-                    trackCurrentView: true);
+                        this.navigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
+                            draperyItemInfo,
+                            trackCurrentView: true);
+                    }
+                    else
+                    {
+                        this.Logger.Error($"An error occurs");
+                    }
+                }
+                catch
+                {
+                    this.Logger.Error($"Invalid operation performed.");
+                }
             }
 
             this.IsWaitingForResponse = false;
@@ -1047,7 +1077,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem.ItemId.Value,
                         this.InputQuantity.Value,
                         this.reasonId,
-                        this.reasonNotes);
+                        this.reasonNotes,
+                        this.SelectedItemCompartment.Id,
+                        this.SelectedItem.Lot,
+                        this.SelectedItem.ItemSerialNumber,
+                        userName: this.authenticationService.UserName);
                 }
                 else if (this.IsPutVisible)
                 {
@@ -1057,7 +1091,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem.ItemId.Value,
                         this.InputQuantity.Value,
                         this.reasonId,
-                        this.reasonNotes);
+                        this.reasonNotes,
+                        this.SelectedItemCompartment.Id,
+                        this.SelectedItem.Lot,
+                        this.SelectedItem.ItemSerialNumber,
+                        userName: this.authenticationService.UserName);
                 }
                 else if (this.IsAdjustmentVisible)
                 {
@@ -1068,12 +1106,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         if (!string.IsNullOrEmpty(this.reasonNotes) &&
                            this.reasonNotes.Except(" ").Any())
                         {
-                            await this.compartmentsWebService.UpdateItemStockAsync(
-                            this.SelectedItemCompartment.Id,
-                            this.SelectedItemCompartment.ItemId.Value,
-                            this.InputQuantity.Value,
-                            this.reasonId,
-                            this.reasonNotes);
+                            await this.WmsDataProvider.UpdateItemStockAsync(
+                                this.SelectedItemCompartment.Id,
+                                this.SelectedItemCompartment.ItemId.Value,
+                                this.InputQuantity.Value,
+                                this.reasonId,
+                                this.reasonNotes,
+                                this.SelectedItem.Lot,
+                                this.SelectedItem.ItemSerialNumber,
+                                userName: this.authenticationService.UserName);
+
+                            var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
+                            if (item.AverageWeight != null && item.AverageWeight != 0)
+                            {
+                                var loadingUnit = await this.machineLoadingUnitsWebService.GetByIdAsync(this.SelectedCompartment.LoadingUnitId.Value);
+
+                                var grossWeight = default(double);
+                                var differece = this.SelectedItemCompartment.Stock - this.InputQuantity.Value;
+                                if (differece > 0)
+                                {
+                                    grossWeight = loadingUnit.GrossWeight - (item.AverageWeight.Value * Math.Abs(differece) / 1000);
+                                }
+                                else
+                                {
+                                    grossWeight = loadingUnit.GrossWeight + (item.AverageWeight.Value * Math.Abs(differece) / 1000);
+                                }
+
+                                await this.machineLoadingUnitsWebService.SetLoadingUnitWeightAsync(this.SelectedCompartment.LoadingUnitId.Value, grossWeight);
+                                this.UnitWeight = grossWeight;
+                                this.RaisePropertyChanged(nameof(this.UnitWeight));
+                            }
 
                             this.ShowNotification(Localized.Get("InstallationApp.SuccessfullChange"), Services.Models.NotificationSeverity.Success);
                         }
@@ -1085,12 +1147,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     else
                     {
-                        await this.compartmentsWebService.UpdateItemStockAsync(
+                        await this.WmsDataProvider.UpdateItemStockAsync(
                             this.SelectedItemCompartment.Id,
                             this.SelectedItemCompartment.ItemId.Value,
                             this.InputQuantity.Value,
                             this.reasonId,
-                            this.reasonNotes);
+                        this.reasonNotes,
+                            this.SelectedItem.Lot,
+                            this.SelectedItem.ItemSerialNumber,
+                            this.authenticationService.UserName);
+
+                        var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
+                        if (item.AverageWeight != null && item.AverageWeight != 0)
+                        {
+                            var loadingUnit = await this.machineLoadingUnitsWebService.GetByIdAsync(this.SelectedItemCompartment.LoadingUnitId);
+
+                            var grossWeight = default(double);
+                            var differece = this.SelectedItemCompartment.Stock - this.InputQuantity.Value;
+                            if (differece > 0)
+                            {
+                                grossWeight = loadingUnit.GrossWeight - (item.AverageWeight.Value * Math.Abs(differece) / 1000);
+                            }
+                            else
+                            {
+                                grossWeight = loadingUnit.GrossWeight + (item.AverageWeight.Value * Math.Abs(differece) / 1000);
+                            }
+
+                            await this.machineLoadingUnitsWebService.SetLoadingUnitWeightAsync(this.SelectedItemCompartment.LoadingUnitId, grossWeight);
+                            this.UnitWeight = grossWeight;
+                            this.RaisePropertyChanged(nameof(this.UnitWeight));
+                        }
                     }
 
                     if (!noteError)

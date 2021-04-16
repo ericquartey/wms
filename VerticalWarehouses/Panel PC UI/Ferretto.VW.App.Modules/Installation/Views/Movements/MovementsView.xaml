@@ -228,6 +228,7 @@
 
               <!--  go bay up position  -->
               <controls:PpcButton Grid.Column="1"
+                                  Width="150"
                                   Margin="5"
                                   HorizontalAlignment="Center"
                                   HorizontalContentAlignment="Right"
@@ -387,7 +388,6 @@
                                   VerticalAlignment="Top"
                                   Command="{Binding MoveToHeightCommand}"
                                   Content="{res:Loc InstallationApp.GoToPosition}"
-                                  
                                   IsBusy="{Binding IsElevatorMovingToHeight}" />
 
               <ctrls:PpcSpinEdit Width="230"

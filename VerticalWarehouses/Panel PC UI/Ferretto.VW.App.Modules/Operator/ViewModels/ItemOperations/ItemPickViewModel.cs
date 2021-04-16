@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineItemsWebService itemsWebService;
+
         private bool canConfirm;
 
         private bool canConfirmOnEmpty;
@@ -45,7 +47,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IWmsDataProvider wmsDataProvider,
+            IAuthenticationService authenticationService)
             : base(
                   areasWebService,
                   machineIdentityWebService,
@@ -58,8 +62,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   bayManager,
                   eventAggregator,
                   missionOperationsService,
-                  dialogService)
+                  dialogService,
+                  wmsDataProvider,
+                  authenticationService)
         {
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
         }
 
         #endregion
@@ -160,6 +167,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.CanInputAvailableQuantity = true;
             this.CanInputQuantity = true;
             this.CloseLine = true;
+            this.FullCompartment = false;
+            this.EmptyCompartment = false;
             this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
             this.RaisePropertyChanged(nameof(this.CanInputQuantity));
 
@@ -320,13 +329,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var type = this.MissionOperation.Type;
+                var quantity = this.InputQuantity.Value;
+
+                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, false, false);
                 if (!canComplete)
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+                else
+                {
+                    await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

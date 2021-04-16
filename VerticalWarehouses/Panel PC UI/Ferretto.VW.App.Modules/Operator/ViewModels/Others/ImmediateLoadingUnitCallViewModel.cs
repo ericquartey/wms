@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
 
@@ -20,6 +21,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     public class ImmediateLoadingUnitCallViewModel : BaseOperatorViewModel
     {
         #region Fields
+
+        private readonly IAuthenticationService authenticationService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -48,14 +51,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ImmediateLoadingUnitCallViewModel(
-                IMachineService machineService,
-                IEventAggregator eventAggregator,
-                IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
-                : base(PresentationMode.Operator)
+                    IMachineService machineService,
+            IEventAggregator eventAggregator,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IAuthenticationService authenticationService)
+            : base(PresentationMode.Operator)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -132,13 +137,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.selectedLoadingUnit.Id);
+                await this.machineLoadingUnitsWebService.MoveToBayAsync(this.selectedLoadingUnit.Id, this.authenticationService.UserName);
 
                 this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.selectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) // when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {

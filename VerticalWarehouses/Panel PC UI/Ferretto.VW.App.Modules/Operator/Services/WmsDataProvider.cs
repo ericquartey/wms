@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.VW.App.Modules.Operator
 {
@@ -10,6 +11,8 @@ namespace Ferretto.VW.App.Modules.Operator
         #region Fields
 
         private readonly IBayManager bayManager;
+
+        private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IMachineItemsWebService itemWebService;
 
@@ -24,11 +27,14 @@ namespace Ferretto.VW.App.Modules.Operator
         public WmsDataProvider(
             IBayManager bayManager,
             IMachineItemsWebService itemWebService,
-            IMachineWmsStatusWebService wmsStatusWebService)
+            IMachineWmsStatusWebService wmsStatusWebService,
+            IMachineCompartmentsWebService compartmentsWebService
+            )
         {
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
             this.itemWebService = itemWebService ?? throw new System.ArgumentNullException(nameof(itemWebService));
             this.wmsStatusWebService = wmsStatusWebService ?? throw new System.ArgumentNullException(nameof(wmsStatusWebService));
+            this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
         }
 
         #endregion
@@ -40,6 +46,39 @@ namespace Ferretto.VW.App.Modules.Operator
         #endregion
 
         #region Methods
+
+        public async Task CheckAsync(int itemId, int compartmentId, string lot = null, string serialNumber = null, string userName = null)
+        {
+            if (!this.bayManager.Identity.AreaId.HasValue)
+            {
+                throw new InvalidOperationException(Resources.Localized.Get("General.AreaMachineUnknow"));
+            }
+
+            try
+            {
+                var bay = await this.bayManager.GetBayAsync();
+
+                await this.itemWebService.CheckAsync(itemId, new ItemOptions
+                {
+                    AreaId = this.bayManager.Identity.AreaId.Value,
+                    BayId = bay.Id,
+                    MachineId = this.bayManager.Identity.Id,
+                    RunImmediately = true,
+                    Lot = lot,
+                    CompartmentId = compartmentId,
+                    SerialNumber = serialNumber,
+                    UserName = userName,
+                });
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+            }
+        }
 
         public async Task<string> GetItemImagePathAsync(int itemId)
         {
@@ -54,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null)
+        public async Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, int? compartmentId = null, string lot = null, string serialNumber = null, string userName = null)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
@@ -74,15 +113,23 @@ namespace Ferretto.VW.App.Modules.Operator
                     RunImmediately = true,
                     ReasonId = reasonId,
                     ReasonNotes = reasonNotes,
+                    CompartmentId = compartmentId,
+                    Lot = lot,
+                    SerialNumber = serialNumber,
+                    UserName = userName,
                 });
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                // do nothing
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
             }
         }
 
-        public async Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null)
+        public async Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, int? compartmentId = null, string lot = null, string serialNumber = null, string userName = null)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
@@ -102,11 +149,19 @@ namespace Ferretto.VW.App.Modules.Operator
                     RunImmediately = true,
                     ReasonId = reasonId,
                     ReasonNotes = reasonNotes,
+                    CompartmentId = compartmentId,
+                    Lot = lot,
+                    SerialNumber = serialNumber,
+                    UserName = userName,
                 });
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                // do nothing
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
             }
         }
 
@@ -129,6 +184,33 @@ namespace Ferretto.VW.App.Modules.Operator
                     }
                 } while (true);
             });
+        }
+
+        public async Task UpdateItemStockAsync(int compartmentId, int itemId, double stock, int? reasonId = null, string reasonNotes = null, string lot = null, string serialNumber = null, string userName = null)
+        {
+            try
+            {
+                await this.compartmentsWebService.UpdateItemStockAsync(
+                    compartmentId,
+                    itemId,
+                    stock,
+                    new ItemOptions
+                    {
+                        ReasonId = reasonId,
+                        ReasonNotes = reasonNotes,
+                        Lot = lot,
+                        SerialNumber = serialNumber,
+                        UserName = userName,
+                    });
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+            }
         }
 
         #endregion

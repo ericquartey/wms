@@ -33,20 +33,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPut("{id}/items/{itemId}/stock")]
-        public async Task<IActionResult> UpdateItemStockAsync(int id, int itemId, double stock, int? reasonId, string reasonNotes)
+        [HttpPut("{id}/compartment/{barcode}/box")]
+        public async Task<IActionResult> BoxToCompartmentAsync(int id, string barcode, int command)
         {
-            await this.compartmentsWmsWebService.UpdateItemStockAsync(id, itemId, stock, reasonId, reasonNotes);
+            await this.compartmentsWmsWebService.BoxToCompartmentAsync(id, barcode, command);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 
             return this.Ok();
         }
 
-        [HttpPut("{id}/compartment/{barcode}/box")]
-        public async Task<IActionResult> BoxToCompartmentAsync(int id, string barcode, int command)
+        [HttpPut("{id}/items/{itemId}/stock")]
+        public async Task<IActionResult> UpdateItemStockAsync(int id, int itemId, double stock, ItemOptions itemOptions)
         {
-            await this.compartmentsWmsWebService.BoxToCompartmentAsync(id, barcode, command);
+            await this.compartmentsWmsWebService.UpdateItemStockAsync(id, itemId, stock, itemOptions);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 

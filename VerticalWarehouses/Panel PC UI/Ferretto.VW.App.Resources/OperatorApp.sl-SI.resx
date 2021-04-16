@@ -1686,4 +1686,10 @@
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
     <value>Počakajte s pologom v notranjem zalivu</value>
   </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Omogoči filter Uwf</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Onemogoči filter Uwf</value>
+  </data>
 </root>

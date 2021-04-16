@@ -496,7 +496,18 @@
 
             <!-- Content="Signalling defect" /* Signalling defect <==> Segnala difetto */ -->
 
-            <controls:PpcButton Grid.Row="5"
+            <Grid Grid.Row="5" HorizontalAlignment="Left">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <controls:PpcButton Grid.Row="5"
                                 Margin="15,8,15,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
@@ -506,7 +517,7 @@
                                 Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcButton Grid.Row="5"
+                <controls:PpcButton Grid.Row="5"
                                 Height="50"
                                 Margin="15,8,15,0"
                                 HorizontalAlignment="Left"
@@ -524,6 +535,7 @@
                                 Visibility="{Binding CanConfirmPresent, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="6"
+                                Width="120"
                                 Margin="15,8,15,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
@@ -553,23 +565,40 @@
                                 IsEnabled="False"
                                 Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding CanPickBox, Converter={StaticResource BTVC}}" />
-
+                
             <StackPanel Grid.Row="6"
                         Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
                 <TextBlock Grid.Row="6"
-                           Margin="15,5,15,0"
-                           HorizontalAlignment="Right"
+                           Margin="10,5,0,0"
+                           HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            FontSize="{StaticResource FontSize_Small}"
                            Foreground="{DynamicResource PpcForeground}"
                            Text="{resources:Loc OperatorApp.CloseLine}" />
 
                 <controls:PpcCheckBox Grid.Row="6"
-                                      Margin="15,5,20,0"
-                                      HorizontalAlignment="Right"
+                                      Margin="20,5,15,0"
+                                      HorizontalAlignment="Left"
                                       VerticalAlignment="Bottom"
                                       IsChecked="{Binding CloseLine, Mode=TwoWay}" />
-            </StackPanel>
+                </StackPanel>
+                <!--<StackPanel Grid.Column="2"
+                        Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
+
+                    <TextBlock Grid.Row="5"
+                           Margin="5,5,5,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"
+                           FontSize="{StaticResource FontSize_Small}"
+                           Foreground="{DynamicResource PpcForeground}"
+                           Text="{resources:Loc OperatorApp.EmptyCompartment}" />
+                    <controls:PpcCheckBox 
+                                      Margin="10,5,0,0"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Top"
+                                      IsChecked="{Binding EmptyCompartment, Mode=TwoWay}" />
+                </StackPanel>-->
+            </Grid>
 
         </Grid>
     </Grid>

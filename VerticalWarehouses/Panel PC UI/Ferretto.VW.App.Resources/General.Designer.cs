@@ -304,6 +304,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forbidden operation.
+        /// </summary>
+        public static string ForbiddenOperation {
+            get {
+                return ResourceManager.GetString("ForbiddenOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:0} hours ago.
         /// </summary>
         public static string HoursAgo {

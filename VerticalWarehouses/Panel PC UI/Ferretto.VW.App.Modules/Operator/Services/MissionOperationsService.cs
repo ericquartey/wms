@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.isRecallUnit;
         }
 
-        public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity = 0)
+        public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment)
         {
             this.logger.Debug($"User requested to partially complete operation '{operationId}' with quantity {quantity}.");
             var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
@@ -138,8 +138,10 @@ namespace Ferretto.VW.App.Modules.Operator
                 await this.missionOperationsWebService.PartiallyCompleteAsync(
                     operationId,
                     quantity,
+                    wastedQuantity,
                     labelPrinterName,
-                    wastedQuantity);
+                    emptyCompartment,
+                    fullCompartment);
 
                 await this.RefreshActiveMissionAsync();
 
@@ -285,8 +287,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     newWmsMission = await this.missionsWebService.GetWmsDetailsByIdAsync(newMachineMission.WmsId.Value);
 
                     var sortedOperations = newWmsMission.Operations.OrderBy(o => o.Priority)
-                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition))
-                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition))
+                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition))
+                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition))
                                                                    .ThenBy(o => o.CreationDate);
 
                     newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.Executing);
@@ -321,16 +323,17 @@ namespace Ferretto.VW.App.Modules.Operator
                     if (this.ActiveMachineMission?.LoadUnitId != null)
                     {
                         var machineMissions = await this.missionsWebService.GetAllAsync();
-                        if (!machineMissions.Any(m =>
-                                m.LoadUnitId == this.ActiveMachineMission.LoadUnitId
-                                &&
-                                m.TargetBay == this.bayNumber
-                                &&
-                                (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.Executing || m.Status == MissionStatus.New)
+                        if (this.ActiveMachineMission?.LoadUnitId != null
+                                && !machineMissions.Any(m =>
+                                    m.LoadUnitId == this.ActiveMachineMission?.LoadUnitId
+                                    &&
+                                    m.TargetBay == this.bayNumber
+                                    &&
+                                    (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.Executing || m.Status == MissionStatus.New)
                                 )
                             )
                         {
-                            this.logger.Debug($"Old WMS mission '{this.ActiveMachineMission.Id}' was removed, but must be completed before proceeding: removing loading unit '{this.ActiveMachineMission.LoadUnitId}'.");
+                            this.logger.Debug($"Old WMS mission '{this.ActiveMachineMission?.Id}' was removed, but must be completed before proceeding: removing loading unit '{this.ActiveMachineMission?.LoadUnitId}'.");
                             await this.loadingUnitsWebService.RemoveFromBayAsync(this.ActiveMachineMission.LoadUnitId);
                         }
                     }

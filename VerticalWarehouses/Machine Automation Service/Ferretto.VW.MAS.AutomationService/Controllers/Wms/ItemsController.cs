@@ -32,6 +32,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpPost("{id}/check")]
+        public async Task<IActionResult> CheckAsync(int id, ItemOptions itemOptions)
+        {
+            _ = await this.itemsWmsWebService.CheckAsync(id, itemOptions);
+
+            await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
+
+            return this.Ok();
+        }
+
         [HttpPost("/barcodes/{code}")]
         public async Task<ActionResult<Item>> GetByBarcodeAsync(string code)
         {

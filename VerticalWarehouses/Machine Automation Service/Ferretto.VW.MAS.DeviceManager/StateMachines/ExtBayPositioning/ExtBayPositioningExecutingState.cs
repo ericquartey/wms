@@ -528,8 +528,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         }
 
                         if (!this.machineData.MessageData.BypassConditions &&
-                            this.IsInvalidSensorsCondition()
-                            )
+                            this.IsInvalidSensorsCondition())
                         {
                             this.Logger.LogError($"Invalid sensors condition. An error occurs");
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.MoveExtBayNotAllowed, this.machineData.RequestingBay);

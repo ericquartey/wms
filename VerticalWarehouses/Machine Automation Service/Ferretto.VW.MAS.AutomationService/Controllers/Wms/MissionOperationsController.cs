@@ -114,9 +114,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/partially-complete")]
-        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, string printerName, double wastedQuantity)
+        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false)
         {
-            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, printerName, wastedQuantity);
+            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, wastedQuantity, printerName, emptyCompartment, fullCompartment);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 

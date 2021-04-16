@@ -1741,7 +1741,7 @@
     <value>Vertical axis</value>
   </data>
   <data name="ConfirmPartial" xml:space="preserve">
-    <value>Partial Confirmation</value>
+    <value>Change</value>
   </data>
   <data name="ConfirmPresent" xml:space="preserve">
     <value>Confirm Present</value>
@@ -2069,5 +2069,20 @@
   </data>
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
     <value>Wait deposit in internal bay</value>
+  </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Enable Uwf filter</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Disable Uwf filter</value>
+  </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="EmptyCompartment" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>Check product</value>
   </data>
 </root>

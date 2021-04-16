@@ -216,7 +216,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     if (this.CloseLine)
                     {
-                        canComplete = await this.missionOperationsService.PartiallyCompleteAsync(this.MissionId, this.InputQuantity.Value, this.WastedDraperyQuantity);
+                        canComplete = await this.missionOperationsService.PartiallyCompleteAsync(this.MissionId, this.InputQuantity.Value, this.WastedDraperyQuantity, null, null, null);
                     }
                     else
                     {

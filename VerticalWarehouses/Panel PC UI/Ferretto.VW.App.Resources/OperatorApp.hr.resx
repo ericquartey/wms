@@ -1695,4 +1695,10 @@
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
     <value>Pričekajte polog u unutarnjem ležištu</value>
   </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Omogući Uwf filtar</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Onemogući Uwf filtar</value>
+  </data>
 </root>

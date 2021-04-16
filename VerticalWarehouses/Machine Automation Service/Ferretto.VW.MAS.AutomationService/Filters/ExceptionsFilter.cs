@@ -36,20 +36,30 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 &&
                 context.ExceptionHandled == false)
             {
-                if (context.Exception is WMS.Data.WebAPI.Contracts.WmsWebApiException)
+                if (context.Exception is WMS.Data.WebAPI.Contracts.WmsWebApiException<WMS.Data.WebAPI.Contracts.ProblemDetails> ex)
+                {
+                    if (ex.Result != null)
+                    {
+                        context.Result = new ObjectResult(ex.Result)
+                        {
+                            StatusCode = ex.StatusCode,
+                        };
+                    }
+                    else
+                    {
+                        context.Result = new ObjectResult(null)
+                        {
+                            StatusCode = ex.StatusCode,
+                        };
+                    }
+                }
+                else if (context.Exception is WMS.Data.WebAPI.Contracts.WmsWebApiException)
                 {
                     context.Result = new BadRequestObjectResult(new ProblemDetails
                     {
                         Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
                         Detail = context.Exception.Message,
                     });
-                }
-                else if (context.Exception is WMS.Data.WebAPI.Contracts.WmsWebApiException<WMS.Data.WebAPI.Contracts.ProblemDetails> ex)
-                {
-                    context.Result = new ObjectResult(ex.Result)
-                    {
-                        StatusCode = ex.Result.Status,
-                    };
                 }
                 else if (context.Exception is DataLayer.EntityNotFoundException)
                 {

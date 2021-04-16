@@ -118,6 +118,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.loadingUnitsDataProvider.GetAllTestUnits());
         }
 
+        [HttpGet("get-unit-by-id")]
+        public ActionResult<DataModels.LoadingUnit> GetById(int id)
+        {
+            return this.Ok(this.loadingUnitsDataProvider.GetById(id));
+        }
+
         [HttpGet("{id}/compartments")]
         public async Task<ActionResult<IEnumerable<CompartmentDetails>>> GetCompartmentsAsync(int id, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
@@ -319,9 +325,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/move-to-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesDefaultResponseType]
         public async Task<IActionResult> MoveToBayAsync(
             int id,
+            string userName,
             [FromServices] IWmsSettingsProvider wmsSettingsProvider,
             [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
@@ -339,10 +347,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber, null);
+                    await loadingUnitsWmsWebService.WithdrawAsync(id, (int)this.BayNumber, userName);
                 }
                 catch (Exception ex)
                 {
+                    if (ex is WmsWebApiException webEx
+                        && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                    {
+                        return this.StatusCode(webEx.StatusCode);
+                    }
                     this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
                 }
             }
@@ -491,6 +504,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SetLoadingUnitOffset(int loadingUnitId, double laserOffset)
         {
             this.loadingUnitsDataProvider.SetLaserOffset(loadingUnitId, laserOffset);
+            return this.Accepted();
+        }
+
+        [HttpPost("set-loading-unit-weight")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetLoadingUnitWeight(int id, double loadingUnitGrossWeight)
+        {
+            this.logger.LogInformation($"Update load unit {id} weight {loadingUnitGrossWeight}kg");
+            this.loadingUnitsDataProvider.SetWeight(id, loadingUnitGrossWeight);
+
             return this.Accepted();
         }
 

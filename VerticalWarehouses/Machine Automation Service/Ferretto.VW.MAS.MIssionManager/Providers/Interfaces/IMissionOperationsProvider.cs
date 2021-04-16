@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         int GetUnitId(int missionId, BayNumber bayNumber);
 
-        Task PartiallyCompleteAsync(int wmsId, double quantity, string printerName, double wastedQuantity = 0);
+        Task PartiallyCompleteAsync(int wmsId, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false);
 
         #endregion
     }

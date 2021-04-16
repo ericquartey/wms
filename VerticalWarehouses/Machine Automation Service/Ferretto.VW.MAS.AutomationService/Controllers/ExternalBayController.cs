@@ -126,20 +126,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("move-manual-double")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public IActionResult MoveManualExtDouble(ExternalBayMovementDirection direction)
+        {
+            this.externalBayProvider.MoveManualExtDouble(direction, -1, null, true, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
         [HttpPost("move-for-extraction")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public IActionResult MovementForExtraction()
+        public IActionResult MovementForExtraction(bool isUpperPosition)
         {
-            this.externalBayProvider.MovementForExtraction(null, this.BayNumber, MessageActor.AutomationService);
+            this.externalBayProvider.MovementForExtraction(null, this.BayNumber, MessageActor.AutomationService, isUpperPosition);
 
             return this.Accepted();
         }
 
         [HttpPost("move-for-insertion")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public IActionResult MovementForInsertion()
+        public IActionResult MovementForInsertion(bool isUpperPosition)
         {
-            this.externalBayProvider.MovementForInsertion(this.BayNumber, MessageActor.AutomationService);
+            this.externalBayProvider.MovementForInsertion(this.BayNumber, MessageActor.AutomationService, isUpperPosition);
 
             return this.Accepted();
         }

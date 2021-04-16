@@ -734,7 +734,7 @@
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTGotoPosition" xml:space="preserve">
-    <value>Moves the vertical axis to the position inside the selected bay. The fee takes into account the boarding offset.</value>
+    <value>Moves the vertical axis to the position inside the selected bay. The height takes into account the boarding offset.</value>
     <comment>Note text</comment>
   </data>
   <data name="HelpDLUTStart" xml:space="preserve">
