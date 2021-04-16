@@ -602,7 +602,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.MachineService.Bay.IsDouble)
             {
                 return this.CanBaseExecute() &&
-                        !this.SensorsService.BayZeroChain &&
+                        this.SensorsService.BayZeroChainUp &&
                         !this.SensorsService.BEDInternalBayBottom &&
                         !this.SensorsService.BEDExternalBayTop;
             }
@@ -636,7 +636,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.MachineService.Bay.IsDouble)
             {
                 return this.CanBaseExecute() &&
-                        this.SensorsService.BayZeroChain &&
+                        !this.SensorsService.BayZeroChain &&
                         !this.SensorsService.BEDExternalBayBottom &&
                         !this.SensorsService.BEDInternalBayTop;
             }
@@ -965,7 +965,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineExternalBayWebService.MovementForInsertionAsync();
+                if (this.MachineService.Bay.IsDouble)
+                {
+                    if (this.SensorsService.BayZeroChain)
+                    {
+                        await this.machineExternalBayWebService.MovementForInsertionAsync(false);
+                    }
+                    else if (this.SensorsService.BayZeroChainUp)
+                    {
+                        await this.machineExternalBayWebService.MovementForInsertionAsync(true);
+                    }
+                }
+                else
+                {
+                    await this.machineExternalBayWebService.MovementForInsertionAsync(false);
+                }
                 this.IsExternalBayMoving = true;
                 this.IsExecutingProcedure = true;
             }
@@ -985,7 +999,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineExternalBayWebService.MovementForExtractionAsync();
+                if (this.MachineService.Bay.IsDouble)
+                {
+                    if (this.SensorsService.BayZeroChain)
+                    {
+                        await this.machineExternalBayWebService.MovementForExtractionAsync(false);
+                    }
+                    else if (this.SensorsService.BayZeroChainUp)
+                    {
+                        await this.machineExternalBayWebService.MovementForExtractionAsync(true);
+                    }
+                }
+                else
+                {
+                    await this.machineExternalBayWebService.MovementForExtractionAsync(false);
+                }
+
                 this.IsExternalBayMoving = true;
                 this.IsExecutingProcedure = true;
             }
@@ -1008,7 +1037,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.MachineService.Bay.IsDouble)
                 {
                     //var selectedBayPosition = this.SelectedBayPosition();
-                    await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, this.IsPositionUpSelected);
+                    if (this.SensorsService.BayZeroChain)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, true);
+                    }
+                    else if (this.SensorsService.BayZeroChainUp)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, false);
+                    }
+                    else
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, this.IsPositionUpSelected);
+                    }
                 }
                 else
                 {
@@ -1036,7 +1076,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.MachineService.Bay.IsDouble)
                 {
                     //var selectedBayPosition = this.SelectedBayPosition();
-                    await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, this.IsPositionUpSelected);
+                    if (this.SensorsService.BayZeroChain)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, false);
+                    }
+                    else if (this.SensorsService.BayZeroChainUp)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, true);
+                    }
+                    else
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, this.IsPositionUpSelected);
+                    }
                 }
                 else
                 {

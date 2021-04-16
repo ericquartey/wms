@@ -686,7 +686,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
 
+                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 bool canComplete = false;
+                var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var type = this.MissionOperation.Type;
+                var quantity = this.InputQuantity.Value;
 
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
                 {
@@ -700,6 +704,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
+                    if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
+                    {
+                        await this.UpdateWeight(loadingUnitId, 1, item.AverageWeight, type);
+                    }
+                    else
+                    {
+                        await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
+                    }
+
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
                 else
@@ -776,6 +789,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsOperationConfirmed = true;
                 bool canComplete;
 
+                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var type = this.MissionOperation.Type;
+                var quantity = this.InputQuantity.Value;
+
                 if (this.closeLine)
                 {
                     canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
@@ -787,6 +805,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
+                    await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
+
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
                 else
@@ -901,6 +921,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await this.MissionOperationsService.RefreshAsync();
             await this.GetLoadingUnitDetailsAsync();
+        }
+
+        public async Task UpdateWeight(int loadingUnitId, double quantity, int? itemWeight, MissionOperationType missionOperationType)
+        {
+            if (itemWeight != null && itemWeight != 0)
+            {
+                var loadingUnit = await this.loadingUnitsWebService.GetByIdAsync(loadingUnitId);
+
+                var grossWeight = default(double);
+                if (missionOperationType == MissionOperationType.Put)
+                {
+                    grossWeight = loadingUnit.GrossWeight + (itemWeight.Value * quantity / 1000);
+                }
+                else if (missionOperationType == MissionOperationType.Pick)
+                {
+                    grossWeight = loadingUnit.GrossWeight - (itemWeight.Value * quantity / 1000);
+                }
+
+                await this.loadingUnitsWebService.SetLoadingUnitWeightAsync(loadingUnitId, grossWeight);
+            }
         }
 
         public async Task PartiallyCompleteOnFullCompartmentAsync()

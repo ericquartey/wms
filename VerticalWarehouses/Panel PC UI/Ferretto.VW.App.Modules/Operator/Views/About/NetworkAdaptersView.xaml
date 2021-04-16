@@ -245,7 +245,7 @@
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding UwfOnCommand}"
-                          Content="Uwf On"
+                          Content="{res:Loc OperatorApp.EnableUwf}"
                           Visibility="{Binding IsFilterEnabled, Converter={StaticResource BTVIC}}" />
 
       <controls:PpcButton Grid.Row="3"
@@ -253,7 +253,7 @@
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding UwfOffCommand}"
-                          Content="Uwf Off"
+                          Content="{res:Loc OperatorApp.DisableUwf}"
                           Visibility="{Binding IsFilterEnabled, Converter={StaticResource BTVC}}" />
 
     </Grid>

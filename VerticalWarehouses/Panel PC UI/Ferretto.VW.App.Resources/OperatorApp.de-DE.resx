@@ -1662,4 +1662,10 @@
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
     <value>Warten auf den internen Lagerplatz</value>
   </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Uwf-Filter aktivieren</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Deaktivieren Sie den Uwf-Filter</value>
+  </data>
 </root>

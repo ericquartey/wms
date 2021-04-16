@@ -454,7 +454,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 !this.IsExecutingProcedure &&
                 !this.SensorsService.BayZeroChain &&
                 !this.IsExternalBayMoving &&
-                !this.SensorsService.BEDInternalBayBottom &&
+                !this.SensorsService.BEDExternalBayBottom &&
                 !this.SensorsService.BEDInternalBayTop;
             }
             else
@@ -476,7 +476,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 !this.SensorsService.BayZeroChain &&
                 !this.IsExternalBayMoving &&
                 !this.SensorsService.BEDInternalBayBottom &&
-                !this.SensorsService.BEDInternalBayTop;
+                !this.SensorsService.BEDExternalBayTop;
             }
             else
             {
@@ -510,7 +510,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             try
             {
-                await this.machineExternalBayWebService.MovementForExtractionAsync();
+                if (this.MachineService.Bay.IsDouble)
+                {
+                    if (this.SensorsService.BayZeroChain)
+                    {
+                        await this.machineExternalBayWebService.MovementForExtractionAsync(false);
+                    }
+                    else if (this.SensorsService.BayZeroChainUp)
+                    {
+                        await this.machineExternalBayWebService.MovementForExtractionAsync(true);
+                    }
+                }
+                else
+                {
+                    await this.machineExternalBayWebService.MovementForExtractionAsync(false);
+                }
+
                 this.IsExternalBayMoving = true;
             }
             catch (Exception ex)
@@ -529,7 +544,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             try
             {
-                await this.machineExternalBayWebService.MovementForInsertionAsync();
+                if (this.MachineService.Bay.IsDouble)
+                {
+                    if (this.SensorsService.BayZeroChain)
+                    {
+                        await this.machineExternalBayWebService.MovementForInsertionAsync(false);
+                    }
+                    else if (this.SensorsService.BayZeroChainUp)
+                    {
+                        await this.machineExternalBayWebService.MovementForInsertionAsync(true);
+                    }
+                }
+                else
+                {
+                    await this.machineExternalBayWebService.MovementForInsertionAsync(false);
+                }
+
                 this.IsExternalBayMoving = true;
             }
             catch (Exception ex)

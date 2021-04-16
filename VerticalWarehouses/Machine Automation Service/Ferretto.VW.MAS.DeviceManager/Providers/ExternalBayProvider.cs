@@ -381,7 +381,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
-            if(bay.IsDouble)
+            if (bay.IsDouble)
             {
                 return this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
             }
@@ -676,7 +676,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             this.logger.LogDebug(
-            $"Move External Bay Assisted " +
+            $"Move Double External Bay Assisted " +
             $"bayNumber: {bayNumber}; " +
             $"direction: {direction}; " +
             $"targetPosition: {targetPosition}; " +
@@ -690,7 +690,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             this.PublishCommand(
                 messageData,
-                $"Execute external {Axis.BayChain} Positioning Command",
+                $"Execute double external {Axis.BayChain} Positioning Command",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
@@ -860,17 +860,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MovementForExtraction(int? loadUnitId, BayNumber bayNumber, MessageActor sender)
+        public void MovementForExtraction(int? loadUnitId, BayNumber bayNumber, MessageActor sender, bool isUpper)
         {
             // Manual movement
 
-            var policy = this.CanMove(ExternalBayMovementDirection.TowardOperator, bayNumber, MovementCategory.Manual);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var policy = default(ActionPolicy);
+            if (bay.IsDouble)
+            {
+                policy = this.CanMoveExtDouble(ExternalBayMovementDirection.TowardOperator, bayNumber, MovementCategory.Manual, isUpper);
+            }
+            else
+            {
+                policy = this.CanMove(ExternalBayMovementDirection.TowardOperator, bayNumber, MovementCategory.Manual);
+            }
+
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var race = bay.External.Race;
             var extraRace = bay.External.ExtraRace;
@@ -928,22 +937,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MovementForInsertion(BayNumber bayNumber, MessageActor sender)
+        public void MovementForInsertion(BayNumber bayNumber, MessageActor sender, bool isUpper)
         {
             // Manual movement
 
-            if (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var policy = default(ActionPolicy);
+            if (bay.IsDouble)
             {
-                throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual));
+                policy = this.CanMoveExtDouble(ExternalBayMovementDirection.TowardMachine, bayNumber, MovementCategory.Manual, isUpper);
+            }
+            else
+            {
+                if (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+                {
+                    throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual));
+                }
+
+                policy = this.CanMove(ExternalBayMovementDirection.TowardMachine, bayNumber, MovementCategory.Manual);
             }
 
-            var policy = this.CanMove(ExternalBayMovementDirection.TowardMachine, bayNumber, MovementCategory.Manual);
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var race = bay.External.Race;
             var extraRace = bay.External.ExtraRace;

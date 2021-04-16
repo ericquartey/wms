@@ -1670,6 +1670,12 @@
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
     <value>Attendere il deposito baia interna</value>
   </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Attiva filtro Uwf</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Disattiva filtro Uwf</value>
+  </data>
   <data name="FullCompartment" xml:space="preserve">
     <value>Pieno</value>
   </data>
