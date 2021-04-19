@@ -736,7 +736,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Moves the vertical axis to the position inside the selected bay. The fee takes into account the boarding offset..
+        ///   Looks up a localized string similar to Moves the vertical axis to the position inside the selected bay. The height takes into account the boarding offset..
         /// </summary>
         public static string HelpDLUTGotoPosition {
             get {

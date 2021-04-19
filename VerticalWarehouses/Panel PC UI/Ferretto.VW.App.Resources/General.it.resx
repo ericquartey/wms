@@ -314,4 +314,7 @@
   <data name="MarkupNameOfSyntax" xml:space="preserve">
     <value>Sintassi per NameOf è Type={x:Type className&gt;}.&lt;</value>
   </data>
+  <data name="ForbiddenOperation" xml:space="preserve">
+    <value>Operazione non permessa</value>
+  </data>
 </root>

@@ -44,7 +44,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IWmsDataProvider wmsDataProvider,
+            IAuthenticationService authenticationService)
             : base(
                   machineIdentityWebService,
                   navigationService,
@@ -56,7 +58,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   bayManager,
                   eventAggregator,
                   missionOperationsService,
-                  dialogService)
+                  dialogService,
+                  wmsDataProvider,
+                  authenticationService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
         }
@@ -151,6 +155,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.CanInputAvailableQuantity = true;
             this.CanInputQuantity = true;
             this.CloseLine = true;
+            this.FullCompartment = false;
+            this.EmptyCompartment = false;
             this.RaisePropertyChanged(nameof(this.CanInputAvailableQuantity));
             this.RaisePropertyChanged(nameof(this.CanInputQuantity));
 
@@ -308,7 +314,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
-                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, false, false);
                 if (!canComplete)
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));

@@ -592,6 +592,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check product.
+        /// </summary>
+        public static string CheckProduct {
+            get {
+                return ResourceManager.GetString("CheckProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close line.
         /// </summary>
         public static string CloseLine {
@@ -826,7 +835,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Partial Confirmation.
+        ///   Looks up a localized string similar to Change.
         /// </summary>
         public static string ConfirmPartial {
             get {
@@ -1618,6 +1627,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empty.
+        /// </summary>
+        public static string EmptyCompartment {
+            get {
+                return ResourceManager.GetString("EmptyCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Units moved without error.
         /// </summary>
         public static string ErrorsStatisticsDrawersMovedWithoutError {
@@ -1794,6 +1812,15 @@ namespace Ferretto.VW.App.Resources {
         public static string FreeCellsOnlySpace {
             get {
                 return ResourceManager.GetString("FreeCellsOnlySpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full.
+        /// </summary>
+        public static string FullCompartment {
+            get {
+                return ResourceManager.GetString("FullCompartment", resourceCulture);
             }
         }
         

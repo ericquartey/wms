@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public ItemWeightChangedMessage lastItemQuantityMessage;
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
         private readonly IEventAggregator eventAggregator;
@@ -39,6 +41,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly INavigationService navigationService;
 
         private readonly IOperatorNavigationService operatorNavigationService;
+
+        private readonly IWmsDataProvider wmsDataProvider;
 
         private double? availableQuantity;
 
@@ -61,6 +65,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand confirmPartialOperationCommand;
 
         private DelegateCommand confirmPresentOperationCommand;
+
+        private bool emptyCompartment;
+
+        private bool fullCompartment;
 
         private string inputItemCode;
 
@@ -127,7 +135,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBayManager bayManager,
             IEventAggregator eventAggregator,
             IMissionOperationsService missionOperationsService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IWmsDataProvider wmsDataProvider,
+            IAuthenticationService authenticationService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
@@ -138,6 +148,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.operatorNavigationService = operatorNavigationService;
             this.navigationService = navigationService;
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
@@ -222,6 +234,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.ConfirmPresentOperationAsync(),
                 this.CanConfirmPresentOperation));
 
+        public bool EmptyCompartment
+        {
+            get => this.emptyCompartment;
+            set => this.SetProperty(ref this.emptyCompartment, value, this.RaiseCanExecuteChanged);
+        }
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public string Error => string.Join(
@@ -230,6 +248,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this[nameof(this.InputLot)],
                     this[nameof(this.InputItemCode)],
                     this[nameof(this.InputSerialNumber)]);
+
+        public bool FullCompartment
+        {
+            get => this.fullCompartment;
+            set => this.SetProperty(ref this.fullCompartment, value, this.RaiseCanExecuteChanged);
+        }
 
         public string InputItemCode
         {
@@ -772,7 +796,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.closeLine)
                 {
-                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
                 }
                 else
                 {
@@ -919,6 +943,44 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public async Task PartiallyCompleteOnFullCompartmentAsync()
+        {
+            this.IsWaitingForResponse = true;
+            this.IsOperationConfirmed = true;
+
+            try
+            {
+                bool canComplete;
+
+                if (this.closeLine)
+                {
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
+                }
+                else
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                }
+
+                if (!canComplete)
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                    this.NavigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT);
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.IsOperationConfirmed = false;
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+                this.lastItemQuantityMessage = null;
+            }
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -1013,12 +1075,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
                 var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Inventory);
 
-                await this.compartmentsWebService.UpdateItemStockAsync(
+                await this.wmsDataProvider.UpdateItemStockAsync(
                         this.selectedCompartment.Id,
                         this.selectedCompartmentDetail.ItemId.Value,
                         this.availableQuantity.Value,
                         reasons.First().Id,
-                        "update present quantity");
+                        "update present quantity",
+                        this.selectedCompartmentDetail.Lot,
+                        this.selectedCompartmentDetail.ItemSerialNumber,
+                        this.authenticationService.UserName);
 
                 //await this.MissionOperationsService.RecallLoadingUnitAsync(this.loadingUnitId.Value);
 

@@ -9,6 +9,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
@@ -21,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private const int PollIntervalMilliseconds = 5000;
 
         private readonly IMachineAreasWebService areasWebService;
+
+        private readonly IAuthenticationService authenticationService;
 
         private readonly IBayManager bayManager;
 
@@ -50,13 +53,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineIdentityWebService identityService,
             IMachineItemListsWebService itemListsWebService,
             IMachineAreasWebService areasWebService,
-            IBayManager bayManager)
+            IBayManager bayManager,
+            IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -141,7 +146,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, bay.Id);
+                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, bay.Id, this.authenticationService.UserName);
                 await this.LoadListsAsync();
                 this.ShowNotification(
                     string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code),
@@ -149,9 +154,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(
-                    Resources.Localized.Get("OperatorApp.CannotExecuteList"),
-                    Services.Models.NotificationSeverity.Warning);
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(
+                        Resources.Localized.Get("OperatorApp.CannotExecuteList"),
+                        Services.Models.NotificationSeverity.Warning);
+                }
             }
         }
 
@@ -198,31 +211,53 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return this.SelectedList != null;
         }
 
+        //private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
+        //{
+        //    var listId = e.GetListId();
+        //    if (!listId.HasValue)
+        //    {
+        //        return;
+        //    }
+
+        //    try
+        //    {
+        //        var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
+        //        await this.ExecuteListAsync(new ItemListExecution(list, this.bayManager.Identity.Id));
+        //    }
+        //    catch
+        //    {
+        //        this.ShowNotification(
+        //            string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listId.Value),
+        //            Services.Models.NotificationSeverity.Error);
+        //    }
+        //}
+
         private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
         {
-            var listId = e.GetListId();
-            if (!listId.HasValue)
+            var listCode = e.GetListCode();
+            if (listCode is null || listCode.Length == 0)
             {
                 return;
             }
 
             try
             {
-                var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
-                await this.ExecuteListAsync(new ItemListExecution(list, this.bayManager.Identity.Id));
+                var list = await this.itemListsWebService.GetByNumAsync(listCode);
+                await this.ExecuteListAsync(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
             }
-            catch
+            catch (Exception ex)
             {
+                this.Logger.Error(ex);
                 this.ShowNotification(
-                    string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listId.Value),
+                    string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listCode),
                     Services.Models.NotificationSeverity.Error);
             }
         }
 
         private async Task FilterListsByBarcodeAsync(UserActionEventArgs e)
         {
-            var listId = e.GetListId();
-            if (!listId.HasValue)
+            var listCode = e.GetListCode();
+            if (listCode is null || listCode.Length == 0)
             {
                 this.ShowNotification(
                    string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheListId"), e.Code),
@@ -233,9 +268,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
+                var list = await this.itemListsWebService.GetByNumAsync(listCode);
 
-                this.ShowDetails(new ItemListExecution(list, this.bayManager.Identity.Id));
+                this.ShowDetails(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
             }
             catch
             {

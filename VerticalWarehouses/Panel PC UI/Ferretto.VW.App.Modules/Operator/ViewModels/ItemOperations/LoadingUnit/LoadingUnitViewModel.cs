@@ -7,6 +7,7 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
 
@@ -15,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     public class LoadingUnitViewModel : BaseLoadingUnitViewModel, IOperationReasonsSelector, IOperationalContextViewModel
     {
         #region Fields
+
+        private readonly IAuthenticationService authenticationService;
 
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
@@ -106,7 +109,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IOperatorNavigationService operatorNavigationService,
             IMachineMissionOperationsWebService missionOperationsWebService,
             IEventAggregator eventAggregator,
-            IWmsDataProvider wmsDataProvider)
+            IWmsDataProvider wmsDataProvider,
+            IAuthenticationService authenticationService)
             : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
@@ -117,6 +121,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -543,7 +548,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {
@@ -701,7 +714,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 // if (activeOperation != null && activeOperation.CompartmentId != null && activeOperation.CompartmentId > 0)
                 if (activeOperation != null && activeOperation.CompartmentId > 0 && activeOperation.ItemId > 0)
                 {
-                    this.SelectedItemCompartment = this.ItemsCompartments.Where(s => s.Id == activeOperation.CompartmentId && s.ItemId == activeOperation.ItemId).FirstOrDefault();
+                    this.SelectedItemCompartment = this.ItemsCompartments.FirstOrDefault(s => s.Id == activeOperation.CompartmentId && s.ItemId == activeOperation.ItemId
+                        && (activeOperation.Lot == null || s.Lot == activeOperation.Lot)
+                        && (activeOperation.SerialNumber == null || s.ItemSerialNumber == activeOperation.SerialNumber));
                     this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
                 }
                 else if (!this.MachineService.Loadunits.Any(l => l.Id == this.LoadingUnit?.Id && l.Status == LoadingUnitStatus.InBay))
@@ -748,7 +763,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem.ItemId.Value,
                         this.InputQuantity.Value,
                         this.reasonId,
-                        this.reasonNotes);
+                        this.reasonNotes,
+                        this.SelectedItemCompartment.Id,
+                        this.SelectedItem.Lot,
+                        this.SelectedItem.ItemSerialNumber,
+                        userName: this.authenticationService.UserName);
                 }
                 else if (this.IsPutVisible)
                 {
@@ -758,7 +777,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem.ItemId.Value,
                         this.InputQuantity.Value,
                         this.reasonId,
-                        this.reasonNotes);
+                        this.reasonNotes,
+                        this.SelectedItemCompartment.Id,
+                        this.SelectedItem.Lot,
+                        this.SelectedItem.ItemSerialNumber,
+                        userName: this.authenticationService.UserName);
                 }
                 else if (this.IsAdjustmentVisible)
                 {
@@ -769,12 +792,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         if (!string.IsNullOrEmpty(this.reasonNotes) &&
                            this.reasonNotes.Except(" ").Any())
                         {
-                            await this.compartmentsWebService.UpdateItemStockAsync(
-                            this.SelectedItemCompartment.Id,
-                            this.SelectedItemCompartment.ItemId.Value,
-                            this.InputQuantity.Value,
-                            this.reasonId,
-                            this.reasonNotes);
+                            await this.WmsDataProvider.UpdateItemStockAsync(
+                                this.SelectedItemCompartment.Id,
+                                this.SelectedItemCompartment.ItemId.Value,
+                                this.InputQuantity.Value,
+                                this.reasonId,
+                                this.reasonNotes,
+                                this.SelectedItem.Lot,
+                                this.SelectedItem.ItemSerialNumber,
+                                userName: this.authenticationService.UserName);
 
                             var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
                             if (item.AverageWeight != null && item.AverageWeight != 0)
@@ -807,12 +833,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     else
                     {
-                        await this.compartmentsWebService.UpdateItemStockAsync(
+                        await this.WmsDataProvider.UpdateItemStockAsync(
                             this.SelectedItemCompartment.Id,
                             this.SelectedItemCompartment.ItemId.Value,
                             this.InputQuantity.Value,
                             this.reasonId,
-                            this.reasonNotes);
+                        this.reasonNotes,
+                            this.SelectedItem.Lot,
+                            this.SelectedItem.ItemSerialNumber,
+                            this.authenticationService.UserName);
 
                         var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
                         if (item.AverageWeight != null && item.AverageWeight != 0)

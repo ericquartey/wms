@@ -367,7 +367,7 @@
     <value>Un pulsante (fungo) di emergenza è stato premuto. Verificare lo stato e riprovare.</value>
   </data>
   <data name="TopLevelBayEmpty" xml:space="preserve">
-    <value>Livello alto baia vuoto.</value>
+    <value>Livello alto baia vuoto. Verificare che il cassetto sia posizionato correttamente e che non si sia spostato verso la macchina. Verificare che la levetta del sensore di presenza non si sia incastrata.</value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
     <value>Il sensore di nottolino a zero risulta attivo in concomitanza con i sensori di presenza a bordo elevatore.</value>

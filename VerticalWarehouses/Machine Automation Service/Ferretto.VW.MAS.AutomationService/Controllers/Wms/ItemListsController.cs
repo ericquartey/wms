@@ -29,9 +29,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("{id}/execute")]
-        public async Task<ActionResult<ItemListDetails>> ExecuteAsync(int id, int areaId, int? bayId = null)
+        public async Task<ActionResult<ItemListDetails>> ExecuteAsync(int id, int areaId, int? bayId = null, string userName = null)
         {
-            await this.itemListsWmsWebService.ExecuteAsync(id, areaId, bayId);
+            await this.itemListsWmsWebService.ExecuteAsync(id, areaId, bayId, userName);
+            return this.Ok();
+        }
+
+        [HttpGet("{id}/execute-num")]
+        public async Task<ActionResult<ItemListDetails>> ExecuteNumAsync(string id, int areaId, int? bayId = null, string userName = null)
+        {
+            await this.itemListsWmsWebService.ExecuteNumAsync(id, areaId, bayId, userName);
             return this.Ok();
         }
 
@@ -39,6 +46,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult<ItemListDetails>> GetByIdAsync(int id)
         {
             return this.Ok(await this.itemListsWmsWebService.GetByIdAsync(id));
+        }
+
+        [HttpGet("{code}/num")]
+        public async Task<ActionResult<IEnumerable<ItemList>>> GetByNumAsync(string code)
+        {
+            return this.Ok(await this.itemListsWmsWebService.GetAllAsync(where: code));
         }
 
         [HttpGet("{id}/rows")]

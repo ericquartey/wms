@@ -82,9 +82,50 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
+                    <DataGridTextColumn x:Name="Column3"
+                                        Width="1*"
+                                        Binding="{Binding Path=Id}"
+                                        Header="{Resources:Loc OperatorApp.Compartment}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn x:Name="Column4"
+                                        Width="1*"
+                                        Binding="{Binding Path=Lot}"
+                                        Header="{Resources:Loc OperatorApp.Lot}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn x:Name="Column5"
+                                        Width="1*"
+                                        Binding="{Binding Path=Sub1}"
+                                        Header="{Resources:Loc OperatorApp.SerialNumber}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
+        <controls:PpcButton Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{Binding CheckProductCommand}"
+                            Content="{Resources:Loc OperatorApp.CheckProduct}"
+                            Style="{StaticResource ConfirmButton}" />
         <controls:PpcButton Grid.Row="2"
                             Grid.Column="1"
                             Margin="15,15,15,0"
