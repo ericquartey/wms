@@ -923,26 +923,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.GetLoadingUnitDetailsAsync();
         }
 
-        public async Task UpdateWeight(int loadingUnitId, double quantity, int? itemWeight, MissionOperationType missionOperationType)
-        {
-            if (itemWeight != null && itemWeight != 0)
-            {
-                var loadingUnit = await this.loadingUnitsWebService.GetByIdAsync(loadingUnitId);
-
-                var grossWeight = default(double);
-                if (missionOperationType == MissionOperationType.Put)
-                {
-                    grossWeight = loadingUnit.GrossWeight + (itemWeight.Value * quantity / 1000);
-                }
-                else if (missionOperationType == MissionOperationType.Pick)
-                {
-                    grossWeight = loadingUnit.GrossWeight - (itemWeight.Value * quantity / 1000);
-                }
-
-                await this.loadingUnitsWebService.SetLoadingUnitWeightAsync(loadingUnitId, grossWeight);
-            }
-        }
-
         public async Task PartiallyCompleteOnFullCompartmentAsync()
         {
             this.IsWaitingForResponse = true;
@@ -978,6 +958,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = false;
                 this.lastItemQuantityMessage = null;
+            }
+        }
+
+        public async Task UpdateWeight(int loadingUnitId, double quantity, int? itemWeight, MissionOperationType missionOperationType)
+        {
+            if (itemWeight != null && itemWeight != 0)
+            {
+                var loadingUnit = await this.loadingUnitsWebService.GetByIdAsync(loadingUnitId);
+
+                var grossWeight = default(double);
+                if (missionOperationType == MissionOperationType.Put)
+                {
+                    grossWeight = loadingUnit.GrossWeight + (itemWeight.Value * quantity / 1000);
+                }
+                else if (missionOperationType == MissionOperationType.Pick)
+                {
+                    grossWeight = loadingUnit.GrossWeight - (itemWeight.Value * quantity / 1000);
+                }
+
+                await this.loadingUnitsWebService.SetLoadingUnitWeightAsync(loadingUnitId, grossWeight);
             }
         }
 
@@ -1125,18 +1125,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
                 this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
 
-                this.Compartments = MapCompartments(this.Mission.LoadingUnit.Compartments);
-                this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
-                    c.Id == this.MissionOperation.CompartmentId);
+                this.Compartments = MapCompartments(this.Mission.LoadingUnit.Compartments).ToList();
 
                 try
                 {
                     this.loadingUnitId = this.Mission.LoadingUnit.Id;
-                    //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
-                    var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
-                    itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
-                    this.SelectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id && s.ItemId == (this.MissionOperation?.ItemId ?? 0)).FirstOrDefault();
-                    this.AvailableQuantity = this.selectedCompartmentDetail?.Stock;
+                    if (this.Compartments != null)
+                    {
+                        this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
+                            c.Id == this.MissionOperation.CompartmentId);
+                        //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
+                        var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
+                        itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
+                        this.SelectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id && s.ItemId == (this.MissionOperation?.ItemId ?? 0)).FirstOrDefault();
+                        this.AvailableQuantity = this.selectedCompartmentDetail?.Stock;
+                    }
                 }
                 catch (Exception)
                 {
