@@ -179,6 +179,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasBayExternal => this.MachineService.HasBayExternal;
 
+        public bool HasBayExternalDouble => this.MachineService.HasBayExternal && this.MachineService.Bay.IsDouble;
+
         public bool HasCarousel => this.MachineService.HasCarousel;
 
         public bool HasShutter => this.MachineService.HasShutter;

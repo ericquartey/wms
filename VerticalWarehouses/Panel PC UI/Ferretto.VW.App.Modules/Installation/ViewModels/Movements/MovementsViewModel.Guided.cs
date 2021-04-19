@@ -546,13 +546,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanLoadFromBay()
         {
             // Check a condition for external bay
+
+            var selectedBayPosition = this.SelectedBayPosition();
+
             var conditionOnExternalBay = true;
-            if (this.HasBayExternal && this.SensorsService.IsLoadingUnitInMiddleBottomBay)
+            if (this.HasBayExternal && !this.MachineService.Bay.IsDouble && this.SensorsService.IsLoadingUnitInMiddleBottomBay)
             {
                 conditionOnExternalBay = false;
             }
+            else if (this.HasBayExternal && this.MachineService.Bay.IsDouble && this.SensorsService.IsLoadingUnitInMiddleBottomBay)
+            {
+                if (selectedBayPosition.IsUpper == true)
+                {
+                    conditionOnExternalBay = this.SensorsService.BEDExternalBayTop || this.SensorsService.BEDInternalBayTop;
+                }
+                else
+                {
+                    conditionOnExternalBay = this.SensorsService.BEDInternalBayBottom || this.SensorsService.BEDExternalBayBottom;
+                }
+            }
 
-            var selectedBayPosition = this.SelectedBayPosition();
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay || !this.HasShutter) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
                    this.MachineStatus.LogicalPositionId == this.Bay.Id &&
@@ -1037,7 +1050,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.MachineService.Bay.IsDouble)
                 {
                     //var selectedBayPosition = this.SelectedBayPosition();
-                    if (this.SensorsService.BayZeroChain)
+
+                    if (this.SensorsService.BEDExternalBayBottom)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, false);
+                    }
+                    else if (this.SensorsService.BEDInternalBayTop)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, true);
+                    }
+                    else if (this.SensorsService.BayZeroChain)
                     {
                         await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, true);
                     }
@@ -1076,7 +1098,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.MachineService.Bay.IsDouble)
                 {
                     //var selectedBayPosition = this.SelectedBayPosition();
-                    if (this.SensorsService.BayZeroChain)
+                    if (this.SensorsService.BEDExternalBayTop)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, true);
+                    }
+                    else if (this.SensorsService.BEDInternalBayBottom)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, false);
+                    }
+                    else if (this.SensorsService.BayZeroChain)
                     {
                         await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, false);
                     }

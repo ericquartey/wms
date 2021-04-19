@@ -44,6 +44,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MovementForInsertion(BayNumber bayNumber, MessageActor sender, bool isUpper);
 
+        void StartDoubleExtBayTest(ExternalBayMovementDirection direction, BayNumber bayNumber, MessageActor sender, bool isUpper);
+
         void StartTest(BayNumber bayNumber, MessageActor sender);
 
         void Stop(BayNumber bayNumber, MessageActor sender);

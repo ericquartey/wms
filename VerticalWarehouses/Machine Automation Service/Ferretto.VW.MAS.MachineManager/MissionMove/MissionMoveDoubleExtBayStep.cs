@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Logger.LogDebug($"Move in restore conditions => LoadUnitDestination: {this.Mission.LoadUnitDestination}, bay number: {bay.Number}");
                 if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId,
-                    (isLoadUnitDestinationInBay ? ExternalBayMovementDirection.TowardOperator : ExternalBayMovementDirection.TowardMachine),
+                    ((isLoadUnitDestinationInBay && !destination.IsUpper) || (!isLoadUnitDestinationInBay && destination.IsUpper) ? ExternalBayMovementDirection.TowardOperator : ExternalBayMovementDirection.TowardMachine),
                     MessageActor.MachineManager,
                     bay.Number,
                     restore: true,
@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (isLoadingUnitInInternalUpPosition && !isLoadingUnitInExternalUpPosition)
                         {
-                            if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper))
+                            if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper))
                             {
                                 this.ExternalBayChainEnd();
                                 return true;
@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (isLoadingUnitInExternalUpPosition && !isLoadingUnitInInternalUpPosition)
                         {
-                            if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper))
+                            if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper))
                             {
                                 this.ExternalBayChainEnd();
                                 return true;
@@ -312,7 +312,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         return;
                                     }
 
-                                    this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper);
+                                    if (destination.IsUpper)
+                                    {
+                                        this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper);
+                                    }
+                                    else
+                                    {
+                                        this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper);
+                                    }
                                     this.Mission.LoadUnitDestination = destination.Location;
 
                                     this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
@@ -388,7 +395,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Logger.LogDebug($"4a. Move double external bay toward Operator, mainly to handle the drawer after a restore conditions movement");
 
-                        this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper);
+                        this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper);
                         //this.Mission.LoadUnitDestination = destination.Location;
 
                         this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
@@ -406,7 +413,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Logger.LogDebug($"5a. Move double external bay toward Machine, mainly to handle the drawer after a restore conditions movement");
 
-                        this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper);
+                        this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, destination.IsUpper);
                         //this.Mission.LoadUnitDestination = destination.Location;
 
                         this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
@@ -543,7 +550,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private BayPosition SelectPosition(Bay currentBay)
         {
-            if (this.Mission.MissionType == MissionType.OUT || this.Mission.MissionType == MissionType.FullTestOUT)
+            if (this.Mission.MissionType == MissionType.OUT ||
+                this.Mission.MissionType == MissionType.FullTestOUT ||
+                this.Mission.MissionType == MissionType.WMS ||
+                (this.Mission.MissionType == MissionType.LoadUnitOperation && this.Mission.LoadUnitSource == LoadingUnitLocation.Elevator) ||
+                (this.Mission.MissionType == MissionType.FirstTest && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell) ||
+                (this.Mission.MissionType == MissionType.LoadUnitOperation && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell) ||
+                (this.Mission.MissionType == MissionType.Manual && this.Mission.LoadUnitSource == LoadingUnitLocation.Elevator))
             {
                 switch (this.Mission.LoadUnitDestination)
                 {
