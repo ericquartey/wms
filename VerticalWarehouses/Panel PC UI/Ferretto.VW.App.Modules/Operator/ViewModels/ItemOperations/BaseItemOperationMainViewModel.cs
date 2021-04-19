@@ -866,7 +866,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
 
+                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 bool canComplete = false;
+                var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var type = this.MissionOperation.Type;
+                var quantity = this.InputQuantity.Value;
 
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
                 {
@@ -880,6 +884,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
+                    if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
+                    {
+                        await this.UpdateWeight(loadingUnitId, 1, item.AverageWeight, type);
+                    }
+                    else
+                    {
+                        await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
+                    }
+
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
                 else
@@ -1960,6 +1973,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 new ItemDraperyDataConfirm
                 {
                     MissionId = this.MissionOperation.Id,
+                    ItemId = this.MissionOperation.ItemId,
+                    MissionOperationType = this.MissionOperation.Type,
+                    LoadingUnitId = this.Mission.LoadingUnit.Id,
                     ItemDescription = this.MissionOperation.ItemDescription,
                     AvailableQuantity = this.AvailableQuantity,
                     MissionRequestedQuantity = this.MissionRequestedQuantity,
@@ -1969,6 +1985,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     QuantityTolerance = this.QuantityTolerance,
                     MeasureUnitTxt = string.Empty,
                     Barcode = barcode,
+                    BarcodeLength = this.BarcodeLenght,
                     IsPartiallyCompleteOperation = isPartiallyConfirmOperation,
                     CloseLine = this.closeLine,
                 },
