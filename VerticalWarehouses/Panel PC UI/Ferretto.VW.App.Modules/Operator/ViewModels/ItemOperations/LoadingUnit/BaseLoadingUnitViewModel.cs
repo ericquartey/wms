@@ -690,7 +690,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.items?.Any() == true)
             {
                 if (this.items.FirstOrDefault(ic => ic.ItemId == this.selectedItemCompartment.ItemId
-                    && (this.selectedItemCompartment.Lot == null || this.selectedItemCompartment.Lot == ic.Lot)) is CompartmentDetails newSelectedItem)
+                    && (this.selectedItemCompartment.Lot == null || this.selectedItemCompartment.Lot == ic.Lot)
+                    && (this.selectedItemCompartment.ItemSerialNumber == null || this.selectedItemCompartment.ItemSerialNumber == ic.ItemSerialNumber)) is CompartmentDetails newSelectedItem)
                 {
                     this.currentItemIndex = this.items.ToList().IndexOf(newSelectedItem);
                     this.selectedItem = newSelectedItem;
@@ -709,18 +710,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (this.itemsCompartments.FirstOrDefault(ic => ic.Id == this.selectedCompartment.Id
-                                                            &&
-                                                            ic.ItemId == this.selectedItem.ItemId
-                                                            &&
-                                                            ic.Stock == this.selectedItem.Stock
-                                                            &&
-                                                            (this.selectedItem.Lot == null || ic.Lot == this.selectedItem.Lot)
-                                                            &&
-                                                            ic.ItemSerialNumber == this.selectedItem.ItemSerialNumber) is CompartmentDetails newSelectedItemCompartment)
+            //if (this.itemsCompartments.FirstOrDefault(ic => ic.Id == this.selectedCompartment.Id
+            //                                                &&
+            //                                                ic.ItemId == this.selectedItem.ItemId
+            //                                                &&
+            //                                                ic.Stock == this.selectedItem.Stock
+            //                                                &&
+            //                                                (this.selectedItem.Lot == null || ic.Lot == this.selectedItem.Lot)
+            //                                                &&
+            //                                                ic.ItemSerialNumber == this.selectedItem.ItemSerialNumber) is CompartmentDetails newSelectedItemCompartment)
+            if (this.selectedItemCompartment != null && this.itemsCompartments.Any(ic => ic.Id == this.selectedItemCompartment.Id))
             {
-                this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
-                this.selectedItemCompartment = newSelectedItemCompartment;
+                this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(this.selectedItemCompartment);
+                //this.selectedItemCompartment = newSelectedItemCompartment;
                 this.RaisePropertyChanged();
             }
 

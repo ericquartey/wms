@@ -253,6 +253,7 @@ namespace Ferretto.VW.App
             Localized.Instance.AddResourceManager(ServiceMachine.ResourceManager);
 
             Localized.Instance.CurrentCulture = CultureInfo.CurrentCulture;
+            Localized.Instance.CurrentKeyboardCulture = CultureInfo.CurrentCulture;
         }
 
         #endregion
