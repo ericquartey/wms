@@ -554,7 +554,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 conditionOnExternalBay = false;
             }
-            else if (this.HasBayExternal && this.MachineService.Bay.IsDouble && this.SensorsService.IsLoadingUnitInMiddleBottomBay)
+            else if (this.HasBayExternal && this.MachineService.Bay.IsDouble)
             {
                 if (selectedBayPosition.IsUpper == true)
                 {
