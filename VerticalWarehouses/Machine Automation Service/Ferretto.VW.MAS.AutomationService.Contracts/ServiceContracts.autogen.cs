@@ -6896,6 +6896,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         NotSpecified = 0,
     
+        Check = 67,
+    
         Inventory = 73,
     
         Pick = 80,

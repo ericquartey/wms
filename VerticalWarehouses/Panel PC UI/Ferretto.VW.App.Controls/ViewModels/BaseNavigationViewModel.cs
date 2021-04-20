@@ -12,6 +12,8 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IEventAggregator eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
         private IRegionNavigationJournal journal;
@@ -72,6 +74,7 @@ namespace Ferretto.VW.App.Controls
 
         public override void OnNavigatingBack(BackNavigationContext navigationContext)
         {
+            this.logger.Debug($"Navigating back");
             base.OnNavigatingBack(navigationContext);
             var args = new System.ComponentModel.CancelEventArgs(false);
             this.NavigatingBack?.Invoke(this, args);

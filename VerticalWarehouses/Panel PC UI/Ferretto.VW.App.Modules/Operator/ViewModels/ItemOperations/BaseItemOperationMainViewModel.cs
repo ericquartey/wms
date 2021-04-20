@@ -976,6 +976,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     grossWeight = loadingUnit.GrossWeight - (itemWeight.Value * quantity / 1000);
                 }
+                else
+                {
+                    return;
+                }
 
                 await this.loadingUnitsWebService.SetLoadingUnitWeightAsync(loadingUnitId, grossWeight);
             }
@@ -1168,6 +1172,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 case MissionOperationType.Inventory:
                     noLongerOperationMsg = Localized.Get("OperatorApp.InventoryOperationCancelled");
+                    break;
+
+                case MissionOperationType.LoadingUnitCheck:
+                    noLongerOperationMsg = Localized.Get("OperatorApp.CheckOperationCancelled");
                     break;
 
                 default:

@@ -11,6 +11,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     {
         #region Fields
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly INavigationService navigationService;
 
         #endregion
@@ -39,6 +41,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override Task ExecuteAsync()
         {
+            this.logger.Debug($"Presentation back");
             if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.ItemSearch.MAIN)
             {
                 //this.navigationService.GoBack();

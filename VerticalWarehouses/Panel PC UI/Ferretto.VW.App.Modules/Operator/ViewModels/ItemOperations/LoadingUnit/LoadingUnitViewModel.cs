@@ -842,7 +842,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.SelectedItemCompartment.ItemId.Value,
                             this.InputQuantity.Value,
                             this.reasonId,
-                        this.reasonNotes,
+                            this.reasonNotes,
                             this.SelectedItem.Lot,
                             this.SelectedItem.ItemSerialNumber,
                             this.authenticationService.UserName);

@@ -1685,4 +1685,10 @@
   <data name="CheckProduct" xml:space="preserve">
     <value>Visione</value>
   </data>
+  <data name="CheckOperationCancelled" xml:space="preserve">
+    <value>L'operazione di visione è stata annullata</value>
+  </data>
+  <data name="ItemListType_Check" xml:space="preserve">
+    <value>Visione</value>
+  </data>
 </root>

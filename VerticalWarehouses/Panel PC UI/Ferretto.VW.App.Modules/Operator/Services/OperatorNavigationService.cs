@@ -102,7 +102,11 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void NavigateToOperatorMenu()
         {
-            this.logger.Debug($"Navigate 2 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, machineMission {this.missionOperationsService.ActiveMachineMission?.Id}, LU {this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id}");
+            this.logger.Debug($"Navigate 2 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, " +
+                $"machineMission {this.missionOperationsService.ActiveMachineMission?.Id}, " +
+                $"LU {this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id}, " +
+                $"Type {this.missionOperationsService.ActiveWmsOperation?.Type}");
+
             if (this.missionOperationsService.ActiveWmsOperation != null &&
                 this.missionOperationsService.ActiveWmsMission != null &&
                 this.missionOperationsService.ActiveWmsMission.Id == this.missionOperationsService.ActiveWmsOperation.MissionId &&
@@ -191,7 +195,11 @@ namespace Ferretto.VW.App.Modules.Operator
                 return;
             }
 
-            this.logger.Debug($"Navigate 3 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, machineMission {this.missionOperationsService.ActiveMachineMission?.Id}, LU {this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id}");
+            this.logger.Debug($"Navigate 3 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, " +
+                $"machineMission {this.missionOperationsService.ActiveMachineMission?.Id}, " +
+                $"LU {this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id}, " +
+                $"Type {this.missionOperationsService.ActiveWmsOperation?.Type}");
+
             if (this.missionOperationsService.ActiveWmsOperation != null &&
                 this.missionOperationsService.ActiveWmsMission != null &&
                 this.missionOperationsService.ActiveWmsMission.Id == this.missionOperationsService.ActiveWmsOperation.MissionId &&
@@ -246,7 +254,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     &&
                     goToWaitViewIfBayIsEmpty)
                 {
-                    this.logger.Trace("No WMS operation and no loading unit in bay, navigation to wait view.");
+                    this.logger.Debug("No WMS operation and no loading unit in bay, navigation to wait view.");
 
                     if (this.IsOperationOrLoadingUnitViewModel(activeViewModelName))
                     {
@@ -336,7 +344,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     break;
 
                 default:
-                    this.logger.Trace($"Operation type is not supported (enum value = {(int)operationType}).");
+                    this.logger.Warn($"Operation type is not supported (enum value = {(int)operationType}).");
                     break;
             }
 

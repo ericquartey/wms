@@ -592,6 +592,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Check operation has been cancelled.
+        /// </summary>
+        public static string CheckOperationCancelled {
+            get {
+                return ResourceManager.GetString("CheckOperationCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check product.
         /// </summary>
         public static string CheckProduct {
@@ -1618,20 +1627,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable Uwf filter.
-        /// </summary>
-        public static string EnableUwf {
-            get {
-                return ResourceManager.GetString("EnableUwf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Empty.
         /// </summary>
         public static string EmptyCompartment {
             get {
                 return ResourceManager.GetString("EmptyCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Uwf filter.
+        /// </summary>
+        public static string EnableUwf {
+            get {
+                return ResourceManager.GetString("EnableUwf", resourceCulture);
             }
         }
         
@@ -2262,6 +2271,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ItemDetailWeight {
             get {
                 return ResourceManager.GetString("ItemDetailWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check.
+        /// </summary>
+        public static string ItemListType_Check {
+            get {
+                return ResourceManager.GetString("ItemListType_Check", resourceCulture);
             }
         }
         

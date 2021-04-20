@@ -15,6 +15,9 @@ namespace Ferretto.VW.App.Controls.Converters
             {
                 switch (value)
                 {
+                    case ItemListType.Check:
+                        return Resources.Localized.Get("OperatorApp.ItemListType_Check");
+
                     case ItemListType.Inventory:
                         return Resources.Localized.Get("OperatorApp.ItemListType_Inventory");
 
@@ -28,7 +31,7 @@ namespace Ferretto.VW.App.Controls.Converters
                         return Resources.Localized.Get("OperatorApp.ItemListType_NotSpecified");
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return value;
             }

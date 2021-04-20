@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly IWmsDataProvider wmsDataProvider;
@@ -175,6 +177,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
 
+                this.logger.Debug($"Item pick");
                 this.NavigationService.GoBack();
             }
             catch (Exception ex)
@@ -212,6 +215,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                        this.InputQuantity),
                    Services.Models.NotificationSeverity.Success);
 
+                this.logger.Debug($"Item put");
                 this.NavigationService.GoBack();
             }
             catch (Exception ex)
