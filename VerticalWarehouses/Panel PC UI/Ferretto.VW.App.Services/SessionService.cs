@@ -76,7 +76,8 @@ namespace Ferretto.VW.App.Services
 
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Login),
-                    Utils.Modules.Login.LOGIN);
+                    Utils.Modules.Login.LOGIN,
+                    "OnHealthStatusChanged");
             }
         }
 

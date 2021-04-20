@@ -900,7 +900,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.navigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "ConfirmOperationAsync");
                 }
 
                 //this.navigationService.GoBackTo(
@@ -1005,7 +1006,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.WAIT);
+                    Utils.Modules.Operator.ItemOperations.WAIT,
+                    "ConfirmPartialOperationAsync");
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -1151,7 +1153,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "PartiallyCompleteOnFullCompartmentAsync");
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

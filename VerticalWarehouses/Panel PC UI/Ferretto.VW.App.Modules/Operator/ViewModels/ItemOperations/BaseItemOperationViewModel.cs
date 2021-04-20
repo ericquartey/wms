@@ -177,7 +177,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 // ?????????????? this.NavigationService.GoBack();
                 this.NavigationService.GoBackTo(
                    nameof(Utils.Modules.Operator),
-                   Utils.Modules.Operator.ItemOperations.WAIT);
+                   Utils.Modules.Operator.ItemOperations.WAIT,
+                   "RetrieveMissionOperationAsync 1");
                 return;
             }
 
@@ -195,11 +196,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.OnMissionOperationItemCodeFontSize = this.SelectFontSize(this.MissionOperation.ItemCode);
 
-            if (this.missionOperation.Type == MissionOperationType.LoadingUnitCheck)
+            if (this.missionOperation.Type == MissionOperationType.LoadingUnitCheck
+                && string.IsNullOrEmpty(this.missionOperation.ItemCode))
             {
                 this.NavigationService.GoBackTo(
                    nameof(Utils.Modules.Operator),
-                   Utils.Modules.Operator.ItemOperations.WAIT);
+                   Utils.Modules.Operator.ItemOperations.WAIT,
+                   "RetrieveMissionOperationAsync 2");
                 return;
             }
 
@@ -213,7 +216,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.NavigationService.GoBackTo(
                        nameof(Utils.Modules.Operator),
-                       Utils.Modules.Operator.ItemOperations.WAIT);
+                       Utils.Modules.Operator.ItemOperations.WAIT,
+                       "RetrieveMissionOperationAsync 3");
                     return;
                 }
 
@@ -223,7 +227,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.NavigationService.GoBackTo(
                        nameof(Utils.Modules.Operator),
-                       Utils.Modules.Operator.ItemOperations.WAIT);
+                       Utils.Modules.Operator.ItemOperations.WAIT,
+                       "RetrieveMissionOperationAsync 4");
                     return;
                 }
 

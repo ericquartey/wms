@@ -340,7 +340,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "PartiallyCompleteOnEmptyCompartmentAsync");
                 }
                 else
                 {
@@ -405,7 +406,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "PickBox_New_Async");
                 }
 
                 //this.navigationService.GoBackTo(
@@ -464,7 +466,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "PickBoxAsync");
                 }
 
                 //this.navigationService.GoBackTo(

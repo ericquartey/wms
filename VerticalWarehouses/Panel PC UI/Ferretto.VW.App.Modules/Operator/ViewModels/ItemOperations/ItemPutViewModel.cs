@@ -265,7 +265,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "ConfirmOperationAsync");
                 }
 
                 //this.navigationService.GoBackTo(
@@ -438,7 +439,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "PutBoxAsync");
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

@@ -708,7 +708,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.WAIT);
+                    Utils.Modules.Operator.ItemOperations.WAIT,
+                    "RecallLoadingUnitAsync");
 
                 this.Reset();
             }
@@ -998,7 +999,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.navigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "CheckUDC");
                     return false;
                 }
             }

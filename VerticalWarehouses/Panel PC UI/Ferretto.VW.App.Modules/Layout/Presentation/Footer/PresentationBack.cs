@@ -41,7 +41,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override Task ExecuteAsync()
         {
-            this.logger.Debug($"Presentation back");
             if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.ItemSearch.MAIN)
             {
                 //this.navigationService.GoBack();
@@ -50,7 +49,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
                 this.navigationService.GoBackTo(
                                 nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.ItemOperations.WAIT);
+                                Utils.Modules.Operator.ItemOperations.WAIT,
+                                "Presentation back");
             }
             else if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Installation.SHUTTERENDURANCETEST &&
                 (this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Test ||
