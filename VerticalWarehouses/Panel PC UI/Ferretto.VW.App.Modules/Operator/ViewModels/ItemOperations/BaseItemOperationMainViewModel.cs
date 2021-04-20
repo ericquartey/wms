@@ -1254,7 +1254,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                this.EventAggregator
                    .GetEvent<PubSubEvent<ProductsChangedEventArgs>>()
                    .Subscribe(async e => await this.OnProductsChangedAsync(e), ThreadOption.UIThread, false);
-
             await this.OnAppearItem();
         }
 
@@ -1778,18 +1777,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
                 this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
 
-                this.Compartments = MapCompartments(this.Mission.LoadingUnit.Compartments);
-                this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
-                    c.Id == this.MissionOperation.CompartmentId);
+                this.Compartments = MapCompartments(this.Mission.LoadingUnit.Compartments).ToList();
 
                 try
                 {
                     this.loadingUnitId = this.Mission.LoadingUnit.Id;
-                    //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
-                    var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
-                    itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
-                    this.SelectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id && s.ItemId == (this.MissionOperation?.ItemId ?? 0)).FirstOrDefault();
-                    this.AvailableQuantity = this.selectedCompartmentDetail?.Stock;
+                    if (this.Compartments != null)
+                    {
+                        this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
+                            c.Id == this.MissionOperation.CompartmentId);
+                        //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
+                        var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
+                        itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
+                        this.SelectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id && s.ItemId == (this.MissionOperation?.ItemId ?? 0)).FirstOrDefault();
+                        this.AvailableQuantity = this.selectedCompartmentDetail?.Stock;
+                    }
                 }
                 catch (Exception)
                 {

@@ -27,6 +27,8 @@
     {
         #region Fields
 
+        public const string BEDTEST = "BEDTestViewModel";
+
         public const string BELTBURNISHING = "BeltBurnishingViewModel";
 
         public const string CAROUSELCALIBRATION = "CarouselCalibrationViewModel";

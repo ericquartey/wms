@@ -73,6 +73,11 @@
         /// <summary>
         /// Test in external bay (for calibration)
         /// </summary>
-        ExtBayTest
+        ExtBayTest,
+
+        /// <summary>
+        /// Test in external bay
+        /// </summary>
+        DoubleExtBayTest
     }
 }

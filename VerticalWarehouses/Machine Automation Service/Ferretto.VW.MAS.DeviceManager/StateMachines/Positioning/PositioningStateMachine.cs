@@ -212,6 +212,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                 }
             }
+            else if (this.machineData.MessageData.MovementMode == MovementMode.DoubleExtBayTest)
+            {
+                ok = this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ? this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay) : this.machineData.MachineSensorStatus.IsSensorZeroTopOnBay(this.machineData.TargetBay);
+                if (!ok)
+                {
+                    errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";
+                    errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                }
+            }
             return ok;
         }
 

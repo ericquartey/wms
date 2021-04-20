@@ -198,6 +198,34 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                     this.Logger.LogInformation($"Machine status switched to {this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode}");
                 }
+                else if (this.machineData.MessageData.MovementMode == MovementMode.DoubleExtBayTest)
+                {
+                    this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
+                        .GetRequiredService<ISetupProceduresDataProvider>()
+                        .GetBayExternalCalibration(this.machineData.RequestingBay)
+                        .PerformedCycles;
+
+                    switch (this.machineData.TargetBay)
+                    {
+                        case BayNumber.BayOne:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                            break;
+
+                        case BayNumber.BayTwo:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test2;
+                            break;
+
+                        case BayNumber.BayThree:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test3;
+                            break;
+
+                        default:
+                            this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Test;
+                            break;
+                    }
+
+                    this.Logger.LogInformation($"Machine status switched to {this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode}");
+                }
                 else if (this.machineData.MessageData.MovementMode == MovementMode.BayTest)
                 {
                     this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider

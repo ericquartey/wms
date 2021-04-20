@@ -371,8 +371,8 @@
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
-                        <!-- StaticResource FontSize_Very_High -->
-                        
+                        <!--  StaticResource FontSize_Very_High  -->
+
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
                                 Visibility="{Binding MissionOperation.ItemCode, Converter={StaticResource RTVC}}">
@@ -496,7 +496,8 @@
 
             <!-- Content="Signalling defect" /* Signalling defect <==> Segnala difetto */ -->
 
-            <Grid Grid.Row="5" HorizontalAlignment="Left">
+            <Grid Grid.Row="5"
+                  HorizontalAlignment="Left">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -508,22 +509,25 @@
                 </Grid.ColumnDefinitions>
 
                 <controls:PpcButton Grid.Row="5"
-                                Margin="15,8,15,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding EmptyOperationCommand}"
-                                Content="{resources:Loc OperatorApp.ConfirmOnEmpty}"
-                                IsBusy="{Binding IsBusyConfirmingOperation}"
-                                Style="{StaticResource ConfirmButton}"
-                                Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
+                                    Margin="15,8,15,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding EmptyOperationCommand}"
+                                    Content="{resources:Loc OperatorApp.ConfirmOnEmpty}"
+                                    IsBusy="{Binding IsBusyConfirmingOperation}"
+                                    Style="{StaticResource ConfirmButton}"
+                                    Visibility="{Binding CanConfirmOnEmpty, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcButton Grid.Row="5"
-                                Height="50"
-                                Margin="15,8,15,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding AddItemCommand}"
-                                Content="{resources:Loc OperatorApp.Add}" />
+                                    Height="50"
+                                    Margin="15,8,15,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding AddItemCommand}"
+                                    Content="{resources:Loc OperatorApp.Add}"
+                                    Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
+
+            </Grid>
 
             <controls:PpcButton Grid.Row="6"
                                 Margin="15,8,15,0"
@@ -565,7 +569,7 @@
                                 IsEnabled="False"
                                 Style="{StaticResource ConfirmButton}"
                                 Visibility="{Binding CanPickBox, Converter={StaticResource BTVC}}" />
-                
+
             <StackPanel Grid.Row="6"
                         Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
                 <TextBlock Grid.Row="6"
@@ -581,8 +585,8 @@
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Bottom"
                                       IsChecked="{Binding CloseLine, Mode=TwoWay}" />
-                </StackPanel>
-                <!--<StackPanel Grid.Column="2"
+            </StackPanel>
+            <!--<StackPanel Grid.Column="2"
                         Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
 
                     <TextBlock Grid.Row="5"
@@ -592,13 +596,12 @@
                            FontSize="{StaticResource FontSize_Small}"
                            Foreground="{DynamicResource PpcForeground}"
                            Text="{resources:Loc OperatorApp.EmptyCompartment}" />
-                    <controls:PpcCheckBox 
+                    <controls:PpcCheckBox
                                       Margin="10,5,0,0"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       IsChecked="{Binding EmptyCompartment, Mode=TwoWay}" />
                 </StackPanel>-->
-            </Grid>
 
         </Grid>
     </Grid>
