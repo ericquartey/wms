@@ -6200,6 +6200,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Note { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("operationResult", Required = Newtonsoft.Json.Required.Always)]
+        public bool OperationResult { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Always)]
         public double Quantity { get; set; }
     

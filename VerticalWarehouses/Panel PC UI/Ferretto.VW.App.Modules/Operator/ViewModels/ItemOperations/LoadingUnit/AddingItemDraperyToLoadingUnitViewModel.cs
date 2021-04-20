@@ -84,7 +84,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.IsAddingAnErrorOperation = false;
+            this.IsAddingAnErrorOperation = true;
             this.MessageToShow = "Add a message";
 
             if (this.Data is DraperyItemInfo info)
@@ -97,6 +97,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.DraperyQuantity = this.draperyItemInfo.Quantity;
                 this.DraperyHeight = this.draperyItemInfo.Height;
 
+                this.IsAddingAnErrorOperation = this.draperyItemInfo.OperationResult;
                 this.MessageToShow = this.draperyItemInfo.Note;
             }
 
