@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool canInputQuantity;
 
+        private string currentItemHeight;
+
         private string measureUnit;
 
         private string measureUnitDescription;
@@ -28,6 +30,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private MissionWithLoadingUnitDetails mission;
 
         private MissionOperation missionOperation;
+
+        private int onMissionOperationItemCodeFontSize;
 
         private double quantityIncrement;
 
@@ -64,6 +68,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set => this.SetProperty(ref this.canInputQuantity, value, this.RaiseCanExecuteChanged);
         }
 
+        public string CurrentItemHeight
+        {
+            get => this.currentItemHeight;
+            set => this.SetProperty(ref this.currentItemHeight, value);
+        }
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public string ItemId => this.missionOperation?.ItemId.ToString();
@@ -90,6 +100,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.missionOperation;
             private set => this.SetProperty(ref this.missionOperation, value);
+        }
+
+        public int OnMissionOperationItemCodeFontSize
+        {
+            get => this.onMissionOperationItemCodeFontSize;
+            set => this.SetProperty(ref this.onMissionOperationItemCodeFontSize, value);
         }
 
         public double QuantityIncrement
@@ -168,6 +184,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Mission = this.MissionOperationsService.ActiveWmsMission;
             this.MissionOperation = this.MissionOperationsService.ActiveWmsOperation;
 
+            if (this.MissionOperation.ItemHeight.HasValue)
+            {
+                this.CurrentItemHeight = this.MissionOperation.ItemHeight.Value.ToString();
+            }
+            else
+            {
+                this.CurrentItemHeight = "--";
+            }
+
+            this.OnMissionOperationItemCodeFontSize = this.SelectFontSize(this.MissionOperation.ItemCode);
+
             if (this.missionOperation.Type == MissionOperationType.LoadingUnitCheck)
             {
                 this.NavigationService.GoBackTo(
@@ -207,6 +234,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.RaisePropertyChanged(nameof(this.MeasureUnit));
                 this.RaisePropertyChanged(nameof(this.QuantityTolerance));
 
+                this.RaisePropertyChanged(nameof(this.OnMissionOperationItemCodeFontSize));
+
                 this.OnMisionOperationRetrieved();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
@@ -216,6 +245,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //   Utils.Modules.Operator.ItemOperations.WAIT);
                 this.ShowNotification(ex);
             }
+        }
+
+        private int SelectFontSize(string value)
+        {
+            // Simple mapping
+            const int _FontSize_Very_Small = 10;
+            const int _FontSize_Small = 14;
+            const int _FontSize_Normal = 16;
+            const int _FontSize_High = 18;
+            const int _FontSize_Very_High = 28;
+
+            var fontSize = _FontSize_Very_High;
+
+            if (value != null)
+            {
+                var len = value.Length;
+                if (len >= 12)
+                {
+                    if (len >= 20)
+                    {
+                        fontSize = _FontSize_Very_Small;
+                    }
+                    else
+                    {
+                        fontSize = _FontSize_Normal;
+                    }
+                }
+            }
+
+            return fontSize;
         }
 
         #endregion

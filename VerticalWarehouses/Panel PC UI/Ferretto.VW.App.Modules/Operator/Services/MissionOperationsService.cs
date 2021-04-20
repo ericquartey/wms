@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         #region Methods
 
-        public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null)
+        public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0)
         {
             this.logger.Debug($"User requested to complete operation '{operationId}'.");
 
@@ -97,7 +97,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     operationId,
                     quantity,
                     labelPrinterName,
-                    barcode);
+                    barcode,
+                    wastedQuantity);
 
                 await this.RefreshActiveMissionAsync();
 

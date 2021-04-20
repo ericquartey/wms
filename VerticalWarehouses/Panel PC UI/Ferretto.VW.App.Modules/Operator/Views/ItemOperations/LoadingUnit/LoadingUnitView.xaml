@@ -249,6 +249,16 @@
                               Style="{DynamicResource PpcButtonMarkStyle}"
                               Visibility="{Binding IsBoxEnabled, Converter={StaticResource BTVC}}" />
 
+          <controls:PpcButton Margin="15,0,15,15"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Top"
+                              BorderBrush="{StaticResource FerrettoBlue}"
+                              Command="{Binding OperationCommand}"
+                              CommandParameter="{x:Static res:OperatorApp.Add}"
+                              Content="{res:Loc OperatorApp.Add}"
+                              IsActive="{Binding IsAddItemVisible}"
+                              Style="{DynamicResource PpcButtonMarkStyle}" />
+
           <controls:PpcButton Margin="15,0,15,0"
                               HorizontalAlignment="Right"
                               VerticalAlignment="Top"

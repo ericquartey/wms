@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS.TimeManagement
                         var syncIntervalMilliseconds = wmsSettingsProvider.TimeSyncIntervalMilliseconds;
                         try
                         {
-                            this.logger.LogInformation($"Attempting sync time with WMS. Device manager busy {machineVolatileDataProvider.IsDeviceManagerBusy}");
+                            this.logger.LogDebug($"Attempting sync time with WMS. Device manager busy {machineVolatileDataProvider.IsDeviceManagerBusy}");
                             if (!machineVolatileDataProvider.IsDeviceManagerBusy)
                             {
                                 var utcTimeWmsWebService = scope.ServiceProvider.GetRequiredService<IUtcTimeWmsWebService>();

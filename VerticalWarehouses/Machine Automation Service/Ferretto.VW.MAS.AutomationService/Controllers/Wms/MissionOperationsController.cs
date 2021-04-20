@@ -68,9 +68,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName, string barcode)
+        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity)
         {
-            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName, barcode);
+            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName, barcode, wastedQuantity);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 

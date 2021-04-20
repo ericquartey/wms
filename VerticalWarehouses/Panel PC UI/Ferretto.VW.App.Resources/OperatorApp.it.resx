@@ -1649,17 +1649,50 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>Questa é l'ultima operazione su questo cassetto depostita l'articolo e premi OK</value>
   </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>Segnalazione difetto</value>
+  </data>
   <data name="NetworkCards" xml:space="preserve">
     <value>Schede di rete</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Qta pezza totale</value>
   </data>
   <data name="IP_Additional" xml:space="preserve">
     <value>IP aggiuntivo</value>
   </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Qta buona di tessuto prima del difetto</value>
+  </data>
   <data name="SubnetMask_Additional" xml:space="preserve">
     <value>SubnetMask aggiuntivo</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Aggiungi</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>Qta scarto</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>Segnala difetto</value>
+  </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Conferma prelievo pezza</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Segnalazione difetto fallita</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Articolo é cancellato</value>
+  </data>
   <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
     <value>Laser</value>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Segnalazione difetto con successo</value>
+  </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Codice a barre</value>
   </data>
   <data name="MissionStateDoubleExtBay" xml:space="preserve">
     <value>Baia esterna doppia</value>

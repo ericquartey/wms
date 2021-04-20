@@ -1,0 +1,118 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.ItemSignallingDefectView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid Margin="15">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Margin="10,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{resources:Loc OperatorApp.DraperyDefectPageHeader}" />
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 MaxHeight="65"
+                                 Margin="0,0,0,10"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding DraperyItemDescription}"
+                                 LabelText="{resources:Loc OperatorApp.CommonItemDescription}" />
+
+        <Border Grid.Row="2"
+                Width="230"
+                Height="90"
+                MinHeight="90"
+                Margin="15,4,15,0"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                <Grid Grid.Column="8"
+                      Grid.ColumnSpan="4">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource Text_Foreground}"
+                               Text="{resources:Loc OperatorApp.PresentQuantityDrapery}" />
+
+                    <!--  Text= "Qta pezza totale"  -->
+
+                    <TextBlock Grid.Row="1"
+                               Margin="4,0,4,4"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding AvailableQuantity}"
+                               TextWrapping="Wrap" />
+
+                </Grid>
+            </Border>
+        </Border>
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Width="460"
+                           Height="90"
+                           Margin="15,4,15,0"
+                           EditValue="{Binding GoodDraperyQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static resources:General.TargetNullValue}}"
+                           Increment="{Binding QuantityIncrement}"
+                           IsEnabled="{Binding CanInputGoodDraperyQuantity}"
+                           LabelText="{resources:Loc OperatorApp.GoodQuantityBeforeDefectDrapery}"
+                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                           MinValue="0" />
+        <!--  LabelText= "Qta buona di tessuto prima del difetto"  -->
+
+        <ctrls:PpcSpinEdit Grid.Row="4"
+                           Width="230"
+                           Height="90"
+                           Margin="15,4,15,0"
+                           EditValue="{Binding WastedDraperyQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static resources:General.TargetNullValue}}"
+                           Increment="{Binding QuantityIncrement}"
+                           IsEnabled="{Binding CanInputWastedDraperyQuantity}"
+                           LabelText="{resources:Loc OperatorApp.WastedQuantityDrapery}"
+                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                           MinValue="0" />
+        <!--  LabelText= "Qta scarto"  -->
+
+        <controls:PpcButton Grid.Row="5"
+                            Margin="15,8,15,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding ConfirmSignallingDefectOperationCommand}"
+                            Content="{resources:Loc OperatorApp.Confirm}"
+                            Style="{StaticResource ConfirmButton}" />
+        <!--  {Binding IsConfirmSignallingDefectButtonEnabled}"  -->
+
+    </Grid>
+
+</ctrls:View>
