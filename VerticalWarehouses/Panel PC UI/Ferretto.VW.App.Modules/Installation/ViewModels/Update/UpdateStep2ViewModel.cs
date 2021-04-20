@@ -43,6 +43,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly string updateExchangeTemp;
 
+        private readonly ObservableCollection<InstallerInfo> updates = new ObservableCollection<InstallerInfo>();
+
         private readonly string updateZipChecksumFileName;
 
         private int currentUpdateIndex;
@@ -54,8 +56,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private string restoreInfo;
 
         private InstallerInfo selectedUpdate;
-
-        private ObservableCollection<InstallerInfo> updates = new ObservableCollection<InstallerInfo>();
 
         private string updatesInfo;
 

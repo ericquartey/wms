@@ -525,7 +525,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (activeOperation != null)
                 {
-                    var quantity = this.ItemsCompartments.FirstOrDefault(ic => ic.Id == activeOperation.CompartmentId && ic.ItemId == activeOperation.ItemId)?.Stock ?? activeOperation.RequestedQuantity;
+                    var quantity = this.ItemsCompartments.FirstOrDefault(ic => ic.Id == activeOperation.CompartmentId
+                        && ic.ItemId == activeOperation.ItemId
+                        && (activeOperation.Lot == null || ic.Lot == activeOperation.Lot)
+                        && (activeOperation.SerialNumber == null || ic.ItemSerialNumber == activeOperation.SerialNumber)
+                        )?.Stock ?? activeOperation.RequestedQuantity;
 
                     var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, quantity);
                     if (!canComplete)
