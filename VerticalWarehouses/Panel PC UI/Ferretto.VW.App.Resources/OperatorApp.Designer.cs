@@ -196,6 +196,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode.
+        /// </summary>
+        public static string BarcodeLabel {
+            get {
+                return ResourceManager.GetString("BarcodeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Some parts of the barcode &apos;{0}&apos; do not match the article..
         /// </summary>
         public static string BarcodeMismatch {
@@ -615,6 +624,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CheckProduct {
             get {
                 return ResourceManager.GetString("CheckProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check request for item {0} (Load Unit {1}) was accepted..
+        /// </summary>
+        public static string CheckRequestWasAccepted {
+            get {
+                return ResourceManager.GetString("CheckRequestWasAccepted", resourceCulture);
             }
         }
         
@@ -4098,6 +4116,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SignallingDefectFailed {
             get {
                 return ResourceManager.GetString("SignallingDefectFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signalling defect successful.
+        /// </summary>
+        public static string SignallingDefectSuccess {
+            get {
+                return ResourceManager.GetString("SignallingDefectSuccess", resourceCulture);
             }
         }
         

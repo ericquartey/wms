@@ -2093,4 +2093,8 @@
     <value>Check</value>
     <comment>Label for Enumeration</comment>
   </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>Check request for item {0} (Load Unit {1}) was accepted.</value>
+    <comment>Information Message</comment>
+  </data>
 </root>
