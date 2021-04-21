@@ -28,9 +28,11 @@
 - Si può attivare una lista in attesa con il barcode del numero lista
 - Dalla ricerca articolo si possono creare liste di visione selezionando i cassetti
 - Le operazioni di prelievo e refilling aggiornano il peso del cassetto
+- Aggiunta gestione tendaggi
+- Aggiunta procedura di test baia esterna
 
 ## Bug Risolti
-- 
+- Riportato Devexpress a versione 19.2.4
 
 ## Compatibile con adapter 0.4.17
 ***
