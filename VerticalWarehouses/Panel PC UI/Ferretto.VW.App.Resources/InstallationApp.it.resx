@@ -2469,4 +2469,7 @@
   <data name="OpenBrowser" xml:space="preserve">
     <value>Apri browser</value>
   </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
 </root>
