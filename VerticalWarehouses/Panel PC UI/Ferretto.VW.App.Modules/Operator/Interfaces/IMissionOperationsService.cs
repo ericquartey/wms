@@ -19,13 +19,13 @@ namespace Ferretto.VW.App.Modules.Operator
 
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
-        Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null);
+        Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0);
 
         bool IsRecallLoadingUnitId();
 
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
-        Task<bool> PartiallyCompleteAsync(int operationId, double quantity);
+        Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment);
 
         Task RecallLoadingUnitAsync(int id);
 

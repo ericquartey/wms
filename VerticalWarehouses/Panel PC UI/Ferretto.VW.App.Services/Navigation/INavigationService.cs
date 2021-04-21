@@ -18,17 +18,17 @@
 
         INavigableViewModel GetActiveViewModel();
 
-        byte[] TakeScreenshot(bool checkWithPrevious);
-
         void GoBack();
 
-        void GoBackTo(string modelName, string viewModelName);
+        void GoBackTo(string modelName, string viewModelName, string caller);
 
         bool IsActiveView(string moduleName, string viewModelName);
 
         void LoadModule(string moduleName);
 
         object SubscribeToNavigationCompleted(System.Action<NavigationCompletedEventArgs> action);
+
+        byte[] TakeScreenshot(bool checkWithPrevious);
 
         void UnsubscribeToNavigationCompleted(object subscriptionToken);
 

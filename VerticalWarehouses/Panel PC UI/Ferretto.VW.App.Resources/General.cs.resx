@@ -312,4 +312,7 @@
   <data name="TokenStatus" xml:space="preserve">
     <value>Stav tokenu</value>
   </data>
+  <data name="ForbiddenOperation" xml:space="preserve">
+    <value>Operace není povolena</value>
+  </data>
 </root>

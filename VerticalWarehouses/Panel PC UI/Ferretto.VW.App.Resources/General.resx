@@ -328,4 +328,7 @@
   <data name="TokenStatus" xml:space="preserve">
     <value>Token status</value>
   </data>
+  <data name="ForbiddenOperation" xml:space="preserve">
+    <value>Forbidden operation</value>
+  </data>
 </root>

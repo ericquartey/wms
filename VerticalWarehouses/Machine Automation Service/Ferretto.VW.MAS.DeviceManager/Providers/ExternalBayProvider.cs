@@ -115,6 +115,88 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return returnValue;
         }
 
+        public void StartDoubleExtBayTest(ExternalBayMovementDirection direction, BayNumber bayNumber, MessageActor sender, bool isUpper)
+        {
+            var policy = this.CanMoveExtDouble(direction, bayNumber, MovementCategory.Assisted, isUpper);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var race = bay.External.Race;
+
+            var distance = race;
+
+            // Be careful: the distance value is used in a relative position mode
+            switch (direction)
+            {
+                case ExternalBayMovementDirection.TowardOperator:
+                    distance = race - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber)) - bay.ChainOffset;
+                    break;
+
+                case ExternalBayMovementDirection.TowardMachine:
+                    distance = bay.ChainOffset - Math.Abs(this.baysDataProvider.GetChainPosition(bayNumber));
+                    break;
+            }
+
+            //var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? race + bay.ChainOffset : bay.ChainOffset; // for .Absolute
+            var targetPosition = distance;
+
+            var procedureParameters = this.setupProceduresDataProvider.GetBayExternalCalibration(bayNumber);
+
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Relative,  //.Absolute,
+                MovementMode.DoubleExtBayTest,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                procedureParameters.RequiredCycles,
+                lowerBound: 0,
+                upperBound: 0,
+                delay: 0,
+                switchPosition,
+                direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
+
+            if (direction == ExternalBayMovementDirection.TowardMachine)
+            {
+                messageData.SourceBayPositionId = bay.Positions.SingleOrDefault(s => s.IsUpper == isUpper).Id;
+            }
+            else
+            {
+                messageData.TargetBayPositionId = bay.Positions.SingleOrDefault(s => s.IsUpper == isUpper).Id;
+            }
+
+            this.logger.LogDebug(
+            $"Move Double External Bay Assisted " +
+            $"bayNumber: {bayNumber}; " +
+            $"direction: {direction}; " +
+            $"targetPosition: {targetPosition}; " +
+            $"current bay axis position: {this.baysDataProvider.GetChainPosition(bayNumber)}; " +
+            $"chain offset parameter: {bay.ChainOffset}; " +
+            $"Direction: {direction}; " +
+            $"feedrate: {procedureParameters.FeedRate}; " +
+            $"speed: {speed[0]:0.00}; " +
+            $"acceleration: {acceleration[0]:0.00}; " +
+            $"deceleration: {deceleration[0]:0.00};");
+
+            this.PublishCommand(
+                messageData,
+                $"Execute double external {Axis.BayChain} Positioning Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                bayNumber,
+                BayNumber.None);
+        }
+
         public MachineErrorCode CanElevatorPickup(BayNumber bayNumber, bool isPositionUpper)
         {
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
@@ -263,11 +345,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case ExternalBayMovementDirection.TowardMachine:
                     if (isPositionUp)
                     {
-                        if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+                        if (!this.machineResourcesProvider.IsSensorZeroTopOnBay(bayNumber))
                         {
                             return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayChainIsNotInZeroPosition", CommonUtils.Culture.Actual) };
                         }
-                        if (!isLoadingUnitInExternalUpPosition && isLoadingUnitInInternalUpPosition)
+                        if (isLoadingUnitInExternalUpPosition && !isLoadingUnitInInternalUpPosition)
                         {
                             return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", CommonUtils.Culture.Actual) };
                         }
@@ -289,11 +371,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case ExternalBayMovementDirection.TowardOperator:
                     if (isPositionUp)
                     {
-                        if (!this.machineResourcesProvider.IsSensorZeroTopOnBay(bayNumber))
+                        if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
                         {
                             return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayChainIsNotInZeroPosition", CommonUtils.Culture.Actual) };
                         }
-                        if (!isLoadingUnitInInternalUpPosition && isLoadingUnitInExternalUpPosition)
+                        if (isLoadingUnitInInternalUpPosition && !isLoadingUnitInExternalUpPosition)
                         {
                             return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", CommonUtils.Culture.Actual) };
                         }
@@ -315,14 +397,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 default:
                     throw new InvalidEnumArgumentException(nameof(direction), (int)direction, typeof(ExternalBayMovementDirection));
             }
-
-            // Not admitted the movement toward machine and the presence of zero sensor (mechanical constraints)
-            //if (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) &&
-            //    movementCategory != MovementCategory.Manual &&
-            //    direction == ExternalBayMovementDirection.TowardMachine)
-            //{
-            //    return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual) };
-            //}
 
             // Not admitted the automatic movement if bay does not contain a loading unit
             if ((movementCategory == MovementCategory.Automatic) &&
@@ -381,7 +455,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
-            if(bay.IsDouble)
+            if (bay.IsDouble)
             {
                 return this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
             }
@@ -676,7 +750,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             this.logger.LogDebug(
-            $"Move External Bay Assisted " +
+            $"Move Double External Bay Assisted " +
             $"bayNumber: {bayNumber}; " +
             $"direction: {direction}; " +
             $"targetPosition: {targetPosition}; " +
@@ -690,7 +764,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             this.PublishCommand(
                 messageData,
-                $"Execute external {Axis.BayChain} Positioning Command",
+                $"Execute double external {Axis.BayChain} Positioning Command",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
@@ -860,17 +934,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MovementForExtraction(int? loadUnitId, BayNumber bayNumber, MessageActor sender)
+        public void MovementForExtraction(int? loadUnitId, BayNumber bayNumber, MessageActor sender, bool isUpper)
         {
             // Manual movement
 
-            var policy = this.CanMove(ExternalBayMovementDirection.TowardOperator, bayNumber, MovementCategory.Manual);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var policy = default(ActionPolicy);
+            if (bay.IsDouble)
+            {
+                policy = this.CanMoveExtDouble(ExternalBayMovementDirection.TowardOperator, bayNumber, MovementCategory.Manual, isUpper);
+            }
+            else
+            {
+                policy = this.CanMove(ExternalBayMovementDirection.TowardOperator, bayNumber, MovementCategory.Manual);
+            }
+
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var race = bay.External.Race;
             var extraRace = bay.External.ExtraRace;
@@ -928,22 +1011,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MovementForInsertion(BayNumber bayNumber, MessageActor sender)
+        public void MovementForInsertion(BayNumber bayNumber, MessageActor sender, bool isUpper)
         {
             // Manual movement
 
-            if (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var policy = default(ActionPolicy);
+            if (bay.IsDouble)
             {
-                throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual));
+                policy = this.CanMoveExtDouble(ExternalBayMovementDirection.TowardMachine, bayNumber, MovementCategory.Manual, isUpper);
+            }
+            else
+            {
+                if (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+                {
+                    throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual));
+                }
+
+                policy = this.CanMove(ExternalBayMovementDirection.TowardMachine, bayNumber, MovementCategory.Manual);
             }
 
-            var policy = this.CanMove(ExternalBayMovementDirection.TowardMachine, bayNumber, MovementCategory.Manual);
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var race = bay.External.Race;
             var extraRace = bay.External.ExtraRace;

@@ -52,6 +52,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand itemDownCommand;
 
+        private bool itemLotVisibility;
+
         private IEnumerable<CompartmentDetails> items;
 
         private IEnumerable<CompartmentDetails> itemsCompartments;
@@ -196,6 +198,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.itemDownCommand = new DelegateCommand(() => this.ChangeSelectedItem(false), this.CanSelectNextItem));
 
+        public bool ItemLotVisibility
+        {
+            get => this.itemLotVisibility;
+            set => this.SetProperty(ref this.itemLotVisibility, value);
+        }
+
         public IEnumerable<CompartmentDetails> Items
         {
             get => this.items;
@@ -226,6 +234,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.loadingUnitDepth;
             set => this.SetProperty(ref this.loadingUnitDepth, value);
         }
+
+        public IMachineLoadingUnitsWebService LoadingUnitsWebService => this.loadingUnitsWebService;
 
         public double LoadingUnitWidth
         {
@@ -354,6 +364,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public async override Task OnAppearedAsync()
         {
             this.ItemSerialNumberVisibility = false;
+            this.ItemLotVisibility = false;
 
             //string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
 
@@ -404,6 +415,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.SelectedItem));
             this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
             this.RaisePropertyChanged(nameof(this.ItemSerialNumberVisibility));
+            this.RaisePropertyChanged(nameof(this.ItemLotVisibility));
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -620,16 +632,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.Items = this.ItemsCompartments.Where(ic => ic.Id == this.selectedCompartment.Id && ic.ItemId.HasValue);
 
-            if (this.items.Where(s => s.ItemSerialNumber != null).Any())
-            {
-                this.ItemSerialNumberVisibility = true;
-            }
-            else
-            {
-                this.ItemSerialNumberVisibility = false;
-            }
-
+            this.ItemSerialNumberVisibility = this.items.Any(s => s.ItemSerialNumber != null);
             this.RaisePropertyChanged(nameof(this.ItemSerialNumberVisibility));
+
+            this.ItemLotVisibility = this.items.Any(s => s.Lot != null);
+            this.RaisePropertyChanged(nameof(this.ItemLotVisibility));
         }
 
         private async void SetItemsAndCompartment()
@@ -682,7 +689,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged();
             if (this.items?.Any() == true)
             {
-                if (this.items.FirstOrDefault(ic => ic.ItemId == this.selectedItemCompartment.ItemId) is CompartmentDetails newSelectedItem)
+                if (this.items.FirstOrDefault(ic => ic.ItemId == this.selectedItemCompartment.ItemId
+                    && (this.selectedItemCompartment.Lot == null || this.selectedItemCompartment.Lot == ic.Lot)
+                    && (this.selectedItemCompartment.ItemSerialNumber == null || this.selectedItemCompartment.ItemSerialNumber == ic.ItemSerialNumber)) is CompartmentDetails newSelectedItem)
                 {
                     this.currentItemIndex = this.items.ToList().IndexOf(newSelectedItem);
                     this.selectedItem = newSelectedItem;
@@ -701,16 +710,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (this.itemsCompartments.FirstOrDefault(ic => ic.Id == this.selectedCompartment.Id
-                                                            &&
-                                                            ic.ItemId == this.selectedItem.ItemId
-                                                            &&
-                                                            ic.Stock == this.selectedItem.Stock
-                                                            &&
-                                                            ic.ItemSerialNumber == this.selectedItem.ItemSerialNumber) is CompartmentDetails newSelectedItemCompartment)
+            var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
+            if (activeOperation != null && activeOperation.ItemId > 0 && activeOperation.CompartmentId == this.selectedCompartment.Id)
             {
-                this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
+                this.selectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == activeOperation.ItemId
+                    && (activeOperation.Lot == null || ic.Lot == activeOperation.Lot)
+                    && (activeOperation.SerialNumber == null || ic.ItemSerialNumber == activeOperation.SerialNumber));
+            }
+
+            if (this.itemsCompartments.FirstOrDefault(ic => ic.Id == this.selectedCompartment.Id
+                                                        &&
+                                                        ic.ItemId == this.selectedItem.ItemId
+                                                        &&
+                                                        ic.Stock == this.selectedItem.Stock
+                                                        &&
+                                                        (this.selectedItem.Lot == null || ic.Lot == this.selectedItem.Lot)
+                                                        &&
+                                                        ic.ItemSerialNumber == this.selectedItem.ItemSerialNumber) is CompartmentDetails newSelectedItemCompartment)
+            //if (this.selectedItemCompartment != null && this.itemsCompartments.Any(ic => ic.Id == this.selectedItemCompartment.Id))
+            {
                 this.selectedItemCompartment = newSelectedItemCompartment;
+                this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(this.selectedItemCompartment);
                 this.RaisePropertyChanged();
             }
 

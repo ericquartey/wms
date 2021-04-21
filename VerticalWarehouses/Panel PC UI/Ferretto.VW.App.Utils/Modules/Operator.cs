@@ -43,6 +43,8 @@
         {
             #region Fields
 
+            public const string ADD_DRAPERYITEM_INTO_LOADINGUNIT = "AddingItemDraperyToLoadingUnitViewModel";
+
             public const string INVENTORY = "ItemInventoryViewModel";
 
             public const string INVENTORY_DETAILS = "ItemInventoryDetailsViewModel";
@@ -60,6 +62,10 @@
             public const string PUT_DETAILS = "ItemPutDetailsViewModel";
 
             public const string WAIT = "ItemOperationWaitViewModel";
+
+            public static string DRAPERYCONFIRM = "ItemDraperyConfirmViewModel";
+
+            public static string SIGNALLINGDEFECT = "ItemSignallingDefectViewModel";
 
             public static string WEIGHT = "ItemWeightViewModel";
 

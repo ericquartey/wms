@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IOperatorNavigationService operatorNavigationService;
 
         private readonly Sensors sensors = new Sensors();
@@ -99,6 +101,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void ChangePage()
         {
+            this.logger.Debug($"Change page");
             this.NavigationService.GoBack();
             this.Reset();
 

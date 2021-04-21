@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand carouselCalibrationCommand;
 
+        private DelegateCommand doubleExternalBayTestCommand;
+
         private DelegateCommand externalBayCalibrationCommand;
 
         private DelegateCommand testShutterCommand;
@@ -57,6 +59,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ExternalBayCalibration,
 
             TestShutter,
+
+            BEDTest,
         }
 
         #endregion
@@ -90,6 +94,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
                 ));
 
+        public ICommand DoubleExternalBayTestCommand =>
+                                                                                                                                    this.doubleExternalBayTestCommand
+            ??
+            (this.doubleExternalBayTestCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.BEDTest),
+                () => this.CanExecuteCommand() &&
+               (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())
+                ));
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         private SetupStepStatus ExternalBayCalibration => this.BaySetupStatus?.ExternalBayCalibration ?? new SetupStepStatus();
@@ -110,6 +123,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public bool IsBayProfileBypassed => this.BayProfile.IsBypassed;
 
         public bool IsBayProfileCompleted => this.BayProfile.IsCompleted && !this.BayProfile.IsBypassed;
+
+        public bool IsBEDTestVisible => this.MachineService.Bay.IsExternal && this.MachineService.Bay.IsDouble;
 
         public bool IsCarouselCalibrationBypassed => this.CarouselCalibration.IsBypassed;
 
@@ -216,6 +231,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.testShutterCommand?.RaiseCanExecuteChanged();
             this.carouselCalibrationCommand?.RaiseCanExecuteChanged();
             this.externalBayCalibrationCommand?.RaiseCanExecuteChanged();
+            this.doubleExternalBayTestCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -258,6 +274,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
                         Utils.Modules.Installation.SHUTTERENDURANCETEST,
+                        data: null,
+                        trackCurrentView: true);
+                    break;
+
+                case Menu.BEDTest:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Installation),
+                        Utils.Modules.Installation.BEDTEST,
                         data: null,
                         trackCurrentView: true);
                     break;

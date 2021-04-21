@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Additional Information.
         /// </summary>
         public static string AdditionalText {
@@ -183,6 +192,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BarcodeDoesNotContainTheListId {
             get {
                 return ResourceManager.GetString("BarcodeDoesNotContainTheListId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode.
+        /// </summary>
+        public static string BarcodeLabel {
+            get {
+                return ResourceManager.GetString("BarcodeLabel", resourceCulture);
             }
         }
         
@@ -592,6 +610,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Check operation has been cancelled.
+        /// </summary>
+        public static string CheckOperationCancelled {
+            get {
+                return ResourceManager.GetString("CheckOperationCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check product.
+        /// </summary>
+        public static string CheckProduct {
+            get {
+                return ResourceManager.GetString("CheckProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check request for item {0} (Load Unit {1}) was accepted..
+        /// </summary>
+        public static string CheckRequestWasAccepted {
+            get {
+                return ResourceManager.GetString("CheckRequestWasAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close line.
         /// </summary>
         public static string CloseLine {
@@ -790,6 +835,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm drapery picking.
+        /// </summary>
+        public static string ConfirmDraperyPickingPageHeader {
+            get {
+                return ResourceManager.GetString("ConfirmDraperyPickingPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm row.
         /// </summary>
         public static string ConfirmInstruction {
@@ -826,7 +880,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Partial Confirmation.
+        ///   Looks up a localized string similar to Change.
         /// </summary>
         public static string ConfirmPartial {
             get {
@@ -961,11 +1015,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable Uwf filter.
+        /// </summary>
+        public static string DisableUwf {
+            get {
+                return ResourceManager.GetString("DisableUwf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Down.
         /// </summary>
         public static string Down {
             get {
                 return ResourceManager.GetString("Down", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drapery defect.
+        /// </summary>
+        public static string DraperyDefectPageHeader {
+            get {
+                return ResourceManager.GetString("DraperyDefectPageHeader", resourceCulture);
             }
         }
         
@@ -1600,6 +1672,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empty.
+        /// </summary>
+        public static string EmptyCompartment {
+            get {
+                return ResourceManager.GetString("EmptyCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Uwf filter.
+        /// </summary>
+        public static string EnableUwf {
+            get {
+                return ResourceManager.GetString("EnableUwf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Units moved without error.
         /// </summary>
         public static string ErrorsStatisticsDrawersMovedWithoutError {
@@ -1780,6 +1870,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full.
+        /// </summary>
+        public static string FullCompartment {
+            get {
+                return ResourceManager.GetString("FullCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string General {
@@ -1884,6 +1983,15 @@ namespace Ferretto.VW.App.Resources {
         public static string GeneralInfoWmsStatus {
             get {
                 return ResourceManager.GetString("GeneralInfoWmsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Good quantity before defect.
+        /// </summary>
+        public static string GoodQuantityBeforeDefectDrapery {
+            get {
+                return ResourceManager.GetString("GoodQuantityBeforeDefectDrapery", resourceCulture);
             }
         }
         
@@ -2217,6 +2325,24 @@ namespace Ferretto.VW.App.Resources {
         public static string ItemDetailWeight {
             get {
                 return ResourceManager.GetString("ItemDetailWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item is deleted.
+        /// </summary>
+        public static string ItemIsDeleted {
+            get {
+                return ResourceManager.GetString("ItemIsDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check.
+        /// </summary>
+        public static string ItemListType_Check {
+            get {
+                return ResourceManager.GetString("ItemListType_Check", resourceCulture);
             }
         }
         
@@ -3787,6 +3913,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total quantity.
+        /// </summary>
+        public static string PresentQuantityDrapery {
+            get {
+                return ResourceManager.GetString("PresentQuantityDrapery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Production date.
         /// </summary>
         public static string ProductionDate {
@@ -3963,6 +4098,33 @@ namespace Ferretto.VW.App.Resources {
         public static string ServiceStatus {
             get {
                 return ResourceManager.GetString("ServiceStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signalling defect.
+        /// </summary>
+        public static string SignallingDefectDrapery {
+            get {
+                return ResourceManager.GetString("SignallingDefectDrapery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signalling defect failed.
+        /// </summary>
+        public static string SignallingDefectFailed {
+            get {
+                return ResourceManager.GetString("SignallingDefectFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Signalling defect successful.
+        /// </summary>
+        public static string SignallingDefectSuccess {
+            get {
+                return ResourceManager.GetString("SignallingDefectSuccess", resourceCulture);
             }
         }
         
@@ -4674,6 +4836,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Warning {
             get {
                 return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wasted quantity.
+        /// </summary>
+        public static string WastedQuantityDrapery {
+            get {
+                return ResourceManager.GetString("WastedQuantityDrapery", resourceCulture);
             }
         }
         

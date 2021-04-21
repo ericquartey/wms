@@ -285,7 +285,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         {
                             if (bay.Positions.FirstOrDefault(s => s.Id == this.machineData.MessageData.TargetBayPositionId).IsUpper)
                             {
-                                failed = !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay);
+                                failed = !this.machineData.MachineSensorStatus.IsDrawerInBayInternalTop(this.machineData.RequestingBay);
+                                //failed = !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay);
                             }
                             else
                             {
@@ -305,7 +306,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         {
                             if (bay.Positions.FirstOrDefault(s => s.Id == this.machineData.MessageData.SourceBayPositionId).IsUpper)
                             {
-                                failed = !this.machineData.MachineSensorStatus.IsDrawerInBayInternalTop(this.machineData.RequestingBay);
+                                failed = !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay);
+                                //failed = !this.machineData.MachineSensorStatus.IsDrawerInBayInternalTop(this.machineData.RequestingBay);
                             }
                             else
                             {
@@ -528,8 +530,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         }
 
                         if (!this.machineData.MessageData.BypassConditions &&
-                            this.IsInvalidSensorsCondition()
-                            )
+                            this.IsInvalidSensorsCondition())
                         {
                             this.Logger.LogError($"Invalid sensors condition. An error occurs");
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.MoveExtBayNotAllowed, this.machineData.RequestingBay);

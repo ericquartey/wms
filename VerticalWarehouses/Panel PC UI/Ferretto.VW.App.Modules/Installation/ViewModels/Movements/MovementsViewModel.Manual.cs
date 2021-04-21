@@ -800,7 +800,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineExternalBayWebService.MoveManualAsync(direction);
+                if (this.MachineService.Bay.IsDouble)
+                {
+                    await this.machineExternalBayWebService.MoveManualExtDoubleAsync(direction);
+                }
+                else
+                {
+                    await this.machineExternalBayWebService.MoveManualAsync(direction);
+                }
 
                 this.IsExternalBayManualMovementTowardMachine = direction is ExternalBayMovementDirection.TowardMachine;
                 this.IsExternalBayManualMovementTowardOperator = direction is ExternalBayMovementDirection.TowardOperator;

@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineItemsWebService itemsWebService;
+
         private bool canPutBox;
 
         private bool confirmOperation;
@@ -34,6 +36,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPutViewModel(
+            IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
             INavigationService navigationService,
             IOperatorNavigationService operatorNavigationService,
@@ -44,8 +47,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IWmsDataProvider wmsDataProvider,
+            IAuthenticationService authenticationService)
             : base(
+                  areasWebService,
                   machineIdentityWebService,
                   navigationService,
                   operatorNavigationService,
@@ -56,8 +62,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   bayManager,
                   eventAggregator,
                   missionOperationsService,
-                  dialogService)
+                  dialogService,
+                  wmsDataProvider,
+                  authenticationService)
         {
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
         }
 
         #endregion
@@ -95,15 +104,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmPartialOperationCommand
             ??
             (this.confirmPartialOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync("0"),
+                async () => await this.ConfirmPartialOperationAsync(),
                 this.CanConfirmPartialOperationPut));
 
         public ICommand FullOperationCommand =>
                     this.fullOperationCommand
             ??
             (this.fullOperationCommand = new DelegateCommand(
-                async () => await this.PartiallyCompleteOnFullCompartmentAsync(),
-                this.CanPartiallyCompleteOnFullCompartmen));
+                async () => await this.ConfirmPartialOperationAsync(),
+                this.CanPartiallyCompleteOnFullCompartment));
 
         public ICommand PutBoxCommand =>
             this.putBoxCommand
@@ -125,6 +134,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 !this.IsOperationCanceled;
 
                 this.confirmPartialOperation = this.MissionOperation != null &&
+                    this.InputQuantity.Value >= 0 &&
                     this.InputQuantity.Value != this.MissionRequestedQuantity &&
                     !this.IsOperationCanceled;
 
@@ -147,7 +157,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                &&
                this.InputQuantity.HasValue
                &&
-               this.InputQuantity.Value >= this.MissionRequestedQuantity
+               this.InputQuantity.Value == this.MissionRequestedQuantity
                &&
                !this.CanPutBox;
         }
@@ -165,7 +175,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                &&
                this.InputQuantity.HasValue
                &&
-               this.InputQuantity.Value > this.MissionRequestedQuantity
+               this.InputQuantity.Value != this.MissionRequestedQuantity
                &&
                !this.canPutBox;
         }
@@ -221,7 +231,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
 
+                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 bool canComplete = false;
+                var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var type = this.MissionOperation.Type;
+                var quantity = this.InputQuantity.Value;
 
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)//16 => lunghezza matrice
                 {
@@ -235,6 +249,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
+                    if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
+                    {
+                        await this.UpdateWeight(loadingUnitId, 1, item.AverageWeight, type);
+                    }
+                    else
+                    {
+                        await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
+                    }
+
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
                 else
@@ -242,7 +265,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "ConfirmOperationAsync");
                 }
 
                 //this.navigationService.GoBackTo(
@@ -268,6 +292,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsAddItem = false;
+
+            this.CloseLine = true;
+            this.FullCompartment = false;
+            this.EmptyCompartment = false;
             await base.OnAppearedAsync();
 
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
@@ -326,9 +355,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             trackCurrentView: true);
         }
 
-        private bool CanPartiallyCompleteOnFullCompartmen()
+        private bool CanPartiallyCompleteOnFullCompartment()
         {
-            return
+            this.CanConfirmPartialOperation =
                 !this.IsWaitingForResponse
                 &&
                 this.MissionOperation != null
@@ -341,9 +370,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity.Value >= 0
                 &&
-                this.InputQuantity.Value < this.MissionRequestedQuantity
+                this.InputQuantity.Value != this.MissionRequestedQuantity
                 &&
                 !this.CanPutBox;
+            this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
+            return this.CanConfirmPartialOperation;
         }
 
         private bool CanPutBoxes()
@@ -369,34 +400,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception)
             {
                 return false;
-            }
-        }
-
-        private async Task PartiallyCompleteOnFullCompartmentAsync()
-        {
-            this.IsWaitingForResponse = true;
-            this.IsOperationConfirmed = true;
-
-            try
-            {
-                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
-                if (!canComplete)
-                {
-                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
-                    this.NavigationService.GoBackTo(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
-                }
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.IsOperationConfirmed = false;
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-                this.lastItemQuantityMessage = null;
             }
         }
 
@@ -436,7 +439,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "PutBoxAsync");
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

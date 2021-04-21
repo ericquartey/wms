@@ -20,17 +20,22 @@
     }
 </style>
 
-## Nuove Funzionalità 1.0.12 rispetto la 1.0.11
-- Aggiunta gestione della Baia Esterna Doppia
-- Aggiunta lingua greca
-- Aggiunti browser negli accessori con web server
+# Note di versione
+
+## Nuove Funzionalità 1.0.13 rispetto la 1.0.12
+- In fase di refilling si può dare il chiudi riga e cambiare le quantità
+- Le richieste di prelievo, refilling e modifica giacenza chedono a EjLog di controllare i diritti utente
+- Si può attivare una lista in attesa con il barcode del numero lista
+- Dalla ricerca articolo si possono creare liste di visione selezionando i cassetti
+- Le operazioni di prelievo e refilling aggiornano il peso del cassetto
 
 ## Bug Risolti
-- La vista di chiamata cassetto non perde la selezione
-- Il controllo delle luci di baia funziona anche durante i movimenti
+- 
 
-## Compatibile con adapter 0.4.15 e 0.4.16
+## Compatibile con adapter 0.4.17
 ***
+
+[Versione 1.0.12](#id1012)
 
 [Versione 1.0.11](#id1011)
 
@@ -55,6 +60,20 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1012"></a>
+
+### Nuove Funzionalità 1.0.12 rispetto la 1.0.11
+- Aggiunta gestione della Baia Esterna Doppia
+- Aggiunta lingua greca
+- Aggiunti browser negli accessori con web server
+
+### Bug Risolti
+- La vista di chiamata cassetto non perde la selezione
+- Il controllo delle luci di baia funziona anche durante i movimenti
+
+### Compatibile con adapter 0.4.15 e 0.4.16
 ***
 
 <a id="id1011"></a>

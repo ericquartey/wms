@@ -258,6 +258,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing
                 || this.machineData.MessageData.MovementMode == MovementMode.BayTest
+                || this.machineData.MessageData.MovementMode == MovementMode.DoubleExtBayTest
                 )
             {
                 //this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
@@ -315,7 +316,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             elevatorDataProvider.SetCurrentCell(targetCellId);
                             elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
                         }
-                        else if (targetCellId is null)
+                        else if (targetCellId is null && previousCell != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousCell.Position))
                         {
                             elevatorDataProvider.SetCurrentCell(null);
                         }
@@ -339,7 +340,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
                             elevatorDataProvider.UpdateLastIdealPosition(targetPosition, Orientation.Vertical);
                         }
-                        else if (targetBayPositionId is null)
+                        else if (targetBayPositionId is null && previousBayPosition != null && !elevatorDataProvider.IsVerticalPositionWithinTolerance(previousBayPosition.Height))
                         {
                             elevatorDataProvider.SetCurrentBayPosition(null);
                         }

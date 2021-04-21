@@ -126,20 +126,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("move-manual-double")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public IActionResult MoveManualExtDouble(ExternalBayMovementDirection direction)
+        {
+            this.externalBayProvider.MoveManualExtDouble(direction, -1, null, true, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
         [HttpPost("move-for-extraction")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public IActionResult MovementForExtraction()
+        public IActionResult MovementForExtraction(bool isUpperPosition)
         {
-            this.externalBayProvider.MovementForExtraction(null, this.BayNumber, MessageActor.AutomationService);
+            this.externalBayProvider.MovementForExtraction(null, this.BayNumber, MessageActor.AutomationService, isUpperPosition);
 
             return this.Accepted();
         }
 
         [HttpPost("move-for-insertion")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public IActionResult MovementForInsertion()
+        public IActionResult MovementForInsertion(bool isUpperPosition)
         {
-            this.externalBayProvider.MovementForInsertion(this.BayNumber, MessageActor.AutomationService);
+            this.externalBayProvider.MovementForInsertion(this.BayNumber, MessageActor.AutomationService, isUpperPosition);
 
             return this.Accepted();
         }
@@ -172,6 +181,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("start-double-ext-movements")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult StartDoubleExtBayTest(ExternalBayMovementDirection direction, bool isPositionUpper)
+        {
+            this.externalBayProvider.StartDoubleExtBayTest(direction, this.BayNumber, MessageActor.AutomationService, isPositionUpper);
+
+            return this.Accepted();
+        }
+
         [HttpPost("stop")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -198,6 +218,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult UpdateExtraRaceDistance(double value)
         {
             this.baysDataProvider.UpdateExtraRace(this.BayNumber, value);
+            return this.Accepted();
+        }
+
+        [HttpPost("update-cycle")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public IActionResult UpdateProcedureCycle(int cycle)
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetBayExternalCalibration(this.BayNumber);
+            this.setupProceduresDataProvider.IncreasePerformedCycles(procedureParameters, cycle);
+
             return this.Accepted();
         }
 

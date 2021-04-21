@@ -1644,14 +1644,47 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>Dies ist der letzte Vorgang in dieser Schublade, bei dem der Artikel platziert wurde, und drücken Sie OK</value>
   </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>Drapery defect</value>
+  </data>
   <data name="NetworkCards" xml:space="preserve">
     <value>Netzwerkkarten</value>
   </data>
   <data name="IP_Additional" xml:space="preserve">
     <value>IP zusätzlich</value>
   </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Total quantity</value>
+  </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Good quantity before defect</value>
+  </data>
   <data name="SubnetMask_Additional" xml:space="preserve">
     <value>SubnetMask zusätzlich</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>Wasted quantity</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>Signalling defect</value>
+  </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Confirm drapery picking</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Signalling defect failed</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Item is deleted</value>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Signalling defect successful</value>
+  </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Barcode</value>
   </data>
   <data name="MissionStateDoubleExtBay" xml:space="preserve">
     <value>Doppelte Außenbucht</value>
@@ -1661,5 +1694,11 @@
   </data>
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
     <value>Warten auf den internen Lagerplatz</value>
+  </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Uwf-Filter aktivieren</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Deaktivieren Sie den Uwf-Filter</value>
   </data>
 </root>

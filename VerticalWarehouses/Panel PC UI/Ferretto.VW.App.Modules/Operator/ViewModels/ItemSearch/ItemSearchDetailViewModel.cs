@@ -20,11 +20,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly Services.IDialogService dialogService;
+        private readonly IAuthenticationService authenticationService;
 
         private readonly IBayManager bayManager;
 
+        private readonly Services.IDialogService dialogService;
+
         private readonly IMachineItemsWebService itemsWebService;
+
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
@@ -53,7 +57,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWmsDataProvider wmsDataProvider,
             IMachineItemsWebService itemsWebService,
             IMachineMissionOperationsWebService missionOperationsWebService,
-            IBayManager bayManager)
+            IBayManager bayManager,
+            IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
@@ -61,6 +66,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -157,7 +163,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 await this.wmsDataProvider.PickAsync(
                     this.Item.Id,
-                    this.InputQuantity.Value);
+                    this.InputQuantity.Value,
+                    reasonId: null,
+                    reasonNotes: null,
+                    lot: this.Item.Lot,
+                    serialNumber: this.Item.SerialNumber,
+                    userName: this.authenticationService.UserName);
 
                 this.ShowNotification(
                     string.Format(
@@ -166,6 +177,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
 
+                this.logger.Debug($"Item pick");
                 this.NavigationService.GoBack();
             }
             catch (Exception ex)
@@ -189,7 +201,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 await this.wmsDataProvider.PutAsync(
                     this.item.Id,
-                    this.InputQuantity.Value);
+                    this.InputQuantity.Value,
+                    reasonId: null,
+                    reasonNotes: null,
+                    lot: this.Item.Lot,
+                    serialNumber: this.Item.SerialNumber,
+                    userName: this.authenticationService.UserName);
 
                 this.ShowNotification(
                    string.Format(
@@ -198,6 +215,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                        this.InputQuantity),
                    Services.Models.NotificationSeverity.Success);
 
+                this.logger.Debug($"Item put");
                 this.NavigationService.GoBack();
             }
             catch (Exception ex)
@@ -229,7 +247,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task RequestItemPickAsync()
         {
-
             var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), string.Concat(Localized.Get("OperatorApp.PickArticle"), this.Item.Code), DialogType.Question, DialogButtons.YesNo);
 
             if (messageBoxResult is DialogResult.Yes)
@@ -315,6 +332,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     var item = await this.itemsWebService.GetByBarcodeAsync(itemCode);
                     this.Item = new ItemInfo(item, this.bayManager.Identity.Id);
+                    this.logger.Debug($"GetByBarcodeAsync '{item.Code}'.");
                 }
                 catch (Exception ex)
                 {

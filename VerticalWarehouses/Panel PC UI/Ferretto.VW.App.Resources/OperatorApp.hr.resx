@@ -1644,14 +1644,47 @@
   <data name="LastOperationMessage" xml:space="preserve">
     <value>Ovo je zadnja operacija na kojoj se u ovu ladicu stavlja članak i pritisnite U redu</value>
   </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>Drapery defect</value>
+  </data>
   <data name="NetworkCards" xml:space="preserve">
     <value>Mrežne kartice</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Total quantity</value>
   </data>
   <data name="IP_Additional" xml:space="preserve">
     <value>IP dodatni</value>
   </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Good quantity before defect</value>
+  </data>
   <data name="SubnetMask_Additional" xml:space="preserve">
     <value>SubnetMask dodatni</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Dodati</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>Wasted quantity</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>Signalling defect</value>
+  </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Confirm drapery picking</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Signalling defect failed</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Item is deleted</value>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Signalling defect successful</value>
+  </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Barcode</value>
   </data>
   <data name="MissionStateDoubleExtBay" xml:space="preserve">
     <value>Dvostruka vanjska uvala</value>
@@ -1661,5 +1694,11 @@
   </data>
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
     <value>Pričekajte polog u unutarnjem ležištu</value>
+  </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Omogući Uwf filtar</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Onemogući Uwf filtar</value>
   </data>
 </root>

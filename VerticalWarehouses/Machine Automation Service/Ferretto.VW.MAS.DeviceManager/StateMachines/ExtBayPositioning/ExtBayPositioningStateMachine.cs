@@ -176,8 +176,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                     if (isUpper)
                     {
                         ok = externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator ?
-                       !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay) :
-                       !this.machineData.MachineSensorStatus.IsDrawerInBayInternalTop(this.machineData.TargetBay);
+                       !this.machineData.MachineSensorStatus.IsDrawerInBayInternalTop(this.machineData.TargetBay) :
+                       !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay);
                     }
                     else
                     {

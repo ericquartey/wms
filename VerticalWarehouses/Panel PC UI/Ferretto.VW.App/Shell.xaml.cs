@@ -13,7 +13,16 @@ namespace Ferretto.VW.App
         public Shell()
         {
             this.InitializeComponent();
-            var fullscreen = Convert.ToBoolean(ConfigurationManager.AppSettings["FullScreen"]);
+
+            var fullscreen = true;
+            try
+            {
+                fullscreen = Convert.ToBoolean(ConfigurationManager.AppSettings["FullScreen"]);
+            }
+            catch (Exception)
+            {
+            }
+
             //#if DEBUG
             if (!fullscreen)
             {

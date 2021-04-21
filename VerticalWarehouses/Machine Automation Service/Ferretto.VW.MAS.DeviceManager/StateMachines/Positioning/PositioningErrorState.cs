@@ -126,6 +126,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing
                 || this.machineData.MessageData.MovementMode == MovementMode.BayTest
+                || this.machineData.MessageData.MovementMode == MovementMode.DoubleExtBayTest
                 )
             {
                 //this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;

@@ -199,10 +199,11 @@
                                    Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   FontSize="{Binding OnMissionOperationItemCodeFontSize}"
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
+                        <!--  "{StaticResource FontSize_Very_High}"  -->
                     </Grid>
                 </Border>
             </Border>

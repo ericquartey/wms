@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineAreasWebService areasWebService;
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IBarcodeReaderService barcodeReaderService;
 
         private readonly IBayManager bayManager;
@@ -38,6 +40,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineItemsWebService itemsWebService;
+
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
@@ -120,7 +124,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineAreasWebService areasWebService,
             IMachineItemsWebService itemsWebService,
             IMachineMissionOperationsWebService missionOperationsWebService,
-            IBarcodeReaderService barcodeReaderService)
+            IBarcodeReaderService barcodeReaderService,
+            IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
@@ -130,6 +135,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
 
             this.maxKnownIndexSelection = ItemsVisiblePageSize;
         }
@@ -456,11 +462,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.isBusyRequestingItemPick)
             {
-                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code);
+                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
             }
             else
             {
-                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code);
+                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
             }
 
             this.selectedItem = null;
@@ -504,7 +510,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //    }
         //}
 
-        public async Task ExecuteItemPickAsync(int itemId, string itemCode)
+        public async Task ExecuteItemPickAsync(int itemId, string itemCode, string lot, string serialNumber)
         {
             try
             {
@@ -515,7 +521,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     itemId,
                     this.InputQuantity.Value,
                     this.reasonId,
-                    this.reasonNotes);
+                    this.reasonNotes,
+                    lot: lot,
+                    serialNumber: serialNumber,
+                    userName: this.authenticationService.UserName);
 
                 this.Reasons = null;
 
@@ -575,7 +584,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //    }
         //}
 
-        public async Task ExecuteItemPutAsync(int itemId, string itemCode)
+        public async Task ExecuteItemPutAsync(int itemId, string itemCode, string lot, string serialNumber)
         {
             try
             {
@@ -586,7 +595,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     itemId,
                     this.InputQuantity.Value,
                     this.reasonId,
-                    this.reasonNotes);
+                    this.reasonNotes,
+                    lot: lot,
+                    serialNumber: serialNumber,
+                    userName: this.authenticationService.UserName);
 
                 this.Reasons = null;
 
@@ -651,7 +663,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (!waitForReason)
             {
-                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code);
+                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
@@ -672,7 +684,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (!waitForReason)
             {
-                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code);
+                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
@@ -1176,6 +1188,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.SearchItem = item.Code;
                             this.items.Add(new ItemInfo(item, this.bayManager.Identity.Id));
 
+                            this.logger.Debug($"GetByBarcodeAsync '{item.Code}'.");
                             this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                         }
                     }

@@ -71,6 +71,8 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<ItemPutView>();
             containerRegistry.RegisterForNavigation<ItemWeightView>();
             containerRegistry.RegisterForNavigation<ItemWeightUpdateView>();
+            containerRegistry.RegisterForNavigation<ItemSignallingDefectView>();
+            containerRegistry.RegisterForNavigation<ItemDraperyConfirmView>();
 
             containerRegistry.RegisterForNavigation<ItemSearchMainView>();
             containerRegistry.RegisterForNavigation<ItemSearchDetailView>();

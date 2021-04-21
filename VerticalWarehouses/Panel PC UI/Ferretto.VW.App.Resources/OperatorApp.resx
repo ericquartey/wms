@@ -1741,7 +1741,7 @@
     <value>Vertical axis</value>
   </data>
   <data name="ConfirmPartial" xml:space="preserve">
-    <value>Partial Confirmation</value>
+    <value>Change</value>
   </data>
   <data name="ConfirmPresent" xml:space="preserve">
     <value>Confirm Present</value>
@@ -2011,12 +2011,55 @@
   <data name="SubnetMask_Additional" xml:space="preserve">
     <value>SubnetMask additional</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>Drapery defect</value>
+    <comment>Page header</comment>
+  </data>
   <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
     <value>Laser</value>
     <comment>Label</comment>
   </data>
   <data name="LaserOffset" xml:space="preserve">
     <value>LaserOffset</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Total quantity</value>
+    <comment>Label</comment>
+  </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Good quantity before defect</value>
+    <comment>Button</comment>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>Wasted quantity</value>
+    <comment>Button</comment>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>Signalling defect</value>
+    <comment>Button</comment>
+  </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Confirm drapery picking</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Signalling defect failed</value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Item is deleted</value>
+    <comment>Information Message</comment>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Signalling defect successful</value>
+    <comment>Information Message</comment>
+  </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Barcode</value>
+    <comment>Label</comment>
   </data>
   <data name="MissionStateDoubleExtBay" xml:space="preserve">
     <value>Double external bay</value>
@@ -2026,5 +2069,32 @@
   </data>
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
     <value>Wait deposit in internal bay</value>
+  </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Enable Uwf filter</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Disable Uwf filter</value>
+  </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="EmptyCompartment" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>Check product</value>
+  </data>
+  <data name="CheckOperationCancelled" xml:space="preserve">
+    <value>The Check operation has been cancelled</value>
+    <comment>Information</comment>
+  </data>
+  <data name="ItemListType_Check" xml:space="preserve">
+    <value>Check</value>
+    <comment>Label for Enumeration</comment>
+  </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>Check request for item {0} (Load Unit {1}) was accepted.</value>
+    <comment>Information Message</comment>
   </data>
 </root>

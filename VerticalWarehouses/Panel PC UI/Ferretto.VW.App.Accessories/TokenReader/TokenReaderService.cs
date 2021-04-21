@@ -157,7 +157,7 @@ namespace Ferretto.VW.App.Accessories
                     if (!this.navigationService.IsActiveView(nameof(Utils.Modules.Accessories), Utils.Modules.Accessories.TokenReader))
                     {
                         this.authenticationService.LogOutAsync();
-                        this.navigationService.GoBackTo(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN);
+                        this.navigationService.GoBackTo(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN, "TokenReaderService");
                     }
                 });
             }

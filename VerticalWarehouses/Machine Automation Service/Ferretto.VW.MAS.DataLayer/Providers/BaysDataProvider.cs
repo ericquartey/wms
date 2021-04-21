@@ -705,6 +705,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case MovementMode.BayChain:
                         case MovementMode.BayChainManual:
                         case MovementMode.BayTest:
+                        case MovementMode.DoubleExtBayTest:
                             returnValue = this.GetByNumber(bayNumber).Inverter.Index;
                             break;
 
