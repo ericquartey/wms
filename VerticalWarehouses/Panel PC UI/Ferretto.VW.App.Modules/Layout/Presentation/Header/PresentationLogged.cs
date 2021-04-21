@@ -154,7 +154,7 @@ namespace Ferretto.VW.App.Modules.Layout
             this.IsPopupOpen = false;
             await this.authenticationService.LogOutAsync();
             await this.machineBaysWebService.DeactivateAsync();
-            this.navigationService.GoBackTo(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN);
+            this.navigationService.GoBackTo(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN, "ExecuteLogOutCommand");
             this.autologoutServiceTimer.Stop();
         }
 

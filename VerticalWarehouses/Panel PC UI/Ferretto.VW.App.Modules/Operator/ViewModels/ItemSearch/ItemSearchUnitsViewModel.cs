@@ -156,7 +156,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.authenticationService.UserName);
 
                     this.ShowNotification(
-                        Resources.Localized.Get("OperatorApp.OperationConfirmed"),
+                        string.Format(
+                            Resources.Localized.Get("OperatorApp.CheckRequestWasAccepted"),
+                            this.Item.Code,
+                            this.selectedItemUnits.LoadingUnitId),
                         Services.Models.NotificationSeverity.Success);
                 }
             }

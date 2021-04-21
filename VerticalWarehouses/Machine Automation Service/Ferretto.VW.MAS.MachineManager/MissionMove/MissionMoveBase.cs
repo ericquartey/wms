@@ -204,6 +204,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.SendPositionNotification($"Load Unit {this.Mission.LoadUnitId} position changed");
             return bayShutter;
         }
+
         private bool isWaitingMissionOnThisBay(Bay bay)
         {
             var retValue = false;

@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly IWmsDataProvider wmsDataProvider;
@@ -1186,6 +1188,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.SearchItem = item.Code;
                             this.items.Add(new ItemInfo(item, this.bayManager.Identity.Id));
 
+                            this.logger.Debug($"GetByBarcodeAsync '{item.Code}'.");
                             this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                         }
                     }

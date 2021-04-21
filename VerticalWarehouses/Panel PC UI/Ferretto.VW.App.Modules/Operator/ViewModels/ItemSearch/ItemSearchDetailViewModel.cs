@@ -332,6 +332,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     var item = await this.itemsWebService.GetByBarcodeAsync(itemCode);
                     this.Item = new ItemInfo(item, this.bayManager.Identity.Id);
+                    this.logger.Debug($"GetByBarcodeAsync '{item.Code}'.");
                 }
                 catch (Exception ex)
                 {

@@ -2439,4 +2439,19 @@
   <data name="OpenBrowser" xml:space="preserve">
     <value>Otevřete prohlížeč</value>
   </data>
+  <data name="SoftwareUpdateDescription" xml:space="preserve">
+    <value>Vložte USB flash disk</value>
+  </data>
+  <data name="CallUnitWeight" xml:space="preserve">
+    <value>Zásuvkové volání: Počkejte, dokud se předchozí zásuvka nevrátí do buňky, poté vyberte požadovanou zásuvku a stiskněte Vyvolání zásuvky. Jakmile zásuvka dorazí do pozice, znovu se zobrazí postup kalibrace hmotnosti</value>
+  </data>
+  <data name="InvalidWeightValues" xml:space="preserve">
+    <value>Chybné hodnoty hmotnosti - všechny 3 se musí lišit!</value>
+  </data>
+  <data name="InvalidCurrentValues" xml:space="preserve">
+    <value>Nesprávné aktuální hodnoty - všechny 3 musí být odlišné!</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
 </root>

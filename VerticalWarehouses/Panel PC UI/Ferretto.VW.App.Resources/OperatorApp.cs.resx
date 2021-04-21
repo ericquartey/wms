@@ -1701,4 +1701,28 @@
   <data name="DisableUwf" xml:space="preserve">
     <value>Zakázat filtr Uwf</value>
   </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>Žádost o prohlížení článku {0} (zásuvka {1}) byla přijata.</value>
+  </data>
+  <data name="CheckOperationCancelled" xml:space="preserve">
+    <value>Operace prohlížení byla zrušena</value>
+  </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>Vidění</value>
+  </data>
+  <data name="EmptyCompartment" xml:space="preserve">
+    <value>Prázdný</value>
+  </data>
+  <data name="ItemListType_Check" xml:space="preserve">
+    <value>Vidění</value>
+  </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>Úplný</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Laser offset</value>
+  </data>
 </root>

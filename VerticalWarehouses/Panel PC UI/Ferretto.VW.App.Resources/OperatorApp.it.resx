@@ -1724,4 +1724,10 @@
   <data name="ItemListType_Check" xml:space="preserve">
     <value>Visione</value>
   </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>La richiesta di visione per l'articolo {0} (cassetto {1}) è stata accettata.</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Offset laser</value>
+  </data>
 </root>

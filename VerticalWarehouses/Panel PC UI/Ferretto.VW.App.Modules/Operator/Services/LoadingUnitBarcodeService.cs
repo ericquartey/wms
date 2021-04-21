@@ -87,7 +87,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     ||
                     this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PICK))
                 {
-                    this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.WAIT);
+                    this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.WAIT, "NavigateAwayFromActiveView 1");
                 }
                 else if (
                     this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PICK_DETAILS)
@@ -96,7 +96,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     ||
                     this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS))
                 {
-                    this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.OPERATOR_MENU);
+                    this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.OPERATOR_MENU, "NavigateAwayFromActiveView 2");
                 }
             });
         }

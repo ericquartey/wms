@@ -260,7 +260,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     {
                         this.navigationService.GoBackTo(
                            nameof(Utils.Modules.Operator),
-                           Utils.Modules.Operator.ItemOperations.WAIT);
+                           Utils.Modules.Operator.ItemOperations.WAIT,
+                           "NavigateToDrawerView");
                     }
                     else
                     {

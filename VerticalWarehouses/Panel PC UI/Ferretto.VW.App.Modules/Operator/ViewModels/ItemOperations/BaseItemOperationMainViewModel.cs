@@ -46,6 +46,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
@@ -767,7 +769,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             else
                             {
                                 var item = await this.itemsWebService.GetByBarcodeAsync(e.GetItemCode());
-                                e.HasMismatch = (item.Code != this.MissionOperation.ItemCode);
+                                e.HasMismatch = (item?.Code != this.MissionOperation.ItemCode);
+                                if (!e.HasMismatch)
+                                {
+                                    this.logger.Debug($"GetByBarcodeAsync '{item?.Code}'.");
+                                }
                             }
                         }
 
@@ -900,7 +906,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.navigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "ConfirmOperationAsync");
                 }
 
                 //this.navigationService.GoBackTo(
@@ -1005,7 +1012,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.WAIT);
+                    Utils.Modules.Operator.ItemOperations.WAIT,
+                    "ConfirmPartialOperationAsync");
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -1151,7 +1159,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
                     this.NavigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "PartiallyCompleteOnFullCompartmentAsync");
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -1303,6 +1312,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         {
                             this.SearchItem = item.Code;
                             this.products.Add(new ItemInfo(item, this.MachineService.Bay.Id));
+                            this.logger.Debug($"GetByBarcodeAsync '{item.Code}'.");
 
                             this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                         }

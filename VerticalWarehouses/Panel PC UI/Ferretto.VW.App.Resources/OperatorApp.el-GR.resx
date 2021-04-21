@@ -1665,4 +1665,7 @@
   <data name="DisableUwf" xml:space="preserve">
     <value>Απενεργοποιήστε το φίλτρο Uwf</value>
   </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>Το αίτημα για προβολή του άρθρου {0} (μονάδας {1}) έγινε αποδεκτό.</value>
+  </data>
 </root>

@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineMissionsWebService machineMissionsWebService;
@@ -708,7 +710,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.WAIT);
+                    Utils.Modules.Operator.ItemOperations.WAIT,
+                    "RecallLoadingUnitAsync");
 
                 this.Reset();
             }
@@ -998,7 +1001,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.navigationService.GoBackTo(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT);
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "CheckUDC");
                     return false;
                 }
             }
@@ -1419,6 +1423,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.SearchItem = item.Code;
                             this.products.Add(new ItemInfo(item, this.machineService.Bay.Id));
 
+                            this.logger.Debug($"GetByBarcodeAsync '{item.Code}'.");
                             this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                         }
                     }

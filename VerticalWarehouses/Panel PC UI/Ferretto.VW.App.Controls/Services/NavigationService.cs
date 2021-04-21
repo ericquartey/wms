@@ -288,7 +288,7 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        public void GoBackTo(string moduleName, string viewModelName)
+        public void GoBackTo(string moduleName, string viewModelName, string caller)
         {
             if (!this.navigationStack.Any(t => t.ModuleName == moduleName && t.ViewModelName == viewModelName))
             {
@@ -309,7 +309,7 @@ namespace Ferretto.VW.App.Controls
             }
 
             var currentHistoryRecord = this.navigationStack.Pop();
-            this.logger.Debug($"Navigating go back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}' ...");
+            this.logger.Debug($"Navigating go back from '{currentHistoryRecord.ModuleName}.{currentHistoryRecord.ViewName}', caller {caller} ...");
 
             while (this.navigationStack.Any()
                 &&
