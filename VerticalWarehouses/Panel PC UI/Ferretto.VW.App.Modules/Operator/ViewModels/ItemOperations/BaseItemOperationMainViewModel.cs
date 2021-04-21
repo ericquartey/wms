@@ -1499,7 +1499,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var loadingUnitId = this.Mission.LoadingUnit.Id;
                 var barcode = this.SelectedProduct.Code;
 
-                var draperyItemInfo = await this.loadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
+                var draperyItemInfoList = await this.loadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
+
+                var draperyItemInfo = draperyItemInfoList.First();
 
                 this.Logger.Debug($"Show the adding view for drapery item [code: {draperyItemInfo.Item.Code}, description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
 

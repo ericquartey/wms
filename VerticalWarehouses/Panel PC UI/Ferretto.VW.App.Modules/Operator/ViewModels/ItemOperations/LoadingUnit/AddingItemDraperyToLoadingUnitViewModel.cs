@@ -72,7 +72,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.draperyQuantity, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsAddingAnErrorOperation { get; set; }
+        public bool IsOperationSuccessfully { get; set; }
 
         public string MessageToShow { get; set; }
 
@@ -84,12 +84,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.IsAddingAnErrorOperation = true;
+            this.IsOperationSuccessfully = false;
             this.MessageToShow = "Add a message";
 
             if (this.Data is DraperyItemInfo info)
             {
                 this.draperyItemInfo = info;
+
+                this.IsOperationSuccessfully = this.draperyItemInfo.OperationResult;
 
                 this.DraperyItemCode = this.draperyItemInfo.Item.Id.ToString();
                 this.DraperyItemDescription = this.draperyItemInfo.Description;
@@ -97,12 +99,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.DraperyQuantity = this.draperyItemInfo.Quantity;
                 this.DraperyHeight = this.draperyItemInfo.Height;
 
-                this.IsAddingAnErrorOperation = this.draperyItemInfo.OperationResult;
                 this.MessageToShow = this.draperyItemInfo.Note;
             }
 
             this.ClearNotifications();
-            this.ShowNotification(this.MessageToShow, this.IsAddingAnErrorOperation ? Services.Models.NotificationSeverity.Error : Services.Models.NotificationSeverity.Success);
+            if (this.IsOperationSuccessfully)
+            {
+                this.ShowNotification("Pezza caricata", Services.Models.NotificationSeverity.Success);
+            }
+            else
+            {
+                this.ShowNotification(this.MessageToShow, Services.Models.NotificationSeverity.Error);
+            }
         }
 
         protected override void RaiseCanExecuteChanged()

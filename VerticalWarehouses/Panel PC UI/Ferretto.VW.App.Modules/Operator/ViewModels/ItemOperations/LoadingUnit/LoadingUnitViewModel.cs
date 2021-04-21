@@ -1028,10 +1028,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.Logger.Debug($"Insert drapery barcode {barcode} into loading unit Id {loadingUnitId}");
 
-                    var draperyItemInfo = await this.LoadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
+                    var draperyItemInfoList = await this.LoadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
 
-                    if (draperyItemInfo != null)
+                    if (draperyItemInfoList != null)
                     {
+                        var draperyItemInfo = draperyItemInfoList.First();
+
                         this.Logger.Debug($"Show the adding view for drapery item [code: {draperyItemInfo.Item.Code}, description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
 
                         this.navigationService.Appear(

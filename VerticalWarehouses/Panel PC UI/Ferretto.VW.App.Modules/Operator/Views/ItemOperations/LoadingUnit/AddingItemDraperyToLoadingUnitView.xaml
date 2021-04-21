@@ -14,13 +14,13 @@
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -33,7 +33,7 @@
         <!--  text: "Load drapery"  -->
 
         <controls:PpcLabeledText Grid.Row="2"
-                                 Margin="0,0,0,10"
+                                 Margin="30,0,0,10"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding DraperyItemCode}"
@@ -41,7 +41,7 @@
         <!--  text: "Item"  -->
 
         <controls:PpcLabeledText Grid.Row="4"
-                                 Margin="0,0,0,10"
+                                 Margin="30,0,0,10"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding DraperyItemDescription}"
@@ -49,7 +49,7 @@
         <!--  text: "Description"  -->
 
         <controls:PpcLabeledText Grid.Row="6"
-                                 Margin="0,0,0,10"
+                                 Margin="30,0,0,10"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding DraperyId}"
@@ -63,7 +63,7 @@
             </Grid.ColumnDefinitions>
 
             <controls:PpcLabeledText Grid.Column="0"
-                                     Margin="0,0,0,10"
+                                     Margin="30,0,0,10"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding DraperyQuantity}"
@@ -71,7 +71,7 @@
             <!--  text: "Quantity"  -->
 
             <controls:PpcLabeledText Grid.Column="1"
-                                     Margin="0,0,0,10"
+                                     Margin="30,0,0,10"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding DraperyHeight}"
