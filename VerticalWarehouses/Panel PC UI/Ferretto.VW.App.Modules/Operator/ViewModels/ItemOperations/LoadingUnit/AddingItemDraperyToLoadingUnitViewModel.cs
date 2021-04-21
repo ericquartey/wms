@@ -93,9 +93,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationSuccessfully = this.draperyItemInfo.OperationResult;
 
-                this.DraperyItemCode = this.draperyItemInfo.Item.Id.ToString();
+                this.DraperyItemCode = (info != null) ? this.draperyItemInfo.Item.Id.ToString() : "--";
                 this.DraperyItemDescription = this.draperyItemInfo.Description;
-                this.DraperyId = this.draperyItemInfo.Item.Code;
+                this.DraperyId = (info != null) ? this.draperyItemInfo.Item.Code : string.Empty;
                 this.DraperyQuantity = this.draperyItemInfo.Quantity;
                 this.DraperyHeight = this.draperyItemInfo.Height;
 

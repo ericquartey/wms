@@ -1038,7 +1038,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         var draperyItemInfo = draperyItemInfoList.First();
 
-                        this.Logger.Debug($"Show the adding view for drapery item [code: {draperyItemInfo.Item.Code}, description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
+                        this.Logger.Debug($"Show the adding view for drapery item [description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
 
                         this.navigationService.Appear(
                             nameof(Utils.Modules.Operator),
