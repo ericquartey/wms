@@ -435,6 +435,63 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.isDisposed = true;
         }
 
+        private void DelayDoubleExtBayElapsed(object state)
+        {
+            this.Logger.LogInformation($"Start another BayTest after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
+
+            this.machineData.MessageData.Direction = this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+
+            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
+
+            var race = bay.External.Race;
+            var targetPosition = race;
+            switch (this.machineData.MessageData.Direction)
+            {
+                case HorizontalMovementDirection.Forwards:
+                    targetPosition = race - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.TargetBay)) - bay.ChainOffset;
+                    break;
+
+                case HorizontalMovementDirection.Backwards:
+                    targetPosition = bay.ChainOffset - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.TargetBay));
+                    break;
+            }
+
+            this.machineData.MessageData.TargetPosition = targetPosition;
+
+            var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
+            var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
+
+            var commandMessage = new FieldCommandMessage(
+                positioningFieldMessageData,
+                $"{this.machineData.MessageData.AxisMovement} Positioning State Started",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.Positioning,
+                inverterIndex);
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+
+            this.ParentStateMachine.PublishFieldCommandMessage(
+                new FieldCommandMessage(
+                    new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, DefaultStatusWordPollingInterval),
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.InverterSetTimer,
+                inverterIndex));
+
+            var notificationMessage = new NotificationMessage(
+                this.machineData.MessageData,
+                $"BayTest {this.machineData.ExecutedSteps} / {this.machineData.MessageData.RequiredCycles}",
+                MessageActor.AutomationService,
+                MessageActor.DeviceManager,
+                MessageType.Positioning,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                MessageStatus.OperationExecuting);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+        }
+
         private void DelayElapsed(object state)
         {
             this.verticalStartingPosition = this.elevatorProvider.VerticalPosition;
@@ -1288,7 +1345,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedure).PerformedCycles;
                         this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
-                        MessageStatus status;
                         if (this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay) &&
                             this.machineData.MachineSensorStatus.IsSensorZeroTopOnBay(this.machineData.TargetBay))
                         {
@@ -1310,62 +1366,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             }
                             else
                             {
-                                this.Logger.LogInformation($"Start another BayTest after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
-
-                                this.machineData.MessageData.Direction = this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
-
-                                var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
-
-                                var race = bay.External.Race;
-                                var targetPosition = race;
-                                switch (this.machineData.MessageData.Direction)
+                                if (this.machineData.MessageData.Delay > 0)
                                 {
-                                    case HorizontalMovementDirection.Forwards:
-                                        targetPosition = race - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.TargetBay)) - bay.ChainOffset;
-                                        break;
-
-                                    case HorizontalMovementDirection.Backwards:
-                                        targetPosition = bay.ChainOffset - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.TargetBay));
-                                        break;
+                                    this.delayTimer = new Timer(this.DelayDoubleExtBayElapsed, null, this.machineData.MessageData.Delay * 1000, Timeout.Infinite);
                                 }
-
-                                this.machineData.MessageData.TargetPosition = targetPosition;
-
-                                var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
-                                var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
-
-                                var commandMessage = new FieldCommandMessage(
-                                    positioningFieldMessageData,
-                                    $"{this.machineData.MessageData.AxisMovement} Positioning State Started",
-                                    FieldMessageActor.InverterDriver,
-                                    FieldMessageActor.DeviceManager,
-                                    FieldMessageType.Positioning,
-                                    inverterIndex);
-                                this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
-                                this.ParentStateMachine.PublishFieldCommandMessage(
-                                    new FieldCommandMessage(
-                                        new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, DefaultStatusWordPollingInterval),
-                                    "Update Inverter status word status",
-                                    FieldMessageActor.InverterDriver,
-                                    FieldMessageActor.DeviceManager,
-                                    FieldMessageType.InverterSetTimer,
-                                    inverterIndex));
-
-                                status = MessageStatus.OperationExecuting;
+                                else
+                                {
+                                    this.DelayDoubleExtBayElapsed(null);
+                                }
                             }
                         }
-                        var notificationMessage = new NotificationMessage(
-                            this.machineData.MessageData,
-                            $"BayTest {this.machineData.ExecutedSteps} / {this.machineData.MessageData.RequiredCycles}",
-                            MessageActor.AutomationService,
-                            MessageActor.DeviceManager,
-                            MessageType.Positioning,
-                            this.machineData.RequestingBay,
-                            this.machineData.TargetBay,
-                            status);
-
-                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                     }
                     break;
             }

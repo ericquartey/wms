@@ -161,7 +161,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 procedureParameters.RequiredCycles,
                 lowerBound: 0,
                 upperBound: 0,
-                delay: 0,
+                delay: 5,
                 switchPosition,
                 direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 

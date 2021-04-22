@@ -446,7 +446,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
                                 baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
-                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; in elevator from bay position {bayPosition.Id}");
+                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {bayPosition.LoadingUnit.Id}; in elevator from bay position {bayPosition.Id}");
                                 isChanged = true;
                             }
                         }
