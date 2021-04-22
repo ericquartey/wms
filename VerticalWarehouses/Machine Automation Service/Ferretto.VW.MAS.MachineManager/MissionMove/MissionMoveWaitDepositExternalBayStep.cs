@@ -86,8 +86,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 if (!this.isWaitingMissionOnThisBay(bay))
                 {
-                    var endStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    endStep.OnEnter(null);
+                    // no need to wait
+                    var newStep2 = new MissionMoveDoubleExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep2.OnEnter(null);
+
                     return true;
                 }
                 else
