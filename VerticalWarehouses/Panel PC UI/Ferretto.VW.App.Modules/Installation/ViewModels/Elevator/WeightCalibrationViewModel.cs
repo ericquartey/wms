@@ -715,7 +715,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             // Check a condition for external bay
             var conditionOnExternalBay = true;
-            if (this.HasBayExternal && this.SensorsService.IsLoadingUnitInMiddleBottomBay)
+            if (this.HasBayExternal && !this.IsExternalDouble && this.SensorsService.IsLoadingUnitInMiddleBottomBay)
             {
                 conditionOnExternalBay = false;
             }
