@@ -417,4 +417,7 @@
   <data name="BayPositionDisabled" xml:space="preserve">
     <value>Zásuvka není k dispozici</value>
   </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Chyba syntaxe hlášení zaslaného měniči.</value>
+  </data>
 </root>

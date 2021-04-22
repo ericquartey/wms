@@ -429,4 +429,7 @@
   <data name="IoDeviceCommandTimeout" xml:space="preserve">
     <value>Errore di comando della scheda di ingressi / uscite</value>
   </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Errore di sintassi del messaggio inviato all'inverter.</value>
+  </data>
 </root>
