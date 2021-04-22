@@ -417,8 +417,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
                         if (this.machineData.MessageData.TargetPosition > 0
-                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number)
-                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number))
+                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal && bay.IsExternal)
+                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal && bay.IsExternal))
                         {
                             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                             var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
@@ -436,8 +436,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
                         var isDrawerInBay = bayPosition.IsUpper
-                             ? machineResourcesProvider.IsDrawerInBayTop(bay.Number)
-                             : machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
+                             ? machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal && bay.IsExternal)
+                             : machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal && bay.IsExternal);
 
                         if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
                         // possible pickup from bay

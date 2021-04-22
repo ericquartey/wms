@@ -104,6 +104,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerInBayBottom(BayNumber bayNumber);
 
+        bool IsDrawerInBayBottom(BayNumber bayNumber, bool isExternalDouble);
+
         bool IsDrawerInBayExternalPosition(BayNumber bayNumber, bool isExternalDoubleBay);
 
         bool IsDrawerInBayInternalBottom(BayNumber bayNumber);
@@ -113,6 +115,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         bool IsDrawerInBayInternalTop(BayNumber bayNumber);
 
         bool IsDrawerInBayTop(BayNumber bayNumber);
+
+        bool IsDrawerInBayTop(BayNumber bayNumber, bool isExternalDouble);
 
         bool IsProfileCalibratedBay(BayNumber bayNumber);
 
