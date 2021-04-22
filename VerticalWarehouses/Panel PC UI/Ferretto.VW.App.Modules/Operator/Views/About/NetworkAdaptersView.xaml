@@ -236,6 +236,7 @@
                             VerticalAlignment="Stretch"
                             Command="{Binding SaveNetworkAdapter1}"
                             Content="{res:Loc General.Save}"
+                            Visibility="Hidden"
                             IsEnabled="{Binding IsEditEnabled}" />
 
       </Grid>
