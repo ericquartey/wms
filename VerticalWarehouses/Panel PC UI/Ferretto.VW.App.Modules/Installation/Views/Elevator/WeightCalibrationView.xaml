@@ -51,7 +51,88 @@
                      Text="{res:Loc InstallationApp.WeightCalibrationDescriptionProcedure}" />
         </StackPanel>
 
-        <ctrls:PpcSpinEdit Grid.Row="1"
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   Margin="15,10,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Text="{res:Loc InstallationApp.LoadingUnitFromBayToBaySelectDrawerPosition}"
+                   TextWrapping="Wrap">
+          <TextBlock.Style>
+            <Style BasedOn="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   TargetType="{x:Type TextBlock}">
+              <Setter Property="Visibility" Value="Visible" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=MachineService.Bay.IsDouble}"
+                             Value="false">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=MachineService.HasCarousel}"
+                             Value="true">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=MachineService.Bay.IsExternal}"
+                             Value="true">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsExternalDouble}"
+                             Value="true">
+                  <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="15,5"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+          <StackPanel.Style>
+            <Style TargetType="{x:Type StackPanel}">
+              <Setter Property="Visibility" Value="Visible" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=MachineService.Bay.IsDouble}"
+                             Value="false">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=MachineService.HasCarousel}"
+                             Value="true">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=MachineService.Bay.IsExternal}"
+                             Value="true">
+                  <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsExternalDouble}"
+                             Value="true">
+                  <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </StackPanel.Style>
+
+          <controls:PpcButton Margin="0,0,15,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Command="{Binding SelectBayPositionDownCommand}"
+                              Content="{res:Loc InstallationApp.BayPositionDown}"
+                              IsActive="{Binding IsPositionDownSelected}" />
+
+          <controls:PpcButton Margin="0,0,15,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Command="{Binding SelectBayPositionUpCommand}"
+                              Content="{res:Loc InstallationApp.BayPositionUp}"
+                              IsActive="{Binding IsPositionUpSelected}" />
+        </StackPanel>
+
+        <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.Column="0"
                            Height="90"
                            Margin="15,5"
@@ -62,7 +143,7 @@
                            Mask="#0"
                            MinValue="1" />
 
-        <controls:PpcButton Grid.Row="1"
+        <controls:PpcButton Grid.Row="2"
                             Grid.Column="1"
                             VerticalAlignment="Center"
                             Command="{Binding CallLoadunitToBayCommand}"
