@@ -450,12 +450,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             if (this.MachineService.Bay.IsDouble)
             {
-                return
-                !this.IsExecutingProcedure &&
-                !this.SensorsService.BayZeroChain &&
-                !this.IsExternalBayMoving &&
-                !this.SensorsService.BEDExternalBayBottom &&
-                !this.SensorsService.BEDInternalBayTop;
+                return false;
+                //return
+                //!this.IsExecutingProcedure &&
+                //!this.SensorsService.BayZeroChain &&
+                //!this.IsExternalBayMoving &&
+                //!this.SensorsService.BEDExternalBayBottom &&
+                //!this.SensorsService.BEDInternalBayTop;
             }
             else
             {
@@ -471,12 +472,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             if (this.MachineService.Bay.IsDouble)
             {
-                return
-                !this.IsExecutingProcedure &&
-                !this.SensorsService.BayZeroChain &&
-                !this.IsExternalBayMoving &&
-                !this.SensorsService.BEDInternalBayBottom &&
-                !this.SensorsService.BEDExternalBayTop;
+                return false;
+                //return
+                //!this.IsExecutingProcedure &&
+                //!this.SensorsService.BayZeroChain &&
+                //!this.IsExternalBayMoving &&
+                //!this.SensorsService.BEDInternalBayBottom &&
+                //!this.SensorsService.BEDExternalBayTop;
             }
             else
             {
@@ -578,7 +580,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             try
             {
-                await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardOperator);
+                if (this.MachineService.Bay.IsDouble)
+                {
+                    if (this.SensorsService.BayZeroChain)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, true);
+                    }
+                    else if (this.SensorsService.BayZeroChainUp)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardOperator, false);
+                    }
+                }
+                else
+                {
+                    await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardOperator);
+                }
                 this.IsExternalBayMoving = true;
             }
             catch (Exception ex)

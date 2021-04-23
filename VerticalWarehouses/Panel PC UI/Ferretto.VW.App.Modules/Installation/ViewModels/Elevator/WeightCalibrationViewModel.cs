@@ -723,7 +723,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             else if (this.HasBayExternal && this.MachineService.Bay.IsDouble)
             {
-                if (selectedBayPosition.IsUpper == true)
+                if (selectedBayPosition.IsUpper)
                 {
                     conditionOnExternalBay = this.SensorsService.BEDExternalBayTop || this.SensorsService.BEDInternalBayTop;
                 }
