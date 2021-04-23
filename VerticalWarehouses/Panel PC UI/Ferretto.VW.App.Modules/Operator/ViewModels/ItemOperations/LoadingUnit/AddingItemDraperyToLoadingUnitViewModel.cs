@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public AddingItemDraperyToLoadingUnitViewModel()
             : base(PresentationMode.Operator)
         {
-            this.Logger.Debug("Ctor AddingItemDraperyToLoadingUnitViewModel!");
+            this.Logger.Info("Ctor AddingItemDraperyToLoadingUnitViewModel");
         }
 
         #endregion
@@ -85,7 +85,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.IsOperationSuccessfully = false;
-            this.MessageToShow = "Add a message";
+            this.MessageToShow = Localized.Get("OperatorApp.DraperyItemNone");
 
             if (this.Data is DraperyItemInfo info)
             {
@@ -93,9 +93,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationSuccessfully = this.draperyItemInfo.OperationResult;
 
-                this.DraperyItemCode = (info != null) ? this.draperyItemInfo.Item.Id.ToString() : "--";
+                this.DraperyItemCode = (info.Item != null) ? this.draperyItemInfo.Item.Id.ToString() : "--";
                 this.DraperyItemDescription = this.draperyItemInfo.Description;
-                this.DraperyId = (info != null) ? this.draperyItemInfo.Item.Code : string.Empty;
+                this.DraperyId = (info.Item != null) ? this.draperyItemInfo.Item.Code : string.Empty;
                 this.DraperyQuantity = this.draperyItemInfo.Quantity;
                 this.DraperyHeight = this.draperyItemInfo.Height;
 
@@ -105,7 +105,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ClearNotifications();
             if (this.IsOperationSuccessfully)
             {
-                this.ShowNotification("Pezza caricata", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("OperatorApp.DraperyItemLoaded"), Services.Models.NotificationSeverity.Success);
             }
             else
             {

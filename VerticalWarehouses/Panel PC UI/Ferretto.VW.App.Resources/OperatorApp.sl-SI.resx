@@ -1692,4 +1692,19 @@
   <data name="DisableUwf" xml:space="preserve">
     <value>Onemogoči filter Uwf</value>
   </data>
+  <data name="LoadingDraperyItemPageHeader" xml:space="preserve">
+    <value>Drapery item loading</value>
+  </data>
+  <data name="DraperyArticleCode" xml:space="preserve">
+    <value>Article/Code</value>
+  </data>
+  <data name="Drapery" xml:space="preserve">
+    <value>Drapery</value>
+  </data>
+  <data name="DraperyItemLoaded" xml:space="preserve">
+    <value>Drapery item loaded</value>
+  </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>None drapery</value>
+  </data>
 </root>

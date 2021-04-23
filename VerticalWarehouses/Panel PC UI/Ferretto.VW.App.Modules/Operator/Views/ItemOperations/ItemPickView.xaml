@@ -181,7 +181,8 @@
                                                VerticalAlignment="Center"
                                                FontSize="{DynamicResource FontSize_High}"
                                                Foreground="{DynamicResource FerrettoPureWhite}">
-                                        <Run Text="{resources:Loc OperatorApp.ItemSearchKeySearch}" />
+                                        <Run Text="{resources:Loc OperatorApp.BarcodeLabel}" />
+                                        <!--  ="{res:Loc OperatorApp.ItemSearchKeySearch}"  -->
                                         <Run Text=":" />
                                     </TextBlock>
 
@@ -255,7 +256,8 @@
                                           HorizontalScrollBarVisibility="Disabled"
                                           ItemsSource="{Binding Products}"
                                           RowHeight="50"
-                                          SelectedItem="{Binding SelectedProduct, Mode=TwoWay}">
+                                          SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
+                                          Visibility="Hidden">
                                     <DataGrid.Resources>
                                         <ctrls:BindingProxy x:Key="proxy"
                                                             Data="{Binding}" />
@@ -303,14 +305,14 @@
 
                             </Grid>
 
-                            <controls:PpcButton Grid.Column="1"
+                            <controls:PpcButton Grid.Column="0"
                                                 Width="100"
                                                 Margin="0,5"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
                                                 Command="{Binding ConfirmItemOperationCommand}"
-                                                Content="{resources:Loc OperatorApp.Confirm}"
-                                                IsBusy="{Binding IsBusyConfirmingOperation}" />
+                                                Content="{resources:Loc OperatorApp.Confirm}" />
+                            <!--  IsBusy="{Binding IsBusyConfirmingOperation}" />  -->
 
                         </Grid>
                     </Grid>

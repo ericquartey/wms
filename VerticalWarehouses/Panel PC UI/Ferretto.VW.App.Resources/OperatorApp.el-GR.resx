@@ -1668,4 +1668,19 @@
   <data name="CheckRequestWasAccepted" xml:space="preserve">
     <value>Το αίτημα για προβολή του άρθρου {0} (μονάδας {1}) έγινε αποδεκτό.</value>
   </data>
+  <data name="LoadingDraperyItemPageHeader" xml:space="preserve">
+    <value>Drapery item loading</value>
+  </data>
+  <data name="DraperyArticleCode" xml:space="preserve">
+    <value>Article/Code</value>
+  </data>
+  <data name="Drapery" xml:space="preserve">
+    <value>Drapery</value>
+  </data>
+  <data name="DraperyItemLoaded" xml:space="preserve">
+    <value>Drapery item loaded</value>
+  </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>None drapery</value>
+  </data>
 </root>
