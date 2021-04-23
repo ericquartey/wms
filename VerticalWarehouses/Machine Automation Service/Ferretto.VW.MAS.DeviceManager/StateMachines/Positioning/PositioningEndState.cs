@@ -295,7 +295,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private void PersistElevatorPosition(int? targetBayPositionId, int? targetCellId, double targetPosition)
         {
-            this.Logger.LogDebug($"PersistElevatorPosition: targetBayPositionId={targetBayPositionId}, targetCellId={targetCellId}, targetPosition={targetPosition}");
+            this.Logger.LogDebug($"PersistElevatorPosition: targetBayPositionId={targetBayPositionId:0.00}, targetCellId={targetCellId}, targetPosition={targetPosition:0.00}");
 
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
@@ -417,8 +417,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
                         if (this.machineData.MessageData.TargetPosition > 0
-                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number)
-                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number))
+                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal && bay.IsExternal)
+                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal && bay.IsExternal))
                         {
                             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                             var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
@@ -436,8 +436,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
                         var isDrawerInBay = bayPosition.IsUpper
-                             ? machineResourcesProvider.IsDrawerInBayTop(bay.Number)
-                             : machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
+                             ? machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal && bay.IsExternal)
+                             : machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal && bay.IsExternal);
 
                         if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
                         // possible pickup from bay
@@ -446,7 +446,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
                                 baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
-                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; in elevator from bay position {bayPosition.Id}");
+                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {bayPosition.LoadingUnit.Id}; in elevator from bay position {bayPosition.Id}");
                                 isChanged = true;
                             }
                         }

@@ -895,6 +895,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             MessageActor sender,
             BayNumber requestingBay,
             bool restore,
+            int loadUnitId,
             int? targetBayPositionId,
             int? targetCellId,
             bool waitContinue = false)
@@ -928,6 +929,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     checkHomingDone: false,
                     waitContinue,
                     isPickupMission: true,
+                    loadUnitId,
                     requestingBay,
                     MessageActor.MachineManager);
             }

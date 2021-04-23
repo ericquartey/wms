@@ -2097,4 +2097,20 @@
     <value>Check request for item {0} (Load Unit {1}) was accepted.</value>
     <comment>Information Message</comment>
   </data>
+  <data name="LoadingDraperyItemPageHeader" xml:space="preserve">
+    <value>Drapery item loading</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="DraperyArticleCode" xml:space="preserve">
+    <value>Article/Code</value>
+  </data>
+  <data name="Drapery" xml:space="preserve">
+    <value>Drapery</value>
+  </data>
+  <data name="DraperyItemLoaded" xml:space="preserve">
+    <value>Drapery item loaded</value>
+  </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>None drapery</value>
+  </data>
 </root>

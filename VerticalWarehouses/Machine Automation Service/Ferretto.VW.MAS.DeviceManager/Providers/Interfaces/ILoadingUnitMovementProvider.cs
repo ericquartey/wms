@@ -83,6 +83,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             MessageActor sender,
             BayNumber requestingBay,
             bool restore,
+            int loadUnitId,
             int? targetBayPositionId,
             int? targetCellId,
             bool waitContinue = false);

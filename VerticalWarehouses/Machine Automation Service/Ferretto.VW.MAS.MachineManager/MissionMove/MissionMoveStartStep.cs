@@ -128,6 +128,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         MessageActor.MachineManager,
                         this.Mission.TargetBay,
                         this.Mission.RestoreConditions,
+                        this.Mission.LoadUnitId,
                         targetBayPositionId,
                         targetCellId);
                 }
@@ -245,6 +246,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         MessageActor.MachineManager,
                         this.Mission.TargetBay,
                         this.Mission.RestoreConditions,
+                        this.Mission.LoadUnitId,
                         sourceBayPositionId,
                         sourceCellId);
                 }
@@ -306,6 +308,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 MessageActor.MachineManager,
                                 this.Mission.TargetBay,
                                 this.Mission.RestoreConditions,
+                                this.Mission.LoadUnitId,
                                 targetBayPositionId,
                                 targetCellId);
                         }
@@ -321,6 +324,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 MessageActor.MachineManager,
                                 this.Mission.TargetBay,
                                 this.Mission.RestoreConditions,
+                                this.Mission.LoadUnitId,
                                 targetBayPositionId,
                                 targetCellId);
                         }
@@ -349,6 +353,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     MessageActor.MachineManager,
                                     this.Mission.TargetBay,
                                     this.Mission.RestoreConditions,
+                                    this.Mission.LoadUnitId,
                                     sourceBayPositionId,
                                     sourceCellId);
                             }

@@ -496,7 +496,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.SetProperty(ref this.searchItem, value))
                 {
                     this.IsSearching = true;
-                    this.TriggerSearchAsync().GetAwaiter();
+                    //this.TriggerSearchAsync().GetAwaiter();  // Do not perform the searching routine
                 }
             }
         }
@@ -1446,8 +1446,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return
                 !this.IsWaitingForResponse
                 &&
-                this.SelectedProduct != null
-                &&
+                //this.SelectedProduct != null   // actually the product is not selected
+                //&&
                 !this.IsBusyConfirmingOperation;
         }
 
@@ -1496,28 +1496,53 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ConfirmItemOperationAsync()
         {
-            if (this.SelectedProduct == null)
+            // Note:
+            // The add item operation to loading unit is based only the barcode value (for the item) given by the user.
+            // No one product is selected in the grid items (the grid items is not visible).
+            //
+            // TODO: insert code to handle the generic (manual) add operation to loading unit
+            //
+
+            if (string.IsNullOrEmpty(this.SearchItem))
             {
-                this.Logger.Debug($"Invalid selected item");
+                this.Logger.Debug($"Invalid search item - barcode value");
                 return;
             }
 
             this.IsWaitingForResponse = true;
 
-            if (this.SelectedProduct.IsDraperyItem)
+            if (this.SearchItem != null)
             {
                 var loadingUnitId = this.Mission.LoadingUnit.Id;
-                var barcode = this.SelectedProduct.Code;
+                var barcode = this.SearchItem;
 
-                var draperyItemInfo = await this.loadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
+                try
+                {
+                    var draperyItemInfoList = await this.loadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
 
-                this.Logger.Debug($"Show the adding view for drapery item [code: {draperyItemInfo.Item.Code}, description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
+                    if (draperyItemInfoList != null)
+                    {
+                        var draperyItemInfo = draperyItemInfoList.First();
 
-                this.navigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
-                    draperyItemInfo,
-                    trackCurrentView: true);
+                        this.Logger.Debug($"Show the adding view for drapery item [description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
+
+                        this.navigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
+                            draperyItemInfo,
+                            trackCurrentView: true);
+                    }
+                    else
+                    {
+                        this.Logger.Error($"An error occurs");
+                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
+                    }
+                }
+                catch
+                {
+                    this.Logger.Error($"Invalid operation performed.");
+                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
+                }
             }
 
             this.IsWaitingForResponse = false;

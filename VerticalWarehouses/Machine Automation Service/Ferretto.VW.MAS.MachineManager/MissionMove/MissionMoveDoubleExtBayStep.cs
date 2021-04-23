@@ -556,7 +556,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 (this.Mission.MissionType == MissionType.LoadUnitOperation && this.Mission.LoadUnitSource == LoadingUnitLocation.Elevator) ||
                 (this.Mission.MissionType == MissionType.FirstTest && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell) ||
                 (this.Mission.MissionType == MissionType.LoadUnitOperation && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell) ||
-                (this.Mission.MissionType == MissionType.Manual && this.Mission.LoadUnitSource == LoadingUnitLocation.Elevator))
+                (this.Mission.MissionType == MissionType.Manual && this.Mission.LoadUnitSource == LoadingUnitLocation.Elevator) ||
+                (this.Mission.MissionType == MissionType.Manual && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell))
             {
                 switch (this.Mission.LoadUnitDestination)
                 {

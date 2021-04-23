@@ -731,7 +731,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.machineElevatorWebService.MoveManualToVerticalPositionAsync(
-                    position, false, false);
+                    position, false, false, null);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

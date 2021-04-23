@@ -203,7 +203,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (isDestinationUp)
                 {
-                    if (isLoadingUnitInExternalUpPosition || isLoadingUnitInInternalUpPosition)
+                    if (isLoadingUnitInExternalUpPosition || isLoadingUnitInInternalUpPosition || !this.machineResourcesProvider.IsSensorZeroTopOnBay(bay.Number))
                     {
                         if (showErrors)
                         {
@@ -214,7 +214,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    if (isLoadingUnitInExternalDownPosition || isLoadingUnitInInternalDownPosition)
+                    if (isLoadingUnitInExternalDownPosition || isLoadingUnitInInternalDownPosition || !this.machineResourcesProvider.IsSensorZeroOnBay(bay.Number))
                     {
                         if (showErrors)
                         {
@@ -524,7 +524,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             // If bay is double and bay is not carousel
                             returnValue = true;
                             // Always check upper position first
-                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, showErrors);
+                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, showErrors && messageData.Destination == upper);
                             if (bValue)
                             {
                                 // Upper position is empty.

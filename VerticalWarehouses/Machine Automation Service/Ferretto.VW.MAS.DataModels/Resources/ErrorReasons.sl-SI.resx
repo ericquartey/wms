@@ -414,4 +414,7 @@
   <data name="BayPositionDisabled" xml:space="preserve">
     <value>Položaj nak police je onemogn</value>
   </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+  </data>
 </root>

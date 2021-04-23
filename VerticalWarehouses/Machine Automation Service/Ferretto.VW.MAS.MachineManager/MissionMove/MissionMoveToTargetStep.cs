@@ -138,6 +138,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     MessageActor.MachineManager,
                     this.Mission.TargetBay,
                     this.Mission.RestoreConditions,
+                    this.Mission.LoadUnitId,
                     targetBayPositionId,
                     targetCellId,
                     waitContinue);
@@ -180,6 +181,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 MessageActor.MachineManager,
                                 notification.RequestingBay,
                                 this.Mission.RestoreConditions,
+                                this.Mission.LoadUnitId,
                                 targetBayPositionId,
                                 targetCellId);
                         }

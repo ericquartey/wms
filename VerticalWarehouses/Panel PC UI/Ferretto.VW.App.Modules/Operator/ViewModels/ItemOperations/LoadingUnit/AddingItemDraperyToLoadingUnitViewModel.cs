@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public AddingItemDraperyToLoadingUnitViewModel()
             : base(PresentationMode.Operator)
         {
-            this.Logger.Debug("Ctor AddingItemDraperyToLoadingUnitViewModel!");
+            this.Logger.Info("Ctor AddingItemDraperyToLoadingUnitViewModel");
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.draperyQuantity, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsAddingAnErrorOperation { get; set; }
+        public bool IsOperationSuccessfully { get; set; }
 
         public string MessageToShow { get; set; }
 
@@ -84,25 +84,33 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.IsAddingAnErrorOperation = true;
-            this.MessageToShow = "Add a message";
+            this.IsOperationSuccessfully = false;
+            this.MessageToShow = Localized.Get("OperatorApp.DraperyItemNone");
 
             if (this.Data is DraperyItemInfo info)
             {
                 this.draperyItemInfo = info;
 
-                this.DraperyItemCode = this.draperyItemInfo.Item.Id.ToString();
+                this.IsOperationSuccessfully = this.draperyItemInfo.OperationResult;
+
+                this.DraperyItemCode = (info.Item != null) ? this.draperyItemInfo.Item.Id.ToString() : "--";
                 this.DraperyItemDescription = this.draperyItemInfo.Description;
-                this.DraperyId = this.draperyItemInfo.Item.Code;
+                this.DraperyId = (info.Item != null) ? this.draperyItemInfo.Item.Code : string.Empty;
                 this.DraperyQuantity = this.draperyItemInfo.Quantity;
                 this.DraperyHeight = this.draperyItemInfo.Height;
 
-                this.IsAddingAnErrorOperation = this.draperyItemInfo.OperationResult;
                 this.MessageToShow = this.draperyItemInfo.Note;
             }
 
             this.ClearNotifications();
-            this.ShowNotification(this.MessageToShow, this.IsAddingAnErrorOperation ? Services.Models.NotificationSeverity.Error : Services.Models.NotificationSeverity.Success);
+            if (this.IsOperationSuccessfully)
+            {
+                this.ShowNotification(Localized.Get("OperatorApp.DraperyItemLoaded"), Services.Models.NotificationSeverity.Success);
+            }
+            else
+            {
+                this.ShowNotification(this.MessageToShow, Services.Models.NotificationSeverity.Error);
+            }
         }
 
         protected override void RaiseCanExecuteChanged()

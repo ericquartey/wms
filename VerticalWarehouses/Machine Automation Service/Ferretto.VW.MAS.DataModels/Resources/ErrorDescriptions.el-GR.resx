@@ -426,4 +426,7 @@
   <data name="IoDeviceCommandTimeout" xml:space="preserve">
     <value>Τέλος χρόνου εντολής διάταξης I/O</value>
   </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Σφάλμα σύνταξης του μηνύματος που εστάλη στον αντιστροφέα.</value>
+  </data>
 </root>

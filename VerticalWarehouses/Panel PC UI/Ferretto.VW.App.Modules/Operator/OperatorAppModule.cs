@@ -74,6 +74,8 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<ItemSignallingDefectView>();
             containerRegistry.RegisterForNavigation<ItemDraperyConfirmView>();
 
+            containerRegistry.RegisterForNavigation<AddingItemDraperyToLoadingUnitView>();
+
             containerRegistry.RegisterForNavigation<ItemSearchMainView>();
             containerRegistry.RegisterForNavigation<ItemSearchDetailView>();
             containerRegistry.RegisterForNavigation<ItemSearchUnitsView>();

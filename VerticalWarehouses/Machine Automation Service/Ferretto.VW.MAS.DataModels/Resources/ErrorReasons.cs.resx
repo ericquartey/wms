@@ -414,4 +414,7 @@
   <data name="BayPositionDisabled" xml:space="preserve">
     <value>Pozice stanice je zakázána</value>
   </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+  </data>
 </root>

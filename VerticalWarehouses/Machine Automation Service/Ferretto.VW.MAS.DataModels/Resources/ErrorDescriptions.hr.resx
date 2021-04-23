@@ -417,4 +417,7 @@
   <data name="BayPositionDisabled" xml:space="preserve">
     <value>Pretinac nije raspoloživ</value>
   </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Greška sintakse poruke poslane inverteru.</value>
+  </data>
 </root>

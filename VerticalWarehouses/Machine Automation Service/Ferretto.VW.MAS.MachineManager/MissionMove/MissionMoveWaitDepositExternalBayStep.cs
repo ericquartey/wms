@@ -84,9 +84,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if ((isDestinationUp && isLoadingUnitInExternalDownPosition) ||
                 (!isDestinationUp && isLoadingUnitInExternalUpPosition))
             {
-                var description = $"Deposit in external bay not possible because there is a LU in external position. Wait for resume";
-                this.Logger.LogInformation(description);
-                return true;
+                if (!this.isWaitingMissionOnThisBay(bay))
+                {
+                    // no need to wait
+                    var newStep2 = new MissionMoveDoubleExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep2.OnEnter(null);
+
+                    return true;
+                }
+                else
+                {
+                    var description = $"Deposit in external bay not possible because there is a LU in external position. Wait for resume";
+                    this.Logger.LogInformation(description);
+                    return true;
+                }
             }
             // no need to wait
             var newStep = new MissionMoveDoubleExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
@@ -149,6 +160,29 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             // no need to wait
             var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             newStep.OnEnter(null);
+        }
+
+        private bool isWaitingMissionOnThisBay(Bay bay)
+        {
+            var retValue = false;
+
+            if (bay != null)
+            {
+                if (bay.IsDouble)
+                {
+                    // List of waiting mission on the bay
+                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                        );
+
+                    retValue = waitMissions.Any();
+                }
+            }
+
+            return retValue;
         }
 
         #endregion
