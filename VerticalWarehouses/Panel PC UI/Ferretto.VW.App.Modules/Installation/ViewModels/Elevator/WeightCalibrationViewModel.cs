@@ -713,16 +713,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanLoadFromBay()
         {
+            var selectedBayPosition = this.SelectedBayPosition();
+
             // Check a condition for external bay
             var conditionOnExternalBay = true;
-            if (this.HasBayExternal && this.SensorsService.IsLoadingUnitInMiddleBottomBay)
+            if (this.HasBayExternal && !this.MachineService.Bay.IsDouble && this.SensorsService.IsLoadingUnitInMiddleBottomBay)
             {
                 conditionOnExternalBay = false;
+            }
+            else if (this.HasBayExternal && this.MachineService.Bay.IsDouble)
+            {
+                if (selectedBayPosition.IsUpper == true)
+                {
+                    conditionOnExternalBay = this.SensorsService.BEDExternalBayTop || this.SensorsService.BEDInternalBayTop;
+                }
+                else
+                {
+                    conditionOnExternalBay = this.SensorsService.BEDInternalBayBottom || this.SensorsService.BEDExternalBayBottom;
+                }
             }
 
             // var selectedBayPosition = this.Bay.Positions.Single(p => p.Height == this.Bay.Positions.Max(pos => pos.Height));
 
-            var selectedBayPosition = this.SelectedBayPosition();
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay || !this.HasShutter) &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
                    this.MachineStatus.LogicalPositionId == this.Bay.Id &&
