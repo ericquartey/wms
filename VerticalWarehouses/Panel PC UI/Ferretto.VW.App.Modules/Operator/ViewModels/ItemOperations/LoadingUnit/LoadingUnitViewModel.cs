@@ -1033,7 +1033,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.Logger.Debug($"Insert drapery barcode {barcode} into loading unit Id {loadingUnitId}");
 
                     var draperyItemInfoList = await this.LoadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
-
                     if (draperyItemInfoList != null)
                     {
                         var draperyItemInfo = draperyItemInfoList.First();
@@ -1049,11 +1048,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     else
                     {
                         this.Logger.Error($"An error occurs");
+                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
                     }
                 }
                 catch
                 {
                     this.Logger.Error($"Invalid operation performed.");
+                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
                 }
             }
 

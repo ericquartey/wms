@@ -1513,19 +1513,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     var draperyItemInfoList = await this.loadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
 
-                    var draperyItemInfo = draperyItemInfoList.First();
+                    if (draperyItemInfoList != null)
+                    {
+                        var draperyItemInfo = draperyItemInfoList.First();
 
-                    this.Logger.Debug($"Show the adding view for drapery item [description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
+                        this.Logger.Debug($"Show the adding view for drapery item [description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
 
-                    this.navigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
-                        draperyItemInfo,
-                        trackCurrentView: true);
+                        this.navigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
+                            draperyItemInfo,
+                            trackCurrentView: true);
+                    }
+                    else
+                    {
+                        this.Logger.Error($"An error occurs");
+                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
+                    }
                 }
                 catch
                 {
                     this.Logger.Error($"Invalid operation performed.");
+                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
                 }
             }
 
