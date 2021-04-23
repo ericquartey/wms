@@ -301,7 +301,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("{id}/load-drapery-item")]
-        public async Task<ActionResult<DraperyItemInfo>> LoadDraperyItemInfoAsync(int id,
+        public async Task<ActionResult<IEnumerable<DraperyItemInfo>>> LoadDraperyItemInfoAsync(int id,
             string barcode,
             [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {

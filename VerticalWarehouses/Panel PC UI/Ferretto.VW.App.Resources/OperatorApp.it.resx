@@ -1730,4 +1730,19 @@
   <data name="LaserOffset" xml:space="preserve">
     <value>Offset laser</value>
   </data>
+  <data name="LoadingDraperyItemPageHeader" xml:space="preserve">
+    <value>Caricamento pezza</value>
+  </data>
+  <data name="DraperyArticleCode" xml:space="preserve">
+    <value>Articolo/Codice</value>
+  </data>
+  <data name="Drapery" xml:space="preserve">
+    <value>Pezza</value>
+  </data>
+  <data name="DraperyItemLoaded" xml:space="preserve">
+    <value>Pezza caricata</value>
+  </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>Nessuna pezza</value>
+  </data>
 </root>

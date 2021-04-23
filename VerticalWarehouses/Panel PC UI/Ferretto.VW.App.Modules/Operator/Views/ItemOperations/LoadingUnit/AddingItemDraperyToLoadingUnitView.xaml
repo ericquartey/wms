@@ -14,13 +14,13 @@
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -29,32 +29,28 @@
                    Margin="10,10,15,10"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Caricamento pezza" />
-        <!--  text: "Load drapery"  -->
+                   Text="{resources:Loc OperatorApp.LoadingDraperyItemPageHeader}" />
 
         <controls:PpcLabeledText Grid.Row="2"
-                                 Margin="0,0,0,10"
+                                 Margin="30,0,0,10"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding DraperyItemCode}"
-                                 LabelText="Articolo/Codice" />
-        <!--  text: "Item"  -->
+                                 LabelText="{resources:Loc OperatorApp.DraperyArticleCode}" />
 
         <controls:PpcLabeledText Grid.Row="4"
-                                 Margin="0,0,0,10"
+                                 Margin="30,0,0,10"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding DraperyItemDescription}"
-                                 LabelText="Descrizione" />
-        <!--  text: "Description"  -->
+                                 LabelText="{resources:Loc OperatorApp.Description}" />
 
         <controls:PpcLabeledText Grid.Row="6"
-                                 Margin="0,0,0,10"
+                                 Margin="30,0,0,10"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding DraperyId}"
-                                 LabelText="Pezza" />
-        <!--  text: "Drapery"  -->
+                                 LabelText="{resources:Loc OperatorApp.Drapery}" />
 
         <Grid Grid.Row="8">
             <Grid.ColumnDefinitions>
@@ -63,20 +59,18 @@
             </Grid.ColumnDefinitions>
 
             <controls:PpcLabeledText Grid.Column="0"
-                                     Margin="0,0,0,10"
+                                     Margin="30,0,0,10"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding DraperyQuantity}"
-                                     LabelText="Qta" />
-            <!--  text: "Quantity"  -->
+                                     LabelText="{resources:Loc OperatorApp.Quantity}" />
 
             <controls:PpcLabeledText Grid.Column="1"
-                                     Margin="0,0,0,10"
+                                     Margin="30,0,0,10"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding DraperyHeight}"
-                                     LabelText="Altezza" />
-            <!--  text: "Height"  -->
+                                     LabelText="{resources:Loc OperatorApp.Height}" />
 
         </Grid>
 
