@@ -477,6 +477,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
         /// </summary>
+        public static string InverterErrorSyntaxError2 {
+            get {
+                return ResourceManager.GetString("InverterErrorSyntaxError2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
+        /// </summary>
         public static string InverterErrorUnknownParameter {
             get {
                 return ResourceManager.GetString("InverterErrorUnknownParameter", resourceCulture);

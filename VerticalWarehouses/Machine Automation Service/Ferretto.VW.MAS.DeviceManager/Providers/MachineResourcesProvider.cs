@@ -221,6 +221,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
+        public bool IsDrawerInBayBottom(BayNumber bayNumber, bool isExternalDouble)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsDrawerInBay1Bottom || this.IsDrawerInBay1InternalBottom;
+
+                case BayNumber.BayTwo:
+                    return this.IsDrawerInBay2Bottom || this.IsDrawerInBay2InternalBottom;
+
+                case BayNumber.BayThree:
+                    return this.IsDrawerInBay3Bottom || this.IsDrawerInBay3InternalBottom;
+            }
+        }
+
         public bool IsDrawerInBayExternalPosition(BayNumber bayNumber, bool isExternalDoubleBay)
         {
             if (isExternalDoubleBay)
@@ -337,6 +353,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 case BayNumber.BayThree:
                     return this.IsDrawerInBay3Top;
+            }
+        }
+
+        public bool IsDrawerInBayTop(BayNumber bayNumber, bool isExternalDouble)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsDrawerInBay1Top || this.IsDrawerInBay1InternalTop;
+
+                case BayNumber.BayTwo:
+                    return this.IsDrawerInBay2Top || this.IsDrawerInBay2InternalTop;
+
+                case BayNumber.BayThree:
+                    return this.IsDrawerInBay3Top || this.IsDrawerInBay3InternalTop;
             }
         }
 

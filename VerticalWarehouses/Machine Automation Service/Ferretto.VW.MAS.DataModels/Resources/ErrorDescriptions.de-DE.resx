@@ -417,4 +417,7 @@
   <data name="BayPositionDisabled" xml:space="preserve">
     <value>Kasten nicht verfügbar</value>
   </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Syntaxfehler der an den Inverter gesendeten Nachricht.</value>
+  </data>
 </root>

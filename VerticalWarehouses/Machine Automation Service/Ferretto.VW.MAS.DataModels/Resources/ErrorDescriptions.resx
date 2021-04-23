@@ -432,4 +432,7 @@
   <data name="IoDeviceCommandTimeout" xml:space="preserve">
     <value>I/O device command timeout</value>
   </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Syntax error of the message sent to the inverter.</value>
+  </data>
 </root>

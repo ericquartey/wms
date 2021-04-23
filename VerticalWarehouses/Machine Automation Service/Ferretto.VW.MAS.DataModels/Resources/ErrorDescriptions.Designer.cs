@@ -484,6 +484,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax error of the message sent to the inverter..
+        /// </summary>
+        public static string InverterErrorSyntaxError2 {
+            get {
+                return ResourceManager.GetString("InverterErrorSyntaxError2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown parameter passed to the inverter..
         /// </summary>
         public static string InverterErrorUnknownParameter {
