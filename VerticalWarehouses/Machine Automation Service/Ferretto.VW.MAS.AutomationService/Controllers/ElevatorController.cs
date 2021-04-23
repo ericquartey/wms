@@ -247,7 +247,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult MoveManualToVerticalPosition(
             double targetPosition,
             bool performWeighting,
-            bool computeElongation)
+            bool computeElongation,
+            int? loadUnitId)
         {
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                 manualMovment: true,
@@ -259,6 +260,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 checkHomingDone: true,
                 waitContinue: false,
                 isPickupMission: false,
+                loadUnitId,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -323,7 +325,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveToVerticalPosition(
             double targetPosition,
-            bool performWeighting)
+            bool performWeighting,
+            int? loadUnitId)
         {
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                 manualMovment: false,
@@ -335,6 +338,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 checkHomingDone: true,
                 waitContinue: false,
                 isPickupMission: false,
+                loadUnitId,
                 this.BayNumber,
                 MessageActor.AutomationService);
 

@@ -90,6 +90,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             bool checkHomingDone,
             bool waitContinue,
             bool isPickupMission,
+            int? loadUnitId,
             BayNumber requestingBay,
             MessageActor sender);
 

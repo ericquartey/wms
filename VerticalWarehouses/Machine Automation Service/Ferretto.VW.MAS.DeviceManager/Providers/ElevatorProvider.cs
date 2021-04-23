@@ -988,6 +988,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             bool checkHomingDone,
             bool waitContinue,
             bool isPickupMission,
+            int? loadUnitId,
             BayNumber requestingBay,
             MessageActor sender)
         {
@@ -998,6 +999,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 computeElongation,
                 requestingBay,
                 sender,
+                loadUnitId,
                 targetBayPositionId,
                 targetCellId,
                 checkHomingDone,
@@ -1022,6 +1024,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 computeElongation,
                 bayNumber,
                 sender,
+                loadUnitId: null,
                 bayPositionId,
                 targetCellId: null,
                 checkHomingDone: true,
@@ -1045,6 +1048,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 computeElongation,
                 requestingBay,
                 sender,
+                loadUnitId: null,
                 targetBayPositionId: null,
                 cellId,
                 checkHomingDone: true,
@@ -1069,6 +1073,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 computeElongation,
                 requestingBay,
                 sender,
+                loadUnitId,
                 targetBayPositionId: null,
                 cellId,
                 checkHomingDone: true,
@@ -1513,6 +1518,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             bool computeElongation,
             BayNumber requestingBay,
             MessageActor sender,
+            int? loadUnitId,
             int? targetBayPositionId,
             int? targetCellId,
             bool checkHomingDone,
@@ -1553,7 +1559,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             if (computeElongation && !isLoadingUnitOnBoard)
             {
-                this.logger.LogWarning($"Do not compute elongation on empty elevator!");
+                if (this.machineVolatileDataProvider.IsOneTonMachine.Value)
+                {
+                    this.logger.LogWarning($"Do not compute elongation on empty elevator!");
+                }
+                else if (loadUnitId.HasValue)
+                {
+                    var lu = this.loadingUnitsDataProvider.GetById(loadUnitId.Value);
+                    var beltDisplacement = this.invertersProvider.ComputeDisplacement(targetPosition, lu.GrossWeight);
+                    this.logger.LogInformation($"Vertical positioning with Belt elongation for height={targetPosition:0.00} and weight={lu.GrossWeight:0.00} is {beltDisplacement:0.00} [mm].");
+                    targetPosition += beltDisplacement / 2;
+                }
+                else
+                {
+                    this.logger.LogWarning($"Do not compute elongation on empty elevator!");
+                }
                 computeElongation = false;
             }
             if (isPickupMission && isLoadingUnitOnBoard)
@@ -1603,7 +1623,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.logger.LogInformation(
                 $"MoveToVerticalPosition: {movementMode}; " +
                 $"manualMovement: {manualMovement}; " +
-                $"targetPosition: {targetPosition}; " +
+                $"targetPosition: {targetPosition:0.00}; " +
                 $"homing: {homingDone}; " +
                 $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
                 $"speed: {speed[0]:0.00}; " +

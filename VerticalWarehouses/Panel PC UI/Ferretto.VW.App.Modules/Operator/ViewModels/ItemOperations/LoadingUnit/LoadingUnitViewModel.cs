@@ -1315,20 +1315,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.areaId is null)
                 {
-                    var machineIdentity = await this.identityService.GetAsync();
+                    var machineIdentity = await this.identityService.GetAsync(cancellationToken);
                     this.areaId = machineIdentity.AreaId;
                 }
 
-                var totalProducts = await this.areasWebService.GetProductsAsync(
-                    this.areaId.Value,
-                    0,
-                    0,
-                    this.searchItem,
-                    false,
-                    true,
-                    cancellationToken);
+                if (this.areaId.HasValue)
+                {
+                    var totalProducts = await this.areasWebService.GetProductsAsync(
+                        this.areaId.Value,
+                        0,
+                        0,
+                        this.searchItem,
+                        false,
+                        true,
+                        cancellationToken);
 
-                this.allProducts.AddRange(totalProducts);
+                    if (totalProducts != null)
+                    {
+                        this.allProducts.AddRange(totalProducts);
+                    }
+                }
             }
             catch (TaskCanceledException)
             {

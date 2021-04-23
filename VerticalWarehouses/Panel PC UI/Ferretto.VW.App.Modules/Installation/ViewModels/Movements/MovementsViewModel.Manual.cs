@@ -586,7 +586,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputHeight.Value,
-                    this.isUseWeightControl);
+                    this.isUseWeightControl,
+                    this.InputLoadingUnitId);
 
                 this.IsElevatorMovingToHeight = true;
                 this.IsExecutingProcedure = true;

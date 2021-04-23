@@ -295,7 +295,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private void PersistElevatorPosition(int? targetBayPositionId, int? targetCellId, double targetPosition)
         {
-            this.Logger.LogDebug($"PersistElevatorPosition: targetBayPositionId={targetBayPositionId}, targetCellId={targetCellId}, targetPosition={targetPosition}");
+            this.Logger.LogDebug($"PersistElevatorPosition: targetBayPositionId={targetBayPositionId:0.00}, targetCellId={targetCellId}, targetPosition={targetPosition:0.00}");
 
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
