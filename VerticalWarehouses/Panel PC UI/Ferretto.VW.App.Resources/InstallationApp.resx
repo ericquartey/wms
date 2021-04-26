@@ -1327,10 +1327,10 @@
     <value>Current [A]</value>
   </data>
   <data name="ExecuteCellMeasurement" xml:space="preserve">
-    <value>Eseguire la misurazione di una cella</value>
+    <value>Perform a cell measurement</value>
   </data>
   <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
-    <value>Eseguire il posizionamento dell'elevatore di fronte ad una cella.</value>
+    <value>Position the elevator in front of a cell.</value>
   </data>
   <data name="ExecuteOriginCalibration" xml:space="preserve">
     <value>Execute Origin Calibration</value>

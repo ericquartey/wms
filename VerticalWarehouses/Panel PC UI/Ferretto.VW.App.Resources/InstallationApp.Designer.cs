@@ -2266,7 +2266,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eseguire la misurazione di una cella.
+        ///   Looks up a localized string similar to Perform a cell measurement.
         /// </summary>
         public static string ExecuteCellMeasurement {
             get {
@@ -2275,7 +2275,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eseguire il posizionamento dell&apos;elevatore di fronte ad una cella..
+        ///   Looks up a localized string similar to Position the elevator in front of a cell..
         /// </summary>
         public static string ExecuteElevatorCellPositioning {
             get {
