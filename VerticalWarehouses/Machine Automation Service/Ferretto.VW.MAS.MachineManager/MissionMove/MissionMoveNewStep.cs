@@ -524,7 +524,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             // If bay is double and bay is not carousel
                             returnValue = true;
                             // Always check upper position first
-                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, showErrors && messageData.Destination == upper);
+                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
                             if (bValue)
                             {
                                 // Upper position is empty.
