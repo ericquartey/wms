@@ -138,7 +138,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Devices.TokenRe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.SocketLink", "Machine Automation Service\Ferretto.VW.MAS.SocketLink\Ferretto.VW.MAS.SocketLink.csproj", "{90A55203-1993-459C-9CC8-6CBDA55EB9E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.MAS.InternalTiming", "Machine Automation Service\Ferretto.VW.MAS.InternalTiming\Ferretto.VW.MAS.InternalTiming.csproj", "{BFE0FBEA-1494-42DA-A6C7-DE82B5331BC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.InternalTiming", "Machine Automation Service\Ferretto.VW.MAS.InternalTiming\Ferretto.VW.MAS.InternalTiming.csproj", "{BFE0FBEA-1494-42DA-A6C7-DE82B5331BC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
