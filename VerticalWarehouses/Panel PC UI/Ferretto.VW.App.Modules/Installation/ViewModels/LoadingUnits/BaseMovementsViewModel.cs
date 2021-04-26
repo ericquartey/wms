@@ -14,6 +14,7 @@ using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
+using BayNumber = Ferretto.VW.MAS.AutomationService.Contracts.BayNumber;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -49,6 +50,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private DelegateCommand moveExtBayMovementForExtractionCommand;
 
         private DelegateCommand moveExtBayMovementForInsertionCommand;
+
+        private DelegateCommand moveExtBayTowardMachineCommand;
 
         private DelegateCommand moveExtBayTowardOperatorCommand;
 
@@ -100,6 +103,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.moveExtBayMovementForInsertionCommand = new DelegateCommand(
                 async () => await this.MoveExtBayForInsertionAsync(),
                 this.CanMoveExtBayForInsertion));
+
+        public ICommand ExtBayTowardMachineCommand =>
+                   this.moveExtBayTowardMachineCommand
+           ??
+           (this.moveExtBayTowardMachineCommand = new DelegateCommand(
+               async () => await this.MoveExtBayTowardMachineAsync(),
+               this.CanMoveExtBayTowardMachine));
 
         public ICommand ExtBayTowardOperatorCommand =>
                             this.moveExtBayTowardOperatorCommand
@@ -444,6 +454,35 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.moveExtBayMovementForExtractionCommand?.RaiseCanExecuteChanged();
             this.moveExtBayMovementForInsertionCommand?.RaiseCanExecuteChanged();
             this.moveExtBayTowardOperatorCommand?.RaiseCanExecuteChanged();
+            this.moveExtBayTowardMachineCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanBaseExecute()
+        {
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                default:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   !this.IsKeyboardOpened &&
+                   !this.IsExecutingProcedure &&
+                   !this.IsMoving;
+
+                case BayNumber.BayTwo:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   !this.IsKeyboardOpened &&
+                   !this.IsExecutingProcedure &&
+                   !this.IsMoving;
+
+                case BayNumber.BayThree:
+                    return this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                   this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
+                   !this.IsKeyboardOpened &&
+                   !this.IsExecutingProcedure &&
+                   !this.IsMoving;
+            }
         }
 
         private bool CanMoveExtBayForExtraction()
@@ -490,12 +529,38 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private bool CanMoveExtBayTowardMachine()
+        {
+            if (this.MachineService.Bay.IsDouble)
+            {
+                return this.CanBaseExecute() &&
+                        this.SensorsService.BayZeroChainUp &&
+                        !this.SensorsService.BEDInternalBayBottom &&
+                        !this.SensorsService.BEDExternalBayTop;
+            }
+            else
+            {
+                return
+                    this.CanBaseExecute() &&
+                    !this.SensorsService.BayZeroChain;
+            }
+        }
+
         private bool CanMoveExtBayTowardOperator()
         {
-            return
-                !this.IsExecutingProcedure &&
-                this.SensorsService.BayZeroChain &&
-                !this.IsExternalBayMoving;
+            if (this.MachineService.Bay.IsDouble)
+            {
+                return this.CanBaseExecute() &&
+                        this.SensorsService.BayZeroChain &&
+                        !this.SensorsService.BEDExternalBayBottom &&
+                        !this.SensorsService.BEDInternalBayTop;
+            }
+            else
+            {
+                return
+                    this.CanBaseExecute() &&
+                    this.SensorsService.BayZeroChain;
+            }
         }
 
         private bool CanStop()
@@ -563,6 +628,42 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 }
 
                 this.IsExternalBayMoving = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveExtBayTowardMachineAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                if (this.MachineService.Bay.IsDouble)
+                {
+                    //var selectedBayPosition = this.SelectedBayPosition();
+
+                    if (this.SensorsService.BayZeroChain)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, true);
+                    }
+                    else if (this.SensorsService.BayZeroChainUp)
+                    {
+                        await this.machineExternalBayWebService.MoveAssistedExternalBayAsync(ExternalBayMovementDirection.TowardMachine, false);
+                    }
+                }
+                else
+                {
+                    await this.machineExternalBayWebService.MoveAssistedAsync(ExternalBayMovementDirection.TowardMachine);
+                }
+                this.IsExternalBayMoving = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
