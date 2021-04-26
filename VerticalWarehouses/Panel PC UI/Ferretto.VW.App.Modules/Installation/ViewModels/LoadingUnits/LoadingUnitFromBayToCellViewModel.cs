@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Properties
 
+        public bool HasExternalDouble => this.MachineService.Bay.IsExternal && this.MachineService.Bay.IsDouble;
+
         public bool IsEnabledEditing
         {
             get => this.isEnabledEditing;
@@ -76,9 +78,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 !this.MachineService.HasCarousel &&
                 !this.MachineService.Bay.IsDouble &&
                 !this.MachineService.BayFirstPositionIsUpper;
-            // Load from MiddleBottomBay only if bay is not carousel, not single and is external
-            var checkP6 = this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
-                !this.MachineService.HasCarousel &&
+            // Load from Top bay only if bay is external double
+            var checkP6 = (this.SensorsService.BEDInternalBayTop || this.SensorsService.BEDExternalBayTop) &&
+                this.IsPositionUpSelected &&
+                this.MachineService.Bay.IsDouble &&
+                this.MachineService.Bay.IsExternal;
+            // Load from bottom bay only if bay is external double
+            var checkP7 = (this.SensorsService.BEDInternalBayBottom || this.SensorsService.BEDExternalBayBottom) &&
+                this.IsPositionDownSelected &&
                 this.MachineService.Bay.IsDouble &&
                 this.MachineService.Bay.IsExternal;
 
@@ -89,7 +96,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
-                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5 || checkP6) &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5 || checkP6 || checkP7) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
 
@@ -97,7 +104,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual2 &&
-                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5 || checkP6) &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5 || checkP6 || checkP7) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
 
@@ -105,7 +112,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return base.CanStart() &&
                    !this.IsMoving &&
                    this.MachineModeService.MachineMode == MachineMode.Manual3 &&
-                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5 || checkP6) &&
+                   (checkP1 || checkP2 || checkP3 || checkP4 || checkP5 || checkP6 || checkP7) &&
                    this.LoadingUnitId.HasValue &&
                    !this.MachineService.Loadunits.DrawerInLocationById(this.LoadingUnitId.Value);
             }
@@ -255,6 +262,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.SelectedLU));
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
+            this.RaisePropertyChanged(nameof(this.HasExternalDouble));
         }
 
         #endregion

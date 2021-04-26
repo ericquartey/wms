@@ -375,62 +375,74 @@
                          Value="true">
               <Setter Property="Visibility" Value="Collapsed" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding Path=HasExternalDouble}"
+                         Value="true">
+              <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
           </Style.Triggers>
         </Style>
       </StackPanel.Style>
 
-      <controls:PpcButton Margin="0,0,15,0"
+      <controls:PpcButton Width="120"
+                          Margin="0,0,15,0"
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"
                           Command="{Binding SelectBayPositionDownCommand}"
                           Content="{res:Loc InstallationApp.BayPositionDown}"
                           IsActive="{Binding IsPositionDownSelected}" />
 
-      <controls:PpcButton Margin="0,0,15,0"
+      <controls:PpcButton Width="120"
+                          Margin="0,0,15,0"
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"
                           Command="{Binding SelectBayPositionUpCommand}"
                           Content="{res:Loc InstallationApp.BayPositionUp}"
                           IsActive="{Binding IsPositionUpSelected}" />
-    </StackPanel>
 
-    <StackPanel Grid.Row="6"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Orientation="Horizontal">
-      <StackPanel.Style>
-        <Style TargetType="{x:Type StackPanel}">
-          <Setter Property="Visibility" Value="Visible" />
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=MachineService.Bay.IsExternal}"
-                         Value="false">
-              <Setter Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </StackPanel.Style>
+      <StackPanel HorizontalAlignment="Left"
+                  VerticalAlignment="Bottom"
+                  Orientation="Horizontal">
+        <StackPanel.Style>
+          <Style TargetType="{x:Type StackPanel}">
+            <Setter Property="Visibility" Value="Visible" />
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding Path=MachineService.Bay.IsExternal}"
+                           Value="false">
+                <Setter Property="Visibility" Value="Collapsed" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </StackPanel.Style>
 
-      <controls:PpcButton Width="100"
-                          Margin="0,0,12,0"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          Command="{Binding ExtBayTowardOperatorCommand}"
-                          Content="{res:Loc InstallationApp.ExtBayTowardOperator}" />
+        <controls:PpcButton Width="100"
+                            Margin="0,0,15,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding ExtBayTowardOperatorCommand}"
+                            Content="{res:Loc InstallationApp.ExtBayTowardOperator}" />
 
-      <controls:PpcButton Margin="0,0,12,0"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          Command="{Binding ExtBayMovementForInsertionCommand}"
-                          Content="{res:Loc InstallationApp.ExtBayMovementForInsertion}" />
+        <controls:PpcButton Width="100"
+                            Margin="0,0,15,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding ExtBayTowardMachineCommand}"
+                            Content="{res:Loc InstallationApp.ExtBayTowardMachine}" />
 
-      <controls:PpcButton Margin="0,0,12,0"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
-                          Command="{Binding ExtBayMovementForExtractionCommand}"
-                          Content="{res:Loc InstallationApp.ExtBayMovementForExtraction}" />
+        <controls:PpcButton Margin="0,0,15,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding ExtBayMovementForInsertionCommand}"
+                            Content="{res:Loc InstallationApp.ExtBayMovementForInsertion}"
+                            Visibility="Collapsed" />
 
+        <controls:PpcButton Margin="0,0,15,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding ExtBayMovementForExtractionCommand}"
+                            Content="{res:Loc InstallationApp.ExtBayMovementForExtraction}"
+                            Visibility="Collapsed" />
+
+      </StackPanel>
     </StackPanel>
 
     <StackPanel Grid.Row="6"
