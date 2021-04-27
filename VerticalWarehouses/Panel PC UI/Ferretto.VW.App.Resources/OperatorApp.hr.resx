@@ -1716,4 +1716,22 @@
   <data name="DraperyItemNone" xml:space="preserve">
     <value>None drapery</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>Akcijski</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Smjer</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Vrijeme misije</value>
+  </data>
+  <data name="StepTime" xml:space="preserve">
+    <value>Step time</value>
+  </data>
+  <data name="LoadUnitCellSourceId" xml:space="preserve">
+    <value>Cell source Id</value>
+  </data>
+  <data name="NeedMovingBackward" xml:space="preserve">
+    <value>Need moving backward</value>
+  </data>
 </root>
