@@ -60,6 +60,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 
+            if (this.Mission.RestoreConditions)
+            {
+                this.OnResume(command);
+                return true;
+            }
+
             this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
             var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
             if (this.Mission.CloseShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
@@ -157,6 +163,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Logger.LogInformation(description);
                 return;
             }
+            this.Mission.RestoreConditions = false;
             // no need to wait
             var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             newStep.OnEnter(null);

@@ -82,26 +82,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             // Detect if homing operation is required
             this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
 
-            if (this.Mission.NeedHomingAxis == Axis.BayChain)
+            if (this.Mission.NeedHomingAxis == Axis.BayChain || this.Mission.RestoreConditions)
             {
+                this.Mission.RestoreConditions = false;
+                this.Mission.NeedHomingAxis = Axis.BayChain;
                 this.Logger.LogInformation($"Homing Double External Bay Start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
             }
-            else if (this.Mission.RestoreConditions)
-            {
-                this.Logger.LogDebug($"Move in restore conditions => LoadUnitDestination: {this.Mission.LoadUnitDestination}, bay number: {bay.Number}");
-                if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId,
-                    ((isLoadUnitDestinationInBay && !destination.IsUpper) || (!isLoadUnitDestinationInBay && destination.IsUpper) ? ExternalBayMovementDirection.TowardOperator : ExternalBayMovementDirection.TowardMachine),
-                    MessageActor.MachineManager,
-                    bay.Number,
-                    restore: true,
-                    destination.IsUpper))
-                {
-                    // already arrived
-                    this.ExternalBayChainEnd();
-                    return true;
-                }
-            }
+            //else if (this.Mission.RestoreConditions)
+            //{
+            //    this.Logger.LogDebug($"Move in restore conditions => LoadUnitDestination: {this.Mission.LoadUnitDestination}, bay number: {bay.Number}");
+            //    if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId,
+            //        ((isLoadUnitDestinationInBay && !destination.IsUpper) || (!isLoadUnitDestinationInBay && destination.IsUpper) ? ExternalBayMovementDirection.TowardOperator : ExternalBayMovementDirection.TowardMachine),
+            //        MessageActor.MachineManager,
+            //        bay.Number,
+            //        restore: true,
+            //        destination.IsUpper))
+            //    {
+            //        // already arrived
+            //        this.ExternalBayChainEnd();
+            //        return true;
+            //    }
+            //}
             else
             {
                 // Move during normal positioning
