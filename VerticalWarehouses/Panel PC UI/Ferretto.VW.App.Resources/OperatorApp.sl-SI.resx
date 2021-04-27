@@ -1707,4 +1707,13 @@
   <data name="DraperyItemNone" xml:space="preserve">
     <value>None drapery</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>Ukrepanje</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Ukrepanje</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Čas poslanstva</value>
+  </data>
 </root>
