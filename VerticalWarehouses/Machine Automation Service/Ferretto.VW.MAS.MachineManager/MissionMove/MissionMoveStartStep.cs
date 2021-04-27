@@ -383,9 +383,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                                     var LUInExternalPosition = isPositionUpper ? this.machineResourcesProvider.IsDrawerInBayTop(bay.Number) : this.machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
 
-                                    var isDoubleExternalBayMovementRequested = bay.IsExternal &&
-                                        bay.IsDouble &&
-                                        LUInExternalPosition;
+                                    var isDoubleExternalBayMovementRequested = LUInExternalPosition;
 
                                     var missions = this.MissionsDataProvider.GetAllActiveMissionsByBay(bay.Number);
 
@@ -396,16 +394,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         throw new StateMachineException(ErrorDescriptions.ExternalBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);
                                     }
 
-                                    if (missions.Any(s => s.Status > MissionStatus.New && s.LoadUnitId != this.Mission.LoadUnitId))
+                                    if (isDoubleExternalBayMovementRequested)
                                     {
-                                        var newStep = new MissionMoveWaitDepositInternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                        newStep.OnEnter(null);
-                                    }
-                                    else if (isDoubleExternalBayMovementRequested)
-                                    {
-                                        // Move the external bay
-                                        var newStep = new MissionMoveDoubleExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                        newStep.OnEnter(null);
+                                        if (missions.Any(s => s.Status > MissionStatus.New && s.LoadUnitId != this.Mission.LoadUnitId))
+                                        {
+                                            var newStep = new MissionMoveWaitDepositInternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                            newStep.OnEnter(null);
+                                        }
+                                        else
+                                        {
+                                            // Move the external bay
+                                            var newStep = new MissionMoveDoubleExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                            newStep.OnEnter(null);
+                                        }
                                     }
                                     else
                                     {

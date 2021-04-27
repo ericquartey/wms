@@ -1561,7 +1561,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 if (this.machineVolatileDataProvider.IsOneTonMachine.Value)
                 {
-                    this.logger.LogWarning($"Do not compute elongation on empty elevator!");
+                    this.logger.LogWarning($"Do not compute elongation on empty elevator in 1T machine!");
                 }
                 else if (loadUnitId.HasValue)
                 {
