@@ -47,10 +47,14 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 try
                 {
-                    // Get the raw bytes contents
-                    using var stream = File.OpenRead(filePath);
-                    rawDatabase = new byte[stream.Length];
-                    stream.Read(rawDatabase, 0, rawDatabase.Length);
+                    var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+                    lock (dataContext)
+                    {
+                        // Get the raw bytes contents
+                        using var stream = File.OpenRead(filePath);
+                        rawDatabase = new byte[stream.Length];
+                        stream.Read(rawDatabase, 0, rawDatabase.Length);
+                    }
 
                     break;
                 }
