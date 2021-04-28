@@ -13,7 +13,18 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             try
             {
-                switch ((InverterIndex)value)
+                var intValue = int.Parse(value.ToString());
+
+                if (intValue == 0)
+                {
+                    intValue = (int)InverterIndex.None;
+                }
+                else
+                {
+                    intValue--;
+                }
+
+                switch ((InverterIndex)intValue)
                 {
                     case InverterIndex.MainInverter:
                         return InverterIndex.MainInverter.ToString();
@@ -40,7 +51,7 @@ namespace Ferretto.VW.App.Controls.Converters
                         return InverterIndex.Slave7.ToString();
 
                     case InverterIndex.None:
-                        return Resources.Localized.Get("OperatorApp.BlockLevelNone");
+                        return Resources.Localized.Get("InstallationApp.None");
 
                     case InverterIndex.All:
                     default:
