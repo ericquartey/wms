@@ -13,7 +13,7 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             try
             {
-                switch (value)
+                switch ((InverterIndex)value)
                 {
                     case InverterIndex.MainInverter:
                         return InverterIndex.MainInverter.ToString();

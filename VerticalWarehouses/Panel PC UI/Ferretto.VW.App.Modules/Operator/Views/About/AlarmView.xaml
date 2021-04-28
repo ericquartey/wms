@@ -197,7 +197,7 @@
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column5"
                                 Width="150"
-                                Binding="{Binding Path=DetailCode}"
+                                Binding="{Binding Path=DetailCode, StringFormat={}0x{0:X4}}"
                                 Header="{res:Loc OperatorApp.DetailCode}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
