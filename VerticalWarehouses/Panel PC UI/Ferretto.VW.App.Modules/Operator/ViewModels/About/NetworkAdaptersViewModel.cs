@@ -68,6 +68,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private System.Timers.Timer refresh;
 
+        private DelegateCommand restartServiceCommand;
+
         private DelegateCommand saveNetworkAdapter0;
 
         private DelegateCommand saveNetworkAdapter1;
@@ -115,8 +117,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.networkAdapter1, value);
         }
 
+        public ICommand RestartServiceCommand => this.restartServiceCommand
+                          ??
+                  (this.restartServiceCommand = new DelegateCommand(
+                      () => this.Reload(), this.CanExecuteReloadCommand));
+
         public ICommand SaveNetworkAdapter0 => this.saveNetworkAdapter0
-                                          ??
+                                                  ??
                   (this.saveNetworkAdapter0 = new DelegateCommand(
                       () => this.SetConfig(this.networkAdapter0), this.CanExecuteCommand));
 
@@ -167,6 +174,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.saveNetworkAdapter1.RaiseCanExecuteChanged();
             this.uwfOffCommand.RaiseCanExecuteChanged();
             this.uwfOnCommand.RaiseCanExecuteChanged();
+            this.restartServiceCommand.RaiseCanExecuteChanged();
         }
 
         private static NetworkAdapter SetData(NetworkInterface networkInterface)
@@ -239,6 +247,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanExecuteCommand()
         {
             return this.MachineModeService.MachineMode != MAS.AutomationService.Contracts.MachineMode.Automatic;
+        }
+
+        private bool CanExecuteReloadCommand()
+        {
+            return this.CanExecuteCommand() &&
+                this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Operator;
         }
 
         private void CheckUwf()
@@ -321,6 +335,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.GetNetworkAdapters();
             this.refresh.Enabled = false;
+        }
+
+        private void Reload()
+        {
+            this.IsBusy = true;
+
+            this.ShowNotification(Localized.Get("InstallationApp.CommandSent"), Services.Models.NotificationSeverity.Success);
+
+            this.HealthProbeService.ReloadMAS(500);
+
+            this.IsBusy = false;
         }
 
         private void SendPromptCommand(string arg)

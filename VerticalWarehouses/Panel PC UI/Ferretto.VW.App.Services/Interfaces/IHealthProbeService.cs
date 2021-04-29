@@ -12,6 +12,8 @@ namespace Ferretto.VW.App.Services
 
         HealthStatus HealthWmsStatus { get; }
 
+        void ReloadMAS(int timeoutMilliseconds);
+
         #endregion
 
         #region Methods

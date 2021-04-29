@@ -138,6 +138,33 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        public void ReloadMAS(int timeoutMilliseconds)
+        {
+            var sc = new ServiceController();
+            sc.ServiceName = this.masServiceName;
+            try
+            {
+                int millisec1 = Environment.TickCount;
+                TimeSpan timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
+
+                sc.Stop();
+                sc.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+
+                // count the rest of the timeout
+                int millisec2 = Environment.TickCount;
+                timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds - (millisec2 - millisec1));
+
+                sc.Start();
+                sc.WaitForStatus(ServiceControllerStatus.Running, timeout);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Debug(ex.ToString());
+            }
+
+            sc.Dispose();
+        }
+
         public void Start()
         {
             this.healthProbeMasTask.Start();

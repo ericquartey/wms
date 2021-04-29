@@ -4309,6 +4309,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restart service.
+        /// </summary>
+        public static string RestartService {
+            get {
+                return ResourceManager.GetString("RestartService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restore conditions.
         /// </summary>
         public static string RestoreConditions {

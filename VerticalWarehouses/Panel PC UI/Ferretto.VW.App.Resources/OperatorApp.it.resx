@@ -1832,4 +1832,7 @@
   <data name="FaultStateChanged" xml:space="preserve">
     <value>Cambio stato fault</value>
   </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>Riavvia servizio</value>
+  </data>
 </root>
