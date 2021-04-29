@@ -77,8 +77,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
                 publishNotification = this.machineData.OnHorizontalPositioningStopped;
             }
 
-            if (!this.machineData.OnHorizontalPositioningError &&
-                !this.machineData.OnVerticalPositioningError)
+            if (!publishNotification)
             {
                 publishNotification = this.machineData.OnHorizontalPositioningStopped &&
                     this.machineData.OnVerticalPositioningStopped;
@@ -128,13 +127,14 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
                     }
 
                 case StopRequestReason.RunningStateChanged:
+                case StopRequestReason.Stop:
                     {
                         this.Logger.LogDebug($"No one Stop Command is sent to the {MessageActor.DeviceManager}");
 
                         break;
                     }
 
-                case StopRequestReason.Stop:
+                // case StopRequestReason.Stop:
                 case StopRequestReason.Abort:
                 case StopRequestReason.Error:
                 case StopRequestReason.FaultStateChanged:
