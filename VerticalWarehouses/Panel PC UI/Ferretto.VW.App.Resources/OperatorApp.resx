@@ -2200,4 +2200,7 @@
   <data name="FaultStateChanged" xml:space="preserve">
     <value>Fault state changed</value>
   </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>Restart service</value>
+  </data>
 </root>
