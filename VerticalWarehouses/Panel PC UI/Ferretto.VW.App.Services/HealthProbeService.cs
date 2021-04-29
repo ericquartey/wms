@@ -138,7 +138,7 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        public void ReloadMAS(int timeoutMilliseconds)
+        public string ReloadMAS(int timeoutMilliseconds)
         {
             var sc = new ServiceController();
             sc.ServiceName = this.masServiceName;
@@ -156,10 +156,13 @@ namespace Ferretto.VW.App.Services
 
                 sc.Start();
                 sc.WaitForStatus(ServiceControllerStatus.Running, timeout);
+
+                return string.Empty;
             }
             catch (Exception ex)
             {
                 this.logger.Debug(ex.ToString());
+                return ex.InnerException.ToString();
             }
 
             sc.Dispose();

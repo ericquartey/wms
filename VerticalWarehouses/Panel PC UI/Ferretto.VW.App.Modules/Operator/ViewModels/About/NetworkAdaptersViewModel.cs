@@ -341,9 +341,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBusy = true;
 
-            this.ShowNotification(Localized.Get("InstallationApp.CommandSent"), Services.Models.NotificationSeverity.Success);
+            this.ShowNotification(Localized.Get("InstallationApp.CommandSent"), Services.Models.NotificationSeverity.Info);
 
-            this.HealthProbeService.ReloadMAS(1000);
+            var result = this.HealthProbeService.ReloadMAS(1000);
+
+            if (!string.IsNullOrEmpty(result))
+            {
+                this.ClearNotifications();
+                this.ShowNotification(result, Services.Models.NotificationSeverity.Error);
+            }
 
             this.IsBusy = false;
         }
