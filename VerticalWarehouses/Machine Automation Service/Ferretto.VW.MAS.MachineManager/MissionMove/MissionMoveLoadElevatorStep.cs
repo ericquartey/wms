@@ -55,6 +55,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         var cell = this.CellsProvider.GetById(this.Mission.LoadUnitCellSourceId.Value);
 
+                        if (Math.Abs(cell.Position - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 4)
+                        {
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.Mission.TargetBay);
+                            throw new StateMachineException(ErrorDescriptions.VerticalPositionChanged, this.Mission.TargetBay, MessageActor.MachineManager);
+                        }
+
                         this.Mission.Direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                     }
                     if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell
@@ -88,6 +94,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                         var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
+                        if (Math.Abs(bayPosition.Height - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 4)
+                        {
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.Mission.TargetBay);
+                            throw new StateMachineException(ErrorDescriptions.VerticalPositionChanged, this.Mission.TargetBay, MessageActor.MachineManager);
+                        }
                         sourceBayPositionId = bayPosition.Id;
                         if (bay.Carousel != null
                             && !bayPosition.IsUpper
