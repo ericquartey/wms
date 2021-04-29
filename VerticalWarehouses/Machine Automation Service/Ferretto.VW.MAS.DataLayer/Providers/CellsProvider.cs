@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const double CellHeight = 25;
 
-        private const int MinimumLU_HeightForTopCells = 175;
+        private const int MinimumLU_HeightForTopCells = 174;
 
         // TODO - remove this parameter when all versions are > 0.27.24
         private const double OldVerticalPositionTolerance = 27;
@@ -376,10 +376,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     // SpaceOnly cells can be occupied by high load units
                     if (isFloating
                         && compactingType == CompactingType.NoCompacting
-                        && loadUnitHeight > MinimumLU_HeightForTopCells
+                        && loadUnitHeight >= MinimumLU_HeightForTopCells
                         && loadUnit.NetWeight < machine.LoadUnitMaxNetWeight * 0.6
                         && freeCells < cells.Count * 0.4
-                        && cellsFollowing.Any(c => c.IsFree && c.Position > cell.Position && c.Position < cell.Position + loadUnitHeight && c.BlockLevel == BlockLevel.SpaceOnly)
+                        && cellsFollowing.Any(c => c.IsFree && c.Position > cell.Position && c.Position <= cell.Position + loadUnitHeight + CellHeight && c.BlockLevel == BlockLevel.SpaceOnly)
                         )
                     {
                         isFloating = false;
