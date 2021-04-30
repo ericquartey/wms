@@ -2533,4 +2533,7 @@
   <data name="OpenBrowser" xml:space="preserve">
     <value>Open browser</value>
   </data>
+  <data name="WmsMissionActive" xml:space="preserve">
+    <value>There are active missions for this drawer by the WMS</value>
+  </data>
 </root>
