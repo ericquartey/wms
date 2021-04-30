@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         bayNumber = bay.Number;
                         var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination);
-                        if (Math.Abs(bayPosition.Height - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 4)
+                        if (Math.Abs(bayPosition.Height - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 10)
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.Mission.TargetBay);
                             throw new StateMachineException(ErrorDescriptions.VerticalPositionChanged, this.Mission.TargetBay, MessageActor.MachineManager);
