@@ -412,7 +412,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        if (bay.Carousel != null
+                        if ((bay.Carousel != null || bay.IsExternal)
                             && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number]
                             && bay.Positions.Any(p => p.LoadingUnit != null)
                             )

@@ -6973,6 +6973,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are active missions for this drawer by the WMS.
+        /// </summary>
+        public static string WmsMissionActive {
+            get {
+                return ResourceManager.GetString("WmsMissionActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Off.
         /// </summary>
         public static string WmsOff {
