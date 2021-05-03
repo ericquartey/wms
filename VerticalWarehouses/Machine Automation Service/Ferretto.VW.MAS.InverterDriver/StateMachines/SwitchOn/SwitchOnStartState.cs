@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         private int minTimeout = 500;
 
-        private DateTime startTime;
+        private DateTime startTime = DateTime.UtcNow;
 
         private bool waitAck;
 
