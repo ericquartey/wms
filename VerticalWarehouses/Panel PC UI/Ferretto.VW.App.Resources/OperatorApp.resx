@@ -2203,4 +2203,16 @@
   <data name="RestartService" xml:space="preserve">
     <value>Restart service</value>
   </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>IP address reached successfully</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>IP address NOT reachable</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>UWF filter NOT active</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>Active UWF filter</value>
+  </data>
 </root>

@@ -1835,4 +1835,16 @@
   <data name="RestartService" xml:space="preserve">
     <value>Riavvia servizio</value>
   </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>Indirizzo IP raggiunto con successo</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>Indirizzo IP NON raggiungibile</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>Filtro UWF NON attivo</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>Filtro UWF attivo</value>
+  </data>
 </root>
