@@ -1234,6 +1234,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
 
+                        if(this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                        {
+                            this.errorsProvider.RecordNew(MachineErrorCode.MissingZeroSensorWithEmptyElevator, this.machineData.RequestingBay);
+                        }
+
                         this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                     }
                     break;
