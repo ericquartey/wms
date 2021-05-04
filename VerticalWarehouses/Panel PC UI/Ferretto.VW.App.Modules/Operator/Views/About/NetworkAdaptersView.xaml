@@ -146,13 +146,14 @@
                             VerticalAlignment="Stretch"
                             Command="{Binding SaveNetworkAdapter0}"
                             Content="{res:Loc General.Save}"
-                            IsEnabled="{Binding IsEditEnabled}" />
+                            IsEnabled="{Binding IsEditEnabled}"
+                            Visibility="{Binding NetworkAdapter0.IsMachine, Converter={StaticResource BTVIC}}" />
 
       </Grid>
 
       <Grid Grid.Row="1"
             Grid.ColumnSpan="2"
-            Margin="0,30,0,0">
+            Margin="0,20,0,0">
         <Grid.RowDefinitions>
           <RowDefinition Height="auto" />
           <RowDefinition Height="auto" />
@@ -244,13 +245,13 @@
                             Command="{Binding SaveNetworkAdapter1}"
                             Content="{res:Loc General.Save}"
                             IsEnabled="{Binding IsEditEnabled}"
-                            Visibility="Hidden" />
+                            Visibility="{Binding NetworkAdapter1.IsMachine, Converter={StaticResource BTVIC}}" />
 
       </Grid>
 
       <StackPanel Grid.Row="2"
                   Grid.Column="0"
-                  Margin="0,10,0,0"
+                  Margin="0,20,0,0"
                   HorizontalAlignment="Left"
                   Orientation="Horizontal">
 
@@ -265,7 +266,7 @@
 
       <StackPanel Grid.Row="2"
                   Grid.Column="1"
-                  Margin="0,10,0,0"
+                  Margin="0,20,0,0"
                   HorizontalAlignment="Right"
                   Orientation="Horizontal">
 

@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public string IP_Additional { get; set; }
 
+        public bool IsMachine { get; set; }
+
         public string Name { get; set; }
 
         public string SubnetMask { get; set; }
@@ -225,6 +227,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var properties = networkInterface.GetIPProperties();
 
             networkAdapter.Name = networkInterface.Name;
+
+            networkAdapter.IsMachine = networkAdapter.Name.Contains("Machine");
 
             networkAdapter.Description = networkInterface.Description;
 
