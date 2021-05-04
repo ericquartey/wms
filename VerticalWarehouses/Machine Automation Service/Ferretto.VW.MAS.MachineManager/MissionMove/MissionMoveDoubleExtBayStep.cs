@@ -85,6 +85,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.RestoreConditions)
             {
                 this.Mission.RestoreConditions = false;
+                this.Mission.ErrorCode = MachineErrorCode.NoError;
                 this.Logger.LogInformation($"Homing Double External Bay Start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
             }
