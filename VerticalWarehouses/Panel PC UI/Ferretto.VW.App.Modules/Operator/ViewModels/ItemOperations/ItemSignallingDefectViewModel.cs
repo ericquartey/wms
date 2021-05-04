@@ -210,33 +210,41 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var bResult = true;
 
-            bResult = await this.itemsWebService.SignallingDefectOnDraperyItemAsync(
-                this.missionOperation.ItemBarcode,
-                this.GoodDraperyQuantity.Value,
-                this.WastedDraperyQuantity.Value);
+            try
+            {
+                bResult = await this.itemsWebService.SignallingDefectOnDraperyItemAsync(
+                    this.missionOperation.ItemBarcode,
+                    this.GoodDraperyQuantity.Value,
+                    this.WastedDraperyQuantity.Value);
 
-            // Notification messages
-            if (!bResult)
-            {
-                this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectFailed"), Services.Models.NotificationSeverity.Error);
-                // string message => "Signalling defect failed"
-            }
-            else
-            {
-                if (isItemDeleted)
+                // Notification messages
+                if (!bResult)
                 {
-                    this.ShowNotification(Localized.Get("OperatorApp.ItemIsDeleted"), Services.Models.NotificationSeverity.Warning);
-                    // string message => "Item is deleted"
+                    this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectFailed"), Services.Models.NotificationSeverity.Error);
+                    // string message => "Signalling defect failed"
                 }
                 else
                 {
-                    this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectSuccess"), Services.Models.NotificationSeverity.Success);
-                    // string message => "Signalling defect successful"
+                    if (isItemDeleted)
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.ItemIsDeleted"), Services.Models.NotificationSeverity.Warning);
+                        // string message => "Item is deleted"
+                    }
+                    else
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectSuccess"), Services.Models.NotificationSeverity.Success);
+                        // string message => "Signalling defect successful"
+                    }
                 }
-            }
 
-            // Go back to the Pick view
-            //this.NavigationService.GoBack();
+                // Go back to the Pick view
+                this.NavigationService.GoBack();
+            }
+            catch (Exception exc)
+            {
+                this.Logger.Debug($"Error: {exc}");
+                this.ShowNotification("Unknown error on signalling defect operation", Services.Models.NotificationSeverity.Error);
+            }
         }
 
         private async Task LoadItemDataAsync(int itemId)
