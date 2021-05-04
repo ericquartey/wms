@@ -205,6 +205,12 @@
                          Command="{Binding MarkAsResolvedAndGoCommand}"
                          Content="{res:Loc OperatorApp.MarkAsResolvedAndGo}"
                          Visibility="{Binding IsVisibleGoTo, Converter={StaticResource BTVC}}" />
+        <local:PpcButton Margin="10,0,0,0"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Command="{Binding MarkAsResolvedAndFindZeroCommand}"
+                         Content="{res:Loc ErrorsApp.MarkAsResolvedAndFindZero}"
+                         Visibility="{Binding IsVisibleFindZero, Converter={StaticResource BTVC}}" />
       </StackPanel>
 
 

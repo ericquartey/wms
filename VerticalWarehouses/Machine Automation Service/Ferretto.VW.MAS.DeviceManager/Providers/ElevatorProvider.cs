@@ -882,6 +882,52 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
+        public void MoveHorizontalFindZero(BayNumber requestingBay, MessageActor sender)
+        {
+            var policy = ActionPolicy.Allowed;
+
+            if (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null
+                   ||
+                   !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
+            {
+                policy = new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("ALoadingUnitIsAlreadyOnBoardOfTheElevator", CommonUtils.Culture.Actual) };
+            }
+
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
+            var targetPosition = this.HorizontalPosition - 20;
+
+            var speed = new[] { axis.HorizontalCalibrateSpeed };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Absolute,
+                MovementMode.FindZero,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                HorizontalMovementDirection.Backwards);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Horizontal find zero Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
         /// <summary>
         /// Moves the horizontal chain of the elevator to load or unload a LoadUnit in manual mode.
         /// It does not use a selected profile to perform this operation.

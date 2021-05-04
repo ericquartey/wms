@@ -361,6 +361,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                     break;
 
+                case MovementMode.FindZero:
+                    {
+                        this.findZeroStep = HorizontalCalibrationStep.FindCenter;
+                        this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
+                        this.targetPosition = this.machineData.MessageData.TargetPosition;
+                        statusWordPollingInterval = 500;
+
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
+
+                        commandMessage = new FieldCommandMessage(
+                            positioningFieldMessageData,
+                            $"{this.machineData.MessageData.AxisMovement} Positioning Find lost Zero Started",
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageActor.DeviceManager,
+                            FieldMessageType.Positioning,
+                            inverterIndex);
+                    }
+                    break;
+
                 default:
                     if (Debugger.IsAttached)
                     {
@@ -789,6 +808,36 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         break;
                     }
 
+                case MovementMode.FindZero:
+                    {
+                        if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
+                        {
+                            var data = message.Data as InverterStatusUpdateFieldMessageData;
+                            var chainPosition = data.CurrentPosition;
+
+                            if (chainPosition.HasValue)
+                            {
+                                switch (this.findZeroStep)
+                                {
+                                    case HorizontalCalibrationStep.FindCenter:
+                                        if (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                                        {
+                                            this.Stop(StopRequestReason.Stop);
+                                        }
+                                        else if(data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition - 11  &&
+                                            data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition - 11)
+                                        {
+                                            this.findZeroStep = HorizontalCalibrationStep.ForwardFindZeroSensor;
+                                            this.FindZeroNextPosition(this.horizontalStartingPosition);
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+
                 case MovementMode.Position when this.machineData.MessageData.MovementType == MovementType.TableTarget:
                     {
                         if (this.IsLoadingErrorDuringPickup())
@@ -1171,6 +1220,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             MessageStatus.OperationEnd);
 
                         this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
+                    }
+                    break;
+
+                case MovementMode.FindZero:
+                    {
+                        this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
 
                         this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                     }
