@@ -315,6 +315,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             if (e.MachinePowerState == MachinePowerState.Powered &&
                 this.findZero)
             {
+                this.Logger.Debug("Send find zero command to MAS");
+
                 this.findZero = false;
                 this.machineElevatorWebService.FindLostZeroAsync();
 

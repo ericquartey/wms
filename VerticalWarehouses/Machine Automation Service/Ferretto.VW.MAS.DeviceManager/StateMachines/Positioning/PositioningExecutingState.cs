@@ -368,6 +368,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.targetPosition = this.machineData.MessageData.TargetPosition;
                         statusWordPollingInterval = 500;
 
+                        this.Logger.LogDebug($"Start Find zero, TargetPosition{this.targetPosition} StartPosition{this.horizontalStartingPosition}");
+
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
@@ -823,10 +825,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                         if (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                                         {
                                             this.Stop(StopRequestReason.Stop);
+                                            this.Logger.LogDebug($"Horizontal Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
                                         else if(data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition - 11  &&
                                             data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition - 11)
                                         {
+                                            this.Logger.LogDebug($"Horizontal Find Zero update destination position Value {this.horizontalStartingPosition:0.0000}");
+
                                             this.findZeroStep = HorizontalCalibrationStep.ForwardFindZeroSensor;
                                             this.FindZeroNextPosition(this.horizontalStartingPosition);
                                         }
