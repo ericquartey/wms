@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public string IP_Additional { get; set; }
 
+        public bool IsMachine { get; set; }
+
         public string Name { get; set; }
 
         public string SubnetMask { get; set; }
@@ -65,6 +67,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private NetworkAdapter networkAdapter0;
 
         private NetworkAdapter networkAdapter1;
+
+        private string pingAddress;
+
+        private DelegateCommand pingCommand;
 
         private System.Timers.Timer refresh;
 
@@ -117,10 +123,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.networkAdapter1, value);
         }
 
+        public string PingAddress
+        {
+            get => this.pingAddress;
+            set => this.SetProperty(ref this.pingAddress, value);
+        }
+
+        public ICommand PingCommand => this.pingCommand
+                         ??
+                 (this.pingCommand = new DelegateCommand(
+                     () => this.Ping(), this.CanExecutePingCommand));
+
         public ICommand RestartServiceCommand => this.restartServiceCommand
-                          ??
+                                  ??
                   (this.restartServiceCommand = new DelegateCommand(
-                      () => this.Reload(), this.CanExecuteReloadCommand));
+                      () => this.Reload(), this.CanExecuteCommand));
 
         public ICommand SaveNetworkAdapter0 => this.saveNetworkAdapter0
                                                   ??
@@ -175,6 +192,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.uwfOffCommand.RaiseCanExecuteChanged();
             this.uwfOnCommand.RaiseCanExecuteChanged();
             this.restartServiceCommand.RaiseCanExecuteChanged();
+            this.pingCommand.RaiseCanExecuteChanged();
+        }
+
+        private static bool PingHost(string nameOrAddress)
+        {
+            bool pingable = false;
+            Ping pinger = null;
+
+            try
+            {
+                pinger = new Ping();
+                PingReply reply = pinger.Send(nameOrAddress);
+                pingable = reply.Status == IPStatus.Success;
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                if (pinger != null)
+                {
+                    pinger.Dispose();
+                }
+            }
+
+            return pingable;
         }
 
         private static NetworkAdapter SetData(NetworkInterface networkInterface)
@@ -184,6 +227,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var properties = networkInterface.GetIPProperties();
 
             networkAdapter.Name = networkInterface.Name;
+
+            networkAdapter.IsMachine = networkAdapter.Name.Contains("Machine");
 
             networkAdapter.Description = networkInterface.Description;
 
@@ -246,13 +291,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanExecuteCommand()
         {
-            return this.MachineModeService.MachineMode != MAS.AutomationService.Contracts.MachineMode.Automatic;
+            return this.MachineModeService.MachineMode != MAS.AutomationService.Contracts.MachineMode.Automatic &&
+                this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Operator;
         }
 
-        private bool CanExecuteReloadCommand()
+        private bool CanExecutePingCommand()
         {
-            return this.CanExecuteCommand() &&
-                this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Operator;
+            return this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Operator;
         }
 
         private void CheckUwf()
@@ -296,11 +341,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ClearNotifications();
             if (this.isFilterEnabled)
             {
-                this.ShowNotification("Filtro UWF attivo", Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Localized.Get("OperatorApp.UwfActive"), Services.Models.NotificationSeverity.Warning);
             }
             else
             {
-                this.ShowNotification("Filtro UWF NON attivo", Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Localized.Get("OperatorApp.UwfNotActive"), Services.Models.NotificationSeverity.Warning);
             }
         }
 
@@ -335,6 +380,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.GetNetworkAdapters();
             this.refresh.Enabled = false;
+        }
+
+        private void Ping()
+        {
+            this.ClearNotifications();
+            if (PingHost(this.pingAddress))
+            {
+                this.ShowNotification(Localized.Get("OperatorApp.IpReached"), Services.Models.NotificationSeverity.Success);
+            }
+            else
+            {
+                this.ShowNotification(Localized.Get("OperatorApp.IpNotReached"), Services.Models.NotificationSeverity.Error);
+            }
         }
 
         private void Reload()

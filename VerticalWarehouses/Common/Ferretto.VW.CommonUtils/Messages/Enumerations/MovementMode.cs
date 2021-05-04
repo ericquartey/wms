@@ -78,6 +78,11 @@
         /// <summary>
         /// Test in external bay
         /// </summary>
-        DoubleExtBayTest
+        DoubleExtBayTest,
+
+        /// <summary>
+        /// Find lost zero
+        /// </summary>
+        FindZero
     }
 }

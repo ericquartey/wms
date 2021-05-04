@@ -2401,6 +2401,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IP address NOT reachable.
+        /// </summary>
+        public static string IpNotReached {
+            get {
+                return ResourceManager.GetString("IpNotReached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IP address reached successfully.
+        /// </summary>
+        public static string IpReached {
+            get {
+                return ResourceManager.GetString("IpReached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsDone.
         /// </summary>
         public static string IsDone {
@@ -5034,6 +5052,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Users {
             get {
                 return ResourceManager.GetString("Users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active UWF filter.
+        /// </summary>
+        public static string UwfActive {
+            get {
+                return ResourceManager.GetString("UwfActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UWF filter NOT active.
+        /// </summary>
+        public static string UwfNotActive {
+            get {
+                return ResourceManager.GetString("UwfNotActive", resourceCulture);
             }
         }
         

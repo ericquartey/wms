@@ -113,6 +113,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.elevatorProvider.CanUnloadToCell(cellId));
         }
 
+        [HttpPost("horizontal/find-lost-zero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult FindLostZero()
+        {
+            this.elevatorProvider.MoveHorizontalFindZero(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         [HttpPost("horizontal/find-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

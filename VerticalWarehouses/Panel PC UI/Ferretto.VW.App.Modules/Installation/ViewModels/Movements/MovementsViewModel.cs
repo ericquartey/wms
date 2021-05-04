@@ -555,7 +555,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanResetCommand()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute() &&
+                this.sessionService.UserAccessLevel > UserAccessLevel.Operator;
         }
 
         private bool CanStopMoving()

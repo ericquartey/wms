@@ -201,4 +201,7 @@
   <data name="UnitSelectIdBay" xml:space="preserve">
     <value>Select the id of the unit/s present in the bay.</value>
   </data>
+  <data name="MarkAsResolvedAndFindZero" xml:space="preserve">
+    <value>Mark as resolved and search the zero</value>
+  </data>
 </root>

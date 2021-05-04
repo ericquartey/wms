@@ -432,4 +432,7 @@
   <data name="InverterErrorSyntaxError2" xml:space="preserve">
     <value>Errore di sintassi del messaggio inviato all'inverter.</value>
   </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Errore dei sensori di baia</value>
+  </data>
 </root>

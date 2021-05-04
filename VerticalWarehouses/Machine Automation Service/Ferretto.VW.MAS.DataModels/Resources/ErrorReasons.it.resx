@@ -426,4 +426,7 @@
   <data name="InverterErrorSyntaxError2" xml:space="preserve">
     <value>Errore momentaneo. Se il problema persiste spegnere la macchina e riaccendere dopo 15 secondi.</value>
   </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Errore dei sensori di presenza di baia</value>
+  </data>
 </root>
