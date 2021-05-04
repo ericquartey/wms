@@ -825,7 +825,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public void MoveHorizontalCalibration(BayNumber requestingBay, MessageActor sender)
         {
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
-            var bayPositionId = bay.Positions.OrderByDescending(b => b.Height).FirstOrDefault().Id;
             var policy = this.CanCalibrateZeroPlate();
             if (!policy.IsAllowed)
             {

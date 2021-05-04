@@ -827,7 +827,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Stop(StopRequestReason.Stop);
                                             this.Logger.LogDebug($"Horizontal Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
-                                        else if(data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition - 11  &&
+                                        else if (data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition - 11 &&
                                             data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition - 11)
                                         {
                                             this.Logger.LogDebug($"Horizontal Find Zero update destination position Value {this.horizontalStartingPosition:0.0000}");
@@ -1234,7 +1234,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
 
-                        if(this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                        if (!this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                         {
                             this.errorsProvider.RecordNew(MachineErrorCode.MissingZeroSensorWithEmptyElevator, this.machineData.RequestingBay);
                         }
