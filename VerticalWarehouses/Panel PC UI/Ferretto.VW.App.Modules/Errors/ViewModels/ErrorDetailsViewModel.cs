@@ -267,12 +267,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 return;
             }
 
-            if (this.error.Code == 39)
+            if (this.error.Code == (int)MachineErrorCode.WarehouseIsFull)
             {
                 this.IsVisibleGoTo = true;
                 this.IsVisibleFindZero = false;
             }
-            else if (this.error.Code == 15)
+            else if (this.error.Code == (int)MachineErrorCode.MissingZeroSensorWithEmptyElevator ||
+                this.error.Code == (int)MachineErrorCode.ZeroSensorErrorAfterDeposit)
             {
                 this.IsVisibleGoTo = false;
                 this.IsVisibleFindZero = true;
