@@ -159,6 +159,22 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                    false);
         }
 
+        private bool CanFindZero()
+        {
+            if (this.error.Code == (int)MachineErrorCode.MissingZeroSensorWithEmptyElevator ||
+                            this.error.Code == (int)MachineErrorCode.ZeroSensorErrorAfterDeposit ||
+                            this.error.Code == (int)MachineErrorCode.ConditionsNotMetForHoming)
+            {
+                return !this.SensorsService.IsZeroChain &&
+                    !this.SensorsService.Sensors.LuPresentInMachineSide &&
+                    !this.SensorsService.Sensors.LuPresentInOperatorSide;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private bool CanMarkAsResolved()
         {
             return
@@ -272,8 +288,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsVisibleGoTo = true;
                 this.IsVisibleFindZero = false;
             }
-            else if (this.error.Code == (int)MachineErrorCode.MissingZeroSensorWithEmptyElevator ||
-                this.error.Code == (int)MachineErrorCode.ZeroSensorErrorAfterDeposit)
+            else if (this.CanFindZero())
             {
                 this.IsVisibleGoTo = false;
                 this.IsVisibleFindZero = true;

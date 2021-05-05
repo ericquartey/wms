@@ -885,11 +885,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var policy = ActionPolicy.Allowed;
 
-            if (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null
-                   ||
-                   !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
+            if (this.machineResourcesProvider.IsSensorZeroOnCradle
+                ||
+                !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
             {
-                policy = new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("ALoadingUnitIsAlreadyOnBoardOfTheElevator", CommonUtils.Culture.Actual) };
+                policy = new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual) };
             }
 
             if (!policy.IsAllowed)
