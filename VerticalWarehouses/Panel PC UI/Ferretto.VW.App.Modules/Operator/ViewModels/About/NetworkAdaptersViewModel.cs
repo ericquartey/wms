@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using System.Diagnostics;
 using Prism.Commands;
-using System.Windows.Input;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Resources;
-using System.Timers;
-using System.Threading;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -42,6 +41,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public string IP_Additional { get; set; }
 
+        public bool IsEnabled { get; set; }
+
         public bool IsMachine { get; set; }
 
         public string Name { get; set; }
@@ -71,8 +72,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private string pingAddress;
 
         private DelegateCommand pingCommand;
-
-        private System.Timers.Timer refresh;
 
         private DelegateCommand restartServiceCommand;
 
@@ -167,20 +166,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBusy = true;
 
-            this.RaisePropertyChanged(nameof(this.IsEditEnabled));
-
             this.IsBackNavigationAllowed = true;
 
             await base.OnAppearedAsync();
 
             this.GetNetworkAdapters();
 
-            this.IsBusy = false;
-
             this.CheckUwf();
 
-            this.refresh = new System.Timers.Timer(1000);
-            this.refresh.Elapsed += new ElapsedEventHandler(this.OnTimerElapsed);
+            this.IsBusy = false;
+
+            this.RaisePropertyChanged(nameof(this.IsEditEnabled));
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -218,75 +214,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             return pingable;
-        }
-
-        private static NetworkAdapter SetData(NetworkInterface networkInterface)
-        {
-            var networkAdapter = new NetworkAdapter();
-
-            var properties = networkInterface.GetIPProperties();
-
-            networkAdapter.Name = networkInterface.Name;
-
-            networkAdapter.IsMachine = networkAdapter.Name.Contains("Machine");
-
-            networkAdapter.Description = networkInterface.Description;
-
-            if (!properties.DhcpServerAddresses.Any())
-            {
-                networkAdapter.DHCP = false;
-            }
-            else
-            {
-                networkAdapter.DHCP = true;
-            }
-
-            if (properties.GatewayAddresses.Any())
-            {
-                if (properties.GatewayAddresses.Count == 2)
-                {
-                    networkAdapter.Gateway = properties.GatewayAddresses.FirstOrDefault().Address.ToString();
-                    networkAdapter.Gateway_Additional = properties.GatewayAddresses.LastOrDefault().Address.ToString();
-                }
-                else
-                {
-                    networkAdapter.Gateway = properties.GatewayAddresses.FirstOrDefault().Address.ToString();
-                }
-            }
-
-            var isSetPrincipalIP = false;
-            foreach (UnicastIPAddressInformation ip in properties.UnicastAddresses)
-            {
-                if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                {
-                    if (!isSetPrincipalIP)
-                    {
-                        networkAdapter.IP = ip.Address.ToString();
-                        networkAdapter.SubnetMask = ip.IPv4Mask.ToString();
-                        isSetPrincipalIP = true;
-                    }
-                    else
-                    {
-                        networkAdapter.IP_Additional = ip.Address.ToString();
-                        networkAdapter.SubnetMask_Additional = ip.IPv4Mask.ToString();
-                    }
-                }
-            }
-
-            if (properties.DnsAddresses.Any())
-            {
-                if (properties.DnsAddresses.Count == 2)
-                {
-                    networkAdapter.DNS1 = properties.DnsAddresses.FirstOrDefault().ToString();
-                    networkAdapter.DNS2 = properties.DnsAddresses.LastOrDefault().ToString();
-                }
-                else
-                {
-                    networkAdapter.DNS1 = properties.DnsAddresses.FirstOrDefault().ToString();
-                }
-            }
-
-            return networkAdapter;
         }
 
         private bool CanExecuteCommand()
@@ -357,7 +284,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var isSetNetwork0 = false;
             foreach (var ethAdapter in ethAdapters)
             {
-                var adapter = SetData(ethAdapter);
+                var adapter = this.SetData(ethAdapter);
 
                 if (!isSetNetwork0)
                 {
@@ -374,12 +301,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.NetworkAdapter1));
 
             this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), Services.Models.NotificationSeverity.Success);
-        }
-
-        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            this.GetNetworkAdapters();
-            this.refresh.Enabled = false;
         }
 
         private void Ping()
@@ -436,6 +357,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void SetConfig(NetworkAdapter networkAdapter)
         {
+            this.IsBusy = true;
+
             this.ClearNotifications();
 
             if (networkAdapter.DHCP)
@@ -465,7 +388,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
                         else
                         {
-                            this.SendPromptCommand("/c netsh interface ipv4 add address \"" + networkAdapter.Name + "\" " + networkAdapter.IP_Additional + " " + networkAdapter.SubnetMask_Additional + " " + networkAdapter.Gateway_Additional);
+                            this.SendPromptCommand("/c netsh interface ipv4 add address \"" + networkAdapter.Name + "\" " + networkAdapter.IP_Additional + " " + networkAdapter.SubnetMask_Additional + " " + networkAdapter.Gateway);
                         }
                     }
                 }
@@ -484,19 +407,96 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     this.SendPromptCommand("/c netsh interface ip set dns \"" + networkAdapter.Name + "\" static " + networkAdapter.DNS1);
-                }
 
-                if (networkAdapter.DNS2 is null)
-                {
-                    this.SendPromptCommand("/c netsh interface ip add dns \"" + networkAdapter.Name + "\" index=2");
-                }
-                else
-                {
-                    this.SendPromptCommand("/c netsh interface ip add dns \"" + networkAdapter.Name + "\" " + networkAdapter.DNS2 + " index=2");
+                    if (networkAdapter.DNS2 is null)
+                    {
+                        this.SendPromptCommand("/c netsh interface ip add dns \"" + networkAdapter.Name + "\" index=2");
+                    }
+                    else
+                    {
+                        this.SendPromptCommand("/c netsh interface ip add dns \"" + networkAdapter.Name + "\" " + networkAdapter.DNS2 + " index=2");
+                    }
                 }
             }
 
-            this.refresh.Enabled = true;
+            this.NetworkAdapter0 = null;
+            this.NetworkAdapter1 = null;
+
+            _ = Task.Delay(1000).ContinueWith(t => this.GetNetworkAdapters());
+
+            this.IsBusy = false;
+        }
+
+        private NetworkAdapter SetData(NetworkInterface networkInterface)
+        {
+            var networkAdapter = new NetworkAdapter();
+
+            var properties = networkInterface.GetIPProperties();
+
+            networkAdapter.IsEnabled = networkInterface.OperationalStatus == OperationalStatus.Up &&
+                this.IsEditEnabled;
+
+            networkAdapter.Name = networkInterface.Name;
+
+            networkAdapter.IsMachine = networkAdapter.Name.Contains("Machine");
+
+            networkAdapter.Description = networkInterface.Description;
+
+            if (!properties.DhcpServerAddresses.Any())
+            {
+                networkAdapter.DHCP = false;
+            }
+            else
+            {
+                networkAdapter.DHCP = true;
+            }
+
+            if (properties.GatewayAddresses.Any())
+            {
+                if (properties.GatewayAddresses.Count == 2)
+                {
+                    networkAdapter.Gateway = properties.GatewayAddresses.FirstOrDefault().Address.ToString();
+                    networkAdapter.Gateway_Additional = properties.GatewayAddresses.LastOrDefault().Address.ToString();
+                }
+                else
+                {
+                    networkAdapter.Gateway = properties.GatewayAddresses.FirstOrDefault().Address.ToString();
+                }
+            }
+
+            var isSetPrincipalIP = false;
+            foreach (UnicastIPAddressInformation ip in properties.UnicastAddresses)
+            {
+                if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    if (!isSetPrincipalIP)
+                    {
+                        networkAdapter.IP = ip.Address.ToString();
+                        networkAdapter.SubnetMask = ip.IPv4Mask.ToString();
+                        isSetPrincipalIP = true;
+                    }
+                    else
+                    {
+                        networkAdapter.IP_Additional = ip.Address.ToString();
+                        networkAdapter.SubnetMask_Additional = ip.IPv4Mask.ToString();
+                    }
+                }
+            }
+
+            if (properties.DnsAddresses.Any())
+            {
+                if (properties.DnsAddresses.Count == 2)
+                {
+                    networkAdapter.DNS1 = properties.DnsAddresses.FirstOrDefault().ToString();
+                    networkAdapter.DNS2 = properties.DnsAddresses.LastOrDefault().ToString();
+                }
+                else
+                {
+                    networkAdapter.DNS1 = properties.DnsAddresses.FirstOrDefault().ToString();
+                }
+            }
+
+            return networkAdapter;
         }
 
         private void SetUWF(bool on)

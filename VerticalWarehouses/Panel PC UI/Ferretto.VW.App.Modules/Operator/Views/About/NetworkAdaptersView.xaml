@@ -2,10 +2,8 @@
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-            xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -34,11 +32,6 @@
                Text="{res:Loc OperatorApp.NetworkCards}" />
 
     <views:AboutMenuNavigationView Grid.RowSpan="2" />
-
-    <Image Grid.Row="1"
-           Grid.Column="1"
-           Width="60"
-           Margin="30" />
 
     <Grid Grid.Row="1"
           Grid.Column="1">
@@ -79,7 +72,7 @@
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
                               IsChecked="{Binding NetworkAdapter0.DHCP, Mode=TwoWay}"
-                              IsEnabled="{Binding IsEditEnabled}"
+                              IsEnabled="{Binding NetworkAdapter0.IsEnabled}"
                               LabelText="DHCP" />
 
         <controls:PpcTextBox Grid.Row="1"
@@ -87,7 +80,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter0.IP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter0.IsEnabled}"
                              LabelText="IP" />
 
         <controls:PpcTextBox Grid.Row="1"
@@ -95,14 +88,14 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter0.IP_Additional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter0.IsEnabled}"
                              LabelText="{res:Loc OperatorApp.IP_Additional}" />
 
         <controls:PpcTextBox Grid.Row="2"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter0.SubnetMask, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter0.IsEnabled}"
                              LabelText="SubnetMask" />
 
         <controls:PpcTextBox Grid.Row="2"
@@ -110,7 +103,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter0.SubnetMask_Additional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter0.IsEnabled}"
                              LabelText="{res:Loc OperatorApp.SubnetMask_Additional}" />
 
         <controls:PpcTextBox Grid.Row="2"
@@ -118,7 +111,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter0.Gateway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter0.IsEnabled}"
                              LabelText="Gateway" />
 
         <controls:PpcTextBox Grid.Row="3"
@@ -126,7 +119,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter0.DNS1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter0.IsEnabled}"
                              LabelText="DNS 1" />
 
         <controls:PpcTextBox Grid.Row="3"
@@ -134,7 +127,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter0.DNS2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter0.IsEnabled}"
                              LabelText="DNS 2" />
 
         <controls:PpcButton Grid.Row="3"
@@ -146,7 +139,7 @@
                             VerticalAlignment="Stretch"
                             Command="{Binding SaveNetworkAdapter0}"
                             Content="{res:Loc General.Save}"
-                            IsEnabled="{Binding IsEditEnabled}"
+                            IsEnabled="{Binding NetworkAdapter0.IsEnabled}"
                             Visibility="{Binding NetworkAdapter0.IsMachine, Converter={StaticResource BTVIC}}" />
 
       </Grid>
@@ -177,7 +170,7 @@
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
                               IsChecked="{Binding NetworkAdapter1.DHCP, Mode=TwoWay}"
-                              IsEnabled="{Binding IsEditEnabled}"
+                              IsEnabled="{Binding NetworkAdapter1.IsEnabled}"
                               LabelText="DHCP" />
 
         <controls:PpcTextBox Grid.Row="1"
@@ -185,7 +178,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter1.IP, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter1.IsEnabled}"
                              LabelText="IP" />
 
         <controls:PpcTextBox Grid.Row="1"
@@ -193,14 +186,14 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter1.IP_Additional, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter1.IsEnabled}"
                              LabelText="{res:Loc OperatorApp.IP_Additional}" />
 
         <controls:PpcTextBox Grid.Row="2"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter1.SubnetMask, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter1.IsEnabled}"
                              LabelText="SubnetMask" />
 
         <controls:PpcTextBox Grid.Row="2"
@@ -208,7 +201,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter1.SubnetMask_Additional, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter1.IsEnabled}"
                              LabelText="{res:Loc OperatorApp.SubnetMask_Additional}" />
 
         <controls:PpcTextBox Grid.Row="2"
@@ -216,7 +209,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter1.Gateway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter1.IsEnabled}"
                              LabelText="Gateway" />
 
         <controls:PpcTextBox Grid.Row="3"
@@ -224,7 +217,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter1.DNS1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter1.IsEnabled}"
                              LabelText="DNS 1" />
 
         <controls:PpcTextBox Grid.Row="3"
@@ -232,7 +225,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding NetworkAdapter1.DNS2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsEditEnabled}"
+                             IsEnabled="{Binding NetworkAdapter1.IsEnabled}"
                              LabelText="DNS 2" />
 
         <controls:PpcButton Grid.Row="3"
@@ -244,7 +237,7 @@
                             VerticalAlignment="Stretch"
                             Command="{Binding SaveNetworkAdapter1}"
                             Content="{res:Loc General.Save}"
-                            IsEnabled="{Binding IsEditEnabled}"
+                            IsEnabled="{Binding NetworkAdapter1.IsEnabled}"
                             Visibility="{Binding NetworkAdapter1.IsMachine, Converter={StaticResource BTVIC}}" />
 
       </Grid>
