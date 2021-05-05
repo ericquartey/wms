@@ -110,7 +110,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.goodDraperyQuantity;
             set => this.SetProperty(ref this.goodDraperyQuantity, value, () =>
             {
-                this.IsConfirmSignallingDefectButtonEnabled = value.HasValue && (value + this.wastedDraperyQuantity <= this.availableQuantity);
+                this.IsConfirmSignallingDefectButtonEnabled = value.HasValue &&
+                    (value + this.wastedDraperyQuantity <= this.availableQuantity) &&
+                    (this.wastedDraperyQuantity > 0);
             });
         }
 
@@ -143,7 +145,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.wastedDraperyQuantity;
             set => this.SetProperty(ref this.wastedDraperyQuantity, value, () =>
             {
-                this.IsConfirmSignallingDefectButtonEnabled = value.HasValue && (this.goodDraperyQuantity + value <= this.availableQuantity);
+                this.IsConfirmSignallingDefectButtonEnabled = value.HasValue &&
+                    (this.goodDraperyQuantity + value <= this.availableQuantity) &&
+                    (value > 0);
             });
         }
 
@@ -161,7 +165,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await this.LoadItemDataAsync(missionOperation.ItemId);
             }
 
-            this.IsConfirmSignallingDefectButtonEnabled = true;
+            this.IsConfirmSignallingDefectButtonEnabled = false;
             this.CanInputGoodDraperyQuantity = true;
             this.CanInputWastedDraperyQuantity = true;
 
@@ -221,24 +225,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (!bResult)
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectFailed"), Services.Models.NotificationSeverity.Error);
-                    // string message => "Signalling defect failed"
                 }
                 else
                 {
                     if (isItemDeleted)
                     {
                         this.ShowNotification(Localized.Get("OperatorApp.ItemIsDeleted"), Services.Models.NotificationSeverity.Warning);
-                        // string message => "Item is deleted"
+                        this.IsConfirmSignallingDefectButtonEnabled = false;
                     }
                     else
                     {
                         this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectSuccess"), Services.Models.NotificationSeverity.Success);
-                        // string message => "Signalling defect successful"
                     }
                 }
 
-                // Go back to the Pick view
-                this.NavigationService.GoBack();
+                if (bResult && !isItemDeleted)
+                {
+                    // Go back to the Pick view
+                    this.NavigationService.GoBack();
+                }
             }
             catch (Exception exc)
             {
