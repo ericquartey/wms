@@ -27,6 +27,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineStatistics GetPresentStatistics();
 
+        /// <summary>
+        /// Get the raw database content.
+        /// </summary>
+        /// <returns>
+        ///     The raw database contents (raw bytes)
+        /// </returns>
+        byte[] GetRawDatabaseContent();
+
         IEnumerable<ServicingInfo> GetServicingInfo();
 
         IEnumerable<MachineStatistics> GetStatistics();
