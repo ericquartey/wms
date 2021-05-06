@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"bayNumber: {bayNumber}; " +
                 $"direction: {direction}; " +
                 $"LoadUnitId: {loadUnitId}; " +
-                $"targetPosition: {targetPosition}; " +
+                $"targetPosition: {targetPosition:0.00}; " +
                 $"speed: {speed[0]:0.00}; " +
                 $"acceleration: {acceleration[0]:0.00}; " +
                 $"deceleration: {deceleration[0]:0.00};");
@@ -400,7 +400,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"bayNumber: {bayNumber}; " +
                 $"direction: {direction}; " +
                 $"LoadUnitId: {loadUnitId}; " +
-                $"targetPosition: {targetPosition}; " +
+                $"targetPosition: {targetPosition:0.00}; " +
                 $"feedrate: {procedureParameters.FeedRate}; " +
                 $"speed: {speed[0]:0.00}; " +
                 $"acceleration: {acceleration[0]:0.00}; " +
