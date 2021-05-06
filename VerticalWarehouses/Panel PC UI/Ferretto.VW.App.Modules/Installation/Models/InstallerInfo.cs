@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Modules.Installation.Models
             this.FileName = fileName;
         }
 
-        public InstallerInfo(string fileName, bool isOnUsb) : this(fileName)
+        public InstallerInfo(string fileName, bool isOnUsb, bool isOnMainPc) : this(fileName)
         {
             this.IsOnUsb = isOnUsb;
         }
@@ -49,6 +49,8 @@ namespace Ferretto.VW.App.Modules.Installation.Models
         public string FileName { get; set; }
 
         public int Id { get; private set; }
+
+        public bool IsOnMainPc { get; }
 
         public bool IsOnUsb { get; }
 

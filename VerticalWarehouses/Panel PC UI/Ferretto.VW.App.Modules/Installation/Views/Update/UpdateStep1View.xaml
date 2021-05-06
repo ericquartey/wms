@@ -38,14 +38,14 @@
                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                Text="{res:Loc InstallationApp.SoftwareUpdate}" />
 
-        <TextBlock Grid.Row="1"
-            Margin="15"
+    <TextBlock Grid.Row="1"
+               Margin="15"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}"
                Text="{res:Loc InstallationApp.SoftwareUpdateDescription}" />
 
-        <Border Grid.Row="2"
+    <Border Grid.Row="2"
             Grid.ColumnSpan="2"
             Width="900"
             Padding="15,20,15,0"
@@ -67,6 +67,8 @@
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
 
         </Grid.ColumnDefinitions>
@@ -80,7 +82,34 @@
                                  LabelText="{res:Loc InstallationApp.PanelPcCurrentVersion}" />
 
 
+        <icon:PackIconMaterial Grid.Row="0"
+                               Grid.Column="2"
+                               Width="24"
+                               Height="24"
+                               Margin="15"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Kind="Cloud" />
+
+        <controls:PpcLabeledText Grid.Row="0"
+                                 Grid.Column="3"
+                                 Margin="0,15,25,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding RepositoryPath}"
+                                 LabelText="{res:Loc InstallationApp.RepositoryPath}" />
+
+        <controls:PpcLabeledText Grid.Row="0"
+                                 Grid.Column="4"
+                                 Margin="0,15,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding RepositoryPackagesCount}"
+                                 LabelText="{res:Loc InstallationApp.AvailablePackages}" />
+
         <icon:PackIconMaterial Grid.Row="1"
+                               Grid.Column="2"
                                Width="24"
                                Height="24"
                                Margin="15"
@@ -90,22 +119,23 @@
                                Kind="Cloud" />
 
         <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="1"
+                                 Grid.Column="3"
                                  Margin="0,15,25,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding RepositoryPath}"
-                                 LabelText="{res:Loc InstallationApp.RepositoryPath}" />
+                                 ContentText="{Binding RepositoryPathSecondary}"
+                                 LabelText="Percorso Repositorio secondario" />
 
         <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="2"
+                                 Grid.Column="4"
                                  Margin="0,15,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding RepositoryPackagesCount}"
+                                 ContentText="{Binding RepositoryPackagesSecondaryCount}"
                                  LabelText="{res:Loc InstallationApp.AvailablePackages}" />
 
         <icon:PackIconMaterial Grid.Row="2"
+                               Grid.Column="2"
                                Width="24"
                                Height="24"
                                Margin="15"
@@ -115,7 +145,7 @@
                                Kind="Usb" />
 
         <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="1"
+                                 Grid.Column="3"
                                  Margin="0,15,25,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
@@ -123,7 +153,7 @@
                                  LabelText="{res:Loc InstallationApp.RemovableDevicesCount}" />
 
         <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="2"
+                                 Grid.Column="4"
                                  Margin="0,15,0,15"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
@@ -165,7 +195,7 @@
                           VerticalAlignment="Center"
                           Command="{Binding RestoreCommand}"
                           Content="{res:Loc InstallationApp.Restoration}"
-                          Visibility="Hidden"/>
+                          Visibility="Hidden" />
 
       <controls:PpcButton Margin="15,0,0,0"
                           HorizontalAlignment="Right"
