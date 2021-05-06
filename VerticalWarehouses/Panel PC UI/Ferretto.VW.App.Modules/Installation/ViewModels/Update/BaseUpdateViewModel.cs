@@ -53,7 +53,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private int repositoryPackagesCount;
 
+        private IEnumerable<string> repositoryPackagesSecondary;
+
+        private int repositoryPackagesSecondaryCount;
+
         private string repositoryPath;
+
+        private string repositoryPathSecondary;
 
         #endregion
 
@@ -101,7 +107,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.installations;
             set => this.SetProperty(ref this.installations, value, () =>
             {
-                this.RepositoryPackagesCount = this.installations.Count(p => !p.IsOnUsb);
+                this.RepositoryPackagesCount = this.installations.Count(p => !p.IsOnUsb && !p.IsOnMainPc);
+                this.RepositoryPackagesSecondaryCount = this.installations.Count(p => !p.IsOnUsb && p.IsOnMainPc);
                 this.RemovableDevicesPackagesCount = this.installations.Count(p => p.IsOnUsb);
 
                 this.RaiseCanExecuteChanged();
@@ -150,10 +157,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.repositoryPackagesCount, value);
         }
 
+        public int RepositoryPackagesSecondaryCount
+        {
+            get => this.repositoryPackagesSecondaryCount;
+            set => this.SetProperty(ref this.repositoryPackagesSecondaryCount, value);
+        }
+
         public string RepositoryPath
         {
             get => this.repositoryPath;
             set => this.SetProperty(ref this.repositoryPath, value);
+        }
+
+        public string RepositoryPathSecondary
+        {
+            get => this.repositoryPathSecondary;
+            set => this.SetProperty(ref this.repositoryPathSecondary, value);
         }
 
         #endregion
@@ -175,6 +194,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.RepositoryPath = ConfigurationManager.AppSettings.GetUpdateRepositoryPath();
+
+                this.RepositoryPathSecondary = ConfigurationManager.AppSettings.GetUpdateRepositoryPathSecondary();
 
                 this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
                 this.usbWatcher.Enable();
@@ -230,6 +251,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.repositoryPackages = this.ScanRepository();
 
+                this.repositoryPackagesSecondary = this.ScanSecondaryRepository();
+
                 this.removableDevicePackages = this.ScanRemovableDevices();
 
                 this.Installations = this.SelectValidPackages();
@@ -283,6 +306,27 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return Array.Empty<string>();
         }
 
+        private IEnumerable<string> ScanSecondaryRepository()
+        {
+            this.IsRepositoryAvailable = Directory.Exists(this.RepositoryPathSecondary);
+            if (this.IsRepositoryAvailable &&
+                (this.MachineService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo ||
+                this.MachineService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree))
+            {
+                var exePackageFiles = Directory.EnumerateFiles(this.RepositoryPathSecondary, InstallPackageExeExtension, SearchOption.TopDirectoryOnly);
+                var zipPackageFiles = Directory.EnumerateFiles(this.RepositoryPathSecondary, InstallPackageZipExtension, SearchOption.TopDirectoryOnly);
+
+                if (!(zipPackageFiles is null))
+                {
+                    exePackageFiles = exePackageFiles.Union(zipPackageFiles);
+                }
+
+                return exePackageFiles.ToArray();
+            }
+
+            return Array.Empty<string>();
+        }
+
         private IEnumerable<InstallerInfo> SelectValidPackages()
         {
             var validPackages = new List<InstallerInfo>();
@@ -293,6 +337,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 packages = packages.Union(this.repositoryPackages);
             }
 
+            if (!(this.repositoryPackagesSecondary is null))
+            {
+                packages = packages.Union(this.repositoryPackagesSecondary);
+            }
+
             foreach (var fileName in packages)
             {
                 try
@@ -300,7 +349,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     using (var archive = ZipFile.OpenRead(fileName))
                     {
                         var isUsb = this.removableDevicePackages.Contains(fileName);
-                        var installerFileInfo = new InstallerInfo(fileName, isUsb);
+                        var isOnMainPc = this.repositoryPackagesSecondary.Contains(fileName);
+                        var installerFileInfo = new InstallerInfo(fileName, isUsb, isOnMainPc);
 
                         foreach (var entry in archive.Entries.Where(e => e.FullName.Contains(DEFAULTMANIFESTFILE)))
                         {

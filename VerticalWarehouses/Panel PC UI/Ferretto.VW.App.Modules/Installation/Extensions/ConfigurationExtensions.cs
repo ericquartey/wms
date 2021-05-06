@@ -19,6 +19,8 @@ namespace Ferretto.VW.App
 
         private const string UpdateRepositoryPath = "Update:Repository:Path";
 
+        private const string UpdateRepositoryPath2 = "Update:Repository:Path2";
+
         private const string UpdateZipChecksumFileName = "Update:Zip:Checksum:FileName";
 
         #endregion
@@ -83,6 +85,16 @@ namespace Ferretto.VW.App
             }
 
             return appSettings.Get(UpdateRepositoryPath);
+        }
+
+        public static string GetUpdateRepositoryPathSecondary(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            return appSettings.Get(UpdateRepositoryPath2);
         }
 
         public static string GetUpdateZipChecksumFileName(this NameValueCollection appSettings)
