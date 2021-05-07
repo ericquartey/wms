@@ -117,49 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О</value>
+  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
+    <value>Высота секции ({0}) должна находиться в пределах диапазона [{1},{2}].</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
+  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
+    <value>Указанное положение секции недействительно.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика, сигналы тревоги, диагностика</value>
+  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
+    <value>В указанной секции нет кругового конвейера.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Установка</value>
+  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
+    <value>В секции находится по крайней мере одна единица груза.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>ИНСТ</value>
+  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value>В секции есть единица груза в верхнем положении.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедуры установки, ручное перемещение, многое другое</value>
+  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
+    <value>Цепной конвейер секции не находится в нулевом положении.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Поддержка</value>
+  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
+    <value>ГоризонтальнаяИВертикальная ось не является действительной осью для метода ПолучитьУказательИнвертораПоВидуДвижения()</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
+    <value>Максимальная высота единицы груза недействительна.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Техническое обслуживание, компактные ящики, обновление</value>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>В секции есть единица груза во внешнем положении.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
+    <value>Указанная секция не является внешней секцией</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>ДВИГАТЬСЯ</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Состояние датчика, сброс машины, больше</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Собирание</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ВЫБИРАТЬ</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Комплектация, депонирование, инвентаризация</value>
+  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
+    <value>Внешняя секция не может выполнить недействительное движение</value>
   </data>
 </root>

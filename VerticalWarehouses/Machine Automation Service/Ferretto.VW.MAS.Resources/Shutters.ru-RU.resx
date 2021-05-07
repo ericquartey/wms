@@ -117,49 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О</value>
+  <data name="TheDelayBetweenTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Задержка между двумя циклами должна быть исключительно положительной.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
+  <data name="TheMinSpeedIsNotValid" xml:space="preserve">
+    <value>МинСкорость заслонки недействительна</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика, сигналы тревоги, диагностика</value>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Количество циклов испытаний должно быть исключительно положительным.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Установка</value>
+  <data name="ThePositionIsNotValid" xml:space="preserve">
+    <value>Исходное положение заслонки недействительно</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>ИНСТ</value>
+  <data name="TheShutterIsNotCompletelyOpen" xml:space="preserve">
+    <value>Заслонка не полностью открыта.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедуры установки, ручное перемещение, многое другое</value>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>Тип заслонки недействителен</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Поддержка</value>
+  <data name="TheSpeedRateIsNotValid" xml:space="preserve">
+    <value>Скорость заслонки недействительна</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
-  </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Техническое обслуживание, компактные ящики, обновление</value>
-  </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>ДВИГАТЬСЯ</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Состояние датчика, сброс машины, больше</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Собирание</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ВЫБИРАТЬ</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Комплектация, депонирование, инвентаризация</value>
+  <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
+    <value>Заслонка секции {0} не полностью закрыта.</value>
   </data>
 </root>

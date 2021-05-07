@@ -117,49 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О</value>
+  <data name="ALoadingUnitIsAlreadyOnBoardOfTheElevator" xml:space="preserve">
+    <value>На подъемнике уже имеется единица груза.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
+  <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Единица груза уже имеется в указанном положении секции.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика, сигналы тревоги, диагностика</value>
+  <data name="HorizontalHomingParametersError" xml:space="preserve">
+    <value>Параметры возврата в исходное положение по горизонтальной оси недействительны</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Установка</value>
+  <data name="MovementDistanceCannotBeZero" xml:space="preserve">
+    <value>Расстояние движения не может быть равно нулю.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>ИНСТ</value>
+  <data name="NoLoadingUnitIsOnBoardOfTheElevator" xml:space="preserve">
+    <value>На подъемнике нет единицы груза.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедуры установки, ручное перемещение, многое другое</value>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>В указанном положении секции нет единицы груза.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Поддержка</value>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
+    <value>В указанной ячейке нет единицы груза.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Ни одна единица груза не ожидает отбора в указанном положении секции.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Техническое обслуживание, компактные ящики, обновление</value>
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>Смещение вертикальной оси ({0}мм) недействительно: должно находиться в диапазоне [{1}мм; {2}мм].</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
+    <value>Целевое положение ({0}мм) должно находиться в диапазоне [{1}мм; {2}мм].</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>ДВИГАТЬСЯ</value>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Подъемник уже находится напротив указанного положения секции.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Состояние датчика, сброс машины, больше</value>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Подъемник уже находится напротив указанной ячейки.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Собирание</value>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>Подъемник не пуст, но задвижка находится в нулевом положении.</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ВЫБИРАТЬ</value>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>Подъемник не заполнен, но задвижка не находится в нулевом положении.</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Комплектация, депонирование, инвентаризация</value>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Подъемник не находится напротив указанного положения секции.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Подъемник не находится напротив указанной ячейки.</value>
+  </data>
+  <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
+    <value>Единица груза не помещается в указанную ячейку.</value>
+  </data>
+  <data name="VerticalHomingParametersError" xml:space="preserve">
+    <value>Параметры возврата в исходное положение по вертикальной оси недействительны</value>
+  </data>
+  <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
+    <value>Перед попыткой перемещения подъемника в заданное положение необходимо выполнить калибровку по вертикали.</value>
+  </data>
+  <data name="VerticalCompensationDistanceOutOfBounds" xml:space="preserve">
+    <value>Расстояние вертикальной коррекции выходит за пределы</value>
   </data>
 </root>

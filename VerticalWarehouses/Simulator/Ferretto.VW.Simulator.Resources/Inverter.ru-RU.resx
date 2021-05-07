@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbsoluteRelative" xml:space="preserve">
+    <value>Abs/rel</value>
+  </data>
+  <data name="ChangeOnSetPoint" xml:space="preserve">
+    <value>Изменение уставки</value>
+  </data>
+  <data name="ChangeSetImmediately" xml:space="preserve">
+    <value>Немедленно измените набор</value>
+  </data>
+  <data name="ElevatorExtraStroke" xml:space="preserve">
+    <value>Дополнительный Ход Лифта</value>
+  </data>
+  <data name="ElevatorZeroPosition" xml:space="preserve">
+    <value>Нулевое положение лифта</value>
+  </data>
+  <data name="EnableOperation" xml:space="preserve">
+    <value>Включить работу</value>
+  </data>
+  <data name="EnableVoltage" xml:space="preserve">
+    <value>Включить Напряжение</value>
+  </data>
+  <data name="EncoderChannelA" xml:space="preserve">
+    <value>Канал кодировщика A Канал</value>
+  </data>
+  <data name="EncoderChannelAElevatorChain" xml:space="preserve">
+    <value>кодировщика A --- Цепь лифта</value>
+  </data>
+  <data name="EncoderChannelB" xml:space="preserve">
+    <value>Кодирующий канал le B</value>
+  </data>
+  <data name="EncoderChannelBElevatorChain" xml:space="preserve">
+    <value>Канал кодировщика B --- Цепь лифта</value>
+  </data>
+  <data name="EncoderChannelZ" xml:space="preserve">
+    <value>Канал кодировщика Z</value>
+  </data>
+  <data name="EncoderChannelZElevatorChain" xml:space="preserve">
+    <value>Канал кодировщика Z --- Цепь лифта</value>
+  </data>
+  <data name="Fault" xml:space="preserve">
+    <value>Вина</value>
+  </data>
+  <data name="FollowingError" xml:space="preserve">
+    <value>Следующая ошибка</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>Свободный</value>
+  </data>
+  <data name="Halt" xml:space="preserve">
+    <value>Остановка</value>
+  </data>
+  <data name="HeartBeat" xml:space="preserve">
+    <value>сердцебиение</value>
+  </data>
+  <data name="HomingAttained" xml:space="preserve">
+    <value>Самонаведение достигнуто</value>
+  </data>
+  <data name="HomingError" xml:space="preserve">
+    <value>Ошибка самонаведения</value>
+  </data>
+  <data name="HomingStarted" xml:space="preserve">
+    <value>Началась операция самонаведения</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Горизонтальная ось</value>
+  </data>
+  <data name="InGear" xml:space="preserve">
+    <value>InGear</value>
+  </data>
+  <data name="InternalLimitActive" xml:space="preserve">
+    <value>Внутренний Лимит Активен</value>
+  </data>
+  <data name="InternalLimitActive_bis" xml:space="preserve">
+    <value>InternalLimitActive</value>
+  </data>
+  <data name="ManufacturerSpecific" xml:space="preserve">
+    <value>Специфика производителя</value>
+  </data>
+  <data name="ManufacturerSpecificWarning2" xml:space="preserve">
+    <value>Предупреждение конкретного производителя 2</value>
+  </data>
+  <data name="MaxSlippage" xml:space="preserve">
+    <value>Максимальное проскальзывание</value>
+  </data>
+  <data name="MotionBlockInProgress" xml:space="preserve">
+    <value>MotionBlockInProgress</value>
+  </data>
+  <data name="MotionBlockSelect0" xml:space="preserve">
+    <value>MotionBlockSelect0</value>
+  </data>
+  <data name="MotionBlockSelect1" xml:space="preserve">
+    <value>MotionBlockSelect1</value>
+  </data>
+  <data name="MotionBlockSelect2" xml:space="preserve">
+    <value>MotionBlockSelect2</value>
+  </data>
+  <data name="MotionBlockSelect3" xml:space="preserve">
+    <value>MotionBlockSelect3</value>
+  </data>
+  <data name="NewSetPoint" xml:space="preserve">
+    <value>Новая уставка</value>
+  </data>
+  <data name="NormalFunction" xml:space="preserve">
+    <value>Нормальная Функция</value>
+  </data>
+  <data name="OperationEnabled" xml:space="preserve">
+    <value>Операция включена</value>
+  </data>
+  <data name="OperationMode" xml:space="preserve">
+    <value>Режим работы</value>
+  </data>
+  <data name="OperationModeSpecific" xml:space="preserve">
+    <value>Специфика режима работы</value>
+  </data>
+  <data name="PowerOn" xml:space="preserve">
+    <value>Включение питания</value>
+  </data>
+  <data name="QuickStop" xml:space="preserve">
+    <value>Быстрая Остановка (Низкая Активность)</value>
+  </data>
+  <data name="ReadyToSwitchOn" xml:space="preserve">
+    <value>Готов к включению</value>
+  </data>
+  <data name="Remote" xml:space="preserve">
+    <value>Дистанционный</value>
+  </data>
+  <data name="ResetFault" xml:space="preserve">
+    <value>Ошибка сброса</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Возобновиться</value>
+  </data>
+  <data name="RfgEnable" xml:space="preserve">
+    <value>Включение Rfg</value>
+  </data>
+  <data name="RfgUnlock" xml:space="preserve">
+    <value>Разблокировка Rfg</value>
+  </data>
+  <data name="RfgUseRef" xml:space="preserve">
+    <value>Использование Rfg ref</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Роль инвертора</value>
+  </data>
+  <data name="RoleByID" xml:space="preserve">
+    <value>ИНВЕРТОР {0}</value>
+  </data>
+  <data name="SensorElevatorChainZero" xml:space="preserve">
+    <value>Датчик нуля цепи лифта</value>
+  </data>
+  <data name="SequenceMode" xml:space="preserve">
+    <value>Режим последовательности</value>
+  </data>
+  <data name="SetPointAck" xml:space="preserve">
+    <value>Подтверждение уставки</value>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Датчик затвора (A)</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Датчик затвора (B)</value>
+  </data>
+  <data name="StartMotionBlock" xml:space="preserve">
+    <value>Блок запуска Движения</value>
+  </data>
+  <data name="SwitchedOn" xml:space="preserve">
+    <value>Включенный</value>
+  </data>
+  <data name="SwitchOn" xml:space="preserve">
+    <value>включить</value>
+  </data>
+  <data name="SwitchOnDisabled" xml:space="preserve">
+    <value>Включение выключено</value>
+  </data>
+  <data name="TargetReached" xml:space="preserve">
+    <value>Цель достигнута</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Тип инвертора</value>
+  </data>
+  <data name="Velocity" xml:space="preserve">
+    <value>Скорость</value>
+  </data>
+  <data name="VoltageEnabled" xml:space="preserve">
+    <value>Напряжение Включено</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Предупреждение</value>
+  </data>
+  <data name="XPosition" xml:space="preserve">
+    <value>Горизонтальное Положение</value>
+  </data>
+  <data name="YPosition" xml:space="preserve">
+    <value>Вертикальное Положение</value>
+  </data>
+  <data name="ZeroPosition" xml:space="preserve">
+    <value>Нулевое Положение</value>
+  </data>
+</root>

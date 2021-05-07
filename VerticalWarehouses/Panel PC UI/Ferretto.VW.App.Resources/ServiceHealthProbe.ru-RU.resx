@@ -117,49 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О</value>
-  </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
-  </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика, сигналы тревоги, диагностика</value>
-  </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Установка</value>
-  </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>ИНСТ</value>
-  </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедуры установки, ручное перемещение, многое другое</value>
-  </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Поддержка</value>
-  </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
-  </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Техническое обслуживание, компактные ящики, обновление</value>
-  </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>ДВИГАТЬСЯ</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Состояние датчика, сброс машины, больше</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Собирание</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ВЫБИРАТЬ</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Комплектация, депонирование, инвентаризация</value>
+  <data name="ValueCannotNegative" xml:space="preserve">
+    <value>Значение не может быть отрицательным.</value>
   </data>
 </root>

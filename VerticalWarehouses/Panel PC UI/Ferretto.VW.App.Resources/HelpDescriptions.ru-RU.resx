@@ -1,0 +1,1278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>Указывает значение верхней квоты, требуемой для испытания. Установить значение только в том случае, если поле доступно для редактирования.</value>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>Указывает значение нижней квоты, требуемой для испытания. Установить значение только в том случае, если поле доступно для редактирования.</value>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>Установить необходимое количество циклов.</value>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>Отображает количество завершенных в данный момент циклов.</value>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>Сообщает текущее положение оси.</value>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>Начать испытание. Испытание продолжается до тех пор, пока не будет достигнуто необходимое количество циклов или пока не будет нажата кнопка останова.</value>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>Остановить испытание. Цикл останавливается в конце текущего движения. Нажатие кнопки запуска цикла возобновляет выполнение испытания до завершения.</value>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>Процедура позволяет выполнить серию циклов перемещения вертикальной оси между двумя точками, указанными во входных данных. Цикл при запуске продолжается либо до тех пор, пока не будут достигнуты необходимые циклы, либо не будет нажата клавиша завершения.</value>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>Функция калибровки разрешения по вертикальной оси позволяет откалибровать правильное значение путем измерения в поле, а затем обновить значение по умолчанию, предложенное системой. Процедура выполняется последовательно до успешного завершения.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Если поле доступно для редактирования, установить требуемую начальную квоту.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>Указывает измеренное перемещение от начального до конечного положения.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Если поле доступно для редактирования, установить требуемую конечную квоту.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>Кнопка начинает перемещать ось в заданное ранее конечное положение.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>Указывает измеренное перемещение от начального до конечного положения.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>Шаг 1: поместить ось в исходное положение</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>Шаг 2: поместить ось в конечное измерение</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>Шаг 3: Обновить разрешение до нового значения</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>Шаг 4: переместить ось и закрыть процедуру</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>РазрешениеКалибровкиТекущееРазрешениеСправка</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Отображает новое значение разрешения, рассчитанное с помощью процедуры.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Заменяет предыдущее значение разрешения новым вычисленным значением.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Вернуть ось в исходное положение.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Определить начало координат оси и закрыть процедуру.</value>
+  </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>Отображает текущее состояние установки. Уже завершенные части выделяются зеленым цветом, а те, которые должны быть завершены или должны быть выполнены, - серым. Некоторые процедуры возможны только после правильного завершения подготовительных процедур.</value>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>Серый индикатор указывает на процедуру, которую еще предстоит выполнить</value>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>Зеленый индикатор указывает на успешно завершенную процедуру.</value>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>Дисплей состояния датчика</value>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>Серый цвет указывает на отключенное состояние датчика.</value>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>Зеленый цвет указывает на включенное состояние датчика.</value>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>Серый цвет указывает на отключенное состояние датчика.</value>
+  </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>Низкоскоростное ручное управление.</value>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>Позволяет осуществлять перемещение различных осей с низкой скоростью. Устанавливается небольшое пространство для перемещения в обоих направлениях. Текст кнопок изменяется в соответствии с требуемым движением. После того, как машина будет испытана, можно будет управлять всеми различными осями на низкой скорости без блокировок и для неограниченного количества ходов.</value>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>Указывает текущее положение или состояние для тех частей, которые имеют только дискретные положения.</value>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>Кнопка для перемещения вперед, вверх или открытия в соответствии с выбранной частью</value>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>Кнопка для перемещения назад, вниз или закрытия в соответствии с выбранной частью</value>
+  </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>Это позволяет провести серию повторяющихся испытаний для закрывающей заслонки выбранной секции. Можно установить время ожидания между двумя последовательными движениями. Процедура заканчивается по достижении заданного количества циклов или на выходе.</value>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>Установить необходимое количество циклов.</value>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>Установить время задержки между двумя последовательными циклами.</value>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>Указывает количество циклов, выполненных в данный момент.</value>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>Состояние датчика А барьера.</value>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>Состояние датчика В барьера.</value>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>Включить запуск необходимых испытаний. Кнопка включена, если количество требуемых циклов больше нуля.</value>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>Останавливает цикл, когда текущее движение завершено. При следующем нажатии кнопки запуска испытание возобновляется с цикла, следующего за остановленным.</value>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>Процедура позволяет определить начало вертикальной оси, в конце которой устанавливается текущее положение, указанное значением смещения. Процедура является подготовительной для реализации других функций, требующих перемещения оси на высоту.</value>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>Нижний предел перемещения.</value>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>Верхний предел перемещения.</value>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>Текущее значение смещения. В конце начала оси текущая квота устанавливается на это значение.</value>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>Текущее разрешение оси.</value>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>Сообщает окончательный результат процедуры.</value>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>Запускает процедуру начала вертикальной оси.</value>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>Останавливает процедуру начала вертикальной оси.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>Начальное значение текущего положения, считываемое счетчиком.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>Конечное значение текущего положения, считываемое счетчиком.</value>
+  </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>Эта процедура позволяет проверить и выполнить возможную корректировку размера выбранной ячейки. Коррекция применяется только к выбранной ячейке.</value>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>Установить ячейку, размер которой необходимо проверить.</value>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>Указывает размер выбранной в данный момент ячейки.</value>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>Значение изменения высоты во время фазы регулировки.</value>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>Текущее значение координаты оси.</value>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>Общее значение применяемой корректировки.</value>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>Поместить вертикальную ось в выбранную ячейку.</value>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>Увеличивает текущую координату оси на значение, указанное шагом.</value>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>Уменьшает текущую координату оси на значение, указанное шагом.</value>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>Значение шага, применяемое к текущей координате оси при каждом нажатии кнопок перемещения.</value>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>Эта процедура позволяет проверить правильное расположение различных дверных панелей стола. Любая коррекция применяется ко всем ячейкам, относящимся к панели, на которой проводится испытание.</value>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>Указывает общее количество панелей на стороне, выбранной контрольной ячейкой.</value>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>Указывает на текущую выбранную панель, которая проверяется.</value>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>Выбранная ячейка, из которой выводится панель для проверки. Посредством нечетных или четных чисел выбирается передняя или задняя сторона.</value>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>Размер выбранной ячейки.</value>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>Указывает текущее положение оси. Оно изменяется действием кнопок шага.</value>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>Значение шага, используемое при изменении измерения.</value>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>Общее значение корректировки, которая будет применена к измерению выбранной ячейки.</value>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>Позволяет перейти к следующей панели для проверки.</value>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>Поместить ось в выбранную ячейку.</value>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>Увеличивает текущую координату оси на значение, указанное шагом.</value>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>Уменьшает текущую координату оси на значение, указанное шагом.</value>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>Применить корректировку к группе ячеек на выбранной в данный момент панели.</value>
+  </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>Процедура позволяет настроить барьер обнаружения высоты выдвижного узла. Сигнал достигнутой высоты также должен использоваться на этапе предварительного позиционирования шаблона испытания.</value>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>Установить скорость, которая будет использоваться на этапе калибровки.</value>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>Указывает системную ошибку, вызванную установленной скоростью калибровки и временем сканирования системы. Уменьшить скорость, чтобы устранить ошибку.</value>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>Устанавливает максимальный допуск, допустимый при измерении. Испытание завершается неуспешно, если результат превышает требуемое значение.</value>
+  </data>
+  <data name="HelpGHCHeightReached" xml:space="preserve">
+    <value>Указывает на активацию луча, используемого в качестве элемента проверки высоты.</value>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>Возвращает текущее положение оси цепного конвейера.</value>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>Указывает корректировку, которая должна быть применена к барьеру. Знак плюс - требуется поднятие барьера, знак минус - требуется спуск барьера на указанное значение.</value>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>Сообщает окончательный результат испытания.</value>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>Кнопка запускает процедуру проверки.</value>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>Кнопка останавливает процедуру проверки.</value>
+  </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>Эта процедура позволяет убедиться, что измерение веса соответствует предусмотренному допуску. Для измерения используются веса образцов в количестве, указанном в соответствующем поле.</value>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>Указывает на ход, выполняемый на низкой скорости, во время которого выполняются пробы подаваемого тока.</value>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>Указывает вес образца, введенного для испытания.</value>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>Указывает допуск, необходимый для измерения.</value>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>Указывает вес, измеренный системой.</value>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>Сообщает окончательный результат процедуры. Результат будет положительным, если измеренный вес находится в пределах установленного допуска.</value>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>Начать процедуру испытания.</value>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>Остановить процедуру испытания.</value>
+  </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>Процедура позволяет исправить смещение вертикальной оси, чтобы выровнять высоту различных ячеек с системой отсчета вертикальной оси.</value>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>Ячейка, выбранная для проверки.</value>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>Текущая высота выбранной ячейки</value>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>Значение изменения высоты, которое будет применяться при каждом нажатии клавиш перемещения оси.</value>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>Текущее положение вертикальной оси.</value>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>Текущее значение смещения вертикальной оси.</value>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>Новое значение смещения.</value>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>Перемещает вертикальную ось в размер выбранной ячейки.</value>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>Увеличивает текущую высоту вертикальной оси на заданное значение шага.</value>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>Уменьшает текущую высоту вертикальной оси на заданное значение шага.</value>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>Обновляет смещение вертикальной оси до указанного значения.</value>
+  </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>Процедура позволяет изменить блок ячеек между первой и последней выбранной. Выбранная сторона автоматически указывается на основе номера начальной ячейки в зависимости от того, является ли она нечетной или четной.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Установить начальный номер ячейки блока.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Установить номер последней ячейки блока.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Установить требуемое значение корректировки, которая будет применена к выбранной группе ячеек.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Показывает сторону, на которой выполняется редактирование. Сторона автоматически определяется на основе выбранного начального номера ячейки: четный или нечетный.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Применить корректировку к выбранной группе ячеек.</value>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>Указывает общее количество ячеек для испытания.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>Указывает количество испытываемых в данный момент ячеек.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>Номер ячейки, которая испытывается в настоящее время.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>Номер вставляемого выдвижного узла.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>Максимальная вместимость выдвижного узла при загрузке.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Начать процедуру вставки выдвижного узла. Процедура заканчивается, когда запланированные циклы завершены.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Вызвать выдвижной узел, используемый для испытания в секции.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>Эта процедура позволяет использовать выдвижной узел, выбранный в соответствующем поле ввода, для проверки нижних и верхних ячеек машины, а также ячеек ниже и выше блоков ячеек, указанных как отключенные. Цель процедуры состоит в том, чтобы убедиться в отсутствии механических помех в этих областях.</value>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>Эта процедура позволяет вставить пустые выдвижные узлы внутрь машины в конце процедуры ввода в эксплуатацию. Выдвижные узлы вставляются внутрь свободных блоков, выбирая их в соответствии с наименьшим приоритетом.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>Общее количество выдвижных узлов.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>Выдвижные узлы уже вставлены в машину.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>Номер вставляемого выдвижного узла. Он может быть сгенерирован соответствующей кнопкой или вставлен в соответствующее поле.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>Указывает максимальную емкость, разрешенную для вставляемого в данный момент узла.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>Кнопка устанавливает следующий выдвижной узел для вставки, это число следует за последним введенным.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Запускает процедуру вставки выбранного выдвижного узла.</value>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>Эта процедура позволяет проверить и, возможно, скорректировать высоту различных возможных положений в различных секциях. Эта процедура подходит для типа секции, указанного в документе, описывающем конфигурацию машины. В случае нескольких положений в одной секции процедура допускает несколько проверок.</value>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>Выбрать секцию, расчеты по которой необходимо проверить.</value>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>Указывает положение внутри выбранной секции, высоту которого необходимо проверить. Оно устанавливается автоматически.</value>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>Отображает высоту выбранной позиции в контролируемой секции.</value>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>Значение шага, применяемое к текущей координате оси при каждом нажатии кнопок перемещения.</value>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>Совокупное значение корректировки, которая будет применена к высоте выбранного положения секции.</value>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>Поместить вертикальную ось в выбранное место секции.</value>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>Увеличивает текущую координату оси на значение, указанное шагом.</value>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>Уменьшает текущую координату оси на значение, указанное шагом.</value>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>Корректирует текущую высоту секции-текущее положение на значение, указанное в соответствующем поле.</value>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>Если эта кнопка включена, она позволяет выбрать следующую позицию в выбранной в данный момент секции. Процедура должна быть повторена для нового положения.</value>
+  </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>Главное меню обеспечивает доступ ко всем функциям, предусмотренным на этапе ввода машины в эксплуатацию.</value>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>Главное меню.</value>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>Указывает, при отображении, на наличие ошибки. Нажатие кнопки открывает окно, предназначенное для восстановления ситуации.</value>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>Состояние Выкл. этой кнопки указывает на отключение движений машины.</value>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>Состояние Вкл. этой кнопки указывает на то, что машина включена для перемещения.</value>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>Указывает имя пользователя, вошедшего в систему в данный момент. При нажатии позволяет выйти из системы.</value>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>При нажатии открывается контекстное меню для выбранной в данный момент функции.</value>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>Позволяет прокручивать список кнопок для доступа к различным функциям.</value>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>Список кнопок для доступа к функциям установки.</value>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>Позволяет прокручивать вниз список кнопок для доступа к различным функциям.</value>
+  </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>Процедура позволяет выполнить серию испытаний на вставку и выемку выдвижного узла с использованием секции, выбранной в соответствующих полях ввода. Для испытания можно изменять ускорение, замедление и скорость подачи согласно тому, что указано в соответствующем поле. Испытание продолжается до тех пор, пока не будет достигнуто необходимое количество циклов или пока не будет нажата кнопка останова.</value>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>Ввести номер секции, на которой необходимо выполнить испытание.</value>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>Ввести положение внутри секции, на котором необходимо выполнить испытание.</value>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>Ввести скорость подачи, необходимую для испытания. Снижение также влияет на значения ускорения и замедления.</value>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>Сообщает текущее положение оси цепного конвейера в виде значения относительно начальной высоты.</value>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>Ввести необходимое количество циклов испытания.</value>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>Сообщает о количестве выполненных в данный момент полных циклов.</value>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>Перемещает вертикальную ось в положение внутри выбранной секции. При подаче учитывается смещение при вставке.</value>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>Начать процедуру испытания. Кнопка включается только после того, как вертикальная ось находится в нужном положении в секции.</value>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>Остановить цикл испытания.</value>
+  </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>Сообщает о режиме, включенном в данный момент для ручных команд. Режим расширенного хода автоматически устанавливается после завершения ввода в эксплуатацию.</value>
+  </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>Отменить процедуру сохранения файла.</value>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>Эта процедура позволяет сохранять или восстанавливать файлы конфигурации на внешнем устройстве.</value>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>Процедура сохранения конфигурации.</value>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>Указывает автоматически созданную папку, в которой будут сохранены файлы конфигурации.</value>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>Запустить процедуру сохранения файлов конфигурации. Все уже имеющиеся файлы будут перезаписаны.</value>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>Подтвердить процедуру сохранения файла.</value>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>Отменить процедуру сохранения файла.</value>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>Процедура восстановления конфигурации.</value>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>Запустить процедуру загрузки файлов конфигурации. Все уже имеющиеся файлы будут перезаписаны.</value>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>Подтвердить процедуру загрузки файла.</value>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>Отменить процедуру загрузки файла.</value>
+  </data>
+  <data name="HelpOpMainPageHeadr" xml:space="preserve">
+    <value>Первая страница.</value>
+  </data>
+  <data name="HelpOpMainPageDescription" xml:space="preserve">
+    <value>Главное меню позволяет проверить состояние машины с помощью соответствующих кнопок в верхней части экрана. С левой стороны, с помощью кнопок навигации, можно получить доступ к различным функциям.</value>
+  </data>
+  <data name="HelpOpMainManu" xml:space="preserve">
+    <value>Указывает на ручной режим. Автоматический цикл приостановлен.</value>
+  </data>
+  <data name="HelpOpMainAuto" xml:space="preserve">
+    <value>Указывает на автоматический режим. Машина управляет командами, поступающими от системы управления.</value>
+  </data>
+  <data name="HelpOpMainOff" xml:space="preserve">
+    <value>Питание двигателей отключено. Движения невозможны ни в одном режиме.</value>
+  </data>
+  <data name="HelpOpMainOn" xml:space="preserve">
+    <value>Питание двигателей включено. Машина может совершать движения.</value>
+  </data>
+  <data name="HelpOpMainServiceAdvice" xml:space="preserve">
+    <value>Система сигнализирует о том, что приближается срок планового технического обслуживания для некоторых частей машины.</value>
+  </data>
+  <data name="HelpOpMainServiceAllert" xml:space="preserve">
+    <value>Система сигнализирует о том, что для некоторых частей машины достигнут конец запланированного периода между двумя операциями технического обслуживания. Требуется техническое обслуживание!</value>
+  </data>
+  <data name="HelpOpMainError" xml:space="preserve">
+    <value>Во время работы машины произошла ошибка. Нажатие этой кнопки открывает страницу для управления процедурами восстановления.</value>
+  </data>
+  <data name="HelpOpMainUser" xml:space="preserve">
+    <value>Сообщает имя текущего вошедшего в систему оператора. Нажатие кнопки позволяет выйти из системы.</value>
+  </data>
+  <data name="HelpOpMainHelp" xml:space="preserve">
+    <value>Кнопка открывает страницу справки, контекстно связанную с используемой процедурой.</value>
+  </data>
+  <data name="HelpOpMainDrawerOp" xml:space="preserve">
+    <value>Кнопка открывает страницу для управления операциями, запланированными на выдвижном узле в секции</value>
+  </data>
+  <data name="HelpOpMainItem" xml:space="preserve">
+    <value>Кнопка открывает страницу, на которой можно выполнить поиск кода изделия.</value>
+  </data>
+  <data name="HelpOpMainLists" xml:space="preserve">
+    <value>Кнопка открывает страницу отображения перечней, ожидающих выполнения и запланированных СУС.</value>
+  </data>
+  <data name="HelpOpMainOther" xml:space="preserve">
+    <value>Позволяет получить доступ к дополнительным функциям.</value>
+  </data>
+  <data name="HelpDrawerWaitDescription" xml:space="preserve">
+    <value>Страница указывает, что система выполнила операции, запланированные на последнем выдвижном узле, поступившим в секцию. Ожидает поступления следующего выдвижного узла, что вызовет открытие страницы, посвященной запланированным операциям.</value>
+  </data>
+  <data name="HelpDrawerWaitNote" xml:space="preserve">
+    <value>В примечании сообщается о текущем состоянии системы.</value>
+  </data>
+  <data name="HelpDrawerWaitScheduledOperations" xml:space="preserve">
+    <value>Поле сообщает о количестве операций, запланированных в настоящее время в направлении секции, на которой работает оператор.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
+    <value>Процедура предоставляет всю подробную информацию, касающуюся операции вывода, запланированной на выдвижном узле, находящемся в секции, где работает пользователь. На чертеже, если таковой имеется, показано разделение выдвижного узла, а выделенная область указывает на отделение, в котором необходимо работать. Если имеется, также отображается изображение обрабатываемого элемента.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
+    <value>Отображается количество элемента, который необходимо удалить из выделенного отсека.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
+    <value>Пользователь может изменить фактически выведенное количество в том случае, если запаса недостаточно. При нормальных условиях поле уже заполнено необходимым количеством.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
+    <value>В окне отображается ряд сведений, дополняющих данные, имеющиеся в окне отбора. Подробная информация отображается как для выбранного элемента, так и для любого соответствующего упаковочного листа. Если имеется, также отображается изображение артикула.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
+    <value>Показывает строку списка, к которой относится выполняемая операция вывода.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Указывается дата изготовления отбираемого элемента.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>При наличии указывается производственная партия отбираемого элемента.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>При необходимости указывается состояние материала для вывода.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
+    <value>Если это применимо, указывается упаковочный лист, в котором собирается информация, относящаяся к различным отбираемым элементам.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
+    <value>Если имеется, указывается описание упаковочного листа, объединяющего отбираемые материалы.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
+    <value>Обеспечивает указание типа упаковки отбираемого элемента.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Отображается количество элемента, который необходимо удалить из выделенного отсека.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
+    <value>На странице отображаются сведения о текущей операции по укладке. Более подробная информация о выполняемых операциях приведена на основной странице.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Указывает строку перечня, участвующую в выполняемой операции.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Сообщает о дате производства изделия.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Показывает материальный статус оплачиваемого изделия.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
+    <value>Указывает строку перечня, участвующую в выполняемой операции.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
+    <value>Указывает тип упаковки оплачиваемого изделия.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
+    <value>Количество, которое должно быть помещено в указанное отделение.</value>
+  </data>
+  <data name="HelpCommonList" xml:space="preserve">
+    <value>Указывается код перечня, связанного с выполняемой процедурой.</value>
+  </data>
+  <data name="HelpCommonListDescription" xml:space="preserve">
+    <value>Показывает описание списка, связанного с выполняемой операцией.</value>
+  </data>
+  <data name="HelpCommonItem" xml:space="preserve">
+    <value>Указывает код изделия, участвующего в выполняемой операции.</value>
+  </data>
+  <data name="HelpCommonItemDescription" xml:space="preserve">
+    <value>Отобразится описание изделия, являющегося предметом текущей операции.</value>
+  </data>
+  <data name="HelpCommonPosition" xml:space="preserve">
+    <value>Поле указывает положение, в котором находится объект отделения выполняемой операции, отображенный в соответствии с принятой кодировкой.</value>
+  </data>
+  <data name="HelpCommonNote" xml:space="preserve">
+    <value>Любые примечания, связанные с выполняемой операцией, показываются оператору.</value>
+  </data>
+  <data name="HelpCommonDetail" xml:space="preserve">
+    <value>Кнопка позволяет перейти на страницу, на которой отображаются дополнительные сведения, относящиеся к выполняемой операции.</value>
+  </data>
+  <data name="HelpCommonConfirm" xml:space="preserve">
+    <value>Убедиться, что текущая операция завершена.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
+    <value>Процедура позволяет пополнить отделение, в котором находится изделия, с теми же характеристиками, что и оплачиваемый товар. Процедура позволяет обновить максимальную вместимость отделения, если записанное значение неверно.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Количество для помещения в выбранное отделение.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
+    <value>Открывает страницу для управления обновлением максимальной вместимости отделения.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Позволяет установить количество, фактически помещенное в выбранное отделение.</value>
+  </data>
+  <data name="HelpCommonGridColumnHeader" xml:space="preserve">
+    <value>Описание столбца таблицы.</value>
+  </data>
+  <data name="HelpCommonUp" xml:space="preserve">
+    <value>Переместить указатель на предыдущее изделие. Двойное нажатие перемещает в начало перечня.</value>
+  </data>
+  <data name="HelpCommonDown" xml:space="preserve">
+    <value>Переместить указатель на следующее изделие. Двойное нажатие перемещает в конец перечня.</value>
+  </data>
+  <data name="HelpListsInWaitDescription" xml:space="preserve">
+    <value>Процедура позволяет просматривать все перечни, ожидающие выполнения системой СУС. Для каждого перечня указаны задействованные машины. Можно выполнить только ту часть перечней, в которой какая-либо статья должна быть взята из присутствующих в машине, из которой используется процедура.</value>
+  </data>
+  <data name="HelpListsInWaitGridList" xml:space="preserve">
+    <value>В столбце сетки представлены коды перечней, ожидающих выполнения.</value>
+  </data>
+  <data name="HelpListsInWaitGridDescription" xml:space="preserve">
+    <value>В столбце сетки представлено описание перечней, ожидающих выполнения.</value>
+  </data>
+  <data name="HelpListsInWaitGridMachine" xml:space="preserve">
+    <value>В столбце для каждого перечня отображается перечень машин, задействованных для его выполнения.</value>
+  </data>
+  <data name="HelpListsInWaitListsDetail" xml:space="preserve">
+    <value>Кнопка позволяет получить доступ к странице сведений о перечне, где можно просмотреть перечень представленных артикулов.</value>
+  </data>
+  <data name="HelpListsInWaitListsExecute" xml:space="preserve">
+    <value>Кнопка, если она активна, позволяет выполнить перечень, выбранный в данный момент для части, присутствующей в машине, с которой вы работаете.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
+    <value>Показывает номер строки отображаемого перечня.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
+    <value>Указать код артикула.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
+    <value>Сообщить описание изделия.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
+    <value>Указывает необходимое количество этого изделия.</value>
+  </data>
+  <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
+    <value>На странице отображается подробная информация о выбранном перечне. Во всех отображаемых строках можно выполнить только те, которые выделены, поскольку артикул содержится в машине, на которой вы работаете. Кнопка «Запустить перечень» активна только в том случае, если на компьютере, на котором вы работаете, есть хотя бы одна исполняемая строка.</value>
+  </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>Эта процедура позволяет выполнять поиск артикула как по столбцам кода, так и по столбцам описания. Текст, введенный в поле поиска, автоматически используется для поиска того, что требуется, используя содержимое двух столбцов. Результат отображается в сетке.</value>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>В нем отображается список кодов артикулов, соответствующих критериям поиска.</value>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>В нем отображается описание кодов артикулов, соответствующих критериям поиска.</value>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>Указывает перечень машин, содержащих изделие, указанное в строке. Артикул может присутствовать в одной или нескольких машинах.</value>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>Ввести последовательность символов для поиска в полях код и описание изделия в поле.</value>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>Указывает доступное количество выбранного изделия внутри машины, на которой вы работаете.</value>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>Поле включено только в том случае, если количество, доступное для выбранного изделия, больше нуля. Можно вставить значение, не превышающее доступное количество.</value>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>Позволяет запросить выбранное изделие в необходимом количестве. Кнопка включена только в том случае, если изделие доступно на машине, на которой вы работаете.</value>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>На странице отображаются основные данные выбранного артикула. Более подробную информацию можно просмотреть на уровне управления СУС.</value>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>Указывает, как управлять артикулом.</value>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>Указывает период Fifo артикула, выраженный в указанной единице измерения.</value>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>Категория принадлежности артикула.</value>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>Класс обработки выбранного изделия.</value>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>Единица измерения, выбранная для изделия.</value>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>Средний вес единицы измерения, выраженный в указанной единице измерения.</value>
+  </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>Позволяет выполнять выделенные строки перечня. Кнопка включена только в том случае, если хотя бы одна строка выбранного перечня может быть выполнена на машине, на которой вы работаете.</value>
+  </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>В столбце отображается машина или машины, на которых в данный момент присутствует артикул.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Процедура позволяет вызвать выбранный выдвижной узел в секции, над которой работает оператор.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
+    <value>Указывает номер выдвижного узла, к которому относятся данные сетки.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
+    <value>Текущая высота выбранного выдвижного узла.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
+    <value>Указывает текущий вес выбранного выдвижного узла.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
+    <value>Указывает ячейку, в которой он хранится в выдвижном узле.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
+    <value>Указывает на ту сторону машины, где хранится выдвижной узел.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
+    <value>Сообщает текущее состояние выдвижного узла. Красный цвет указывает на то, что выдвижной узел не может быть вызван подключенным пользователем.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
+    <value>Показывает номер вызываемого выдвижного узла.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Кнопка позволяет вспомнить выдвижной узел, выбранный в данный момент в сетке. Кнопка активна, если выдвижной узел может быть вызван текущим пользователем.</value>
+  </data>
+  <data name="HelpDrawerCompactingDescription" xml:space="preserve">
+    <value>Активирует процедуру сжатия для задней стороны машины. Кнопка активна, если есть возможность восстановить необходимое пространство.</value>
+  </data>
+  <data name="HelpDrawerCompactingSide" xml:space="preserve">
+    <value>Указывает сторону машины, к которой относятся предоставленные данные.</value>
+  </data>
+  <data name="HelpDrawerCompactingFragment" xml:space="preserve">
+    <value>Указывает количество потерянных фрагментов, присутствующих на текущей стороне.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
+    <value>Сообщить максимальное пространство, которое может быть восстановлено на текущей стороне.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Пространство для восстановления. По умолчанию установлено максимальное значение восстанавливаемого пространства.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
+    <value>Активирует процедуру сжатия для передней стороны машины. Кнопка активна, если есть возможность восстановить необходимое пространство.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
+    <value>Активирует процедуру сжатия для задней стороны машины. Кнопка активна, если есть возможность восстановить необходимое пространство.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>Пространство для восстановления. По умолчанию установлено максимальное значение восстанавливаемого пространства.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>Указывает номер выдвижного узла.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>Указывает количество задач, выполненных на выдвижном узле.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>Указывает количество отображенных отделений, присутствующих внутри выдвижного узла, независимо от их состояния.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>Сообщает общее количество выдвижных узлов, выделенных в машине.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>Показывает размер выдвижных узлов, хранящихся внутри машины.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>Указывает как в графической, так и в цифровой форме общую степень заполнения машины.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>Позволяет получить доступ к процедуре статистического анализа, относящейся к весу, распределенному в различных выдвижных узлах.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>Процедура предоставляет данные о весе, распределенном в различных выдвижных узлах и, в глобальном масштабе, внутри машины. Для каждого выдвижного узла предоставляется дополнительная информация, включая текущую высоту, максимальный вес, который может быть загружен для каждого такого узла, тару, текущий общий вес, а также процент текущего веса по сравнению с максимумом, предоставленным как в графической, так и в числовой форме. Также предоставляется глобальный показатель, действительный для всей машины.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>Указывает номер выдвижного узла.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>Текущая высота выдвижного узла.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>Указывает максимальный вес, допустимый для выдвижного узла.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>Указывает вес пустого выдвижного узла.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>Сообщает текущий вес выдвижного узла.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>Указывает процент использованного веса, отнесенный к максимально возможному.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Указывает максимальное количество выдвижных ящиков, выделенных в машине.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>Показывает максимальную полную мощность машины.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>Указывает загруженный вес брутто.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>Максимальный чистый расход, разрешенный машиной.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>Указывает вес нетто, загруженный в данный момент.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>Показывает текущий процент загруженного веса, относящийся к максимально допустимому весу.</value>
+  </data>
+  <data name="HelpMachineStatisticsDescription" xml:space="preserve">
+    <value>Процедура предоставляет статистические данные об основных частях машины. Приведенные данные относятся к тому, что машина выполнила в течение своего жизненного цикла с момента установки.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
+    <value>Указывает общее количество циклов, выполненных вертикальной осью. Цикл эквивалентен сдвигу между двумя точками.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
+    <value>Сообщает о суммировании Км. Перемещается по вертикальной оси с момента установки.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
+    <value>Сообщает об общем количестве циклов, выполняемых заслонкой, которой оснащена секция № 1. Цикл это полная или промежуточная операция открытия или закрытия.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
+    <value>Сообщает об общем количестве циклов, выполняемых заслонкой, которой оснащена секция № 2. Цикл это полная или промежуточная операция открытия или закрытия.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
+    <value>Сообщает об общем количестве циклов, выполняемых заслонкой, которой оснащена секция № 3. Цикл это полная или промежуточная операция открытия или закрытия.</value>
+  </data>
+  <data name="HelpMachineStatisticsHorizontalCycles" xml:space="preserve">
+    <value>Поле показывает общее количество циклов, выполненных цепным конвейером на подъемнике машины с момента установки. Цикл-это операция вставки или выемки.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay1" xml:space="preserve">
+    <value>В поле отображается общее количество выдвижных узлов, которые воздействовали на секцию № 2. Количество увеличивается, когда выдвижной узел вносится в секцию, а затем возвращается на склад.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay2" xml:space="preserve">
+    <value>В поле отображается общее количество выдвижных узлов, которые воздействовали на секцию № 2. Количество увеличивается, когда выдвижной узел вносится в секцию, а затем возвращается на склад.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay3" xml:space="preserve">
+    <value>В поле отображается общее количество выдвижных узлов, которые воздействовали на секцию № 3. Количество увеличивается, когда выдвижной узел вносится в секцию, а затем возвращается на склад.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
+    <value>В столбце отображается код комплекта для выбранного компонента.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
+    <value>В столбце показано описание различных комплектов.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
+    <value>Указывает текущее состояние комплекта. оранжевый цвет указывает на приближение технического обслуживания, красный - период истек и, следовательно, требуется техническое обслуживание.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
+    <value>В колонке указывается, что запрос на вмешательство уже был направлен обслуживающему персоналу для получения конкретного комплекта.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
+    <value>Показать модель машины.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
+    <value>Сообщить серийный номер машины.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
+    <value>Сообщить дату установки машины.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
+    <value>Указывает дату, когда было выполнено последнее техническое обслуживание.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
+    <value>Указывает предполагаемую дату следующего технического обслуживания</value>
+  </data>
+  <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
+    <value>Указывает текущее состояние комплекта. оранжевый цвет указывает на приближение технического обслуживания, красный - период истек и, следовательно, требуется техническое обслуживание.</value>
+  </data>
+  <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
+    <value>Страница позволяет просматривать данные, на которых основано обслуживание выбранного комплекта. Отображается вся информация, используемая системой для определения плановых операций технического обслуживания.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
+    <value>Показывает номер части, используемый выбранным комплектом технического обслуживания.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
+    <value>Сообщает описание компонента, используемого в выбранном комплекте.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
+    <value>Указывает количество частей элемента, необходимых в выбранном наборе.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
+    <value>Общее количество циклов, выполненных с момента установки машины.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
+    <value>Сообщает количество циклов, выполненных с момента последнего технического обслуживания.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
+    <value>Указывает количество циклов, которые могут быть выполнены между двумя операциями технического обслуживания.</value>
+  </data>
+  <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Он сообщает о состоянии комплекта с соглашением о том, что оранжевый цвет указывает на приближение технического обслуживания, а красный-на то, что срок технического обслуживания истек.</value>
+  </data>
+  <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
+    <value>Указывает количество часов, необходимых для выполнения требуемой операции технического обслуживания.</value>
+  </data>
+  <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Указывает, необходимо ли использовать платформу для работы на высоте для проведения работ по техническому обслуживанию.</value>
+  </data>
+  <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
+    <value>Позволяет вам отправить электронное письмо в службу поддержки с просьбой связаться с вами для организации технического обслуживания.</value>
+  </data>
+  <data name="HelpGeneralInfoDescription" xml:space="preserve">
+    <value>На этой странице представлен ряд общих сведений, относящихся к машине, на которой вы работаете. Помимо других сведений, также отображается дата следующего технического обслуживания. В случае, если требуется больше операций ТО, отображается самая последняя дата.</value>
+  </data>
+  <data name="HelpGeneralInfoModel" xml:space="preserve">
+    <value>Показывает модель машины, над которой вы работаете.</value>
+  </data>
+  <data name="HelpGeneralInfoSerial" xml:space="preserve">
+    <value>Указывает серийный номер машины, на которой вы работаете.</value>
+  </data>
+  <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
+    <value>Показывает выпуск ПО, установленного в данный момент на компьютере.</value>
+  </data>
+  <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
+    <value>Общее количество выдвижных узлов, вставленных в машину.</value>
+  </data>
+  <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
+    <value>Сообщить дату установки машины.</value>
+  </data>
+  <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Указывает дату последнего технического обслуживания.</value>
+  </data>
+  <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Указывает предполагаемую дату следующего технического обслуживания.</value>
+  </data>
+  <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
+    <value>Сообщает о текущем состоянии технического обслуживания машины.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
+    <value>На странице отображается некоторая статистическая информация, касающаяся использования площади выдвижного узла и общего веса, загруженного в зависимости от характеристик машины. Также отображается информация об использовании машины.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
+    <value>Общее количество выдвижных узлов с момента начала установки.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
+    <value>Указывает процент площади, занимаемой внутри машины, от общего доступного пространства.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
+    <value>Общее количество выдвижных узлов с момента начала установки.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
+    <value>Сообщает общее время включения питания с момента установки машины.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
+    <value>Указывает соотношение между общим временем, прошедшим в автоматическом режиме, и временем включения с момента установки.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
+    <value>Коэффициент использования показывает соотношение между временем, затрачиваемым на автоматическое перемещение выдвижных узлов, и временем зажигания.</value>
+  </data>
+  <data name="HelpCellsStatisticsDescription" xml:space="preserve">
+    <value>Процедура показывает статистические данные, относящиеся к ячейкам, присутствующим внутри машины. В дополнение к глобальным данным, относящимся к передней и задней сторонам, отображаются данные, относящиеся к числу ячеек в различных состояниях, предусмотренных как для передней, так и для задней сторон.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
+    <value>Сообщает о состоянии ячейки, к которой относятся данные строки.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
+    <value>Показывает общее количество ячеек со состоянием, указанным в первом столбце сетки, относящемся к лицевой стороне.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
+    <value>Указывает процент ячеек, имеющих состояние, указанный в первом столбце сетки, относящемся к лицевой стороне.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
+    <value>Показывает общее количество ячеек со состоянием, указанным в первом столбце сетки, относящемся к лицевой стороне.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
+    <value>Указывает процент ячеек, имеющих состояние, указанное в первом столбце сетки, относящемся к обратной стороне.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
+    <value>Общее количество ячеек, присутствующих в машине.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
+    <value>Общее количество ячеек, присутствующих на передней панели машины.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
+    <value>Общее количество ячеек, присутствующих на задней стороне машины.</value>
+  </data>
+  <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
+    <value>Показывает процент занятых ячеек, отнесенных к общему количеству присутствующих ячеек.</value>
+  </data>
+  <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
+    <value>Кнопка позволяет получить доступ к процедуре сжатия пространства для хранения.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonCellsStatistics" xml:space="preserve">
+    <value>Активировать страницу отображения статистики ячеек.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonDrawersStatistics" xml:space="preserve">
+    <value>Отображает страницу статистических данных различных ящиков, имеющихся в машине.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonMachineStatistics" xml:space="preserve">
+    <value>Позволяет получить доступ к странице отображения статистических данных машины.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonErrorsStatistics" xml:space="preserve">
+    <value>Активирует страницу для отображения статистических данных, относящихся к ошибкам, сгенерированным машиной с момента установки.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonDrawerCall" xml:space="preserve">
+    <value>Просмотреть страницу, посвященную немедленному вызову по ящику.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonCompacting" xml:space="preserve">
+    <value>Позволяет получить доступ к странице управления процедурами уплотнения пространства хранения.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonStastistics" xml:space="preserve">
+    <value>Позволяет получить доступ к разделу, посвященному статистической информации, относящейся к машине, на которой вы работаете.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonMaintenance" xml:space="preserve">
+    <value>Открывает страницу, предназначенную для операций технического обслуживания, предусмотренным для машины, на которой вы работаете.</value>
+  </data>
+  <data name="HelpErrorsStatisticsDescription" xml:space="preserve">
+    <value>Эта процедура позволяет получить доступ к странице отображения статистики ошибок, относящейся к машине, на которой вы работаете. Статистика охватывает весь период с момента установки до момента консультации.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridError" xml:space="preserve">
+    <value>В столбце таблицы отображается список кодов ошибок, сгенерированных машиной, на которой вы работаете.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridTotal" xml:space="preserve">
+    <value>Процентная частота каждой отдельной ошибки указывается по отношению к общему количеству учтенных ошибок.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridPercTotal" xml:space="preserve">
+    <value>СправкаОшибкиСтатистикаСетьПрохИтого</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersMoved" xml:space="preserve">
+    <value>В поле отображается общее количество выдвижных узлов, обработанных с начала установки. Выдвижной узел считается перемещенным при перемещении из источника в пункт назначения.</value>
+  </data>
+  <data name="HelpErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Отобразится полное описание ошибки, выбранной в таблице.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotaleErrors" xml:space="preserve">
+    <value>Отображается общее количество ошибок, которые машина насчитала с момента установки.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersNoError" xml:space="preserve">
+    <value>В поле отображаются статистические данные, рассчитанные системой, которые относятся к среднему значению выдвижных узлов, перемещенных без ошибок.</value>
+  </data>
+  <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
+    <value>Система вычисляет коэффициент надежности машины как отношение между количеством подсчитанных ошибок и общим количеством перемещаемых выдвижных узлов.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
+    <value>На странице представлены основные данные, относящиеся к операции инвентаризации, которая должна быть проведена по различным изделиям, размещенным в выдвижном узле в секции. Процедура, как только отделение, содержащее запрашиваемое изделие, будет указано, ожидает, пока оператор вставит количество штук, имеющихся в настоящее время на складе.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>В этом поле отображается количество единиц, находящихся в настоящее время на складе, подсчитанное оператором.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
+    <value>Эта страница предоставляет оператору более подробную информацию о текущей операции инвентаризации.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
+    <value>Сообщает дату производства изделия, находящегося в настоящее время на складе.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
+    <value>Указывает материальный статус изделия для инвентаризации.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
+    <value>Сообщает о производственной партии изделия на этапе инвентаризации.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
+    <value>Сообщить тип упаковки, используемой для изделия, подлежащего инвентаризации.</value>
+  </data>
+  <data name="HelpListsInWaitGridType" xml:space="preserve">
+    <value>Он указывает тип перечня в соответствии со следующим кодом: P: отбор V: размещение I: Инвентаризация</value>
+  </data>
+  <data name="HelpCommonListType" xml:space="preserve">
+    <value>Указывает тип перечня, выбранного в соответствии со следующим кодом: Р: Отбор V: размещение I: Инвентаризация.</value>
+  </data>
+  <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
+    <value>В этом поле отображается текущее состояние СУС, если таковое имеется, которая управляет машиной, на которой вы работаете.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
+    <value>На странице показан ход выполнения процедуры сжатия. Указывается перемещаемый выдвижной узел, из какой ячейки он извлекается и для какой ячейки он предназначен. Ход процедуры также отображается с указанием фрагментов и пространства, подлежащего восстановлению, в дополнение к уже восстановленному пространству.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Указывает код перемещаемого в данный момент узла.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Указывает исходную ячейку, в которой хранился обрабатываемый выдвижной узел.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Указывает номер ячейки, в которую будет перемещен выдвижной узел во время обработки.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
+    <value>Он сообщает о текущей фазе цикла обработки различных выдвижных узлов.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Показывает текущее положение вертикальной оси.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Указывает текущее положение горизонтальной оси.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
+    <value>Указывает количество фрагментов, которые еще предстоит упаковать.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Указывает общее пространство, освобожденное в настоящее время.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Сообщает о пространстве, необходимом для восстановления, после чего процедура заканчивается.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter" xml:space="preserve">
+    <value>Сообщает об общем количестве циклов, выполняемых заслонкой, которой оснащена секция № 1. Цикл это полная или промежуточная операция открытия или закрытия.</value>
+  </data>
+  <data name="CarouselCalibrationFunctionDescription" xml:space="preserve">
+    <value>Функция калибровки карусели позволяет откалибровать правильное значение, выполнив серию последовательных автоматических перемещений, а затем обновив значение по умолчанию, предложенное системой. Процедура работает в последовательных шагах до правильного завершения.</value>
+  </data>
+  <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
+    <value>Функция калибровки внешней секции позволяет откалибровать правильное значение, выполнив серию последовательных автоматических перемещений, а затем обновив значение по умолчанию, предложенное системой. Процедура работает в последовательных шагах до правильного завершения.</value>
+  </data>
+  <data name="BayOperationsDescription" xml:space="preserve">
+    <value>Процедура позволяет просмотреть тип операций, возможных в текущей секции </value>
+  </data>
+  <data name="BayOperationsDescriptionWarning" xml:space="preserve">
+    <value>ВНИМАНИЕ: Если тип операции отключен, перечни, отправленные СУС, будут отклонены </value>
+  </data>
+</root>

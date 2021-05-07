@@ -117,49 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О</value>
+  <data name="TheCellAlreadyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>В ячейке уже есть другая единица груза.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
+  <data name="TheCellIsUnexpectedlyFree" xml:space="preserve">
+    <value>Ячейка непредвиденно свободна</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика, сигналы тревоги, диагностика</value>
+  <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>В ячейке непредвиденно есть другая единица груза.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Установка</value>
+  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
+    <value>Единица груза не может занимать заблокированную ячейку.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>ИНСТ</value>
+  <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
+    <value>Единица груза уже находится в другой ячейке.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедуры установки, ручное перемещение, многое другое</value>
+  <data name="TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights" xml:space="preserve">
+    <value>Указанная высота не находится между высотами соседних ячеек.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Поддержка</value>
+  <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
+    <value>Указанная высота приведет к пересечению панели с другими панелями.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
+    <value>Целевая ячейка это только пространство, она не может поддерживать единицу груза.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Техническое обслуживание, компактные ящики, обновление</value>
+  <data name="TheTargetCellIsBlocked" xml:space="preserve">
+    <value>Целевая ячейка заблокирована.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Указанная ячейка не находится в вертикальных пределах подъемника.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>ДВИГАТЬСЯ</value>
+  <data name="NoEmptyCellsAvailable" xml:space="preserve">
+    <value>НетПустыхЯчеек</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Состояние датчика, сброс машины, больше</value>
+  <data name="TheCellIsNotFree" xml:space="preserve">
+    <value>Ячейка не свободна.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Собирание</value>
+  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
+    <value>Указанная ячейка не подходит для единицы груза</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ВЫБИРАТЬ</value>
+  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Указанная высота находится за вертикальными пределами подъемника</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Комплектация, депонирование, инвентаризация</value>
+  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
+    <value>Выдвижной узел не может быть помещен перед отключенной ячейкой.</value>
+  </data>
+  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
+    <value>Целевая ячейка отключена.</value>
+  </data>
+  <data name="TheTargetCellIsUnusable" xml:space="preserve">
+    <value>Целевая ячейка непригодна для использования.</value>
   </data>
 </root>

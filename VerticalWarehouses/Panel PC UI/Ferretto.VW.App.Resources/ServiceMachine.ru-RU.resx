@@ -117,49 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О</value>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Автоматическое отсутствие</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>Калибровка секции не выполнена.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика, сигналы тревоги, диагностика</value>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>Калибровка кругового конвейера завершена неуспешно. \r\n Цепной конвейер секции не в нулевом положении.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Установка</value>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Занятый</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>ИНСТ</value>
+  <data name="CellFree" xml:space="preserve">
+    <value>Свободный</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедуры установки, ручное перемещение, многое другое</value>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>Возврат в исходное положение не выполнен.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Поддержка</value>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>Несогласованность датчиков наличия заслонки в секции.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>Несогласованность состояния груза и датчиков.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Техническое обслуживание, компактные ящики, обновление</value>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Несогласованность ноля датчика задвижки и наличия единицы груза.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Наличие единицы груза на подъемнике.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>ДВИГАТЬСЯ</value>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>Единица груза готова к операции.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Состояние датчика, сброс машины, больше</value>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Успешный запрос единицы груза {0}.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Собирание</value>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Недействительная высота ЕдиницыГруза на машине</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ВЫБИРАТЬ</value>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>Машина не в ручном режиме...</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Комплектация, депонирование, инвентаризация</value>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Машина выкл.</value>
+  </data>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Ошибка задач...</value>
+  </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Миссии Wms присутствуют, но wms не активны</value>
+  </data>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Продолжается движение цепи отсека...</value>
+  </data>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Движение лифта продолжается...</value>
+  </data>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>Горизонтальное движение в процессе...</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Продолжается движение... {0}</value>
+  </data>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Продолжается движение... Миссия: {0}, Единица загрузки: {1}, Статус: {2}, Перемещение: из {3} {4}, к {5} {6})</value>
+  </data>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Выполняется перемещение грузового блока...</value>
+  </data>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Движение затвора в процессе ...</value>
+  </data>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>Вертикальное движение в процессе...</value>
+  </data>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>В отсеке нет погрузочной установки.</value>
+  </data>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>Отсутствие датчика нулевой фиксации или наличия загрузочного блока.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Позиция {0}</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>Затвор открыт или находится в неизвестном положении.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>Испытание выполняется...</value>
   </data>
 </root>

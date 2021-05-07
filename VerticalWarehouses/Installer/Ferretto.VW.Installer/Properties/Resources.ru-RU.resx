@@ -117,49 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О</value>
+  <data name="Abort" xml:space="preserve">
+    <value>Выкинуть</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>Установка Ferretto Vertimag</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика, сигналы тревоги, диагностика</value>
+  <data name="UnknownVersion" xml:space="preserve">
+    <value>Неизвестный</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Установка</value>
+  <data name="VertimagSoftwareInstallation" xml:space="preserve">
+    <value>Установка программного обеспечения Vertimag</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>ИНСТ</value>
+  <data name="ServiceVersion" xml:space="preserve">
+    <value>Версия фоновой службы</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедуры установки, ручное перемещение, многое другое</value>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>Версия пользовательского интерфейса</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Поддержка</value>
+  <data name="SelectVertimagConfigurationFile" xml:space="preserve">
+    <value>Выберите файл конфигурации vertimag</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="VertimagConfigurationFiles" xml:space="preserve">
+    <value>Файлы конфигурации Vertimag</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Техническое обслуживание, компактные ящики, обновление</value>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Все файлы</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="MasterBay" xml:space="preserve">
+    <value>Мастер-Бей</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>ДВИГАТЬСЯ</value>
+  <data name="SlaveBay" xml:space="preserve">
+    <value>Невольничий отсек</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Состояние датчика, сброс машины, больше</value>
+  <data name="SelectedConfigurationFile" xml:space="preserve">
+    <value>Файл конфигурации</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Собирание</value>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>Файл не выбран</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ВЫБИРАТЬ</value>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Выберите Файл</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Комплектация, депонирование, инвентаризация</value>
+  <data name="MasterBayAddress" xml:space="preserve">
+    <value>Адрес Мастер-Бэй</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Продолжать</value>
+  </data>
+  <data name="BaySelection" xml:space="preserve">
+    <value>Выбор бухты</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Модель</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Серийный номер</value>
+  </data>
+  <data name="MaximumGrossCapacity" xml:space="preserve">
+    <value>Максимальная Вместимость Брутто</value>
+  </data>
+  <data name="KilogramsValueFormat" xml:space="preserve">
+    <value>{0} кг</value>
+  </data>
+  <data name="SelectNumberOfThisBay" xml:space="preserve">
+    <value>Выберите номер этого отсека</value>
+  </data>
+  <data name="GoBack" xml:space="preserve">
+    <value>возвращаться</value>
   </data>
 </root>

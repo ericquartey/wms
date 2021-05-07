@@ -1,0 +1,2460 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Auto" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>Полировка ленты</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Вниз</value>
+  </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Вперед</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="Shutter" xml:space="preserve">
+    <value>Заслонка</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Вертикальная ось</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Вручную</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Выкл.</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Вкл.</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Вверх</value>
+  </data>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Начало вертикальной оси</value>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>Начало вертикальной оси не установлено.</value>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Нижний предел [мм]</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Смещение [мм]</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Разрешение</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Запустить</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Остановить</value>
+  </data>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Верхний предел [мм]</value>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Секции и контроль высоты</value>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Люлька</value>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Ворота для предотвращения доступа</value>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Выбран двигатель люльки</value>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Выбран двигатель подъемника</value>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Аварийный Запуск</value>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>Наличие LU на стороне Люльки машины</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>Присутствие LU на стороне Люльки Оператора</value>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Микро картер левая сторона</value>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Микро картер правая сторона</value>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Грибовидная аварийная кнопка</value>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Предохранительная функция включена</value>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Датчик нуля задвижки</value>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Нулевой Вертикальный Датчик</value>
+  </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Испытание заслонки</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Переместить</value>
+  </data>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Перейти в ячейку</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Исходное положение [мм]</value>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>Новое разрешение (имп/мм)</value>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Текущее разрешение (имп/мм)</value>
+  </data>
+  <data name="MeasuredMovement" xml:space="preserve">
+    <value>Измеренное перемещение [мм]</value>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Калибровка вертикального Разрешения</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Закрытый</value>
+  </data>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Выполненные циклы (сессия)</value>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Текущее положение [мм]</value>
+  </data>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Задержка между циклами [с]</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="RequiredCycles" xml:space="preserve">
+    <value>Необходимые циклы</value>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Управление воротами 1</value>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Текущая высота [мм]</value>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Корректировка ворот [мм]</value>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Контроль Высоты Ворот 1</value>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Скорость [мм/с]</value>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>Системная ошибка [мм]</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Допуск (+/-) [мм]</value>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Калибровка Вертикального Смещения</value>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Контроль веса</value>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Допустимый допуск по весу (%)</value>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Вставленный вес (кг)</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Измеренный вес (кг)</value>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Запуск испытания</value>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Скорректированное смещение [мм]</value>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Текущее смещение [мм]</value>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Процедура закрытия</value>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Положение контрольной ячейки [мм]</value>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Значение шага [мм]</value>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Высота ячейки [мм]</value>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Текущая ячейка</value>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Текущая панель</value>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Корректировка панели [мм]</value>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Всего панелей</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Задний</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Передний</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Правильный</value>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Состояние установки</value>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Полировка ленты</value>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Калибровка по Вертикали</value>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Вертикальное разрешение</value>
+  </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Управление положением ячеек</value>
+  </data>
+  <data name="MeasuredInitialPosition" xml:space="preserve">
+    <value>Измеренное начальное положение [мм]</value>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Перейти в положение</value>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Корректировка высоты ячейки [мм]</value>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Вертикальное Смещение Проверено</value>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Датчик заслонки A</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Датчик заслонки B</value>
+  </data>
+  <data name="FinalPosition" xml:space="preserve">
+    <value>Конечное положение</value>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Процедура запуска</value>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Процедура закрытия</value>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Следующая панель</value>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Процедура контроля панелей</value>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>СчитатьКонечноеПоложение</value>
+  </data>
+  <data name="Gate1HeightReached" xml:space="preserve">
+    <value>Достигнутая Высота</value>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>Подъемник</value>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Изменить положение группы ячеек</value>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>Начальная ячейка</value>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Последняя ячейка</value>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>Запрошенная корректировка [мм]</value>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Выбранная сторона</value>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Загрузить выдвижные узлы</value>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Всего выдвижных узлов</value>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Максимальный вес (кг)</value>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Вставленные выдвижные узлы</value>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Выдвижной узел для вставки</value>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Следующий выдвижной узел</value>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Начать вставку</value>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>Загрузить первый выдвижной узел и провести испытание ячеек</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Всего ячеек для испытания</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Общее количество испытанных ячеек</value>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>Испытанная ячейка</value>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Выдвижной узел для вставки</value>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>Максимальный вес выдвижного узла (кг)</value>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Выдвижной узел</value>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Вызвать выдвижной узел</value>
+  </data>
+  <data name="BayHeightCheck" xml:space="preserve">
+    <value>Проверка Высоты Положения Секций</value>
+  </data>
+  <data name="BayHeightCheckSelectedPosition" xml:space="preserve">
+    <value>Положение в секции</value>
+  </data>
+  <data name="BayHeight" xml:space="preserve">
+    <value>Высота секции [мм]</value>
+  </data>
+  <data name="BayHeightCheckActualHeight" xml:space="preserve">
+    <value>Текущее положение [мм]</value>
+  </data>
+  <data name="BayHeightCheckCorrectionValue" xml:space="preserve">
+    <value>Значение корректировки [мм]</value>
+  </data>
+  <data name="BayHeightCheckNextPosition" xml:space="preserve">
+    <value>Следующее положение</value>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Укладка / Отбор в испытании секции</value>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>Скорость подачи %</value>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>Запрошенные циклы</value>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Текущее положение цепного конвейера</value>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Завершенные циклы</value>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Остановить цикл</value>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Цикл запуска</value>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>Предупреждение</value>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>В настоящее время доступны ручные команды для неблокируемых низкоскоростных движений</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>Сохранить файлы конфигурации</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>Восстановить файлы конфигурации</value>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>Выбранная папка</value>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>Сохранить конфигурацию</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>Подтвердить сохранение</value>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>Отменить сохранение</value>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>Загрузить конфигурацию</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>Подтвердить загрузку</value>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>Отменить загрузку</value>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Горизонтальный возврат в исходное положение Завершен</value>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Выполнение горизонтального возврата в исходное положение ({0} из {1})</value>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Начался Горизонтальный возврат в исходное положение</value>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Переключатель Двигателя Завершен</value>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Переключатель Запуска Двигателя</value>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Выполнение вертикального возврат в исходное положение ({0} из {1})</value>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Начался Вертикальный возврат в исходное положение</value>
+  </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Ошибка вертикального возврата в исходное положение ({0} из {1})</value>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Ошибка горизонтального возврата в исходное положение ({0} из {1})</value>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Ошибка переключения Двигателя</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Начать отзыв из ячейки в секцию</value>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Запустить складирование из секции в ячейку</value>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Хранение выдвижных узлов и отзыв выдвижных узлов</value>
+  </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Инициализация ...</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Секция 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Секция 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Секция 3</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Испытание на устойчивость заслонки для секции</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Закрытый</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>На полпути</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Шаг 1</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Шаг 2</value>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Сторона ячейки</value>
+  </data>
+  <data name="BayPositionDown" xml:space="preserve">
+    <value>Положение вниз</value>
+  </data>
+  <data name="BayPositionUp" xml:space="preserve">
+    <value>Положение вверх</value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Смещение [мм]</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Внешняя секция</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Применить Корректировку</value>
+  </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>Вставить нужный идентификатор единицы груза</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Проверить</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Сторона</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Секция</value>
+  </data>
+  <data name="BayPosition" xml:space="preserve">
+    <value>Положение секции</value>
+  </data>
+  <data name="ElevatorVerticalPosition" xml:space="preserve">
+    <value>Вертикальное положение [мм]</value>
+  </data>
+  <data name="TrayInBay" xml:space="preserve">
+    <value>Лоток в секции</value>
+  </data>
+  <data name="GoToBay" xml:space="preserve">
+    <value>Перейти в секцию</value>
+  </data>
+  <data name="Cells" xml:space="preserve">
+    <value>Ячейки</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Подъемник</value>
+  </data>
+  <data name="LoadedTray" xml:space="preserve">
+    <value>Загруженный Лоток</value>
+  </data>
+  <data name="TrayWeight" xml:space="preserve">
+    <value>Вес лотка (кг)</value>
+  </data>
+  <data name="ElevatorHorizontalPosition" xml:space="preserve">
+    <value>Горизонтальное положение [мм]</value>
+  </data>
+  <data name="ProcedureWasStopped" xml:space="preserve">
+    <value>Процедура была остановлена.</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Выполняется циклически (совокупно)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Следующий</value>
+  </data>
+  <data name="WeightAnalysis" xml:space="preserve">
+    <value>Анализ веса</value>
+  </data>
+  <data name="TrayTare" xml:space="preserve">
+    <value>Тара лотка (кг)</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Вес нетто (кг)</value>
+  </data>
+  <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
+    <value>На этом терминале включен брандмауэр.</value>
+  </data>
+  <data name="ProcedureCompleted" xml:space="preserve">
+    <value>Процедура завершена.</value>
+  </data>
+  <data name="GoToPosition" xml:space="preserve">
+    <value>Перейти в положение</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Положение</value>
+  </data>
+  <data name="ConfirmationOperation" xml:space="preserve">
+    <value>Операция подтверждения?</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Идентификатор единицы груза</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Калибровка секции</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>Круговой конвейер вниз</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>Круговой конвейер вверх</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Калибровка цепного конвейера</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Номер выдвижного узла</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Закрыть заслонку</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Открыть заслонку</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>Перейти к выдвижному узлу</value>
+  </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>Присутствие LU на стороне машины</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>Присутствие LU на стороне Оператора</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>Информация была обновлена.</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Сохранить успешно</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Идентификатор ячейки назначения</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Вставить единицу груза из секции в ячейку</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Нулевая цепной конвейер</value>
+  </data>
+  <data name="LoadingUnitFromCellToCell" xml:space="preserve">
+    <value>Перемещение единицы груза из ячейки в ячейку</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
+    <value>Перемещение единицы груза из ячейки в секцию</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Подтвердить извлечение единицы груза</value>
+  </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Испытание заслонки</value>
+  </data>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Положение вниз высота секции [мм]</value>
+  </data>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>Положение вверх по высоте секции [мм]</value>
+  </data>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Лоток в положении вниз</value>
+  </data>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Лоток в положении вверх</value>
+  </data>
+  <data name="LoadingUnitCodePositionUp" xml:space="preserve">
+    <value>Положение кода единицы груза вверх</value>
+  </data>
+  <data name="LoadingUnitCodePositionDown" xml:space="preserve">
+    <value>Положение кода единицы груза вниз</value>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Код единицы груза</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Ячейка</value>
+  </data>
+  <data name="RestoreSuccessful" xml:space="preserve">
+    <value>Восстановление прошло успешно</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Восстановить</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="DeviceFileFound" xml:space="preserve">
+    <value>Найден файл устройства</value>
+  </data>
+  <data name="InsertDeviceWithFileConfiguration" xml:space="preserve">
+    <value>Вставить устройство с конфигурацией файла - {0} -</value>
+  </data>
+  <data name="FileReadError" xml:space="preserve">
+    <value>Ошибка чтения файла</value>
+  </data>
+  <data name="ExportSuccessful" xml:space="preserve">
+    <value>Экспорт выполнен успешно</value>
+  </data>
+  <data name="ConfirmFileOverwrite" xml:space="preserve">
+    <value>Подтвердить перезапись файла ?</value>
+  </data>
+  <data name="FileIsAlreadyPresent" xml:space="preserve">
+    <value>Файл уже присутствует на устройстве.</value>
+  </data>
+  <data name="ConfirmRestore" xml:space="preserve">
+    <value>Подтвердить восстановление</value>
+  </data>
+  <data name="RestoreConfiguration" xml:space="preserve">
+    <value>Восстановление конфигурации</value>
+  </data>
+  <data name="SureToApplyConfiguration" xml:space="preserve">
+    <value>Обязательно применять конфигурацию ?</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Неизвестный</value>
+  </data>
+  <data name="CompletedTest" xml:space="preserve">
+    <value>Испытание успешно завершено</value>
+  </data>
+  <data name="Rear" xml:space="preserve">
+    <value>Задний</value>
+  </data>
+  <data name="UseWeightControl" xml:space="preserve">
+    <value>Выполнить взвешивание</value>
+  </data>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Выполнить измерение</value>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Загрузить</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Выгрузить</value>
+  </data>
+  <data name="ElevatorLogicalPosition" xml:space="preserve">
+    <value>Положение</value>
+  </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>Ячейка {0}</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>в секции {0}</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Испытание</value>
+  </data>
+  <data name="MovementsGuided" xml:space="preserve">
+    <value>Управляемые движения</value>
+  </data>
+  <data name="MovementsManual" xml:space="preserve">
+    <value>Движения вручную</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Калибровка</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Достигнутая высота</value>
+  </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Сбросить машину</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>Сброс машины выполнен успешно.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Заслонка вниз</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Заслонка вверх</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Вниз</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Вверх</value>
+  </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Калибровка барьера</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Безопасность</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Предохранительные датчики</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Час</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Год</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Месяц</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>День</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Минуты</value>
+  </data>
+  <data name="SystemDateTime" xml:space="preserve">
+    <value>4.7.5 Системная дата и время</value>
+  </data>
+  <data name="WMSAutoSync" xml:space="preserve">
+    <value>Автоматическая синхронизация СУС</value>
+  </data>
+  <data name="SetManualSystemDateTime" xml:space="preserve">
+    <value>Установить ручную системную дату и время</value>
+  </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>Дата и время ввода недействительны.</value>
+  </data>
+  <data name="ConfirmUpdateVer" xml:space="preserve">
+    <value>Подтвердите обновление до {0} '{1}' ?</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>Подтвердите обновление</value>
+  </data>
+  <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
+    <value>Обновление успешно завершено.</value>
+  </data>
+  <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
+    <value>Ошибка на начальном этапе обновления.</value>
+  </data>
+  <data name="ConfigurationDetected" xml:space="preserve">
+    <value>Обнаружена импортируемая конфигурация "{0}".</value>
+  </data>
+  <data name="ExportableDeviceDetected" xml:space="preserve">
+    <value>Обнаруженное устройство для экспорта конфигурации.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="MultipleConfigurationsDetected" xml:space="preserve">
+    <value>Обнаружено {0} импортируемых конфигураций.</value>
+  </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>Устройство больше не доступно.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>Восстановление невозможно из файла {0}.</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>Восстановление возможно из файла {0}.</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Источник</value>
+  </data>
+  <data name="InstallerAppStartedSuccessfully" xml:space="preserve">
+    <value>Приложение установщика успешно запущено.</value>
+  </data>
+  <data name="ErrorExecutingInstallerApp" xml:space="preserve">
+    <value>Ошибка при выполнении приложения установщика.</value>
+  </data>
+  <data name="CellNotValid" xml:space="preserve">
+    <value>Ячейка недействительна</value>
+  </data>
+  <data name="InputFormCellIdMustBePositive" xml:space="preserve">
+    <value>InputFormCellId должен быть положительным.</value>
+  </data>
+  <data name="InputFormCellIdRequired" xml:space="preserve">
+    <value>Требуется InputFormCellId.</value>
+  </data>
+  <data name="InputToCellIdMustBePositive" xml:space="preserve">
+    <value>InputToCellId должен быть положительным.</value>
+  </data>
+  <data name="InputToCellIdRequired" xml:space="preserve">
+    <value>Требуется InputToCellId.</value>
+  </data>
+  <data name="StepMustBePositive" xml:space="preserve">
+    <value>Шаг должен быть положительным.</value>
+  </data>
+  <data name="StepRequired" xml:space="preserve">
+    <value>Требуется шаг.</value>
+  </data>
+  <data name="SuccessfullChange" xml:space="preserve">
+    <value>Успешные изменения</value>
+  </data>
+  <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
+    <value>Обновлено Смещение Оси По Вертикали</value>
+  </data>
+  <data name="BeltBreakIn" xml:space="preserve">
+    <value>Разрыв ленты</value>
+  </data>
+  <data name="CellInsertedNotFree" xml:space="preserve">
+    <value>Вставленная ячейка не свободна</value>
+  </data>
+  <data name="CellSelectedNotPresent" xml:space="preserve">
+    <value>Выбранная ячейка отсутствует.</value>
+  </data>
+  <data name="CellSelectedRequired" xml:space="preserve">
+    <value>Требуется выбранная ячейка.</value>
+  </data>
+  <data name="ChecksumCompleted" xml:space="preserve">
+    <value>Проверка файлов контрольной суммы успешно завершена.</value>
+  </data>
+  <data name="ClearTempFolder" xml:space="preserve">
+    <value>Очистите временную папку " {0}".</value>
+  </data>
+  <data name="DestinationPositionMustBePositive" xml:space="preserve">
+    <value>Положение назначения должно быть исключительно положительным.</value>
+  </data>
+  <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Конечное положение вне оси диапазона ({0}).</value>
+  </data>
+  <data name="DestinationPositionRequired" xml:space="preserve">
+    <value>Требуется НазначениеПоложения.</value>
+  </data>
+  <data name="DrawerIdExtracted" xml:space="preserve">
+    <value>Идентификатор извлеченного выдвижного узла {0}</value>
+  </data>
+  <data name="ErrorCheckFile" xml:space="preserve">
+    <value>Ошибка при проверке файла {0}</value>
+  </data>
+  <data name="ErrorChecksum" xml:space="preserve">
+    <value>Ошибка при проверке контрольной суммы файлов:</value>
+  </data>
+  <data name="ErrorChecksumNotFound" xml:space="preserve">
+    <value>Ошибка при проверке файла " {0}". Контрольные суммы не найдены.</value>
+  </data>
+  <data name="ErrorClearTempFolder" xml:space="preserve">
+    <value>Ошибка при очистке временной папки:</value>
+  </data>
+  <data name="ErrorExtractingFiles" xml:space="preserve">
+    <value>Ошибка извлечения файлов:</value>
+  </data>
+  <data name="ErrorOnStarting" xml:space="preserve">
+    <value>Ошибка при запуске:</value>
+  </data>
+  <data name="ExtractingFilesCompleted" xml:space="preserve">
+    <value>Извлечение успешно завершено.</value>
+  </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Перейти в свободную ячейку</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Выполняется перемещение по горизонтальной оси ...</value>
+  </data>
+  <data name="InputDelayBetweenCyclesMustBePositive" xml:space="preserve">
+    <value>InputDelayBetweenCycles должен быть строго положительным.</value>
+  </data>
+  <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
+    <value>Требуется InputDelayBetweenCycles.</value>
+  </data>
+  <data name="InputDisplacementMustBePositive" xml:space="preserve">
+    <value>InputDisplacement должен быть строго положительным.</value>
+  </data>
+  <data name="InputDisplacementRequired" xml:space="preserve">
+    <value>Требуется InputDisplacement.</value>
+  </data>
+  <data name="InputNetWeightMustBePositive" xml:space="preserve">
+    <value>Входной вес должен быть исключительно положительным.</value>
+  </data>
+  <data name="InputNetWeightRequired" xml:space="preserve">
+    <value>Требуется входной вес.</value>
+  </data>
+  <data name="InputWeightMustBePositive" xml:space="preserve">
+    <value>InputWeightRequired должен быть строго положительным.</value>
+  </data>
+  <data name="InputWeightMustBeSpecified" xml:space="preserve">
+    <value>Необходимо указать InputWeightRequired.</value>
+  </data>
+  <data name="InvalidCellIdEntered" xml:space="preserve">
+    <value>Введен неверный идентификатор ячейки</value>
+  </data>
+  <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
+    <value>Неверный идентификатор ячейки на вставленном выдвижном узле </value>
+  </data>
+  <data name="InvalidDestinationChoiceType" xml:space="preserve">
+    <value>Недействительный тип выбора назначения</value>
+  </data>
+  <data name="InvalidDrawerIdInBay" xml:space="preserve">
+    <value>Недействительный идентификатор выдвижного узла в секции</value>
+  </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>Выбран недействительный выдвижной узел</value>
+  </data>
+  <data name="InvalidEnteredDrawerId" xml:space="preserve">
+    <value>Недействительный введенный идентификатор выдвижного узла</value>
+  </data>
+  <data name="InvalidSourceChoiceType" xml:space="preserve">
+    <value>Недействительный тип выбора источника</value>
+  </data>
+  <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
+    <value>LoadingUnitId должен быть строго положительным.</value>
+  </data>
+  <data name="LoadingUnitIdRequired" xml:space="preserve">
+    <value>Требуется LoadingUnitId.</value>
+  </data>
+  <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Измеренное положение вне оси диапазона ({0}).</value>
+  </data>
+  <data name="OperationAborted" xml:space="preserve">
+    <value>Операция прервана.</value>
+  </data>
+  <data name="RequiredCyclesCompleted" xml:space="preserve">
+    <value>Необходимое количество циклов было выполнено.</value>
+  </data>
+  <data name="StartChecksum" xml:space="preserve">
+    <value>Начните проверять контрольную сумму файлов " {0}".</value>
+  </data>
+  <data name="StartExtractingFiles" xml:space="preserve">
+    <value>Начните извлечение файлов из '{0}'.</value>
+  </data>
+  <data name="StartingApplication" xml:space="preserve">
+    <value>Запуск приложения " {0}".</value>
+  </data>
+  <data name="StartPositionMustBePositive" xml:space="preserve">
+    <value>Исходное положение должно быть строго положительным.</value>
+  </data>
+  <data name="StartPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Начальное положение вне оси диапазона ({0}).</value>
+  </data>
+  <data name="TestToRunMustBePositive" xml:space="preserve">
+    <value>Испытание для выполнения должен быть строго положительным.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Продолжается движение по вертикальной оси ...</value>
+  </data>
+  <data name="WeightToleranceMustBePositive" xml:space="preserve">
+    <value>Допуск веса должен быть строго положительным.</value>
+  </data>
+  <data name="ModeLoadUnitOperations" xml:space="preserve">
+    <value>Операции Loadunit</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Сжать</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Калибровка кругового конвейера</value>
+  </data>
+  <data name="InputDelayMustBePositive" xml:space="preserve">
+    <value>InputDelay должен быть строго положительным</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
+    <value>InputLowerBound должен быть больше, чем InputUpperBound.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputLowerBound должен быть больше {0}.</value>
+  </data>
+  <data name="InputLowerBoundMustBePositive" xml:space="preserve">
+    <value>InputLowerBound должен быть строго положительным.</value>
+  </data>
+  <data name="InputLowerBoundRequired" xml:space="preserve">
+    <value>Требуется InputLowerBound.</value>
+  </data>
+  <data name="InputRequiredCyclesMustBePositive" xml:space="preserve">
+    <value>Входные циклы должны быть строго положительными.</value>
+  </data>
+  <data name="InputRequiredCyclesRequired" xml:space="preserve">
+    <value>Требуется InputRequiredCycles.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanLower" xml:space="preserve">
+    <value>InputUpperBound должен быть больше, чем InputLowerBound.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputUpperBound должен быть больше {0}.</value>
+  </data>
+  <data name="InputUpperBoundMustBePositive" xml:space="preserve">
+    <value>InputUpperrBound должен быть строго положительным.</value>
+  </data>
+  <data name="InputUpperBoundRequired" xml:space="preserve">
+    <value>Требуется InputUpperBound.</value>
+  </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>Управление высоким положением</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Переместить подъемник на высоту секции и открыть заслонку.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Положение вниз по новой высоте отсека [мм]</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Положение вверх по новой высоте отсека [мм]</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Проверьте выравнивание между секцией и подъемником Если они не выровнены, продолжайте корректировать положение подъемника.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Подтвердить изменения.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Управление низким положением</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Переместить подъемник</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Изменения отсутствуют.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Проверьте новые измерения и нажмите кнопку Сохранить, чтобы изменения вступили в силу.</value>
+  </data>
+  <data name="Interaxle" xml:space="preserve">
+    <value>Промежуточная ось [мм]</value>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Следующий</value>
+  </data>
+  <data name="FirstTest" xml:space="preserve">
+    <value>Первое испытание</value>
+  </data>
+  <data name="CellSelectedBlocked" xml:space="preserve">
+    <value>Выбранная ячейка заблокирована.</value>
+  </data>
+  <data name="BeforeStart" xml:space="preserve">
+    <value>Перед запуском</value>
+  </data>
+  <data name="CalibrationInProgress" xml:space="preserve">
+    <value>Калибровка выполняется ...</value>
+  </data>
+  <data name="CalibrationProcedureRequired" xml:space="preserve">
+    <value>Выполните процедуру калибровки секции, чтобы переместить стол к датчику.</value>
+  </data>
+  <data name="CheckDrawersThenStart" xml:space="preserve">
+    <value>Убедиться, что перед запуском в секции отсутствуют выдвижные узлы. Для начала процедуры нажать на ЗАПУСТИТЬ</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Завершить</value>
+  </data>
+  <data name="ConfirmAdjustment" xml:space="preserve">
+    <value>Подтвердите Корректировку</value>
+  </data>
+  <data name="ErrorInMillimiters" xml:space="preserve">
+    <value>Погрешность (мм)</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Оставшееся Время</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Повторять</value>
+  </data>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Нажмите кнопку Повторить, чтобы повторить процедуру еще раз.</value>
+  </data>
+  <data name="SelectDirectionAndApply" xml:space="preserve">
+    <value>Выберите+, если вы находитесь над датчиком, или - если вы находитесь ниже, и примените коррекцию, нажав Применить коррекцию.</value>
+  </data>
+  <data name="StopInProgress" xml:space="preserve">
+    <value>Остановка в процессе</value>
+  </data>
+  <data name="StopProcedure" xml:space="preserve">
+    <value>Процедура Остановки</value>
+  </data>
+  <data name="RaisingsPerformed" xml:space="preserve">
+    <value>Выполненные подъемы</value>
+  </data>
+  <data name="ConfirmSetup" xml:space="preserve">
+    <value>Подтвердите настройку</value>
+  </data>
+  <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
+    <value>Процедура перемещает лоток из исходной ячейки в ячейку назначения. Чтобы начать процедуру, введите идентификатор выдвижного узла, идентификатор ячейки назначения и нажмите кнопку Пуск</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>Эта процедура позволяет переместить выдвижной узел из исходной секции в ячейку назначения. Чтобы начать процедуру, введите идентификатор выдвижного узла и нажмите кнопку Пуск</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Выберите положение отбора выдвижного узла</value>
+  </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>Перемещение ящика из отсека в отсек</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>Эта процедура позволяет переместить выдвижной узел из исходной секции в секцию назначения. Чтобы начать процедуру, введите идентификатор выдвижного узла и нажмите кнопку Пуск</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value>Выберите целевое расположение выдвижного узла</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>Процедура позволяет удалить выдвижной узел. Чтобы начать процедуру, введите идентификатор выдвижного узла и нажмите кнопку Пуск</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>Управление выдвижными узлами</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Выберите целевое расположение выдвижного узла</value>
+  </data>
+  <data name="ConfirmNewOffset" xml:space="preserve">
+    <value>Подтвердите новое смещение</value>
+  </data>
+  <data name="CorrectElevatorPositionNext" xml:space="preserve">
+    <value>Корректировать положение подъемника до тех пор, пока он не будет идеально выровнен, и нажать кнопку Далее.</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Ток [A]</value>
+  </data>
+  <data name="ExecuteCellMeasurement" xml:space="preserve">
+    <value>Выполнить измерение ячейки</value>
+  </data>
+  <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
+    <value>Выполнить позиционирование подъемника напротив ячейки.</value>
+  </data>
+  <data name="ExecuteOriginCalibration" xml:space="preserve">
+    <value>Выполнить Калибровку Источника</value>
+  </data>
+  <data name="MoveElevatorToPlaceMeter" xml:space="preserve">
+    <value>Переместите подъемник на высоту, позволяющую прикрепить счетчик.</value>
+  </data>
+  <data name="MoveToElevatorPosition" xml:space="preserve">
+    <value>Перейти в положение подъемника</value>
+  </data>
+  <data name="MoveToQuote" xml:space="preserve">
+    <value>Перейти к квоте</value>
+  </data>
+  <data name="NewOffset" xml:space="preserve">
+    <value>Новое смещение (мм)</value>
+  </data>
+  <data name="PlaceMeter" xml:space="preserve">
+    <value>Установите счетчик</value>
+  </data>
+  <data name="RemoveCarterRestore" xml:space="preserve">
+    <value>Приступайте к снятию одного из картеров и установке счетчика. Завершите, переместив картер и восстановив состояние PowerOn машины.</value>
+  </data>
+  <data name="RepeatOriginCalibration" xml:space="preserve">
+    <value>Из-за только что выполненного изменения смещения снова требуется калибровка начала вертикальной оси. Нажмите кнопку Пуск, чтобы начать.</value>
+  </data>
+  <data name="SelectedCell" xml:space="preserve">
+    <value>Выделенная ячейка</value>
+  </data>
+  <data name="StartQuote" xml:space="preserve">
+    <value>Начальная квота</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Время [s]</value>
+  </data>
+  <data name="VerifyConfirmWarn" xml:space="preserve">
+    <value>Проверьте новое вычисленное значение смещения и нажмите кнопку Сохранить, чтобы изменение вступило в силу. Все последующие размещения будут отрегулированы в соответствии с корректировкой</value>
+  </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Полное испытание</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>Эта процедура позволяет провести полную проверку всех выдвижных узлов, имеющихся в машине. Чтобы начать процедуру, введите количество циклов и нажмите кнопку Пуск</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Циклы сеансов</value>
+  </data>
+  <data name="ApplyCorrectionMessage" xml:space="preserve">
+    <value>Вы действительно хотите применить корректировку?</value>
+  </data>
+  <data name="AttachMeter" xml:space="preserve">
+    <value>Прикрепите счетчик:</value>
+  </data>
+  <data name="ConfirmCalibrationProcedure" xml:space="preserve">
+    <value>Вы хотите подтвердить процедуру калибровки?</value>
+  </data>
+  <data name="ConfirmNewResolution" xml:space="preserve">
+    <value>Подтвердите новое разрешение:</value>
+  </data>
+  <data name="DestinationPosition" xml:space="preserve">
+    <value>Цель назначения</value>
+  </data>
+  <data name="ElevatorHighAttachMeter" xml:space="preserve">
+    <value>Расположите подъемник на высоте, позволяющей прикрепить счетчик.</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart1" xml:space="preserve">
+    <value>Сделайте первое измерение (1/2):</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart2" xml:space="preserve">
+    <value>Сделайте первое измерение (2/2):</value>
+  </data>
+  <data name="IndicateMisuredPosition" xml:space="preserve">
+    <value>Укажите высоту, измеренную с помощью измерителя, и нажмите кнопку Далее</value>
+  </data>
+  <data name="MisuredPosition" xml:space="preserve">
+    <value>Измеренная высота</value>
+  </data>
+  <data name="ModifyLowerBoundDialog" xml:space="preserve">
+    <value>Следующий результат изменит значение нижнего предела машины, продолжить?</value>
+  </data>
+  <data name="ResetTotalCyclesNumber" xml:space="preserve">
+    <value>Вы действительно хотите сбросить общее количество завершенных циклов?</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="StartProcedureMessage" xml:space="preserve">
+    <value>Вы хотите начать процедуру</value>
+  </data>
+  <data name="TestStopped" xml:space="preserve">
+    <value>Остановленный тест в фазе</value>
+  </data>
+  <data name="VerifyNewCalcolatedValue" xml:space="preserve">
+    <value>Проверьте новое вычисленное значение разрешения и нажмите кнопку Сохранить, чтобы изменение вступило в силу</value>
+  </data>
+  <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
+    <value>Новое разрешение</value>
+  </data>
+  <data name="ConfirmRestoreToPreviousVersion" xml:space="preserve">
+    <value>Подтвердите восстановление до предыдущей версии ?</value>
+  </data>
+  <data name="RestoreInProgress" xml:space="preserve">
+    <value>Восстановление в процессе...</value>
+  </data>
+  <data name="RestoreEndedWithErrors" xml:space="preserve">
+    <value>Восстановление завершилось с ошибками</value>
+  </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>Удалите файл моментального снимка установщика '{0}'.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Ошибка при удалении файла моментального снимка.</value>
+  </data>
+  <data name="DrawerManagement" xml:space="preserve">
+    <value>Управление выдвижными узлами</value>
+  </data>
+  <data name="AverageCurrent" xml:space="preserve">
+    <value>Средний ток [А]</value>
+  </data>
+  <data name="CallUnit" xml:space="preserve">
+    <value>Блок вызова</value>
+  </data>
+  <data name="CarouselCalibrationDescription" xml:space="preserve">
+    <value>Дождитесь окончания процедуры, при необходимости нажмите кнопку "СТОП" для немедленной остановки и кнопку "ОСТАНОВИТЬ ПРОЦЕДУРУ" для остановки в фазе.</value>
+  </data>
+  <data name="CellEditing" xml:space="preserve">
+    <value>Редактирование ячеек</value>
+  </data>
+  <data name="CellManagement" xml:space="preserve">
+    <value>Управление ячейками</value>
+  </data>
+  <data name="CellPanelsCheckDescription" xml:space="preserve">
+    <value>Обязательно отрегулируйте наличие фотоэлементов в ящике, если они не отрегулированы, подъемник может заблокироваться в верхней части машины.</value>
+  </data>
+  <data name="CellPanelsCheckPanel" xml:space="preserve">
+    <value>Панель управления:</value>
+  </data>
+  <data name="CellPanelsCheckPhotocells" xml:space="preserve">
+    <value>Управление фотоэлементом:</value>
+  </data>
+  <data name="DeleteUnit" xml:space="preserve">
+    <value>Удалить блок</value>
+  </data>
+  <data name="ElevatorBack" xml:space="preserve">
+    <value>Подъемник назад</value>
+  </data>
+  <data name="ElevatorDown" xml:space="preserve">
+    <value>Подъемник вниз</value>
+  </data>
+  <data name="ElevatorForwards" xml:space="preserve">
+    <value>Подъемник вперед</value>
+  </data>
+  <data name="ElevatorUp" xml:space="preserve">
+    <value>Подъемник вверх</value>
+  </data>
+  <data name="FallsUnit" xml:space="preserve">
+    <value>Падает выдвижной узел</value>
+  </data>
+  <data name="GoToCell" xml:space="preserve">
+    <value>Перейти в ячейку</value>
+  </data>
+  <data name="InsertUnit" xml:space="preserve">
+    <value>Вставить блок</value>
+  </data>
+  <data name="ProcedureNotCompleted" xml:space="preserve">
+    <value>Процедура не завершена</value>
+  </data>
+  <data name="RepeteProcedure" xml:space="preserve">
+    <value>Повторите процедуру, так как она закончилась неправильно</value>
+  </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>Сохранить единицу</value>
+  </data>
+  <data name="TestedPanels" xml:space="preserve">
+    <value>Испытанные панели</value>
+  </data>
+  <data name="TotalCyclesCompleted" xml:space="preserve">
+    <value>Общее количество завершенных циклов</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Единица измерения</value>
+  </data>
+  <data name="UnitEditing" xml:space="preserve">
+    <value>Редактирование единицы</value>
+  </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>Калибровка барьера</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Измерение секции</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>Калибровка левой стороны (мм)</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Результат калибровки:</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>Калибровка правой стороны (мм)</value>
+  </data>
+  <data name="DataBePositive" xml:space="preserve">
+    <value>Данные должны быть положительными.</value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Подъемник на месте:</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Коррекция ворот</value>
+  </data>
+  <data name="InstallationFileFound" xml:space="preserve">
+    <value>{0} файлы установки найдены слева</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>левая</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Измерение левой стороны</value>
+  </data>
+  <data name="MaxValue9" xml:space="preserve">
+    <value>Максимально допустимое значение-9.</value>
+  </data>
+  <data name="MissValue" xml:space="preserve">
+    <value>Значение отсутствует</value>
+  </data>
+  <data name="NoInstallationFileFound" xml:space="preserve">
+    <value>Установочный файл не найден</value>
+  </data>
+  <data name="OneInstallationFileFound" xml:space="preserve">
+    <value>Найден один установочный файл</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>В конце процедуры страница автоматически изменится.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>Текущая версия PanelPc</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Панели</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Параметры</value>
+  </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Расположите подъемник на высоте секции.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Расположите шаблон a На</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>основе результата калибровки, вы можете решить, следует ли завершить операцию, имея результат менее 1 мм.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>Если результат калибровки превышает 1 мм, необходимо применить предложенные модификации и повторить измерение.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Загрузите блок секции или вызовите его, чтобы запустить мастер калибровки секции.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Поместите регулировочный шаблон в правый верхний угол выдвижного узла в секции, убедитесь, что магниты расположены так, чтобы он плотно прилегал к выдвижному узлу. Затем откройте заслонку.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Поместите регулировочный шаблон в верхний левый угол выдвижного узла в секции, убедитесь, что магниты расположены так, чтобы он плотно прилегал к выдвижному узлу.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>Повторите калибровку</value>
+  </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>Восстановление</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Право на восстановление</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Измерение правой стороны</value>
+  </data>
+  <data name="RepositoryPath" xml:space="preserve">
+    <value>Путь к восстановлению</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>Системная ошибка</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>Как только шаблон будет установлен, откройте затвор и нажмите клавишу ИЗМЕРЕНИЯ, которая запустит процедуру.</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Тестовые данные</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Требуется допуск</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Единица в секции:</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Единица в высоком положении</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Единица в низком положении</value>
+  </data>
+  <data name="SoftwareUpdate" xml:space="preserve">
+    <value>Обновление программного обеспечения.</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Ожидание управления пользователями</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Дождитесь завершения автоматической процедуры.</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Образцы текущих значенийдля набора веса</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Анализ профиля веса</value>
+  </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Позволяет регулировать барьер обнаружения высоты выдвижного узла</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Калибровка барьера</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>Он позволяет проверять и корректировать высоту различных положений в секциях</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Управление секцией</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>Он выполняет серию циклов перемещения вертикальной оси</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Разрыв ленты</value>
+  </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Вы уверены, что хотите пропустить это испытание?</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>Откалибруйте круговой конвейер</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Калибровка кругового конвейера</value>
+  </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Управление ячейками</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Загрузите первый выдвижной узел и испытательные ячейки</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Тест пограничных ячеек</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Примените коррекцию к группе ячеек</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Изменить блок ячеек (устаревший)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Проверьте вертикальное положение ячеек, по одной для каждой панели, отметив каждую проверенную панель</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Проверьте вертикальное положение ячеек</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Проверьте квоту одной или нескольких ячеек</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Проверьте квоты ячеек (устаревшие)</value>
+  </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Завершите испытания в других секциях</value>
+  </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Полный тест</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Вы хотите подтвердить завершение теста?</value>
+  </data>
+  <data name="DateTimeMenuDescription" xml:space="preserve">
+    <value>Настройка системной даты и времени</value>
+  </data>
+  <data name="DateTimeMenuTitle" xml:space="preserve">
+    <value>Дата и время</value>
+  </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Посадка / Высадка</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>Это позволяет проводить серию повторяющихся тестов для ворот</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Испытание заслонки</value>
+  </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>Процедура ввода нового блока</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>Вставка</value>
+  </data>
+  <data name="InverterParameterizationMenuDescription" xml:space="preserve">
+    <value>Загрузка параметризации инвертора стандартными параметрами</value>
+  </data>
+  <data name="InverterParameterizationMenuTitle" xml:space="preserve">
+    <value>Параметризация инвертора</value>
+  </data>
+  <data name="manageUserMenuDescription" xml:space="preserve">
+    <value>Управление локальными пользователями</value>
+  </data>
+  <data name="ManageUserMenuTitle" xml:space="preserve">
+    <value>Ожидание управления пользователями</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>Порядок перемещения единицы из секции в секцию</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Перемещение из секции в секцию</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>Процедура перемещения блока из ячейки в ячейку</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Перемещение из ячейки в ячейку</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Откалибруйте смещение вертикальной оси</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Смещение вертикальной оси</value>
+  </data>
+  <data name="ParametersMenuDescription" xml:space="preserve">
+    <value>Модификация, импорт и экспорт параметров машины</value>
+  </data>
+  <data name="ParametersMenuTitle" xml:space="preserve">
+    <value>Параметры</value>
+  </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>Процедура удаления блока</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>Удаление</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Откалибруйте разрешение вертикальной оси</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Разрешение по вертикальной оси</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Управление подразделениями</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>Откалибруйте начало вертикальной оси</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Начало вертикальной оси</value>
+  </data>
+  <data name="WMSComunicationMenuDescription" xml:space="preserve">
+    <value>Настройка параметров связи с WMS</value>
+  </data>
+  <data name="WMSComunicationMenuTitle" xml:space="preserve">
+    <value>Связь WMS</value>
+  </data>
+  <data name="WmsOn" xml:space="preserve">
+    <value>Вкл.</value>
+  </data>
+  <data name="WmsOff" xml:space="preserve">
+    <value>Выкл.</value>
+  </data>
+  <data name="BeltMustBeTight" xml:space="preserve">
+    <value>Пожалуйста, затяните ремень до 56 Гц</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Проверить Статус</value>
+  </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>Состояние установки завершено.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>Состояние неполной установки. Выполните процедуры {0} / {1}.</value>
+  </data>
+  <data name="CorrectDistance" xml:space="preserve">
+    <value>Правильное расстояние</value>
+  </data>
+  <data name="TemplateInclination" xml:space="preserve">
+    <value>Наклон шаблона</value>
+  </data>
+  <data name="TemplateLenght" xml:space="preserve">
+    <value>Длина шаблона</value>
+  </data>
+  <data name="SaveParameters" xml:space="preserve">
+    <value>Сохранение параметров</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Установка</value>
+  </data>
+  <data name="WmsSetting" xml:space="preserve">
+    <value>Настройка WMS</value>
+  </data>
+  <data name="WmsHostAddress" xml:space="preserve">
+    <value>Адрес хоста</value>
+  </data>
+  <data name="HorizontalChainCalibration" xml:space="preserve">
+    <value>Горизонтальная калибровка цепи</value>
+  </data>
+  <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
+    <value>Выполняет горизонтальную калибровку цепи</value>
+  </data>
+  <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
+    <value>Выполните процедуру калибровки цепи. Датчик горизонтального нуля должен быть активен.</value>
+  </data>
+  <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
+    <value>Функция горизонтальной калибровки цепи позволяет откалибровать правильное значение с помощью специальной процедуры. Процедура работает в последовательных шагах до правильного завершения.</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Горизонтальная калибровка</value>
+  </data>
+  <data name="ConfirmProcedure" xml:space="preserve">
+    <value>Процедура подтверждения</value>
+  </data>
+  <data name="MisurationDone" xml:space="preserve">
+    <value>Измерение выполнено</value>
+  </data>
+  <data name="MisurationDoneDescription" xml:space="preserve">
+    <value>Примените к машине следующие измерения</value>
+  </data>
+  <data name="RetryProcedure" xml:space="preserve">
+    <value>Повторите процедуру</value>
+  </data>
+  <data name="ResetSession" xml:space="preserve">
+    <value>Сеанс сброса</value>
+  </data>
+  <data name="ResetTotal" xml:space="preserve">
+    <value>Сброс итогов</value>
+  </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Остановить тест</value>
+  </data>
+  <data name="CallUnitDescription" xml:space="preserve">
+    <value>Выберите единицу для вызова в секции</value>
+  </data>
+  <data name="CloseShutterCommand" xml:space="preserve">
+    <value>Выполните команду, чтобы закрыть затвор</value>
+  </data>
+  <data name="OpenShutterCommand" xml:space="preserve">
+    <value>Выполните команду, чтобы открыть затвор</value>
+  </data>
+  <data name="DeposiAndPickUpDescription" xml:space="preserve">
+    <value>Функция загрузки / выгрузки агрегата позволяет проверить правильность работы перемещений агрегата с помощью серии циклов. Процедура для следующих шагов до правильного завершения.</value>
+  </data>
+  <data name="TestDone" xml:space="preserve">
+    <value>Тест выполнен</value>
+  </data>
+  <data name="TestDoneDescription" xml:space="preserve">
+    <value>Вот количество выполненных циклов</value>
+  </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>Циклы</value>
+  </data>
+  <data name="CycleDescription" xml:space="preserve">
+    <value>Введите количество циклов, которые вы хотите выполнить</value>
+  </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>WMS в автономном режиме</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Проверка в процессе</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Не в сети</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Онлайн</value>
+  </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Завершите тест</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Идентификатор</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Набор Данных идентификаторов</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Ценность</value>
+  </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Добавьте все единицы измерения для тестирования</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Добавить модуль для тестирования</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Удалите весь тестовый блок</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Снять испытательный блок</value>
+  </data>
+  <data name="InverterProgrammingStarted" xml:space="preserve">
+    <value>Начато программирование инвертора</value>
+  </data>
+  <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
+    <value>Программирование инвертора завершилось успешно</value>
+  </data>
+  <data name="InvertersProgrammingStarted" xml:space="preserve">
+    <value>Начато программирование инверторов</value>
+  </data>
+  <data name="InvertersProgrammingStopped" xml:space="preserve">
+    <value>Программирование инверторов остановлено</value>
+  </data>
+  <data name="InverterProgrammingEndedErrors" xml:space="preserve">
+    <value>Программирование инвертора закончилось ошибками</value>
+  </data>
+  <data name="InverterProgrammingNext" xml:space="preserve">
+    <value>Начните программирование следующего инвертора</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Только для чтения</value>
+  </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>Навстречу машине</value>
+  </data>
+  <data name="AccessoryEnabled" xml:space="preserve">
+    <value>Включенный</value>
+  </data>
+  <data name="ConfigureDevice" xml:space="preserve">
+    <value>Настройка устройства</value>
+  </data>
+  <data name="SystemPorts" xml:space="preserve">
+    <value>Системные порты</value>
+  </data>
+  <data name="NoSerialPortDetected" xml:space="preserve">
+    <value>Последовательных портов не обнаружено. Убедитесь, что устройство подключено к панели.</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
+    <value>Снимайте эти штрих-коды последовательно, чтобы убедиться, что ваш считыватель штрих-кодов настроен как эмуляция USB COM-порта.</value>
+  </data>
+  <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
+    <value>Не удается найти последовательный порт считывателя штрих-кодов? Настройте устройство.</value>
+  </data>
+  <data name="AccessoriesBarcodeEnableComEmulation" xml:space="preserve">
+    <value>Включить эмуляцию COM</value>
+  </data>
+  <data name="AccessoriesBarcodeEnterSetup" xml:space="preserve">
+    <value>Введите Настройки</value>
+  </data>
+  <data name="AccessoriesBarcodeExitSetup" xml:space="preserve">
+    <value>Выход из настройки</value>
+  </data>
+  <data name="FirmwareVersion" xml:space="preserve">
+    <value>Версия прошивки</value>
+  </data>
+  <data name="ManufactureDate" xml:space="preserve">
+    <value>Дата изготовления</value>
+  </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>Номер модели</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Серийный номер</value>
+  </data>
+  <data name="AlphaNumericBarSizeL" xml:space="preserve">
+    <value>Большой</value>
+  </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>К оператору</value>
+  </data>
+  <data name="AlphaNumericBarSizeM" xml:space="preserve">
+    <value>Средний</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>Калибровка внешней секции</value>
+  </data>
+  <data name="AlphaNumericBarSizeS" xml:space="preserve">
+    <value>Маленький</value>
+  </data>
+  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
+    <value>Очень большой</value>
+  </data>
+  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
+    <value>Очень маленький</value>
+  </data>
+  <data name="LoadFile" xml:space="preserve">
+    <value>Импорт в память </value>
+  </data>
+  <data name="ImportSuccessful" xml:space="preserve">
+    <value>Импорт успешен</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Импорт файла конфигурации </value>
+  </data>
+  <data name="DefaultConfigurationLoaded" xml:space="preserve">
+    <value>Загружена конфигурация по умолчанию</value>
+  </data>
+  <data name="BayHomingStarted" xml:space="preserve">
+    <value>Начался возврат цепного конвейера секции в исходное положение</value>
+  </data>
+  <data name="UnitExternalPosition" xml:space="preserve">
+    <value>Блок во внешнем положении</value>
+  </data>
+  <data name="UnitInternalPosition" xml:space="preserve">
+    <value>Блок во внутреннем положении</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>Калибровка внешней секции</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>Калибровка внешней секции</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>Выполните процедуру калибровки секции для позиционирования в соответствии с датчиком</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Выполняемые движения</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Пробег (мм)</value>
+  </data>
+  <data name="StartProcedure" xml:space="preserve">
+    <value>Нажмите кнопку ПУСК, чтобы начать процедуру</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>Системный путь '{0}' не найден</value>
+  </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Соответствующий шаблон (регулярное выражение)</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Начать Тест</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Приобретенный токен</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Код был распознан.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>Сохраните изменения перед началом теста.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Используйте карту на считывателе карт.</value>
+  </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Полученный Штрих-код</value>
+  </data>
+  <data name="CheckSerialPorts" xml:space="preserve">
+    <value>Проверьте последовательные порты</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Оператор</value>
+  </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Имя принтера</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Высота</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Вес</value>
+  </data>
+  <data name="LoadingUnitStatus_InBay" xml:space="preserve">
+    <value>В секции</value>
+  </data>
+  <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
+    <value>В Лифте</value>
+  </data>
+  <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
+    <value>На Месте</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
+    <value>Перемещение в секцию</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
+    <value>Перемещение</value>
+  </data>
+  <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
+    <value>Не определено</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="GrossWeight" xml:space="preserve">
+    <value>Вес брутто (кг)</value>
+  </data>
+  <data name="IsIntoMachine" xml:space="preserve">
+    <value>В машину</value>
+  </data>
+  <data name="MaxNetWeight" xml:space="preserve">
+    <value>Максимальный вес нетто (кг)</value>
+  </data>
+  <data name="MissionsCount" xml:space="preserve">
+    <value>Миссии</value>
+  </data>
+  <data name="Tare" xml:space="preserve">
+    <value>Тара (кг)</value>
+  </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Уровень блока</value>
+  </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Датчик активен</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Датчик отключен</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>Ложный</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Легенда</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Свободный</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>Идентификатор Панели</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Приоритет</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Правда</value>
+  </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>Цепной конвейер секции</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Горизонтальный</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>Горизонтальные и вертикальные</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Никто</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Вертикальный</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Секция подъемника</value>
+  </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>Итого единиц груза в секции 1</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>Итого единиц груза в секции 2</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>Итого единиц груза в секции 3</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Всего миссий</value>
+  </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Крепление камеры</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Переместите камеру в правильное положение</value>
+  </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Отправить снимок экрана</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Отправка журналов</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Литой экран</value>
+  </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Сохранить ячейку</value>
+  </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Обновление часов</value>
+  </data>
+  <data name="RemovableDevicesCount" xml:space="preserve">
+    <value>Количество съемных устройств</value>
+  </data>
+  <data name="AvailablePackages" xml:space="preserve">
+    <value>Доступные пакеты</value>
+  </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Сохранение журналов</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Сохранение журналов</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Загрузка журналов из службы телеметрии...</value>
+  </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>Загружены журналы из службы телеметрии</value>
+  </data>
+  <data name="Accessories" xml:space="preserve">
+    <value>Вспомогательные устройства</value>
+  </data>
+  <data name="WeightingScaleTare" xml:space="preserve">
+    <value>Тара</value>
+  </data>
+  <data name="NoDriveSelected" xml:space="preserve">
+    <value>Диск не выбран.</value>
+  </data>
+  <data name="ZeroChainCarousel" xml:space="preserve">
+    <value>Карусель с нулевой цепью</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Удаленная поддержка</value>
+  </data>
+  <data name="DeleteUnitDialog" xml:space="preserve">
+    <value>Это позволит удалить ящик с карты склада</value>
+  </data>
+  <data name="ExtBayMovementForExtraction" xml:space="preserve">
+    <value>Дополнительное движение в сторону оператора</value>
+  </data>
+  <data name="ExtBayMovementForInsertion" xml:space="preserve">
+    <value>Дополнительное движение к лифту</value>
+  </data>
+  <data name="InverterInFault" xml:space="preserve">
+    <value>Неисправность инверторов</value>
+  </data>
+  <data name="ScreenCastDurationExpire" xml:space="preserve">
+    <value>Срок действия зеркального отображения видео истек</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Завершенный</value>
+  </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Энергосбережение</value>
+  </data>
+  <data name="ExternalBayShort" xml:space="preserve">
+    <value>Ext</value>
+  </data>
+  <data name="InternalBayShort" xml:space="preserve">
+    <value>Int</value>
+  </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Серийный номер токена</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Выберите модель</value>
+  </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Блок-блок</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Блок Разблокировки</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Блокированный</value>
+  </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Обновление тары</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Процедура обновления тары ящика</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Вы подтверждаете, что выбранный ящик пуст?</value>
+  </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Калибровка веса</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>Функция калибровки веса позволяет изменять показания веса с помощью весов образцов</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>Загрузите узел в секцию или вызовите его, чтобы запустить мастер калибровки веса</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Взвешивание с пустым блоком</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Нажмите кнопку, чтобы получить текущие данные, переместив ящик, и введите его вес нетто. По завершении нажмите кнопку Далее, чтобы подтвердить выполнение операции</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>Поглощенный ток</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>Первое взвешивание с промежуточным весом</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Взвешивание с полным блоком</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Блок смены</value>
+  </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Изменить номер машины</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Новый идентификатор машины</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>Изменение идентификатора</value>
+  </data>
+  <data name="StartCalibrationButton" xml:space="preserve">
+    <value>Нажмите кнопку Пуск, чтобы начать калибровку</value>
+  </data>
+  <data name="CallUnitWeight" xml:space="preserve">
+    <value>Кассетто Чиамата: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Выгрузить</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Загрузить</value>
+  </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Калибровка лифта</value>
+  </data>
+  <data name="SoftwareUpdateDescription" xml:space="preserve">
+    <value>Пожалуйста, вставьте USB-накопитель</value>
+  </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Чтение инвертора успешно завершено</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Чтение инвертора закончилось ошибками</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Чтение инвертора остановилось</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Начало следующего чтения инвертора</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Написать код</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Считывание кода</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Десятичное число</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Начато чтение инвертора</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Читать все</value>
+  </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value>Структура импорта</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Перезаписать целевой файл</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Сохранить конфигурацию инвертора</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Написать один</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Напишите все</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Команда отправлена</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Ошибки и фактические значения</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Ошибки</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Фактические значения</value>
+  </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Импорт и сохранение</value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Перед</value>
+  </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>резервным копированием базы данных конечного компьютера</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Внутренняя копия</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>На сервере</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>О телеметрии</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Параметры резервного копирования базы данных</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Есть активные ошибки</value>
+  </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>Руководство 2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>Руководство 3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Тест2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Тест3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Компакт2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Компакт3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Операции Loadunit2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Операции Loadunit3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Отключите первые 30 ячеек над соответствующей секцией</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Назначение случайных ячеек </value>
+  </data>
+  <data name="InternalDown" xml:space="preserve">
+    <value>Int Вниз</value>
+  </data>
+  <data name="InternalUp" xml:space="preserve">
+    <value>Int Вверх</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Блок в высоком внутреннем положении</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Блок в низком внутреннем положении</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Двойная внешняя секция 1</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Двойная внешняя секция 2</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Двойная внешняя секция 3</value>
+  </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Движущаяся машина</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Смещение лазера (мм)</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Лазер</value>
+  </data>
+  <data name="InvalidCurrentValues" xml:space="preserve">
+    <value>Недопустимые текущие значения - все три должны быть разными!</value>
+  </data>
+  <data name="InvalidWeightValues" xml:space="preserve">
+    <value>Недопустимые значения веса - все три должны быть разными!</value>
+  </data>
+</root>

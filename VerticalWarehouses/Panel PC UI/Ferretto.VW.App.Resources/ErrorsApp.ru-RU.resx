@@ -117,49 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О</value>
+  <data name="CalibrationBarierError" xml:space="preserve">
+    <value>Опора не может быть больше 1 мм</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
+  <data name="CheckUnit" xml:space="preserve">
+    <value>Проверить единицу загрузки</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика, сигналы тревоги, диагностика</value>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Детализированный код</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Установка</value>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>Идентификация выдвижного узла завершена, переключиться в автоматический режим.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>ИНСТ</value>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>Идентификация выдвижного узла завершена, переключиться в ручной режим.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедуры установки, ручное перемещение, многое другое</value>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Выбор выдвижного узла</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Поддержка</value>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Код ошибки</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Описание ошибки</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Техническое обслуживание, компактные ящики, обновление</value>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Причина ошибки</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Восстановление ошибок</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>ДВИГАТЬСЯ</value>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Первичная</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Состояние датчика, сброс машины, больше</value>
+  <data name="Forwards" xml:space="preserve">
+    <value>Вперед</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Собирание</value>
+  <data name="HighPosition" xml:space="preserve">
+    <value>Высокое положение</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ВЫБИРАТЬ</value>
+  <data name="Id" xml:space="preserve">
+    <value>Идентификатор</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Комплектация, депонирование, инвентаризация</value>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>Недействительная единица, вставить: </value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Инвертор</value>
+  </data>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Ошибка восстановления НЕИСПРАВНОСТИ ИНВЕРТОРА</value>
+  </data>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Низкое положение</value>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Пометить как устраненную</value>
+  </data>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>Ни один элемент не был загружен на страницу.</value>
+  </data>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Выберите идентификатор единицы на подъемнике.</value>
+  </data>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Единица на подъемнике</value>
+  </data>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Выбор единицы (секция 1):</value>
+  </data>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Выбор единицы (секция 2):</value>
+  </data>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Выбор единицы (секция 3):</value>
+  </data>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Выбрать идентификатор единицы/единиц, которые имеются в секции.</value>
   </data>
 </root>

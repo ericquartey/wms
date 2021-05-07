@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,1546 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Confirm" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Подробные данные</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Перечень</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>Машины</value>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>Тип упаковки</value>
+  </data>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>Дата изготовления</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="RequestedQuantity" xml:space="preserve">
+    <value>Запрашиваемое количество [{0}]</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>Операции с выдвижными узлами</value>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>Ожидающие перечни</value>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>Поиск изделия</value>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Операции по комплектации</value>
+  </data>
+  <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
+    <value>Запрошенное количество</value>
+  </data>
+  <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
+    <value>Выбранное количество</value>
+  </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>В ожидании нового выдвижного узла</value>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>Запланированные операции:</value>
+  </data>
+  <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
+    <value>Деталь отбора изделия</value>
+  </data>
+  <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Дата изготовления</value>
+  </data>
+  <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Партия</value>
+  </data>
+  <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Материальный статус</value>
+  </data>
+  <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
+    <value>Тип упаковки</value>
+  </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>Ожидание перечней выполнения</value>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>Детали перечня</value>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>Перечень выполнения</value>
+  </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>Поиск изделия по коду или описанию</value>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Доступное количество [{0}]</value>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>Элемент вызова</value>
+  </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>Подробные данные изделия</value>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>Тип управления</value>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>Промежуток времени FIFO</value>
+  </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>Немедленный вызов выдвижного узла</value>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Вызвать выдвижной узел</value>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>Запрошенный лоток</value>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>Основная информация</value>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>Модель</value>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>Серийный номер</value>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>Количество выдвижных узлов</value>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>Версия программного обеспечения</value>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>Дата принятия</value>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Последняя служба</value>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Следующая услуга</value>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>Состояние оперативной машины</value>
+  </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>Процедура уплотнения выдвижного ящика</value>
+  </data>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+  </data>
+  <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
+    <value>Количество фрагментов</value>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>Максимальное восстанавливаемое пространство</value>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Пространство для восстановления</value>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>Компактная передняя сторона</value>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>Компактная задняя сторона</value>
+  </data>
+  <data name="OtherNavigationCompaction" xml:space="preserve">
+    <value>Уплотнение</value>
+  </data>
+  <data name="OtherNavigationStatistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="OtherNavigationMaintenance" xml:space="preserve">
+    <value>Поддержка</value>
+  </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>StatisticsGeneralDataHeader</value>
+  </data>
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
+    <value>Перемещаемый блок</value>
+  </data>
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
+    <value>Общее время включения питания</value>
+  </data>
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
+    <value>Заполнение области</value>
+  </data>
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
+    <value>Грузоподъемность</value>
+  </data>
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
+    <value>Автоматическое время</value>
+  </data>
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
+    <value>Время использования</value>
+  </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>Статистика: насыщенность пространства ящика.</value>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>Всего единиц</value>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>Размер ящика (мм)</value>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>Разливочная машина</value>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>Анализ пространства</value>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>Статистика: анализ удельного веса.</value>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Всего единиц</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>Статистика: анализ удельного веса.</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>Чистый расход макс. (кг)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>Вес нетто загружен (%)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>Вес нетто с грузом (кг)</value>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>Вес нетто загружен (%)</value>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>Строки исполняемого списка</value>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>Статистика: ячейки.</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>Всего ячеек</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>Всего передних ячеек</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>Всего задних ячеек</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>Общее количество использованных ячеек</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>Другой</value>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>Статистика: анализ ошибок.</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>Общее количество перемещенных единиц</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>Общее количество ошибок</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>Единицы перемещались без ошибок</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>Индекс надежности</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Описание ошибки</value>
+  </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>Поддержка: Vertimag X</value>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>Модель</value>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>Серийный</value>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>Дата установки</value>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>Дата последнего технического обслуживания</value>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>Следующая дата технического обслуживания</value>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>Государственная машина</value>
+  </data>
+  <data name="MaintenanceDetailHeader" xml:space="preserve">
+    <value>Детали технического обслуживания</value>
+  </data>
+  <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
+    <value>Общее количество циклов</value>
+  </data>
+  <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
+    <value>Циклы между двумя техобслуживаниями</value>
+  </data>
+  <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
+    <value>Циклы с последнего технического обслуживания</value>
+  </data>
+  <data name="MaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Состояние элемента</value>
+  </data>
+  <data name="MaintenanceDetailStopRequired" xml:space="preserve">
+    <value>Необходимое время простоя машины [часов]</value>
+  </data>
+  <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Платформа</value>
+  </data>
+  <data name="MaintenanceDetailContactRequired" xml:space="preserve">
+    <value>Отправить запрос на контакт</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>Вызов ящика</value>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>Статистические единицы</value>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>Ячейки статистики</value>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>Ошибки статистики</value>
+  </data>
+  <data name="DrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Операция заправки</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Запрашиваемое количество [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Количество заправки [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
+    <value>Обновление максимальной емкости</value>
+  </data>
+  <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
+    <value>Строка списка</value>
+  </data>
+  <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Запрошенное количество</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
+    <value>Детали операции заправки</value>
+  </data>
+  <data name="Lot" xml:space="preserve">
+    <value>Много</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Материальный статус</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
+    <value>Тип упаковки</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Дата изготовления</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
+    <value>Запрошенное количество</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Строка списка</value>
+  </data>
+  <data name="CommonItemCode" xml:space="preserve">
+    <value>Код изделия</value>
+  </data>
+  <data name="CommonItemDescription" xml:space="preserve">
+    <value>Описание изделия</value>
+  </data>
+  <data name="CommonListCode" xml:space="preserve">
+    <value>Код списка</value>
+  </data>
+  <data name="CommonListDescription" xml:space="preserve">
+    <value>Описание списка</value>
+  </data>
+  <data name="CommonPackingListCode" xml:space="preserve">
+    <value>Код упаковочного листа</value>
+  </data>
+  <data name="CommonPackingListDescription" xml:space="preserve">
+    <value>Описание упаковочного листа</value>
+  </data>
+  <data name="CommonNote" xml:space="preserve">
+    <value>Примечание:</value>
+  </data>
+  <data name="CommonUp" xml:space="preserve">
+    <value>Вверх</value>
+  </data>
+  <data name="CommonDown" xml:space="preserve">
+    <value>Вниз</value>
+  </data>
+  <data name="DrawerActivityInventoryHeader" xml:space="preserve">
+    <value>Операция инвентаризации</value>
+  </data>
+  <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Сохраненное количество</value>
+  </data>
+  <data name="CommonCompartmentPosition" xml:space="preserve">
+    <value>Позиция:</value>
+  </data>
+  <data name="CommonButtonConfirm" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="CommonButtonDetail" xml:space="preserve">
+    <value>Деталь</value>
+  </data>
+  <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
+    <value>Детали операции инвентаризации</value>
+  </data>
+  <data name="ItemDetailCategory" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="ItemDetailClasse" xml:space="preserve">
+    <value>Класс</value>
+  </data>
+  <data name="ItemDetailMeasurementUnity" xml:space="preserve">
+    <value>Единство измерения</value>
+  </data>
+  <data name="ItemDetailWeight" xml:space="preserve">
+    <value>Средний вес [гр]</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>Тот Вернулся</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>Тот Вернулся %</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>Тот Фронт</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>Тот Фронт %</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>Государство</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>Отсеки</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>Идентификатор Ящика</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>Заполнение</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>Заполнение %</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>Миссии</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>Ячейка</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>Выдвижной ящик</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>Высота</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>Сторона</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>Государство</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>Вес</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>Весь</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>Весь %</value>
+  </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>Список</value>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>Машины</value>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>Комплект</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>Запрос</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>Государство</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>Текущий вес</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>Выдвижной ящик</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>Высота</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>Макс %</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>Максимальный вес</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>Тара</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>Элемент</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>Предмет</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>Машина</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>Ряд</value>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>Статистическая машина</value>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>Машинная статистика</value>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>Данные по вертикальной оси.</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Общее количество километров по вертикальной оси</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>Общее количество циклов по вертикальной оси</value>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>Данные о ставнях.</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>Всего циклов затвора 1</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>Всего выдержка 2 цикла</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>Всего выдержка 3 цикла</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>Данные оси цепи.</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>Горизонтальные суммарные циклы</value>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>Статистика секций</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>Выдвижные узлы перемещены в секцию 1</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>Выдвижные узлы перемещены в секцию 2</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>Выдвижные узлы перемещены в секцию 3</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>Предмет</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>Описание изделия</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>Машины</value>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>Тип списка</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>Статус WMS</value>
+  </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>Просмотр деталей уплотнения.</value>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Перемещение ящика</value>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Исходная ячейка</value>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Ячейка назначения</value>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>Фактический шаг</value>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Положение вертикальной оси</value>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Положение оси горизонта</value>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>Оставшийся фрагмент</value>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Восстановленное пространство мм.</value>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Пространство для восстановления мм.</value>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>Финишное уплотнение</value>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>DrawerCompactingProcedureStatus</value>
+  </data>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>Никто</value>
+  </data>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>Не определено</value>
+  </data>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>Только пространство</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>Блокированный</value>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>Услуги WMS в автономном режиме</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>Услуги WMS онлайн</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Истекший</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>Истекает</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Неизвестный</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Действительный</value>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>Единицы нагрузки в ячейку</value>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>Анализ пространства</value>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>ФИФО</value>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Объем</value>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Не указан</value>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Инвентаризация</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Выбирать</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Поставь</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>Не определенное</value>
+  </data>
+  <data name="QuantityToPick" xml:space="preserve">
+    <value>количество для выбора</value>
+  </data>
+  <data name="PickedQuantity" xml:space="preserve">
+    <value>Выбранное количество [{0}]</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Материальный статус</value>
+  </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>Операция инвентаризации.</value>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>Обнаруженное количество [{0}]</value>
+  </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>Запрос на выбор товара {0} (q.ty {1}) был принят.</value>
+  </data>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Доступный</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Строка списка</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Идентификатор загрузочной единицы</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Загрузочный блок</value>
+  </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>Подтвердите на пустом</value>
+  </data>
+  <data name="ConfirmOnFull" xml:space="preserve">
+    <value>Подтвердите полностью</value>
+  </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>Доступность машин</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Операция отменена.</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>Операция подтверждена.</value>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>Нет единиц груза для перемещения в секцию {0}</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>Есть {0} единицы груза, отправленные в секцию {1}</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>Существует 1 единица груза, отправленная в секцию {0}</value>
+  </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Удалите все пролитые предметы из отсека.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Если вы подобрали предметы, положите их обратно в исходное отделение.</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Отменить пут</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Отменить выбор</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>Отмена операции подтверждена.</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>Операция инвентаризации отменена.</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Миссии</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Список миссий</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Шаг</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Секция</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Секция подъемника</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>Секция три</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>Секция два</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>Нет секции</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>Проведение</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>Новый</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>Ожидание</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Завершенный</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>Прервана</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>Завершение</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>Секция один</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Тип задачи</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>Секция</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>1.Новое</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>2.Начните</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>3.Подъемник</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>4.К цели</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>5.Единица укладки</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>6.Ожидание действий оператора</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>7.Цепной конвейер секции</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>8.Закройте заслонку</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>13.Конец</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>101.Ошибка</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>Нет типа</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Руководство</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>Сус</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Сжать</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Не определено</value>
+  </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>в секции</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Отозвать выдвижной узел</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>ПК Выбрать</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Выбирать</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Поставь</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>Регулировка</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Склад</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Описание изделия</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Код изделия</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Отсек</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Количество регулировки [{0}]</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Разместить количество [{0}]</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Количество отбора [{0}]</value>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>Доступны новые операции</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Подтверждение и новые доступные операции</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Склад</value>
+  </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>Загрузочный блок присутствует</value>
+  </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Выберите отсек</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
+    <value>ВЫБИРАТЬ</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
+    <value>Собирание</value>
+  </data>
+  <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
+    <value>ПУНКТ</value>
+  </data>
+  <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
+    <value>Поиск и запрос статей</value>
+  </data>
+  <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
+    <value>СПИСОК</value>
+  </data>
+  <data name="NavigationMainMenuListsDescription" xml:space="preserve">
+    <value>Исполнение / приостановление списков</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
+    <value>РИСОВАТЬ</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Операции с выдвижными узлами</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Уплотнение</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>Необходимо проверить</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>Элемент с кодом " {0}" недоступен</value>
+  </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Начать обновление</value>
+  </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Сигнализация</value>
+  </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Уплотнение в процессе</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>Диагностика</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Общие</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>Основная информация</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Номер машины</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Серийный</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Итого пройденных км</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Общий вес машины</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Всего миссий</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Всего единиц</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Ожидание</value>
+  </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Счетчики</value>
+  </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>В выбранном отсеке отсутствует изделие</value>
+  </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>Первое испытание</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>Полный цикл испытания ВКЛ</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>Полный цикл испытания ВЫКЛ</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>Работа с единицей загрузки</value>
+  </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Много</value>
+  </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>Перечень аварийных сигналов машины</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Номер секции</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Детализированный код</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Идентификатор</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>Указатель инвертора</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>Дата возникновения</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Дата устранения</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Серийный</value>
+  </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Часть назад</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Часть вперед</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Часть итого</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>Невозможно выполнить Перечень.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Недействительная операция {0}</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Пользователи</value>
+  </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>вне секции</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>Единица измерения</value>
+  </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Дополнительные сведения</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>№ единицы</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Высота</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Вес</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>Слишком высокий уровень фрагментации: запустить процедуру Уплотнения</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Калибровка кругового конвейера выполняется</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Горизонтальная калибровка выполняется</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>Доступное количество</value>
+  </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Изделия фильтруются по коду.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>В штрихкоде «{0}» отсутствует код изделия.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>В штрихкоде «{0}» отсутствует количество изделия.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>В штрихкоде «{0}» отсутствует идентификатор перечня.</value>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>Перечень с идентификатором «{0}» не найден.</value>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>Выполнение перечня «{0}» было принято.</value>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>Занятые ячейки</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>Свободные ячейки</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Свободные ячейки для опоры</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Ячейки освобождают только пространство</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Запертые камеры</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Всего ячеек</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Единицы в секции</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Единицы измерения в ячейке</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Блоки в лифте</value>
+  </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>Подтвердите обслуживание</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>Дата установки</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>Дата последнего обслуживания</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>Следующая дата обслуживания</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>Статус обслуживания</value>
+  </data>
+  <data name="IsDone" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="IsToDo" xml:space="preserve">
+    <value>Сделать</value>
+  </data>
+  <data name="MaxDays" xml:space="preserve">
+    <value>максДней</value>
+  </data>
+  <data name="MaxRelativeCount" xml:space="preserve">
+    <value>МаксОтносПодсчет</value>
+  </data>
+  <data name="MaxTotalCount" xml:space="preserve">
+    <value>МаксИтоговыйПодсчет</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>Общее время активной миссии</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>Км секция 1</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>Км секция 2</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>Км Бухта 3</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>Км горизонтальная ось лифта</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Подъем вертикальной оси км</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>Квартиры в бухте 1</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>Квартиры в бухте 2</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>Квартиры в бухте 3</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(Данные рассчитываются на основе последнего технического обслуживания по сравнению с общим значением)</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Поддержка:</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>Время исполняемых задач</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Секция 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Секция 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Секция 3</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>Горизонтальный осевой элеватор</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>Лифт с вертикальной осью</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>Км отсеков с момента последнего технического обслуживания / всего</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>Км подъемных осей с момента последнего технического обслуживания / всего</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>Общее время активных миссий с момента последнего технического обслуживания / всего</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>Единицы измерения в отсеках с момента последнего технического обслуживания / всего</value>
+  </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>Запрошенное количество</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Подтвердить ряд</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Ось</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>ИмяСчетчика</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Состояние ряда</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Выполнить ряд</value>
+  </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>Вы уверены, что хотите подтвердить эту услугу?</value>
+  </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Циклы работы лифта с момента последнего технического обслуживания / всего</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Горизонтальная ось</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Вертикальная ось</value>
+  </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>Частичное Подтверждение</value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>Подтвердите Настоящее время</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Настоящее количество</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Статья: </value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Единицы</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Единица измерения</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Завершенный</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Недовес</value>
+  </data>
+  <data name="TotalMissionsHeader" xml:space="preserve">
+    <value>Всего миссий</value>
+  </data>
+  <data name="CloseLine" xml:space="preserve">
+    <value>Закрыть линию</value>
+  </data>
+  <data name="UpdatedValue" xml:space="preserve">
+    <value>Обновленное значение</value>
+  </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Удалить задачу</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>Назначение ЕдиницыЗагрузки</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>Источник ЕдиницыЗагрузки</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>ИД СУС</value>
+  </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>Круговой конвейер секции 1 вниз</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>Круговой конвейер секции 1 вверх</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>Круговой конвейер секции 2 вниз</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>Круговой конвейер секции 2 вверх</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>Круговой конвейер секции 3 вниз</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>Круговой конвейер секции 3 вверх</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Ячейка</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Вниз</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Подъемник</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>Внешняя секция 1 вниз</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>Внешняя секция 1 вверх</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>Внешняя секция 2 вниз</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>Внешняя секция 2 вверх</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>Внешняя секция 3 вниз</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>Внешняя секция 3 вверх</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>Внутренняя секция 1 вниз</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>Внутренняя секция 1 вверх</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>Внутренняя секция 2 вниз</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>Внутренняя секция 2 вверх</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>Внутренняя секция 3 вниз</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>Внутренняя секция 3 вверх</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>Единица загрузки</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>Расположение отсутствует</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Неизвестный</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Вверх</value>
+  </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>Назад к секции</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>Ошибка укладки</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>Ошибка груза</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>Внешн. секция</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>Ожидать цепной конвейер</value>
+  </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>Агрегат, присутствующий в отсеке, уплотнение не допускается</value>
+  </data>
+  <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
+    <value>Обновление среднего унитарного веса</value>
+  </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>Фактический Средний Унитарный вес [г]</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>Исходный Средний Унитарный вес [г]</value>
+  </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>Измерьте вес и посчитайте куски</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Сброс</value>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>Измеренное количество</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>Обновить вес единицы</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>Подтвердить измеренное количество </value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>Подтвердить требуемое количество</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Вес единицы [г]</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>Операция подтверждена сканером штрихкодов.</value>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>Некоторые части штрихкода «{0}» не соответствуют артикулу.</value>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>Некоторые части штрихкода «{0}» не соответствуют артикулу. Перезапустить.</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>Недостающее количество перед подтверждением.</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Штрихкод «{0}» не распознан.</value>
+  </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>Запрос о размещении изделия {0} (кол-во {1}) был принят.</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Операции захвата на единице №</value>
+  </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Операции дополнения на единице №</value>
+  </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Взять артикул </value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Разместить артикул </value>
+  </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>Загрузка артикулов...</value>
+  </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>Операции с секцией</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Вид</value>
+  </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>Максимальное последовательное свободное пространство на задней стороне</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>Максимальное последовательное свободное пространство на передней стороне</value>
+  </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>Отметить как устраненное и перейти к сжатию</value>
+  </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Код коробки</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Взять коробку</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Разместить коробку</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Коробка</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Вставить коробку</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Удалить коробку</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Примечание</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Выбрать причину</value>
+  </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Ожидать - укладка в ячейку</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Ожидать - укладка секции</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Недействительное поле примечаний - операция не подтверждена</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Предупреждение</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>Это последняя операция на этой выдвижной секции, поместить артикул и нажать ОК</value>
+  </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Сетевые карты</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>Дополнительный IP</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>Дополнительная МаскаПодсети</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>Лазер</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>СмещениеЛазера</value>
+  </data>
 </root>

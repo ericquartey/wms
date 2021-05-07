@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
 		Microsoft ResX Schema
 
 		Version 1.3
@@ -58,44 +58,499 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Ускорение</value>
+  </data>
+  <data name="AssistedMovements" xml:space="preserve">
+    <value>Движения с помощью</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Секция {0}</value>
+  </data>
+  <data name="BayCarousel" xml:space="preserve">
+    <value>Секция {0} Круговой конвейер</value>
+  </data>
+  <data name="BayCarousel_Description" xml:space="preserve">
+    <value>Параметр кругового конвейера</value>
+  </data>
+  <data name="BayInverter" xml:space="preserve">
+    <value>Секция {0} Инвертор</value>
+  </data>
+  <data name="BayIoDevice" xml:space="preserve">
+    <value>Секция {0} Устройство ввода-вывода</value>
+  </data>
+  <data name="BayLaser" xml:space="preserve">
+    <value>Секция {0} Лазер</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Номер секции</value>
+  </data>
+  <data name="BayNumber.BayOne" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayNumber.BayThree" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayNumber.BayTwo" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BayNumber.ElevatorBay" xml:space="preserve">
+    <value>Люлька</value>
+  </data>
+  <data name="BayPosition_Height" xml:space="preserve">
+    <value>Высота</value>
+  </data>
+  <data name="BayPosition_IsBlocked" xml:space="preserve">
+    <value>Заблокировано</value>
+  </data>
+  <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
+    <value>Максимальная двойная высота</value>
+  </data>
+  <data name="BayPosition_MaxSingleHeight" xml:space="preserve">
+    <value>Максимальная стандартная высота</value>
+  </data>
+  <data name="BayPosition_ProfileOffset" xml:space="preserve">
+    <value>Смещение контроля профиля</value>
+  </data>
+  <data name="BayShutter" xml:space="preserve">
+    <value>Секция {0} Заслонка</value>
+  </data>
+  <data name="Bay_CategoryDescription" xml:space="preserve">
+    <value>Позволяет изменить параметры и устройства секции.</value>
+  </data>
+  <data name="Bay_ChainOffset" xml:space="preserve">
+    <value>Нулевое смещение цепного конвейера</value>
+  </data>
+  <data name="Bay_IsActive" xml:space="preserve">
+    <value>Включено</value>
+  </data>
+  <data name="Bay_IsAdjustByWeight" xml:space="preserve">
+    <value>Сокращает высоту отбора при наличии в секции тяжелых единиц грузов</value>
+  </data>
+  <data name="Bay_IsCheckIntrusion" xml:space="preserve">
+    <value>Проверяет нарушение фотоэлектрического барьера</value>
+  </data>
+  <data name="Bay_IsDouble" xml:space="preserve">
+    <value>Двойной</value>
+  </data>
+  <data name="Bay_IsExternal" xml:space="preserve">
+    <value>Внешний</value>
+  </data>
+  <data name="Bay_IsFastDepositToBay" xml:space="preserve">
+    <value>Быстрая укладка в секцию</value>
+  </data>
+  <data name="Bay_Resolution" xml:space="preserve">
+    <value>Разрешение</value>
+  </data>
+  <data name="Bay_Side" xml:space="preserve">
+    <value>Сторона</value>
+  </data>
+  <data name="BeltRigidity" xml:space="preserve">
+    <value>Прочность ленты</value>
+  </data>
+  <data name="BeltSpacing" xml:space="preserve">
+    <value>Расстояние блока натяжения ремня</value>
+  </data>
+  <data name="Carousel" xml:space="preserve">
+    <value>Круговой конвейер</value>
+  </data>
+  <data name="Carousel_ElevatorDistance" xml:space="preserve">
+    <value>Расстояние подъемника</value>
+  </data>
+  <data name="Carousel_HomingCreepSpeed" xml:space="preserve">
+    <value>Замедленная скорость возврата в исходное положение</value>
+  </data>
+  <data name="Carousel_HomingFastSpeed" xml:space="preserve">
+    <value>Высокая скорость возврата в исходное положение</value>
+  </data>
+  <data name="CyclesToCalibrate" xml:space="preserve">
+    <value>Циклы для калибровки</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Замедление</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Подъемник</value>
+  </data>
+  <data name="ElevatorAxis" xml:space="preserve">
+    <value>Ось подъемника {0}</value>
+  </data>
+  <data name="ElevatorAxis_BrakeActivatePercent" xml:space="preserve">
+    <value>Процент включения тормоза</value>
+  </data>
+  <data name="ElevatorAxis_BrakeReleaseTime" xml:space="preserve">
+    <value>Время отпуска тормоза</value>
+  </data>
+  <data name="ElevatorAxis_ChainOffset" xml:space="preserve">
+    <value>Нулевое смещение цепного конвейера</value>
+  </data>
+  <data name="ElevatorAxis_HomingCreepSpeed" xml:space="preserve">
+    <value>Замедленная скорость возврата в исходное положение</value>
+  </data>
+  <data name="ElevatorAxis_HomingFastSpeed" xml:space="preserve">
+    <value>Высокая скорость возврата в исходное положение</value>
+  </data>
+  <data name="ElevatorAxis_HorizontalCalibrateSpeed" xml:space="preserve">
+    <value>Скорость горизонтальной калибровки</value>
+  </data>
+  <data name="ElevatorAxis_LowerBound" xml:space="preserve">
+    <value>Нижний предел оси</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateLength" xml:space="preserve">
+    <value>Макс. расстояние калибровки профиля</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibratePosition" xml:space="preserve">
+    <value>Расстояние считывания профиля 6a ftc</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
+    <value>Скорость калибровки профиля</value>
+  </data>
+  <data name="ElevatorAxis_Profiles" xml:space="preserve">
+    <value>Профили</value>
+  </data>
+  <data name="ElevatorAxis_Resolution" xml:space="preserve">
+    <value>Разрешение</value>
+  </data>
+  <data name="ElevatorAxis_UpperBound" xml:space="preserve">
+    <value>Верхний предел оси</value>
+  </data>
+  <data name="ElevatorAxis_VerticalDepositOffset" xml:space="preserve">
+    <value>Вертикальное смещение укладки</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupOffset" xml:space="preserve">
+    <value>Вертикальное смещение захвата</value>
+  </data>
+  <data name="ElevatorWeight" xml:space="preserve">
+    <value>Вес подъемника</value>
+  </data>
+  <data name="Elevator_CategoryDescription" xml:space="preserve">
+    <value>Позволяет менять параметры подъемника и двух сопряженных осей.</value>
+  </data>
+  <data name="EmptyLoadMovement" xml:space="preserve">
+    <value>Движение при отсутствии груза</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Секция {0} Внешняя</value>
+  </data>
+  <data name="ExternalBay_Description" xml:space="preserve">
+    <value>Параметры внешней секции</value>
+  </data>
+  <data name="ExtraRace" xml:space="preserve">
+    <value>Ускоренный ход для вставки/отбора</value>
+  </data>
+  <data name="FeedRate" xml:space="preserve">
+    <value>Скорость подачи</value>
+  </data>
+  <data name="FeedRateAfterZero" xml:space="preserve">
+    <value>Скорость подачи после нуля оси</value>
+  </data>
+  <data name="FullLoadMovement" xml:space="preserve">
+    <value>Движение при полной загрузке</value>
+  </data>
+  <data name="HalfShaftLength" xml:space="preserve">
+    <value>Длина половины вала</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Инвентаризация</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Инвертор</value>
+  </data>
+  <data name="Inverter_Index" xml:space="preserve">
+    <value>Указатель</value>
+  </data>
+  <data name="Inverter_IpAddress" xml:space="preserve">
+    <value>IP инвертора</value>
+  </data>
+  <data name="Inverter_TcpPort" xml:space="preserve">
+    <value>Порт инвертора</value>
+  </data>
+  <data name="Inverter_Type" xml:space="preserve">
+    <value>Тип инвертора</value>
+  </data>
+  <data name="IoDevice" xml:space="preserve">
+    <value>Устройство ввода-вывода</value>
+  </data>
+  <data name="IoDevice_Index" xml:space="preserve">
+    <value>Указатель устройства ввода-вывода</value>
+  </data>
+  <data name="IoDevice_IpAddress" xml:space="preserve">
+    <value>IP устройства ввода-вывода</value>
+  </data>
+  <data name="IoDevice_TcpPort" xml:space="preserve">
+    <value>Порт устройства ввода-вывода</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Лазер</value>
+  </data>
+  <data name="Laser_IpAddress" xml:space="preserve">
+    <value>IP лазера</value>
+  </data>
+  <data name="Laser_TcpPort" xml:space="preserve">
+    <value>Порт лазера</value>
+  </data>
+  <data name="LastCalibrationCycles" xml:space="preserve">
+    <value>Последние циклы калибровки</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Машина</value>
+  </data>
+  <data name="Machine_CategoryDescription" xml:space="preserve">
+    <value>Позволяет изменять конструктивные параметры машины.</value>
+  </data>
+  <data name="Machine_ExpireCountPrecent" xml:space="preserve">
+    <value>Оставшийся процент подсчета</value>
+  </data>
+  <data name="Machine_ExpireDays" xml:space="preserve">
+    <value>Оставшиеся дни</value>
+  </data>
+  <data name="Machine_Height" xml:space="preserve">
+    <value>Высота</value>
+  </data>
+  <data name="Machine_HorizontalCyclesToCalibrate" xml:space="preserve">
+    <value>Горизонтальные циклы для калибровки</value>
+  </data>
+  <data name="Machine_HorizontalPositionToCalibrate" xml:space="preserve">
+    <value>Горизонтальное положение для калибровки</value>
+  </data>
+  <data name="Machine_Id" xml:space="preserve">
+    <value>Ид. номер машины</value>
+  </data>
+  <data name="Machine_LoadDepth" xml:space="preserve">
+    <value>Глубина загрузки машины</value>
+  </data>
+  <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
+    <value>Макс. высота выдвижной секции</value>
+  </data>
+  <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
+    <value>Макс. вес нетто выдвижной секции</value>
+  </data>
+  <data name="Machine_LoadUnitMinHeight" xml:space="preserve">
+    <value>Мин. высота выдвижной секции</value>
+  </data>
+  <data name="Machine_LoadUnitTare" xml:space="preserve">
+    <value>Масса тары единицы загрузки</value>
+  </data>
+  <data name="Machine_LoadUnitVeryHeavyPercent" xml:space="preserve">
+    <value>Вес нетто для очень тяжелой выдвижной секции, 0 отключает</value>
+  </data>
+  <data name="Machine_LoadUnitWidth" xml:space="preserve">
+    <value>Ширина единицы груза</value>
+  </data>
+  <data name="Machine_MaxGrossWeight" xml:space="preserve">
+    <value>Макс. вес брутто машины</value>
+  </data>
+  <data name="Machine_ModelName" xml:space="preserve">
+    <value>Модель</value>
+  </data>
+  <data name="Machine_SerialNumber" xml:space="preserve">
+    <value>Серийный номер</value>
+  </data>
+  <data name="Machine_Simulation" xml:space="preserve">
+    <value>Моделирование</value>
+  </data>
+  <data name="ManualMovements" xml:space="preserve">
+    <value>Движения вручную</value>
+  </data>
+  <data name="MeasureConst0" xml:space="preserve">
+    <value>Постоянная взвешивания K0</value>
+  </data>
+  <data name="MeasureConst1" xml:space="preserve">
+    <value>Постоянная взвешивания K1</value>
+  </data>
+  <data name="MeasureConst2" xml:space="preserve">
+    <value>Постоянная взвешивания K2</value>
+  </data>
+  <data name="MeasureSpeed" xml:space="preserve">
+    <value>Измерить скорость</value>
+  </data>
+  <data name="MeasureTime" xml:space="preserve">
+    <value>Измерить время</value>
+  </data>
+  <data name="MovementParameters" xml:space="preserve">
+    <value>ПараметрыДвижения</value>
+  </data>
+  <data name="MovementProfileType.LongDeposit" xml:space="preserve">
+    <value>Длинный - укладка</value>
+  </data>
+  <data name="MovementProfileType.LongPickup" xml:space="preserve">
+    <value>Длинный - захват</value>
+  </data>
+  <data name="MovementProfileType.ShortDeposit" xml:space="preserve">
+    <value>Короткий - укладка</value>
+  </data>
+  <data name="MovementProfileType.ShortPickup" xml:space="preserve">
+    <value>Короткий - захват</value>
+  </data>
+  <data name="MovementProfileType.Undefined" xml:space="preserve">
+    <value>Не определено</value>
+  </data>
+  <data name="NetworkConfiguration" xml:space="preserve">
+    <value>Конфигурация сети</value>
+  </data>
+  <data name="Orientation.Horizontal" xml:space="preserve">
+    <value>Горизонтальная</value>
+  </data>
+  <data name="Orientation.Vertical" xml:space="preserve">
+    <value>Вертикальная</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Выбирать</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Положение {0}</value>
+  </data>
+  <data name="PulleyDiameter" xml:space="preserve">
+    <value>Диаметр шкива</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Поместить</value>
+  </data>
+  <data name="Race" xml:space="preserve">
+    <value>Ход</value>
+  </data>
+  <data name="SecondTermMultiplier" xml:space="preserve">
+    <value>ДвойнойУвеличитель</value>
+  </data>
+  <data name="ShaftDiameter" xml:space="preserve">
+    <value>Диаметр вала</value>
+  </data>
+  <data name="ShaftElasticity" xml:space="preserve">
+    <value>Упругость вала</value>
+  </data>
+  <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
+    <value>Скорость подачи заслонки</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
+    <value>Продолжительность закрытия заслонки</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
+    <value>Продолжительность открытия заслонки</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationClose" xml:space="preserve">
+    <value>Продолжительность полузакрытия заслонки</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationOpen" xml:space="preserve">
+    <value>Продолжительность полуоткрытия заслонки</value>
+  </data>
+  <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
+    <value>Макс. скорость заслонки</value>
+  </data>
+  <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
+    <value>Мин. скорость заслонки</value>
+  </data>
+  <data name="ShutterType.NotSpecified" xml:space="preserve">
+    <value>Не указано</value>
+  </data>
+  <data name="ShutterType.ThreeSensors" xml:space="preserve">
+    <value>Три датчика</value>
+  </data>
+  <data name="ShutterType.TwoSensors" xml:space="preserve">
+    <value>Два датчика</value>
+  </data>
+  <data name="Shutter_AssistedMovements" xml:space="preserve">
+    <value>Принудительные движения заслонки</value>
+  </data>
+  <data name="Shutter_ManualMovements" xml:space="preserve">
+    <value>Движения заслонки вручную</value>
+  </data>
+  <data name="Shutter_Type" xml:space="preserve">
+    <value>Тип заслонки</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Скорость</value>
+  </data>
+  <data name="StepMovementParameters_AdjustAccelerationByWeight" xml:space="preserve">
+    <value>Отрегулировать ускорение по высоте</value>
+  </data>
+  <data name="StepMovementParameters_AdjustSpeedByWeight" xml:space="preserve">
+    <value>Отрегулировать скорость по весу</value>
+  </data>
+  <data name="StepMovementParameters_Number" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="StepMovementParameters_Position" xml:space="preserve">
+    <value>Положение</value>
+  </data>
+  <data name="TargetDistance" xml:space="preserve">
+    <value>Макс. расстояние с движением вручную</value>
+  </data>
+  <data name="TargetDistanceAfterZero" xml:space="preserve">
+    <value>Макс. расстояние с движением вручную после настройки нуля оси</value>
+  </data>
+  <data name="TotalDistance" xml:space="preserve">
+    <value>Общее расстояние</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Вид</value>
+  </data>
+  <data name="Center" xml:space="preserve">
+    <value>Центр</value>
+  </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Идентификатор изделия - уникальная длина</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Коробка</value>
+  </data>
+  <data name="Machine_IsAxisChanged" xml:space="preserve">
+    <value>Ось изменена в системе связи с инвертором</value>
+  </data>
+  <data name="Machine_IsHeartBeat" xml:space="preserve">
+    <value>Импульс в системе связи с инвертором </value>
+  </data>
+  <data name="EnabeNoteRules" xml:space="preserve">
+    <value>Включить правила примечания</value>
+  </data>
+  <data name="Machine_IsDbSaveOnTelemetry" xml:space="preserve">
+    <value>БД Сохранить в телеметрических данных</value>
+  </data>
+  <data name="ShutterMaxSpeed" xml:space="preserve">
+    <value>Макс. скорость</value>
+  </data>
+  <data name="ShutterMinSpeed" xml:space="preserve">
+    <value>Мин. скорость</value>
+  </data>
+  <data name="ElevatorAxis_HomingAcceleration" xml:space="preserve">
+    <value>Ускорение возврата в исходное положение</value>
+  </data>
 </root>

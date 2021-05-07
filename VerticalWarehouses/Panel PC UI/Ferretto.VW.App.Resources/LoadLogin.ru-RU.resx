@@ -117,49 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>О</value>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Установлено Подключение к Услугам</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Подключение к Службе автоматизации потеряно, выполняется попытка восстановления...</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика, сигналы тревоги, диагностика</value>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>Невозможно подключиться к Службе автоматизации</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Установка</value>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Неверные учетные данные.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>ИНСТ</value>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>Модуль Загружен.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедуры установки, ручное перемещение, многое другое</value>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>Введите свой пароль</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Поддержка</value>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>Пароль слишком короткий.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>Необходимо указать пароль.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Техническое обслуживание, компактные ящики, обновление</value>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>Инициализация служб</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="TempKey" xml:space="preserve">
+    <value>Временный ключ: {0}</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>ДВИГАТЬСЯ</value>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>Не удалось аутентифицировать пользователя по штрих-коду.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Состояние датчика, сброс машины, больше</value>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>Необходимо указать имя пользователя.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Собирание</value>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>Не удалось аутентифицировать пользователя с помощью карты.</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>ВЫБИРАТЬ</value>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Выполнение входа через карту ...</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Комплектация, депонирование, инвентаризация</value>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Аутентификация пользователя ...</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Жетон вставлен. Autenticazione на Корсо ...</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Токен удален.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Не удалось аутентифицировать пользователя с помощью токена.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>Не удалось аутентифицировать пользователя с помощью токена. потому что WMS недоступна.</value>
+  </data>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>Срок действия сеанса пользователя "Сервис" истек</value>
   </data>
 </root>
