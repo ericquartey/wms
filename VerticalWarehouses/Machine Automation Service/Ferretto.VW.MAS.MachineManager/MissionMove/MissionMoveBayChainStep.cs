@@ -323,6 +323,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.LoadUnitDestinationBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
+            if (this.Mission.Status != MissionStatus.Waiting)
+            {
+                this.Logger.LogInformation($"Move Bay chain allowed only for waiting missions. Wait for another resume.");
+                return;
+            }
             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
 #if CHECK_BAY_SENSOR
             var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();

@@ -67,22 +67,30 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && (lowerUnit = bay.Positions.FirstOrDefault(p => !p.IsUpper && p.LoadingUnit != null)?.LoadingUnit) != null
                     )
                 {
-                    var lowerMission = this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.LoadUnitId == lowerUnit.Id && m.MissionType != MissionType.IN);
+                    var lowerMission = this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.LoadUnitId == lowerUnit.Id
+                        && m.MissionType != MissionType.IN);
                     if (lowerMission != null)
                     {
-                        this.Logger.LogInformation($"Resume lower bay Mission:Id={lowerMission.Id}");
-                        this.LoadingUnitMovementProvider.ResumeOperation(
-                            lowerMission.Id,
-                            lowerMission.LoadUnitSource,
-                            lowerMission.LoadUnitDestination,
-                            lowerMission.WmsId,
-                            lowerMission.MissionType,
-                            lowerMission.TargetBay,
-                            MessageActor.MachineManager);
+                        if (lowerMission.Status == MissionStatus.Waiting)
+                        {
+                            this.Logger.LogInformation($"Resume lower bay Mission:Id={lowerMission.Id}");
+                            this.LoadingUnitMovementProvider.ResumeOperation(
+                                lowerMission.Id,
+                                lowerMission.LoadUnitSource,
+                                lowerMission.LoadUnitDestination,
+                                lowerMission.WmsId,
+                                lowerMission.MissionType,
+                                lowerMission.TargetBay,
+                                MessageActor.MachineManager);
 
-                        this.MissionsDataProvider.Update(this.Mission);
+                            this.MissionsDataProvider.Update(this.Mission);
 
-                        this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+                            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation($"Waiting for resume of lower bay Mission:Id={lowerMission.Id}");
+                        }
                         return true;
                     }
                 }
