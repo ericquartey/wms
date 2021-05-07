@@ -7,6 +7,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:gif="http://wpfanimatedgif.codeplex.com"
             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:localControl="clr-namespace:Ferretto.VW.App.Modules.Installation.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -116,7 +117,8 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Foreground="White"
-                               Kind="Cloud" />
+                               Kind="Cloud"
+                               Visibility="{Binding IsBay1, Converter={StaticResource BTVIC}}" />
 
         <controls:PpcLabeledText Grid.Row="1"
                                  Grid.Column="3"
@@ -124,7 +126,8 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding RepositoryPathSecondary}"
-                                 LabelText="Percorso Repositorio secondario" />
+                                 LabelText="Percorso Repositorio secondario"
+                                 Visibility="{Binding IsBay1, Converter={StaticResource BTVIC}}" />
 
         <controls:PpcLabeledText Grid.Row="1"
                                  Grid.Column="4"
@@ -132,7 +135,8 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding RepositoryPackagesSecondaryCount}"
-                                 LabelText="{res:Loc InstallationApp.AvailablePackages}" />
+                                 LabelText="{res:Loc InstallationApp.AvailablePackages}"
+                                 Visibility="{Binding IsBay1, Converter={StaticResource BTVIC}}" />
 
         <icon:PackIconMaterial Grid.Row="2"
                                Grid.Column="2"
@@ -185,7 +189,14 @@
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
 
-      <controls:PpcButton HorizontalAlignment="Right"
+      <!--<controls:PpcButton HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding BrowserOpenCommand}"
+                          Content="{res:Loc InstallationApp.OpenBrowser}"
+                          IsBusy="{Binding IsWaitingForResponse}" />-->
+
+      <controls:PpcButton Margin="15,0,0,0"
+                          HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           Command="{Binding SupportCommand}"
                           Content="{res:Loc InstallationApp.Support}" />
@@ -203,5 +214,11 @@
                           Command="{Binding NextCommand}"
                           Content="{res:Loc InstallationApp.Next}" />
     </StackPanel>
+
+    <!--<localControl:AdvancedBrowser Grid.RowSpan="4"
+                                  Grid.ColumnSpan="2"
+                                  IsOpen="{Binding IsBrowserOpened}"
+                                  Url="https://install.appcenter.ms/sign-in?original_url=install:/%2Forgs%2FFerretto-Group-S.p.A."
+                                  Visibility="{Binding IsBrowserOpened, Converter={StaticResource BTVC}}" />-->
   </Grid>
 </ctrls:View>

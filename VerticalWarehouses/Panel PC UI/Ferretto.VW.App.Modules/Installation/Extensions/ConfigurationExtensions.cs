@@ -19,7 +19,7 @@ namespace Ferretto.VW.App
 
         private const string UpdateRepositoryPath = "Update:Repository:Path";
 
-        private const string UpdateRepositoryPath2 = "Update:Repository:Path2";
+        private const string UpdateRepositoryPath2 = "AutomationService:Url";
 
         private const string UpdateZipChecksumFileName = "Update:Zip:Checksum:FileName";
 

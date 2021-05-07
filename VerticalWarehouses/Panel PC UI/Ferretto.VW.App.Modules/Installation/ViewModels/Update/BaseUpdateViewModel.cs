@@ -115,6 +115,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             });
         }
 
+        public bool IsBay1 => this.MachineService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne;
+
         public bool IsBusy
         {
             get => this.isBusy;
@@ -310,8 +312,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.IsRepositoryAvailable = Directory.Exists(this.RepositoryPathSecondary);
             if (this.IsRepositoryAvailable &&
-                (this.MachineService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo ||
-                this.MachineService.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree))
+                !this.IsBay1)
             {
                 var exePackageFiles = Directory.EnumerateFiles(this.RepositoryPathSecondary, InstallPackageExeExtension, SearchOption.TopDirectoryOnly);
                 var zipPackageFiles = Directory.EnumerateFiles(this.RepositoryPathSecondary, InstallPackageZipExtension, SearchOption.TopDirectoryOnly);
