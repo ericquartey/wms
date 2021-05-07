@@ -1725,4 +1725,10 @@
   <data name="MissionTime" xml:space="preserve">
     <value>Missionszeit</value>
   </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="ShipmentDay" xml:space="preserve">
+    <value>Day of shipment</value>
+  </data>
 </root>

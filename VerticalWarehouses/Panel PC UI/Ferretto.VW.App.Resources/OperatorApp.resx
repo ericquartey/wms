@@ -2215,4 +2215,12 @@
   <data name="UwfActive" xml:space="preserve">
     <value>Active UWF filter</value>
   </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Destination</value>
+    <comment>Label</comment>
+  </data>
+  <data name="ShipmentDay" xml:space="preserve">
+    <value>Day of shipment</value>
+    <comment>Label</comment>
+  </data>
 </root>
