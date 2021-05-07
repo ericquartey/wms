@@ -152,19 +152,19 @@
       </Border>
     </Border>
 
-    <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
-                                                Grid.Column="0"
-                                                Grid.ColumnSpan="2"
-                                                Margin="0,15,15,0"
-                                                ItemsSource="{Binding LoadingUnits}"
-                                                SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    <controls:CustomControlFullTestLoadingUnitsDataGrid Grid.Row="4"
+                                                        Grid.Column="0"
+                                                        Grid.ColumnSpan="2"
+                                                        Margin="0,15,15,0"
+                                                        ItemsSource="{Binding LoadingUnits}"
+                                                        SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-    <controls:CustomControlLoadingUnitsDataGrid Grid.Row="4"
-                                                Grid.Column="2"
-                                                Grid.ColumnSpan="2"
-                                                Margin="0,15,15,0"
-                                                ItemsSource="{Binding TestUnits}"
-                                                SelectedItem="{Binding SelectedTU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+    <controls:CustomControlFullTestLoadingUnitsDataGrid Grid.Row="4"
+                                                        Grid.Column="2"
+                                                        Grid.ColumnSpan="2"
+                                                        Margin="0,15,15,0"
+                                                        ItemsSource="{Binding TestUnits}"
+                                                        SelectedItem="{Binding SelectedTU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
     <StackPanel Grid.Row="5"
                 Grid.Column="2"

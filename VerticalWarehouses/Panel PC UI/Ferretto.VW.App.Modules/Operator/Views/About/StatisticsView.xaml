@@ -196,7 +196,8 @@
 
       <Border Margin="0,5,15,5"
               VerticalAlignment="Top"
-              Background="{DynamicResource PpcBackground}">
+              Background="{DynamicResource PpcBackground}"
+              Visibility="Collapsed">
         <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                 BorderThickness="{DynamicResource PpcBorderThickness}">
           <Grid>
@@ -647,6 +648,207 @@
         </Border>
       </Border>
 
+      <Border Margin="0,15,15,5">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+
+          <Grid Margin="0,0,5,0">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                       Text="{res:Loc OperatorApp.MachineStatistics_AutomaticTimePercentage}" />
+
+            <controls:PpcProgressBar Grid.Row="1"
+                                     Color1="{DynamicResource FerrettoGreen}"
+                                     Color2="Green"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding TotalStatistics.AutomaticTimePercentage}" />
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ProgressBar_Data}"
+                       Text="{Binding TotalStatistics.AutomaticTimePercentage, StringFormat={}{0:F2}%}" />
+          </Grid>
+
+          <Grid Grid.Column="1"
+                Margin="5,0">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                       Text="{res:Loc OperatorApp.MachineStatistics_UsageTimePercentage}" />
+
+            <controls:PpcProgressBar Grid.Row="1"
+                                     Color1="{DynamicResource FerrettoGreen}"
+                                     Color2="Green"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding TotalStatistics.UsageTimePercentage}" />
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ProgressBar_Data}"
+                       Text="{Binding TotalStatistics.UsageTimePercentage, StringFormat={}{0:F2}%}" />
+          </Grid>
+
+          <Grid Grid.Column="2"
+                Margin="5,0">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                       Text="{res:Loc OperatorApp.MachineStatistics_AreaFillPercentage}" />
+
+            <controls:PpcProgressBar Grid.Row="1"
+                                     Color1="{DynamicResource FerrettoGreen}"
+                                     Color2="Green"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding TotalStatistics.AreaFillPercentage}" />
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ProgressBar_Data}"
+                       Text="{Binding TotalStatistics.AreaFillPercentage, StringFormat={}{0:F2}%}" />
+          </Grid>
+
+          <Grid Grid.Column="3"
+                Margin="5,0,0,0">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                       Text="{res:Loc OperatorApp.MachineStatistics_WeightCapacityPercentage}" />
+
+            <controls:PpcProgressBar Grid.Row="1"
+                                     Color1="{DynamicResource FerrettoGreen}"
+                                     Color2="Green"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding TotalStatistics.WeightCapacityPercentage}" />
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ProgressBar_Data}"
+                       Text="{Binding TotalStatistics.WeightCapacityPercentage, StringFormat={}{0:F2}%}" />
+          </Grid>
+
+          <Grid Grid.Row="1"
+                Margin="0,15,5,5">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                       Text="{res:Loc OperatorApp.CellsStatisticsTotalUsedCells}" />
+
+            <controls:PpcProgressBar Grid.Row="1"
+                                     Color1="{DynamicResource FerrettoGreen}"
+                                     Color2="Green"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding CellFillPercentage}" />
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ProgressBar_Data}"
+                       Text="{Binding CellFillPercentage, StringFormat={}{0:F2}%}" />
+          </Grid>
+
+          <Grid Grid.Row="1"
+                Grid.Column="1"
+                Margin="5,15,5,5">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                       Text="{resources:Loc OperatorApp.FragmentFront}" />
+
+            <controls:PpcProgressBar Grid.Row="1"
+                                     Color1="{DynamicResource FerrettoGreen}"
+                                     Color2="Green"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding FragmentFrontPercent}" />
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ProgressBar_Data}"
+                       Text="{Binding FragmentFrontPercent, StringFormat={}{0:F2}%}" />
+          </Grid>
+
+          <Grid Grid.Row="1"
+                Grid.Column="2"
+                Margin="5,15,5,5">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                       Text="{resources:Loc OperatorApp.FragmentBack}" />
+
+            <controls:PpcProgressBar Grid.Row="1"
+                                     Color1="{DynamicResource FerrettoGreen}"
+                                     Color2="Green"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding FragmentBackPercent}" />
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{DynamicResource VWAPP_ProgressBar_Data}"
+                       Text="{Binding FragmentBackPercent, StringFormat={}{0:F2}%}" />
+          </Grid>
+
+          <Grid Grid.Row="1"
+                Grid.Column="3"
+                Margin="5,15,0,5">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                       Text="{resources:Loc OperatorApp.FragmentTotal}" />
+
+            <controls:PpcProgressBar Grid.Row="1"
+                                     Color1="{DynamicResource FerrettoGreen}"
+                                     Color2="Green"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding FragmentTotalPercent}" />
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ProgressBar_Data}"
+                       Text="{Binding FragmentTotalPercent, StringFormat={}{0:F2}%}" />
+          </Grid>
+        </Grid>
+      </Border>
 
     </StackPanel>
 

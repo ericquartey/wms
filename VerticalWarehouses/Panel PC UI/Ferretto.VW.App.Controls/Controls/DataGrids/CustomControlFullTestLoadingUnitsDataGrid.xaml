@@ -1,8 +1,9 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.Views.LoadingUnitDataGridView"
+﻿<UserControl x:Class="Ferretto.VW.App.Controls.Controls.CustomControlFullTestLoadingUnitsDataGrid"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviours"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls">
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
 
   <Border BorderBrush="{DynamicResource PpcBorderBrush}"
           BorderThickness="{DynamicResource PpcBorderThickness}"
@@ -23,10 +24,10 @@
               IsReadOnly="True"
               IsSynchronizedWithCurrentItem="True"
               ItemsSource="{Binding ItemsSource}"
-              RowHeight="45"
+              RowHeight="30"
               SelectedItem="{Binding SelectedItem}"
               SelectionMode="Single"
-              Sorting="DataGridName_Sorting"
+              Sorting="dataGridName_Sorting"
               VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
               VerticalScrollBarVisibility="Auto">
 
@@ -83,7 +84,6 @@
                       </Grid.ColumnDefinitions>
                       <ScrollBar x:Name="PART_HorizontalScrollBar"
                                  Grid.Column="1"
-                                 ContextMenuService.IsEnabled="False"
                                  Maximum="{TemplateBinding ScrollableWidth}"
                                  Orientation="Horizontal"
                                  Style="{DynamicResource MyScrollBar}"
@@ -183,7 +183,6 @@
           <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
         </Style>
       </DataGrid.CellStyle>
-
       <DataGrid.RowStyle>
         <Style TargetType="{x:Type DataGridRow}">
           <Style.Resources>
@@ -208,11 +207,11 @@
 
       <DataGrid.Columns>
         <DataGridTextColumn x:Name="Column1"
-                            Width="1*"
-                            Binding="{Binding Path=Code}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}"
+                            Width="0.75*"
+                            Binding="{Binding Path=Id}"
+                            Header="Id"
                             SortDirection="Ascending"
-                            SortMemberPath="Code">
+                            SortMemberPath="Id">
           <DataGridTextColumn.CellStyle>
             <Style TargetType="DataGridCell">
               <Setter Property="BorderThickness" Value="0" />
@@ -228,10 +227,10 @@
         </DataGridTextColumn>
         <DataGridTextColumn x:Name="Column2"
                             Width="1*"
-                            Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}"
+                            Binding="{Binding Path=CellId}"
+                            Header="{Resources:Loc InstallationApp.Cell}"
                             SortDirection="Ascending"
-                            SortMemberPath="Height">
+                            SortMemberPath="CellId">
           <DataGridTextColumn.CellStyle>
             <Style TargetType="DataGridCell">
               <Setter Property="BorderThickness" Value="1,0,0,0" />
@@ -245,68 +244,12 @@
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
-        <!--<DataGridTextColumn x:Name="Column3"
-                            Width="0.7*"
+        <DataGridTextColumn x:Name="Column4"
+                            Width="1*"
                             Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}"
+                            Header="{Resources:Loc InstallationApp.Weight}"
                             SortDirection="Ascending"
                             SortMemberPath="NetWeight">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>-->
-
-        <DataGridTemplateColumn x:Name="Column3"
-                                Width="1.2*"
-                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}"
-                                SortDirection="Ascending"
-                                SortMemberPath="NetWeight">
-          <DataGridTemplateColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTemplateColumn.CellStyle>
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <Grid>
-                <!--<ProgressBar Height="30"
-                             Margin="5"
-                             Maximum="{Binding MaxNetWeight}"
-                             Minimum="0"
-                             Value="{Binding NetWeight}" />-->
-
-                <controls:PpcProgressBar Grid.Row="1"
-                                         Height="30"
-                                         Margin="5"
-                                         Color1="{DynamicResource FerrettoGreen}"
-                                         Color2="Green"
-                                         Maximum="{Binding MaxNetWeight}"
-                                         Minimum="0"
-                                         Value="{Binding NetWeight}" />
-
-                <TextBlock HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Text="{Binding Path=NetWeight, StringFormat={}{0:F2}}" />
-              </Grid>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-        <DataGridTextColumn x:Name="Column4"
-                            Width="0.8*"
-                            Binding="{Binding Path=CellId}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderCell}"
-                            SortDirection="Ascending"
-                            SortMemberPath="CellId">
           <DataGridTextColumn.CellStyle>
             <Style TargetType="DataGridCell">
               <Setter Property="BorderThickness" Value="0" />
@@ -322,10 +265,10 @@
         </DataGridTextColumn>
         <DataGridTextColumn x:Name="Column5"
                             Width="1*"
-                            Binding="{Binding Path=Cell.Side, Converter={StaticResource EWSC}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderSide}"
+                            Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
+                            Header="{Resources:Loc InstallationApp.Height}"
                             SortDirection="Ascending"
-                            SortMemberPath="Cell.Side">
+                            SortMemberPath="Height">
           <DataGridTextColumn.CellStyle>
             <Style TargetType="DataGridCell">
               <Setter Property="BorderThickness" Value="0" />
@@ -342,28 +285,9 @@
         <DataGridTextColumn x:Name="Column6"
                             Width="1*"
                             Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}"
+                            Header="{Resources:Loc InstallationApp.Status}"
                             SortDirection="Ascending"
                             SortMemberPath="Status">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column7"
-                            Width="0.8*"
-                            Binding="{Binding Path=LaserOffset, StringFormat={}{0:F0}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderLaser}"
-                            SortDirection="Ascending"
-                            SortMemberPath="LaserOffset">
           <DataGridTextColumn.CellStyle>
             <Style TargetType="DataGridCell">
               <Setter Property="BorderThickness" Value="0" />
