@@ -882,6 +882,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 {
                     // do nothing
                 }
+                else if (c == ' ' || c == '*')
+                {
+                    escapedChar = c.ToString();
+                }
                 else if (((int)c > 32 && (int)c < 126))
                 {
                     escapedChar = Uri.EscapeDataString(c.ToString());
