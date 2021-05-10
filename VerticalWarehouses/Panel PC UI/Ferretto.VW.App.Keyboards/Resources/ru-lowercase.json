@@ -323,7 +323,8 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "ё"
+              "Caption": "EN",
+              "CommandText": "{layout:lowercase.en-EN}"
             }
           }
         }
@@ -424,7 +425,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "'"
+              "CommandText": "("
             }
           },
           "Width": "Auto"
@@ -432,8 +433,7 @@
         {
           "Key": {
             "Command": {
-              "Caption": "EN",
-              "CommandText": "{layout:lowercase.en-EN}"
+              "CommandText": ")"
             }
           },
           "Width": "Auto"
