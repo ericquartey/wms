@@ -307,7 +307,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.StopReason = StopRequestReason.NoReason;
             var origin = this.LoadingUnitMovementProvider.GetLastVerticalPosition();
             var current = this.LoadingUnitMovementProvider.GetCurrentVerticalPosition();
-            if ((Math.Abs(origin - current) > 3)
+            if ((Math.Abs(origin - current) > 4)
                 && this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
                 )
             {
@@ -341,6 +341,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (this.Mission.LoadUnitCellSourceId != null)
                     {
                         var cell = this.CellsProvider.GetById(this.Mission.LoadUnitCellSourceId.Value);
+                        if (this.SensorsProvider.IsSensorZeroOnCradle
+                            && Math.Abs(cell.Position - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 4)
+                        {
+                            this.Logger.LogDebug($"{this.GetType().Name}: Vertical position 2 has changed {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+
+                            this.Mission.RestoreConditions = true;
+                            this.Mission.RestoreStep = MissionStep.NotDefined;
+                            this.Mission.NeedMovingBackward = false;
+                            //this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                            var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep.OnEnter(null);
+
+                            return;
+                        }
 
                         // invert direction?
                         if (this.Mission.NeedMovingBackward)
@@ -358,6 +372,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 default:
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
+                    if (this.SensorsProvider.IsSensorZeroOnCradle
+                        && Math.Abs(bayPosition.Height - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 4)
+                    {
+                        this.Logger.LogDebug($"{this.GetType().Name}: Vertical position 3 has changed {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+
+                        this.Mission.RestoreConditions = true;
+                        this.Mission.RestoreStep = MissionStep.NotDefined;
+                        this.Mission.NeedMovingBackward = false;
+                        //this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                        var newStep = new MissionMoveStartStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep.OnEnter(null);
+
+                        return;
+                    }
                     positionId = bayPosition.Id;
 
                     // TODO: extend this sensor check also to external bay

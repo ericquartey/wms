@@ -2113,4 +2113,106 @@
   <data name="DraperyItemNone" xml:space="preserve">
     <value>None drapery</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="BayNotifications" xml:space="preserve">
+    <value>Bay notifications</value>
+  </data>
+  <data name="CloseShutterBayNumber" xml:space="preserve">
+    <value>Close shutter bay</value>
+  </data>
+  <data name="CloseShutterPosition" xml:space="preserve">
+    <value>Close shutter position</value>
+  </data>
+  <data name="DeviceNotifications" xml:space="preserve">
+    <value>Device notifications</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction</value>
+  </data>
+  <data name="EjectLoadUnit" xml:space="preserve">
+    <value>Eject load unit</value>
+  </data>
+  <data name="ErrorMovements" xml:space="preserve">
+    <value>Error movements</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Mission time</value>
+  </data>
+  <data name="NeedHomingAxis" xml:space="preserve">
+    <value>Need homing axis</value>
+  </data>
+  <data name="OpenShutterPosition" xml:space="preserve">
+    <value>Open shutter position</value>
+  </data>
+  <data name="RestoreConditions" xml:space="preserve">
+    <value>Restore conditions</value>
+  </data>
+  <data name="RestoreStep" xml:space="preserve">
+    <value>Restore step</value>
+  </data>
+  <data name="StopReason" xml:space="preserve">
+    <value>Stop reason</value>
+  </data>
+  <data name="StepTime" xml:space="preserve">
+    <value>Step time</value>
+  </data>
+  <data name="LoadUnitCellSourceId" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="NeedMovingBackward" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Resume</value>
+  </data>
+  <data name="Intermediate" xml:space="preserve">
+    <value>Intermediate</value>
+  </data>
+  <data name="Positioning" xml:space="preserve">
+    <value>Positioning</value>
+  </data>
+  <data name="Homing" xml:space="preserve">
+    <value>Homing</value>
+  </data>
+  <data name="CombinedMovements" xml:space="preserve">
+    <value>Combined movements</value>
+  </data>
+  <data name="CheckIntrusion" xml:space="preserve">
+    <value>Check intrusion</value>
+  </data>
+  <data name="Backwards" xml:space="preserve">
+    <value>Backwards</value>
+  </data>
+  <data name="NoReason" xml:space="preserve">
+    <value>No reason</value>
+  </data>
+  <data name="RunningStateChanged" xml:space="preserve">
+    <value>Running state changed</value>
+  </data>
+  <data name="FaultStateChanged" xml:space="preserve">
+    <value>Fault state changed</value>
+  </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>Restart service</value>
+  </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>IP address reached successfully</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>IP address NOT reachable</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>UWF filter NOT active</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>Active UWF filter</value>
+  </data>
 </root>

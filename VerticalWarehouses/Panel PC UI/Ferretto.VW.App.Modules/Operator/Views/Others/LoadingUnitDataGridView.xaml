@@ -1,7 +1,8 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.Views.LoadingUnitDataGridView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls">
 
   <Border BorderBrush="{DynamicResource PpcBorderBrush}"
           BorderThickness="{DynamicResource PpcBorderThickness}"
@@ -244,8 +245,8 @@
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column3"
-                            Width="1*"
+        <!--<DataGridTextColumn x:Name="Column3"
+                            Width="0.7*"
                             Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
                             Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}"
                             SortDirection="Ascending"
@@ -262,9 +263,46 @@
               <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
           </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
+        </DataGridTextColumn>-->
+
+        <DataGridTemplateColumn x:Name="Column3"
+                                Width="1.2*"
+                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}"
+                                SortDirection="Ascending"
+                                SortMemberPath="NetWeight">
+          <DataGridTemplateColumn.CellStyle>
+            <Style TargetType="DataGridCell">
+              <Setter Property="BorderThickness" Value="0" />
+              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+            </Style>
+          </DataGridTemplateColumn.CellStyle>
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <Grid>
+                <!--<ProgressBar Height="30"
+                             Margin="5"
+                             Maximum="{Binding MaxNetWeight}"
+                             Minimum="0"
+                             Value="{Binding NetWeight}" />-->
+
+                <controls:PpcProgressBar Grid.Row="1"
+                                         Height="30"
+                                         Margin="5"
+                                         Color1="{DynamicResource FerrettoGreen}"
+                                         Color2="Green"
+                                         Maximum="{Binding MaxNetWeight}"
+                                         Minimum="0"
+                                         Value="{Binding NetWeight}" />
+
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{Binding Path=NetWeight, StringFormat={}{0:F2}}" />
+              </Grid>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
         <DataGridTextColumn x:Name="Column4"
-                            Width="1*"
+                            Width="0.8*"
                             Binding="{Binding Path=CellId}"
                             Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderCell}"
                             SortDirection="Ascending"
@@ -321,7 +359,7 @@
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
         <DataGridTextColumn x:Name="Column7"
-                            Width="1*"
+                            Width="0.8*"
                             Binding="{Binding Path=LaserOffset, StringFormat={}{0:F0}}"
                             Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderLaser}"
                             SortDirection="Ascending"

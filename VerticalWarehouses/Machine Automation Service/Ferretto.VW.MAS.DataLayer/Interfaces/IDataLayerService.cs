@@ -12,8 +12,8 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         void CopyMachineDatabaseToServer(string host);
 
-        byte[] GetRawDatabaseContent();
-
         #endregion
+
+        //byte[] GetRawDatabaseContent();
     }
 }

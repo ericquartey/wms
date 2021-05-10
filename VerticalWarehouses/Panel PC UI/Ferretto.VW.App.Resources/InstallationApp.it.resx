@@ -2472,4 +2472,10 @@
   <data name="Laser" xml:space="preserve">
     <value>Laser</value>
   </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Micro carter lato sinistro</value>
+  </data>
+  <data name="WmsMissionActive" xml:space="preserve">
+    <value>Ci sono missioni attive per questo cassetto da parte del WMS</value>
+  </data>
 </root>

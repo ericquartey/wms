@@ -18,25 +18,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly IMachineServicingWebService machineServicingWebService;
+
+        private int busyCells;
+
+        private double cellFillPercentage;
+
         private double fragmentBackPercent;
 
         private double fragmentFrontPercent;
 
         private double fragmentTotalPercent;
-
-        private int totalDrawers;
-
-        private int unitsInCell;
-
-        private int unitsInBay;
-
-        private int unitsInElevator;
-
-        private int totalCells;
-
-        private int busyCells;
-
-        private int lockedCells;
 
         private int freeCells;
 
@@ -44,9 +36,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int freeCellsOnlySpace;
 
+        private int lockedCells;
+
         private double maxSolidSpaceBack;
 
         private double maxSolidSpaceFront;
+
+        private int totalCells;
+
+        private int totalDrawers;
+
+        private MachineStatistics totalStatistics;
+
+        private int unitsInBay;
+
+        private int unitsInCell;
+
+        private int unitsInElevator;
 
         #endregion
 
@@ -54,9 +60,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public StatisticsViewModel(IMachineCompactingWebService machineCompactingWebService,
             IMachineCellsWebService machineCellsWebService,
+            IMachineServicingWebService machineServicingWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
             : base()
         {
+            this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
             this.machineCompactingWebService = machineCompactingWebService ?? throw new ArgumentNullException(nameof(machineCompactingWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
@@ -66,16 +74,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public double MaxSolidSpaceBack
+        public int BusyCells
         {
-            get => this.maxSolidSpaceBack;
-            set => this.SetProperty(ref this.maxSolidSpaceBack, value, this.RaiseCanExecuteChanged);
+            get => this.busyCells;
+            private set => this.SetProperty(ref this.busyCells, value, this.RaiseCanExecuteChanged);
         }
 
-        public double MaxSolidSpaceFront
+        public double CellFillPercentage
         {
-            get => this.maxSolidSpaceFront;
-            set => this.SetProperty(ref this.maxSolidSpaceFront, value, this.RaiseCanExecuteChanged);
+            get => this.cellFillPercentage;
+            set => this.SetProperty(ref this.cellFillPercentage, value, this.RaiseCanExecuteChanged);
         }
 
         public double FragmentBackPercent
@@ -96,48 +104,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.fragmentTotalPercent, value, this.RaiseCanExecuteChanged);
         }
 
-        public int TotalDrawers
-        {
-            get => this.totalDrawers;
-            private set => this.SetProperty(ref this.totalDrawers, value, this.RaiseCanExecuteChanged);
-        }
-
-        public int UnitsInCell
-        {
-            get => this.unitsInCell;
-            private set => this.SetProperty(ref this.unitsInCell, value, this.RaiseCanExecuteChanged);
-        }
-
-        public int UnitsInBay
-        {
-            get => this.unitsInBay;
-            private set => this.SetProperty(ref this.unitsInBay, value, this.RaiseCanExecuteChanged);
-        }
-
-        public int UnitsInElevator
-        {
-            get => this.unitsInElevator;
-            private set => this.SetProperty(ref this.unitsInElevator, value, this.RaiseCanExecuteChanged);
-        }
-
-        public int TotalCells
-        {
-            get => this.totalCells;
-            private set => this.SetProperty(ref this.totalCells, value, this.RaiseCanExecuteChanged);
-        }
-
-        public int BusyCells
-        {
-            get => this.busyCells;
-            private set => this.SetProperty(ref this.busyCells, value, this.RaiseCanExecuteChanged);
-        }
-
-        public int LockedCells
-        {
-            get => this.lockedCells;
-            private set => this.SetProperty(ref this.lockedCells, value, this.RaiseCanExecuteChanged);
-        }
-
         public int FreeCells
         {
             get => this.freeCells;
@@ -154,6 +120,60 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.freeCellsOnlySpace;
             private set => this.SetProperty(ref this.freeCellsOnlySpace, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int LockedCells
+        {
+            get => this.lockedCells;
+            private set => this.SetProperty(ref this.lockedCells, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double MaxSolidSpaceBack
+        {
+            get => this.maxSolidSpaceBack;
+            set => this.SetProperty(ref this.maxSolidSpaceBack, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double MaxSolidSpaceFront
+        {
+            get => this.maxSolidSpaceFront;
+            set => this.SetProperty(ref this.maxSolidSpaceFront, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int TotalCells
+        {
+            get => this.totalCells;
+            private set => this.SetProperty(ref this.totalCells, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int TotalDrawers
+        {
+            get => this.totalDrawers;
+            private set => this.SetProperty(ref this.totalDrawers, value, this.RaiseCanExecuteChanged);
+        }
+
+        public MachineStatistics TotalStatistics
+        {
+            get => this.totalStatistics;
+            set => this.SetProperty(ref this.totalStatistics, value);
+        }
+
+        public int UnitsInBay
+        {
+            get => this.unitsInBay;
+            private set => this.SetProperty(ref this.unitsInBay, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int UnitsInCell
+        {
+            get => this.unitsInCell;
+            private set => this.SetProperty(ref this.unitsInCell, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int UnitsInElevator
+        {
+            get => this.unitsInElevator;
+            private set => this.SetProperty(ref this.unitsInElevator, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -202,6 +222,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.FreeCellsForSupport = cellsStatistic.Count(n => n.IsFree && n.BlockLevel == BlockLevel.None);
                 this.FreeCellsOnlySpace = cellsStatistic.Count(n => n.IsFree && n.BlockLevel == BlockLevel.SpaceOnly);
                 this.LockedCells = cellsStatistic.Count(n => n.BlockLevel == BlockLevel.Blocked);
+                this.CellFillPercentage = (double)(this.BusyCells + this.LockedCells) / this.TotalCells * 100;
+
+                var allServicing = await this.machineServicingWebService.GetAllAsync();
+                this.TotalStatistics = new MachineStatistics();
+
+                this.TotalStatistics.AutomaticTimePercentage = allServicing.Select(s => s.MachineStatistics.AutomaticTimePercentage).Sum();
+                this.TotalStatistics.WeightCapacityPercentage = allServicing.Select(s => s.MachineStatistics.WeightCapacityPercentage).Sum();
+                this.TotalStatistics.UsageTimePercentage = allServicing.Select(s => s.MachineStatistics.UsageTimePercentage).Sum();
+                this.TotalStatistics.AreaFillPercentage = allServicing.Select(s => s.MachineStatistics.AreaFillPercentage).Sum();
 
                 await base.OnDataRefreshAsync();
             }

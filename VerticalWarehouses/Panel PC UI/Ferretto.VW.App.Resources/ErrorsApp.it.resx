@@ -195,4 +195,7 @@
   <data name="UnitSelectIdBay" xml:space="preserve">
     <value>Selezionare l'id del/i cassetto/i presente/i in baia.</value>
   </data>
+  <data name="MarkAsResolvedAndFindZero" xml:space="preserve">
+    <value>Marca come risolto e cerca lo zero</value>
+  </data>
 </root>

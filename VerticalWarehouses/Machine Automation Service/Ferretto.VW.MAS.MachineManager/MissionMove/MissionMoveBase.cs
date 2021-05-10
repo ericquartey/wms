@@ -169,7 +169,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var destinationCellId = this.Mission.DestinationCellId;
                     if (destinationCellId.HasValue)
                     {
-                        if (this.Mission.LoadUnitId > 0)
+                        var lu = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
+                        if (this.Mission.LoadUnitId > 0
+                            && (lu.CellId == null || lu.CellId != destinationCellId))
                         {
                             try
                             {

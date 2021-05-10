@@ -48,5 +48,11 @@
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Controls\DataGrids\CustomControlFullTestLoadingUnitsDataGrid.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>
 

@@ -232,6 +232,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mark as resolved and search the zero.
+        /// </summary>
+        public static string MarkAsResolvedAndFindZero {
+            get {
+                return ResourceManager.GetString("MarkAsResolvedAndFindZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No item was loaded on the page..
         /// </summary>
         public static string NoItemLoadedOnPage {

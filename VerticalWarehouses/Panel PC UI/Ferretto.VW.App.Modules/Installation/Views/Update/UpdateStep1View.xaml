@@ -7,6 +7,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:gif="http://wpfanimatedgif.codeplex.com"
             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:localControl="clr-namespace:Ferretto.VW.App.Modules.Installation.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -38,14 +39,14 @@
                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                Text="{res:Loc InstallationApp.SoftwareUpdate}" />
 
-        <TextBlock Grid.Row="1"
-            Margin="15"
+    <TextBlock Grid.Row="1"
+               Margin="15"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Style="{StaticResource VWAPP_WizardDescriptionTextBlockStyle}"
                Text="{res:Loc InstallationApp.SoftwareUpdateDescription}" />
 
-        <Border Grid.Row="2"
+    <Border Grid.Row="2"
             Grid.ColumnSpan="2"
             Width="900"
             Padding="15,20,15,0"
@@ -67,6 +68,8 @@
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
 
         </Grid.ColumnDefinitions>
@@ -80,7 +83,8 @@
                                  LabelText="{res:Loc InstallationApp.PanelPcCurrentVersion}" />
 
 
-        <icon:PackIconMaterial Grid.Row="1"
+        <icon:PackIconMaterial Grid.Row="0"
+                               Grid.Column="2"
                                Width="24"
                                Height="24"
                                Margin="15"
@@ -89,23 +93,53 @@
                                Foreground="White"
                                Kind="Cloud" />
 
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="1"
+        <controls:PpcLabeledText Grid.Row="0"
+                                 Grid.Column="3"
                                  Margin="0,15,25,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding RepositoryPath}"
                                  LabelText="{res:Loc InstallationApp.RepositoryPath}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="2"
+        <controls:PpcLabeledText Grid.Row="0"
+                                 Grid.Column="4"
                                  Margin="0,15,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding RepositoryPackagesCount}"
                                  LabelText="{res:Loc InstallationApp.AvailablePackages}" />
 
+        <icon:PackIconMaterial Grid.Row="1"
+                               Grid.Column="2"
+                               Width="24"
+                               Height="24"
+                               Margin="15"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="White"
+                               Kind="Cloud"
+                               Visibility="{Binding IsBay1, Converter={StaticResource BTVIC}}" />
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="3"
+                                 Margin="0,15,25,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding RepositoryPathSecondary}"
+                                 LabelText="Percorso Repositorio secondario"
+                                 Visibility="{Binding IsBay1, Converter={StaticResource BTVIC}}" />
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="4"
+                                 Margin="0,15,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding RepositoryPackagesSecondaryCount}"
+                                 LabelText="{res:Loc InstallationApp.AvailablePackages}"
+                                 Visibility="{Binding IsBay1, Converter={StaticResource BTVIC}}" />
+
         <icon:PackIconMaterial Grid.Row="2"
+                               Grid.Column="2"
                                Width="24"
                                Height="24"
                                Margin="15"
@@ -115,7 +149,7 @@
                                Kind="Usb" />
 
         <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="1"
+                                 Grid.Column="3"
                                  Margin="0,15,25,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
@@ -123,7 +157,7 @@
                                  LabelText="{res:Loc InstallationApp.RemovableDevicesCount}" />
 
         <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="2"
+                                 Grid.Column="4"
                                  Margin="0,15,0,15"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
@@ -155,7 +189,14 @@
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
 
-      <controls:PpcButton HorizontalAlignment="Right"
+      <!--<controls:PpcButton HorizontalAlignment="Right"
+                          VerticalAlignment="Center"
+                          Command="{Binding BrowserOpenCommand}"
+                          Content="{res:Loc InstallationApp.OpenBrowser}"
+                          IsBusy="{Binding IsWaitingForResponse}" />-->
+
+      <controls:PpcButton Margin="15,0,0,0"
+                          HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           Command="{Binding SupportCommand}"
                           Content="{res:Loc InstallationApp.Support}" />
@@ -165,7 +206,7 @@
                           VerticalAlignment="Center"
                           Command="{Binding RestoreCommand}"
                           Content="{res:Loc InstallationApp.Restoration}"
-                          Visibility="Hidden"/>
+                          Visibility="Hidden" />
 
       <controls:PpcButton Margin="15,0,0,0"
                           HorizontalAlignment="Right"
@@ -173,5 +214,11 @@
                           Command="{Binding NextCommand}"
                           Content="{res:Loc InstallationApp.Next}" />
     </StackPanel>
+
+    <!--<localControl:AdvancedBrowser Grid.RowSpan="4"
+                                  Grid.ColumnSpan="2"
+                                  IsOpen="{Binding IsBrowserOpened}"
+                                  Url="https://install.appcenter.ms/sign-in?original_url=install:/%2Forgs%2FFerretto-Group-S.p.A."
+                                  Visibility="{Binding IsBrowserOpened, Converter={StaticResource BTVC}}" />-->
   </Grid>
 </ctrls:View>

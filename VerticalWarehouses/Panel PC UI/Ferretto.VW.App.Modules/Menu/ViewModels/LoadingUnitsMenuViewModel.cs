@@ -166,7 +166,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 case Menu.TestComplete:
                     return this.CanExecuteCommand() &&
-                      this.MachineService.IsHoming;
+                      this.VerticalOriginCalibration.IsCompleted;
 
                 default:
                     return this.CanExecuteCommand();

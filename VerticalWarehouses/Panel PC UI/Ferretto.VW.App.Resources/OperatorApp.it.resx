@@ -1745,4 +1745,106 @@
   <data name="DraperyItemNone" xml:space="preserve">
     <value>Nessuna pezza</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>Azione</value>
+  </data>
+  <data name="BayNotifications" xml:space="preserve">
+    <value>Notifiche baia</value>
+  </data>
+  <data name="CloseShutterBayNumber" xml:space="preserve">
+    <value>Chiusura serranda baia</value>
+  </data>
+  <data name="CloseShutterPosition" xml:space="preserve">
+    <value>Posizione chiusura serranda</value>
+  </data>
+  <data name="DeviceNotifications" xml:space="preserve">
+    <value>Notifiche dispositivo </value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direzione</value>
+  </data>
+  <data name="EjectLoadUnit" xml:space="preserve">
+    <value>Espelli cassetto</value>
+  </data>
+  <data name="ErrorMovements" xml:space="preserve">
+    <value>Errore movimenti</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Tempo missione</value>
+  </data>
+  <data name="NeedHomingAxis" xml:space="preserve">
+    <value>Asse necessita homing</value>
+  </data>
+  <data name="OpenShutterPosition" xml:space="preserve">
+    <value>Posizione serranda aperta </value>
+  </data>
+  <data name="RestoreConditions" xml:space="preserve">
+    <value>Ripristina condizioni</value>
+  </data>
+  <data name="RestoreStep" xml:space="preserve">
+    <value>Ripristina step</value>
+  </data>
+  <data name="StopReason" xml:space="preserve">
+    <value>Motivo stop</value>
+  </data>
+  <data name="StepTime" xml:space="preserve">
+    <value>Tempo step</value>
+  </data>
+  <data name="LoadUnitCellSourceId" xml:space="preserve">
+    <value>Id sorgente cella </value>
+  </data>
+  <data name="NeedMovingBackward" xml:space="preserve">
+    <value>Necessita movimento indietro</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Attivare</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pausa</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Riprendere</value>
+  </data>
+  <data name="Intermediate" xml:space="preserve">
+    <value>Intermedia</value>
+  </data>
+  <data name="Positioning" xml:space="preserve">
+    <value>Posizionamento</value>
+  </data>
+  <data name="Homing" xml:space="preserve">
+    <value>Homing</value>
+  </data>
+  <data name="CombinedMovements" xml:space="preserve">
+    <value>Movimenti combinati</value>
+  </data>
+  <data name="CheckIntrusion" xml:space="preserve">
+    <value>Controllo intrusioni</value>
+  </data>
+  <data name="Backwards" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
+  <data name="NoReason" xml:space="preserve">
+    <value>Nessuna ragione</value>
+  </data>
+  <data name="RunningStateChanged" xml:space="preserve">
+    <value>Cambio stato esecuzione</value>
+  </data>
+  <data name="FaultStateChanged" xml:space="preserve">
+    <value>Cambio stato fault</value>
+  </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>Riavvia servizio</value>
+  </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>Indirizzo IP raggiunto con successo</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>Indirizzo IP NON raggiungibile</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>Filtro UWF NON attivo</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>Filtro UWF attivo</value>
+  </data>
 </root>

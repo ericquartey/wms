@@ -1683,4 +1683,13 @@
   <data name="DraperyItemNone" xml:space="preserve">
     <value>None drapery</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>Δράση</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Δράση</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Ώρα αποστολής</value>
+  </data>
 </root>

@@ -166,8 +166,8 @@ namespace Ferretto.VW.MAS.AutomationService
                     if (machineDataProvider.IsDbSaveOnTelemetry())
                     {
                         // Retrieve the (raw) database content
-                        var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
-                        var rawDatabaseContent = dataLayer.GetRawDatabaseContent();
+                        var machine = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMachineProvider>();
+                        var rawDatabaseContent = machine.GetRawDatabaseContent();
 
                         // Send raw database content
                         await this.SendRawDatabaseContentAsync(rawDatabaseContent);

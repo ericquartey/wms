@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         private readonly IMachineVolatileDataProvider machineModeDataProvider;
 
+        private readonly IMachineResourcesProvider machineResourcesProvider;
+
         private readonly IMissionsDataProvider missionsDataProvider;
 
         private readonly ISensorsProvider sensorsProvider;
@@ -39,6 +41,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         #region Constructors
 
         public ChangeRunningStateEndState(
+            IMachineResourcesProvider machineResourcesProvider,
             IBaysDataProvider baysDataProvider,
             IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
@@ -48,6 +51,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             ILogger<StateBase> logger)
             : base(logger)
         {
+            this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
@@ -104,6 +108,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 }
                 else
                 {
+                    var result = this.AntiIntrusionBarrierDetect(commandMessage.RequestingBay);
+
                     this.Logger.LogWarning($"ChangeRunningStateEndState: Running state {runningState.Enable} not valid or error detected");
 
                     var endMessageData = new ChangeRunningStateMessageData(false, null, runningState.CommandAction, StopRequestReason.Error);
@@ -117,7 +123,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                         commandMessage.TargetBay,
                         StopRequestReasonConverter.GetMessageStatusFromReason(StopRequestReason.Error));
 
-                    this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
+                    if (!result)
+                    {
+                        this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
+                    }
 
                     {
                         var newMessageData = new ChangeRunningStateMessageData(false);
@@ -180,6 +189,45 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         protected override IState OnStop(StopRequestReason reason)
         {
             return this;
+        }
+
+        private bool AntiIntrusionBarrierDetect(BayNumber bay)
+        {
+            this.Logger.LogWarning($"Check {bay} anti intrusion barrier");
+            var errorCode = MachineErrorCode.SecurityWasTriggered;
+            switch (bay)
+            {
+                case BayNumber.BayOne:
+                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay1)
+                    {
+                        errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
+                        this.errorsProvider.RecordNew(errorCode, bay);
+                        return true;
+                    }
+                    break;
+
+                case BayNumber.BayTwo:
+                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay2)
+                    {
+                        errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
+                        this.errorsProvider.RecordNew(errorCode, bay);
+                        return true;
+                    }
+                    break;
+
+                case BayNumber.BayThree:
+                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay3)
+                    {
+                        errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
+                        this.errorsProvider.RecordNew(errorCode, bay);
+                        return true;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+            return false;
         }
 
         private void UpdateResponseList(MessageStatus status, BayNumber targetBay)

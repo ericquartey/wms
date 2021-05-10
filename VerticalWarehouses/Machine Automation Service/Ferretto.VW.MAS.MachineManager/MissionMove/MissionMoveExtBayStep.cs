@@ -218,6 +218,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 {
                                     this.LoadingUnitMovementProvider.UpdateLastBayChainPosition(this.Mission.TargetBay);
                                     this.Mission.RestoreConditions = false;
+                                    this.Mission.ErrorCode = MachineErrorCode.NoError;
 
                                     this.Logger.LogDebug($"Restore conditions: {this.Mission.RestoreConditions}");
                                     //this.MissionsDataProvider.Update(this.Mission);

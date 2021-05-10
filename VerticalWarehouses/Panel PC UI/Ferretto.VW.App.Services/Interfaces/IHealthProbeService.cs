@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        string ReloadMAS(int timeoutMilliseconds);
+
         void Start();
 
         void Stop();

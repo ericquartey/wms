@@ -416,6 +416,757 @@
           </Style>
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
+
+      <DataGridTemplateColumn x:Name="Action"
+                              Width="80"
+                              Header="{Res:Loc OperatorApp.Action}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Action}">
+                      <DataTrigger.Value>
+                        <model:CommandAction>Start</model:CommandAction>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc General.Start}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Action}">
+                      <DataTrigger.Value>
+                        <model:CommandAction>Activate</model:CommandAction>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.Activate}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Action}">
+                      <DataTrigger.Value>
+                        <model:CommandAction>Pause</model:CommandAction>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.Pause}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Action}">
+                      <DataTrigger.Value>
+                        <model:CommandAction>Resume</model:CommandAction>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.Resume}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Action}">
+                      <DataTrigger.Value>
+                        <model:CommandAction>Abort</model:CommandAction>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusAborted}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Action}">
+                      <DataTrigger.Value>
+                        <model:CommandAction>Stop</model:CommandAction>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc General.Stop}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTemplateColumn x:Name="BayNotifications"
+                              Width="120"
+                              Header="{Res:Loc OperatorApp.BayNotifications}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding BayNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionBayNotifications>None</model:MissionBayNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayNone}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding BayNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionBayNotifications>BayOne</model:MissionBayNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayOne}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding BayNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionBayNotifications>BayTwo</model:MissionBayNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayTwo}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding BayNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionBayNotifications>BayThree</model:MissionBayNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayThree}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding BayNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionBayNotifications>ElevatorBay</model:MissionBayNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberElevatorBay}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTemplateColumn x:Name="CloseShutterBayNumber"
+                              Width="200"
+                              Header="{Res:Loc OperatorApp.CloseShutterBayNumber}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding CloseShutterBayNumber}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>None</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayNone}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CloseShutterBayNumber}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>BayOne</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayOne}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CloseShutterBayNumber}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>BayTwo</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayTwo}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CloseShutterBayNumber}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>BayThree</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberBayThree}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CloseShutterBayNumber}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>ElevatorBay</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberElevatorBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CloseShutterBayNumber}">
+                      <DataTrigger.Value>
+                        <model:BayNumber>All</model:BayNumber>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.BayNumberAll}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTemplateColumn x:Name="CloseShutterPosition"
+                              Width="250"
+                              Header="{Res:Loc OperatorApp.CloseShutterPosition}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding CloseShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>NotSpecified</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.ItemListType_NotSpecified}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CloseShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>Opened</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.ShutterOpen}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CloseShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>Half</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.ShutterMidWay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CloseShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>Closed</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.ShutterClosed}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CloseShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>Intermediate</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.Intermediate}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTextColumn x:Name="DestinationCellId"
+                          Width="auto"
+                          Binding="{Binding Path=DestinationCellId}"
+                          Header="{Res:Loc InstallationApp.InsertDestinationCellId}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+      <DataGridTemplateColumn x:Name="DeviceNotifications"
+                              Width="auto"
+                              Header="{Res:Loc OperatorApp.DeviceNotifications}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding DeviceNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionDeviceNotifications>None</model:MissionDeviceNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.None}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding DeviceNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionDeviceNotifications>Positioning</model:MissionDeviceNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.Positioning}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding DeviceNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionDeviceNotifications>Shutter</model:MissionDeviceNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.Shutter}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding DeviceNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionDeviceNotifications>Homing</model:MissionDeviceNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.Homing}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding DeviceNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionDeviceNotifications>CombinedMovements</model:MissionDeviceNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.CombinedMovements}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding DeviceNotifications}">
+                      <DataTrigger.Value>
+                        <model:MissionDeviceNotifications>CheckIntrusion</model:MissionDeviceNotifications>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.CheckIntrusion}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTemplateColumn x:Name="Direction"
+                              Width="120"
+                              Header="{Res:Loc OperatorApp.Direction}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Direction}">
+                      <DataTrigger.Value>
+                        <model:HorizontalMovementDirection>NotSpecified</model:HorizontalMovementDirection>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.ItemListType_NotSpecified}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Direction}">
+                      <DataTrigger.Value>
+                        <model:HorizontalMovementDirection>Forwards</model:HorizontalMovementDirection>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.Forwards}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Direction}">
+                      <DataTrigger.Value>
+                        <model:HorizontalMovementDirection>Backwards</model:HorizontalMovementDirection>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.Backwards}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTextColumn x:Name="EjectLoadUnit"
+                          Width="auto"
+                          Binding="{Binding Path=EjectLoadUnit, Converter={StaticResource BTSC}}"
+                          Header="{Res:Loc OperatorApp.EjectLoadUnit}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+      <DataGridTextColumn x:Name="ErrorCode"
+                          Width="150"
+                          Binding="{Binding Path=ErrorCode}"
+                          Header="{Res:Loc ErrorsApp.ErrorCode}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+      <DataGridTemplateColumn x:Name="ErrorMovements"
+                              Width="150"
+                              Header="{Res:Loc OperatorApp.ErrorMovements}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding ErrorMovements}">
+                      <DataTrigger.Value>
+                        <model:MissionErrorMovements>None</model:MissionErrorMovements>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.None}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ErrorMovements}">
+                      <DataTrigger.Value>
+                        <model:MissionErrorMovements>MoveForward</model:MissionErrorMovements>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.Forwards}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ErrorMovements}">
+                      <DataTrigger.Value>
+                        <model:MissionErrorMovements>MoveBackward</model:MissionErrorMovements>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.Backwards}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ErrorMovements}">
+                      <DataTrigger.Value>
+                        <model:MissionErrorMovements>MoveShutterOpen</model:MissionErrorMovements>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.ShutterOpen}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ErrorMovements}">
+                      <DataTrigger.Value>
+                        <model:MissionErrorMovements>MoveShutterClosed</model:MissionErrorMovements>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.ShutterClosed}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ErrorMovements}">
+                      <DataTrigger.Value>
+                        <model:MissionErrorMovements>AbortMovement</model:MissionErrorMovements>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.OperationAborted}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTextColumn x:Name="LoadUnitCellSourceId"
+                          Width="auto"
+                          Binding="{Binding Path=LoadUnitCellSourceId}"
+                          Header="{Res:Loc OperatorApp.LoadUnitCellSourceId}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+      <DataGridTextColumn x:Name="MissionTime"
+                          Width="150"
+                          Binding="{Binding Path=MissionTime}"
+                          Header="{Res:Loc OperatorApp.MissionTime}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+      <DataGridTemplateColumn x:Name="NeedHomingAxis"
+                              Width="auto"
+                              Header="{Res:Loc OperatorApp.NeedHomingAxis}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding NeedHomingAxis}">
+                      <DataTrigger.Value>
+                        <model:Axis>None</model:Axis>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.None}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding NeedHomingAxis}">
+                      <DataTrigger.Value>
+                        <model:Axis>Horizontal</model:Axis>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc SensorCard.Horizontal}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding NeedHomingAxis}">
+                      <DataTrigger.Value>
+                        <model:Axis>Vertical</model:Axis>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.Vertical}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding NeedHomingAxis}">
+                      <DataTrigger.Value>
+                        <model:Axis>HorizontalAndVertical</model:Axis>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.HorizontalAndVertical}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding NeedHomingAxis}">
+                      <DataTrigger.Value>
+                        <model:Axis>BayChain</model:Axis>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.BayChain}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTextColumn x:Name="NeedMovingBackward"
+                          Width="auto"
+                          Binding="{Binding Path=NeedMovingBackward, Converter={StaticResource BTSC}}"
+                          Header="{Res:Loc OperatorApp.NeedMovingBackward}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+      <DataGridTemplateColumn x:Name="OpenShutterPosition"
+                              Width="250"
+                              Header="{Res:Loc OperatorApp.OpenShutterPosition}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding OpenShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>NotSpecified</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.ItemListType_NotSpecified}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding OpenShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>Opened</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.ShutterOpen}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding OpenShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>Half</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.ShutterMidWay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding OpenShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>Closed</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.ShutterClosed}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding OpenShutterPosition}">
+                      <DataTrigger.Value>
+                        <model:ShutterPosition>Intermediate</model:ShutterPosition>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.Intermediate}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTextColumn x:Name="Priority"
+                          Width="80"
+                          Binding="{Binding Path=Priority}"
+                          Header="{Res:Loc InstallationApp.Priority}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+      <DataGridTextColumn x:Name="RestoreConditions"
+                          Width="auto"
+                          Binding="{Binding Path=RestoreConditions, Converter={StaticResource BTSC}}"
+                          Header="{Res:Loc OperatorApp.RestoreConditions}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+      <DataGridTemplateColumn x:Name="RestoreStep"
+                              Width="150"
+                              Header="{Res:Loc OperatorApp.RestoreStep}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>NotDefined</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MisionStateNotDefined}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>New</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateNew}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>Start</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateStart}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>LoadElevator</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateLoadElevator}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ToTarget</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateToTarget}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>DepositUnit</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateDepositUnit}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitPick</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitPick}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>BayChain</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateBayChain}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>CloseShutter</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateCloseShutter}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>BackToBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateBackToBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitChain</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitChain}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitDepositCell</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDepositCell}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitDepositBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDepositBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>DoubleExtBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateDoubleExtBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitDepositExternalBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDepositExternalBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>WaitDepositInternalBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateWaitDepositInternalBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ExtBay</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateExtBay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>End</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateEnd}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>Error</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateError}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ErrorLoad</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorLoad}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RestoreStep}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ErrorDeposit</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorDeposit}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
+      <DataGridTextColumn x:Name="StepTime"
+                          Width="150"
+                          Binding="{Binding Path=StepTime, StringFormat={x:Static Res:General.DateFormatComplete}}"
+                          Header="{Res:Loc OperatorApp.StepTime}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+      <DataGridTemplateColumn x:Name="StopReason"
+                              Width="auto"
+                              Header="{Res:Loc OperatorApp.StopReason}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding StopReason}">
+                      <DataTrigger.Value>
+                        <model:StopRequestReason>NoReason</model:StopRequestReason>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.NoReason}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding StopReason}">
+                      <DataTrigger.Value>
+                        <model:StopRequestReason>Stop</model:StopRequestReason>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc InstallationApp.Stop}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding StopReason}">
+                      <DataTrigger.Value>
+                        <model:StopRequestReason>Error</model:StopRequestReason>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc General.Error}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding StopReason}">
+                      <DataTrigger.Value>
+                        <model:StopRequestReason>Abort</model:StopRequestReason>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.StatusAborted}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding StopReason}">
+                      <DataTrigger.Value>
+                        <model:StopRequestReason>RunningStateChanged</model:StopRequestReason>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.RunningStateChanged}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding StopReason}">
+                      <DataTrigger.Value>
+                        <model:StopRequestReason>FaultStateChanged</model:StopRequestReason>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.FaultStateChanged}" />
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+
     </DataGrid.Columns>
   </DataGrid>
 </UserControl>

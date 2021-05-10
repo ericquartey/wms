@@ -927,6 +927,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.IsWmsHealthy;
             }
+            if (param == OperatorApp.Add)
+            {
+                return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyConfirmingRecallOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.IsWmsHealthy;
+            }
 
             return
             this.SelectedItemCompartment?.ItemId != null

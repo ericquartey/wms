@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -272,6 +273,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.ErrorMovements = MissionErrorMovements.None;
                         var cell = this.CellsProvider.GetById(this.Mission.DestinationCellId.Value);
+                        if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                            && Math.Abs(cell.Position - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 10)
+                        {
+                            this.Logger.LogDebug($"{this.GetType().Name}: Vertical position 2 has changed {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+
+                            this.Mission.RestoreConditions = true;
+                            this.Mission.RestoreStep = MissionStep.NotDefined;
+                            this.Mission.NeedMovingBackward = false;
+                            //this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                            var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep.OnEnter(null);
+
+                            return;
+                        }
                         // invert direction?
                         if (this.Mission.NeedMovingBackward)
                         {
@@ -287,6 +302,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 default:
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination);
+                    if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                        && Math.Abs(bayPosition.Height - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 10)
+                    {
+                        this.Logger.LogDebug($"{this.GetType().Name}: Vertical position 3 has changed {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+
+                        this.Mission.ErrorMovements = MissionErrorMovements.None;
+                        this.Mission.RestoreConditions = true;
+                        this.Mission.RestoreStep = MissionStep.NotDefined;
+                        this.Mission.NeedMovingBackward = false;
+                        //this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                        var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep.OnEnter(null);
+
+                        return;
+                    }
                     // invert direction?
                     if (this.Mission.NeedMovingBackward)
                     {

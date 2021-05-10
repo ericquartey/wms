@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -57,6 +56,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
+        private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
@@ -123,12 +124,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public WeightCalibrationViewModel(
+            IMachineMissionsWebService machineMissionsWebService,
             IEventAggregator eventAggregator,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineShuttersWebService shuttersWebService)
           : base(PresentationMode.Installer)
         {
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -354,6 +357,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    !this.IsPositionUpSelected;
         }
 
+        public async Task CheckWmsMission(int loadingUnitId)
+        {
+            var missions = await this.machineMissionsWebService.GetAllAsync();
+
+            if (missions.Any(s => s.WmsId != null && s.LoadUnitId == loadingUnitId))
+            {
+                this.ClearNotifications();
+                this.ShowNotification(Localized.Get("InstallationApp.WmsMissionActive"), Services.Models.NotificationSeverity.Warning);
+            }
+        }
+
         public override void Disappear()
         {
             base.Disappear();
@@ -559,6 +573,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(this.MachineService.GetBayPositionSourceByDestination(this.isPositionDownSelected), this.LoadingUnitId);
+
+                await this.CheckWmsMission(this.LoadingUnitId);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -757,10 +773,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.isPositionDownSelected)
                 {
                     await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.SelectedBayPosition().Location, null, this.MachineStatus.LoadingUnitPositionDownInBay.Id);
+
+                    await this.CheckWmsMission(this.MachineStatus.LoadingUnitPositionDownInBay.Id);
                 }
                 else
                 {
                     await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(this.SelectedBayPosition().Location, null, this.MachineStatus.LoadingUnitPositionUpInBay.Id);
+
+                    await this.CheckWmsMission(this.MachineStatus.LoadingUnitPositionUpInBay.Id);
                 }
                 this.IsBusyCallDrawer = true;
                 //this.CurrentStep = WeightCalibartionStep.CallUnit;
@@ -885,6 +905,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     await this.machineLoadingUnitsWebService.StartScaleCalibrationAsync(selectedBayPosition.LoadingUnit.Id);
                     //await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(selectedBayPosition.LoadingUnit.Id, MAS.AutomationService.Contracts.LoadingUnitLocation.Elevator);
+
+                    await this.CheckWmsMission(selectedBayPosition.LoadingUnit.Id);
 
                     this.IsBusyLoadingFromBay = true;
                 }

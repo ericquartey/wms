@@ -120,6 +120,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public bool HasShutter => this.MachineService.HasShutter;
 
+        public bool HasExternalDouble => this.MachineService.Bay.IsExternal && this.MachineService.Bay.IsDouble;
+
         public bool IsExecutingProcedure
         {
             get => this.isExecutingProcedure;

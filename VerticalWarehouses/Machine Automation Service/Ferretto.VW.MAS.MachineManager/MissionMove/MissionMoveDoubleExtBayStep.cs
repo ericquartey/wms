@@ -80,28 +80,30 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var isLoadingUnitInInternalDownPosition = this.machineResourcesProvider.IsDrawerInBayInternalBottom(bay.Number);
 
             // Detect if homing operation is required
-            this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
+            //this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
 
-            if (this.Mission.NeedHomingAxis == Axis.BayChain)
+            if (this.Mission.RestoreConditions)
             {
+                this.Mission.RestoreConditions = false;
+                this.Mission.ErrorCode = MachineErrorCode.NoError;
                 this.Logger.LogInformation($"Homing Double External Bay Start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
             }
-            else if (this.Mission.RestoreConditions)
-            {
-                this.Logger.LogDebug($"Move in restore conditions => LoadUnitDestination: {this.Mission.LoadUnitDestination}, bay number: {bay.Number}");
-                if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId,
-                    ((isLoadUnitDestinationInBay && !destination.IsUpper) || (!isLoadUnitDestinationInBay && destination.IsUpper) ? ExternalBayMovementDirection.TowardOperator : ExternalBayMovementDirection.TowardMachine),
-                    MessageActor.MachineManager,
-                    bay.Number,
-                    restore: true,
-                    destination.IsUpper))
-                {
-                    // already arrived
-                    this.ExternalBayChainEnd();
-                    return true;
-                }
-            }
+            //else if (this.Mission.RestoreConditions)
+            //{
+            //    this.Logger.LogDebug($"Move in restore conditions => LoadUnitDestination: {this.Mission.LoadUnitDestination}, bay number: {bay.Number}");
+            //    if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId,
+            //        ((isLoadUnitDestinationInBay && !destination.IsUpper) || (!isLoadUnitDestinationInBay && destination.IsUpper) ? ExternalBayMovementDirection.TowardOperator : ExternalBayMovementDirection.TowardMachine),
+            //        MessageActor.MachineManager,
+            //        bay.Number,
+            //        restore: true,
+            //        destination.IsUpper))
+            //    {
+            //        // already arrived
+            //        this.ExternalBayChainEnd();
+            //        return true;
+            //    }
+            //}
             else
             {
                 // Move during normal positioning
@@ -274,13 +276,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
                                 }
 
-                                if (this.Mission.RestoreConditions)
-                                {
-                                    this.LoadingUnitMovementProvider.UpdateLastBayChainPosition(this.Mission.TargetBay);
-                                    this.Mission.RestoreConditions = false;
+                                //if (this.Mission.RestoreConditions)
+                                //{
+                                //    this.LoadingUnitMovementProvider.UpdateLastBayChainPosition(this.Mission.TargetBay);
+                                //    this.Mission.RestoreConditions = false;
 
-                                    this.Logger.LogDebug($"Restore conditions: {this.Mission.RestoreConditions}");
-                                }
+                                //    this.Logger.LogDebug($"Restore conditions: {this.Mission.RestoreConditions}");
+                                //}
                             }
                         }
 
@@ -298,10 +300,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             // Calibrate double external bay
                             if (messageData.AxisToCalibrate == Axis.BayChain)
                             {
-                                this.Logger.LogDebug($"Acquired the {notificationStatus} of {notification.Type}");
-                                this.Mission.NeedHomingAxis = Axis.None;
+                                this.Logger.LogDebug($"Homing full BayChain executed: prepare for empty homing");
+                                this.Mission.NeedHomingAxis = Axis.BayChain;
 
-                                this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
+                                this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
 
                                 if (isLoadUnitDestinationInBay)
                                 {
@@ -323,6 +325,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     this.Mission.LoadUnitDestination = destination.Location;
 
                                     this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
+                                    this.MissionsDataProvider.Update(this.Mission);
                                     this.Logger.LogDebug($"Execute the move external bay toward Operator, DeviceNotification: {this.Mission.DeviceNotifications}");
                                 }
                                 else
@@ -379,12 +382,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter))
                     )
             {
-                if (this.Mission.NeedHomingAxis == Axis.BayChain &&
-                    !this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Homing))
-                {
-                    this.Logger.LogDebug($"Waiting for homing Mission:Id={this.Mission.Id}");
-                }
-                else if (this.Mission.ErrorCode == MachineErrorCode.MoveExtBayNotAllowed)
+                //if (this.Mission.NeedHomingAxis == Axis.BayChain &&
+                //    !this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Homing))
+                //{
+                //    this.Logger.LogDebug($"Waiting for homing Mission:Id={this.Mission.Id}");
+                //}
+                //else
+                if (this.Mission.ErrorCode == MachineErrorCode.MoveExtBayNotAllowed)
                 {
                     this.SetErrorMoveExtBayChain(bay, destination);
                     //this.SetErrorMoveExtBayChain(bay, bay.Positions.FirstOrDefault());

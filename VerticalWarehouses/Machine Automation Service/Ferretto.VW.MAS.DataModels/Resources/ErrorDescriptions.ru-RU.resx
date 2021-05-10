@@ -1,0 +1,429 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Условия позиционирования не выполнены.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Условия запуска не выполнены.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Единица груза не загружена полностью.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Подъемник не загружен после захвата</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Подъемник не пустой после укладки</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Несоответствие датчиков подъемника</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Несоответствие датчиков подъемника</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Общая ошибка инвертора</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Параметр инвертора не может быть записан во время выполнения.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Данные набора данных инвертора не соответствуют.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Ошибка контрольной суммы EEPROM инвертора.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Ошибка считывания EEPROM инвертора.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Ошибка записи EEPROM инвертора.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Недействительный набор данных инвертора.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Недействительный параметр инвертора.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Указанный узел недоступен.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Параметр инвертора доступен только для чтения.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Параметр инвертора доступен только для записи.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Синтаксическая ошибка сообщения, отправленного на инвертор.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Неизвестный параметр передан на инвертор.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Несоответствие между длиной сообщения для инвертора и типом данных сообщения!</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>На одном из инверторов обнаружена ошибка.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Сработала предохранительная функция.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Недействительная ячейка назначения</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Люлька подъемника занята</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Несоответствие исходного положения базы данных</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>В указанной секции нет загрузочного устройства</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Единица груза обнаружена в секции отбора</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Секция назначения лотка занята</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Единица загрузки недоступна</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Выбранная единица груза не загружена на склад</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Исходная секция пустой единицы груза</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Недействительная исходная ячейка</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Недействительные датчики</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Несогласованность состояния датчиков подъемника</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Несогласованность состояния датчиков</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Несогласованность состояния датчиков</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Несоответствие датчиков секции</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Верхний уровень секции занят</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Несоответствие датчиков подъемника</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Максимальный вес, загруженный на загрузочное устройство, является чрезмерным.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Заслонка закрыта</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Заслонка открыта</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Назначение ниже нижнего предела</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>Инвертор выполняет другую команду</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Назначение выше верхнего предела</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Ошибка устройства ввода-вывода</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Единица груза внутри склада</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Режим машины недействителен</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Предохранительный барьер занят</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Проверить все предохранительные кнопки.</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Панель с левой стороны открыта.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Единица груза находится в другой секции.</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Выдвижной секции нет на подъемнике</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Недействительные датчики</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Верхний уровень секции пустой</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Ошибка выполнения задачи</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Ошибка выполнения задачи</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Ошибка выполнения задачи</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>НетОшибки</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Слишком низкий вес</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Общий вес машины превышен</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Склад заполнен</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Секция занята неизвестным загрузочным устройством</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Подъемник занят неизвестным загрузочным устройством</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Ошибка связи</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Ошибка связи</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Ошибка связи</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Автоматическое восстановление движения не допускается</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Тип назначения недействителен</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Неопределенное нижнее положение секции</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Неопределенное верхнее положение секции</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Тип задачи недействителен</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Перемещение цепного конвейера секции не допускается: единица груза слишком тяжелая.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Команда подтверждения захвата недействительна</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Обновление базы данных завершено неуспешно. Одна или несколько ячеек назначения заняты при выполнении последовательности</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Условия возврата в исходное положение не соблюдаются.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Ошибка высоты</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Положение заслонки недействительно</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Необходима калибровка назначения секции</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Испытание не завершено</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Склад не пустой.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Ошибка позиционирования</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Панель с правой стороны открыта.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Вертикальное положение изменилось после запуска машины</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Испытание не завершено</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Недействительная секция</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Недействительное положение секции</value>
+  </data>
+  <data name="AxisMovementAccelerationConfigurationInvalid" xml:space="preserve">
+    <value>Недействительная конфигурация ускорения перемещения оси {0}</value>
+  </data>
+  <data name="AxisMovementDecelerationConfigurationInvalid" xml:space="preserve">
+    <value>Недействительная конфигурация замедления движения оси {0}</value>
+  </data>
+  <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
+    <value>Недействительная конфигурация скорости перемещения оси {0}</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Ошибка позиционирования на верхней стороне</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Внешняя секция занята</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Внешняя секция пустая</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>Ошибка СУС</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Недействительное движение</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Ошибка позиционирования на нижней стороне</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>Единица груза недоступна</value>
+  </data>
+  <data name="LoadUnitNumber" xml:space="preserve">
+    <value>Номер единицы груза</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Недействительные датчики секции</value>
+  </data>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Ошибка позиционирования</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Время ожидания команды инвертора</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>Время ожидания команды устройства ввода-вывода</value>
+  </data>
+</root>

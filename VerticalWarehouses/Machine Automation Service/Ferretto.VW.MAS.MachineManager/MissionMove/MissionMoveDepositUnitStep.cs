@@ -78,6 +78,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
 
                     var cell = this.CellsProvider.GetById(this.Mission.DestinationCellId.Value);
+                    if (Math.Abs(cell.Position - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 10)
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.VerticalPositionChanged, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
 
                     this.Mission.Direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
 
@@ -94,6 +99,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         bayNumber = bay.Number;
                         var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination);
+                        if (Math.Abs(bayPosition.Height - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 10)
+                        {
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.Mission.TargetBay);
+                            throw new StateMachineException(ErrorDescriptions.VerticalPositionChanged, this.Mission.TargetBay, MessageActor.MachineManager);
+                        }
                         targetBayPositionId = bayPosition.Id;
                         this.Mission.OpenShutterPosition = this.LoadingUnitMovementProvider.GetShutterOpenPosition(bay, this.Mission.LoadUnitDestination);
                         var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(bay.Number);

@@ -789,6 +789,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanUnloadToBay()
         {
             var selectedBayPosition = this.SelectedBayPosition();
+
+            var conditionOnExternalBay = true;
+            if (this.MachineService.Bay.IsExternal && this.MachineService.Bay.IsDouble)
+            {
+                if (selectedBayPosition.IsUpper)
+                {
+                    conditionOnExternalBay = this.SensorsService.BayZeroChainUp && !this.SensorsService.BEDInternalBayTop;
+                }
+                else
+                {
+                    conditionOnExternalBay = this.SensorsService.BayZeroChain && !this.SensorsService.BEDInternalBayBottom;
+                }
+            }
+
             var res = (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || this.SensorsService.ShutterSensors.MidWay || !this.HasShutter) &&
                    this.CanBaseExecute() &&
                    this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay &&
@@ -796,7 +810,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    this.IsPositionUpSelected == this.MachineStatus.BayPositionUpper &&
                    selectedBayPosition != null &&
                    selectedBayPosition.LoadingUnit == null &&
-                   this.MachineStatus.EmbarkedLoadingUnit != null;
+                   this.MachineStatus.EmbarkedLoadingUnit != null &&
+                   conditionOnExternalBay;
 
             return res;
         }

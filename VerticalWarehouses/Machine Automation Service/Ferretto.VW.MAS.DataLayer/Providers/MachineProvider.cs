@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -91,6 +93,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMemoryCache cache;
 
+        private readonly IConfiguration configuration;
+
         private readonly DataLayerContext dataContext;
 
         private readonly ILogger<MachineProvider> logger;
@@ -102,11 +106,13 @@ namespace Ferretto.VW.MAS.DataLayer
         public MachineProvider(
             DataLayerContext dataContext,
             ILogger<MachineProvider> logger,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            IConfiguration configuration)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         #endregion
@@ -221,6 +227,56 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.MachineStatistics.AsNoTracking().LastOrDefault();
             }
+        }
+
+        public byte[] GetRawDatabaseContent()
+        {
+            const int NUMBER_OF_RETRIES = 5;
+
+            // Retrieve the path of primary database file
+            //      example: "Database/MachineAutomationService.Simulation.Primary.db"
+            var filePath = GetDBFilePath(this.configuration.GetDataLayerPrimaryConnectionString());
+            var exist = File.Exists(filePath);
+            if (!exist)
+            {
+                this.logger.LogError($"Error: {filePath} does not exist");
+                return null;
+            }
+
+            byte[] rawDatabase = null;
+
+            for (var i = 0; i < NUMBER_OF_RETRIES; i++)
+            {
+                try
+                {
+                    lock (this.dataContext)
+                    {
+                        // Get the raw bytes contents
+                        using (var stream = File.OpenRead(filePath))
+                        {
+                            rawDatabase = new byte[stream.Length];
+                            stream.Read(rawDatabase, 0, rawDatabase.Length);
+                        }
+                    }
+
+                    break;
+                }
+                catch (IOException ioExc) when (i < NUMBER_OF_RETRIES)
+                {
+                    this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ioExc.Message}");
+                }
+            }
+
+            /*
+            // Write the bytes array back to a file
+            using (Stream file = File.OpenWrite("Database/trial.db"))
+            {
+                file.Write(rawDatabase, 0, rawDatabase.Length);
+            }
+            */
+
+            this.logger.LogDebug($"Retrieve raw database content from file {filePath}");
+            return rawDatabase;
         }
 
         public IEnumerable<ServicingInfo> GetServicingInfo()
@@ -696,6 +752,32 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             );
             dataContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Retrieve the path of the primary database.
+        /// </summary>
+        /// <param name="primaryConnectionString"></param>
+        /// <returns>
+        ///     The path
+        /// </returns>
+        private static string GetDBFilePath(string primaryConnectionString)
+        {
+            try
+            {
+                var index = primaryConnectionString.IndexOf("'", StringComparison.CurrentCulture);
+
+                var tmp = primaryConnectionString.Remove(0, index + 1);
+                index = tmp.IndexOf("'", StringComparison.CurrentCulture);
+
+                var retValue = tmp.Remove(index, 1);
+                return retValue;
+            }
+            catch (Exception)
+            {
+            }
+
+            return null;
         }
 
         #endregion

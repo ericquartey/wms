@@ -22,251 +22,251 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
 
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top">
+      <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc OperatorApp.Alarms}" />
+      <TextBlock Margin="0,0,0,15"
+                 Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                 Text="{res:Loc OperatorApp.AlarmsDescription}" />
+    </StackPanel>
+
+
+    <Border Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,0,15,0"
+            Background="{DynamicResource PpcBackground}"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="0">
+      <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Grid.Column="1"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top">
-            <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc OperatorApp.Alarms}" />
-            <TextBlock Margin="0,0,0,15"
-                       Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-                       Text="{res:Loc OperatorApp.AlarmsDescription}" />
-        </StackPanel>
+        <Grid Grid.Row="0"
+              Margin="0"
+              Visibility="Collapsed">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
 
+          <TextBlock Margin="0,0,10,0"
+                     VerticalAlignment="Center"
+                     FontSize="{DynamicResource FontSize_High}"
+                     Foreground="{DynamicResource FerrettoPureWhite}">
+            <Run Text="{res:Loc OperatorApp.ItemSearchKeySearch}" />
+            <Run Text=":" />
+          </TextBlock>
 
-        <Border Grid.Row="1"
-                Grid.Column="1"
-                Margin="0,0,15,0"
-                Background="{DynamicResource PpcBackground}"
-                BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="{DynamicResource PpcBorderThickness}"
-                CornerRadius="0">
-            <Grid Margin="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0"
-                      Margin="0"
-                      Visibility="Collapsed">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Margin="0,0,10,0"
-                               VerticalAlignment="Center"
-                               FontSize="{DynamicResource FontSize_High}"
-                               Foreground="{DynamicResource FerrettoPureWhite}">
-                        <Run Text="{res:Loc OperatorApp.ItemSearchKeySearch}" />
-                        <Run Text=":" />
-                    </TextBlock>
-
-                    <TextBox x:Name="SearchText"
-                             Grid.Column="1"
-                             Margin="0"
-                             Style="{DynamicResource SearchTextBoxStyle}"
-                             Text="{Binding SearchItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=250}">
-                        <i:Interaction.Behaviors>
-                            <behaviors:TextBoxAutoSelectBehavior />
-                            <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
-                                                                     KeyboardLabel="{res:Loc OperatorApp.ItemSearchKeySearch}" />
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-                    <Button x:Name="ClearButton"
-                            Grid.Column="2"
-                            Width="70"
-                            Margin="0,1,1,1"
-                            BorderThickness="0"
-                            Visibility="{Binding Path=SearchItem, Converter={StaticResource TTUI}}">
-                        <Button.Style>
-                            <Style BasedOn="{StaticResource IconButtonInvertStyle}"
-                                   TargetType="{x:Type Button}">
-                                <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
-                                <Setter Property="Background" Value="{StaticResource FerrettoPureWhite}" />
-                                <Setter Property="BorderBrush" Value="{StaticResource FerrettoPureWhite}" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource FerrettoLightGray}" />
-                                        <Setter Property="BorderBrush" Value="{StaticResource FerrettoPureWhite}" />
-                                    </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter Property="Foreground" Value="{StaticResource FerrettoLightGray}" />
-                                        <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
-                                        <Setter Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                        <in:Interaction.Triggers>
-                            <in:EventTrigger EventName="Click">
-                                <ei:ChangePropertyAction PropertyName="Text"
-                                                         TargetObject="{Binding ElementName=SearchText}"
-                                                         TargetName="SearchText"
-                                                         Value="" />
-                            </in:EventTrigger>
-                        </in:Interaction.Triggers>
-                        <Button.Template>
-                            <ControlTemplate>
-                                <Grid Margin="0"
-                                      Background="{TemplateBinding Background}">
-                                    <icons:PackIconFontAwesome Width="{TemplateBinding Width}"
-                                                               Height="{TemplateBinding Height}"
-                                                               Margin="2"
-                                                               HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"
-                                                               Foreground="{TemplateBinding Foreground}"
-                                                               Kind="BackspaceSolid" />
-                                </Grid>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
+          <TextBox x:Name="SearchText"
+                   Grid.Column="1"
+                   Margin="0"
+                   Style="{DynamicResource SearchTextBoxStyle}"
+                   Text="{Binding SearchItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=250}">
+            <i:Interaction.Behaviors>
+              <behaviors:TextBoxAutoSelectBehavior />
+              <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
+                                                       KeyboardLabel="{res:Loc OperatorApp.ItemSearchKeySearch}" />
+            </i:Interaction.Behaviors>
+          </TextBox>
+          <Button x:Name="ClearButton"
+                  Grid.Column="2"
+                  Width="70"
+                  Margin="0,1,1,1"
+                  BorderThickness="0"
+                  Visibility="{Binding Path=SearchItem, Converter={StaticResource TTUI}}">
+            <Button.Style>
+              <Style BasedOn="{StaticResource IconButtonInvertStyle}"
+                     TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="{DynamicResource FerrettoMediumGray}" />
+                <Setter Property="Background" Value="{StaticResource FerrettoPureWhite}" />
+                <Setter Property="BorderBrush" Value="{StaticResource FerrettoPureWhite}" />
+                <Style.Triggers>
+                  <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource FerrettoLightGray}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource FerrettoPureWhite}" />
+                  </Trigger>
+                  <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource FerrettoLightGray}" />
+                    <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </Button.Style>
+            <in:Interaction.Triggers>
+              <in:EventTrigger EventName="Click">
+                <ei:ChangePropertyAction PropertyName="Text"
+                                         TargetObject="{Binding ElementName=SearchText}"
+                                         TargetName="SearchText"
+                                         Value="" />
+              </in:EventTrigger>
+            </in:Interaction.Triggers>
+            <Button.Template>
+              <ControlTemplate>
+                <Grid Margin="0"
+                      Background="{TemplateBinding Background}">
+                  <icons:PackIconFontAwesome Width="{TemplateBinding Width}"
+                                             Height="{TemplateBinding Height}"
+                                             Margin="2"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             Foreground="{TemplateBinding Foreground}"
+                                             Kind="BackspaceSolid" />
                 </Grid>
-                <DataGrid Name="DataGrid"
-                          Grid.Row="1"
-                          Grid.Column="0"
-                          Width="auto"
-                          Height="auto"
-                          ItemsSource="{Binding MachineErrors}"
-                          RowHeight="40">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn x:Name="Column1"
-                                            Width="60"
-                                            Binding="{Binding Path=Id}"
-                                            Header="{res:Loc OperatorApp.Id}">
-                            <DataGridTextColumn.CellStyle>
-                                <Style TargetType="DataGridCell">
-                                    <Setter Property="BorderThickness" Value="1,0,0,0" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                                </Style>
-                            </DataGridTextColumn.CellStyle>
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column2"
-                                            Width="120"
-                                            Binding="{Binding Path=BayNumber, Converter={StaticResource BNTSC}}"
-                                            Header="{res:Loc OperatorApp.BayNumber}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column3"
-                                            Width="80"
-                                            Binding="{Binding Path=Code}"
-                                            Header="{res:Loc OperatorApp.Code}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column4"
-                                            Width="400"
-                                            Binding="{Binding Path=Description}"
-                                            Header="{res:Loc OperatorApp.Description}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="10,0" />
-                                    <Setter Property="HorizontalAlignment" Value="Left" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="TextWrapping" Value="Wrap" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column5"
-                                            Width="150"
-                                            Binding="{Binding Path=DetailCode}"
-                                            Header="{res:Loc OperatorApp.DetailCode}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column6"
-                                            Width="150"
-                                            Binding="{Binding Path=InverterIndex}"
-                                            Header="{res:Loc OperatorApp.InverterIndex}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column7"
-                                            Width="200"
-                                            Binding="{Binding Path=OccurrenceDate, StringFormat={x:Static res:General.DateFormatComplete}}"
-                                            Header="{res:Loc OperatorApp.OccurrenceDate}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column8"
-                                            Width="200"
-                                            Binding="{Binding Path=ResolutionDate, StringFormat={x:Static res:General.DateFormatComplete}}"
-                                            Header="{res:Loc OperatorApp.ResolutionDate}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column9"
-                                            Width="600"
-                                            Binding="{Binding Path=AdditionalText}"
-                                            Header="{res:Loc OperatorApp.AdditionalText}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="10,0" />
-                                    <Setter Property="HorizontalAlignment" Value="Left" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="TextWrapping" Value="Wrap" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </Border>
+              </ControlTemplate>
+            </Button.Template>
+          </Button>
+        </Grid>
+        <DataGrid Name="DataGrid"
+                  Grid.Row="1"
+                  Grid.Column="0"
+                  Width="auto"
+                  Height="auto"
+                  ItemsSource="{Binding MachineErrors}"
+                  RowHeight="40">
+          <DataGrid.Columns>
+            <DataGridTextColumn x:Name="Column1"
+                                Width="60"
+                                Binding="{Binding Path=Id}"
+                                Header="{res:Loc OperatorApp.Id}">
+              <DataGridTextColumn.CellStyle>
+                <Style TargetType="DataGridCell">
+                  <Setter Property="BorderThickness" Value="1,0,0,0" />
+                  <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                </Style>
+              </DataGridTextColumn.CellStyle>
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column2"
+                                Width="120"
+                                Binding="{Binding Path=BayNumber, Converter={StaticResource BNTSC}}"
+                                Header="{res:Loc OperatorApp.BayNumber}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column3"
+                                Width="80"
+                                Binding="{Binding Path=Code}"
+                                Header="{res:Loc OperatorApp.Code}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column4"
+                                Width="400"
+                                Binding="{Binding Path=Description}"
+                                Header="{res:Loc OperatorApp.Description}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
+                  <Setter Property="HorizontalAlignment" Value="Left" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                  <Setter Property="TextWrapping" Value="Wrap" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column5"
+                                Width="150"
+                                Binding="{Binding Path=DetailCode, StringFormat={}0x{0:X4}}"
+                                Header="{res:Loc OperatorApp.DetailCode}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column6"
+                                Width="150"
+                                Binding="{Binding Path=InverterIndex, Converter={StaticResource INVTSC}}"
+                                Header="{res:Loc OperatorApp.InverterIndex}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column7"
+                                Width="200"
+                                Binding="{Binding Path=OccurrenceDate, StringFormat={x:Static res:General.DateFormatComplete}}"
+                                Header="{res:Loc OperatorApp.OccurrenceDate}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column8"
+                                Width="200"
+                                Binding="{Binding Path=ResolutionDate, StringFormat={x:Static res:General.DateFormatComplete}}"
+                                Header="{res:Loc OperatorApp.ResolutionDate}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column9"
+                                Width="600"
+                                Binding="{Binding Path=AdditionalText}"
+                                Header="{res:Loc OperatorApp.AdditionalText}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
+                  <Setter Property="HorizontalAlignment" Value="Left" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                  <Setter Property="TextWrapping" Value="Wrap" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+      </Grid>
+    </Border>
 
-        <controls:PpcButton Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="0,0,15,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding GoToExport}"
-                            Content="{res:Loc InstallationApp.Export}" />
+    <controls:PpcButton Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="0,0,15,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding GoToExport}"
+                        Content="{res:Loc InstallationApp.Export}" />
 
-        <views:AboutMenuNavigationView Grid.RowSpan="2" />
+    <views:AboutMenuNavigationView Grid.RowSpan="2" />
 
 
 
-    </Grid>
+  </Grid>
 </ctrls:View>

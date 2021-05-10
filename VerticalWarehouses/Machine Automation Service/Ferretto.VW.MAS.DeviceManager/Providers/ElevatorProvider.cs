@@ -825,7 +825,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public void MoveHorizontalCalibration(BayNumber requestingBay, MessageActor sender)
         {
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
-            var bayPositionId = bay.Positions.OrderByDescending(b => b.Height).FirstOrDefault().Id;
             var policy = this.CanCalibrateZeroPlate();
             if (!policy.IsAllowed)
             {
@@ -880,6 +879,52 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     }
                 }
             }
+        }
+
+        public void MoveHorizontalFindZero(BayNumber requestingBay, MessageActor sender)
+        {
+            var policy = ActionPolicy.Allowed;
+
+            if (this.machineResourcesProvider.IsSensorZeroOnCradle
+                ||
+                !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
+            {
+                policy = new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual) };
+            }
+
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
+            var targetPosition = this.HorizontalPosition + 20;
+
+            var speed = new[] { axis.HorizontalCalibrateSpeed };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Absolute,
+                MovementMode.FindZero,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Horizontal find zero Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
         }
 
         /// <summary>
@@ -1561,7 +1606,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 if (this.machineVolatileDataProvider.IsOneTonMachine.Value)
                 {
-                    this.logger.LogWarning($"Do not compute elongation on empty elevator!");
+                    this.logger.LogWarning($"Do not compute elongation on empty elevator in 1T machine!");
                 }
                 else if (loadUnitId.HasValue)
                 {
