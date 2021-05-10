@@ -189,11 +189,11 @@
                 HorizontalAlignment="Right"
                 Orientation="Horizontal">
 
-      <!--<controls:PpcButton HorizontalAlignment="Right"
+      <controls:PpcButton HorizontalAlignment="Right"
                           VerticalAlignment="Center"
                           Command="{Binding BrowserOpenCommand}"
                           Content="{res:Loc InstallationApp.OpenBrowser}"
-                          IsBusy="{Binding IsWaitingForResponse}" />-->
+                          IsBusy="{Binding IsWaitingForResponse}" />
 
       <controls:PpcButton Margin="15,0,0,0"
                           HorizontalAlignment="Right"
@@ -215,10 +215,10 @@
                           Content="{res:Loc InstallationApp.Next}" />
     </StackPanel>
 
-    <!--<localControl:AdvancedBrowser Grid.RowSpan="4"
+    <localControl:AdvancedBrowser Grid.RowSpan="4"
                                   Grid.ColumnSpan="2"
                                   IsOpen="{Binding IsBrowserOpened}"
-                                  Url="https://install.appcenter.ms/sign-in?original_url=install:/%2Forgs%2FFerretto-Group-S.p.A."
-                                  Visibility="{Binding IsBrowserOpened, Converter={StaticResource BTVC}}" />-->
+                                  Url="https://install.appcenter.ms/orgs/Ferretto-Group-S.p.A."
+                                  Visibility="{Binding IsBrowserOpened, Converter={StaticResource BTVC}}" />
   </Grid>
 </ctrls:View>

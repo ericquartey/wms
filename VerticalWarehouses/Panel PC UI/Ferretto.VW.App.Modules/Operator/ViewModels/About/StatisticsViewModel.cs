@@ -14,8 +14,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineCellsWebService machineCellsWebService;
 
-        private readonly IMachineCompactingWebService machineCompactingWebService;
-
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineServicingWebService machineServicingWebService;
@@ -58,14 +56,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public StatisticsViewModel(IMachineCompactingWebService machineCompactingWebService,
+        public StatisticsViewModel(
             IMachineCellsWebService machineCellsWebService,
             IMachineServicingWebService machineServicingWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
             : base()
         {
             this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
-            this.machineCompactingWebService = machineCompactingWebService ?? throw new ArgumentNullException(nameof(machineCompactingWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
         }

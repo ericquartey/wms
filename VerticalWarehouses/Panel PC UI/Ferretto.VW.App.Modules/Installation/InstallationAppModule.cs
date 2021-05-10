@@ -43,6 +43,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<AlphaNumericBarSettingsView>();
             containerRegistry.RegisterForNavigation<BarcodeReaderSettingsView>();
             containerRegistry.RegisterForNavigation<BarcodeReaderConfigurationView>();
+            containerRegistry.RegisterForNavigation<AdvancedBrowser>();
             containerRegistry.RegisterForNavigation<LabelPrinterSettingsView>();
             containerRegistry.RegisterForNavigation<LaserPointerSettingsView>();
             containerRegistry.RegisterForNavigation<CardReaderSettingsView>();

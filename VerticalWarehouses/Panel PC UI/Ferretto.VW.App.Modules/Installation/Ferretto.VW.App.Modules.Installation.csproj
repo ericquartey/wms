@@ -2,20 +2,26 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
+    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <OutputType>Library</OutputType>
     <UseWPF>true</UseWPF>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DefineConstants>TRACE;NOT_CHECK_BAY_SENSOR</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BarCode" Version="2020.6.0" />
+    <PackageReference Include="cef.redist.x64" Version="89.0.17" />
+    <PackageReference Include="cef.redist.x86" Version="89.0.17" />
+    <PackageReference Include="CefSharp.Common" Version="89.0.170" />
+    <PackageReference Include="CefSharp.Wpf" Version="89.0.170" />
     <PackageReference Include="DevExpress.Wpf.Charts" Version="19.2.4" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="3.2.0" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />    
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

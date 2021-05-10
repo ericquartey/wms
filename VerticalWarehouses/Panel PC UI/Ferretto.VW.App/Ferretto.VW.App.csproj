@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
+    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
     <StartupObject>Ferretto.VW.App.App</StartupObject>
@@ -10,6 +11,10 @@
     <ApplicationManifest>properties/app.manifest</ApplicationManifest>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
     <Version>0.0.1-debug</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
