@@ -22,20 +22,22 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.13 rispetto la 1.0.12
-- In fase di refilling si può dare il chiudi riga e cambiare le quantità
-- Le richieste di prelievo, refilling e modifica giacenza chedono a EjLog di controllare i diritti utente
-- Si può attivare una lista in attesa con il barcode del numero lista
-- Dalla ricerca articolo si possono creare liste di visione selezionando i cassetti
-- Le operazioni di prelievo e refilling aggiornano il peso del cassetto
-- Aggiunta gestione tendaggi
-- Aggiunta procedura di test baia esterna
+## Nuove Funzionalità 1.0.14 rispetto la 1.0.13
+- Aggiunto comando "Ricerca di Zero" nell'allarme 15 "Manca il sensore di zero con elevatore vuoto"
+- Aggiunti comandi Ping e Riavvia servizio nella vista delle schede di rete
+- Aggiunta lingua Russa
 
 ## Bug Risolti
-- Riportato Devexpress a versione 19.2.4
+- Corretti vari errori sulla BED
+- Corretta segnalazione di barriera attiva all'accensione della macchina
+- Corretto ripristino delle missioni con doppia baia
+- Corretto timeout in accensione inverter (SwitchOnStart)
+- Corretto errore in salvataggio database
 
-## Compatibile con adapter 0.4.17
+## Compatibile con adapter 0.4.18
 ***
+
+[Versione 1.0.13](#id1013)
 
 [Versione 1.0.12](#id1012)
 
@@ -62,6 +64,22 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1013"></a>
+## Nuove Funzionalità 1.0.13 rispetto la 1.0.12
+- In fase di refilling si può dare il chiudi riga e cambiare le quantità
+- Le richieste di prelievo, refilling e modifica giacenza chedono a EjLog di controllare i diritti utente
+- Si può attivare una lista in attesa con il barcode del numero lista
+- Dalla ricerca articolo si possono creare liste di visione selezionando i cassetti
+- Le operazioni di prelievo e refilling aggiornano il peso del cassetto
+- Aggiunta gestione tendaggi
+- Aggiunta procedura di test baia esterna
+
+## Bug Risolti
+- Riportato Devexpress a versione 19.2.4
+
+## Compatibile con adapter 0.4.17
 ***
 
 <a id="id1012"></a>
