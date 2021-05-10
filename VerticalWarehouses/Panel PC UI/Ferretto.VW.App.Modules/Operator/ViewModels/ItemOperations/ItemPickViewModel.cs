@@ -36,6 +36,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPickViewModel(
+            ILaserPointerService deviceService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
             INavigationService navigationService,
@@ -51,6 +52,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService)
             : base(
+                  deviceService,
                   areasWebService,
                   machineIdentityWebService,
                   navigationService,
