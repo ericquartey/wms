@@ -21,6 +21,7 @@ namespace Ferretto.VW.App.Services
         #region Methods
 
         Task LaserPointerConfigureAsync();
+        void ResetPoint();
 
         /// <summary>
         ///

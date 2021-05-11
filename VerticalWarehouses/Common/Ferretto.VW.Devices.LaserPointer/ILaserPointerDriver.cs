@@ -45,6 +45,8 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         Task<bool> PositionSaveAsync();
 
+        void ResetSelectedPoint();
+
         Task<bool> StepAsync(LaserStep spep);
 
         Task<bool> SwitchOnAndMoveAsync(LaserPoint point);

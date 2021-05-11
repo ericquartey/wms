@@ -40,6 +40,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
+        private readonly ILaserPointerService deviceService;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineItemsWebService itemsWebService;
@@ -177,7 +179,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public BaseItemOperationMainViewModel(
-            IMachineAreasWebService areasWebService,
+            ILaserPointerService deviceService,
+        IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
             INavigationService navigationService,
             IOperatorNavigationService operatorNavigationService,
@@ -193,6 +196,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IAuthenticationService authenticationService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
+            this.deviceService = deviceService ?? throw new ArgumentNullException(nameof(deviceService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.eventAggregator = eventAggregator;
@@ -1049,6 +1053,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.productsChangedToken = null;
 
             base.Disappear();
+
+            this.deviceService.ResetPoint();
         }
 
         public void InitializeInputQuantity()
