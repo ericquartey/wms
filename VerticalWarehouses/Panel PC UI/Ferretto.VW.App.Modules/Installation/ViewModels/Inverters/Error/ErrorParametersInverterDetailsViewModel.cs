@@ -284,7 +284,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (angError.Any(s => s == parameter.Code))
                     {
-                        if (parameter.DecimalCount > 0)
+                        if (parameter.DecimalCount > 0 &&
+                            parameter.StringValue.Length - parameter.DecimalCount > 0)
                         {
                             parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                         }
@@ -356,7 +357,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                     else if (angActualValues.Any(s => s == parameter.Code))
                     {
-                        if (parameter.DecimalCount > 0)
+                        if (parameter.DecimalCount > 0 &&
+                            parameter.StringValue.Length - parameter.DecimalCount > 0)
                         {
                             parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                         }
@@ -372,7 +374,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (aglError.Any(s => s == parameter.Code))
                     {
-                        if (parameter.DecimalCount > 0)
+                        if (parameter.DecimalCount > 0 &&
+                            parameter.StringValue.Length - parameter.DecimalCount > 0)
                         {
                             parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                         }
@@ -444,7 +447,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                     else if (aglActualValues.Any(s => s == parameter.Code))
                     {
-                        if (parameter.DecimalCount > 0)
+                        if (parameter.DecimalCount > 0 &&
+                            parameter.StringValue.Length - parameter.DecimalCount > 0)
                         {
                             parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                         }
@@ -460,7 +464,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (acuError.Any(s => s == parameter.Code))
                     {
-                        if (parameter.DecimalCount > 0)
+                        if (parameter.DecimalCount > 0 &&
+                            parameter.StringValue.Length - parameter.DecimalCount > 0)
                         {
                             parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                         }
@@ -532,7 +537,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                     else if (acuActualValues.Any(s => s == parameter.Code))
                     {
-                        if (parameter.DecimalCount > 0)
+                        if (parameter.DecimalCount > 0 &&
+                            parameter.StringValue.Length - parameter.DecimalCount > 0)
                         {
                             parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                         }
