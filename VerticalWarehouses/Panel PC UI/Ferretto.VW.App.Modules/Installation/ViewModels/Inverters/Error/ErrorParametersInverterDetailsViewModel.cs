@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public static readonly IList<short> angError = new ReadOnlyCollection<short>(new List<short> { 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 362, 363, 330, 331, 332, 333, 334, 335, 336,
                                                                                                        337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 403});
 
-        private readonly Services.IDialogService dialogService;
+        private readonly List<InverterParameter> error = new List<InverterParameter>();
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
@@ -71,13 +71,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand actualValueCommand;
 
-        private List<InverterParameter> actualValueParameters = new List<InverterParameter>();
-
-        private List<InverterParameter> error = new List<InverterParameter>();
+        private ObservableCollection<InverterParameter> actualValueParameters = new ObservableCollection<InverterParameter>();
 
         private DelegateCommand errorCommand;
 
-        private List<InverterParameters> errorParameters = new List<InverterParameters>();
+        private ObservableCollection<InverterParameters> errorParameters = new ObservableCollection<InverterParameters>();
 
         private SubscriptionToken inverterParameterReceivedToken;
 
@@ -102,12 +100,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ErrorParametersInverterDetailsViewModel(
-            Services.IDialogService dialogService,
             ISessionService sessionService,
             IMachineDevicesWebService machineDevicesWebService)
             : base(PresentationMode.Installer)
         {
-            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
         }
@@ -126,7 +122,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsError = false;
                     }, this.CanExecuteActualValue));
 
-        public List<InverterParameter> ActualValueParameters
+        public ObservableCollection<InverterParameter> ActualValueParameters
         {
             get => this.actualValueParameters;
             set => this.SetProperty(ref this.actualValueParameters, value, this.RaiseCanExecuteChanged);
@@ -144,7 +140,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsError = true;
                     }, this.CanExecuteError));
 
-        public List<InverterParameters> ErrorParameters
+        public ObservableCollection<InverterParameters> ErrorParameters
         {
             get => this.errorParameters;
             set => this.SetProperty(ref this.errorParameters, value, this.RaiseCanExecuteChanged);
