@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineCompartmentsWebService compartmentsWebService;
 
+        private readonly ILaserPointerService deviceService;
+
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineItemsWebService itemsWebService;
@@ -146,6 +148,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitViewModel(
+            ILaserPointerService deviceService,
             IMachineIdentityWebService identityService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
@@ -163,6 +166,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IAuthenticationService authenticationService)
             : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
         {
+            this.deviceService = deviceService ?? throw new ArgumentNullException(nameof(deviceService));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
@@ -561,6 +565,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.productsChangedToken?.Dispose();
             this.productsChangedToken = null;
+
+            this.deviceService.ResetPoint();
         }
 
         public async Task GetLoadingUnitsAsync()

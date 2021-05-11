@@ -470,6 +470,12 @@ namespace Ferretto.VW.Devices.LaserPointer
             return true;
         }
 
+        public void ResetSelectedPoint()
+        {
+            this.logger.Debug($"Reset point");
+            this.SelectedPoint = null;
+        }
+
         public async Task<bool> StepAsync(LaserStep step)
         {
             this.EnqueueCommand(LaserPointerCommands.Command.STEP, null, step);

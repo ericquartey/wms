@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public static readonly IList<short> angError = new ReadOnlyCollection<short>(new List<short> { 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 362, 363, 330, 331, 332, 333, 334, 335, 336,
                                                                                                        337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 361, 403});
 
-        private readonly Services.IDialogService dialogService;
+        private readonly List<InverterParameter> error = new List<InverterParameter>();
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
@@ -71,13 +71,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand actualValueCommand;
 
-        private List<InverterParameter> actualValueParameters = new List<InverterParameter>();
-
-        private List<InverterParameter> error = new List<InverterParameter>();
+        private ObservableCollection<InverterParameter> actualValueParameters = new ObservableCollection<InverterParameter>();
 
         private DelegateCommand errorCommand;
 
-        private List<InverterParameters> errorParameters = new List<InverterParameters>();
+        private ObservableCollection<InverterParameters> errorParameters = new ObservableCollection<InverterParameters>();
 
         private SubscriptionToken inverterParameterReceivedToken;
 
@@ -102,12 +100,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ErrorParametersInverterDetailsViewModel(
-            Services.IDialogService dialogService,
             ISessionService sessionService,
             IMachineDevicesWebService machineDevicesWebService)
             : base(PresentationMode.Installer)
         {
-            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
         }
@@ -126,7 +122,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsError = false;
                     }, this.CanExecuteActualValue));
 
-        public List<InverterParameter> ActualValueParameters
+        public ObservableCollection<InverterParameter> ActualValueParameters
         {
             get => this.actualValueParameters;
             set => this.SetProperty(ref this.actualValueParameters, value, this.RaiseCanExecuteChanged);
@@ -144,7 +140,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsError = true;
                     }, this.CanExecuteError));
 
-        public List<InverterParameters> ErrorParameters
+        public ObservableCollection<InverterParameters> ErrorParameters
         {
             get => this.errorParameters;
             set => this.SetProperty(ref this.errorParameters, value, this.RaiseCanExecuteChanged);
@@ -219,6 +215,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsError = true;
+            this.RaisePropertyChanged(nameof(this.IsError));
 
             if (this.Data is Inverter mainConfiguration)
             {
@@ -278,269 +275,283 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsBusy = true;
 
-            if (this.inverterParameters.Type == InverterType.Ang)
+            try
             {
-                foreach (var parameter in this.inverterParameters.Parameters)
+
+                if (this.inverterParameters.Type == InverterType.Ang)
                 {
-                    if (angError.Any(s => s == parameter.Code))
+                    foreach (var parameter in this.inverterParameters.Parameters)
                     {
-                        if (parameter.DecimalCount > 0)
+                        if (angError.Any(s => s == parameter.Code))
                         {
-                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
-                        }
-
-                        parameter.StringValue += " " + parameter.Um;
-                        this.error.Add(parameter);
-
-                        if (this.errorParameters.Any(s => s.Code == parameter.Code))
-                        {
-                            var parameterError = this.errorParameters.SingleOrDefault(s => s.Code == parameter.Code);
-                            this.errorParameters.Remove(parameterError);
-
-                            switch (parameter.DataSet)
+                            if (parameter.DecimalCount > 0 &&
+                                parameter.StringValue.Length - parameter.DecimalCount > 0)
                             {
-                                case 0:
-                                    parameterError.DataSet0 = parameter.StringValue;
-                                    break;
-
-                                case 1:
-                                    parameterError.DataSet1 = parameter.StringValue;
-                                    break;
-
-                                case 2:
-                                    parameterError.DataSet2 = parameter.StringValue;
-                                    break;
-
-                                case 3:
-                                    parameterError.DataSet3 = parameter.StringValue;
-                                    break;
-
-                                case 4:
-                                    parameterError.DataSet4 = parameter.StringValue;
-                                    break;
+                                parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                             }
 
-                            this.errorParameters.Add(parameterError);
-                        }
-                        else
-                        {
-                            var parameterToAdd = new InverterParameters();
-                            parameterToAdd.Code = (short)parameter.Code;
-                            parameterToAdd.Description = parameter.Description;
+                            parameter.StringValue += " " + parameter.Um;
+                            this.error.Add(parameter);
 
-                            switch (parameter.DataSet)
+                            if (this.errorParameters.Any(s => s.Code == parameter.Code))
                             {
-                                case 0:
-                                    parameterToAdd.DataSet0 = parameter.StringValue;
-                                    break;
+                                var parameterError = this.errorParameters.SingleOrDefault(s => s.Code == parameter.Code);
+                                this.errorParameters.Remove(parameterError);
 
-                                case 1:
-                                    parameterToAdd.DataSet1 = parameter.StringValue;
-                                    break;
+                                switch (parameter.DataSet)
+                                {
+                                    case 0:
+                                        parameterError.DataSet0 = parameter.StringValue;
+                                        break;
 
-                                case 2:
-                                    parameterToAdd.DataSet2 = parameter.StringValue;
-                                    break;
+                                    case 1:
+                                        parameterError.DataSet1 = parameter.StringValue;
+                                        break;
 
-                                case 3:
-                                    parameterToAdd.DataSet3 = parameter.StringValue;
-                                    break;
+                                    case 2:
+                                        parameterError.DataSet2 = parameter.StringValue;
+                                        break;
 
-                                case 4:
-                                    parameterToAdd.DataSet4 = parameter.StringValue;
-                                    break;
+                                    case 3:
+                                        parameterError.DataSet3 = parameter.StringValue;
+                                        break;
+
+                                    case 4:
+                                        parameterError.DataSet4 = parameter.StringValue;
+                                        break;
+                                }
+
+                                this.errorParameters.Add(parameterError);
+                            }
+                            else
+                            {
+                                var parameterToAdd = new InverterParameters();
+                                parameterToAdd.Code = (short)parameter.Code;
+                                parameterToAdd.Description = parameter.Description;
+
+                                switch (parameter.DataSet)
+                                {
+                                    case 0:
+                                        parameterToAdd.DataSet0 = parameter.StringValue;
+                                        break;
+
+                                    case 1:
+                                        parameterToAdd.DataSet1 = parameter.StringValue;
+                                        break;
+
+                                    case 2:
+                                        parameterToAdd.DataSet2 = parameter.StringValue;
+                                        break;
+
+                                    case 3:
+                                        parameterToAdd.DataSet3 = parameter.StringValue;
+                                        break;
+
+                                    case 4:
+                                        parameterToAdd.DataSet4 = parameter.StringValue;
+                                        break;
+                                }
+
+                                this.errorParameters.Add(parameterToAdd);
+                            }
+                        }
+                        else if (angActualValues.Any(s => s == parameter.Code))
+                        {
+                            if (parameter.DecimalCount > 0 &&
+                                parameter.StringValue.Length - parameter.DecimalCount > 0)
+                            {
+                                parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                             }
 
-                            this.errorParameters.Add(parameterToAdd);
+                            parameter.StringValue += " " + parameter.Um;
+                            this.actualValueParameters.Add(parameter);
                         }
                     }
-                    else if (angActualValues.Any(s => s == parameter.Code))
+                }
+                else if (this.inverterParameters.Type == InverterType.Agl)
+                {
+                    foreach (var parameter in this.inverterParameters.Parameters)
                     {
-                        if (parameter.DecimalCount > 0)
+                        if (aglError.Any(s => s == parameter.Code))
                         {
-                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
-                        }
+                            if (parameter.DecimalCount > 0 &&
+                                parameter.StringValue.Length - parameter.DecimalCount > 0)
+                            {
+                                parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                            }
 
-                        parameter.StringValue += " " + parameter.Um;
-                        this.actualValueParameters.Add(parameter);
+                            parameter.StringValue += " " + parameter.Um;
+                            this.error.Add(parameter);
+
+                            if (this.errorParameters.Any(s => s.Code == parameter.Code))
+                            {
+                                var parameterError = this.errorParameters.SingleOrDefault(s => s.Code == parameter.Code);
+                                this.errorParameters.Remove(parameterError);
+
+                                switch (parameter.DataSet)
+                                {
+                                    case 0:
+                                        parameterError.DataSet0 = parameter.StringValue;
+                                        break;
+
+                                    case 1:
+                                        parameterError.DataSet1 = parameter.StringValue;
+                                        break;
+
+                                    case 2:
+                                        parameterError.DataSet2 = parameter.StringValue;
+                                        break;
+
+                                    case 3:
+                                        parameterError.DataSet3 = parameter.StringValue;
+                                        break;
+
+                                    case 4:
+                                        parameterError.DataSet4 = parameter.StringValue;
+                                        break;
+                                }
+
+                                this.errorParameters.Add(parameterError);
+                            }
+                            else
+                            {
+                                var parameterToAdd = new InverterParameters();
+                                parameterToAdd.Code = (short)parameter.Code;
+                                parameterToAdd.Description = parameter.Description;
+
+                                switch (parameter.DataSet)
+                                {
+                                    case 0:
+                                        parameterToAdd.DataSet0 = parameter.StringValue;
+                                        break;
+
+                                    case 1:
+                                        parameterToAdd.DataSet1 = parameter.StringValue;
+                                        break;
+
+                                    case 2:
+                                        parameterToAdd.DataSet2 = parameter.StringValue;
+                                        break;
+
+                                    case 3:
+                                        parameterToAdd.DataSet3 = parameter.StringValue;
+                                        break;
+
+                                    case 4:
+                                        parameterToAdd.DataSet4 = parameter.StringValue;
+                                        break;
+                                }
+
+                                this.errorParameters.Add(parameterToAdd);
+                            }
+                        }
+                        else if (aglActualValues.Any(s => s == parameter.Code))
+                        {
+                            if (parameter.DecimalCount > 0 &&
+                                parameter.StringValue.Length - parameter.DecimalCount > 0)
+                            {
+                                parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                            }
+
+                            parameter.StringValue += " " + parameter.Um;
+                            this.actualValueParameters.Add(parameter);
+                        }
+                    }
+                }
+                else if (this.inverterParameters.Type == InverterType.Acu)
+                {
+                    foreach (var parameter in this.inverterParameters.Parameters)
+                    {
+                        if (acuError.Any(s => s == parameter.Code))
+                        {
+                            if (parameter.DecimalCount > 0 &&
+                                parameter.StringValue.Length - parameter.DecimalCount > 0)
+                            {
+                                parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                            }
+
+                            parameter.StringValue += " " + parameter.Um;
+                            this.error.Add(parameter);
+
+                            if (this.errorParameters.Any(s => s.Code == parameter.Code))
+                            {
+                                var parameterError = this.errorParameters.SingleOrDefault(s => s.Code == parameter.Code);
+                                this.errorParameters.Remove(parameterError);
+
+                                switch (parameter.DataSet)
+                                {
+                                    case 0:
+                                        parameterError.DataSet0 = parameter.StringValue;
+                                        break;
+
+                                    case 1:
+                                        parameterError.DataSet1 = parameter.StringValue;
+                                        break;
+
+                                    case 2:
+                                        parameterError.DataSet2 = parameter.StringValue;
+                                        break;
+
+                                    case 3:
+                                        parameterError.DataSet3 = parameter.StringValue;
+                                        break;
+
+                                    case 4:
+                                        parameterError.DataSet4 = parameter.StringValue;
+                                        break;
+                                }
+
+                                this.errorParameters.Add(parameterError);
+                            }
+                            else
+                            {
+                                var parameterToAdd = new InverterParameters();
+                                parameterToAdd.Code = (short)parameter.Code;
+                                parameterToAdd.Description = parameter.Description;
+
+                                switch (parameter.DataSet)
+                                {
+                                    case 0:
+                                        parameterToAdd.DataSet0 = parameter.StringValue;
+                                        break;
+
+                                    case 1:
+                                        parameterToAdd.DataSet1 = parameter.StringValue;
+                                        break;
+
+                                    case 2:
+                                        parameterToAdd.DataSet2 = parameter.StringValue;
+                                        break;
+
+                                    case 3:
+                                        parameterToAdd.DataSet3 = parameter.StringValue;
+                                        break;
+
+                                    case 4:
+                                        parameterToAdd.DataSet4 = parameter.StringValue;
+                                        break;
+                                }
+
+                                this.errorParameters.Add(parameterToAdd);
+                            }
+                        }
+                        else if (acuActualValues.Any(s => s == parameter.Code))
+                        {
+                            if (parameter.DecimalCount > 0 &&
+                                parameter.StringValue.Length - parameter.DecimalCount > 0)
+                            {
+                                parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                            }
+
+                            parameter.StringValue += " " + parameter.Um;
+                            this.actualValueParameters.Add(parameter);
+                        }
                     }
                 }
             }
-            else if (this.inverterParameters.Type == InverterType.Agl)
+            catch(Exception ex)
             {
-                foreach (var parameter in this.inverterParameters.Parameters)
-                {
-                    if (aglError.Any(s => s == parameter.Code))
-                    {
-                        if (parameter.DecimalCount > 0)
-                        {
-                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
-                        }
-
-                        parameter.StringValue += " " + parameter.Um;
-                        this.error.Add(parameter);
-
-                        if (this.errorParameters.Any(s => s.Code == parameter.Code))
-                        {
-                            var parameterError = this.errorParameters.SingleOrDefault(s => s.Code == parameter.Code);
-                            this.errorParameters.Remove(parameterError);
-
-                            switch (parameter.DataSet)
-                            {
-                                case 0:
-                                    parameterError.DataSet0 = parameter.StringValue;
-                                    break;
-
-                                case 1:
-                                    parameterError.DataSet1 = parameter.StringValue;
-                                    break;
-
-                                case 2:
-                                    parameterError.DataSet2 = parameter.StringValue;
-                                    break;
-
-                                case 3:
-                                    parameterError.DataSet3 = parameter.StringValue;
-                                    break;
-
-                                case 4:
-                                    parameterError.DataSet4 = parameter.StringValue;
-                                    break;
-                            }
-
-                            this.errorParameters.Add(parameterError);
-                        }
-                        else
-                        {
-                            var parameterToAdd = new InverterParameters();
-                            parameterToAdd.Code = (short)parameter.Code;
-                            parameterToAdd.Description = parameter.Description;
-
-                            switch (parameter.DataSet)
-                            {
-                                case 0:
-                                    parameterToAdd.DataSet0 = parameter.StringValue;
-                                    break;
-
-                                case 1:
-                                    parameterToAdd.DataSet1 = parameter.StringValue;
-                                    break;
-
-                                case 2:
-                                    parameterToAdd.DataSet2 = parameter.StringValue;
-                                    break;
-
-                                case 3:
-                                    parameterToAdd.DataSet3 = parameter.StringValue;
-                                    break;
-
-                                case 4:
-                                    parameterToAdd.DataSet4 = parameter.StringValue;
-                                    break;
-                            }
-
-                            this.errorParameters.Add(parameterToAdd);
-                        }
-                    }
-                    else if (aglActualValues.Any(s => s == parameter.Code))
-                    {
-                        if (parameter.DecimalCount > 0)
-                        {
-                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
-                        }
-
-                        parameter.StringValue += " " + parameter.Um;
-                        this.actualValueParameters.Add(parameter);
-                    }
-                }
-            }
-            else if (this.inverterParameters.Type == InverterType.Acu)
-            {
-                foreach (var parameter in this.inverterParameters.Parameters)
-                {
-                    if (acuError.Any(s => s == parameter.Code))
-                    {
-                        if (parameter.DecimalCount > 0)
-                        {
-                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
-                        }
-
-                        parameter.StringValue += " " + parameter.Um;
-                        this.error.Add(parameter);
-
-                        if (this.errorParameters.Any(s => s.Code == parameter.Code))
-                        {
-                            var parameterError = this.errorParameters.SingleOrDefault(s => s.Code == parameter.Code);
-                            this.errorParameters.Remove(parameterError);
-
-                            switch (parameter.DataSet)
-                            {
-                                case 0:
-                                    parameterError.DataSet0 = parameter.StringValue;
-                                    break;
-
-                                case 1:
-                                    parameterError.DataSet1 = parameter.StringValue;
-                                    break;
-
-                                case 2:
-                                    parameterError.DataSet2 = parameter.StringValue;
-                                    break;
-
-                                case 3:
-                                    parameterError.DataSet3 = parameter.StringValue;
-                                    break;
-
-                                case 4:
-                                    parameterError.DataSet4 = parameter.StringValue;
-                                    break;
-                            }
-
-                            this.errorParameters.Add(parameterError);
-                        }
-                        else
-                        {
-                            var parameterToAdd = new InverterParameters();
-                            parameterToAdd.Code = (short)parameter.Code;
-                            parameterToAdd.Description = parameter.Description;
-
-                            switch (parameter.DataSet)
-                            {
-                                case 0:
-                                    parameterToAdd.DataSet0 = parameter.StringValue;
-                                    break;
-
-                                case 1:
-                                    parameterToAdd.DataSet1 = parameter.StringValue;
-                                    break;
-
-                                case 2:
-                                    parameterToAdd.DataSet2 = parameter.StringValue;
-                                    break;
-
-                                case 3:
-                                    parameterToAdd.DataSet3 = parameter.StringValue;
-                                    break;
-
-                                case 4:
-                                    parameterToAdd.DataSet4 = parameter.StringValue;
-                                    break;
-                            }
-
-                            this.errorParameters.Add(parameterToAdd);
-                        }
-                    }
-                    else if (acuActualValues.Any(s => s == parameter.Code))
-                    {
-                        if (parameter.DecimalCount > 0)
-                        {
-                            parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
-                        }
-
-                        parameter.StringValue += " " + parameter.Um;
-                        this.actualValueParameters.Add(parameter);
-                    }
-                }
+                this.Logger.Error(ex.ToString());
             }
 
             this.RaisePropertyChanged(nameof(this.ActualValueParameters));
@@ -605,7 +616,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineDevicesWebService.ReadInverterParameterAsync(this.inverterParameters);
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -631,7 +642,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.LoadData();
                 }
             }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }

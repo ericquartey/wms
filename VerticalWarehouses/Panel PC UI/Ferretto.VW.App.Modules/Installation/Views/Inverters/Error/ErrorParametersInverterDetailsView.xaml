@@ -98,7 +98,6 @@
                 ItemsSource="{Binding ActualValueParameters}"
                 RowHeight="40"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                SelectedItem="{Binding SelectedParameter}"
                 SelectionMode="Single"
                 VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
                 VerticalScrollBarVisibility="Auto">
@@ -187,7 +186,6 @@
                 ItemsSource="{Binding ErrorParameters}"
                 RowHeight="50"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                SelectedItem="{Binding SelectedParameter}"
                 SelectionMode="Single"
                 VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
                 VerticalScrollBarVisibility="Auto">

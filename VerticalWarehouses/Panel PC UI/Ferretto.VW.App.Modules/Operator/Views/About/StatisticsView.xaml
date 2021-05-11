@@ -662,7 +662,8 @@
             <RowDefinition />
           </Grid.RowDefinitions>
 
-          <Grid Margin="0,0,5,0">
+          <Grid Margin="0,0,5,0"
+                Visibility="Hidden">
             <Grid.RowDefinitions>
               <RowDefinition />
               <RowDefinition />
@@ -681,11 +682,12 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ProgressBar_Data}"
-                       Text="{Binding TotalStatistics.AutomaticTimePercentage, StringFormat={}{0:F2}%}" />
+                       Text="{Binding TotalStatistics.AutomaticTimePercentage, TargetNullValue=0.00, StringFormat={}{0:F2}%}" />
           </Grid>
 
           <Grid Grid.Column="1"
-                Margin="5,0">
+                Margin="5,0"
+                Visibility="Hidden">
             <Grid.RowDefinitions>
               <RowDefinition />
               <RowDefinition />
@@ -704,7 +706,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ProgressBar_Data}"
-                       Text="{Binding TotalStatistics.UsageTimePercentage, StringFormat={}{0:F2}%}" />
+                       Text="{Binding TotalStatistics.UsageTimePercentage, TargetNullValue=0.00, StringFormat={}{0:F2}%}" />
           </Grid>
 
           <Grid Grid.Column="2"
@@ -727,7 +729,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ProgressBar_Data}"
-                       Text="{Binding TotalStatistics.AreaFillPercentage, StringFormat={}{0:F2}%}" />
+                       Text="{Binding TotalStatistics.AreaFillPercentage, TargetNullValue=0.00, StringFormat={}{0:F2}%}" />
           </Grid>
 
           <Grid Grid.Column="3"
@@ -750,7 +752,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ProgressBar_Data}"
-                       Text="{Binding TotalStatistics.WeightCapacityPercentage, StringFormat={}{0:F2}%}" />
+                       Text="{Binding TotalStatistics.WeightCapacityPercentage, TargetNullValue=0.00, StringFormat={}{0:F2}%}" />
           </Grid>
 
           <Grid Grid.Row="1"
@@ -773,7 +775,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ProgressBar_Data}"
-                       Text="{Binding CellFillPercentage, StringFormat={}{0:F2}%}" />
+                       Text="{Binding CellFillPercentage, TargetNullValue=0.00, StringFormat={}{0:F2}%}" />
           </Grid>
 
           <Grid Grid.Row="1"
@@ -797,7 +799,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ProgressBar_Data}"
-                       Text="{Binding FragmentFrontPercent, StringFormat={}{0:F2}%}" />
+                       Text="{Binding FragmentFrontPercent, TargetNullValue=0.00, StringFormat={}{0:F2}%}" />
           </Grid>
 
           <Grid Grid.Row="1"
@@ -821,7 +823,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{DynamicResource VWAPP_ProgressBar_Data}"
-                       Text="{Binding FragmentBackPercent, StringFormat={}{0:F2}%}" />
+                       Text="{Binding FragmentBackPercent, TargetNullValue=0.00, StringFormat={}{0:F2}%}" />
           </Grid>
 
           <Grid Grid.Row="1"
@@ -845,7 +847,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ProgressBar_Data}"
-                       Text="{Binding FragmentTotalPercent, StringFormat={}{0:F2}%}" />
+                       Text="{Binding FragmentTotalPercent, TargetNullValue=0.00, StringFormat={}{0:F2}%}" />
           </Grid>
         </Grid>
       </Border>
