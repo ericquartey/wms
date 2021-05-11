@@ -1853,4 +1853,7 @@
   <data name="ShipmentDay" xml:space="preserve">
     <value>Giorno di spedizione</value>
   </data>
+  <data name="Day" xml:space="preserve">
+    <value>Giorno</value>
+  </data>
 </root>

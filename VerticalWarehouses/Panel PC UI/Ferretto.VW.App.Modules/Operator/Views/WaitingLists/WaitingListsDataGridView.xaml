@@ -8,157 +8,177 @@
              xmlns:dxga="http://schemas.devexpress.com/winfx/2008/xaml/gauges"
              xmlns:model="clr-namespace:Ferretto.VW.App.Modules.Operator.Models">
 
-  <UserControl.Resources>
-    <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
-    <conv:MachinesToStringConverter x:Key="MTSC" />
-    <ControlTemplate x:Key="StateIndicatorControlControlTemplate1"
-                     TargetType="{x:Type dxga:StateIndicatorControl}">
-      <Border Padding="{TemplateBinding Padding}"
-              Background="{TemplateBinding Background}">
-        <Grid x:Name="PART_BaseLayoutElement">
-          <dxga:ElementInfoContainer Width="16"
-                                     Height="16"
-                                     ElementInfo="{Binding State.ElementInfo, RelativeSource={RelativeSource TemplatedParent}}"
-                                     StretchToAvailableSize="False" />
-        </Grid>
-      </Border>
-    </ControlTemplate>
-  </UserControl.Resources>
+    <UserControl.Resources>
+        <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
+        <conv:MachinesToStringConverter x:Key="MTSC" />
+        <ControlTemplate x:Key="StateIndicatorControlControlTemplate1"
+                         TargetType="{x:Type dxga:StateIndicatorControl}">
+            <Border Padding="{TemplateBinding Padding}"
+                    Background="{TemplateBinding Background}">
+                <Grid x:Name="PART_BaseLayoutElement">
+                    <dxga:ElementInfoContainer Width="16"
+                                               Height="16"
+                                               ElementInfo="{Binding State.ElementInfo, RelativeSource={RelativeSource TemplatedParent}}"
+                                               StretchToAvailableSize="False" />
+                </Grid>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Resources>
 
-  <DataGrid x:Name="DataGrid"
-            CanUserSortColumns="True"
-            IsSynchronizedWithCurrentItem="True"
-            ItemsSource="{Binding Lists}"
-            RowHeight="50"
-            SelectedItem="{Binding SelectedList}"
-            VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}">
-    <DataGrid.Columns>
-      <DataGridTextColumn x:Name="Column1"
-                          Width="1*"
-                          Binding="{Binding ItemListType, Converter={StaticResource ILTEC}}"
-                          Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderType}">
-        <DataGridTextColumn.CellStyle>
-          <Style TargetType="{x:Type DataGridCell}">
-            <Setter Property="BorderThickness" Value="1,0,0,0" />
-            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-          </Style>
-        </DataGridTextColumn.CellStyle>
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
-      <DataGridTextColumn x:Name="Column2"
-                          Width="1*"
-                          Binding="{Binding Code}"
-                          Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderList}">
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
-      <DataGridTextColumn x:Name="Column3"
-                          Width="3*"
-                          Binding="{Binding Description}"
-                          Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
+    <DataGrid x:Name="DataGrid"
+              CanUserSortColumns="True"
+              IsSynchronizedWithCurrentItem="True"
+              ItemsSource="{Binding Lists}"
+              RowHeight="50"
+              SelectedItem="{Binding SelectedList}"
+              VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}">
 
-      </DataGridTextColumn>
-      <DataGridTemplateColumn x:Name="Column4"
-                              Width="100"
-                              Header="{Resources:Loc OperatorApp.ListAvailable}">
-        <DataGridTemplateColumn.CellTemplate>
-          <DataTemplate>
-            <dxga:StateIndicatorControl x:Name="stateIndicatorControl1"
-                                        Margin="0,0,0,2"
-                                        RenderOptions.EdgeMode="Aliased"
-                                        Template="{DynamicResource StateIndicatorControlControlTemplate1}">
-              <dxga:StateIndicatorControl.AdditionalStates>
-                <dxga:State>
-                  <dxga:State.Presentation>
-                    <dxga:CustomStatePresentation>
-                      <dxga:CustomStatePresentation.StateTemplate>
-                        <ControlTemplate>
-                          <Viewbox Stretch="Uniform">
-                            <Grid Width="8"
-                                  Height="8"
-                                  Margin="0">
-                              <Ellipse Width="8"
-                                       Height="8"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Fill="{DynamicResource FerrettoGreen}" />
-                            </Grid>
-                          </Viewbox>
-                        </ControlTemplate>
-                      </dxga:CustomStatePresentation.StateTemplate>
-                    </dxga:CustomStatePresentation>
-                  </dxga:State.Presentation>
-                </dxga:State>
-                <dxga:State>
-                  <dxga:State.Presentation>
-                    <dxga:CustomStatePresentation>
-                      <dxga:CustomStatePresentation.StateTemplate>
-                        <ControlTemplate>
-                          <Viewbox Stretch="Uniform">
-                            <Grid Width="8"
-                                  Height="8"
-                                  Margin="0">
-                              <Ellipse Width="8"
-                                       Height="8"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Fill="{DynamicResource FerrettoYellow}" />
-                            </Grid>
-                          </Viewbox>
-                        </ControlTemplate>
-                      </dxga:CustomStatePresentation.StateTemplate>
-                    </dxga:CustomStatePresentation>
-                  </dxga:State.Presentation>
-                </dxga:State>
-              </dxga:StateIndicatorControl.AdditionalStates>
-              <dxga:StateIndicatorControl.Model>
-                <dxga:LampStateIndicatorModel />
-              </dxga:StateIndicatorControl.Model>
-              <dxga:StateIndicatorControl.Style>
-                <Style TargetType="{x:Type dxga:StateIndicatorControl}">
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding ExecutionMode}">
-                      <DataTrigger.Value>
-                        <model:ListExecutionMode>SomeRows</model:ListExecutionMode>
-                      </DataTrigger.Value>
-                      <Setter Property="StateIndex" Value="5" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding ExecutionMode}">
-                      <DataTrigger.Value>
-                        <model:ListExecutionMode>AllRows</model:ListExecutionMode>
-                      </DataTrigger.Value>
-                      <Setter Property="StateIndex" Value="4" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding ExecutionMode}">
-                      <DataTrigger.Value>
-                        <model:ListExecutionMode>None</model:ListExecutionMode>
-                      </DataTrigger.Value>
-                      <Setter Property="Visibility" Value="Hidden" />
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </dxga:StateIndicatorControl.Style>
-            </dxga:StateIndicatorControl>
-          </DataTemplate>
-        </DataGridTemplateColumn.CellTemplate>
-      </DataGridTemplateColumn>
-    </DataGrid.Columns>
-  </DataGrid>
+        <DataGrid.Resources>
+            <ctrls:BindingProxy x:Key="proxy"
+                                Data="{Binding}" />
+        </DataGrid.Resources>
+
+        <DataGrid.Columns>
+            <DataGridTextColumn x:Name="Column1"
+                                Width="1*"
+                                Binding="{Binding ItemListType, Converter={StaticResource ILTEC}}"
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderType}">
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Setter Property="BorderThickness" Value="1,0,0,0" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column2"
+                                Width="1*"
+                                Binding="{Binding Code}"
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderList}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column3"
+                                Width="3*"
+                                Binding="{Binding Description}"
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+
+            </DataGridTextColumn>
+
+            <DataGridTextColumn x:Name="Column4"
+                                Width="1*"
+                                Binding="{Binding ShipmentUnitCode}"
+                                Header="{Resources:Loc OperatorApp.Day}"
+                                Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTemplateColumn x:Name="Column5"
+                                    Width="100"
+                                    Header="{Resources:Loc OperatorApp.ListAvailable}">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <dxga:StateIndicatorControl x:Name="stateIndicatorControl1"
+                                                    Margin="0,0,0,2"
+                                                    RenderOptions.EdgeMode="Aliased"
+                                                    Template="{DynamicResource StateIndicatorControlControlTemplate1}">
+                            <dxga:StateIndicatorControl.AdditionalStates>
+                                <dxga:State>
+                                    <dxga:State.Presentation>
+                                        <dxga:CustomStatePresentation>
+                                            <dxga:CustomStatePresentation.StateTemplate>
+                                                <ControlTemplate>
+                                                    <Viewbox Stretch="Uniform">
+                                                        <Grid Width="8"
+                                                              Height="8"
+                                                              Margin="0">
+                                                            <Ellipse Width="8"
+                                                                     Height="8"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"
+                                                                     Fill="{DynamicResource FerrettoGreen}" />
+                                                        </Grid>
+                                                    </Viewbox>
+                                                </ControlTemplate>
+                                            </dxga:CustomStatePresentation.StateTemplate>
+                                        </dxga:CustomStatePresentation>
+                                    </dxga:State.Presentation>
+                                </dxga:State>
+                                <dxga:State>
+                                    <dxga:State.Presentation>
+                                        <dxga:CustomStatePresentation>
+                                            <dxga:CustomStatePresentation.StateTemplate>
+                                                <ControlTemplate>
+                                                    <Viewbox Stretch="Uniform">
+                                                        <Grid Width="8"
+                                                              Height="8"
+                                                              Margin="0">
+                                                            <Ellipse Width="8"
+                                                                     Height="8"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"
+                                                                     Fill="{DynamicResource FerrettoYellow}" />
+                                                        </Grid>
+                                                    </Viewbox>
+                                                </ControlTemplate>
+                                            </dxga:CustomStatePresentation.StateTemplate>
+                                        </dxga:CustomStatePresentation>
+                                    </dxga:State.Presentation>
+                                </dxga:State>
+                            </dxga:StateIndicatorControl.AdditionalStates>
+                            <dxga:StateIndicatorControl.Model>
+                                <dxga:LampStateIndicatorModel />
+                            </dxga:StateIndicatorControl.Model>
+                            <dxga:StateIndicatorControl.Style>
+                                <Style TargetType="{x:Type dxga:StateIndicatorControl}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ExecutionMode}">
+                                            <DataTrigger.Value>
+                                                <model:ListExecutionMode>SomeRows</model:ListExecutionMode>
+                                            </DataTrigger.Value>
+                                            <Setter Property="StateIndex" Value="5" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}">
+                                            <DataTrigger.Value>
+                                                <model:ListExecutionMode>AllRows</model:ListExecutionMode>
+                                            </DataTrigger.Value>
+                                            <Setter Property="StateIndex" Value="4" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}">
+                                            <DataTrigger.Value>
+                                                <model:ListExecutionMode>None</model:ListExecutionMode>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </dxga:StateIndicatorControl.Style>
+                        </dxga:StateIndicatorControl>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
 
 </UserControl>

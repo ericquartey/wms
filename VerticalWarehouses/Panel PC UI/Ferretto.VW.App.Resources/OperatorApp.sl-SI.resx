@@ -1722,4 +1722,7 @@
   <data name="ShipmentDay" xml:space="preserve">
     <value>Day of shipment</value>
   </data>
+  <data name="Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
 </root>
