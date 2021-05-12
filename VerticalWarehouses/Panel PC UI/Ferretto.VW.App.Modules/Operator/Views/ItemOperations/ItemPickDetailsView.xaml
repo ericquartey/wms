@@ -152,6 +152,24 @@
                                          ContentText="{Binding MissionOperation.MaterialStatusId}"
                                          LabelText="{resources:Loc OperatorApp.MaterialStatus}" />
 
+                <controls:PpcLabeledText Grid.Row="4"
+                                         Grid.Column="2"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding MissionOperation.ItemListShipmentUnitCode}"
+                                         LabelText="{resources:Loc OperatorApp.ShipmentDay}"
+                                         Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
+                                         <!-- Only reserved for TendaggiParadiso -->
+
+                <controls:PpcLabeledText Grid.Row="5"
+                                         Grid.Column="0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding MissionOperation.ItemNotes}"
+                                         LabelText="{resources:Loc OperatorApp.Destination}"
+                                         Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
+                                         <!-- Only reserved for TendaggiParadiso -->
+
             </Grid>
 
         </Border>
@@ -203,7 +221,7 @@
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
                                    TextWrapping="Wrap" />
-                        <!-- "{StaticResource FontSize_Very_High}" -->
+                        <!--  "{StaticResource FontSize_Very_High}"  -->
                     </Grid>
                 </Border>
             </Border>

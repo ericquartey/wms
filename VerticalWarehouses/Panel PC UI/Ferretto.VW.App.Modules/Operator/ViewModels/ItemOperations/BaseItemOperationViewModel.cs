@@ -78,6 +78,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public string ItemId => this.missionOperation?.ItemId.ToString();
 
+        public IMachineItemsWebService ItemsWebService => this.itemsWebService;
+
         public string MeasureUnit
         {
             get => this.measureUnit;

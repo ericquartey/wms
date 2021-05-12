@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string draperyItemDescription;
 
+        private bool forceDisablingConfirmButton;
+
         private double? inputQuantity;
 
         private string measureUnitTxt;
@@ -163,6 +165,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.QuantityTolerance = 1;
             this.QuantityIncrement = 0.1;
 
+            this.forceDisablingConfirmButton = false;
+
             if (this.Data is ItemDraperyDataConfirm itemDraperyData)
             {
                 this.MissionId = itemDraperyData.MissionId;
@@ -234,6 +238,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmDraperyItemButton()
         {
+            // force disabling the button
+            if (this.forceDisablingConfirmButton)
+            {
+                return false;
+            }
+
             bool canConfirm;
             if (!this.InputQuantity.HasValue ||
                 !this.AvailableQuantity.HasValue)
@@ -253,6 +263,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.IsPartiallyCompleteOperation)
             {
                 this.IsWaitingForResponse = true;
+                this.forceDisablingConfirmButton = true;
 
                 try
                 {
@@ -261,6 +272,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var item = await this.itemsWebService.GetByIdAsync(this.ItemId);
                     var loadingUnitId = this.LoadingUnitId;
                     var type = this.MissionOperationType;
+
+                    this.CanConfirmDraperyItemButton();
 
                     if (this.CloseLine)
                     {
@@ -291,10 +304,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 finally
                 {
                     this.IsWaitingForResponse = false;
+                    this.forceDisablingConfirmButton = false;
                 }
             }
             else
             {
+                this.forceDisablingConfirmButton = true;
+
                 try
                 {
                     this.IsWaitingForResponse = true;
@@ -306,6 +322,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     var loadingUnitId = this.LoadingUnitId;
                     var type = this.MissionOperationType;
+
+                    this.CanConfirmDraperyItemButton();
 
                     if (this.Barcode != null)
                     {
@@ -340,6 +358,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     //    nameof(Utils.Modules.Operator),
                     //    Utils.Modules.Operator.ItemOperations.WAIT);
 
+                    this.forceDisablingConfirmButton = false;
+
                     this.NavigationService.GoBack();
                 }
                 catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -350,8 +370,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     // Do not enable the interface. Wait for a new notification to arrive.
                     this.IsWaitingForResponse = false;
+                    this.forceDisablingConfirmButton = false;
                 }
             }
+
+            this.CanConfirmDraperyItemButton();
         }
 
         #endregion
