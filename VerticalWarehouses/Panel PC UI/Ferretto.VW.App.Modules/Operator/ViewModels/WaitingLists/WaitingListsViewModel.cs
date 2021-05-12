@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int currentItemIndex;
 
+        private bool isShipmentDayVisible;
+
         private DelegateCommand listDetailButtonCommand;
 
         private DelegateCommand listExecuteCommand;
@@ -69,6 +71,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public string ActiveContextName => OperationalContext.ListSearch.ToString();
+
+        public bool IsShipmentDayVisible
+        {
+            get => this.isShipmentDayVisible;
+            protected set => this.SetProperty(ref this.isShipmentDayVisible, value, this.RaiseCanExecuteChanged);
+        }
 
         public override bool KeepAlive => true;
 
@@ -173,6 +181,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
+            this.IsShipmentDayVisible = false;
 
             var machineIdentity = await this.identityService.GetAsync();
             if (machineIdentity is null)
@@ -299,7 +308,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.lists.Clear();
                 newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
 
+                if (this.lists.Count > 0)
+                {
+                    this.IsShipmentDayVisible = this.lists.Any(i => i.ShipmentUnitCode != null);
+                }
+
                 this.RaisePropertyChanged(nameof(this.Lists));
+                this.RaisePropertyChanged(nameof(this.IsShipmentDayVisible));
 
                 this.SetCurrentIndex(lastItemListId);
 

@@ -36,6 +36,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPutViewModel(
+            ILaserPointerService deviceService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
             INavigationService navigationService,
@@ -51,6 +52,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService)
             : base(
+                  deviceService,
                   areasWebService,
                   machineIdentityWebService,
                   navigationService,
@@ -288,6 +290,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
             }
+        }
+
+        public override void Disappear()
+        {
+            base.Disappear();
         }
 
         public override async Task OnAppearedAsync()

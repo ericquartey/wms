@@ -3,63 +3,63 @@
                     xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters"
                     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
 
-  <!--  converters  -->
-  <conv:AlphaNumericBarSizeEnumConverter x:Key="ANBSEC" />
-  <!--<conv:AlphaNumericBarSizeListEnumConverter x:Key="ANBSLEC" />-->
+    <!--  converters  -->
+    <conv:AlphaNumericBarSizeEnumConverter x:Key="ANBSEC" />
+    <!--<conv:AlphaNumericBarSizeListEnumConverter x:Key="ANBSLEC" />-->
 
-  <conv:LoadingUnitLocationConverter x:Key="LULC" />
+    <conv:LoadingUnitLocationConverter x:Key="LULC" />
 
-  <conv:BoolToThicknessConverter x:Key="BTTC" />
-  <conv:BoolToVisibilityConverter x:Key="BTVC" />
-  <conv:BoolToVisibilityConverterHidden x:Key="BTVCH" />
-  <conv:BoolToVisibilityConverter x:Key="BTVIC"
-                                  Invert="True" />
-  <conv:BoolToVisibilityConverter x:Key="BTVHC"
-                                  Hide="True" />
-  <conv:BooleanNegationConverter x:Key="BNC" />
-  <conv:BoolToStringConverter x:Key="BTSC" />
-  <conv:Int32ToStringConverter x:Key="I32TSC" />
-  <conv:DoubleNullableToProgressValueConverter x:Key="DNTPV" />
+    <conv:BoolToThicknessConverter x:Key="BTTC" />
+    <conv:BoolToVisibilityConverter x:Key="BTVC" />
+    <conv:BoolToVisibilityConverterHidden x:Key="BTVCH" />
+    <conv:BoolToVisibilityConverter x:Key="BTVIC"
+                                    Invert="True" />
+    <conv:BoolToVisibilityConverter x:Key="BTVHC"
+                                    Hide="True" />
+    <conv:BooleanNegationConverter x:Key="BNC" />
+    <conv:BoolToStringConverter x:Key="BTSC" />
+    <conv:Int32ToStringConverter x:Key="I32TSC" />
+    <conv:DoubleNullableToProgressValueConverter x:Key="DNTPV" />
 
-  <dxmvvm:ObjectToBooleanConverter x:Key="OTBC" />
-  <dxmvvm:ObjectToBooleanConverter x:Key="OTBIC"
-                                   Inverse="True" />
+    <dxmvvm:ObjectToBooleanConverter x:Key="OTBC" />
+    <dxmvvm:ObjectToBooleanConverter x:Key="OTBIC"
+                                     Inverse="True" />
 
-  <conv:ReferenceToVisibilityConverter x:Key="RTVC" />
-  <conv:ReferenceToVisibilityConverter x:Key="RTVIC"
-                                       Invert="True" />
+    <conv:ReferenceToVisibilityConverter x:Key="RTVC" />
+    <conv:ReferenceToVisibilityConverter x:Key="RTVIC"
+                                         Invert="True" />
 
-  <conv:ReferenceToBoolConverter x:Key="RTBC" />
-  <conv:ReferenceToBoolConverter x:Key="RTBIC"
-                                 Invert="True" />
+    <conv:ReferenceToBoolConverter x:Key="RTBC" />
+    <conv:ReferenceToBoolConverter x:Key="RTBIC"
+                                   Invert="True" />
 
-  <conv:EnumBlockLevelConverter x:Key="EBLC" />
-  <conv:InverterIndexToIntConverter x:Key="IITIC" />
-  <!--<conv:EnumBlockLevelListConverter x:Key="EBLLC" />-->
-  <conv:EnumWarehouseSideConverter x:Key="EWSC" />
-  <conv:EnumItemManagementTypeConverter x:Key="EIMTC" />
-  <conv:ImageToSourceConverter x:Key="ITSC" />
-  <conv:InverterToStringConverter x:Key="INVTSC" />
+    <conv:EnumBlockLevelConverter x:Key="EBLC" />
+    <conv:InverterIndexToIntConverter x:Key="IITIC" />
+    <!--<conv:EnumBlockLevelListConverter x:Key="EBLLC" />-->
+    <conv:EnumWarehouseSideConverter x:Key="EWSC" />
+    <conv:EnumItemManagementTypeConverter x:Key="EIMTC" />
+    <conv:ImageToSourceConverter x:Key="ITSC" />
+    <conv:InverterToStringConverter x:Key="INVTSC" />
 
 
 
-  <conv:CounterNameConverter x:Key="CNC" />
-  <conv:BayNumberToStringConverter x:Key="BNTSC" />
-  <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
-  <conv:AxisToStringConverter x:Key="ATSC" />
-  <conv:MachineServiceStatusEnumConverter x:Key="MSSEC" />
-  <conv:LoadingUnitStatusEnumConverter x:Key="LUSEC" />
-  <!--<conv:LoadingUnitStatusListEnumConverter x:Key="LUSLEC" />-->
+    <conv:CounterNameConverter x:Key="CNC" />
+    <conv:BayNumberToStringConverter x:Key="BNTSC" />
+    <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
+    <conv:AxisToStringConverter x:Key="ATSC" />
+    <conv:MachineServiceStatusEnumConverter x:Key="MSSEC" />
+    <conv:LoadingUnitStatusEnumConverter x:Key="LUSEC" />
+    <!--<conv:LoadingUnitStatusListEnumConverter x:Key="LUSLEC" />-->
 
-  <conv:MachinesMatchConverter x:Key="MMC" />
-  <conv:MachinesToStringConverter x:Key="MTSC" />
-  <conv:MultiValueConverterAdapter x:Key="MVC" />
+    <conv:MachinesMatchConverter x:Key="MMC" />
+    <conv:MachinesToStringConverter x:Key="MTSC" />
+    <conv:MultiValueConverterAdapter x:Key="MVC" />
 
-  <conv:DebugDummyConverter x:Key="DEBUG" />
+    <conv:DebugDummyConverter x:Key="DEBUG" />
 
-  <!--  truthy to ui  -->
-  <conv:TruthyToUiConverter x:Key="TTUI" />
-  <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
+    <!--  truthy to ui  -->
+    <conv:TruthyToUiConverter x:Key="TTUI" />
+    <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
 
-  <conv:EnumToHealthStatusConverter x:Key="ETHSC" />
+    <conv:EnumToHealthStatusConverter x:Key="ETHSC" />
 </ResourceDictionary>

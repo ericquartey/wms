@@ -172,7 +172,9 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemNotes}"
-                                 LabelText="{resources:Loc OperatorApp.CommonNote}" />
+                                 LabelText="{resources:Loc OperatorApp.CommonNote}"
+                                 Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVIC}}" />
+                                 <!-- Make unvisible for TendaggiParadiso -->
 
         <Border Grid.Row="1"
                 Grid.Column="2"

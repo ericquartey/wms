@@ -173,7 +173,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 $"Inverter {this.machineData.CurrentInverterIndex} " +
                 $"Axis:{this.machineData.MessageData.AxisMovement} " +
                 $"StopRequestReason {this.stateData.StopRequestReason} " +
-                $"MovementType {this.machineData.MessageData.MovementType}" +
+                $"MovementType {this.machineData.MessageData.MovementType} " +
                 $"LoadUnitId={this.machineData.MessageData.LoadingUnitId}");
             if (this.machineData.MessageData.AxisMovement is Axis.Horizontal
                 || this.machineData.MessageData.AxisMovement is Axis.BayChain
@@ -417,8 +417,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
                         if (this.machineData.MessageData.TargetPosition > 0
-                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal && bay.IsExternal)
-                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal && bay.IsExternal))
+                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal)
+                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal))
                         {
                             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
                             var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
@@ -436,8 +436,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
                         var isDrawerInBay = bayPosition.IsUpper
-                             ? machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal && bay.IsExternal)
-                             : machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal && bay.IsExternal);
+                             ? machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal)
+                             : machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal);
 
                         if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
                         // possible pickup from bay

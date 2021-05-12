@@ -126,6 +126,11 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        public void ResetPoint()
+        {
+            this.laserPointerDriver.ResetSelectedPoint();
+        }
+
         public Task StartAsync()
         {
             this.missionToken = this.missionToken

@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             this.ItemListType = itemList.ItemListType;
             this.Code = itemList.Code;
             this.Description = itemList.Description;
+            this.ShipmentUnitCode = itemList.ShipmentUnitCode;
+            this.ShipmentUnitDescription = itemList.ShipmentUnitDescription;
 
             if (itemList.Machines?.Any(m => m.Id == machineId) == true)
             {

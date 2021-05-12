@@ -708,6 +708,32 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.SaveChanges();
         }
 
+        public void UpdateTotalAutomaticTime(TimeSpan duration)
+        {
+            lock (this.dataContext)
+            {
+                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                if (machineStat != null)
+                {
+                    machineStat.TotalAutomaticTime = machineStat.TotalAutomaticTime + duration;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateTotalPowerOnTime(TimeSpan duration)
+        {
+            lock (this.dataContext)
+            {
+                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                if (machineStat != null)
+                {
+                    machineStat.TotalPowerOnTime = machineStat.TotalPowerOnTime + duration;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         /// <summary>
         /// Update vertical axis statistics
         /// </summary>

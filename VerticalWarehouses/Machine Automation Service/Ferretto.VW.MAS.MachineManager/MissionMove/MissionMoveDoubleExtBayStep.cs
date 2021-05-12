@@ -324,6 +324,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     this.Mission.LoadUnitDestination = destination.Location;
 
+                                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                                    var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                                    if (this.Mission.CloseShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
+                                    {
+                                        this.Mission.CloseShutterPosition = ShutterPosition.NotSpecified;
+                                    }
+                                    if (this.Mission.CloseShutterPosition != ShutterPosition.NotSpecified)
+                                    {
+                                        this.Logger.LogInformation($"CloseShutter start Mission:Id={this.Mission.Id}");
+                                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
+                                    }
+
                                     this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
                                     this.MissionsDataProvider.Update(this.Mission);
                                     this.Logger.LogDebug($"Execute the move external bay toward Operator, DeviceNotification: {this.Mission.DeviceNotifications}");

@@ -487,10 +487,10 @@
     <value>Descrizione lista</value>
   </data>
   <data name="CommonPackingListCode" xml:space="preserve">
-    <value>Codice packing list</value>
+    <value>Codice imballo</value>
   </data>
   <data name="CommonPackingListDescription" xml:space="preserve">
-    <value>Descrizione packing list</value>
+    <value>Descrizione imballo</value>
   </data>
   <data name="CommonNote" xml:space="preserve">
     <value>Note:</value>
@@ -1846,5 +1846,14 @@
   </data>
   <data name="UwfActive" xml:space="preserve">
     <value>Filtro UWF attivo</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Destinatario</value>
+  </data>
+  <data name="ShipmentDay" xml:space="preserve">
+    <value>Giorno di spedizione</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Giorno</value>
   </data>
 </root>
