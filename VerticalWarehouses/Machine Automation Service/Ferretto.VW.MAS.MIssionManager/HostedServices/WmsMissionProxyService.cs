@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 var machinemachineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
                 if (machinemachineVolatileDataProvider.Mode != MachineMode.Automatic
-                    && machinemachineVolatileDataProvider.Mode != MachineMode.SwitchingToAutomatic
+                    //&& machinemachineVolatileDataProvider.Mode != MachineMode.SwitchingToAutomatic
                     )
                 {
                     return;

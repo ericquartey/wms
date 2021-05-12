@@ -1286,6 +1286,16 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     this.machineVolatileDataProvider.IsHomingActive = false;
 
+                    if (message.Data is IHomingMessageData dataHoming
+                        && dataHoming.AxisToCalibrate == Axis.BayChain)
+                    {
+                        this.machineVolatileDataProvider.IsBayHomingExecuted[message.RequestingBay] = false;
+                    }
+                    else
+                    {
+                        this.machineVolatileDataProvider.IsHomingExecuted = false;
+                    }
+
                     if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
                     {
                         //this.machineVolatileDataProvider.Mode = MachineMode.Manual; //MachineMode.Automatic;
