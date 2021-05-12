@@ -1295,6 +1295,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         this.machineVolatileDataProvider.IsHomingExecuted = false;
                     }
+                    this.Logger.LogDebug("Homing failed");
 
                     if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
                     {
