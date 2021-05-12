@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Timers;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -14,13 +15,21 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private const int TIMERINTERVAL = 30000;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly Dictionary<BayNumber, double> positions = new Dictionary<BayNumber, double>();
 
+        private readonly Timer refreshTimer;
+
         private readonly IServiceScopeFactory serviceScopeFactory;
 
         private bool isHomingExecuted;
+
+        private MachinePowerState lastMachinePowerState;
+
+        private MachineMode lastMode;
 
         private MachineMode mode;
 
@@ -76,6 +85,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     false,
                     m => m.Type is MessageType.DataLayerReady);
             }
+
+            this.refreshTimer = new Timer(TIMERINTERVAL);
+            this.refreshTimer.Elapsed += new ElapsedEventHandler(this.timer_Elapsed);
+            this.refreshTimer.Enabled = true;
+            this.refreshTimer.AutoReset = true;
         }
 
         #endregion
@@ -300,6 +314,24 @@ namespace Ferretto.VW.MAS.DataLayer
         private void OnDataLayerReady()
         {
             this.IsOneTonMachine = this.IsOneTonMachine ?? this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMachineProvider>().IsOneTonMachine();
+        }
+
+        private void timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (this.mode == MachineMode.Automatic &&
+                this.mode == this.lastMode)
+            {
+                this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMachineProvider>().UpdateTotalAutomaticTime(TimeSpan.FromMilliseconds(TIMERINTERVAL));
+            }
+
+            if (this.MachinePowerState == MachinePowerState.Powered &&
+                this.lastMachinePowerState == this.MachinePowerState)
+            {
+                this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMachineProvider>().UpdateTotalPowerOnTime(TimeSpan.FromMilliseconds(TIMERINTERVAL));
+            }
+
+            this.lastMachinePowerState = this.MachinePowerState;
+            this.lastMode = this.mode;
         }
 
         #endregion

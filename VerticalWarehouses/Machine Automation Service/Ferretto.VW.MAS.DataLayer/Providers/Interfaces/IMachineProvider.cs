@@ -79,6 +79,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateSolo(Machine machine, DataLayerContext dataContext);
 
+        void UpdateTotalAutomaticTime(TimeSpan duration);
+
+        void UpdateTotalPowerOnTime(TimeSpan duration);
+
         void UpdateVerticalAxisStatistics(double distance);
 
         void UpdateWeightStatistics(DataLayerContext dataContext);
