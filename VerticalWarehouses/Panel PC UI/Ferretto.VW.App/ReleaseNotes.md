@@ -27,11 +27,10 @@
 
 ## Bug Risolti
 - Corretti vari errori per Tendaggi Paradiso
-- I comandi per la barra alfanumerica non convertono più i caratteri ' ' e '*'
+- I comandi per la barra alfanumerica non convertono più il carattere '*'
 - Il laser ripete il posizionamento al rientro nella vista di operazioni su cassetto
 - Corretta vista errori inverter nel menu Installazione
 - La baia esterna chiude la serranda dopo l'homing
-- La richiesta delle causali ha sempre il campo note 
 
 ## Compatibile con adapter 0.4.19
 ***
