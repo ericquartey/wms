@@ -607,7 +607,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         this.dataContext.SaveChanges();
                     }
-                    catch (Microsoft.Data.Sqlite.SqliteException ex) when (i < NUMBER_OF_RETRIES)
+                    catch (Microsoft.Data.Sqlite.SqliteException ex)
                     {
                         this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ex.Message}");
                     }
