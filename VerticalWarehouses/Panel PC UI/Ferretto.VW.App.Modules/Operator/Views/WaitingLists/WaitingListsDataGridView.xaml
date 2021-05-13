@@ -68,7 +68,7 @@
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column3"
-                                Width="3*"
+                                Width="2*"
                                 Binding="{Binding Description}"
                                 Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
                 <DataGridTextColumn.ElementStyle>
@@ -94,8 +94,21 @@
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
 
-            <DataGridTemplateColumn x:Name="Column5"
-                                    Width="100"
+            <DataGridTextColumn x:Name="Column5"
+                                Width="1*"
+                                Binding="{Binding ShipmentUnitDescription}"
+                                Header="{Resources:Loc OperatorApp.Destination}"
+                                Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTemplateColumn x:Name="Column6"
+                                    Width="90"
                                     Header="{Resources:Loc OperatorApp.ListAvailable}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
