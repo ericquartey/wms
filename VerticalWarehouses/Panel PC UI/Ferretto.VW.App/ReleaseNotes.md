@@ -31,6 +31,7 @@
 - Il laser ripete il posizionamento al rientro nella vista di operazioni su cassetto
 - Corretta vista errori inverter nel menu Installazione
 - La baia esterna chiude la serranda dopo l'homing
+- La richiesta delle causali ha sempre il campo note 
 
 ## Compatibile con adapter 0.4.19
 ***
