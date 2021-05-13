@@ -882,7 +882,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 {
                     // do nothing
                 }
-                else if (c == ' ' || c == '*')
+                else if (//c == ' '||
+                         c == '*')
                 {
                     escapedChar = c.ToString();
                 }
