@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double GetCurrentVerticalPosition();
 
-        int GetCyclesFromCalibration();
+        int GetCyclesFromCalibration(Orientation orientation);
 
         double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId);
 

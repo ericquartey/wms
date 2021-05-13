@@ -127,7 +127,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     elevatorDataProvider.UpdateLastIdealPosition(0);
                     elevatorDataProvider.SetCurrentBayPosition(null);
                     elevatorDataProvider.SetCurrentCell(null);
-                    elevatorDataProvider.UpdateLastCalibrationCycles();
+                    elevatorDataProvider.UpdateLastCalibrationCycles(Orientation.Horizontal);
+                    elevatorDataProvider.UpdateLastCalibrationCycles(Orientation.Vertical);
                 }
                 else if (this.machineData.AxisToCalibrate == Axis.BayChain)
                 {
