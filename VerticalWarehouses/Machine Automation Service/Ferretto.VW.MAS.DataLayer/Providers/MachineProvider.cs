@@ -275,7 +275,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             */
 
-            this.logger.LogDebug($"Retrieve raw database content from file {filePath}");
+            this.logger.LogInformation($"Retrieve raw database content from file {filePath}");
             return rawDatabase;
         }
 
