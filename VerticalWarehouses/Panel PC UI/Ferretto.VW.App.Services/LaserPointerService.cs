@@ -128,7 +128,7 @@ namespace Ferretto.VW.App.Services
 
         public void ResetPoint()
         {
-            this.laserPointerDriver.ResetSelectedPoint();
+            //this.laserPointerDriver.ResetSelectedPoint();
         }
 
         public Task StartAsync()
@@ -254,8 +254,8 @@ namespace Ferretto.VW.App.Services
 
                         var point = this.laserPointerDriver.CalculateLaserPoint(e.WmsMission.LoadingUnit.Width, e.WmsMission.LoadingUnit.Depth, compartmentSelected.Width.Value, compartmentSelected.Depth.Value, compartmentSelected.XPosition.Value, compartmentSelected.YPosition.Value, itemHeight, bayPosition.IsUpper, bay.Side);
 
-                        this.logger.Info("Move and switch on laser pointer");
-                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point, true);
+                        this.logger.Info($"Move and switch on laser pointer, operation {e.WmsOperation.Id}");
+                        await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
                     }
                 }
             }

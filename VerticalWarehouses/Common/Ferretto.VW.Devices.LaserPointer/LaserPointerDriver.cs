@@ -379,6 +379,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             }
 
             if (this.SelectedPoint is null
+                || !select
                 || point.X != this.SelectedPoint.X
                 || point.Y != this.SelectedPoint.Y
                 || point.Z != this.SelectedPoint.Z)
