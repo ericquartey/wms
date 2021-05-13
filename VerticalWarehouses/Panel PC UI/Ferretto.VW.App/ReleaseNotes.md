@@ -22,20 +22,21 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.14 rispetto la 1.0.13
-- Aggiunto comando "Ricerca di Zero" nell'allarme 15 "Manca il sensore di zero con elevatore vuoto"
-- Aggiunti comandi Ping e Riavvia servizio nella vista delle schede di rete
-- Aggiunta lingua Russa
+## Nuove Funzionalità 1.0.15 rispetto la 1.0.14
+- Aggiunto tempo automatico nelle statistiche
 
 ## Bug Risolti
-- Corretti vari errori sulla BED
-- Corretta segnalazione di barriera attiva all'accensione della macchina
-- Corretto ripristino delle missioni con doppia baia
-- Corretto timeout in accensione inverter (SwitchOnStart)
-- Corretto errore in salvataggio database
+- Corretti vari errori per Tendaggi Paradiso
+- I comandi per la barra alfanumerica non convertono più i caratteri ' ' e '*'
+- Il laser ripete il posizionamento al rientro nella vista di operazioni su cassetto
+- Corretta vista errori inverter nel menu Installazione
+- La baia esterna chiude la serranda dopo l'homing
+- La richiesta delle causali ha sempre il campo note 
 
-## Compatibile con adapter 0.4.18
+## Compatibile con adapter 0.4.19
 ***
+
+[Versione 1.0.14](#id1014)
 
 [Versione 1.0.13](#id1013)
 
@@ -64,6 +65,24 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1014"></a>
+# Note di versione
+
+## Nuove Funzionalità 1.0.14 rispetto la 1.0.13
+- Aggiunto comando "Ricerca di Zero" nell'allarme 15 "Manca il sensore di zero con elevatore vuoto"
+- Aggiunti comandi Ping e Riavvia servizio nella vista delle schede di rete
+- Aggiunta lingua Russa
+
+## Bug Risolti
+- Corretti vari errori sulla BED
+- Corretta segnalazione di barriera attiva all'accensione della macchina
+- Corretto ripristino delle missioni con doppia baia
+- Corretto timeout in accensione inverter (SwitchOnStart)
+- Corretto errore in salvataggio database
+
+## Compatibile con adapter 0.4.18
 ***
 
 <a id="id1013"></a>

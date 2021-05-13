@@ -600,7 +600,18 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.dataContext.AddOrUpdate(mission, (e) => e.Id);
 
-                this.dataContext.SaveChanges();
+                const int NUMBER_OF_RETRIES = 3;
+                for (var i = 0; i < NUMBER_OF_RETRIES; i++)
+                {
+                    try
+                    {
+                        this.dataContext.SaveChanges();
+                    }
+                    catch (Microsoft.Data.Sqlite.SqliteException ex)
+                    {
+                        this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ex.Message}");
+                    }
+                }
 
                 this.CheckPendingChanges();
             }
