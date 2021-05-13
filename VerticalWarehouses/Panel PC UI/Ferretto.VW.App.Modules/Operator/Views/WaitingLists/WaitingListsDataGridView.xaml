@@ -95,7 +95,7 @@
             </DataGridTextColumn>
 
             <DataGridTextColumn x:Name="Column5"
-                                Width="1*"
+                                Width="110"
                                 Binding="{Binding ShipmentUnitDescription}"
                                 Header="{Resources:Loc OperatorApp.Destination}"
                                 Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">
@@ -108,7 +108,7 @@
             </DataGridTextColumn>
 
             <DataGridTemplateColumn x:Name="Column6"
-                                    Width="90"
+                                    Width="100"
                                     Header="{Resources:Loc OperatorApp.ListAvailable}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
