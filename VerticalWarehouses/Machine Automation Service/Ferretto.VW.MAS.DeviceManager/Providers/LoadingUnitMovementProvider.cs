@@ -296,9 +296,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.elevatorProvider.VerticalPosition;
         }
 
-        public int GetCyclesFromCalibration()
+        public int GetCyclesFromCalibration(Orientation orientation)
         {
-            return this.elevatorDataProvider.GetCyclesFromCalibration();
+            if (orientation == Orientation.Horizontal)
+            {
+                return this.elevatorDataProvider.GetCyclesFromCalibrationHorizontal();
+            }
+            else if (orientation == Orientation.Vertical)
+            {
+                return this.elevatorDataProvider.GetCyclesFromCalibrationVertical();
+            }
+            else
+            {
+                throw new EntityNotFoundException(orientation.ToString());
+            }
         }
 
         public double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId)

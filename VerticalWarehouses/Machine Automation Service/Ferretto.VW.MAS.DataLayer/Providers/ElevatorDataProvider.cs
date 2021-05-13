@@ -231,16 +231,30 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public int GetCyclesFromCalibration(Orientation orientation = Orientation.Horizontal)
+        public int GetCyclesFromCalibrationHorizontal()
         {
             lock (this.dataContext)
             {
-                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
                 if (axis is null)
                 {
-                    throw new EntityNotFoundException(orientation.ToString());
+                    throw new EntityNotFoundException(Orientation.Horizontal.ToString());
                 }
                 var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalHorizontalAxisCycles ?? 0;
+                return Math.Abs(cycles - axis.LastCalibrationCycles);
+            }
+        }
+
+        public int GetCyclesFromCalibrationVertical()
+        {
+            lock (this.dataContext)
+            {
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
+                if (axis is null)
+                {
+                    throw new EntityNotFoundException(Orientation.Vertical.ToString());
+                }
+                var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalVerticalAxisCycles ?? 0;
                 return Math.Abs(cycles - axis.LastCalibrationCycles);
             }
         }
@@ -460,7 +474,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateLastCalibrationCycles(Orientation orientation = Orientation.Horizontal)
+        public void UpdateLastCalibrationCycles(Orientation orientation)
         {
             lock (this.dataContext)
             {
@@ -472,15 +486,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.cache.Remove(GetAxisCacheKey(orientation));
 
-                var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalHorizontalAxisCycles ?? 0;
-                axis.LastCalibrationCycles = cycles;
+                if (orientation == Orientation.Vertical)
+                {
+                    var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalVerticalAxisCycles ?? 0;
+                    axis.LastCalibrationCycles = cycles;
+                }
+                else if (orientation == Orientation.Horizontal)
+                {
+                    var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalHorizontalAxisCycles ?? 0;
+                    axis.LastCalibrationCycles = cycles;
+                }
 
                 this.dataContext.SaveChanges();
-
-                if (orientation == Orientation.Horizontal)
-                {
-                    this.NotifyElevatorPositionChanged(useCachedValue: true);
-                }
+                this.NotifyElevatorPositionChanged(useCachedValue: true);
             }
         }
 

@@ -159,13 +159,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             {
                 var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                 elevatorDataProvider.UpdateLastIdealPosition(0);
-                elevatorDataProvider.UpdateLastCalibrationCycles();
+                elevatorDataProvider.UpdateLastCalibrationCycles(Orientation.Horizontal);
             }
             else if (this.machineData.AxisToCalibrate == Axis.Vertical)
             {
                 var elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                 var machineVolatileDataProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
                 elevatorDataProvider.UpdateLastIdealPosition(machineVolatileDataProvider.ElevatorVerticalPosition, Orientation.Vertical);
+                elevatorDataProvider.UpdateLastCalibrationCycles(Orientation.Vertical);
             }
 
             var notificationMessageData = new CalibrateAxisMessageData(this.machineData.AxisToCalibrate, this.machineData.NumberOfExecutedSteps, this.machineData.MaximumSteps, MessageVerbosity.Info);
