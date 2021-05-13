@@ -656,7 +656,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.itemToPickId = itemId;
             //this.itemToPickCode = itemCode;
 
-            this.NoteEnabled = true;
+            this.NoteEnabled = false;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
 
             var waitForReason = await this.CheckReasonsAsync();
@@ -677,7 +677,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.itemToPickId = itemId;
             //this.itemToPickCode = itemCode;
 
-            this.NoteEnabled = true;
+            this.NoteEnabled = false;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
 
             var waitForReason = await this.CheckReasonsAsync();

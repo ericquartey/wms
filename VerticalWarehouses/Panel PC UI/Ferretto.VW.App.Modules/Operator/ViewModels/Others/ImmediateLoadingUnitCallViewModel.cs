@@ -30,15 +30,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineService machineService;
 
+        private readonly ISessionService sessionService;
+
         private DelegateCommand callLoadingUnitCommand;
 
         private DelegateCommand changeLaserOffsetCommand;
 
         private bool isEnabledLaser;
 
+        private int? loadingUnitId;
+
         private List<LoadingUnit> loadingUnits;
 
         private DelegateCommand loadingUnitsMissionsCommand;
+
+        private int maxLoadingUnitId;
+
+        private int minLoadingUnitId;
 
         private SubscriptionToken positioningMessageReceivedToken;
 
@@ -51,12 +59,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ImmediateLoadingUnitCallViewModel(
-                    IMachineService machineService,
+            ISessionService sessionService,
+            IMachineService machineService,
             IEventAggregator eventAggregator,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
@@ -77,6 +87,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.isEnabledLaser;
             set => this.SetProperty(ref this.isEnabledLaser, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool IsOperator => this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Operator;
 
         public override bool IsWaitingForResponse
         {
@@ -100,7 +112,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.CallLoadingUnitAsync(),
                 this.CanCallLoadingUnit));
 
-        //public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
+        public int? LoadingUnitId
+        {
+            get => this.loadingUnitId;
+            set
+            {
+                if (this.SetProperty(ref this.loadingUnitId, value))
+                {
+                    if (this.LoadingUnits.Any(s => s.Id == this.loadingUnitId))
+                    {
+                        this.SelectedLoadingUnit = this.LoadingUnits.SingleOrDefault(s => s.Id == this.loadingUnitId);
+                    }
+                    else
+                    {
+                        this.SelectedLoadingUnit = null;
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public List<LoadingUnit> LoadingUnits
         {
@@ -108,15 +139,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.loadingUnits, value, this.RaiseCanExecuteChanged);
         }
 
+        //public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
         public ICommand LoadingUnitsMissionsCommand =>
             this.loadingUnitsMissionsCommand
             ??
             (this.loadingUnitsMissionsCommand = new DelegateCommand(this.LoadingUnitsMissionsAppear));
 
+        public int MaxLoadingUnitId
+        {
+            get => this.maxLoadingUnitId;
+            set => this.SetProperty(ref this.maxLoadingUnitId, value);
+        }
+
+        public int MinLoadingUnitId
+        {
+            get => this.minLoadingUnitId;
+            set => this.SetProperty(ref this.minLoadingUnitId, value);
+        }
+
         public LoadingUnit SelectedLoadingUnit
         {
             get => this.selectedLoadingUnit;
-            set => this.SetProperty(ref this.selectedLoadingUnit, value, this.RaiseCanExecuteChanged);
+            set
+            {
+                if (this.SetProperty(ref this.selectedLoadingUnit, value))
+                {
+                    this.LoadingUnitId = this.selectedLoadingUnit?.Id;
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         #endregion
@@ -174,6 +226,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.LoadingUnits.Any())
             {
+                this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
+                this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
+
                 this.SelectedLoadingUnit = this.LoadingUnits.FirstOrDefault();
 
                 var bay = this.MachineService.Bays?.FirstOrDefault(b => b.Number == this.MachineService.BayNumber);
@@ -193,10 +248,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.loadingUnits = this.MachineService.Loadunits.ToList();
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
 
+                this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
+                this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
                 this.selectedLoadingUnit = null;
             }
 
             this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
+            this.RaisePropertyChanged(nameof(this.LoadingUnitId));
+            this.RaisePropertyChanged(nameof(this.IsOperator));
         }
 
         private bool CanCallLoadingUnit()
