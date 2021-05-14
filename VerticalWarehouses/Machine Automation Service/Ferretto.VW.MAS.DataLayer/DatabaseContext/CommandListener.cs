@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.writingOnStandby = true;
 
-                    using (var dbContext = new DataLayerContext(isActiveChannel: false, this.redundancyService as IDbContextRedundancyService<DataLayerContext>))
+                    using (var dbContext = new DataLayerContext(isActiveChannel: false, this.redundancyService as IDbContextRedundancyService<DataLayerContext>, this.logger))
                     {
                         var parametersArray = new SqliteParameter[command.Parameters.Count];
                         command.Parameters.CopyTo(parametersArray, 0);

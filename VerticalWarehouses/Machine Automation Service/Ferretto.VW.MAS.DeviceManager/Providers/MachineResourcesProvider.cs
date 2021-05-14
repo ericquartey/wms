@@ -662,10 +662,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     this.OnSecurityStateChanged(args);
                                 }
 
+                                this.IsTeleOk();
+
                                 updateDone = true;
                             }
-
-                            this.IsTeleOk();
 
                             break;
                         }
@@ -746,68 +746,39 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
                 foreach (var bay in baysDataProvider.GetAll())
                 {
-                    var error = errorsProvider.GetCurrent();
+                    var isError = false;
                     switch (bay.Number)
                     {
                         case BayNumber.BayOne:
-                            if (bay.IsTelescopic &&
-                                !this.TeleOkBay1)
-                            {
-                                errorsProvider.RecordNew(MachineErrorCode.TelescopicBayError, bay.Number);
-
-                                if (error?.Code != (int)MachineErrorCode.TelescopicBayError)
-                                {
-                                    var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
-                                    var stopMachineMessage = new CommandMessage(stopMachineData,
-                                        "Positioning OperationError",
-                                        MessageActor.MachineManager,
-                                        MessageActor.DeviceManager,
-                                        MessageType.ChangeRunningState,
-                                        bay.Number);
-                                    eventAggregator.GetEvent<CommandEvent>().Publish(stopMachineMessage);
-                                }
-                            }
+                            isError = (bay.IsTelescopic &&
+                                !this.TeleOkBay1);
                             break;
 
                         case BayNumber.BayTwo:
-                            if (bay.IsTelescopic &&
-                                !this.TeleOkBay2)
-                            {
-                                errorsProvider.RecordNew(MachineErrorCode.TelescopicBayError, bay.Number);
-
-                                if (error?.Code != (int)MachineErrorCode.TelescopicBayError)
-                                {
-                                    var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
-                                    var stopMachineMessage = new CommandMessage(stopMachineData,
-                                        "Positioning OperationError",
-                                        MessageActor.MachineManager,
-                                        MessageActor.DeviceManager,
-                                        MessageType.ChangeRunningState,
-                                        bay.Number);
-                                    eventAggregator.GetEvent<CommandEvent>().Publish(stopMachineMessage);
-                                }
-                            }
+                            isError = (bay.IsTelescopic &&
+                                !this.TeleOkBay2);
                             break;
 
                         case BayNumber.BayThree:
-                            if (bay.IsTelescopic &&
-                                !this.TeleOkBay3)
-                            {
-                                errorsProvider.RecordNew(MachineErrorCode.TelescopicBayError, bay.Number);
-
-                                if (error?.Code != (int)MachineErrorCode.TelescopicBayError)
-                                {
-                                    var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
-                                    var stopMachineMessage = new CommandMessage(stopMachineData,
-                                        "Positioning OperationError",
-                                        MessageActor.MachineManager,
-                                        MessageActor.DeviceManager,
-                                        MessageType.ChangeRunningState,
-                                        bay.Number);
-                                    eventAggregator.GetEvent<CommandEvent>().Publish(stopMachineMessage);
-                                }
-                            }
+                            isError = (bay.IsTelescopic &&
+                                !this.TeleOkBay3);
                             break;
+                    }
+
+                    if (isError)
+                    {
+                        errorsProvider.RecordNew(MachineErrorCode.TelescopicBayError, bay.Number);
+                        if (this.IsMachineInRunningState)
+                        {
+                            var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
+                            var stopMachineMessage = new CommandMessage(stopMachineData,
+                                "Positioning OperationError",
+                                MessageActor.MachineManager,
+                                MessageActor.DeviceManager,
+                                MessageType.ChangeRunningState,
+                                bay.Number);
+                            eventAggregator.GetEvent<CommandEvent>().Publish(stopMachineMessage);
+                        }
                     }
                 }
             }

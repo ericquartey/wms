@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private static int saveChangesCounter;
 
+        private readonly ILogger<DataLayerContext> logger;
+
         private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
 
         #endregion
@@ -23,9 +26,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DataLayerContext(
             bool isActiveChannel,
-            IDbContextRedundancyService<DataLayerContext> redundancyService)
+            IDbContextRedundancyService<DataLayerContext> redundancyService,
+            ILogger<DataLayerContext> logger)
             : this(isActiveChannel ? redundancyService?.ActiveDbContextOptions : redundancyService?.StandbyDbContextOptions, redundancyService)
         {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.redundancyService = redundancyService ?? throw new ArgumentNullException(nameof(redundancyService));
         }
 
@@ -51,25 +56,36 @@ namespace Ferretto.VW.MAS.DataLayer
             var affectedRecordsCount = 0;
             lock (SyncRoot)
             {
-                try
+                const int NUMBER_OF_RETRIES = 4;
+                for (var i = 0; i < NUMBER_OF_RETRIES; i++)
                 {
-                    affectedRecordsCount = base.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    // Swap is handled in diagnostic interceptor:
-                    // Microsoft.EntityFrameworkCore.Database.Command.CommandError
-                    System.Diagnostics.Debug.Assert(
-                          this.Options == this.redundancyService.StandbyDbContextOptions,
-                          $"This channel (previously was active) is now standby because {ex.Message}");
-
-                    if (this.redundancyService.IsActiveDbInhibited)
+                    try
                     {
-                        throw new DataLayerPersistentException(
-                            DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
+                        affectedRecordsCount = base.SaveChanges();
+                        break;
                     }
+                    catch (Microsoft.Data.Sqlite.SqliteException ex) when (i < NUMBER_OF_RETRIES - 1)
+                    {
+                        this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ex.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogDebug($"Try: #{i + 1}. Error reason ex: {ex.Message}");
+                        // Swap is handled in diagnostic interceptor:
+                        // Microsoft.EntityFrameworkCore.Database.Command.CommandError
+                        System.Diagnostics.Debug.Assert(
+                              this.Options == this.redundancyService.StandbyDbContextOptions,
+                              $"This channel (previously was active) is now standby because {ex.Message}");
 
-                    affectedRecordsCount = this.SaveToActiveDb();
+                        if (this.redundancyService.IsActiveDbInhibited)
+                        {
+                            throw new DataLayerPersistentException(
+                                DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
+                        }
+
+                        affectedRecordsCount = this.SaveToActiveDb();
+                        break;
+                    }
                 }
             }
 
@@ -100,7 +116,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private int SaveToActiveDb()
         {
-            using (var dbContext = new DataLayerContext(isActiveChannel: true, this.redundancyService))
+            using (var dbContext = new DataLayerContext(isActiveChannel: true, this.redundancyService, this.logger))
             {
                 var affectedRecordsCount = 0;
                 try
