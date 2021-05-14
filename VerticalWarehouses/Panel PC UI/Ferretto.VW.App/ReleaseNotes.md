@@ -29,6 +29,7 @@
 ## Bug Risolti
 - Corretti vari errori per Tendaggi Paradiso
 - I comandi per la barra alfanumerica non convertono più il carattere '*'
+- Il laser non memorizza l'ultimo punto
 - Corretta vista errori inverter nel menu Installazione
 - La baia esterna chiude la serranda dopo l'homing
 - Reso non bloccante l'errore di SQLite 'readonly database' 
