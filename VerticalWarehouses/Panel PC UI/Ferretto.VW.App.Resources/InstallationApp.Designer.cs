@@ -619,6 +619,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bay telescopic.
+        /// </summary>
+        public static string BayTelescopic {
+            get {
+                return ResourceManager.GetString("BayTelescopic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Before end.
         /// </summary>
         public static string BeforeEnd {

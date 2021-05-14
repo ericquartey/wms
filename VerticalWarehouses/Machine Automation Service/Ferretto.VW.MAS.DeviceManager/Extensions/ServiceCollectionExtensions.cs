@@ -20,6 +20,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             services.AddHostedService<DeviceManagerService>();
 
             services
+                .AddScoped<IBayTelescopicZeroConditionEvaluator, BayTelescopicZeroConditionEvaluator>()
                 .AddScoped<IElevatorHorizontalChainZeroConditionEvaluator, ElevatorHorizontalChainZeroConditionEvaluator>()
                 .AddScoped<IElevatorOverrunConditionEvaluator, ElevatorOverrunConditionEvaluator>();
 

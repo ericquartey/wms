@@ -1,10 +1,12 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public interface IConditionEvaluator
     {
         #region Methods
 
-        bool IsSatisfied();
+        bool IsSatisfied(BayNumber bayNumber);
 
         #endregion
     }

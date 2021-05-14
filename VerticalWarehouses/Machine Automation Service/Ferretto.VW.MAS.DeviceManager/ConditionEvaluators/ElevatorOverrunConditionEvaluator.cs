@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 
@@ -23,7 +24,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         #region Methods
 
-        public bool IsSatisfied()
+        public bool IsSatisfied(BayNumber bayNumber)
         {
             return !this.machineResourcesProvider.IsElevatorOverrun;
         }

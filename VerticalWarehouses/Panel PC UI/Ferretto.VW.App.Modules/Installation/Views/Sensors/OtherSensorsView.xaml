@@ -13,121 +13,133 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+  <Grid Margin="0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
 
-        <views:SensorsNavigationView />
+    <views:SensorsNavigationView />
 
-        <Grid Grid.Column="1"
-              Margin="5,0,15,0">
+    <Grid Grid.Column="1"
+          Margin="5,0,15,0">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.ColumnSpan="2"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc InstallationApp.SecuritySensors}" />
+      <TextBlock Grid.ColumnSpan="2"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc InstallationApp.SecuritySensors}" />
 
-            <StackPanel Grid.Row="1"
-                        Orientation="Vertical">
-                <controls:PpcSensorControl SensorState="{Binding Sensors.RunningState}"
-                                           Text="{res:Loc InstallationApp.SecurityFunctionActive}" />
+      <StackPanel Grid.Row="1"
+                  Orientation="Vertical">
+        <controls:PpcSensorControl SensorState="{Binding Sensors.RunningState}"
+                                   Text="{res:Loc InstallationApp.SecurityFunctionActive}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterLeftSide}"
-                                           Text="{res:Loc InstallationApp.MicroCarterLeftSide}" />
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterLeftSide}"
+                                   Text="{res:Loc InstallationApp.MicroCarterLeftSide}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterRightSide}"
-                                           Text="{res:Loc InstallationApp.MicroCarterRightSide}" />
-                
-                <controls:PpcSensorControl SensorState="{Binding Sensors.InverterInFault1}"
-                                           Text="{res:Loc InstallationApp.InverterInFault}" />
-                                           
-            </StackPanel>
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterRightSide}"
+                                   Text="{res:Loc InstallationApp.MicroCarterRightSide}" />
 
-            <StackPanel Grid.Row="2"
-                        Margin="0,15,0,0"
-                        Orientation="Vertical">
-                <TextBlock VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{res:Loc InstallationApp.Bay1}" />
+        <controls:PpcSensorControl SensorState="{Binding Sensors.InverterInFault1}"
+                                   Text="{res:Loc InstallationApp.InverterInFault}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.MushroomEmergencyButtonBay1}"
-                                           Text="{res:Loc InstallationApp.MushroomHeadButton}" />
+        <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay1}"
+                                   Text="{res:Loc InstallationApp.BayTelescopic}"
+                                   Visibility="{Binding IsBay1TelescopicPresent, Converter={StaticResource BTVC}}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay1}"
-                                           Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
-            </StackPanel>
+        <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay2}"
+                                   Text="{res:Loc InstallationApp.BayTelescopic}"
+                                   Visibility="{Binding IsBay2TelescopicPresent, Converter={StaticResource BTVC}}" />
 
-            <StackPanel Grid.Row="2"
-                        Grid.Column="1"
-                        Margin="0,15,0,0"
-                        Orientation="Vertical"
-                        Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}">
-                <TextBlock VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{res:Loc InstallationApp.Bay2}" />
+        <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay3}"
+                                   Text="{res:Loc InstallationApp.BayTelescopic}"
+                                   Visibility="{Binding IsBay3TelescopicPresent, Converter={StaticResource BTVC}}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.MushroomEmergencyButtonBay2}"
-                                           Text="{res:Loc InstallationApp.MushroomHeadButton}" />
+      </StackPanel>
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay2}"
-                                           Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
-            </StackPanel>
-            <StackPanel Grid.Row="3"
-                        Orientation="Vertical"
-                        Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}">
-                <TextBlock VerticalAlignment="Top"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{res:Loc InstallationApp.Bay3}" />
+      <StackPanel Grid.Row="2"
+                  Margin="0,15,0,0"
+                  Orientation="Vertical">
+        <TextBlock VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.Bay1}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.MushroomEmergencyButtonBay3}"
-                                           Text="{res:Loc InstallationApp.MushroomHeadButton}" />
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MushroomEmergencyButtonBay1}"
+                                   Text="{res:Loc InstallationApp.MushroomHeadButton}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay3}"
-                                           Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
-            </StackPanel>
+        <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay1}"
+                                   Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
+      </StackPanel>
 
-        </Grid>
+      <StackPanel Grid.Row="2"
+                  Grid.Column="1"
+                  Margin="0,15,0,0"
+                  Orientation="Vertical"
+                  Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}">
+        <TextBlock VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.Bay2}" />
 
-        <StackPanel Grid.Column="2">
-            <Border Margin="0,0,15,0"
-                    VerticalAlignment="Top"
-                    Background="{DynamicResource PpcBackground}">
-                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                        BorderThickness="{DynamicResource PpcBorderThickness}">
-                    <Grid Margin="10,10,10,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0"
-                                   Grid.ColumnSpan="2"
-                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="{res:Loc InstallationApp.Legend}" />
-                        <controls:PpcSensorControl Grid.Row="1"
-                                                   SensorState="True"
-                                                   Text="{res:Loc InstallationApp.ActiveSensor}" />
-                        <controls:PpcSensorControl Grid.Row="2"
-                                                   SensorState="False"
-                                                   Text="{res:Loc InstallationApp.DeactivatedSensor}" />
-                    </Grid>
-                </Border>
-            </Border>
-        </StackPanel>
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MushroomEmergencyButtonBay2}"
+                                   Text="{res:Loc InstallationApp.MushroomHeadButton}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay2}"
+                                   Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
+      </StackPanel>
+      <StackPanel Grid.Row="3"
+                  Orientation="Vertical"
+                  Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}">
+        <TextBlock VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{res:Loc InstallationApp.Bay3}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MushroomEmergencyButtonBay3}"
+                                   Text="{res:Loc InstallationApp.MushroomHeadButton}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay3}"
+                                   Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
+      </StackPanel>
 
     </Grid>
+
+    <StackPanel Grid.Column="2">
+      <Border Margin="0,0,15,0"
+              VerticalAlignment="Top"
+              Background="{DynamicResource PpcBackground}">
+        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
+          <Grid Margin="10,10,10,0">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{res:Loc InstallationApp.Legend}" />
+            <controls:PpcSensorControl Grid.Row="1"
+                                       SensorState="True"
+                                       Text="{res:Loc InstallationApp.ActiveSensor}" />
+            <controls:PpcSensorControl Grid.Row="2"
+                                       SensorState="False"
+                                       Text="{res:Loc InstallationApp.DeactivatedSensor}" />
+          </Grid>
+        </Border>
+      </Border>
+    </StackPanel>
+
+  </Grid>
 </ctrls:View>
