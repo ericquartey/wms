@@ -265,6 +265,10 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceCommandTimeout), 1)]
         IoDeviceCommandTimeout,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TelescopicBayError), 1)]
+        [ErrorCondition(typeof(IBayTelescopicZeroConditionEvaluator))]
+        TelescopicBayError,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 1000,
 
@@ -309,9 +313,5 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorSyntaxError), 1)]
         InverterErrorSyntaxError2 = InverterErrorBaseCode + 30,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TelescopicBayError), 1)]
-        [ErrorCondition(typeof(IBayTelescopicZeroConditionEvaluator))]
-        TelescopicBayError,
     }
 }
