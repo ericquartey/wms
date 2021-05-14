@@ -1490,14 +1490,14 @@ namespace Ferretto.VW.MAS.MissionManager
                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
                 errorsProvider.PurgeErrors();
 
-                // elevator and bay chain homing every new day
-                this.machineVolatileDataProvider.IsHomingExecuted = false;
+                // elevator and bay chain homing every new day?
+                //this.machineVolatileDataProvider.IsHomingExecuted = false;
 
-                var bayDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null || b.IsExternal))
-                {
-                    this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
-                }
+                //var bayDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                //foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null || b.IsExternal))
+                //{
+                //    this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                //}
 
                 // try to fix missions not starting in the morning because of "Bay chain not calibrated"
                 //if (this.machineVolatileDataProvider.Mode == MachineMode.Automatic

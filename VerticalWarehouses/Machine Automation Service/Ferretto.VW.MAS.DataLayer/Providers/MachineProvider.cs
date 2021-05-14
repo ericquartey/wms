@@ -715,7 +715,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
                 if (machineStat != null)
                 {
-                    machineStat.TotalAutomaticTime = machineStat.TotalAutomaticTime + duration;
+                    machineStat.TotalAutomaticTime += duration;
                     this.dataContext.SaveChanges();
                 }
             }
@@ -728,7 +728,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
                 if (machineStat != null)
                 {
-                    machineStat.TotalPowerOnTime = machineStat.TotalPowerOnTime + duration;
+                    machineStat.TotalPowerOnTime += duration;
                     this.dataContext.SaveChanges();
                 }
             }
