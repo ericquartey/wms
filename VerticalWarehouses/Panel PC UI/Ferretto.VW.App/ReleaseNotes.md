@@ -24,13 +24,14 @@
 
 ## Nuove Funzionalità 1.0.15 rispetto la 1.0.14
 - Aggiunto tempo automatico nelle statistiche
+- Aggiunta calibrazione verticale dopo cicli configurabili
 
 ## Bug Risolti
 - Corretti vari errori per Tendaggi Paradiso
 - I comandi per la barra alfanumerica non convertono più il carattere '*'
-- Il laser ripete il posizionamento al rientro nella vista di operazioni su cassetto
 - Corretta vista errori inverter nel menu Installazione
 - La baia esterna chiude la serranda dopo l'homing
+- Reso non bloccante l'errore di SQLite 'readonly database' 
 
 ## Compatibile con adapter 0.4.19
 ***
