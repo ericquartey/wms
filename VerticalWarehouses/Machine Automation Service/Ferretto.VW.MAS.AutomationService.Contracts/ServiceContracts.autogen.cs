@@ -3458,6 +3458,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         IoDeviceCommandTimeout = 84,
     
+        TelescopicBayError = 85,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -3487,8 +3489,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         InverterErrorNodeNotAvailable = 1020,
     
         InverterErrorSyntaxError2 = 1030,
-    
-        TelescopicBayError = 1031,
     
         NoError = -1,
     
