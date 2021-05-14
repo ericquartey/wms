@@ -47,13 +47,13 @@ namespace Ferretto.VW.MAS.DataLayer
             const int NUMBER_OF_RETRIES = 3;
             if (this.redundancyService == null)
             {
-                for (var i = 0; i < NUMBER_OF_RETRIES; i++)
+                for (var i = 0; i < NUMBER_OF_RETRIES + 1; i++)
                 {
                     try
                     {
                         return base.SaveChanges();
                     }
-                    catch (Microsoft.Data.Sqlite.SqliteException ex)
+                    catch (Microsoft.Data.Sqlite.SqliteException ex) when (i < NUMBER_OF_RETRIES)
                     {
                         this.logger.Debug($"Try: #{i + 1}. Error reason 0: {ex.Message}");
                     }
