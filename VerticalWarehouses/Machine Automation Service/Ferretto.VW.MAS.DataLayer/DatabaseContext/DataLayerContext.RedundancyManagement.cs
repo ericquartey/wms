@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private static int saveChangesCounter;
 
-        private readonly ILogger<DataLayerContext> logger;
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
 
@@ -26,11 +26,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DataLayerContext(
             bool isActiveChannel,
-            IDbContextRedundancyService<DataLayerContext> redundancyService,
-            ILogger<DataLayerContext> logger)
+            IDbContextRedundancyService<DataLayerContext> redundancyService)
             : this(isActiveChannel ? redundancyService?.ActiveDbContextOptions : redundancyService?.StandbyDbContextOptions, redundancyService)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.redundancyService = redundancyService ?? throw new ArgumentNullException(nameof(redundancyService));
         }
 
@@ -46,9 +44,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public override int SaveChanges()
         {
+            const int NUMBER_OF_RETRIES = 3;
             if (this.redundancyService == null)
             {
-                return base.SaveChanges();
+                for (var i = 0; i < NUMBER_OF_RETRIES; i++)
+                {
+                    try
+                    {
+                        return base.SaveChanges();
+                    }
+                    catch (Microsoft.Data.Sqlite.SqliteException ex)
+                    {
+                        this.logger.Debug($"Try: #{i + 1}. Error reason 0: {ex.Message}");
+                    }
+                }
+                return 0;
             }
 
             var counter = saveChangesCounter++;
@@ -56,21 +66,20 @@ namespace Ferretto.VW.MAS.DataLayer
             var affectedRecordsCount = 0;
             lock (SyncRoot)
             {
-                const int NUMBER_OF_RETRIES = 4;
-                for (var i = 0; i < NUMBER_OF_RETRIES; i++)
+                for (var i = 0; i < NUMBER_OF_RETRIES + 1; i++)
                 {
                     try
                     {
                         affectedRecordsCount = base.SaveChanges();
                         break;
                     }
-                    catch (Microsoft.Data.Sqlite.SqliteException ex) when (i < NUMBER_OF_RETRIES - 1)
+                    catch (Microsoft.Data.Sqlite.SqliteException ex) when (i < NUMBER_OF_RETRIES)
                     {
-                        this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ex.Message}");
+                        this.logger.Debug($"Try: #{i + 1}. Error reason 1: {ex.Message}");
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogDebug($"Try: #{i + 1}. Error reason ex: {ex.Message}");
+                        this.logger.Debug($"Try: #{i + 1}. Error reason 2: {ex.Message}");
                         // Swap is handled in diagnostic interceptor:
                         // Microsoft.EntityFrameworkCore.Database.Command.CommandError
                         System.Diagnostics.Debug.Assert(
@@ -116,7 +125,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private int SaveToActiveDb()
         {
-            using (var dbContext = new DataLayerContext(isActiveChannel: true, this.redundancyService, this.logger))
+            using (var dbContext = new DataLayerContext(isActiveChannel: true, this.redundancyService))
             {
                 var affectedRecordsCount = 0;
                 try

@@ -82,6 +82,7 @@
 - Corretto ripristino delle missioni con doppia baia
 - Corretto timeout in accensione inverter (SwitchOnStart)
 - Corretto errore in salvataggio database
+- Tolto Reset Macchina dal livello Operatore
 
 ## Compatibile con adapter 0.4.18
 ***
