@@ -44,7 +44,9 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         Cell GetCurrentCell();
 
-        int GetCyclesFromCalibration(Orientation orientation = Orientation.Horizontal);
+        int GetCyclesFromCalibrationHorizontal();
+
+        int GetCyclesFromCalibrationVertical();
 
         IEnumerable<ElevatorAxis> GetElevatorAxes();
 
@@ -76,7 +78,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateHorizontalDistance(double newDistance);
 
-        void UpdateLastCalibrationCycles(Orientation orientation = Orientation.Horizontal);
+        void UpdateLastCalibrationCycles(Orientation orientation);
 
         void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal);
 

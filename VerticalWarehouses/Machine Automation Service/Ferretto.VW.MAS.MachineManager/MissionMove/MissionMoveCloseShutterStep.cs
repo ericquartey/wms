@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal
                     || (this.Mission.NeedHomingAxis == Axis.None
                         && (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
-                            || this.LoadingUnitMovementProvider.GetCyclesFromCalibration() >= machine.HorizontalCyclesToCalibrate
+                            || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal) >= machine.HorizontalCyclesToCalibrate
                             )
                         )
                     )

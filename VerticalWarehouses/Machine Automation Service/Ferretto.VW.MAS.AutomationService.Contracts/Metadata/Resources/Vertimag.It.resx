@@ -570,4 +570,7 @@
   <data name="ElevatorAxis_HomingAcceleration" xml:space="preserve">
     <value>Accelerazione homing</value>
   </data>
+  <data name="Machine_VerticalCyclesToCalibrate" xml:space="preserve">
+    <value>Cicli dell'asse verticale per la calibrazione</value>
+  </data>
 </root>

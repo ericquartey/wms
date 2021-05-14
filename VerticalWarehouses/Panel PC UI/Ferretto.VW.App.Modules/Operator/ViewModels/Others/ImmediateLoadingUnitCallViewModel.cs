@@ -58,8 +58,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public ImmediateLoadingUnitCallViewModel(ISessionService sessionService,
-                    IMachineService machineService,
+        public ImmediateLoadingUnitCallViewModel(
+            ISessionService sessionService,
+            IMachineService machineService,
             IEventAggregator eventAggregator,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IAuthenticationService authenticationService)

@@ -55,12 +55,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_HorizontalCyclesToCalibrate))]
             [Id(9)]
-            public double HorizontalCyclesToCalibrate { get; set; }
+            public int HorizontalCyclesToCalibrate { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_HorizontalPositionToCalibrate))]
             [Id(10)]
-            public double HorizontalPositionToCalibrate { get; set; }
+            public int HorizontalPositionToCalibrate { get; set; }
 
             [Editable(false)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Id))]
@@ -143,6 +143,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Simulation))]
             [Id(13)]
             public bool Simulation { get; set; }
+
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_VerticalCyclesToCalibrate))]
+            [Id(23)]
+            public int VerticalCyclesToCalibrate { get; set; }
 
             #endregion
         }
