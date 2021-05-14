@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Text;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -10,8 +12,11 @@ using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
@@ -165,6 +170,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool IsSensorZeroTopOnBay2 => this.sensorStatus[(int)IOMachineSensors.ACUBay2S6IND];
 
         public bool IsSensorZeroTopOnBay3 => this.sensorStatus[(int)IOMachineSensors.ACUBay3S6IND];
+
+        public bool TeleOkBay1 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1];
+
+        public bool TeleOkBay2 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay2];
+
+        public bool TeleOkBay3 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay3];
 
         #endregion
 
@@ -654,6 +665,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 updateDone = true;
                             }
 
+                            this.IsTeleOk();
+
                             break;
                         }
 
@@ -722,6 +735,82 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var handler = this.SecurityStateChanged;
             handler?.Invoke(this, e);
+        }
+
+        private void IsTeleOk()
+        {
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                var eventAggregator = scope.ServiceProvider.GetRequiredService<IEventAggregator>();
+                var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                foreach (var bay in baysDataProvider.GetAll())
+                {
+                    var error = errorsProvider.GetCurrent();
+                    switch (bay.Number)
+                    {
+                        case BayNumber.BayOne:
+                            if (bay.IsTelescopic &&
+                                !this.TeleOkBay1)
+                            {
+                                errorsProvider.RecordNew(MachineErrorCode.TelescopicBayError, bay.Number);
+
+                                if (error?.Code != (int)MachineErrorCode.TelescopicBayError)
+                                {
+                                    var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
+                                    var stopMachineMessage = new CommandMessage(stopMachineData,
+                                        "Positioning OperationError",
+                                        MessageActor.MachineManager,
+                                        MessageActor.DeviceManager,
+                                        MessageType.ChangeRunningState,
+                                        bay.Number);
+                                    eventAggregator.GetEvent<CommandEvent>().Publish(stopMachineMessage);
+                                }
+                            }
+                            break;
+
+                        case BayNumber.BayTwo:
+                            if (bay.IsTelescopic &&
+                                !this.TeleOkBay2)
+                            {
+                                errorsProvider.RecordNew(MachineErrorCode.TelescopicBayError, bay.Number);
+
+                                if (error?.Code != (int)MachineErrorCode.TelescopicBayError)
+                                {
+                                    var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
+                                    var stopMachineMessage = new CommandMessage(stopMachineData,
+                                        "Positioning OperationError",
+                                        MessageActor.MachineManager,
+                                        MessageActor.DeviceManager,
+                                        MessageType.ChangeRunningState,
+                                        bay.Number);
+                                    eventAggregator.GetEvent<CommandEvent>().Publish(stopMachineMessage);
+                                }
+                            }
+                            break;
+
+                        case BayNumber.BayThree:
+                            if (bay.IsTelescopic &&
+                                !this.TeleOkBay3)
+                            {
+                                errorsProvider.RecordNew(MachineErrorCode.TelescopicBayError, bay.Number);
+
+                                if (error?.Code != (int)MachineErrorCode.TelescopicBayError)
+                                {
+                                    var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
+                                    var stopMachineMessage = new CommandMessage(stopMachineData,
+                                        "Positioning OperationError",
+                                        MessageActor.MachineManager,
+                                        MessageActor.DeviceManager,
+                                        MessageType.ChangeRunningState,
+                                        bay.Number);
+                                    eventAggregator.GetEvent<CommandEvent>().Publish(stopMachineMessage);
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
         }
 
         #endregion

@@ -3020,6 +3020,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("View", Required = Newtonsoft.Json.Required.Always)]
         public bool View { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsTelescopic", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsTelescopic { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
@@ -3484,6 +3487,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         InverterErrorNodeNotAvailable = 1020,
     
         InverterErrorSyntaxError2 = 1030,
+    
+        TelescopicBayError = 1031,
     
         NoError = -1,
     

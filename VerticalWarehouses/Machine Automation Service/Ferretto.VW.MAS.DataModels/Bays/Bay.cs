@@ -78,6 +78,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool View { get; set; }
 
+        public bool IsTelescopic { get; set; }
+
         #endregion
 
         #region Methods

@@ -160,6 +160,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Telescopic.
+        /// </summary>
+        public static string Bay_IsTelescopic {
+            get {
+                return ResourceManager.GetString("Bay_IsTelescopic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Resolution.
         /// </summary>
         public static string Bay_Resolution {

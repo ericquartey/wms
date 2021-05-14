@@ -309,5 +309,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorSyntaxError), 1)]
         InverterErrorSyntaxError2 = InverterErrorBaseCode + 30,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TelescopicBayError), 1)]
+        TelescopicBayError,
     }
 }
