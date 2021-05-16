@@ -261,7 +261,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     break;
                 }
-                catch (IOException ioExc)
+                catch (IOException ioExc) when (i < NUMBER_OF_RETRIES - 1)
                 {
                     this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ioExc.Message}");
                 }
