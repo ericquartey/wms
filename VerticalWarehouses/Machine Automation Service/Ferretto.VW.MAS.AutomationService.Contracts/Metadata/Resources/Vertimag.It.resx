@@ -573,4 +573,7 @@
   <data name="Machine_VerticalCyclesToCalibrate" xml:space="preserve">
     <value>Cicli dell'asse verticale per la calibrazione</value>
   </data>
+  <data name="Bay_IsTelescopic" xml:space="preserve">
+    <value>Telescopica</value>
+  </data>
 </root>

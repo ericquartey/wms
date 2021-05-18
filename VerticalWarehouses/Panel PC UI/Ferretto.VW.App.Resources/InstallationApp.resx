@@ -2536,4 +2536,7 @@
   <data name="WmsMissionActive" xml:space="preserve">
     <value>There are active missions for this drawer by the WMS</value>
   </data>
+  <data name="BayTelescopic" xml:space="preserve">
+    <value>Bay telescopic</value>
+  </data>
 </root>

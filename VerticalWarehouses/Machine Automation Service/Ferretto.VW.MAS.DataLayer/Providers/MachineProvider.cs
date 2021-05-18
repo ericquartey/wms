@@ -261,7 +261,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     break;
                 }
-                catch (IOException ioExc)
+                catch (IOException ioExc) when (i < NUMBER_OF_RETRIES - 1)
                 {
                     this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ioExc.Message}");
                 }
@@ -715,7 +715,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
                 if (machineStat != null)
                 {
-                    machineStat.TotalAutomaticTime = machineStat.TotalAutomaticTime + duration;
+                    machineStat.TotalAutomaticTime += duration;
                     this.dataContext.SaveChanges();
                 }
             }
@@ -728,7 +728,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
                 if (machineStat != null)
                 {
-                    machineStat.TotalPowerOnTime = machineStat.TotalPowerOnTime + duration;
+                    machineStat.TotalPowerOnTime += duration;
                     this.dataContext.SaveChanges();
                 }
             }

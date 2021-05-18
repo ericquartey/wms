@@ -2478,4 +2478,7 @@
   <data name="WmsMissionActive" xml:space="preserve">
     <value>Ci sono missioni attive per questo cassetto da parte del WMS</value>
   </data>
+  <data name="BayTelescopic" xml:space="preserve">
+    <value>Baia telescopica</value>
+  </data>
 </root>

@@ -3020,6 +3020,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("View", Required = Newtonsoft.Json.Required.Always)]
         public bool View { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsTelescopic", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsTelescopic { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
@@ -3454,6 +3457,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         InverterCommandTimeout = 83,
     
         IoDeviceCommandTimeout = 84,
+    
+        TelescopicBayError = 85,
     
         InverterErrorBaseCode = 1000,
     

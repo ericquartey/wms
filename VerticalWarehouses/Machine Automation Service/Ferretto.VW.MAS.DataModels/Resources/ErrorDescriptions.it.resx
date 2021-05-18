@@ -435,4 +435,7 @@
   <data name="MoveExtBayNotAllowed" xml:space="preserve">
     <value>Errore dei sensori di baia</value>
   </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>La baia telescopica non è agganciata correttamente</value>
+  </data>
 </root>

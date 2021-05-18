@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.IODriver
@@ -23,7 +24,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         #region Methods
 
-        public bool IsSatisfied()
+        public bool IsSatisfied(BayNumber bayNumber)
         {
             var mainDevice = this.ioDevicesProvider.Devices.SingleOrDefault(d => d.IoIndex == IoIndex.IoDevice1);
             if (mainDevice is null)

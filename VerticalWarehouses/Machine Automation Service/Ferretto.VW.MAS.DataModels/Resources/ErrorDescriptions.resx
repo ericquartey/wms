@@ -435,4 +435,7 @@
   <data name="InverterErrorSyntaxError2" xml:space="preserve">
     <value>Syntax error of the message sent to the inverter.</value>
   </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>The telescopic bay is not properly hooked</value>
+  </data>
 </root>

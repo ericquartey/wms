@@ -934,6 +934,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The telescopic bay is not properly hooked.
+        /// </summary>
+        public static string TelescopicBayError {
+            get {
+                return ResourceManager.GetString("TelescopicBayError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Top level bay empty.
         /// </summary>
         public static string TopLevelBayEmpty {

@@ -300,7 +300,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(id);
                 }
 
-                if (force || !this.IsErrorStillActive(error.Code))
+                if (force || !this.IsErrorStillActive(error.Code, error.BayNumber))
                 {
                     error.ResolutionDate = DateTime.Now;
                     this.logger.LogDebug($"User error {error.Code} for {error.BayNumber} marked as resolved.");
@@ -329,7 +329,7 @@ namespace Ferretto.VW.MAS.DataLayer
             errors.ToList().ForEach(id => this.Resolve(id, force));
         }
 
-        private bool IsErrorStillActive(int code)
+        private bool IsErrorStillActive(int code, BayNumber bayNumber)
         {
             var machineError = (MachineErrorCode)code;
 
@@ -347,7 +347,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     var condition = scope.ServiceProvider.GetConditionEvaluator(attribute);
 
-                    isErrorStillActive &= !condition.IsSatisfied();
+                    isErrorStillActive &= !condition.IsSatisfied(bayNumber);
                 }
             }
 

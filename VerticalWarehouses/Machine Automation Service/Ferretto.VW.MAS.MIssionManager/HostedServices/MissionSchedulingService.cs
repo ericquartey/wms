@@ -1137,6 +1137,8 @@ namespace Ferretto.VW.MAS.MissionManager
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
             var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+            var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var loadUnitMovementProvider = serviceProvider.GetRequiredService<ILoadingUnitMovementProvider>();
             if (sensorProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
             {
                 var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
@@ -1159,8 +1161,28 @@ namespace Ferretto.VW.MAS.MissionManager
                         var machine = machineProvider.GetMinMaxHeight();
                         loadingUnitProvider.SetHeight(loadUnit.Id, machine.LoadUnitMaxHeight);
                     }
+                    var bays = bayProvider.GetAll();
+                    MissionType missionType;
+                    foreach (var bay in bays)
+                    {
+                        foreach (var position in bay.Positions.OrderBy(b => b.Location))
+                        {
+                            if (!sensorProvider.IsLoadingUnitInLocation(position.Location)
+                                && (!bay.IsExternal
+                                    || (!bay.IsDouble && !loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                                    || (bay.IsDouble && !loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location))
+                                    )
+                                )
+                            {
+                                this.Logger.LogInformation($"Eject load unit {loadUnit.Id} from {LoadingUnitLocation.Elevator} to bay");
+                                missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.OUT : MissionType.LoadUnitOperation;
+                                moveLoadingUnitProvider.EjectFromCell(missionType, position.Location, loadUnit.Id, bay.Number, MessageActor.AutomationService);
+                                return true;
+                            }
+                        }
+                    }
                     this.Logger.LogInformation($"Insert load unit {loadUnit.Id} from {LoadingUnitLocation.Elevator} to cell");
-                    var missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.IN : MissionType.LoadUnitOperation;
+                    missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.IN : MissionType.LoadUnitOperation;
                     moveLoadingUnitProvider.InsertToCell(missionType, LoadingUnitLocation.Elevator, null, loadUnit.Id, BayNumber.BayOne, MessageActor.AutomationService);
                     return true;
                 }
@@ -1168,8 +1190,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic)
             {
-                var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                var loadUnitMovementProvider = serviceProvider.GetRequiredService<ILoadingUnitMovementProvider>();
                 var bays = bayProvider.GetAll();
                 var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
                 foreach (var bay in bays)
@@ -1490,14 +1510,14 @@ namespace Ferretto.VW.MAS.MissionManager
                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
                 errorsProvider.PurgeErrors();
 
-                // elevator and bay chain homing every new day
-                this.machineVolatileDataProvider.IsHomingExecuted = false;
+                // elevator and bay chain homing every new day?
+                //this.machineVolatileDataProvider.IsHomingExecuted = false;
 
-                var bayDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null || b.IsExternal))
-                {
-                    this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
-                }
+                //var bayDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                //foreach (var bay in bayDataProvider.GetAll().Where(b => b.Carousel != null || b.IsExternal))
+                //{
+                //    this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                //}
 
                 // try to fix missions not starting in the morning because of "Bay chain not calibrated"
                 //if (this.machineVolatileDataProvider.Mode == MachineMode.Automatic

@@ -94,6 +94,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsSensorZeroTopOnBay3 { get; }
 
+        bool TeleOkBay1 { get; }
+
+        bool TeleOkBay2 { get; }
+
+        bool TeleOkBay3 { get; }
+
         #endregion
 
         #region Methods

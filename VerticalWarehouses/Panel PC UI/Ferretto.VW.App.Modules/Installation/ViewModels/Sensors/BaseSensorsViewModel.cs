@@ -36,6 +36,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bay2HasShutter;
 
+        private bool isBay1TelescopicPresent;
+
+        private bool isBay2TelescopicPresent;
+
+        private bool isBay3TelescopicPresent;
+
         private bool bay2ZeroChainIsVisible;
 
         private bool bay2ZeroChainUpIsVisible;
@@ -124,6 +130,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsBay1ExternalDoublePresent { get => this.isBay1ExternalDoublePresent; private set => this.SetProperty(ref this.isBay1ExternalDoublePresent, value); }
+
+        public bool IsBay1TelescopicPresent { get => this.isBay1TelescopicPresent; private set => this.SetProperty(ref this.isBay1TelescopicPresent, value); }
+
+        public bool IsBay2TelescopicPresent { get => this.isBay2TelescopicPresent; private set => this.SetProperty(ref this.isBay2TelescopicPresent, value); }
+
+        public bool IsBay3TelescopicPresent { get => this.isBay3TelescopicPresent; private set => this.SetProperty(ref this.isBay3TelescopicPresent, value); }
 
         public bool IsBay1ExternalPresent { get => this.isBay1ExternalPresent; private set => this.SetProperty(ref this.isBay1ExternalPresent, value); }
 
@@ -227,18 +239,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBay1ExternalPresent = bay1.IsExternal && !bay1.IsDouble;
                 this.IsBay1ExternalDoublePresent = bay1.IsExternal && bay1.IsDouble;
                 this.IsBay1InternalPresent = !this.IsBay1ExternalPresent && !this.IsBay1ExternalDoublePresent;
+                this.IsBay1TelescopicPresent = bay1.IsTelescopic;
             }
             if (!(bay2 is null))
             {
                 this.IsBay2ExternalPresent = bay2.IsExternal && !bay2.IsDouble;
                 this.IsBay2ExternalDoublePresent = bay2.IsExternal && bay2.IsDouble;
                 this.IsBay2InternalPresent = !this.IsBay2ExternalPresent && !this.IsBay2ExternalDoublePresent;
+                this.IsBay2TelescopicPresent = bay2.IsTelescopic;
             }
             if (!(bay3 is null))
             {
                 this.IsBay3ExternalPresent = bay3.IsExternal && !bay3.IsDouble;
                 this.IsBay3ExternalDoublePresent = bay3.IsExternal && bay3.IsDouble;
                 this.IsBay3InternalPresent = !this.IsBay3ExternalPresent && !this.IsBay3ExternalDoublePresent;
+                this.IsBay3TelescopicPresent = bay3.IsTelescopic;
             }
 
             this.IsBay2PositionDownPresent = (bay2?.IsDouble ?? false) || (!bay2?.Positions?.Any(o => o.IsUpper) ?? false);

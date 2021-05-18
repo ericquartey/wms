@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -14,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
         private static readonly object SyncRoot = new object();
 
         private static int saveChangesCounter;
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
 
@@ -41,9 +44,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public override int SaveChanges()
         {
+            const int NUMBER_OF_RETRIES = 3;
             if (this.redundancyService == null)
             {
-                return base.SaveChanges();
+                for (var i = 0; i < NUMBER_OF_RETRIES + 1; i++)
+                {
+                    try
+                    {
+                        return base.SaveChanges();
+                    }
+                    catch (Microsoft.Data.Sqlite.SqliteException ex) when (i < NUMBER_OF_RETRIES)
+                    {
+                        this.logger.Debug($"Try: #{i + 1}. Error reason 0: {ex.Message}");
+                    }
+                }
+                return 0;
             }
 
             var counter = saveChangesCounter++;
@@ -51,25 +66,35 @@ namespace Ferretto.VW.MAS.DataLayer
             var affectedRecordsCount = 0;
             lock (SyncRoot)
             {
-                try
+                for (var i = 0; i < NUMBER_OF_RETRIES + 1; i++)
                 {
-                    affectedRecordsCount = base.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    // Swap is handled in diagnostic interceptor:
-                    // Microsoft.EntityFrameworkCore.Database.Command.CommandError
-                    System.Diagnostics.Debug.Assert(
-                          this.Options == this.redundancyService.StandbyDbContextOptions,
-                          $"This channel (previously was active) is now standby because {ex.Message}");
-
-                    if (this.redundancyService.IsActiveDbInhibited)
+                    try
                     {
-                        throw new DataLayerPersistentException(
-                            DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
+                        affectedRecordsCount = base.SaveChanges();
+                        break;
                     }
+                    catch (Microsoft.Data.Sqlite.SqliteException ex) when (i < NUMBER_OF_RETRIES)
+                    {
+                        this.logger.Debug($"Try: #{i + 1}. Error reason 1: {ex.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.Debug($"Try: #{i + 1}. Error reason 2: {ex.Message}");
+                        // Swap is handled in diagnostic interceptor:
+                        // Microsoft.EntityFrameworkCore.Database.Command.CommandError
+                        System.Diagnostics.Debug.Assert(
+                              this.Options == this.redundancyService.StandbyDbContextOptions,
+                              $"This channel (previously was active) is now standby because {ex.Message}");
 
-                    affectedRecordsCount = this.SaveToActiveDb();
+                        if (this.redundancyService.IsActiveDbInhibited)
+                        {
+                            throw new DataLayerPersistentException(
+                                DataLayerPersistentExceptionCode.PrimaryAndSecondaryPartitionFailure);
+                        }
+
+                        affectedRecordsCount = this.SaveToActiveDb();
+                        break;
+                    }
                 }
             }
 

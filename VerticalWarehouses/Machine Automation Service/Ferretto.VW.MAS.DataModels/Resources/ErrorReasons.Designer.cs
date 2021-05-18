@@ -916,6 +916,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The telescopic bay is out of place. Position it correctly to restore automatic movements.
+        /// </summary>
+        public static string TelescopicBayError {
+            get {
+                return ResourceManager.GetString("TelescopicBayError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The top bay level is empty..
         /// </summary>
         public static string TopLevelBayEmpty {
