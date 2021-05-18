@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                             // Perform the operation if machine is regular or machine is 1Ton machine and notification type is MessageType.CombinedMovements
                             if (!this.MachineVolatileDataProvider.IsOneTonMachine.Value ||
-                                (this.MachineVolatileDataProvider.IsOneTonMachine.Value && notification.Type == MessageType.CombinedMovements))
+                                notification.Type == MessageType.CombinedMovements)
                             {
                                 this.ManualMovementEnd();
                             }
@@ -131,7 +131,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         break;
 
                     case MessageStatus.OperationStop:
-                        if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
+                        if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement)
+                            && (!this.MachineVolatileDataProvider.IsOneTonMachine.Value || notification.Type == MessageType.CombinedMovements))
                         {
                             this.Mission.ErrorMovements &= ~MissionErrorMovements.AbortMovement;
                             this.ManualMovementEnd();

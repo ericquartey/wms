@@ -122,7 +122,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         break;
 
                     case MessageStatus.OperationStop:
-                        if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
+                        if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement)
+                            && (!this.MachineVolatileDataProvider.IsOneTonMachine.Value || notification.Type == MessageType.CombinedMovements))
                         {
                             this.Mission.ErrorMovements &= ~MissionErrorMovements.AbortMovement;
                             this.ManualMovementEnd(notification);
