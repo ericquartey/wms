@@ -22,20 +22,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.15 rispetto la 1.0.14
-- Aggiunto tempo automatico nelle statistiche
-- Aggiunta calibrazione verticale dopo cicli configurabili
+## Nuove Funzionalità 1.0.16 rispetto la 1.0.15
+- Aggiunto Allarme per baia telescopica
 
 ## Bug Risolti
-- Corretti vari errori per Tendaggi Paradiso
-- I comandi per la barra alfanumerica non convertono più il carattere '*'
-- Il laser non memorizza l'ultimo punto
-- Corretta vista errori inverter nel menu Installazione
-- La baia esterna chiude la serranda dopo l'homing
-- Reso non bloccante l'errore di SQLite 'readonly database' 
+- Il cassetto sconosciuto a bordo elevatore viene depositato in baia
+- Eliminata la calibrazione di mezzanotte 
 
-## Compatibile con adapter 0.4.19
+## Compatibile con adapter 0.4.20
 ***
+
+[Versione 1.0.15](#id1015)
 
 [Versione 1.0.14](#id1014)
 
@@ -66,6 +63,22 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1015"></a>
+## Nuove Funzionalità 1.0.15 rispetto la 1.0.14
+- Aggiunto tempo automatico nelle statistiche
+- Aggiunta calibrazione verticale dopo cicli configurabili
+
+## Bug Risolti
+- Corretti vari errori per Tendaggi Paradiso
+- I comandi per la barra alfanumerica non convertono più il carattere '*'
+- Il laser non memorizza l'ultimo punto
+- Corretta vista errori inverter nel menu Installazione
+- La baia esterna chiude la serranda dopo l'homing
+- Reso non bloccante l'errore di SQLite 'readonly database' 
+
+## Compatibile con adapter 0.4.19
 ***
 
 <a id="id1014"></a>
