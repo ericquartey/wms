@@ -14,11 +14,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineCellsWebService machineCellsWebService;
 
-        private readonly IMachineCompactingWebService machineCompactingWebService;
+        private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
-
-        private readonly IMachineServicingWebService machineServicingWebService;
 
         private int busyCells;
 
@@ -58,14 +56,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public StatisticsViewModel(IMachineCompactingWebService machineCompactingWebService,
+        public StatisticsViewModel(
             IMachineCellsWebService machineCellsWebService,
-            IMachineServicingWebService machineServicingWebService,
+            IMachineIdentityWebService machineIdentityWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
             : base()
         {
-            this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
-            this.machineCompactingWebService = machineCompactingWebService ?? throw new ArgumentNullException(nameof(machineCompactingWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
         }
@@ -155,7 +152,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public MachineStatistics TotalStatistics
         {
             get => this.totalStatistics;
-            set => this.SetProperty(ref this.totalStatistics, value);
+            set => this.SetProperty(ref this.totalStatistics, value, this.RaiseCanExecuteChanged);
         }
 
         public int UnitsInBay
@@ -224,13 +221,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.LockedCells = cellsStatistic.Count(n => n.BlockLevel == BlockLevel.Blocked);
                 this.CellFillPercentage = (double)(this.BusyCells + this.LockedCells) / this.TotalCells * 100;
 
-                var allServicing = await this.machineServicingWebService.GetAllAsync();
-                this.TotalStatistics = new MachineStatistics();
+                this.TotalStatistics = await this.machineIdentityWebService.GetStatisticsAsync();
+                //this.TotalStatistics = new MachineStatistics();
 
-                this.TotalStatistics.AutomaticTimePercentage = allServicing.Select(s => s.MachineStatistics.AutomaticTimePercentage).Sum();
-                this.TotalStatistics.WeightCapacityPercentage = allServicing.Select(s => s.MachineStatistics.WeightCapacityPercentage).Sum();
-                this.TotalStatistics.UsageTimePercentage = allServicing.Select(s => s.MachineStatistics.UsageTimePercentage).Sum();
-                this.TotalStatistics.AreaFillPercentage = allServicing.Select(s => s.MachineStatistics.AreaFillPercentage).Sum();
+                //this.TotalStatistics.AutomaticTimePercentage = machineStatistics.Select(s => s.AutomaticTimePercentage).Sum();
+                //this.TotalStatistics.WeightCapacityPercentage = machineStatistics.Select(s => s.WeightCapacityPercentage).Sum();
+                //this.TotalStatistics.UsageTimePercentage = machineStatistics.Select(s => s.UsageTimePercentage).Sum();
+                //this.TotalStatistics.AreaFillPercentage = machineStatistics.Select(s => s.AreaFillPercentage).Sum();
+
+                this.RaisePropertyChanged(nameof(this.TotalStatistics));
 
                 await base.OnDataRefreshAsync();
             }
