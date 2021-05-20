@@ -22,15 +22,18 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.16 rispetto la 1.0.15
-- Aggiunto Allarme per baia telescopica
+## Nuove Funzionalità 1.0.17 rispetto la 1.0.16
+- Aggiunto parametro per visualizzare "Aggiungi" nella vista del cassetto in baia
 
 ## Bug Risolti
-- Il cassetto sconosciuto a bordo elevatore viene depositato in baia
-- Eliminata la calibrazione di mezzanotte 
+-  Corretto uso della tastiera touch sovrapposta alle griglie dati
+-  Tolta la pagina finale nella chiusura della procedura di calibrazione giostra
+-  Eliminato allarme di "baia occupata in altra operazione" nei ripristini con macchine da 990kg
 
 ## Compatibile con adapter 0.4.20
 ***
+
+[Versione 1.0.16](#id1016)
 
 [Versione 1.0.15](#id1015)
 
@@ -63,6 +66,17 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1016"></a>
+## Nuove Funzionalità 1.0.16 rispetto la 1.0.15
+- Aggiunto Allarme per baia telescopica
+
+## Bug Risolti
+- Il cassetto sconosciuto a bordo elevatore viene depositato in baia
+- Eliminata la calibrazione di mezzanotte 
+
+## Compatibile con adapter 0.4.20
 ***
 
 <a id="id1015"></a>
