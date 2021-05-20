@@ -42,7 +42,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public override Task ExecuteAsync()
         {
             if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.ItemSearch.MAIN ||
-                this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL)
+                this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL ||
+                this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.WaitingLists.MAIN)
             {
                 //this.navigationService.GoBack();
 

@@ -1084,9 +1084,6 @@
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Confirm on empty</value>
   </data>
-  <data name="ConfirmOnFull" xml:space="preserve">
-    <value>Confirm on full</value>
-  </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Machines availabiility</value>
     <comment>Label</comment>
