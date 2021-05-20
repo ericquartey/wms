@@ -1,6 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator;
 using Ferretto.VW.App.Services;
@@ -41,16 +41,18 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override Task ExecuteAsync()
         {
-            if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.ItemSearch.MAIN)
+            if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.ItemSearch.MAIN ||
+                this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL)
             {
                 //this.navigationService.GoBack();
 
-                NavigationItemSearch.OnItemSearchMainView = true;
+                //this.navigationService.GoBackTo(
+                //                nameof(Utils.Modules.Operator),
+                //                Utils.Modules.Operator.ItemOperations.WAIT,
+                //                "Presentation back");
 
-                this.navigationService.GoBackTo(
-                                nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.ItemOperations.WAIT,
-                                "Presentation back");
+                var operatorNavigationService = ServiceLocator.Current.GetInstance<IOperatorNavigationService>();
+                operatorNavigationService.NavigateToOperationOrGoBack();
             }
             else if (this.navigationService.GetActiveViewModel().ToString().Split('.').Last() == Utils.Modules.Installation.SHUTTERENDURANCETEST &&
                 (this.MachineModeService.MachineMode == MAS.AutomationService.Contracts.MachineMode.Test ||
