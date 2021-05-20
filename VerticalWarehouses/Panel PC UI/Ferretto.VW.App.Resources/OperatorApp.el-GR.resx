@@ -843,9 +843,6 @@
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Επιβεβαίωση σε άδειο</value>
   </data>
-  <data name="ConfirmOnFull" xml:space="preserve">
-    <value>Επιβεβαίωση σε γεμάτο</value>
-  </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Διαθεσιμότητα μηχανημάτων</value>
   </data>

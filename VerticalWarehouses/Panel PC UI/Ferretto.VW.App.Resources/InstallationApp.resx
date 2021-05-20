@@ -1947,10 +1947,6 @@
     <value>Inverter programming ended successfully</value>
     <comment>description</comment>
   </data>
-  <data name="InvertersProgrammingStarted" xml:space="preserve">
-    <value>Inverters programming started</value>
-    <comment>description</comment>
-  </data>
   <data name="InvertersProgrammingStopped" xml:space="preserve">
     <value>Inverters programming stopped</value>
     <comment>description</comment>
@@ -2355,9 +2351,6 @@
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Press start to begin calibration</value>
   </data>
-  <data name="CallUnitWeight" xml:space="preserve">
-    <value>Chiamata cassetto: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso</value>
-  </data>
   <data name="UnloadToBay" xml:space="preserve">
     <value>Unload</value>
   </data>
@@ -2396,9 +2389,6 @@
   </data>
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Read all</value>
-  </data>
-  <data name="ImportStructure" xml:space="preserve">
-    <value>Import structure</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Overwrite target file</value>
@@ -2481,12 +2471,6 @@
   </data>
   <data name="RandomCells" xml:space="preserve">
     <value>Random cells assignment </value>
-  </data>
-  <data name="InternalDown" xml:space="preserve">
-    <value>Int Down</value>
-  </data>
-  <data name="InternalUp" xml:space="preserve">
-    <value>Int Up</value>
   </data>
   <data name="UnitHightInternalPosition" xml:space="preserve">
     <value>Unit in high internal position</value>

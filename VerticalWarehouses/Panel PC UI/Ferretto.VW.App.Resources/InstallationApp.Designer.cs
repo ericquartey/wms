@@ -808,15 +808,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chiamata cassetto: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso.
-        /// </summary>
-        public static string CallUnitWeight {
-            get {
-                return ResourceManager.GetString("CallUnitWeight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Carousel calibration.
         /// </summary>
         public static string CarouselCalibration {
@@ -2905,15 +2896,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Import structure.
-        /// </summary>
-        public static string ImportStructure {
-            get {
-                return ResourceManager.GetString("ImportStructure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Import successful.
         /// </summary>
         public static string ImportSuccessful {
@@ -3337,24 +3319,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Int Down.
-        /// </summary>
-        public static string InternalDown {
-            get {
-                return ResourceManager.GetString("InternalDown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Int Up.
-        /// </summary>
-        public static string InternalUp {
-            get {
-                return ResourceManager.GetString("InternalUp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Invalid cell id entered.
         /// </summary>
         public static string InvalidCellIdEntered {
@@ -3567,15 +3531,6 @@ namespace Ferretto.VW.App.Resources {
         public static string InverterReadingSuccessfullyEnded {
             get {
                 return ResourceManager.GetString("InverterReadingSuccessfullyEnded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inverters programming started.
-        /// </summary>
-        public static string InvertersProgrammingStarted {
-            get {
-                return ResourceManager.GetString("InvertersProgrammingStarted", resourceCulture);
             }
         }
         

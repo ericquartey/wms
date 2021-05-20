@@ -831,9 +831,6 @@
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Conferma su vuoto</value>
   </data>
-  <data name="ConfirmOnFull" xml:space="preserve">
-    <value>Conferma su pieno</value>
-  </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Disponibilità su macchine</value>
   </data>

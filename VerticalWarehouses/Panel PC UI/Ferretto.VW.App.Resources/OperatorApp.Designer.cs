@@ -943,15 +943,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm on full.
-        /// </summary>
-        public static string ConfirmOnFull {
-            get {
-                return ResourceManager.GetString("ConfirmOnFull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         public static string ConfirmPartial {
@@ -1024,6 +1015,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        public static string Day {
+            get {
+                return ResourceManager.GetString("Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete mission.
         /// </summary>
         public static string DeleteMission {
@@ -1038,6 +1038,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination.
+        /// </summary>
+        public static string Destination {
+            get {
+                return ResourceManager.GetString("Destination", resourceCulture);
             }
         }
         
@@ -4413,6 +4422,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ServiceStatus {
             get {
                 return ResourceManager.GetString("ServiceStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Day of shipment.
+        /// </summary>
+        public static string ShipmentDay {
+            get {
+                return ResourceManager.GetString("ShipmentDay", resourceCulture);
             }
         }
         

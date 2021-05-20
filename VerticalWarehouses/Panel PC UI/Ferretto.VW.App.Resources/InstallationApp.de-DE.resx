@@ -1899,9 +1899,6 @@
   <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
     <value>Inverter-Programmierung erfolgreich abgeschl.</value>
   </data>
-  <data name="InvertersProgrammingStarted" xml:space="preserve">
-    <value>Inverter-Programmierung läuft</value>
-  </data>
   <data name="InvertersProgrammingStopped" xml:space="preserve">
     <value>Inverter-Programmierung abgebr.</value>
   </data>
@@ -2411,12 +2408,6 @@
   </data>
   <data name="RandomCells" xml:space="preserve">
     <value>Zufällige Zellenzuweisung</value>
-  </data>
-  <data name="InternalUp" xml:space="preserve">
-    <value>Int Up</value>
-  </data>
-  <data name="InternalDown" xml:space="preserve">
-    <value>Int Down</value>
   </data>
   <data name="UnitHightInternalPosition" xml:space="preserve">
     <value>Schublade in hoher Innenstellung</value>
