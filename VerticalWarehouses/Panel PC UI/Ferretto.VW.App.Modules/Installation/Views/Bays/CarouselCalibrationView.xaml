@@ -189,12 +189,9 @@
                              Height="90"
                              Margin="0,0,0,15"
                              HorizontalAlignment="Center"
-                             EditValue="{Binding NewErrorValue, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             EditValue="{Binding ChainOffset}"
                              IsEnabled="False"
-                             LabelText="{res:Loc InstallationApp.ErrorInMillimiters}"
-                             Mask="N0"
-                             MaxValue="9"
-                             MinValue="1" />
+                             LabelText="{res:Loc InstallationApp.ErrorInMillimiters}" />
 
           <RadioButton Grid.Row="3"
                        Margin="0"
