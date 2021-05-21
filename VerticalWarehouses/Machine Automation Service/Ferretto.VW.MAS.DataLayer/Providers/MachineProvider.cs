@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -268,6 +269,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         throw;
                     }
                     this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ioExc.Message}");
+                    Thread.Sleep(10);
                 }
                 catch (AggregateException ae)
                 {
