@@ -29,6 +29,8 @@
 -  Corretto uso della tastiera touch sovrapposta alle griglie dati
 -  Tolta la pagina finale nella chiusura della procedura di calibrazione giostra
 -  Eliminato allarme di "baia occupata in altra operazione" nei ripristini con macchine da 990kg
+-  Corretto errore di file bloccato durante il backup
+-  La pagina delle operazioni sul cassetto in baia si apre col tasto Indietro della ricerca articolo
 
 ## Compatibile con adapter 0.4.20
 ***

@@ -261,9 +261,25 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     break;
                 }
-                catch (IOException ioExc) when (i < NUMBER_OF_RETRIES - 1)
+                catch (IOException ioExc)
                 {
+                    if (i >= NUMBER_OF_RETRIES - 1)
+                    {
+                        throw;
+                    }
                     this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ioExc.Message}");
+                }
+                catch (AggregateException ae)
+                {
+                    ae.Handle(ex =>
+                    {
+                        if (ex is IOException && i < NUMBER_OF_RETRIES - 1)
+                        {
+                            this.logger.LogDebug($"Try: #{i + 1}. Error reason aggregate: {ex.Message}");
+                            return true;
+                        }
+                        return false;
+                    });
                 }
             }
 
