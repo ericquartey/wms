@@ -1178,6 +1178,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsEnableAddItemAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsEnableAddItemAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SetMachineIdAsync(int newMachineId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4520,6 +4527,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsDbSaveOnTelemetry", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDbSaveOnTelemetry { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsEnableAddItem", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsEnableAddItem { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsHeartBeat", Required = Newtonsoft.Json.Required.Always)]
         public bool IsHeartBeat { get; set; }

@@ -369,6 +369,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsEnableAddItem()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsEnableAddItem ?? false;
+            }
+        }
+
         public bool IsHeartBeat()
         {
             lock (this.dataContext)

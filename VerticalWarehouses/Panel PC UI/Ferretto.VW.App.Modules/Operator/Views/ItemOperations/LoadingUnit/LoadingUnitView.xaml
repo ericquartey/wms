@@ -254,7 +254,8 @@
                                         VerticalAlignment="Top"
                                         Command="{Binding OperationCommand}"
                                         CommandParameter="{x:Static res:OperatorApp.Add}"
-                                        Content="{res:Loc OperatorApp.Add}" />
+                                        Content="{res:Loc OperatorApp.Add}"
+                                        Visibility="{Binding IsAddItemFeatureAvailable, Converter={StaticResource BTVC}}" />
 
                     <controls:PpcButton Margin="15,0,15,0"
                                         HorizontalAlignment="Right"
