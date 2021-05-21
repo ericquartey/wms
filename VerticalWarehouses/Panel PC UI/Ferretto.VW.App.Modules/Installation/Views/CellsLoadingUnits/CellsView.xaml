@@ -145,6 +145,7 @@
             <controls:PpcButton Grid.Column="4"
                                 Margin="0"
                                 HorizontalAlignment="Right"
+                                IsBusy="{Binding IsBusy}"
                                 Command="{Binding SaveCommand}"
                                 Content="{res:Loc InstallationApp.SaveCell}" />
 
