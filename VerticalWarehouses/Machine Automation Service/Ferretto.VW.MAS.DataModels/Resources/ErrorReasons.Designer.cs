@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check that the emergency mushrooms are deactivated and that all the safety sensors are deactivated..
+        ///   Looks up a localized string similar to Check that the emergency buttons are deactivated and that all the safety sensors are deactivated..
         /// </summary>
         public static string ConditionsNotMetForRunning {
             get {

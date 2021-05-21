@@ -155,11 +155,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.isNewOperationAvailable;
             set
             {
-                if (this.SetProperty(ref this.isNewOperationAvailable, value))
+                this.SetProperty(ref this.isNewOperationAvailable, value);
+
+                var result = value
+                    ? Localized.Get("OperatorApp.NewOperationsAvailable")
+                    : Localized.Get("OperatorApp.RecallDrawer");
+
+                if (result != this.recallLoadingUnitInfo)
                 {
-                    this.RecallLoadingUnitInfo = value
-                        ? Localized.Get("OperatorApp.NewOperationsAvailable")
-                        : Localized.Get("OperatorApp.RecallDrawer");
+                    this.recallLoadingUnitInfo = result;
                 }
             }
         }

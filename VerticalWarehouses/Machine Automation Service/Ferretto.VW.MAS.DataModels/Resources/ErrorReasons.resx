@@ -121,7 +121,7 @@
     <value>Check that the pawl is at zero or that the loading unit is fully loaded on the elevator.</value>
   </data>
   <data name="ConditionsNotMetForRunning" xml:space="preserve">
-    <value>Check that the emergency mushrooms are deactivated and that all the safety sensors are deactivated.</value>
+    <value>Check that the emergency buttons are deactivated and that all the safety sensors are deactivated.</value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
     <value>The loading unit may have got stuck.</value>

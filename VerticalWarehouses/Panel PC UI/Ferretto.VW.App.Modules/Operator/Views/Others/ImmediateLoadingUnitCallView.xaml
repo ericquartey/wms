@@ -107,8 +107,7 @@
                          EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static Resources:General.TargetNullValue}}"
                          LabelText="{Resources:Loc OperatorApp.ImmediateDrawerCallRequiredDrawer}"
                          MaxValue="{Binding MaxLoadingUnitId}"
-                         MinValue="{Binding MinLoadingUnitId}"
-                         Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
+                         MinValue="{Binding MinLoadingUnitId}" />
 
       <controls:PpcButton Grid.Row="2"
                           Margin="15,15,15,0"

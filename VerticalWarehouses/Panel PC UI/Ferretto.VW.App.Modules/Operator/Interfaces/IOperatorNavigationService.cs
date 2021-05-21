@@ -8,6 +8,8 @@
 
         void NavigateToDrawerViewConfirmPresent();
 
+        void NavigateToOperationOrGoBack();
+
         void NavigateToOperatorMenu();
 
         #endregion

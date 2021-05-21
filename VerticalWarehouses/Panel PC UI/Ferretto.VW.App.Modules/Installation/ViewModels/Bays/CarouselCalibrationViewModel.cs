@@ -30,15 +30,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly Services.IDialogService dialogService;
+        private readonly IDialogService dialogService;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineBaysWebService machineBaysWebService;
-
         private readonly IMachineCarouselWebService machineCarouselWebService;
-
-        private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private DelegateCommand applyCommand;
 
@@ -56,11 +52,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBeltButnishing = false;
 
-        private bool isCalibrationCompletedOrStopped;
+        private bool isCalibrationCompleted;
 
-        private bool isCalibrationNotCompleted;
-
-        private bool isChainOffsetVisible;
+        private bool isCalibrationStopped;
 
         private bool isErrorNegative = true;
 
@@ -114,17 +108,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CarouselCalibrationViewModel(
             IEventAggregator eventAggregator,
-            IMachineElevatorWebService machineElevatorWebService,
             IDialogService dialogService,
-            IMachineCarouselWebService machineCarouselWebService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineCarouselWebService machineCarouselWebService)
           : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
-            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
             this.CurrentStep = CarouselCalibrationStep.StartCalibration;
         }
@@ -186,28 +176,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepStartCalibration => this.currentStep is CarouselCalibrationStep.StartCalibration;
 
-        public bool IsCalibrationCompletedOrStopped
+        public bool IsCalibrationCompleted
         {
-            get => this.isCalibrationCompletedOrStopped;
+            get => this.isCalibrationCompleted;
+            set => this.SetProperty(ref this.isCalibrationCompleted, value);
+        }
+
+        public bool IsCalibrationNotCompletedAndStopped => !this.IsCalibrationStopped && !this.IsCalibrationCompleted;
+
+        public bool IsCalibrationStopped
+        {
+            get => this.isCalibrationStopped;
             private set
             {
-                if (this.SetProperty(ref this.isCalibrationCompletedOrStopped, value))
+                if (this.SetProperty(ref this.isCalibrationStopped, value))
                 {
                     this.UpdateView();
                 }
             }
-        }
-
-        public bool IsCalibrationNotCompleted
-        {
-            get => this.isCalibrationNotCompleted;
-            set => this.SetProperty(ref this.isCalibrationNotCompleted, value);
-        }
-
-        public bool IsChainOffsetVisible
-        {
-            get => this.isChainOffsetVisible;
-            set => this.SetProperty(ref this.isChainOffsetVisible, value);
         }
 
         public bool IsErrorNegative
@@ -612,7 +598,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanComplete()
         {
             return this.CanBaseExecute() &&
-                !this.isCalibrationNotCompleted;
+                this.isCalibrationCompleted;
         }
 
         private bool CanRepeat()
@@ -699,24 +685,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.IsErrored() ||
                 this.MachineError != null)
             {
-                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
 
-                this.IsCalibrationCompletedOrStopped = true;
+                this.IsCalibrationStopped = true;
 
-                this.IsChainOffsetVisible = true;
                 this.IsNewErrorValueVisible = false;
 
                 this.IsExecutingProcedure = false;
 
-                this.IsCalibrationNotCompleted = this.requiredCycles == this.performedCycles ? false : true;
+                this.IsCalibrationCompleted = this.requiredCycles == this.performedCycles ? true : false;
 
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
 
                 if (this.MachineError != null)
                 {
-                    this.IsChainOffsetVisible = false;
                     this.IsNewErrorValueVisible = true;
-                    this.IsCalibrationNotCompleted = true;
+                    this.IsCalibrationCompleted = false;
                     this.NewErrorValue = 0;
                 }
 
@@ -747,7 +731,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     this.IsNewErrorValueVisible = false;
 
-                    this.IsCalibrationNotCompleted = true;
+                    this.IsCalibrationCompleted = false;
+
+                    this.IsCalibrationStopped = true;
                 }
                 else
                 {
@@ -755,15 +741,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     this.IsNewErrorValueVisible = true;
 
-                    this.IsCalibrationNotCompleted = this.requiredCycles == this.performedCycles ? false : true;
-                }
+                    this.IsCalibrationCompleted = this.requiredCycles == this.performedCycles ? true : false;
 
-                this.IsChainOffsetVisible = false;
+                    this.IsCalibrationStopped = false;
+                }
 
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;
-
-                this.IsCalibrationCompletedOrStopped = true;
 
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
 
@@ -774,21 +758,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.Status == MessageStatus.OperationStop)
             {
-                this.IsCalibrationNotCompleted = true;
+                this.IsCalibrationCompleted = false;
 
-                this.IsChainOffsetVisible = false;
                 this.IsNewErrorValueVisible = false;
 
                 this.IsExecutingStopInPhase = false;
+
                 this.IsExecutingProcedure = false;
-                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
+
+                this.IsCalibrationStopped = true;
+
+                this.ShowNotification(Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
+
                 this.PerformedCycles = message.Data.ExecutedCycles;
+
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
 
-                this.IsCalibrationCompletedOrStopped = false;
                 this.NewErrorValue = 0;
 
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
+
                 this.UpdateView();
 
                 this.IsExecutingProcedure = false;
@@ -1046,6 +1035,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.RequiredCycles));
             this.RaisePropertyChanged(nameof(this.IsExecutingProcedure));
             this.RaisePropertyChanged(nameof(this.IsExecutingStopInPhase));
+            this.RaisePropertyChanged(nameof(this.IsCalibrationNotCompletedAndStopped));
 
             this.RaisePropertyChanged(nameof(this.NewErrorValue));
             this.RaisePropertyChanged(nameof(this.ChainOffset));

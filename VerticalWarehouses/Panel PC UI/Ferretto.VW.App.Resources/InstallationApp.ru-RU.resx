@@ -1899,9 +1899,6 @@
   <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
     <value>Программирование инвертора завершилось успешно</value>
   </data>
-  <data name="InvertersProgrammingStarted" xml:space="preserve">
-    <value>Начато программирование инверторов</value>
-  </data>
   <data name="InvertersProgrammingStopped" xml:space="preserve">
     <value>Программирование инверторов остановлено</value>
   </data>
@@ -2298,9 +2295,6 @@
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Нажмите кнопку Пуск, чтобы начать калибровку</value>
   </data>
-  <data name="CallUnitWeight" xml:space="preserve">
-    <value>Кассетто Чиамата: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso</value>
-  </data>
   <data name="UnloadToBay" xml:space="preserve">
     <value>Выгрузить</value>
   </data>
@@ -2339,9 +2333,6 @@
   </data>
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Читать все</value>
-  </data>
-  <data name="ImportStructure" xml:space="preserve">
-    <value>Структура импорта</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Перезаписать целевой файл</value>
@@ -2420,12 +2411,6 @@
   </data>
   <data name="RandomCells" xml:space="preserve">
     <value>Назначение случайных ячеек </value>
-  </data>
-  <data name="InternalDown" xml:space="preserve">
-    <value>Int Вниз</value>
-  </data>
-  <data name="InternalUp" xml:space="preserve">
-    <value>Int Вверх</value>
   </data>
   <data name="UnitHightInternalPosition" xml:space="preserve">
     <value>Блок в высоком внутреннем положении</value>

@@ -115,22 +115,29 @@ namespace Ferretto.VW.MAS.AutomationService
                     var scope = this.ServiceScopeFactory.CreateScope();
                     var machineDataProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
 
-                    if (machineDataProvider.IsDbSaveOnTelemetry())
+                    try
                     {
-                        // Retrieve the (raw) database content
-                        var machine = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMachineProvider>();
-                        var rawDatabaseContent = machine.GetRawDatabaseContent();
+                        if (machineDataProvider.IsDbSaveOnTelemetry())
+                        {
+                            // Retrieve the (raw) database content
+                            var machine = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMachineProvider>();
+                            var rawDatabaseContent = machine.GetRawDatabaseContent();
 
-                        await this.SendRawDatabaseContentAsync(rawDatabaseContent);
+                            await this.SendRawDatabaseContentAsync(rawDatabaseContent);
+                        }
+
+                        if (machineDataProvider.IsDbSaveOnServer())
+                        {
+                            var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
+                            var wmsSettings = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>();
+
+                            // save the database to server
+                            dataLayer.CopyMachineDatabaseToServer(wmsSettings.ServiceUrl.Host);
+                        }
                     }
-
-                    if (machineDataProvider.IsDbSaveOnServer())
+                    catch (Exception ex)
                     {
-                        var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
-                        var wmsSettings = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>();
-
-                        // save the database to server
-                        dataLayer.CopyMachineDatabaseToServer(wmsSettings.ServiceUrl.Host);
+                        this.Logger.LogError(ex.Message);
                     }
                 }
 

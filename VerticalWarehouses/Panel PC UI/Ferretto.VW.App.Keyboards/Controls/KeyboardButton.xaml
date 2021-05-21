@@ -10,8 +10,6 @@
              d:DesignWidth="800"
              DataContext="{Binding Path=., RelativeSource={RelativeSource Mode=Self}}"
              PreviewMouseLeftButtonDown="UserControl_PreviewMouseLeftButtonDown"
-             PreviewTouchDown="UserControl_PreviewTouchDown"
-             PreviewTouchUp="UserControl_PreviewTouchUp"
              TouchDown="UserControl_TouchDown"
              TouchUp="UserControl_TouchUp"
              mc:Ignorable="d">

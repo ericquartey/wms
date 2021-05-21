@@ -1084,9 +1084,6 @@
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Confirm on empty</value>
   </data>
-  <data name="ConfirmOnFull" xml:space="preserve">
-    <value>Confirm on full</value>
-  </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Machines availabiility</value>
     <comment>Label</comment>
@@ -2159,10 +2156,10 @@
     <value>Step time</value>
   </data>
   <data name="LoadUnitCellSourceId" xml:space="preserve">
-    <value></value>
+    <value>Cell source Id</value>
   </data>
   <data name="NeedMovingBackward" xml:space="preserve">
-    <value></value>
+    <value>Need moving backward</value>
   </data>
   <data name="Activate" xml:space="preserve">
     <value>Activate</value>

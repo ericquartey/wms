@@ -571,13 +571,13 @@
     <value>Αρχικοποίηση ...</value>
   </data>
   <data name="Bay1" xml:space="preserve">
-    <value>Πλατφόρμα 1</value>
+    <value>Πλατ.1</value>
   </data>
   <data name="Bay2" xml:space="preserve">
-    <value>Πλατφόρμα 2</value>
+    <value>Πλατ.2</value>
   </data>
   <data name="Bay3" xml:space="preserve">
-    <value>Πλατφόρμα 3</value>
+    <value>Πλατ.3</value>
   </data>
   <data name="ShutterEnduranceTestTitle" xml:space="preserve">
     <value>Δοκιμή αντοχής κλείστρου για πλατφόρμα</value>
@@ -625,7 +625,7 @@
     <value>Πλευρά</value>
   </data>
   <data name="Bay" xml:space="preserve">
-    <value>Πλατφόρμα</value>
+    <value>Πλατ.</value>
   </data>
   <data name="BayPosition" xml:space="preserve">
     <value>Θέση πλατφόρμας</value>
@@ -1899,9 +1899,6 @@
   <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
     <value>Ο προγραμματισμός του αντιστροφέα τερμάτισε επιτυχώς</value>
   </data>
-  <data name="InvertersProgrammingStarted" xml:space="preserve">
-    <value>Άρχισε ο προγραμματισμός των αντιστροφέων</value>
-  </data>
   <data name="InvertersProgrammingStopped" xml:space="preserve">
     <value>Διακόπηκε ο προγραμματισμός του αντιστροφέα</value>
   </data>
@@ -2298,9 +2295,6 @@
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Πατήστε εκκίνηση για να ξεκινήσετε τη βαθμονόμηση</value>
   </data>
-  <data name="CallUnitWeight" xml:space="preserve">
-    <value>Κλήση συρταριού: Περιμένετε έως ότου το προηγούμενο συρτάρι έχει εισέλθει στην κυψέλη, κατόπιν επιλέξτε το συρτάρι που θέλετε και πατήστε κλήση συρταριού. Όταν το συρτάρι θα φθάσει στην πλατφόρμα θα ανοίξει ξανά η διαδικασία της βαθμονόμησης βάρους</value>
-  </data>
   <data name="UnloadToBay" xml:space="preserve">
     <value>Εκφόρτωση</value>
   </data>
@@ -2339,9 +2333,6 @@
   </data>
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Διαβάστε τα όλα</value>
-  </data>
-  <data name="ImportStructure" xml:space="preserve">
-    <value>Εισάγετε τη δομή</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Αντικαταστήστε το αρχείο στόχου</value>
@@ -2420,12 +2411,6 @@
   </data>
   <data name="RandomCells" xml:space="preserve">
     <value>Ανάθεση τυχαίων κυψελών </value>
-  </data>
-  <data name="InternalDown" xml:space="preserve">
-    <value>Είσοδος κάτω</value>
-  </data>
-  <data name="InternalUp" xml:space="preserve">
-    <value>Είσοδος επάνω</value>
   </data>
   <data name="UnitHightInternalPosition" xml:space="preserve">
     <value>Μονάδα σε εσωτερική υψηλή θέση</value>
