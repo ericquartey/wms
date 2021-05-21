@@ -571,13 +571,13 @@
     <value>Αρχικοποίηση ...</value>
   </data>
   <data name="Bay1" xml:space="preserve">
-    <value>Πλατφόρμα 1</value>
+    <value>Πλατ.1</value>
   </data>
   <data name="Bay2" xml:space="preserve">
-    <value>Πλατφόρμα 2</value>
+    <value>Πλατ.2</value>
   </data>
   <data name="Bay3" xml:space="preserve">
-    <value>Πλατφόρμα 3</value>
+    <value>Πλατ.3</value>
   </data>
   <data name="ShutterEnduranceTestTitle" xml:space="preserve">
     <value>Δοκιμή αντοχής κλείστρου για πλατφόρμα</value>
@@ -625,7 +625,7 @@
     <value>Πλευρά</value>
   </data>
   <data name="Bay" xml:space="preserve">
-    <value>Πλατφόρμα</value>
+    <value>Πλατ.</value>
   </data>
   <data name="BayPosition" xml:space="preserve">
     <value>Θέση πλατφόρμας</value>

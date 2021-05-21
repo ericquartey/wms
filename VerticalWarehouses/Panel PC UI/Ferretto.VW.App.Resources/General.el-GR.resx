@@ -175,7 +175,7 @@
     <value>Αλλαγή θέματος</value>
   </data>
   <data name="BayNumber" xml:space="preserve">
-    <value>Πλατφόρμα</value>
+    <value>Πλατ.</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
     <value>{0:0} μέρες πριν</value>
@@ -208,7 +208,7 @@
     <value>Μπροστά</value>
   </data>
   <data name="Bay" xml:space="preserve">
-    <value>Πλατφόρμα</value>
+    <value>Πλατ.</value>
   </data>
   <data name="BayOneName" xml:space="preserve">
     <value>Ένα</value>
