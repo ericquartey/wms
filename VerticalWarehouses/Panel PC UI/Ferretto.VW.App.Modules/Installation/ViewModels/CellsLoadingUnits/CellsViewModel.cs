@@ -54,7 +54,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsBusy
         {
             get => this.isBusy;
-            set => this.SetProperty(ref this.isBusy, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.isBusy, value);
         }
 
         public bool IsEnabledEditing => !this.IsMoving;
@@ -97,6 +97,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.SelectedCell = this.Cells?.ToList()[0];
             }
 
+            this.RaisePropertyChanged(nameof(this.Cells));
+
             await base.OnAppearedAsync();
         }
 
@@ -106,10 +108,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.saveCommand?.RaiseCanExecuteChanged();
 
-            this.RaisePropertyChanged(nameof(this.Cells));
             this.RaisePropertyChanged(nameof(this.BlockLevels));
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
             this.RaisePropertyChanged(nameof(this.IsBusy));
+            this.RaisePropertyChanged(nameof(this.Cells));
 
             if (this.IsMoving)
             {
@@ -138,6 +140,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.MachineService.GetCells();
 
                 this.IsBusy = false;
+
+                this.RaisePropertyChanged(nameof(this.Cells));
             }
         }
 
