@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,8 +22,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Fields
 
         private readonly Services.IDialogService dialogService;
-
-        private readonly IHealthProbeService healthProbeService;
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
@@ -77,13 +76,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineBaysWebService machineBaysWebService,
-            IHealthProbeService healthProbeService,
             ISessionService sessionService)
             : base(PresentationMode.Installer)
         {
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
-            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
@@ -191,7 +188,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsEnabledEditing => !this.IsMoving;
 
-        public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
+        public ObservableCollection<LoadingUnit> LoadingUnits => IEnumConvert(this.MachineService.Loadunits);
 
         public ICommand RemoveDrawerCommand =>
             this.removeDrawerCommand
@@ -535,6 +532,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                this.IsBusyUpdateDrawer = true;
+
                 await this.machineLoadingUnitsWebService.SaveLoadUnitAsync(this.SelectedLU);
 
                 if (this.SelectedLU.Status == LoadingUnitStatus.InBay && this.SelectedBayPositionId.HasValue)
@@ -556,6 +555,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     await this.MachineService.GetLoadUnits();
                 }
+
+                this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -565,6 +566,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 await this.MachineService.GetLoadUnits();
+
+                this.IsBusyUpdateDrawer = false;
             }
         }
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
@@ -35,9 +37,9 @@ namespace Ferretto.VW.App.Controls
 
         private SubscriptionToken bayChainPositionChangedToken;
 
-        private DelegateCommand browserOpenCommand;
-
         private DelegateCommand browserCloseCommand;
+
+        private DelegateCommand browserOpenCommand;
 
         private SubscriptionToken healthStatusChangedToken;
 
@@ -80,15 +82,15 @@ namespace Ferretto.VW.App.Controls
 
         #region Properties
 
-        public ICommand BrowserOpenCommand =>
-                            this.browserOpenCommand
-            ??
-            (this.browserOpenCommand = new DelegateCommand(() => { this.IsBrowserOpened = true; }));
-
         public ICommand BrowserCloseCommand =>
                             this.browserCloseCommand
             ??
             (this.browserCloseCommand = new DelegateCommand(() => { this.IsBrowserOpened = false; }));
+
+        public ICommand BrowserOpenCommand =>
+                                    this.browserOpenCommand
+            ??
+            (this.browserOpenCommand = new DelegateCommand(() => { this.IsBrowserOpened = true; }));
 
         public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
@@ -169,6 +171,11 @@ namespace Ferretto.VW.App.Controls
         #endregion
 
         #region Methods
+
+        public static ObservableCollection<T> IEnumConvert<T>(IEnumerable<T> original)
+        {
+            return new ObservableCollection<T>(original);
+        }
 
         public void ClearNotifications()
         {
