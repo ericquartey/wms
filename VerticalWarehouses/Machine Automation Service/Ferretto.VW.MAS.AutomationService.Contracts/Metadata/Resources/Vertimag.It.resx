@@ -576,4 +576,7 @@
   <data name="Bay_IsTelescopic" xml:space="preserve">
     <value>Telescopica</value>
   </data>
+  <data name="Machine_IsEnableAddItem" xml:space="preserve">
+    <value>Abilitato aggiungi articolo</value>
+  </data>
 </root>
