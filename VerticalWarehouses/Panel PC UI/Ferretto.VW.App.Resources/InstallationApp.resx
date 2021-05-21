@@ -219,7 +219,7 @@
     <comment>Sensor control text</comment>
   </data>
   <data name="MushroomHeadButton" xml:space="preserve">
-    <value>Mushroom Emergency Button</value>
+    <value>Emergency Red Button</value>
     <comment>Sensor control text</comment>
   </data>
   <data name="SecurityFunctionActive" xml:space="preserve">
