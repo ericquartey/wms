@@ -4498,7 +4498,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mushroom Emergency Button.
+        ///   Looks up a localized string similar to Emergency Red Button.
         /// </summary>
         public static string MushroomHeadButton {
             get {

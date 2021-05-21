@@ -2869,7 +2869,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Cell source Id.
         /// </summary>
         public static string LoadUnitCellSourceId {
             get {
@@ -3814,7 +3814,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Need moving backward.
         /// </summary>
         public static string NeedMovingBackward {
             get {

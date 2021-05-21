@@ -1725,9 +1725,6 @@
   <data name="StepTime" xml:space="preserve">
     <value>Step time</value>
   </data>
-  <data name="LoadUnitCellSourceId" xml:space="preserve">
-    <value>Cell source Id</value>
-  </data>
   <data name="NeedMovingBackward" xml:space="preserve">
     <value>Need moving backward</value>
   </data>

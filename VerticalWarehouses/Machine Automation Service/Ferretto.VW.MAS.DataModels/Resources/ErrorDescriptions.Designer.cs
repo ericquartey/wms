@@ -313,7 +313,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The configuration of the acceleration of the axis {0} movement is not correct: empty load acceleration less than full load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {
             get {
@@ -322,7 +322,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The configuration of the speed of the axis {0} movement is not correct: empty load speed less than full load speed.
         /// </summary>
         public static string InvalidAxisSpeedConfiguration {
             get {
