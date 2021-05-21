@@ -15,9 +15,6 @@
 
   <ItemGroup>
     <PackageReference Include="BarCode" Version="2020.6.0" />
-    <PackageReference Include="cef.redist.x64" Version="89.0.17" />
-    <PackageReference Include="cef.redist.x86" Version="89.0.17" />
-    <PackageReference Include="CefSharp.Common" Version="89.0.170" />
     <PackageReference Include="CefSharp.Wpf" Version="89.0.170" />
     <PackageReference Include="DevExpress.Wpf.Charts" Version="19.2.4" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="3.2.0" />
