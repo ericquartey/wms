@@ -2,195 +2,195 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-                    xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
-                    xmlns:dxwuit="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/themekeys">
+                    xmlns:dxwuit="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/themekeys"
+                    xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
 
-    <Style x:Key="titleStyle"
-           TargetType="TextBox">
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
-        <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
-        <Setter Property="FontWeight" Value="Light" />
-        <Setter Property="Margin" Value="0,0,0,20" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="MaxWidth" Value="{x:Static SystemParameters.MaximizedPrimaryScreenWidth}" />
-    </Style>
+  <Style x:Key="titleStyle"
+         TargetType="TextBox">
+    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
+    <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
+    <Setter Property="FontWeight" Value="Light" />
+    <Setter Property="Margin" Value="0,0,0,20" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="MaxWidth" Value="{x:Static SystemParameters.MaximizedPrimaryScreenWidth}" />
+  </Style>
 
-    <ControlTemplate x:Key="DXMessageBoxTemplate"
-                     TargetType="{x:Type dxwui:WinUIMessageBox}">
-        <Border Background="{DynamicResource {dxwuit:MessageBoxElementsThemeKey ResourceKey=Background}}">
-            <Grid MinWidth="350"
-                  VerticalAlignment="Center"
-                  Background="{DynamicResource VWAPP_BACKGROUND}">
-                <Grid Margin="0,30,0,35"
-                      HorizontalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <TextBox Margin="0,0,0,0"
-                             HorizontalAlignment="Left"
-                             Style="{StaticResource titleStyle}"
-                             Text="{Binding Path=Caption, RelativeSource={RelativeSource TemplatedParent}}" />
-                    <Grid Grid.Row="1"
-                          Margin="0,15,0,0"
-                          HorizontalAlignment="Left">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Image x:Name="PART_MessageBoxImage"
-                               Width="40"
-                               Height="40"
-                               Margin="0,0,10,0"
-                               VerticalAlignment="Center"
-                               SnapsToDevicePixels="True"
-                               Source="{Binding Path=ImageSource, RelativeSource={RelativeSource TemplatedParent}}"
-                               Stretch="Uniform" />
-                        <TextBox Grid.Column="1"
-                                 MaxWidth="{x:Static SystemParameters.MaximizedPrimaryScreenWidth}"
-                                 VerticalAlignment="Center"
-                                 Background="Transparent"
-                                 BorderBrush="Transparent"
-                                 BorderThickness="0"
-                                 FontSize="{DynamicResource VWAPP_TextBlock_Normal_FontSize}"
-                                 Foreground="{DynamicResource Text_Foreground}"
-                                 IsReadOnly="True"
-                                 IsReadOnlyCaretVisible="False"
-                                 Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}}"
-                                 TextWrapping="Wrap" />
-                    </Grid>
-                    <Grid Grid.Row="2"
-                          Margin="0,25,0,0"
-                          HorizontalAlignment="Center">
-                        <Grid x:Name="okGrid"
-                              Visibility="Collapsed">
-                            <controls:PpcButton x:Name="PART_OkButton"
-                                                MinWidth="65"
-                                                Margin="6,0,0,0"
-                                                Content="{dx:DXMessageBoxStringId StringId=Ok}" />
-                        </Grid>
-                        <Grid x:Name="okCancelGrid"
-                              Visibility="Collapsed">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <controls:PpcButton x:Name="PART_OkButton1"
-                                                MinWidth="65"
-                                                Margin="6,0,0,0"
-                                                Content="{dx:DXMessageBoxStringId StringId=Ok}" />
-                            <controls:PpcButton x:Name="PART_CancelButton"
-                                                Grid.Column="1"
-                                                MinWidth="65"
-                                                Margin="6,0,0,0"
-                                                Content="{dx:DXMessageBoxStringId StringId=Cancel}" />
-                        </Grid>
-                        <Grid x:Name="yesNoGrid"
-                              Visibility="Collapsed">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <controls:PpcButton x:Name="PART_YesButton"
-                                                MinWidth="65"
-                                                Margin="6,0,0,0"
-                                                Content="{dx:DXMessageBoxStringId StringId=Yes}" />
-                            <controls:PpcButton x:Name="PART_NoButton"
-                                                Grid.Column="1"
-                                                MinWidth="65"
-                                                Margin="6,0,0,0"
-                                                Content="{dx:DXMessageBoxStringId StringId=No}" />
-                        </Grid>
-                        <Grid x:Name="yesNoCancelGrid"
-                              Visibility="Collapsed">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <controls:PpcButton x:Name="PART_YesButton1"
-                                                MinWidth="65"
-                                                Margin="6,0,0,0"
-                                                Content="{dx:DXMessageBoxStringId StringId=Yes}" />
-                            <controls:PpcButton x:Name="PART_NoButton1"
-                                                Grid.Column="1"
-                                                MinWidth="65"
-                                                Margin="6,0,0,0"
-                                                Content="{dx:DXMessageBoxStringId StringId=No}" />
-                            <controls:PpcButton x:Name="PART_CancelButton1"
-                                                Grid.Column="2"
-                                                MinWidth="65"
-                                                Margin="6,0,0,0"
-                                                Content="{dx:DXMessageBoxStringId StringId=Cancel}" />
-                        </Grid>
-                    </Grid>
-                </Grid>
+  <ControlTemplate x:Key="DXMessageBoxTemplate"
+                   TargetType="{x:Type dxwui:WinUIMessageBox}">
+    <Border Background="{DynamicResource {dxwuit:MessageBoxElementsThemeKey ResourceKey=Background}}">
+      <Grid MinWidth="350"
+            VerticalAlignment="Center"
+            Background="{DynamicResource VWAPP_BACKGROUND}">
+        <Grid Margin="0,30,0,35"
+              HorizontalAlignment="Center">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <TextBox Margin="0,0,0,0"
+                   HorizontalAlignment="Left"
+                   Style="{StaticResource titleStyle}"
+                   Text="{Binding Path=Caption, RelativeSource={RelativeSource TemplatedParent}}" />
+          <Grid Grid.Row="1"
+                Margin="0,15,0,0"
+                HorizontalAlignment="Left">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image x:Name="PART_MessageBoxImage"
+                   Width="40"
+                   Height="40"
+                   Margin="0,0,10,0"
+                   VerticalAlignment="Center"
+                   SnapsToDevicePixels="True"
+                   Source="{Binding Path=ImageSource, RelativeSource={RelativeSource TemplatedParent}}"
+                   Stretch="Uniform" />
+            <TextBox Grid.Column="1"
+                     MaxWidth="{x:Static SystemParameters.MaximizedPrimaryScreenWidth}"
+                     VerticalAlignment="Center"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     BorderThickness="0"
+                     FontSize="{DynamicResource VWAPP_TextBlock_Normal_FontSize}"
+                     Foreground="{DynamicResource Text_Foreground}"
+                     IsReadOnly="True"
+                     IsReadOnlyCaretVisible="False"
+                     Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}}"
+                     TextWrapping="Wrap" />
+          </Grid>
+          <Grid Grid.Row="2"
+                Margin="0,25,0,0"
+                HorizontalAlignment="Center">
+            <Grid x:Name="okGrid"
+                  Visibility="Collapsed">
+              <controls:PpcButton x:Name="PART_OkButton"
+                                  MinWidth="65"
+                                  Margin="6,0,0,0"
+                                  Content="{res:Loc General.Ok}" />
             </Grid>
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="group1">
-                    <VisualState x:Name="OK">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="okGrid"
-                                                           Storyboard.TargetProperty="Visibility">
-                                <DiscreteObjectKeyFrame KeyTime="0">
-                                    <DiscreteObjectKeyFrame.Value>
-                                        <Visibility>Visible</Visibility>
-                                    </DiscreteObjectKeyFrame.Value>
-                                </DiscreteObjectKeyFrame>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="OKCancel">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="okCancelGrid"
-                                                           Storyboard.TargetProperty="Visibility">
-                                <DiscreteObjectKeyFrame KeyTime="0">
-                                    <DiscreteObjectKeyFrame.Value>
-                                        <Visibility>Visible</Visibility>
-                                    </DiscreteObjectKeyFrame.Value>
-                                </DiscreteObjectKeyFrame>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="YesNo">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="yesNoGrid"
-                                                           Storyboard.TargetProperty="Visibility">
-                                <DiscreteObjectKeyFrame KeyTime="0">
-                                    <DiscreteObjectKeyFrame.Value>
-                                        <Visibility>Visible</Visibility>
-                                    </DiscreteObjectKeyFrame.Value>
-                                </DiscreteObjectKeyFrame>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </VisualState>
+            <Grid x:Name="okCancelGrid"
+                  Visibility="Collapsed">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <controls:PpcButton x:Name="PART_OkButton1"
+                                  MinWidth="65"
+                                  Margin="6,0,0,0"
+                                  Content="{res:Loc General.Ok}" />
+              <controls:PpcButton x:Name="PART_CancelButton"
+                                  Grid.Column="1"
+                                  MinWidth="65"
+                                  Margin="6,0,0,0"
+                                  Content="{res:Loc General.Cancel}" />
+            </Grid>
+            <Grid x:Name="yesNoGrid"
+                  Visibility="Collapsed">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <controls:PpcButton x:Name="PART_YesButton"
+                                  MinWidth="65"
+                                  Margin="6,0,0,0"
+                                  Content="{res:Loc General.Yes}" />
+              <controls:PpcButton x:Name="PART_NoButton"
+                                  Grid.Column="1"
+                                  MinWidth="65"
+                                  Margin="6,0,0,0"
+                                  Content="{res:Loc General.No}" />
+            </Grid>
+            <Grid x:Name="yesNoCancelGrid"
+                  Visibility="Collapsed">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+              </Grid.ColumnDefinitions>
+              <controls:PpcButton x:Name="PART_YesButton1"
+                                  MinWidth="65"
+                                  Margin="6,0,0,0"
+                                  Content="{res:Loc General.Yes}" />
+              <controls:PpcButton x:Name="PART_NoButton1"
+                                  Grid.Column="1"
+                                  MinWidth="65"
+                                  Margin="6,0,0,0"
+                                  Content="{res:Loc General.No}" />
+              <controls:PpcButton x:Name="PART_CancelButton1"
+                                  Grid.Column="2"
+                                  MinWidth="65"
+                                  Margin="6,0,0,0"
+                                  Content="{res:Loc General.Cancel}" />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+      <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="group1">
+          <VisualState x:Name="OK">
+            <Storyboard>
+              <ObjectAnimationUsingKeyFrames Storyboard.TargetName="okGrid"
+                                             Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                  <DiscreteObjectKeyFrame.Value>
+                    <Visibility>Visible</Visibility>
+                  </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+              </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+          </VisualState>
+          <VisualState x:Name="OKCancel">
+            <Storyboard>
+              <ObjectAnimationUsingKeyFrames Storyboard.TargetName="okCancelGrid"
+                                             Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                  <DiscreteObjectKeyFrame.Value>
+                    <Visibility>Visible</Visibility>
+                  </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+              </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+          </VisualState>
+          <VisualState x:Name="YesNo">
+            <Storyboard>
+              <ObjectAnimationUsingKeyFrames Storyboard.TargetName="yesNoGrid"
+                                             Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                  <DiscreteObjectKeyFrame.Value>
+                    <Visibility>Visible</Visibility>
+                  </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+              </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+          </VisualState>
 
-                    <VisualState x:Name="YesNoCancel">
-                        <Storyboard>
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="yesNoCancelGrid"
-                                                           Storyboard.TargetProperty="Visibility">
-                                <DiscreteObjectKeyFrame KeyTime="0">
-                                    <DiscreteObjectKeyFrame.Value>
-                                        <Visibility>Visible</Visibility>
-                                    </DiscreteObjectKeyFrame.Value>
-                                </DiscreteObjectKeyFrame>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-        </Border>
-    </ControlTemplate>
+          <VisualState x:Name="YesNoCancel">
+            <Storyboard>
+              <ObjectAnimationUsingKeyFrames Storyboard.TargetName="yesNoCancelGrid"
+                                             Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                  <DiscreteObjectKeyFrame.Value>
+                    <Visibility>Visible</Visibility>
+                  </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+              </ObjectAnimationUsingKeyFrames>
+            </Storyboard>
+          </VisualState>
+        </VisualStateGroup>
+      </VisualStateManager.VisualStateGroups>
+    </Border>
+  </ControlTemplate>
 
-    <Style TargetType="{x:Type dxwui:WinUIMessageBox}">
-        <Setter Property="Template" Value="{StaticResource DXMessageBoxTemplate}" />
-    </Style>
+  <Style TargetType="{x:Type dxwui:WinUIMessageBox}">
+    <Setter Property="Template" Value="{StaticResource DXMessageBoxTemplate}" />
+  </Style>
 
 </ResourceDictionary>

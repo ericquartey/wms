@@ -373,10 +373,10 @@
     <value>Vertical position has changed after machine start</value>
   </data>
   <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
-    <value />
+    <value>The configuration of the acceleration of the axis {0} movement is not correct: empty load acceleration less than full load acceleration</value>
   </data>
   <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
-    <value />
+    <value>The configuration of the speed of the axis {0} movement is not correct: empty load speed less than full load speed</value>
   </data>
   <data name="FullTestFailed" xml:space="preserve">
     <value>Test not completed</value>

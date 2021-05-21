@@ -48,6 +48,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsDbSaveOnTelemetry { get; set; }
 
+        /// <summary>
+        /// Get a value indicating if add item operation is enabled.
+        /// </summary>
+        public bool IsEnableAddItem { get; set; }
+
         public bool IsHeartBeat { get; set; }
 
         /// <summary>

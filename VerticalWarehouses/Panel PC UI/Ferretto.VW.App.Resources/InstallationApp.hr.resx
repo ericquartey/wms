@@ -1899,9 +1899,6 @@
   <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
     <value>Programiranje invertera uspješno završeno</value>
   </data>
-  <data name="InvertersProgrammingStarted" xml:space="preserve">
-    <value>Programiranje invertera u izvođenju</value>
-  </data>
   <data name="InvertersProgrammingStopped" xml:space="preserve">
     <value>Programiranje inver. zaustavlj.</value>
   </data>
@@ -2411,12 +2408,6 @@
   </data>
   <data name="RandomCells" xml:space="preserve">
     <value>Slučajno dodjeljivanje stanica</value>
-  </data>
-  <data name="InternalUp" xml:space="preserve">
-    <value>Int Gore</value>
-  </data>
-  <data name="InternalDown" xml:space="preserve">
-    <value>Int Dolje</value>
   </data>
   <data name="UnitHightInternalPosition" xml:space="preserve">
     <value>Ladica u visokom unutarnjem položaju</value>

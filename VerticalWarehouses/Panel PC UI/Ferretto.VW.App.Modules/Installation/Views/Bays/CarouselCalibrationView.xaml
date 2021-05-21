@@ -147,144 +147,188 @@
     <DataTemplate x:Key="DataTemplateConfirmAdjustment">
       <Grid Margin="20"
             DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.ColumnSpan="2"
-                    Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}">
-          <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
+        <Grid Visibility="{Binding IsCalibrationNotCompletedAndStopped, Converter={StaticResource ResourceKey=BTVC}}">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Grid.ColumnSpan="2"
+                     Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
             <Run Text="{res:Loc InstallationApp.ConfirmAdjustment}" /><Run Text=":" />
           </TextBlock>
-        </StackPanel>
 
-        <StackPanel Grid.ColumnSpan="2"
-                    Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVC}}">
-          <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+          <TextBlock Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.SelectDirectionAndApply}" />
+
+          <ctrls:PpcSpinEdit Grid.Row="2"
+                             Grid.ColumnSpan="2"
+                             Width="250"
+                             Height="90"
+                             Margin="0,0,0,15"
+                             HorizontalAlignment="Center"
+                             EditValue="{Binding ChainOffset, Mode=OneWay}"
+                             IsEnabled="false"
+                             LabelText="{res:Loc InstallationApp.ErrorInMillimiters}"
+                             Mask="F1" />
+          <ctrls:PpcSpinEdit Grid.Row="2"
+                             Grid.ColumnSpan="2"
+                             Width="250"
+                             Height="90"
+                             Margin="0,0,0,15"
+                             HorizontalAlignment="Center"
+                             EditValue="{Binding ChainOffset}"
+                             IsEnabled="False"
+                             LabelText="{res:Loc InstallationApp.ErrorInMillimiters}" />
+
+          <RadioButton Grid.Row="3"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       GroupName="test"
+                       IsChecked="{Binding IsErrorNegative, Mode=TwoWay}"
+                       IsEnabled="true">
+            <RadioButton.Content>
+              <TextBlock Style="{StaticResource VWAPP_ViewRadioButtonTitleTextBlockStyle}"
+                         Text="-" />
+            </RadioButton.Content>
+          </RadioButton>
+
+          <RadioButton Grid.Row="3"
+                       Grid.Column="1"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       GroupName="test"
+                       IsChecked="{Binding IsErrorPositive, Mode=TwoWay}"
+                       IsEnabled="true">
+            <RadioButton.Content>
+              <TextBlock Style="{StaticResource VWAPP_ViewRadioButtonTitleTextBlockStyle}"
+                         Text="+" />
+            </RadioButton.Content>
+          </RadioButton>
+
+          <controls:PpcButton Grid.Row="4"
+                              Grid.Column="1"
+                              Margin="0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Command="{Binding ApplyCommand}"
+                              Content="{res:Loc InstallationApp.ApplyCorrection}"
+                              Style="{DynamicResource WizardIntoButton}" />
+
+          <controls:PpcButton Grid.Row="4"
+                              Grid.Column="0"
+                              Margin="0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Command="{Binding CompleteCommand}"
+                              Content="{res:Loc InstallationApp.ConfirmProcedure}"
+                              Style="{DynamicResource WizardIntoButton}" />
+
+          <TextBlock Grid.Row="5"
+                     Grid.ColumnSpan="2"
+                     Margin="0,15,0,0"
+                     Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.RepeatProcedure}" />
+
+          <controls:PpcButton Grid.Row="6"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="0,10,0,0"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding RepeatCalibrationCommand}"
+                              Content="{res:Loc InstallationApp.Repeat}"
+                              Style="{StaticResource WizardConfirmButton}" />
+        </Grid>
+
+        <Grid Visibility="{Binding IsCalibrationCompleted, Converter={StaticResource ResourceKey=BTVC}}">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Grid.ColumnSpan="2"
+                     Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.ProcedureCompleted}"
+                     TextWrapping="Wrap" />
+
+          <controls:PpcButton Grid.Row="1"
+                              Grid.ColumnSpan="2"
+                              Margin="0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Command="{Binding CompleteCommand}"
+                              Content="{res:Loc InstallationApp.ConfirmProcedure}"
+                              Style="{DynamicResource WizardIntoButton}"
+                              Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
+
+          <TextBlock Grid.Row="2"
+                     Grid.ColumnSpan="2"
+                     Margin="0,15,0,0"
+                     VerticalAlignment="Bottom"
+                     Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.RepeatProcedure}"
+                     Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
+
+          <controls:PpcButton Grid.Row="3"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="0,10,0,0"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding RepeatCalibrationCommand}"
+                              Content="{res:Loc InstallationApp.Repeat}"
+                              Style="{StaticResource WizardConfirmButton}"
+                              Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
+        </Grid>
+
+        <Grid Visibility="{Binding IsCalibrationStopped, Converter={StaticResource ResourceKey=BTVC}}">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Grid.ColumnSpan="2"
+                     Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}"
                      TextWrapping="Wrap">
             <Run Text="{res:Loc InstallationApp.ProcedureNotCompleted}" /><Run Text=":" />
           </TextBlock>
-        </StackPanel>
 
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="2"
-                   Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.SelectDirectionAndApply}"
-                   Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVC}}" />
+          <TextBlock Grid.Row="1"
+                     Grid.ColumnSpan="2"
+                     Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.RepeteProcedure}" />
 
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="2"
-                   Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.RepeteProcedure}"
-                   Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVIC}}" />
+          <controls:PpcButton Grid.Row="2"
+                              Grid.RowSpan="5"
+                              Grid.ColumnSpan="2"
+                              VerticalAlignment="Bottom"
+                              Command="{Binding RepeatCalibrationCommand}"
+                              Content="{res:Loc InstallationApp.Repeat}"
+                              Style="{StaticResource WizardConfirmButton}" />
+        </Grid>
 
-        <controls:PpcButton Grid.Row="2"
-                            Grid.RowSpan="5"
-                            Grid.ColumnSpan="2"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding RepeatCalibrationCommand}"
-                            Content="{res:Loc InstallationApp.Repeat}"
-                            Style="{StaticResource WizardConfirmButton}"
-                            Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVIC}}" />
-
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           Width="250"
-                           Height="90"
-                           Margin="0,0,0,15"
-                           HorizontalAlignment="Center"
-                           EditValue="{Binding ChainOffset, Mode=OneWay}"
-                           IsEnabled="false"
-                           LabelText="{res:Loc InstallationApp.ErrorInMillimiters}"
-                           Mask="F1"
-                           Visibility="{Binding IsChainOffsetVisible, Converter={StaticResource ResourceKey=BTVC}}" />
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           Width="250"
-                           Height="90"
-                           Margin="0,0,0,15"
-                           HorizontalAlignment="Center"
-                           EditValue="{Binding NewErrorValue, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsCalibrationCompletedOrStopped}"
-                           LabelText="{res:Loc InstallationApp.ErrorInMillimiters}"
-                           Mask="N0"
-                           MaxValue="9"
-                           MinValue="1"
-                           Visibility="{Binding IsNewErrorValueVisible, Converter={StaticResource ResourceKey=BTVC}}" />
-
-        <RadioButton Grid.Row="3"
-                     Margin="0"
-                     HorizontalAlignment="Center"
-                     GroupName="test"
-                     IsChecked="{Binding IsErrorNegative, Mode=TwoWay}"
-                     IsEnabled="true"
-                     Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVC}}">
-          <RadioButton.Content>
-            <TextBlock Style="{StaticResource VWAPP_ViewRadioButtonTitleTextBlockStyle}"
-                       Text="-" />
-          </RadioButton.Content>
-        </RadioButton>
-
-        <RadioButton Grid.Row="3"
-                     Grid.Column="1"
-                     Margin="0"
-                     HorizontalAlignment="Center"
-                     GroupName="test"
-                     IsChecked="{Binding IsErrorPositive, Mode=TwoWay}"
-                     IsEnabled="true"
-                     Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVC}}">
-          <RadioButton.Content>
-            <TextBlock Style="{StaticResource VWAPP_ViewRadioButtonTitleTextBlockStyle}"
-                       Text="+" />
-          </RadioButton.Content>
-        </RadioButton>
-
-        <controls:PpcButton Grid.Row="4"
-                            Grid.Column="1"
-                            Margin="0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Command="{Binding ApplyCommand}"
-                            Content="{res:Loc InstallationApp.ApplyCorrection}"
-                            Style="{DynamicResource WizardIntoButton}"
-                            Visibility="{Binding IsCalibrationCompletedOrStopped, Converter={StaticResource ResourceKey=BTVC}}" />
-
-        <controls:PpcButton Grid.Row="4"
-                            Grid.Column="0"
-                            Margin="0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Command="{Binding CompleteCommand}"
-                            Content="{res:Loc InstallationApp.ConfirmProcedure}"
-                            Style="{DynamicResource WizardIntoButton}"
-                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
-
-        <TextBlock Grid.Row="5"
-                   Grid.ColumnSpan="2"
-                   Margin="0,15,0,0"
-                   Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.RepeatProcedure}"
-                   Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
-
-        <controls:PpcButton Grid.Row="6"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="0,10,0,0"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding RepeatCalibrationCommand}"
-                            Content="{res:Loc InstallationApp.Repeat}"
-                            Style="{StaticResource WizardConfirmButton}"
-                            Visibility="{Binding IsCalibrationNotCompleted, Converter={StaticResource ResourceKey=BTVIC}}" />
       </Grid>
     </DataTemplate>
 

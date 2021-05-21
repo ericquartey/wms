@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IMachineItemsWebService itemWebService;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineWmsStatusWebService wmsStatusWebService;
 
         private bool isEnabled;
@@ -202,6 +204,7 @@ namespace Ferretto.VW.App.Modules.Operator
                         SerialNumber = serialNumber,
                         UserName = userName,
                     });
+                this.logger.Debug($"User requested to update compartment {compartmentId}, item {itemId} with quantity {stock}.");
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

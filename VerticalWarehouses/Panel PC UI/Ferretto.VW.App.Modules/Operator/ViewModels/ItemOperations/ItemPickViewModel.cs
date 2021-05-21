@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand emptyOperationCommand;
 
+        private bool isAddItemFeatureAvailable;
+
         private string measureUnitTxt;
 
         private DelegateCommand pickBoxCommand;
@@ -96,13 +98,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public ICommand EmptyOperationCommand =>
-                    this.emptyOperationCommand
-            ??
-            (this.emptyOperationCommand = new DelegateCommand(
-                async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
-                this.CanPartiallyCompleteOnEmptyCompartment));
+                            this.emptyOperationCommand
+                    ??
+                    (this.emptyOperationCommand = new DelegateCommand(
+                        async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
+                        this.CanPartiallyCompleteOnEmptyCompartment));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether it makes visible the 'Add' button according to a well-defined configuration machine parameter.
+        /// </summary>
+        public bool IsAddItemFeatureAvailable
+        {
+            get => this.isAddItemFeatureAvailable;
+            set => this.SetProperty(ref this.isAddItemFeatureAvailable, value, this.RaiseCanExecuteChanged);
+        }
 
         public string MeasureUnitTxt
         {
@@ -180,6 +191,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
             await base.OnAppearedAsync();
+
+            this.IsAddItemFeatureAvailable = await this.MachineIdentityWebService.IsEnableAddItemAsync() &&
+                this.IsCurrentDraperyItem;
 
             //this.SetLastQuantity();
         }

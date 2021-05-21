@@ -1898,9 +1898,6 @@
   <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
     <value>Programmazione inverter terminata con successo</value>
   </data>
-  <data name="InvertersProgrammingStarted" xml:space="preserve">
-    <value>Programmazione inverters in esecuzione</value>
-  </data>
   <data name="InvertersProgrammingStopped" xml:space="preserve">
     <value>Programmazione inverter fermata</value>
   </data>
@@ -2298,9 +2295,6 @@
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Premi inizia per cominciare la calibrazione</value>
   </data>
-  <data name="CallUnitWeight" xml:space="preserve">
-    <value>Chiamata cassetto: Attendere che il cassetto precedente sia rientrato in cella, poi selezionare il cassetto voluto e premere Chiamata cassetto. Quando il cassetto sarà arrivato in baia riapparirà la procedura di calibrazione peso</value>
-  </data>
   <data name="UnloadToBay" xml:space="preserve">
     <value>Scarica</value>
   </data>
@@ -2339,9 +2333,6 @@
   </data>
   <data name="ReadInverterParameter" xml:space="preserve">
     <value>Leggi tutto</value>
-  </data>
-  <data name="ImportStructure" xml:space="preserve">
-    <value>Importa struttura</value>
   </data>
   <data name="OverwriteFile" xml:space="preserve">
     <value>Sovrascrivi il file di destinazione</value>
@@ -2421,12 +2412,6 @@
   <data name="RandomCells" xml:space="preserve">
     <value>Assegnazione celle random</value>
   </data>
-  <data name="InternalUp" xml:space="preserve">
-    <value>Int Alta</value>
-  </data>
-  <data name="InternalDown" xml:space="preserve">
-    <value>Int Bassa</value>
-  </data>
   <data name="UnitHightInternalPosition" xml:space="preserve">
     <value>Cassetto in posizione interna alta</value>
   </data>
@@ -2479,6 +2464,6 @@
     <value>Ci sono missioni attive per questo cassetto da parte del WMS</value>
   </data>
   <data name="BayTelescopic" xml:space="preserve">
-    <value>Baia telescopica</value>
+    <value>Baia telescopica in sede</value>
   </data>
 </root>

@@ -79,6 +79,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand insertOperationCommand;
 
+        private bool isAddItemFeatureAvailable;
+
         private bool isAddItemVisible;
 
         private bool isAdjustmentVisible;
@@ -240,6 +242,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.insertOperationCommand = new DelegateCommand(
                 async () => await this.BoxOperationAsync(), this.CanInsertOperation));
+
+        /// <summary>
+        /// Gets or sets a value indicating whether it makes visible the 'Add' button according to a well-defined configuration machine parameter.
+        /// </summary>
+        public bool IsAddItemFeatureAvailable
+        {
+            get => this.isAddItemFeatureAvailable;
+            set => this.SetProperty(ref this.isAddItemFeatureAvailable, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsAddItemVisible
         {
@@ -655,6 +666,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await this.OnAppearItem();
 
+            this.IsAddItemFeatureAvailable = await this.identityService.IsEnableAddItemAsync();
             this.Reasons = null;
             this.IsWaitingForReason = false;
 

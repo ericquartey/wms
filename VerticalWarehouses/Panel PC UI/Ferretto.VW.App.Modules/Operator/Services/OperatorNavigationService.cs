@@ -100,6 +100,37 @@ namespace Ferretto.VW.App.Modules.Operator
             this.NavigateToDrawerViewConfirmPresent(goToWaitViewIfBayIsEmpty: true);
         }
 
+        public void NavigateToOperationOrGoBack()
+        {
+            if (this.missionOperationsService.ActiveWmsOperation != null &&
+                this.missionOperationsService.ActiveWmsMission != null &&
+                this.missionOperationsService.ActiveWmsMission.Id == this.missionOperationsService.ActiveWmsOperation.MissionId &&
+                 this.missionOperationsService.ActiveWmsMission.BayId == this.machineService.Bay.Id)
+            {
+                this.NavigateToOperationDetails(this.missionOperationsService.ActiveWmsOperation.Type);
+            }
+            else
+            {
+                var currentMission = this.missionOperationsService.ActiveMachineMission;
+                var loadingUnit = this.machineService.Loadunits.SingleOrDefault(l => l.Id == currentMission?.LoadUnitId);
+
+                if (loadingUnit != null &&
+                    currentMission != null &&
+                    this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id == loadingUnit.Id)
+                {
+                    this.lastActiveUnitId = loadingUnit.Id;
+                    this.NavigateToLoadingUnitDetails(loadingUnit.Id);
+                }
+                else
+                {
+                    this.navigationService.GoBackTo(
+                              nameof(Utils.Modules.Operator),
+                              Utils.Modules.Operator.OPERATOR_MENU,
+                              "NavigateToOperatorMenu");
+                }
+            }
+        }
+
         public void NavigateToOperatorMenu()
         {
             this.logger.Debug($"Navigate 2 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, " +

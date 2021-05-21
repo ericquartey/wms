@@ -1899,9 +1899,6 @@
   <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
     <value>Programování měniče úspěšně dokončeno</value>
   </data>
-  <data name="InvertersProgrammingStarted" xml:space="preserve">
-    <value>Probíhá programování měničů</value>
-  </data>
   <data name="InvertersProgrammingStopped" xml:space="preserve">
     <value>Programování měniče zastavena</value>
   </data>
@@ -2400,12 +2397,6 @@
   <data name="RandomCells" xml:space="preserve">
     <value>Náhodné přiřazení buněk</value>
   </data>
-  <data name="InternalUp" xml:space="preserve">
-    <value>Int Up</value>
-  </data>
-  <data name="InternalDown" xml:space="preserve">
-    <value>Int Down</value>
-  </data>
   <data name="UnitHightInternalPosition" xml:space="preserve">
     <value>Zásuvka ve vysoké vnitřní poloze</value>
   </data>
@@ -2441,9 +2432,6 @@
   </data>
   <data name="SoftwareUpdateDescription" xml:space="preserve">
     <value>Vložte USB flash disk</value>
-  </data>
-  <data name="CallUnitWeight" xml:space="preserve">
-    <value>Zásuvkové volání: Počkejte, dokud se předchozí zásuvka nevrátí do buňky, poté vyberte požadovanou zásuvku a stiskněte Vyvolání zásuvky. Jakmile zásuvka dorazí do pozice, znovu se zobrazí postup kalibrace hmotnosti</value>
   </data>
   <data name="InvalidWeightValues" xml:space="preserve">
     <value>Chybné hodnoty hmotnosti - všechny 3 se musí lišit!</value>

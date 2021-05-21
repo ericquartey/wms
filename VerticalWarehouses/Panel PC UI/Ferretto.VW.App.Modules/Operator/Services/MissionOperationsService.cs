@@ -85,7 +85,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0)
         {
-            this.logger.Debug($"User requested to complete operation '{operationId}'.");
+            this.logger.Debug($"User requested to complete operation '{operationId}' with quantity {quantity}.");
 
             var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
             this.logger.Debug($"Operation to complete has status '{operationToComplete.Status}'.");

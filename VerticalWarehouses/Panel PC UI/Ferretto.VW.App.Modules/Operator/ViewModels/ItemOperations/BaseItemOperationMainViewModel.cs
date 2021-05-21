@@ -482,6 +482,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.loadingUnitWidth, value, this.RaiseCanExecuteChanged);
         }
 
+        public IMachineIdentityWebService MachineIdentityWebService => this.machineIdentityWebService;
+
         public double MissionRequestedQuantity
         {
             get => this.missionRequestedQuantity;

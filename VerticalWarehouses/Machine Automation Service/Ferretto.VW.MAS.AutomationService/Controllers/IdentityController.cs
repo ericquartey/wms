@@ -135,6 +135,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(statistics);
         }
 
+        [HttpPost("get/IsEnableAddItem")]
+        public ActionResult<bool> IsEnableAddItem()
+        {
+            return this.Ok(this.machineProvider.IsEnableAddItem());
+        }
+
         [HttpPost("set/machine/id")]
         public IActionResult SetMachineId(int newMachineId)
         {

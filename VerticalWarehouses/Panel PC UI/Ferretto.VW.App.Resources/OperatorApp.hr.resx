@@ -843,9 +843,6 @@
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Potvrdi na prazno</value>
   </data>
-  <data name="ConfirmOnFull" xml:space="preserve">
-    <value>Potvr.na popunjen</value>
-  </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Dostupnost na strojevima</value>
   </data>
@@ -1727,9 +1724,6 @@
   </data>
   <data name="StepTime" xml:space="preserve">
     <value>Step time</value>
-  </data>
-  <data name="LoadUnitCellSourceId" xml:space="preserve">
-    <value>Cell source Id</value>
   </data>
   <data name="NeedMovingBackward" xml:space="preserve">
     <value>Need moving backward</value>

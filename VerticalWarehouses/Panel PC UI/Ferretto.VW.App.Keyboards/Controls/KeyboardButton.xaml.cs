@@ -90,28 +90,19 @@ namespace Ferretto.VW.App.Keyboards.Controls
             this.KeyCommand = command;
         }
 
-        private void UserControl_PreviewTouchDown(object sender, TouchEventArgs e)
+        private void UserControl_TouchUp(object sender, TouchEventArgs e)
         {
+            this.ExecuteKeyCommand();
 
-        }
-
-        private void UserControl_PreviewTouchUp(object sender, TouchEventArgs e)
-        {
-
+            e.Handled = true;
         }
 
         private void UserControl_TouchDown(object sender, TouchEventArgs e)
         {
-
-        }
-
-        private void UserControl_TouchUp(object sender, TouchEventArgs e)
-        {
-            this.ExecuteKeyCommand();
+            e.Handled = true;
         }
 
         #endregion
-
 
     }
 }

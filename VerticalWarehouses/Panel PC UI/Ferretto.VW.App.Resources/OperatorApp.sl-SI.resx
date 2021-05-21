@@ -843,9 +843,6 @@
   <data name="ConfirmOnEmpty" xml:space="preserve">
     <value>Potrdi na praznem</value>
   </data>
-  <data name="ConfirmOnFull" xml:space="preserve">
-    <value>Potrdi na polnem</value>
-  </data>
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Razpoložlj na strojih</value>
   </data>

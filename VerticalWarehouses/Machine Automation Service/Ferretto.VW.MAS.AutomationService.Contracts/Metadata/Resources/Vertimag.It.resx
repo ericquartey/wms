@@ -172,7 +172,7 @@
     <value>Offset controllo sagoma</value>
   </data>
   <data name="BayShutter" xml:space="preserve">
-    <value>Shutter baia {0}</value>
+    <value>Serranda baia {0}</value>
   </data>
   <data name="Bay_CategoryDescription" xml:space="preserve">
     <value>Permette di modificare i parametri e i dispositivi della baia.</value>
@@ -575,5 +575,8 @@
   </data>
   <data name="Bay_IsTelescopic" xml:space="preserve">
     <value>Telescopica</value>
+  </data>
+  <data name="Machine_IsEnableAddItem" xml:space="preserve">
+    <value>Abilitato aggiungi articolo</value>
   </data>
 </root>

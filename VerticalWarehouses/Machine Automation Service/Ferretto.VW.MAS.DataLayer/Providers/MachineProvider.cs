@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -261,9 +262,26 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     break;
                 }
-                catch (IOException ioExc) when (i < NUMBER_OF_RETRIES - 1)
+                catch (IOException ioExc)
                 {
+                    if (i >= NUMBER_OF_RETRIES - 1)
+                    {
+                        throw;
+                    }
                     this.logger.LogDebug($"Try: #{i + 1}. Error reason: {ioExc.Message}");
+                    Thread.Sleep(10);
+                }
+                catch (AggregateException ae)
+                {
+                    ae.Handle(ex =>
+                    {
+                        if (ex is IOException && i < NUMBER_OF_RETRIES - 1)
+                        {
+                            this.logger.LogDebug($"Try: #{i + 1}. Error reason aggregate: {ex.Message}");
+                            return true;
+                        }
+                        return false;
+                    });
                 }
             }
 
@@ -366,6 +384,14 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.FirstOrDefault()?.IsDbSaveOnTelemetry ?? false;
+            }
+        }
+
+        public bool IsEnableAddItem()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsEnableAddItem ?? false;
             }
         }
 

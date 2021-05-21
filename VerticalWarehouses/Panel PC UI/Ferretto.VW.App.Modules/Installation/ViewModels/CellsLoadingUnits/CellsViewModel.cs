@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,11 +20,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IHealthProbeService healthProbeService;
-
         private readonly IMachineCellsWebService machineCellsWebService;
 
         private SubscriptionToken cellsToken;
+
+        private bool isBusy;
 
         private DelegateCommand saveCommand;
 
@@ -34,12 +35,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public CellsViewModel(
-            IMachineCellsWebService machineCellsWebService,
-            IHealthProbeService healthProbeService)
-            : base(Services.PresentationMode.Installer)
+            IMachineCellsWebService machineCellsWebService)
+            : base(PresentationMode.Installer)
         {
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
-            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
         }
 
         #endregion
@@ -48,9 +47,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<BlockLevel> BlockLevels => Enum.GetValues(typeof(BlockLevel)).OfType<BlockLevel>().Where(block => block != BlockLevel.NeedsTest).ToList();
 
-        public IEnumerable<Cell> Cells => this.MachineService.Cells.OrderBy(s => s.Side).ThenBy(s => s.Id);
+        public ObservableCollection<Cell> Cells => IEnumConvert(this.MachineService.Cells.OrderBy(s => s.Side).ThenBy(s => s.Id));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.SetProperty(ref this.isBusy, value);
+        }
 
         public bool IsEnabledEditing => !this.IsMoving;
 
@@ -92,6 +97,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.SelectedCell = this.Cells?.ToList()[0];
             }
 
+            this.RaisePropertyChanged(nameof(this.Cells));
+
             await base.OnAppearedAsync();
         }
 
@@ -101,9 +108,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.saveCommand?.RaiseCanExecuteChanged();
 
-            this.RaisePropertyChanged(nameof(this.Cells));
             this.RaisePropertyChanged(nameof(this.BlockLevels));
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
+            this.RaisePropertyChanged(nameof(this.IsBusy));
+            this.RaisePropertyChanged(nameof(this.Cells));
 
             if (this.IsMoving)
             {
@@ -115,13 +123,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                this.IsBusy = true;
+
+                this.ClearNotifications();
+
                 await this.machineCellsWebService.SaveCellAsync(this.SelectedCell);
 
-                await this.MachineService.GetCells();
+                this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                await this.MachineService.GetCells();
+
+                this.IsBusy = false;
+
+                this.RaisePropertyChanged(nameof(this.Cells));
             }
         }
 

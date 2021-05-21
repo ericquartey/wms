@@ -30,15 +30,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly Services.IDialogService dialogService;
+        private readonly IDialogService dialogService;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineBaysWebService machineBaysWebService;
-
         private readonly IMachineCarouselWebService machineCarouselWebService;
-
-        private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private DelegateCommand applyCommand;
 
@@ -56,11 +52,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBeltButnishing = false;
 
-        private bool isCalibrationCompletedOrStopped;
+        private bool isCalibrationCompleted;
 
-        private bool isCalibrationNotCompleted;
-
-        private bool isChainOffsetVisible;
+        private bool isCalibrationStopped;
 
         private bool isErrorNegative = true;
 
@@ -70,11 +64,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingStopInPhase;
 
-        private bool isNewErrorValueVisible;
+        //private bool isNewErrorValueVisible;
 
         private bool isTuningBay;
 
-        private int? newErrorValue;
+        //private int? newErrorValue;
 
         private int oldPerformedCycle = 0;
 
@@ -114,17 +108,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CarouselCalibrationViewModel(
             IEventAggregator eventAggregator,
-            IMachineElevatorWebService machineElevatorWebService,
             IDialogService dialogService,
-            IMachineCarouselWebService machineCarouselWebService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineCarouselWebService machineCarouselWebService)
           : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
-            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
             this.CurrentStep = CarouselCalibrationStep.StartCalibration;
         }
@@ -173,8 +163,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public string Error => string.Join(
             this[nameof(this.CurrentDistance)],
-            this[nameof(this.CurrentResolution)],
-            this[nameof(this.NewErrorValue)]);
+            this[nameof(this.CurrentResolution)]/*,
+            this[nameof(this.NewErrorValue)]*/);
 
         public bool HasCarousel => this.MachineService.HasCarousel;
 
@@ -186,28 +176,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepStartCalibration => this.currentStep is CarouselCalibrationStep.StartCalibration;
 
-        public bool IsCalibrationCompletedOrStopped
+        public bool IsCalibrationCompleted
         {
-            get => this.isCalibrationCompletedOrStopped;
+            get => this.isCalibrationCompleted;
+            set => this.SetProperty(ref this.isCalibrationCompleted, value);
+        }
+
+        public bool IsCalibrationNotCompletedAndStopped => !this.IsCalibrationStopped && !this.IsCalibrationCompleted;
+
+        public bool IsCalibrationStopped
+        {
+            get => this.isCalibrationStopped;
             private set
             {
-                if (this.SetProperty(ref this.isCalibrationCompletedOrStopped, value))
+                if (this.SetProperty(ref this.isCalibrationStopped, value))
                 {
                     this.UpdateView();
                 }
             }
-        }
-
-        public bool IsCalibrationNotCompleted
-        {
-            get => this.isCalibrationNotCompleted;
-            set => this.SetProperty(ref this.isCalibrationNotCompleted, value);
-        }
-
-        public bool IsChainOffsetVisible
-        {
-            get => this.isChainOffsetVisible;
-            set => this.SetProperty(ref this.isChainOffsetVisible, value);
         }
 
         public bool IsErrorNegative
@@ -262,11 +248,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         //public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
-        public bool IsNewErrorValueVisible
-        {
-            get => this.isNewErrorValueVisible;
-            set => this.SetProperty(ref this.isNewErrorValueVisible, value);
-        }
+        //public bool IsNewErrorValueVisible
+        //{
+        //    get => this.isNewErrorValueVisible;
+        //    set => this.SetProperty(ref this.isNewErrorValueVisible, value);
+        //}
 
         public bool IsTuningBay
         {
@@ -274,11 +260,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isTuningBay, value);
         }
 
-        public int? NewErrorValue
-        {
-            get => this.newErrorValue;
-            set => this.SetProperty(ref this.newErrorValue, value);
-        }
+        //public int? NewErrorValue
+        //{
+        //    get => this.newErrorValue;
+        //    set => this.SetProperty(ref this.newErrorValue, value);
+        //}
 
         public int PerformedCycles
         {
@@ -387,26 +373,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     return null;
                 }
 
-                switch (columnName)
-                {
-                    case nameof(this.NewErrorValue):
-                        if (!this.NewErrorValue.HasValue)
-                        {
-                            return Localized.Get("InstallationApp.MissValue");
-                        }
+                //switch (columnName)
+                //{
+                //    case nameof(this.NewErrorValue):
+                //        if (!this.NewErrorValue.HasValue)
+                //        {
+                //            return Localized.Get("InstallationApp.MissValue");
+                //        }
 
-                        if (this.NewErrorValue.HasValue && this.NewErrorValue < 1)
-                        {
-                            return Localized.Get("InstallationApp.DataBePositive");
-                        }
+                //        if (this.NewErrorValue.HasValue && this.NewErrorValue < 1)
+                //        {
+                //            return Localized.Get("InstallationApp.DataBePositive");
+                //        }
 
-                        if (this.NewErrorValue.HasValue && this.NewErrorValue > 9)
-                        {
-                            return Localized.Get("InstallationApp.MaxValue9");
-                        }
+                //        if (this.NewErrorValue.HasValue && this.NewErrorValue > 9)
+                //        {
+                //            return Localized.Get("InstallationApp.MaxValue9");
+                //        }
 
-                        break;
-                }
+                //        break;
+                //}
 
                 return null;
             }
@@ -558,20 +544,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ApplyCorrectionMessage"), Localized.Get("InstallationApp.CarouselCalibration"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    double newElevatorDistance = 0;
+                    //double newElevatorDistance = 0;
 
-                    if (this.IsNewErrorValueVisible)
-                    {
-                        var measuredCorrection = this.IsErrorNegative ? this.NewErrorValue : -this.NewErrorValue;
-                        var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
-                        newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
-                    }
-                    else
-                    {
-                        var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
-                        var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
-                        newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
-                    }
+                    //if (this.IsNewErrorValueVisible)
+                    //{
+                    //    var measuredCorrection = this.IsErrorNegative ? this.NewErrorValue : -this.NewErrorValue;
+                    //    var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
+                    //    newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
+                    //}
+                    //else
+                    //{
+                    //    var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
+                    //    var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
+                    //    newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
+                    //}
+
+                    var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
+                    var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
+                    double newElevatorDistance = (double)correctionForEachMovement + this.MachineService.Bay.Carousel.ElevatorDistance;
 
                     await this.machineCarouselWebService.UpdateElevatorChainDistanceAsync(newElevatorDistance);
 
@@ -580,7 +570,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.CurrentDistance = this.MachineService.Bay.Carousel.ElevatorDistance;
 
                     this.ShowNotification(
-                            VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
+                            Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
                             Services.Models.NotificationSeverity.Success);
 
                     this.CurrentStep = CarouselCalibrationStep.StartCalibration;
@@ -612,7 +602,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanComplete()
         {
             return this.CanBaseExecute() &&
-                !this.isCalibrationNotCompleted;
+                this.isCalibrationCompleted;
         }
 
         private bool CanRepeat()
@@ -663,7 +653,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineCarouselWebService.SetCalibrationCompletedAsync();
 
                 this.ShowNotification(
-                    VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"),
+                    Localized.Get("InstallationApp.CompletedTest"),
                     Services.Models.NotificationSeverity.Success);
 
                 this.NavigationService.GoBack();
@@ -699,25 +689,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.IsErrored() ||
                 this.MachineError != null)
             {
-                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
+                this.ShowNotification(Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
 
-                this.IsCalibrationCompletedOrStopped = true;
+                //this.IsNewErrorValueVisible = false;
 
-                this.IsChainOffsetVisible = true;
-                this.IsNewErrorValueVisible = false;
+                this.IsCalibrationStopped = false;
 
                 this.IsExecutingProcedure = false;
 
-                this.IsCalibrationNotCompleted = this.requiredCycles == this.performedCycles ? false : true;
+                this.IsCalibrationCompleted = this.requiredCycles == this.performedCycles ? true : false;
 
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
 
                 if (this.MachineError != null)
                 {
-                    this.IsChainOffsetVisible = false;
-                    this.IsNewErrorValueVisible = true;
-                    this.IsCalibrationNotCompleted = true;
-                    this.NewErrorValue = 0;
+                    //this.IsNewErrorValueVisible = true;
+                    this.IsCalibrationCompleted = false;
+                    //this.NewErrorValue = 0;
                 }
 
                 return;
@@ -745,50 +733,55 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.ShowNotification(Localized.Get("InstallationApp.TestStopped"), Services.Models.NotificationSeverity.Success);
 
-                    this.IsNewErrorValueVisible = false;
+                    //this.IsNewErrorValueVisible = false;
 
-                    this.IsCalibrationNotCompleted = true;
+                    this.IsCalibrationCompleted = false;
+
+                    this.IsCalibrationStopped = true;
                 }
                 else
                 {
-                    this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
 
-                    this.IsNewErrorValueVisible = true;
+                    //this.IsNewErrorValueVisible = true;
 
-                    this.IsCalibrationNotCompleted = this.requiredCycles == this.performedCycles ? false : true;
+                    this.IsCalibrationCompleted = this.requiredCycles == this.performedCycles ? true : false;
+
+                    this.IsCalibrationStopped = false;
                 }
-
-                this.IsChainOffsetVisible = false;
 
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;
 
-                this.IsCalibrationCompletedOrStopped = true;
-
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
 
-                this.NewErrorValue = 0;
+                //this.NewErrorValue = 0;
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
                 this.UpdateView();
             }
 
             if (message.Status == MessageStatus.OperationStop)
             {
-                this.IsCalibrationNotCompleted = true;
+                this.IsCalibrationCompleted = false;
 
-                this.IsChainOffsetVisible = false;
-                this.IsNewErrorValueVisible = false;
+                //this.IsNewErrorValueVisible = false;
 
                 this.IsExecutingStopInPhase = false;
+
                 this.IsExecutingProcedure = false;
-                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
+
+                this.IsCalibrationStopped = true;
+
+                this.ShowNotification(Localized.Get("InstallationApp.ProcedureWasStopped"), Services.Models.NotificationSeverity.Warning);
+
                 this.PerformedCycles = message.Data.ExecutedCycles;
+
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
 
-                this.IsCalibrationCompletedOrStopped = false;
-                this.NewErrorValue = 0;
+                //this.NewErrorValue = 0;
 
                 this.CurrentStep = CarouselCalibrationStep.ConfirmAdjustment;
+
                 this.UpdateView();
 
                 this.IsExecutingProcedure = false;
@@ -1046,8 +1039,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.RequiredCycles));
             this.RaisePropertyChanged(nameof(this.IsExecutingProcedure));
             this.RaisePropertyChanged(nameof(this.IsExecutingStopInPhase));
+            this.RaisePropertyChanged(nameof(this.IsCalibrationNotCompletedAndStopped));
 
-            this.RaisePropertyChanged(nameof(this.NewErrorValue));
+            //this.RaisePropertyChanged(nameof(this.NewErrorValue));
             this.RaisePropertyChanged(nameof(this.ChainOffset));
         }
 

@@ -907,6 +907,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enabled add item.
+        /// </summary>
+        public static string Machine_IsEnableAddItem {
+            get {
+                return ResourceManager.GetString("Machine_IsEnableAddItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HeartBeat in inverter communication .
         /// </summary>
         public static string Machine_IsHeartBeat {

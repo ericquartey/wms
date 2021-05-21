@@ -527,7 +527,7 @@
                                     VerticalAlignment="Bottom"
                                     Command="{Binding AddItemCommand}"
                                     Content="{resources:Loc OperatorApp.Add}"
-                                    Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
+                                    Visibility="{Binding IsAddItemFeatureAvailable, Converter={StaticResource BTVC}}" />
 
             </Grid>
 
