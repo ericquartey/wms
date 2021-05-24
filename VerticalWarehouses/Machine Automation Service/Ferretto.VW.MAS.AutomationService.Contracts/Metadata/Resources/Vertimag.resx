@@ -582,4 +582,7 @@
   <data name="Machine_IsEnableAddItem" xml:space="preserve">
     <value>Enabled add item</value>
   </data>
+  <data name="BarcodeAutomaticPut" xml:space="preserve">
+    <value>Barcode automatic put</value>
+  </data>
 </root>

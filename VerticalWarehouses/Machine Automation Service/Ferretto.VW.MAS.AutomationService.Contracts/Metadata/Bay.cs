@@ -13,6 +13,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             #region Properties
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BarcodeAutomaticPut))]
+            [Id(35)]
+            public bool BarcodeAutomaticPut { get; set; }
+
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.BayCarousel))]
             [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.BayCarousel_Description))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
