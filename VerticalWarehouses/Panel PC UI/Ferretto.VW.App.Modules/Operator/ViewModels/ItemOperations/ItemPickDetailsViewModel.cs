@@ -10,6 +10,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCurrentDraperyItem;
 
+        private bool isPackingListCodeAvailable;
+
+        private bool isPackingListDescriptionAvailable;
+
         #endregion
 
         // Note:
@@ -39,6 +43,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isCurrentDraperyItem, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsPackingListCodeAvailable
+        {
+            get => this.isPackingListCodeAvailable;
+            set => this.SetProperty(ref this.isPackingListCodeAvailable, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsPackingListDescriptionAvailable
+        {
+            get => this.isPackingListDescriptionAvailable;
+            set => this.SetProperty(ref this.isPackingListDescriptionAvailable, value, this.RaiseCanExecuteChanged);
+        }
+
         #endregion
 
         #region Methods
@@ -46,6 +62,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.IsPackingListCodeAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListCode);
+            this.IsPackingListDescriptionAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListDescription);
 
             var item = await this.ItemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
             this.IsCurrentDraperyItem = item.IsDraperyItem;
