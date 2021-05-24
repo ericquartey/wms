@@ -2472,4 +2472,10 @@
   <data name="OpenBrowser" xml:space="preserve">
     <value>Otwórz przeglądarkę</value>
   </data>
+  <data name="BayTelescopic" xml:space="preserve">
+    <value>Zatoka teleskopowa</value>
+  </data>
+  <data name="WmsMissionActive" xml:space="preserve">
+    <value>W tej szufladzie są aktywne misje przez WMS</value>
+  </data>
 </root>

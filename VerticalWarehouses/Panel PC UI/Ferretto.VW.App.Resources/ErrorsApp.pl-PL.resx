@@ -195,4 +195,7 @@
   <data name="UnitSelectIdBay" xml:space="preserve">
     <value>Wybierz id jednostki/jednostek obecnych w zatoce.</value>
   </data>
+  <data name="MarkAsResolvedAndFindZero" xml:space="preserve">
+    <value>Oznacz jako rozwiązane i wyszukaj zero </value>
+  </data>
 </root>

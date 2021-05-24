@@ -429,4 +429,10 @@
   <data name="InverterErrorSyntaxError2" xml:space="preserve">
     <value>Błąd tymczasowy. Jeśli problem pojawi się ponownie, wyłączyć zasilanie i włączyć je po 15 sekundach.</value>
   </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>Zmień parametr tara jednostki ładunkowej</value>
+  </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>Zatoka teleskopowa jest poza miejscem. Ustaw ją właściwie aby przywrócić ruchy automatyczne</value>
+  </data>
 </root>
