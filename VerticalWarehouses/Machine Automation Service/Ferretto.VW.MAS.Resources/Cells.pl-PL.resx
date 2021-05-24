@@ -117,49 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="TheCellAlreadyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>W komórce znajduje się już inna jednostka ładunkowa.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="TheCellIsUnexpectedlyFree" xml:space="preserve">
+    <value>Komórka jest nieoczekiwanie wolna.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>Komórka zawiera nieoczekiwanie inną jednostkę ładunkową.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
+    <value>Jednostka ładunkowa nie może zająć zablokowanej komórki.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
+    <value>Jednostka ładunkowa znajduje się już w innej komórce.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights" xml:space="preserve">
+    <value>Podana wysokość nie znajduje się pomiędzy wysokościami sąsiednich komórek.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
+    <value>Określona wysokość spowodowałaby nałożenie się panelu na inne panele.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
+    <value>Komórka docelowa jest tylko przestrzenią, nie może obsługiwać jednostki ładunkowej.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="TheTargetCellIsBlocked" xml:space="preserve">
+    <value>Komórka docelowa jest zablokowana.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
+  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Określona komórka nie znajduje się w granicach pionowych podnośnika.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="NoEmptyCellsAvailable" xml:space="preserve">
+    <value>Brak dostępnej pustej komórki</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="TheCellIsNotFree" xml:space="preserve">
+    <value>Komórka nie jest wolna.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
+  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
+    <value>Określona komórka nie może pomieścić jednostki ładunkowej</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Określona wysokość jest poza pionowym ograniczeniem podnośnika</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
+    <value>Szuflada nie może być umieszczona przed wyłączoną komórką.</value>
+  </data>
+  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
+    <value>Komórka docelowa jest wyłączona.</value>
+  </data>
+  <data name="TheTargetCellIsUnusable" xml:space="preserve">
+    <value>Komórka docelowa jest niezdatna do użytku.</value>
   </data>
 </root>

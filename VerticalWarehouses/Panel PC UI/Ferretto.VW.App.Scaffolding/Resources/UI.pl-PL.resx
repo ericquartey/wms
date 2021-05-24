@@ -117,49 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="All" xml:space="preserve">
+    <value>Wszystkie</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="AllDescription" xml:space="preserve">
+    <value>Umożliwia dostęp do listy wszystkich parametrów.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Anuluj</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="Empty" xml:space="preserve">
+    <value>Brak elementów spełniających kryteria nawigacji.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Nieprawidłowa wartość</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="Machine" xml:space="preserve">
+    <value>Urządzenie</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="MachineDescription" xml:space="preserve">
+    <value>Umożliwia dostęp do listy wszystkich parametrów.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="Root" xml:space="preserve">
+    <value>Podstawa</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="Save" xml:space="preserve">
+    <value>Zapisz</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="Search" xml:space="preserve">
+    <value>Szukaj:</value>
   </data>
 </root>

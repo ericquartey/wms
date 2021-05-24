@@ -117,49 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="CalibrationBarierError" xml:space="preserve">
+    <value>Podpora nie może być większa niż 1 mm</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="CheckUnit" xml:space="preserve">
+    <value>Sprawdzić jednostkę ładunkową:</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Kod szczegółu</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>Identyfikacja szuflady zakończona, przełączyć na tryb automatyczny.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>Identyfikacja szuflady zakończona, przełączyć na tryb ręczny.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Wybór szuflady</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Kod błędu</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Opis błędu</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Powód błędu</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Usuwanie błędów</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Pierwszy widziany</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="Forwards" xml:space="preserve">
+    <value>Do przodu</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
+  <data name="HighPosition" xml:space="preserve">
+    <value>Wysoka pozycja</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="Id" xml:space="preserve">
+    <value>Oznaczenie</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>Nieprawidłowa jednostka, wstaw: </value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Falownik</value>
+  </data>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Błąd przywrócenia BŁĄD FALOWNIKA</value>
+  </data>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Niska pozycja</value>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Oznacz jako rozwiązany</value>
+  </data>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>Żadna pozycja nie została załadowana na stronę.</value>
+  </data>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Wybrać identyfikator jednostki na podnośniku.</value>
+  </data>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Jednostka na podnośniku</value>
+  </data>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Wybór jednostki (Zatoka 1):</value>
+  </data>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Wybór jednostki (Zatoka 2):</value>
+  </data>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Wybór jednostki (Zatoka 3):</value>
+  </data>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Wybierz id jednostki/jednostek obecnych w zatoce.</value>
   </data>
 </root>

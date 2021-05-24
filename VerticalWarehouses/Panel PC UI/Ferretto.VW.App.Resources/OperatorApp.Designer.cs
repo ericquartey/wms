@@ -943,6 +943,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ConfirmOnFull {
+            get {
+                return ResourceManager.GetString("ConfirmOnFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change.
         /// </summary>
         public static string ConfirmPartial {

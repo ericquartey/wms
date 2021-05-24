@@ -117,49 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="Close" xml:space="preserve">
+    <value>Zamknij</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="Next" xml:space="preserve">
+    <value>Następny</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Otwórz folder</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="VertimagConfigurationFile" xml:space="preserve">
+    <value>Plik konfiguracyjny Vertimag</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Otwórz plik</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="InvertersFolder" xml:space="preserve">
+    <value>Folder falowników</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
+    <value>Generator plików z parametrami falowników</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="NoParametersFilesFound" xml:space="preserve">
+    <value>Nie znaleziono plików z parametrami</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
+  <data name="InverterTypeParametersConfiguration" xml:space="preserve">
+    <value>Konfiguracja parametrów falownika [{0}] typ '{1}'</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="TotalParameters" xml:space="preserve">
+    <value>parametry całkowite {0}</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Oznaczenie</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Oznaczenie</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Zbiór danych</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Wartość</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Jest tylko do odczytu</value>
+  </data>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Eksport konfiguracji</value>
+  </data>
+  <data name="ExportFile" xml:space="preserve">
+    <value>Eksport pliku</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Brak wierszy</value>
+  </data>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>Eksport zakończony pomyślnie.</value>
+  </data>
+  <data name="SaveFileConfiguration" xml:space="preserve">
+    <value>Zapisz plik konfiguracji</value>
+  </data>
+  <data name="ConfigurationFile" xml:space="preserve">
+    <value>Plik konfiguracyjny</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Poprzedni</value>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Import konfiguracji</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Wybierz plik</value>
+  </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Folder parametrów falowników</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Wybierz plik konfiguracyjny</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Folder konfiguracyjny</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Foldery nie istnieją</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>Plik nieważny lub niewstawiony</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>Plik nie został zapisany</value>
+  </data>
+  <data name="SearchPattern" xml:space="preserve">
+    <value>Wzór plików</value>
+  </data>
+  <data name="VertimagInverterConfigurationFile" xml:space="preserve">
+    <value>Plik konfiguracyjny falownika Vertimag</value>
   </data>
 </root>

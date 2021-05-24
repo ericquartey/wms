@@ -117,49 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Brak automatyczny</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>Nie wykonano kalibracji zatoki.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>Kalibracja karuzeli nie powiodła się. \r\n Łańcuch zatoki nie znajduje się w położeniu zerowym.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Zajęty</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="CellFree" xml:space="preserve">
+    <value>Wolny</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>Nie wykonano ustawienia pozycji zerowej.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>Niespójność czujników obecności migawki w zatoce.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>Niespójność stanu załadunku i czujników.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Niespójność zera czujników przesuwacza i obecności jednostki ładunkowej.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Obecność jednostki ładunkowej na podnośniku.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>Jednostka ładunkowa gotowa do pracy.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Pomyślnie zażądano jednostki ładunkowej {0}.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Jednostka ładunkowa na pokładzie ma nieprawidłową wysokość</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>Maszyna nie jest w trybie ręcznym ...</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Maszyna wyłączona</value>
+  </data>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Błędne misje ...</value>
+  </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Misje wms są obecne, ale wms nie jest aktywny</value>
+  </data>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Trwa ruch łańcucha zatoki ...</value>
+  </data>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Ruch podnośnika w toku...</value>
+  </data>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>Poziomy ruch w toku...</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Ruch w toku... {0}</value>
+  </data>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Ruch w toku... Misja: {0}, Jednostka ładunkowa: {1}, Status: {2}, Ruch z {3} {4}, do {5} {6})</value>
+  </data>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Trwa ruch jednostki ładunkowej ...</value>
+  </data>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Ruch migawki w toku ...</value>
+  </data>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>Pionowy ruch w toku ...</value>
+  </data>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>Brak jednostki ładunkowej w zatoce.</value>
+  </data>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>Brak zerowego czujnika przesuwacza lub obecności jednostki ładunkowej.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Pozycja {0}</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>Migawka otwarta lub w nieznanej pozycji.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>Trwa test...</value>
   </data>
 </root>
