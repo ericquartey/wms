@@ -432,4 +432,7 @@
   <data name="TelescopicBayError" xml:space="preserve">
     <value>The telescopic bay is out of place. Position it correctly to restore automatic movements</value>
   </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>Correct the tare parameter of the Loading Unit</value>
+  </data>
 </root>
