@@ -11,6 +11,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string batch;
 
+        private bool isPackingListCodeAvailable;
+
+        private bool isPackingListDescriptionAvailable;
+
         private string itemCode;
 
         private string itemDescription;
@@ -52,6 +56,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public string Batch { get => this.batch; set => this.SetProperty(ref this.batch, value); }
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsPackingListCodeAvailable
+        {
+            get => this.isPackingListCodeAvailable;
+            set => this.SetProperty(ref this.isPackingListCodeAvailable, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsPackingListDescriptionAvailable
+        {
+            get => this.isPackingListDescriptionAvailable;
+            set => this.SetProperty(ref this.isPackingListDescriptionAvailable, value, this.RaiseCanExecuteChanged);
+        }
 
         public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
 
@@ -101,6 +117,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Position = this.ItemDetail.Position;
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
+
+            this.IsPackingListCodeAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListCode);
+            this.IsPackingListDescriptionAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListDescription);
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
         }
 
         #endregion
