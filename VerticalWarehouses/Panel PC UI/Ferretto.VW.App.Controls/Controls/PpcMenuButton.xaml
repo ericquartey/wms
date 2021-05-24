@@ -9,193 +9,194 @@
              Width="380"
              Height="100"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <Style TargetType="{x:Type controls:BaseMenuButton}">
-            <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
-            <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-            <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource PpcMenuButtonBorderBrush}" />
-            <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="UseLayoutRounding" Value="True" />
+  <UserControl.Resources>
+    <Style TargetType="{x:Type controls:BaseMenuButton}">
+      <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
+      <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+      <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource PpcMenuButtonBorderBrush}" />
+      <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+      <Setter Property="SnapsToDevicePixels" Value="True" />
+      <Setter Property="UseLayoutRounding" Value="True" />
 
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type controls:BaseMenuButton}">
-                        <Border x:Name="ButtonBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{DynamicResource PpcBorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type controls:BaseMenuButton}">
+            <Border x:Name="ButtonBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="{DynamicResource PpcCornerRadius}">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                                <Grid Grid.Column="0"
-                                      Background="{TemplateBinding MenuBrush}"
-                                      Opacity="0.8">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="5" />
-                                        <ColumnDefinition Width="70" />
-                                        <ColumnDefinition Width="25" />
-                                        <ColumnDefinition Width="65" />
-                                        <ColumnDefinition Width="5" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="5" />
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="5" />
-                                    </Grid.RowDefinitions>
+                <Grid Grid.Column="0"
+                      Background="{TemplateBinding MenuBrush}"
+                      Opacity="0.8">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="65" />
+                    <ColumnDefinition Width="5" />
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="5" />
+                  </Grid.RowDefinitions>
 
-                                    <StackPanel Grid.Row="1"
-                                                Grid.Column="1"
-                                                VerticalAlignment="Center">
-                                        <ContentPresenter Grid.Row="1"
-                                                          Grid.RowSpan="2"
-                                                          Grid.Column="1"
-                                                          Margin="5,0,0,0"
-                                                          HorizontalAlignment="Right"
-                                                          VerticalAlignment="Top"
-                                                          Content="{Binding ElementName=MenuButton, Path=Abbreviation, FallbackValue='INSTALL'}"
-                                                          TextBlock.FontSize="18" />
-
-                                        <ContentPresenter Grid.Row="3"
-                                                          Grid.RowSpan="2"
-                                                          Grid.Column="1"
-                                                          Margin="0,-7,-3,0"
-                                                          HorizontalAlignment="Right"
-                                                          VerticalAlignment="Top"
-                                                          Content="{Binding ElementName=MenuButton, Path=Number, FallbackValue='01'}"
-                                                          TextBlock.FontSize="36" />
-                                    </StackPanel>
-
-                                    <Border x:Name="Grid_MenuButton_DrawingBrush"
-                                            Grid.Row="1"
-                                            Grid.Column="2"
-                                            Margin="5,25"
-                                            HorizontalAlignment="Center"
-                                            BorderThickness="2,0,0,0">
-                                        <Border.BorderBrush>
-                                            <DrawingBrush TileMode="Tile"
-                                                          Viewport="0,0,8,8"
-                                                          ViewportUnits="Absolute">
-                                                <DrawingBrush.Drawing>
-                                                    <DrawingGroup>
-                                                        <GeometryDrawing Brush="{DynamicResource MenuButtonBorderBrush}">
-                                                            <GeometryDrawing.Geometry>
-                                                                <GeometryGroup>
-                                                                    <RectangleGeometry Rect="0,0,50,50" />
-                                                                    <RectangleGeometry Rect="50,50,50,50" />
-                                                                </GeometryGroup>
-                                                            </GeometryDrawing.Geometry>
-                                                        </GeometryDrawing>
-                                                    </DrawingGroup>
-                                                </DrawingBrush.Drawing>
-                                            </DrawingBrush>
-                                        </Border.BorderBrush>
-                                    </Border>
-
-                                    <Grid Grid.Row="1"
-                                          Grid.Column="3"
-                                          HorizontalAlignment="Left">
-                                        <Ellipse x:Name="Grid_MenuButton_Ellipse"
-                                                 Width="56"
-                                                 Height="56"
-                                                 HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center"
-                                                 Fill="{TemplateBinding MenuBrush}"
-                                                 Stroke="{DynamicResource MenuButtonStroke}"
-                                                 StrokeThickness="1">
-                                            <Ellipse.BitmapEffect>
-                                                <DropShadowBitmapEffect Opacity="0.5"
-                                                                        ShadowDepth="5" />
-                                            </Ellipse.BitmapEffect>
-                                        </Ellipse>
-
-                                        <icon:PackIconMaterial x:Name="Grid_MenuButton_Icon"
-                                                               Width="28"
-                                                               Height="28"
-                                                               HorizontalAlignment="Center"
-                                                               VerticalAlignment="Center"
-                                                               Foreground="{DynamicResource Foreground}"
-                                                               Kind="{Binding Path=Kind, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    </Grid>
-                                </Grid>
-                                <Grid x:Name="Grid_MenuButton"
+                  <StackPanel Grid.Row="1"
+                              Grid.Column="1"
+                              VerticalAlignment="Center">
+                    <ContentPresenter Grid.Row="1"
+                                      Grid.RowSpan="2"
                                       Grid.Column="1"
-                                      Background="{DynamicResource MainButtonBackground}">
-                                    <Grid.RowDefinitions>
-                                        <!--  Margine Top  -->
-                                        <RowDefinition Height="10" />
-                                        <!--  Title  -->
-                                        <RowDefinition Height="Auto" />
-                                        <!--  Body  -->
-                                        <RowDefinition Height="*" />
-                                        <!--  Margine Botton  -->
-                                        <RowDefinition Height="10" />
-                                    </Grid.RowDefinitions>
+                                      Margin="5,0,0,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Top"
+                                      Content="{Binding ElementName=MenuButton, Path=Abbreviation, FallbackValue='INSTALL'}"
+                                      TextBlock.FontSize="18" />
 
-                                    <Grid.ColumnDefinitions>
-                                        <!--  Margine Left  -->
-                                        <ColumnDefinition Width="25" />
-                                        <!--  Body  -->
-                                        <ColumnDefinition Width="*" />
-                                        <!--  Margine Right  -->
-                                        <ColumnDefinition Width="25" />
-                                    </Grid.ColumnDefinitions>
+                    <ContentPresenter Grid.Row="3"
+                                      Grid.RowSpan="2"
+                                      Grid.Column="1"
+                                      Margin="0,-7,-3,0"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Top"
+                                      Content="{Binding ElementName=MenuButton, Path=Number, FallbackValue='01'}"
+                                      TextBlock.FontSize="36" />
+                  </StackPanel>
 
-                                    <TextBlock x:Name="Grid_MenuButton_Title"
-                                               Grid.Row="1"
-                                               Grid.Column="1"
-                                               FontSize="24"
-                                               Foreground="{DynamicResource Text_Foreground}"
-                                               Text="{Binding ElementName=MenuButton, Path=Title, FallbackValue='TITOLO'}"
-                                               TextWrapping="Wrap" />
+                  <Border x:Name="Grid_MenuButton_DrawingBrush"
+                          Grid.Row="1"
+                          Grid.Column="2"
+                          Margin="5,25"
+                          HorizontalAlignment="Center"
+                          BorderThickness="2,0,0,0">
+                    <Border.BorderBrush>
+                      <DrawingBrush TileMode="Tile"
+                                    Viewport="0,0,8,8"
+                                    ViewportUnits="Absolute">
+                        <DrawingBrush.Drawing>
+                          <DrawingGroup>
+                            <GeometryDrawing Brush="{DynamicResource MenuButtonBorderBrush}">
+                              <GeometryDrawing.Geometry>
+                                <GeometryGroup>
+                                  <RectangleGeometry Rect="0,0,50,50" />
+                                  <RectangleGeometry Rect="50,50,50,50" />
+                                </GeometryGroup>
+                              </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                          </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                      </DrawingBrush>
+                    </Border.BorderBrush>
+                  </Border>
 
-                                    <TextBlock x:Name="Grid_MenuButton_Description"
-                                               Grid.Row="2"
-                                               Grid.Column="1"
-                                               FontSize="{DynamicResource FontSize_Small}"
-                                               Foreground="{DynamicResource TextLight_Foreground}"
-                                               Text="{Binding ElementName=MenuButton, Path=Description, FallbackValue='bla bla bla bla bla'}"
-                                               TextWrapping="Wrap" />
-                                </Grid>
+                  <Grid Grid.Row="1"
+                        Grid.Column="3"
+                        HorizontalAlignment="Left">
+                    <Ellipse x:Name="Grid_MenuButton_Ellipse"
+                             Width="56"
+                             Height="56"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Fill="{TemplateBinding MenuBrush}"
+                             Stroke="{DynamicResource MenuButtonStroke}"
+                             StrokeThickness="1">
+                      <Ellipse.BitmapEffect>
+                        <DropShadowBitmapEffect Opacity="0.5"
+                                                ShadowDepth="5" />
+                      </Ellipse.BitmapEffect>
+                    </Ellipse>
 
-                                <Border x:Name="MenuDisabled"
-                                        Grid.ColumnSpan="2"
-                                        BorderBrush="{DynamicResource FerrettoDarkGray}"
-                                        BorderThickness="0"
-                                        Visibility="Collapsed">
-                                    <Border.Background>
-                                        <SolidColorBrush Opacity="0.5"
-                                                         Color="Black" />
-                                    </Border.Background>
-                                </Border>
+                    <icon:PackIconMaterial x:Name="Grid_MenuButton_Icon"
+                                           Width="28"
+                                           Height="28"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource Foreground}"
+                                           Kind="{Binding Path=Kind, RelativeSource={RelativeSource TemplatedParent}}" />
+                  </Grid>
+                </Grid>
+                <Grid x:Name="Grid_MenuButton"
+                      Grid.Column="1"
+                      Background="{DynamicResource MainButtonBackground}">
+                  <Grid.RowDefinitions>
+                    <!--  Margine Top  -->
+                    <RowDefinition Height="10" />
+                    <!--  Title  -->
+                    <RowDefinition Height="Auto" />
+                    <!--  Body  -->
+                    <RowDefinition Height="*" />
+                    <!--  Margine Botton  -->
+                    <RowDefinition Height="10" />
+                  </Grid.RowDefinitions>
 
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
-                                <Setter Property="Cursor" Value="Hand" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="MenuDisabled" Property="Visibility" Value="Visible" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </UserControl.Resources>
+                  <Grid.ColumnDefinitions>
+                    <!--  Margine Left  -->
+                    <ColumnDefinition Width="25" />
+                    <!--  Body  -->
+                    <ColumnDefinition Width="*" />
+                    <!--  Margine Right  -->
+                    <ColumnDefinition Width="25" />
+                  </Grid.ColumnDefinitions>
 
-    <controls:BaseMenuButton Abbreviation="{Binding ElementName=MenuButton, Path=Abbreviation, FallbackValue='A'}"
-                             Command="{Binding ElementName=MenuButton, Path=Command}"
-                             Content="{Binding ElementName=MenuButton, Path=Text, FallbackValue='01'}"
-                             Kind="{Binding ElementName=MenuButton, Path=Kind, FallbackValue='Account'}"
-                             MenuBrush="{Binding ElementName=MenuButton, Path=MenuBrush, FallbackValue='White'}"
-                             Visibility="{Binding ElementName=MenuButton, Path=VisibilityPermission}" />
+                  <TextBlock x:Name="Grid_MenuButton_Title"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             FontSize="24"
+                             Foreground="{DynamicResource Text_Foreground}"
+                             Text="{Binding ElementName=MenuButton, Path=Title, FallbackValue='TITOLO'}"
+                             TextWrapping="Wrap" />
+
+                  <TextBlock x:Name="Grid_MenuButton_Description"
+                             Grid.Row="2"
+                             Grid.Column="1"
+                             FontSize="{DynamicResource FontSize_Small}"
+                             Foreground="{DynamicResource TextLight_Foreground}"
+                             Text="{Binding ElementName=MenuButton, Path=Description, FallbackValue='bla bla bla bla bla'}"
+                             TextTrimming="CharacterEllipsis"
+                             TextWrapping="Wrap" />
+                </Grid>
+
+                <Border x:Name="MenuDisabled"
+                        Grid.ColumnSpan="2"
+                        BorderBrush="{DynamicResource FerrettoDarkGray}"
+                        BorderThickness="0"
+                        Visibility="Collapsed">
+                  <Border.Background>
+                    <SolidColorBrush Opacity="0.5"
+                                     Color="Black" />
+                  </Border.Background>
+                </Border>
+
+              </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                <Setter Property="Cursor" Value="Hand" />
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="MenuDisabled" Property="Visibility" Value="Visible" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Resources>
+
+  <controls:BaseMenuButton Abbreviation="{Binding ElementName=MenuButton, Path=Abbreviation, FallbackValue='A'}"
+                           Command="{Binding ElementName=MenuButton, Path=Command}"
+                           Content="{Binding ElementName=MenuButton, Path=Text, FallbackValue='01'}"
+                           Kind="{Binding ElementName=MenuButton, Path=Kind, FallbackValue='Account'}"
+                           MenuBrush="{Binding ElementName=MenuButton, Path=MenuBrush, FallbackValue='White'}"
+                           Visibility="{Binding ElementName=MenuButton, Path=VisibilityPermission}" />
 
 </UserControl>

@@ -389,13 +389,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Put);
+                    //var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Put);
 
                     await this.wmsDataProvider.PutAsync(
                             item.Id,
                             1,
-                            reasons.FirstOrDefault().Id,
-                            barcode,
+                            null,
+                            null,
                             null,
                             null,
                             null,
