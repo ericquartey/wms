@@ -117,49 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="BayLightActivation" xml:space="preserve">
+    <value>Włącz światło zatoki</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="CarterSensorLeft" xml:space="preserve">
+    <value>Czujnik drzwi ochronnych z lewej strony</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="CarterSensorRight" xml:space="preserve">
+    <value>Czujnik drzwi ochronnych z prawej strony</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="EmergencyPB" xml:space="preserve">
+    <value>Przycisk awaryjny</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="EnableRunConsole" xml:space="preserve">
+    <value>Włącz konsolę uruchamiania</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
+    <value>Wybrano silnik łańcuchowy windy (sprzężenie zwrotne)</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
+    <value>Wybrano silnik windy (sprzężenie zwrotne)</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="Free" xml:space="preserve">
+    <value>Wolny</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="HeightReadingActivation" xml:space="preserve">
+    <value>Aktywacja funkcji odczytu wysokości (kurtyna świetlna pomiaru)</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
+  <data name="InverterFaultSignal" xml:space="preserve">
+    <value>Sygnał błędu falownika</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="IODeviceByID" xml:space="preserve">
+    <value>Urządzenie IO {0:00}</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="IODeviceName" xml:space="preserve">
+    <value>Nazwa urządzenia IO</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
+  <data name="LightCurtain" xml:space="preserve">
+    <value>Kurtyna świetlna bezpieczeństwa</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="LightCurtainCalibration" xml:space="preserve">
+    <value>Kalibracja kurtyny świetlnej</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
+    <value>Obecność czujnika skrzyni w dolnej części zatoki</value>
+  </data>
+  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Obecność czujnika łańcucha podnośnika po stronie maszyny</value>
+  </data>
+  <data name="MotorElevatorChainSelection" xml:space="preserve">
+    <value>Wybierz silnik łańcucha podnośnika</value>
+  </data>
+  <data name="MotorElevatorSelection" xml:space="preserve">
+    <value>Wybierz silnik podnośnika</value>
+  </data>
+  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Obecność czujnika łańcucha podnośnika po stronie operatora</value>
+  </data>
+  <data name="ResetSafetyFunction" xml:space="preserve">
+    <value>Reset funkcji bezpieczeństwa</value>
+  </data>
+  <data name="RobotEndPicking" xml:space="preserve">
+    <value>Opcja robota - Naciśnij przycisk Zakończono kompletację robota</value>
+  </data>
+  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
+    <value>Opcja robota - misja w Magazynie zakończona</value>
+  </data>
+  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
+    <value>Opcja robota - magazyn gotowy/usterka</value>
+  </data>
+  <data name="SafetyStatus" xml:space="preserve">
+    <value>Status bezpieczeństwa</value>
+  </data>
+  <data name="TrolleyHook" xml:space="preserve">
+    <value>Opcja wózka - hak do wózka</value>
+  </data>
+  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
+    <value>Czujnik obecności górnej skrzynki ładunkowej</value>
   </data>
 </root>

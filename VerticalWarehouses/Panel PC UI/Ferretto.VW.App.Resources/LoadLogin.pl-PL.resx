@@ -117,49 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Połączenie z usługami nawiązane</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Połączenie z Automation Service zostało utracone, próbuję wznowić...</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>Niemożliwe połączenie z Automation Service</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Nieprawidłowe dane uwierzytelniające.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>Moduł załadowany.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>Wpisz swoje hasło</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>Hasło jest zbyt krótkie.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>Hasło musi być określone.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>Inicjalizacja usług</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
+  <data name="TempKey" xml:space="preserve">
+    <value>Klucz tymczasowy: {0}</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>Nie można uwierzytelnić użytkownika za pomocą kodu kreskowego.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>Musi być podana nazwa użytkownika.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>Nie można uwierzytelnić użytkownika za pomocą karty.</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Wykonywanie logowania za pomocą karty ...</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Uwierzytelnianie użytkownika ...</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Token włożony. Autentykacja w toku...</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Token wyjęty.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Nie można uwierzytelnić użytkownika za pomocą tokena.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>Nie można uwierzytelnić użytkownika za pomocą tokena. Ponieważ system WMS nie jest osiągalny.</value>
+  </data>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>Sesja użytkownika 'service' wygasła</value>
   </data>
 </root>
