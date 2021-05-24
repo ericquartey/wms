@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -118,321 +118,327 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConditionsNotMetForPositioning" xml:space="preserve">
-    <value>Check that the pawl is at zero or that the loading unit is fully loaded on the elevator.</value>
+    <value>Podnośnik nie jest załadowany po pobieraniu</value>
   </data>
   <data name="ConditionsNotMetForRunning" xml:space="preserve">
-    <value>Check that the emergency buttons are deactivated and that all the safety sensors are deactivated.</value>
+    <value>Podnośnik nie jest pusty po odłożeniu</value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
-    <value>The loading unit may have got stuck.</value>
+    <value>Niedopasowanie Czujników podnośnika</value>
   </data>
   <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
-    <value>The loading unit does not seem to be completely on the elevator after the loading phase.</value>
+    <value>Niedopasowanie czujników podnośnika</value>
   </data>
   <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
-    <value>The loading unit does not appear to be completely out of the elevator after the unloading phase.</value>
+    <value>Ogólny błąd falownika</value>
   </data>
   <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
-    <value>The elevator is full after a deposit.</value>
+    <value>Parametr falownika nie mógł zostać zapisany podczas wykonywania.</value>
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
-    <value>The elevator is empty after a pickup.</value>
+    <value>Dane zestawu danych falownika nie są zgodne.</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Błąd sumy kontrolnej EEPROM falownika.</value>
   </data>
   <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Błąd odczytu EEPROM falownika.</value>
   </data>
   <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Błąd zapisu EEPROM falownika.</value>
   </data>
   <data name="InverterErrorEepromChecksumError" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Nieprawidłowy zbiór danych falownika.</value>
   </data>
   <data name="InverterErrorEepromReadError" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Nieprawidłowy parametr falownika.</value>
   </data>
   <data name="InverterErrorEepromWriteError" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Podany węzeł nie jest dostępny.</value>
   </data>
   <data name="InverterErrorInvalidDataset" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Parametr falownika jest tylko do odczytu.</value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Parametr falownika jest tylko do zapisu.</value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Błąd składni komunikatu wysłanego do falownika.</value>
   </data>
   <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Nieznany parametr przekazany do falownika.</value>
   </data>
   <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Niezgodność pomiędzy długością komunikatu do falownika a typem danych komunikatu.!</value>
   </data>
   <data name="InverterErrorSyntaxError" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>W jednym z falowników wykryty został błąd.</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Wywołana funkcja bezpieczeństwa.</value>
   </data>
   <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Nieważna komórka docelowa</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Kołyska podnośnika zajęta</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
-    <value>Check that the emergency buttons are deactivated and that all the safety sensors are deactivated.</value>
+    <value>Niespójność pozycji źródła bazy danych</value>
   </data>
   <data name="LoadUnitDestinationCell" xml:space="preserve">
-    <value>Verify that the target cell of the loading unit inside the database is correctly configured</value>
+    <value>Brak jednostki ładunkowej we wskazanej zatoce</value>
   </data>
   <data name="LoadUnitElevator" xml:space="preserve">
-    <value>Check that the lift cradle is empty. Check the correct operation of the loading unit presence sensors on the cradle.</value>
+    <value>Wykryto jednostkę ładunkową w zatoce pobierania</value>
   </data>
   <data name="LoadUnitSourceDb" xml:space="preserve">
-    <value>Check that the source position of the loading unit in the database is correctly configured</value>
+    <value>Stanowisko przeznaczenia tac zajęte</value>
   </data>
   <data name="NoLoadUnitInSource" xml:space="preserve">
-    <value>Make sure that a loading unit is present in the bay and that the presence sensors work correctly</value>
+    <value>Jednostka ładunkowa nie jest dostępna</value>
   </data>
   <data name="LoadUnitNotRemoved" xml:space="preserve">
-    <value>If the loading unit has been removed, check the loading unit presence sensors in the bay, otherwise remove the loading unit from the bay.</value>
+    <value>Wybrana jednostka ładunkowa nie jest załadowana do magazynu</value>
   </data>
   <data name="LoadUnitDestinationBay" xml:space="preserve">
-    <value>Verify that the destination bay of the drawer is actually empty. Check that the bay loading unit sensors are working correctly.</value>
+    <value>Zatoka źródłowa pustej jednostki ładunkowej</value>
   </data>
   <data name="LoadUnitNotFound" xml:space="preserve">
-    <value>The selected load unit is not available. Check the load unit number entered and the logical position of the load unit.</value>
+    <value>Nieważna komórka źródłowa</value>
   </data>
   <data name="LoadUnitNotLoaded" xml:space="preserve">
-    <value>The selected loading unit is present in the database but is not loaded in the warehouse. Check the database configuration.</value>
+    <value>Nieprawidłowe czujniki</value>
   </data>
   <data name="LoadUnitSourceBay" xml:space="preserve">
-    <value>Check that the loading unit is actually present in the source bay. Check that the bay loading unit sensors are working correctly.</value>
+    <value>Nieprawidłowy stan czujników podnośnika</value>
   </data>
   <data name="LoadUnitSourceCell" xml:space="preserve">
-    <value>Check that the source cell of the loading unit inside the database is correctly configured</value>
+    <value>Nieprawidłowy stan czujników</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>Lower bay position is already occupied by a Load unit.</value>
+    <value>Nieprawidłowy stan czujników</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>Invalid elevator presence sensors.</value>
+    <value>Niedopasowanie czujników zatoki</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
-    <value>Presence on the elevator with the elevator logically unloaded.</value>
+    <value>Zajęta zatoka górnego poziomu</value>
   </data>
   <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
-    <value>The zero sensor is active but elevator is empty.</value>
+    <value>Niedopasowanie czujników podnośnika</value>
   </data>
   <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
-    <value>Sensors error. The Bay Zero Sensor is not active.</value>
+    <value>Maksymalny ciężar załadowany na jednostkę ładunkową jest nadmierny.</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
-    <value>Upper bay position is already occupied by a drawer.</value>
+    <value>Migawka zamknięta</value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
-    <value>The elevator chain zero sensor is active but the elevator is full.</value>
+    <value>Migawka otwarta</value>
   </data>
   <data name="LoadUnitWeightExceeded" xml:space="preserve">
-    <value>Unload the loading unit in the bay and remove the excess weight. Then set Auto mode.</value>
+    <value>Miejsce przeznaczenia poniżej dolnej granicy</value>
   </data>
   <data name="LoadUnitShutterClosed" xml:space="preserve">
-    <value>The shutter is not open. Please check shutter sensors.</value>
+    <value>Falownik wykonuje inne polecenie</value>
   </data>
   <data name="LoadUnitShutterOpen" xml:space="preserve">
-    <value>The shutter is open. Please check shutter sensors.</value>
+    <value>Miejsce przeznaczenia powyżej górnej granicy</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
-    <value>The vertical destination is below lower bound. Please check machine parameters.</value>
+    <value>Błąd urządzenia I/O.</value>
   </data>
   <data name="BayInvertersBusy" xml:space="preserve">
-    <value>The bay is already executing a command and cannot process any more</value>
+    <value>Jednostka ładunkowa znajduje się wewnątrz magazynu</value>
   </data>
   <data name="DestinationOverUpperBound" xml:space="preserve">
-    <value>The vertical destination exceeds upper bound. Please check machine parameters.</value>
+    <value>Tryb pracy maszyny nie jest właściwy</value>
   </data>
   <data name="IoDeviceError" xml:space="preserve">
-    <value>I/O device error.</value>
+    <value>Bariera bezpieczeństwa włączona</value>
   </data>
   <data name="LoadUnitPresentInCell" xml:space="preserve">
-    <value>The load unit is inside the warehouse</value>
+    <value>Proszę sprawdzić wszystkie przyciski bezpieczeństwa.</value>
   </data>
   <data name="MachineModeNotValid" xml:space="preserve">
-    <value>The requested command is not valid in the present machine mode.</value>
+    <value>Lewy panel boczny jest otwarty.</value>
   </data>
   <data name="SecurityBarrierWasTriggered" xml:space="preserve">
-    <value>Please check all security barriers.</value>
+    <value>Jednostka ładunkowa znajduje się w innej zatoce</value>
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
-    <value>Please check all security buttons.</value>
-  </data>
-  <data name="LoadUnitOtherBay" xml:space="preserve">
-    <value>The load unit is in another bay.</value>
-  </data>
-  <data name="LoadUnitSourceElevator" xml:space="preserve">
-    <value>The load unit on board is unknown</value>
-  </data>
-  <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>Bottom Bay Level is Empty</value>
-  </data>
-  <data name="TopLevelBayEmpty" xml:space="preserve">
-    <value>The top bay level is empty.</value>
-  </data>
-  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
-    <value>Another Mission Is Active For This Bay</value>
-  </data>
-  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
-    <value>Another Mission Is Active For This Load Unit</value>
-  </data>
-  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
-    <value>Another Mission Of This Type Is Active</value>
-  </data>
-  <data name="NoError" xml:space="preserve">
-    <value>No error</value>
-  </data>
-  <data name="LoadUnitWeightTooLow" xml:space="preserve">
-    <value>The load unit weight is below minimum value.  Then set Auto mode.</value>
-  </data>
-  <data name="MachineWeightExceeded" xml:space="preserve">
-    <value>The sum of total load unit weights is exceeds the maximum value.</value>
-  </data>
-  <data name="WarehouseIsFull" xml:space="preserve">
-    <value>The warehouse is full. It is not possible to find any free cell for the Load Unit.</value>
-  </data>
-  <data name="LoadUnitMissingOnBay" xml:space="preserve">
-    <value>Check the loading unit id on the bay. Check that the loading unit presence sensors are working properly. Put the machine in Automatic.</value>
-  </data>
-  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
-    <value>Check the id of the loading unit on the elevator. Check that the loading unit presence sensors on the elevator are working properly. Put the machine in Automatic.</value>
-  </data>
-  <data name="InverterConnectionError" xml:space="preserve">
-    <value>Inverter connection error. Please check ethernet connections</value>
-  </data>
-  <data name="IoDeviceConnectionError" xml:space="preserve">
-    <value>I/O device connection error. Please check ethernet connections.</value>
-  </data>
-  <data name="LaserConnectionError" xml:space="preserve">
-    <value>Laser connection error. Please check ethernet connections.</value>
-  </data>
-  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
-    <value>The {0} Axis movement Acceleration {1} is invalid: Empty load acceleration lower than full load acceleration</value>
-  </data>
-  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
-    <value>The {0} Axis movement Speed {1} is invalid: Empty load speed lower than full load speed</value>
-  </data>
-  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
-    <value>Check presence sensors of elevator and bay</value>
-  </data>
-  <data name="DestinationTypeNotValid" xml:space="preserve">
-    <value>The destination type is not valid</value>
-  </data>
-  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
-    <value>Bottom bay position undefined</value>
-  </data>
-  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
-    <value>Upper bay position undefined</value>
-  </data>
-  <data name="MissionTypeNotValid" xml:space="preserve">
-    <value>The mission type is not valid</value>
-  </data>
-  <data name="MoveBayChainNotAllowed" xml:space="preserve">
-    <value>Please remove the excess weight. Then close the error.</value>
-  </data>
-  <data name="ResumeCommandNotValid" xml:space="preserve">
-    <value>The picking confirmation command is not valid</value>
-  </data>
-  <data name="CellLogicallyOccupied" xml:space="preserve">
-    <value>Update database failed. One or more destination cells are logically occupied</value>
-  </data>
-  <data name="ConditionsNotMetForHoming" xml:space="preserve">
-    <value>Check that the pawl is at zero or that the loading unit is fully loaded on the elevator. Check also that the shutter is not closed</value>
-  </data>
-  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
-    <value>Try to lower the height of the load unit. Then set Auto mode.</value>
-  </data>
-  <data name="LoadUnitShutterInvalid" xml:space="preserve">
-    <value>The shutter is not open nor closed. Please check shutter sensors.</value>
-  </data>
-  <data name="DestinationBayNotCalibrated" xml:space="preserve">
-    <value>Destination bay needs calibration.</value>
-  </data>
-  <data name="FirstTestFailed" xml:space="preserve">
-    <value>First load unit  test failed: Not all cells could be tested!</value>
-  </data>
-  <data name="WarehouseNotEmpty" xml:space="preserve">
-    <value>The warehouse is not empty. The first load unit test is not allowed.</value>
-  </data>
-  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
-    <value>The Bay Zero Sensor is not active at the end of positioning.</value>
+    <value>Brak szuflady na podnośniku</value>
   </data>
   <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
-    <value>The left side panel is open. Please check that all side panels are correctly positioned and closed.</value>
+    <value>Nieprawidłowe czujniki</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Pusta zatoka górnego poziomu</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Błąd w realizacji misji</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Błąd w realizacji misji</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Błąd w realizacji misji</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Brak błędu</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Zbyt mała waga</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Przekroczona masa całkowita maszyny</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Magazyn jest pełny</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Zatoka zajęta przez nieznaną jednostkę ładunkową</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Podnośnik zajęty przez nieznaną jednostkę ładunkową</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Błąd połączenia</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Błąd połączenia</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Błąd połączenia</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Automatyczne przywrócenie ruchu nie jest dozwolone</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Typ miejsca przeznaczenia jest nieprawidłowy</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Nieokreślone dolne położenie zatoki</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Nieokreślone górne położenie zatoki</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Typ misji jest nieprawidłowy</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Przesunięcie łańcucha zatoki nie jest dozwolone: jednostka ładunkowa jest zbyt ciężka.</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Polecenie potwierdzenia kompletacji jest nieważne</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Aktualizacja bazy danych nie powiodła się. Jedna lub więcej komórek docelowych jest logicznie zajętych</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Nie spełniono warunków ustawienia pozycji wyjściowej.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Błąd wysokości</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Nieprawidłowe położenie migawki</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Zatoka docelowa wymaga kalibracji</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Test nie został zakończony</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Magazyn nie jest pusty.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Błąd pozycjonowania</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Prawy panel boczny jest otwarty.</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Pozycja pionowa zmieniła się po uruchomieniu maszyny</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Błąd pozycjonowania</value>
   </data>
   <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
-    <value>The right side panel is open. Please check that all side panels are correctly positioned and closed.</value>
+    <value>Prawy panel boczny jest otwarty.</value>
   </data>
   <data name="VerticalPositionChanged" xml:space="preserve">
-    <value>Vertical position has changed after machine start</value>
+    <value>Test nie został zakończony</value>
   </data>
   <data name="FullTestFailed" xml:space="preserve">
-    <value>Full load unit  test failed: Not all requested loops could be performed!</value>
+    <value>Nieprawidłowa {0} konfiguracja przyspieszenia ruchu osi</value>
   </data>
   <data name="InvalidBay" xml:space="preserve">
-    <value>The selected bay is invalid</value>
+    <value>Nieprawidłowa {0} konfiguracja zwolnienia ruchu osi</value>
   </data>
   <data name="InvalidPositionBay" xml:space="preserve">
-    <value>The selected bay position is invalid</value>
+    <value>Nieprawidłowa {0} konfiguracja prędkości ruchu osi</value>
+  </data>
+  <data name="AxisMovementAccelerationConfigurationInvalid" xml:space="preserve">
+    <value>Błąd pozycjonowania po stronie górnej</value>
+  </data>
+  <data name="AxisMovementDecelerationConfigurationInvalid" xml:space="preserve">
+    <value>Zewnętrzna zatoka jest zajęta</value>
+  </data>
+  <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
+    <value>Zewnętrzna zatoka jest pusta</value>
   </data>
   <data name="ElevatorOverrunDetected" xml:space="preserve">
-    <value>The elevator is positioned on the overrun top sensor.</value>
+    <value>Błąd WMS</value>
   </data>
   <data name="ExternalBayOccupied" xml:space="preserve">
-    <value>The external bay is occupied</value>
+    <value>Nieprawidłowy ruch</value>
   </data>
   <data name="ExternalBayEmpty" xml:space="preserve">
-    <value>The external bay is empty</value>
-  </data>
-  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
-    <value>The {0} Axis movement Acceleration {1} is lower than full load acceleration or higher than Empty load acceleration</value>
-  </data>
-  <data name="InvalidAxisSpeedRange" xml:space="preserve">
-    <value>The {0} Axis movement Speed {1} is lower than full load speed or higher than empty load speed</value>
+    <value>Błąd pozycjonowania po stronie dolnej</value>
   </data>
   <data name="WmsError" xml:space="preserve">
-    <value>The WMS system has answerd with an error code</value>
+    <value>Jednostka ładunku nie jest dostępna</value>
   </data>
   <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
-    <value>The height of the load unit is too high for this bay. Send it to another bay or move it manually</value>
+    <value>Numer jednostki ładunku</value>
   </data>
   <data name="ElevatorUnderrunDetected" xml:space="preserve">
-    <value>The elevator is positioned on the overrun bottom sensor.</value>
+    <value>Nieprawidłowe czujniki zatoki</value>
   </data>
   <data name="BayPositionDisabled" xml:space="preserve">
-    <value>The bay position is disabled</value>
+    <value>Błąd pozycjonowania</value>
+  </data>
+  <data name="LoadUnitNumber" xml:space="preserve">
+    <value>Przeterminowanie polecenia falownika</value>
   </data>
   <data name="MoveExtBayNotAllowed" xml:space="preserve">
-    <value>Invalid bay presence sensors.</value>
+    <value>Przeterminowanie polecenia urządzenia I/O</value>
   </data>
   <data name="StartPositioningBlocked" xml:space="preserve">
-    <value>Movement blocked for a long time</value>
+    <value>Błąd składni komunikatu wysłanego do falownika.</value>
   </data>
   <data name="InverterCommandTimeout" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Sprawdzić, czy przesuwacz jest w położeniu zerowym lub czy jednostka ładunkowa jest w pełni załadowana na podnośnik.</value>
   </data>
   <data name="IoDeviceCommandTimeout" xml:space="preserve">
-    <value>I/O device timeout</value>
+    <value>Sprawdzić, czy grzyby awaryjne są wyłączone i czy wszystkie czujniki bezpieczeństwa są wyłączone.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>Nieprawidłowa zatoka</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>Nieprawidłowa pozycja zatoki</value>
   </data>
   <data name="InverterErrorSyntaxError2" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>Jednostka ładunkowa mogła się zaklinować.</value>
   </data>
   <data name="TelescopicBayError" xml:space="preserve">
-    <value>The telescopic bay is out of place. Position it correctly to restore automatic movements</value>
+    <value>Jednostka ładunkowa nie wydaje się być całkowicie załadowana na podnośnik po zakończeniu fazy załadunku.</value>
   </data>
   <data name="LoadUnitTareError" xml:space="preserve">
-    <value>Correct the tare parameter of the Loading Unit</value>
+    <value>Jednostka ładunkowa nie wygląda na całkowicie wysuniętą z podnośnika po zakończeniu fazy rozładunku.</value>
   </data>
 </root>

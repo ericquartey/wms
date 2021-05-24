@@ -117,49 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="Abort" xml:space="preserve">
+    <value>Przerwij</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>Setup Ferretto Vertimag</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="UnknownVersion" xml:space="preserve">
+    <value>Nieznane</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="VertimagSoftwareInstallation" xml:space="preserve">
+    <value>Instalacja oprogramowania Vertimag</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="ServiceVersion" xml:space="preserve">
+    <value>Wersja usługi tła</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>Wersja interfejsu użytkownika</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="SelectVertimagConfigurationFile" xml:space="preserve">
+    <value>Wybierz plik konfiguracyjny vertimag</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="VertimagConfigurationFiles" xml:space="preserve">
+    <value>Pliki konfiguracyjne Vertimag</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Wszystkie pliki</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
+  <data name="MasterBay" xml:space="preserve">
+    <value>Zatoka Master</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="SlaveBay" xml:space="preserve">
+    <value>Zatoka Slave</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="SelectedConfigurationFile" xml:space="preserve">
+    <value>Plik konfiguracyjny</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>Nie wybrano żadnego pliku</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Wybierz plik</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="MasterBayAddress" xml:space="preserve">
+    <value>Adres Zatoki Master</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Załadunek</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Kontynuuj</value>
+  </data>
+  <data name="BaySelection" xml:space="preserve">
+    <value>Wybór zatoki</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Numer Seryjny</value>
+  </data>
+  <data name="MaximumGrossCapacity" xml:space="preserve">
+    <value>Maksymalna Pojemność Brutto</value>
+  </data>
+  <data name="KilogramsValueFormat" xml:space="preserve">
+    <value>{0} kg</value>
+  </data>
+  <data name="SelectNumberOfThisBay" xml:space="preserve">
+    <value>Wybierz numer tej zatoki</value>
+  </data>
+  <data name="GoBack" xml:space="preserve">
+    <value>Wróć</value>
   </data>
 </root>

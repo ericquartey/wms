@@ -79,6 +79,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode automatic put.
+        /// </summary>
+        public static string BarcodeAutomaticPut {
+            get {
+                return ResourceManager.GetString("BarcodeAutomaticPut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay {0}.
         /// </summary>
         public static string Bay {
@@ -903,6 +912,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Machine_IsDbSaveOnTelemetry {
             get {
                 return ResourceManager.GetString("Machine_IsDbSaveOnTelemetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled add item.
+        /// </summary>
+        public static string Machine_IsEnableAddItem {
+            get {
+                return ResourceManager.GetString("Machine_IsEnableAddItem", resourceCulture);
             }
         }
         

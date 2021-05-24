@@ -117,49 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="AirFiltersCheck" xml:space="preserve">
+    <value>Sprawdzić filtry powietrza</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="BearingsCheck" xml:space="preserve">
+    <value>Sprawdzić łożyska</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="BearingsGrease" xml:space="preserve">
+    <value>Smarowanie łożysk</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="BeltAdjust" xml:space="preserve">
+    <value>Wyregulować pas</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="BeltFasten" xml:space="preserve">
+    <value>Zamocować pas</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="BeltSubstitute" xml:space="preserve">
+    <value>Wymiana pasa</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="CableChainCheck" xml:space="preserve">
+    <value>Sprawdzenie łańcucha linek</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="CablesCheck" xml:space="preserve">
+    <value>Sprawdzenie linek</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="ChainAdjust" xml:space="preserve">
+    <value>Regulacja łańcucha</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
+  <data name="ChainGrease" xml:space="preserve">
+    <value>Smarowanie łańcucha</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="ChainSubstitute" xml:space="preserve">
+    <value>Wymienić łańcuch</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="ContactorsSubstitute" xml:space="preserve">
+    <value>Wymienić stycznik</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
+  <data name="ElectricalComponentsCheck" xml:space="preserve">
+    <value>Kontrola komponentów elektrycznych</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="FirstCellCheck" xml:space="preserve">
+    <value>Sprawdzenie pierwszego ogniwa</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="GuidesCheck" xml:space="preserve">
+    <value>Sprawdzenie prowadnic</value>
+  </data>
+  <data name="GuidesSubstitute" xml:space="preserve">
+    <value>Wymienić prowadnice</value>
+  </data>
+  <data name="LampsCheck" xml:space="preserve">
+    <value>Sprawdzenie lamp</value>
+  </data>
+  <data name="LinkCheck" xml:space="preserve">
+    <value>Sprawdzenie połączenia</value>
+  </data>
+  <data name="LinksGrease" xml:space="preserve">
+    <value>Smarowanie połączeń</value>
+  </data>
+  <data name="LinkSubstitute" xml:space="preserve">
+    <value>Wymienić łącznik</value>
+  </data>
+  <data name="MicroSwitchesCheck" xml:space="preserve">
+    <value>Mikroprzełączniki kontrola</value>
+  </data>
+  <data name="MicroSwitchesMount" xml:space="preserve">
+    <value>Mikroprzełączniki montaż</value>
+  </data>
+  <data name="MicroSwitchesSubstitute" xml:space="preserve">
+    <value>Mikroprzełączniki zamienniki</value>
+  </data>
+  <data name="MotorChainAdjust" xml:space="preserve">
+    <value>Regulacja łańcucha silnika</value>
+  </data>
+  <data name="MotorChainGrease" xml:space="preserve">
+    <value>Smarowanie łańcucha silnika</value>
+  </data>
+  <data name="MotorChainSubstitute" xml:space="preserve">
+    <value>Wymienić łańcuch silnika</value>
+  </data>
+  <data name="MotorGearOil" xml:space="preserve">
+    <value>Olej przekładni silnikowych</value>
+  </data>
+  <data name="MotorGearSubstitute" xml:space="preserve">
+    <value>Wymienić olej przekładni silnikowych</value>
+  </data>
+  <data name="OpticalSensorsClean" xml:space="preserve">
+    <value>Wyczyść czujniki optyczne</value>
+  </data>
+  <data name="OpticalSensorsMount" xml:space="preserve">
+    <value>Zamontować czujniki optyczne</value>
+  </data>
+  <data name="PinPawlFastenersCheck" xml:space="preserve">
+    <value>Sprawdzić elementy mocujące sworznia przesuwacza</value>
+  </data>
+  <data name="PinPawlFastenersGrease" xml:space="preserve">
+    <value>Nasmarować elementy mocujące sworznia przesuwacza</value>
+  </data>
+  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
+    <value>Wymienić elementy mocujące sworznia przesuwacza</value>
+  </data>
+  <data name="PlasticCamsCheck" xml:space="preserve">
+    <value>Sprawdzić plastikowe krzywki</value>
+  </data>
+  <data name="RandomCellCheck" xml:space="preserve">
+    <value>Sprawdzić losowe ogniwa</value>
+  </data>
+  <data name="SensorCheck" xml:space="preserve">
+    <value>Sprawdzić czujniki</value>
+  </data>
+  <data name="SensorsClean" xml:space="preserve">
+    <value>Wyczyść czujniki</value>
+  </data>
+  <data name="SensorsMount" xml:space="preserve">
+    <value>Zamontować czujniki</value>
+  </data>
+  <data name="ShaftCheck" xml:space="preserve">
+    <value>Sprawdzić wał</value>
+  </data>
+  <data name="SupportsCheck" xml:space="preserve">
+    <value>Sprawdzić podpory</value>
+  </data>
+  <data name="WheelsCheck" xml:space="preserve">
+    <value>Sprawdzić koła</value>
+  </data>
+  <data name="WheelsSubstitute" xml:space="preserve">
+    <value>Wymienić koła</value>
   </data>
 </root>

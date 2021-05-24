@@ -91,6 +91,14 @@ namespace Ferretto.VW.MAS.MissionManager
                 errorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, machineProvider.BayTestNumber);
                 return false;
             }
+            var loadingUnit = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>().GetById(loadUnitId.Value);
+            if (loadingUnit.Tare == 0.00)
+            {
+                this.Logger.LogError($"First Test error: Load Unit tare is zero!");
+                errorsProvider.RecordNew(MachineErrorCode.LoadUnitTareError, machineProvider.BayTestNumber);
+                return false;
+            }
+
             var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
             if (machineProvider.ExecutedCycles == 0)
             {

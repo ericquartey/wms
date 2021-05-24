@@ -117,49 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="WmsMissionWithoutMachineMission" xml:space="preserve">
+    <value>Nie można mieć misji wms bez misji maszyny.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
-  </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
-  </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
-  </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
-  </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
-  </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
-  </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
-  </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
-  </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="WmsOperationWithoutWmsMission" xml:space="preserve">
+    <value>Nie można przeprowadzić operacji wms bez misji wms.</value>
   </data>
 </root>

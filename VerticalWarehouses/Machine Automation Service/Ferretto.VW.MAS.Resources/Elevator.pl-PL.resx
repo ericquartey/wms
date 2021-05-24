@@ -117,49 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="ALoadingUnitIsAlreadyOnBoardOfTheElevator" xml:space="preserve">
+    <value>Jednostka ładunkowa znajduje się już na pokładzie podnośnika.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Jednostka ładunkowa znajduje się już na określonej pozycji zatoki.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="HorizontalHomingParametersError" xml:space="preserve">
+    <value>Parametry naprowadzania osi poziomej są nieprawidłowe</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Montaż</value>
+  <data name="MovementDistanceCannotBeZero" xml:space="preserve">
+    <value>Odległość przemieszczenia nie może wynosić zero.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="NoLoadingUnitIsOnBoardOfTheElevator" xml:space="preserve">
+    <value>Na pokładzie podnośnika nie ma jednostki ładunkowej.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Brak jednostki ładunkowej na określonej pozycji zatoki.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
+    <value>Brak jednostki ładunkowej we wskazanej komórce.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Brak jednostki ładunkowej na określonej pozycji zatoki.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>Przesunięcie osi pionowej ({0}mm) nieprawidłowe: musi mieścić się w zakresie [{1}mm; {2}mm].</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Ruchy</value>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
+    <value>Położenie docelowe ({0}mm) musi znajdować się w zakresie [{1}mm; {2}mm].</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Podnośnik znajduje się już naprzeciwko określonego położenia zatoki.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Podnośnik znajduje się już naprzeciwko określonej komórki.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>Podnośnik nie jest pusty, ale przesuwacz jest w pozycji zerowej.</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>Podnośnik nie jest pełen, ale przesuwacz nie jest w pozycji zerowej.</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Podnośnik nie znajduje się naprzeciwko określonego położenia zatoki.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>Podnośnik nie znajduje się naprzeciwko określonej komórki.</value>
+  </data>
+  <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
+    <value>Jednostka ładunkowa nie mieści się w określonej komórce.</value>
+  </data>
+  <data name="VerticalHomingParametersError" xml:space="preserve">
+    <value>Parametry naprowadzania osi pionowej są nieprawidłowe</value>
+  </data>
+  <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
+    <value>Przed próbą przesunięcia podnośnika do danej pozycji należy przeprowadzić kalibrację początkową osi pionowej.</value>
+  </data>
+  <data name="VerticalCompensationDistanceOutOfBounds" xml:space="preserve">
+    <value>Odległość kompensacji pionowej jest poza zakresem</value>
   </data>
 </root>

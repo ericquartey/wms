@@ -117,49 +117,145 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>O firmie</value>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Konfiguracja i testowanie paska alfanumerycznego</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Parametry konfiguracyjne</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Statystyki, alarmy, diagnostyka</value>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Pasek alfanumeryczny</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Strzałka</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Dioda</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>Komunikat</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Grupa Ferretto - Komunikat testowy</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>Pozycja</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Tekst</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracja i test czytnika kodów kreskowych</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Czytnik Kodów Kreskowych</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracja i testowanie czytnika kart</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Czytnik kart</value>
+  </data>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>Adres IP</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>Konfiguracja i testowanie drukarki etykiet</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Drukarka Etykiet</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuDescription" xml:space="preserve">
+    <value>Konfiguracja i test drukarki laserowej</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
+    <value>Wskaźnik Laserowy</value>
+  </data>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>Przesunięcie osi Y</value>
+  </data>
+  <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
+    <value>Przesunięcie osi Y</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetLowerPosition" xml:space="preserve">
+    <value>Przesunięcie osi Z (dolna zatoka)</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetUpperPosition" xml:space="preserve">
+    <value>Przesunięcie osi Z (górna zatoka)</value>
+  </data>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Menu akcesoriów</value>
+  </data>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Wył.</value>
+  </data>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Wł.</value>
+  </data>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Rozmiar</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>Konfiguracja i test czytnika tokenów</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Czytnik tokenów</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>Konfiguracja i testowanie wagi szalkowej</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Waga</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Zatoka</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Menu zatoki</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Menu komórki</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Potwierdź test</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Menu Podnośnik</value>
   </data>
   <data name="Installation" xml:space="preserve">
     <value>Montaż</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="InstallationStatus" xml:space="preserve">
+    <value>Status montażu</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedury instalacyjne, ruch ręczny, więcej</value>
+  <data name="MenuAccessories" xml:space="preserve">
+    <value>Wyposażenie dodatkowe</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Konserwacja</value>
+  <data name="MenuCells" xml:space="preserve">
+    <value>Komórki</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="MenuElevator" xml:space="preserve">
+    <value>Podnośnik</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Konserwacja, szuflady kompaktowe, aktualizacja</value>
+  <data name="MenuLoadingUnits" xml:space="preserve">
+    <value>Jednostki ładunkowe</value>
   </data>
   <data name="Movements" xml:space="preserve">
     <value>Ruchy</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="Other" xml:space="preserve">
+    <value>Ustawienia</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Stan czujników, reset maszyny, więcej</value>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Ustawienia menu</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Kompletacja</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Kompletacja, odkładanie, inwentaryzacja</value>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Menu Jednostki</value>
   </data>
 </root>

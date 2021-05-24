@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public BayAccessories Accessories { get; set; }
 
+        public bool BarcodeAutomaticPut { get; set; }
+
         public Carousel Carousel { get; set; }
 
         public double ChainOffset { get; set; }
@@ -42,6 +44,8 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsExternal { get; set; }
 
         public bool IsFastDepositToBay { get; set; }
+
+        public bool IsTelescopic { get; set; }
 
         public int LastCalibrationCycles { get; set; }
 
@@ -77,8 +81,6 @@ namespace Ferretto.VW.MAS.DataModels
         public int TotalCycles { get; set; }
 
         public bool View { get; set; }
-
-        public bool IsTelescopic { get; set; }
 
         #endregion
 

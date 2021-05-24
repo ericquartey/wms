@@ -2941,6 +2941,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Accessories", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public BayAccessories Accessories { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("BarcodeAutomaticPut", Required = Newtonsoft.Json.Required.Always)]
+        public bool BarcodeAutomaticPut { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Carousel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Carousel Carousel { get; set; }
     
@@ -2989,6 +2992,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsFastDepositToBay", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFastDepositToBay { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsTelescopic", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsTelescopic { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LastCalibrationCycles", Required = Newtonsoft.Json.Required.Always)]
         public int LastCalibrationCycles { get; set; }
     
@@ -3026,9 +3032,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("View", Required = Newtonsoft.Json.Required.Always)]
         public bool View { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsTelescopic", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsTelescopic { get; set; }
     
         public string ToJson() 
         {
@@ -3466,6 +3469,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         IoDeviceCommandTimeout = 84,
     
         TelescopicBayError = 85,
+    
+        LoadUnitTareError = 86,
     
         InverterErrorBaseCode = 1000,
     
