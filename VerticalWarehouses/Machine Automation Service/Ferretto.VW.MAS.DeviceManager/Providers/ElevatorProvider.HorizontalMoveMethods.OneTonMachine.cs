@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var displacement = this.invertersProvider.ComputeDisplacement(this.VerticalPosition, grossWeight);
             displacement *= (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null) ? -1 : +1;
-            this.logger.LogDebug($"Combined movement: Vertical displacement: {displacement:0.00} mm [targetPosition: {this.VerticalPosition + displacement:0.00} mm], weight load unit: {grossWeight:0.00} kg");
+            this.logger.LogDebug($"Combined movement: Vertical displacement: {displacement:0.00} mm [targetPosition: {this.VerticalPosition + displacement:0.00} mm], gross weight load unit: {grossWeight:0.00} kg");
 
             var manualVerticalParameters = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
 

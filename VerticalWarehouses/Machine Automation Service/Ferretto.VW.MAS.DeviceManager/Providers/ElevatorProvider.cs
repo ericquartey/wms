@@ -716,7 +716,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ? HorizontalMovementDirection.Backwards
                 : HorizontalMovementDirection.Forwards;
 
-            var supposedLoadingUnitGrossWeight = bayPosition.LoadingUnit.MaxNetWeight + bayPosition.LoadingUnit.Tare;
+            var supposedLoadingUnitGrossWeight = bayPosition.LoadingUnit.MaxNetWeight + bayPosition.LoadingUnit.Tare + this.elevatorDataProvider.GetWeight();
 
             this.MoveHorizontalAuto(
                 direction,
