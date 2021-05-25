@@ -1853,4 +1853,7 @@
   <data name="Day" xml:space="preserve">
     <value>Giorno</value>
   </data>
+  <data name="MissionStateElevatorBayUp" xml:space="preserve">
+    <value>Elevatore in baia alta</value>
+  </data>
 </root>

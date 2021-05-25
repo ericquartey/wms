@@ -224,6 +224,7 @@
                                   IsActive="{Binding IsPositionDownSelected}"
                                   IsEnabled="{Binding IsPositionDownEnabled}"
                                   Kind="ArrowDown"
+                                  Style="{DynamicResource PpcIconTextButtonStyle}"
                                   Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
 
               <!--  go bay up position  -->
@@ -237,6 +238,7 @@
                                   IsActive="{Binding IsPositionUpSelected}"
                                   IsEnabled="{Binding IsPositionUpEnabled}"
                                   Kind="ArrowUp"
+                                  Style="{DynamicResource PpcIconTextButtonStyle}"
                                   Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
 
             </Grid>

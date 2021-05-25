@@ -175,6 +175,12 @@
                       </DataTrigger.Value>
                       <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorDeposit}" />
                     </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ElevatorBayUp</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateElevatorBayUp}" />
+                    </DataTrigger>
                   </Style.Triggers>
                 </Style>
               </TextBlock.Style>
@@ -1092,6 +1098,12 @@
                         <model:MissionStep>ErrorDeposit</model:MissionStep>
                       </DataTrigger.Value>
                       <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateErrorDeposit}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Step}">
+                      <DataTrigger.Value>
+                        <model:MissionStep>ElevatorBayUp</model:MissionStep>
+                      </DataTrigger.Value>
+                      <Setter Property="Text" Value="{Res:Loc OperatorApp.MissionStateElevatorBayUp}" />
                     </DataTrigger>
                   </Style.Triggers>
                 </Style>

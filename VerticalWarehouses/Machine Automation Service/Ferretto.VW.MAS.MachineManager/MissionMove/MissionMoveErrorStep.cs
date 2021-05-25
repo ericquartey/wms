@@ -255,6 +255,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     break;
 
+                case MissionStep.ElevatorBayUp:
+                    var newStepBayChain = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    this.Mission.StepTime = DateTime.UtcNow;
+                    newStepBayChain.OnEnter(null);
+
+                    this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
+                    break;
+
                 default:
                     this.Logger.LogError($"{this.GetType().Name}: no valid RestoreState {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
@@ -491,6 +499,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MissionStep.BayChain:
                     this.RestoreBayChain();
                     return;
+
+                case MissionStep.ElevatorBayUp:
+                    {
+                        newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
+                    break;
 
                 case MissionStep.CloseShutter:
                     {
