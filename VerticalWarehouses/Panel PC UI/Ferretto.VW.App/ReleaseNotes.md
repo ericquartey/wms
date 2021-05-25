@@ -26,9 +26,11 @@
 - Aggiunto parametro di baia per generare automaticamente una lista di deposito con il barcode
 - Aggiunto allarme di tara cassetto a zero nella procedura di test celle limite
 - Aggiunta lingua polacca
+- Aggiunto Step ElevatorBayUp: dopo il deposito in giostra, posizione bassa, si porta in posizione alta
 
 ## Bug Risolti
--  
+-  Corretto errore 82 - Timeout StartPositioningBlocked
+-  Corretta quota verticale nel ripristino del prelievo da cella con macchine da 1000kg
 
 ## Compatibile con adapter 0.4.20
 ***
