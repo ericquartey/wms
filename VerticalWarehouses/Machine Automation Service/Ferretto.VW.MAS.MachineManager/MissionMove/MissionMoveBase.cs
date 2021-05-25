@@ -391,7 +391,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            //newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep = new MissionMoveElevatorBayUpStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                         }
                     }
                 }

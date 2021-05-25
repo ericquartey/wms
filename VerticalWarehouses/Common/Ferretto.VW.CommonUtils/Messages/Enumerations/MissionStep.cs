@@ -37,12 +37,14 @@
 
         ExtBay,
 
+        ElevatorBayUp,
+
         End,
 
         Error = 101,
 
         ErrorLoad,
 
-        ErrorDeposit
+        ErrorDeposit,
     }
 }

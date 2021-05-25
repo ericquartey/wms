@@ -2226,4 +2226,7 @@
   <data name="ConfirmOnFull" xml:space="preserve">
     <value></value>
   </data>
+  <data name="MissionStateElevatorBayUp" xml:space="preserve">
+    <value>Elevator in bay up</value>
+  </data>
 </root>

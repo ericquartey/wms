@@ -3463,6 +3463,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elevator in bay up.
+        /// </summary>
+        public static string MissionStateElevatorBayUp {
+            get {
+                return ResourceManager.GetString("MissionStateElevatorBayUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 13.End.
         /// </summary>
         public static string MissionStateEnd {

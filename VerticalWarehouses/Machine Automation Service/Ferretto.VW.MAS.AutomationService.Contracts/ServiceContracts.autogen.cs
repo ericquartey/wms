@@ -3662,7 +3662,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ExtBay = 16,
     
-        End = 17,
+        ElevatorBayUp = 17,
+    
+        End = 18,
     
         Error = 101,
     
