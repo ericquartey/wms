@@ -22,18 +22,18 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.17 rispetto la 1.0.16
-- Aggiunto parametro per visualizzare "Aggiungi" nella vista del cassetto in baia
+## Nuove Funzionalità 1.0.18 rispetto la 1.0.17
+- Aggiunto parametro di baia per generare automaticamente una lista di deposito con il barcode
+- Aggiunto allarme di tara cassetto a zero nella procedura di test celle limite
+- Aggiunta lingua polacca
 
 ## Bug Risolti
--  Corretto uso della tastiera touch sovrapposta alle griglie dati
--  Tolta la pagina finale nella chiusura della procedura di calibrazione giostra
--  Eliminato allarme di "baia occupata in altra operazione" nei ripristini con macchine da 990kg
--  Corretto errore di file bloccato durante il backup
--  La pagina delle operazioni sul cassetto in baia si apre col tasto Indietro della ricerca articolo
+-  
 
 ## Compatibile con adapter 0.4.20
 ***
+
+[Versione 1.0.17](#id1017)
 
 [Versione 1.0.16](#id1016)
 
@@ -68,6 +68,20 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1017"></a>
+## Nuove Funzionalità 1.0.17 rispetto la 1.0.16
+- Aggiunto parametro per visualizzare "Aggiungi" nella vista del cassetto in baia
+
+## Bug Risolti
+-  Corretto uso della tastiera touch sovrapposta alle griglie dati
+-  Tolta la pagina finale nella chiusura della procedura di calibrazione giostra
+-  Eliminato allarme di "baia occupata in altra operazione" nei ripristini con macchine da 990kg
+-  Corretto errore di file bloccato durante il backup
+-  La pagina delle operazioni sul cassetto in baia si apre col tasto Indietro della ricerca articolo
+
+## Compatibile con adapter 0.4.20
 ***
 
 <a id="id1016"></a>
