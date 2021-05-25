@@ -1737,4 +1737,118 @@
   <data name="DraperyItemLoaded" xml:space="preserve">
     <value>Załadowany element obłożenia</value>
   </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>Brak zasłony</value>
+  </data>
+  <data name="StepTime" xml:space="preserve">
+    <value>Czas kroku</value>
+  </data>
+  <data name="LoadUnitCellSourceId" xml:space="preserve">
+    <value>Id celu komórki</value>
+  </data>
+  <data name="NeedMovingBackward" xml:space="preserve">
+    <value>Trzeba się cofnąć</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Aktywowany</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pauza</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Wznów</value>
+  </data>
+  <data name="Positioning" xml:space="preserve">
+    <value>Pozycjonowanie</value>
+  </data>
+  <data name="Homing" xml:space="preserve">
+    <value>Homing</value>
+  </data>
+  <data name="CombinedMovements" xml:space="preserve">
+    <value>Połączone ruchy</value>
+  </data>
+  <data name="CheckIntrusion" xml:space="preserve">
+    <value>Sprawdź wtargnięcie</value>
+  </data>
+  <data name="Backwards" xml:space="preserve">
+    <value>Wstecz</value>
+  </data>
+  <data name="StopReason" xml:space="preserve">
+    <value>Przyczyna zatrzymania</value>
+  </data>
+  <data name="NoReason" xml:space="preserve">
+    <value>Brak przyczyny</value>
+  </data>
+  <data name="FaultStateChanged" xml:space="preserve">
+    <value>Zmiana stanu błedu</value>
+  </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>Uruchomi ponownie usługę</value>
+  </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>Adres IP został osiągnięty</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>Adres IP nieosiągalny</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>Filtr UWF nie jest aktywny</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>Aktywuj filtr UWF</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Destynacja</value>
+  </data>
+  <data name="ShipmentDay" xml:space="preserve">
+    <value>Dzień wysyłki</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Dzień</value>
+  </data>
+  <data name="RunningStateChanged" xml:space="preserve">
+    <value>Stan pracy został zmieniony</value>
+  </data>
+  <data name="RestoreStep" xml:space="preserve">
+    <value>Przywróć krok</value>
+  </data>
+  <data name="Intermediate" xml:space="preserve">
+    <value>Pośredni</value>
+  </data>
+  <data name="RestoreConditions" xml:space="preserve">
+    <value>Przywróć warunki</value>
+  </data>
+  <data name="CloseShutterBayNumber" xml:space="preserve">
+    <value>Zamknij zasuwę zatoki</value>
+  </data>
+  <data name="BayNotifications" xml:space="preserve">
+    <value>Powiadomienia zatoki</value>
+  </data>
+  <data name="DeviceNotifications" xml:space="preserve">
+    <value>Powiadomienia urządzenia</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Akcja</value>
+  </data>
+  <data name="OpenShutterPosition" xml:space="preserve">
+    <value>Pozycja otwartej zasuwy</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Czas misji</value>
+  </data>
+  <data name="NeedHomingAxis" xml:space="preserve">
+    <value>Wymagany homing osi</value>
+  </data>
+  <data name="ErrorMovements" xml:space="preserve">
+    <value>Błędne ruchy</value>
+  </data>
+  <data name="EjectLoadUnit" xml:space="preserve">
+    <value>Usuń jednostkę ładunkową</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Kierunek</value>
+  </data>
+  <data name="CloseShutterPosition" xml:space="preserve">
+    <value>Pozycja zamkniętej zasuwy</value>
+  </data>
 </root>
