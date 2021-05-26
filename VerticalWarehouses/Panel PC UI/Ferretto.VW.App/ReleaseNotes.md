@@ -31,6 +31,7 @@
 ## Bug Risolti
 -  Corretto errore 82 - Timeout StartPositioningBlocked
 -  Corretta quota verticale nel ripristino del prelievo da cella con macchine da 1000kg
+-  Aggiunto controllo del sensore di zero catena nella BES nel movimento verso operatore
 
 ## Compatibile con adapter 0.4.20
 ***
