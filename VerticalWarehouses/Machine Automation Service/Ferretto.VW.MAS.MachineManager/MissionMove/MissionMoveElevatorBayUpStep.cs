@@ -50,7 +50,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var positionUp = bay.Positions.SingleOrDefault(s => s.IsUpper);
             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
 
-            if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location))
+            if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
+                || !this.SensorsProvider.IsLoadingUnitInLocation(positionUp.Location)
+                || (this.Mission.MissionType != MissionType.WMS && this.Mission.MissionType != MissionType.OUT)
+                )
             {
                 var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
