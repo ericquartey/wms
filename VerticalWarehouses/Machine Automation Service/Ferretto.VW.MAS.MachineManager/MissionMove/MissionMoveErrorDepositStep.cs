@@ -5,9 +5,10 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -58,6 +59,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         {
                             this.OnHomingNotification(messageData);
+
+                            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                            if (messageData.AxisToCalibrate == Axis.BayChain &&
+                                !bay.IsDouble &&
+                                bay.IsExternal)
+                            {
+                                this.RestoreDepositStart(false);
+                                break;
+                            }
                         }
                         else if (notification.Type == MessageType.ShutterPositioning)
                         {
@@ -364,6 +374,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.MissionsDataProvider.Update(this.Mission);
                         return;
                     }
+
+                    var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+                    if (bay.IsExternal &&
+                        !bay.IsDouble &&
+                        !machineResourcesProvider.IsSensorZeroOnBay(this.Mission.TargetBay))
+                    {
+                        this.Logger.LogInformation($"Homing External Bay Start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
+                        return;
+                    }
+
                     this.Mission.ErrorMovements = MissionErrorMovements.None;
                     break;
             }
