@@ -304,6 +304,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheExtBayCannotPerformAnInvalidMovement", CommonUtils.Culture.Actual) };
             }
 
+            // Not admitted the movement toward operator and missing of zero sensor (mechanical constraints)
+            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) &&
+                movementCategory != MovementCategory.Manual &&
+                direction == ExternalBayMovementDirection.TowardOperator)
+            {
+                return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayChainIsNotInZeroPosition", CommonUtils.Culture.Actual) };
+            }
+
             // Not admitted the automatic movement if bay does not contain a loading unit
             if ((movementCategory == MovementCategory.Automatic) &&
                 bay.Positions.FirstOrDefault().LoadingUnit != null &&

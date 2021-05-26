@@ -229,7 +229,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 bay.IsExternal)
             {
                 if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) ||
-                    this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                    this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) ||
+                    !this.machineResourcesProvider.IsSensorZeroOnBay(bay.Number))
                 {
                     if (showErrors)
                     {
