@@ -420,20 +420,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
 
                 if (bay.IsExternal &&
-                    !bay.IsDouble &&
-                    machineResourcesProvider.IsDrawerInBayInternalPosition(this.Mission.TargetBay, false))
+                    !bay.IsDouble)
                 {
-                    this.ErrorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.Mission.TargetBay);
-                    throw new StateMachineException(ErrorDescriptions.InvalidPresenceSensors, this.Mission.TargetBay, MessageActor.MachineManager);
-                }
-                if (bay.IsExternal &&
-                    !bay.IsDouble &&
-                    !machineResourcesProvider.IsSensorZeroOnBay(this.Mission.TargetBay))
-                {
-                    this.MissionsDataProvider.Update(this.Mission);
-                    this.Logger.LogInformation($"Homing External Bay Start Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
-                    return;
+                    if (machineResourcesProvider.IsDrawerInBayInternalPosition(this.Mission.TargetBay, false)
+                        || machineResourcesProvider.IsDrawerInBayExternalPosition(this.Mission.TargetBay, false))
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.InvalidPresenceSensors, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                    if (!machineResourcesProvider.IsSensorZeroOnBay(this.Mission.TargetBay))
+                    {
+                        this.MissionsDataProvider.Update(this.Mission);
+                        this.Logger.LogInformation($"Homing External Bay Start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
+                        return;
+                    }
                 }
 
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");

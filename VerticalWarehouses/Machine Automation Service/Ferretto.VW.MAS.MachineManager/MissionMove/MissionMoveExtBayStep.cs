@@ -263,7 +263,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                                 this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
 
-                                if (isLoadUnitDestinationInBay)
+                                if (isLoadUnitDestinationInBay && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
                                 {
                                     this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
                                     this.Mission.LoadUnitDestination = destination.Location;
