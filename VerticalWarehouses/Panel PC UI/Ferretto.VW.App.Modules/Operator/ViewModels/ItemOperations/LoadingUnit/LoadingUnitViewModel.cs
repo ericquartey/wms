@@ -1181,6 +1181,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                     grossWeight = loadingUnit.GrossWeight + (item.AverageWeight.Value * Math.Abs(differece) / 1000);
                                 }
 
+                                this.logger.Debug($"Set weight {grossWeight:0.00} to LoadUnit {this.SelectedItemCompartment.ItemId.Value} item {item.Code} difference {differece} unit weight {item.AverageWeight.Value} original weight {loadingUnit.GrossWeight:0.00}");
                                 await this.machineLoadingUnitsWebService.SetLoadingUnitWeightAsync(this.SelectedCompartment.LoadingUnitId.Value, grossWeight);
                                 this.UnitWeight = grossWeight;
                                 this.RaisePropertyChanged(nameof(this.UnitWeight));
@@ -1222,6 +1223,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 grossWeight = loadingUnit.GrossWeight + (item.AverageWeight.Value * Math.Abs(differece) / 1000);
                             }
 
+                            this.logger.Debug($"Set weight {grossWeight:0.00} to LoadUnit {this.SelectedItemCompartment.ItemId.Value} item {item.Code} difference {differece} unit weight {item.AverageWeight.Value} original weight {loadingUnit.GrossWeight:0.00}");
                             await this.machineLoadingUnitsWebService.SetLoadingUnitWeightAsync(this.SelectedItemCompartment.LoadingUnitId, grossWeight);
                             this.UnitWeight = grossWeight;
                             this.RaisePropertyChanged(nameof(this.UnitWeight));

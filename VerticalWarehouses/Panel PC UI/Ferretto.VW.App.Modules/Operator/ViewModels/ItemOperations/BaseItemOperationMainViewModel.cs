@@ -1361,6 +1361,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return;
                 }
 
+                this.logger.Debug($"Set weight {grossWeight:0.00} to LoadUnit {loadingUnitId} difference {quantity} unit weight {itemWeight.Value} original weight {loadingUnit.GrossWeight:0.00}");
                 await this.loadingUnitsWebService.SetLoadingUnitWeightAsync(loadingUnitId, grossWeight);
             }
         }

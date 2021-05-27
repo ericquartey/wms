@@ -512,7 +512,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SetLoadingUnitWeight(int id, double loadingUnitGrossWeight)
         {
-            this.logger.LogInformation($"Update load unit {id} weight {loadingUnitGrossWeight}kg");
+            this.logger.LogInformation($"Update load unit {id} weight {loadingUnitGrossWeight:0.00}kg");
             this.loadingUnitsDataProvider.SetWeight(id, loadingUnitGrossWeight, isAdditionalCheck: true);
 
             return this.Accepted();
