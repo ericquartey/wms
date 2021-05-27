@@ -1000,6 +1000,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
                 }
+                else if (this.fullCompartment)
+                {
+                    await this.compartmentsWebService.SetFillPercentageAsync(this.MissionOperation.CompartmentId, 100);
+                    canComplete = false;
+                }
                 else
                 {
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
@@ -1156,6 +1161,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.closeLine)
                 {
                     canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
+                }
+                else if (this.fullCompartment)
+                {
+                    await this.compartmentsWebService.SetFillPercentageAsync(this.MissionOperation.CompartmentId, 100);
+                    canComplete = false;
                 }
                 else
                 {

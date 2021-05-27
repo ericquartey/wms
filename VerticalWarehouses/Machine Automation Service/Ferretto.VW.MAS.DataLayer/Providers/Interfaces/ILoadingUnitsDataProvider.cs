@@ -58,7 +58,13 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         /// <param name="loadingUnitId"></param>
         /// <param name="loadingUnitGrossWeight">Tare + ElevatorWeight + NetWeight</param>
-        void SetWeight(int loadingUnitId, double loadingUnitGrossWeight, bool isAdditionalCheck);
+        void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
+
+        /// <summary>
+        /// </summary>
+        /// <param name="loadingUnitId"></param>
+        /// <param name="loadingUnitGrossWeight">Tare + NetWeight</param>
+        void SetWeightFromUI(int loadingUnitId, double loadingUnitGrossWeight);
 
         void TryAdd(int loadingUnitId);
 
