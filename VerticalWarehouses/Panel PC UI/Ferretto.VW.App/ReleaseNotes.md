@@ -33,6 +33,7 @@
 -  Corretta quota verticale nel ripristino del prelievo da cella con macchine da 1000kg
 -  Aggiunto controllo del sensore di zero catena nella BES nel movimento verso operatore
 -  Aggiunto controllo del peso aggiornato dalle operazioni sul cassetto in baia
+-  Nella pagina di versamento si può attivare cassetto "pieno" senza il "chiudi riga" 
 
 ## Compatibile con adapter 0.4.20
 ***
