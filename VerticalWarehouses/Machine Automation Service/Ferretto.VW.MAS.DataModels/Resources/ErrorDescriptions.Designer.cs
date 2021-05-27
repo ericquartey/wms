@@ -745,6 +745,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The tare of the Loading Unit is 0.
+        /// </summary>
+        public static string LoadUnitTareError {
+            get {
+                return ResourceManager.GetString("LoadUnitTareError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Undefined bay bottom position.
         /// </summary>
         public static string LoadUnitUndefinedBottom {

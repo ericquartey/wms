@@ -5,9 +5,10 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -58,6 +59,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         {
                             this.OnHomingNotification(messageData);
+
+                            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                            if (messageData.AxisToCalibrate == Axis.BayChain &&
+                                !bay.IsDouble &&
+                                bay.IsExternal)
+                            {
+                                this.RestoreDepositStart(false);
+                                break;
+                            }
                         }
                         else if (notification.Type == MessageType.ShutterPositioning)
                         {
@@ -364,6 +374,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.MissionsDataProvider.Update(this.Mission);
                         return;
                     }
+
                     this.Mission.ErrorMovements = MissionErrorMovements.None;
                     break;
             }
@@ -405,6 +416,27 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward)
                 )
             {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+                if (bay.IsExternal &&
+                    !bay.IsDouble)
+                {
+                    if (machineResourcesProvider.IsDrawerInBayInternalPosition(this.Mission.TargetBay, false)
+                        || machineResourcesProvider.IsDrawerInBayExternalPosition(this.Mission.TargetBay, false))
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.Mission.TargetBay);
+                        throw new StateMachineException(ErrorDescriptions.InvalidPresenceSensors, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                    if (!machineResourcesProvider.IsSensorZeroOnBay(this.Mission.TargetBay))
+                    {
+                        this.MissionsDataProvider.Update(this.Mission);
+                        this.Logger.LogInformation($"Homing External Bay Start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
+                        return;
+                    }
+                }
+
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
                 if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay))
                 {

@@ -2230,6 +2230,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> BoxToCompartmentAsync(int id, string barcode, int command, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetFillPercentageAsync(int id, int percentage);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetFillPercentageAsync(int id, int percentage, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> UpdateItemStockAsync(int id, int itemId, double stock, ItemOptions itemOptions);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2941,6 +2948,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Accessories", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public BayAccessories Accessories { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("BarcodeAutomaticPut", Required = Newtonsoft.Json.Required.Always)]
+        public bool BarcodeAutomaticPut { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Carousel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Carousel Carousel { get; set; }
     
@@ -2989,6 +2999,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsFastDepositToBay", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFastDepositToBay { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsTelescopic", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsTelescopic { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LastCalibrationCycles", Required = Newtonsoft.Json.Required.Always)]
         public int LastCalibrationCycles { get; set; }
     
@@ -3026,9 +3039,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("View", Required = Newtonsoft.Json.Required.Always)]
         public bool View { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsTelescopic", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsTelescopic { get; set; }
     
         public string ToJson() 
         {
@@ -3467,6 +3477,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         TelescopicBayError = 85,
     
+        LoadUnitTareError = 86,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -3657,7 +3669,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ExtBay = 16,
     
-        End = 17,
+        ElevatorBayUp = 17,
+    
+        End = 18,
     
         Error = 101,
     

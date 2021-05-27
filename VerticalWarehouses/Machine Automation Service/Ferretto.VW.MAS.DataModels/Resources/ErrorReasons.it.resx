@@ -432,4 +432,7 @@
   <data name="TelescopicBayError" xml:space="preserve">
     <value>La baia telescopica risulta fuori sede. Posizionarla correttamente per ripristinare i movimenti automatici</value>
   </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>Correggere il parametro tara del cassetto</value>
+  </data>
 </root>

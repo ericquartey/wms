@@ -1000,6 +1000,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
                 }
+                else if (this.fullCompartment)
+                {
+                    await this.compartmentsWebService.SetFillPercentageAsync(this.MissionOperation.CompartmentId, 100);
+                    canComplete = false;
+                }
                 else
                 {
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
@@ -1156,6 +1161,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.closeLine)
                 {
                     canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
+                }
+                else if (this.fullCompartment)
+                {
+                    await this.compartmentsWebService.SetFillPercentageAsync(this.MissionOperation.CompartmentId, 100);
+                    canComplete = false;
                 }
                 else
                 {
@@ -1361,6 +1371,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return;
                 }
 
+                this.logger.Debug($"Set weight {grossWeight:0.00} to LoadUnit {loadingUnitId} difference {quantity} unit weight {itemWeight.Value} original weight {loadingUnit.GrossWeight:0.00}");
                 await this.loadingUnitsWebService.SetLoadingUnitWeightAsync(loadingUnitId, grossWeight);
             }
         }

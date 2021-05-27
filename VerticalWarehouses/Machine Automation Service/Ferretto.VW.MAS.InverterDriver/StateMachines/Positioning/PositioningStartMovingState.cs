@@ -169,6 +169,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         // if position doesn't change raise an alarm
                         if (this.oldPosition.HasValue
                             && Math.Abs(position.Value - this.oldPosition.Value) < 1
+                            && this.data.TargetSpeed[0] > 1
                             )
                         {
                             if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)

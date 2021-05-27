@@ -1,0 +1,1278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>Wskazuje wartość górnej wartości wymaganej przez test. Ustaw wartość tylko wtedy, gdy pole jest edytowalne.</value>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>Wskazuje wartość dolnej wartości wymaganej przez test. Ustaw wartość tylko wtedy, gdy pole jest edytowalne.</value>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>Ustawić wymaganą liczbę cykli.</value>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>Wyświetla liczbę aktualnie wykonanych cykli.</value>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>Informuje o aktualnej pozycji osi.</value>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>Rozpocząć test. Test jest kontynuowany do momentu osiągnięcia wymaganej liczby cykli lub do momentu naciśnięcia przycisku Stop.</value>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>Zatrzymać test. Cykl zatrzymuje się na końcu bieżącego ruchu. Naciśnięcie przycisku rozpoczęcia cyklu powoduje wznowienie wykonywania testu aż do jego zakończenia.</value>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>Procedura pozwala na wykonanie serii cykli przemieszczania osi pionowej pomiędzy dwoma punktami wskazanymi w danych wejściowych. Rozpoczęty cykl jest kontynuowany do momentu osiągnięcia wymaganej liczby cykli lub naciśnięcia klawisza zakończenia.</value>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>Funkcja kalibracji rozdzielczości osi pionowej pozwala na skalibrowanie poprawnej wartości poprzez pomiar w terenie, a następnie uaktualnienie wartości domyślnej proponowanej przez system. Procedura przebiega w kolejnych krokach aż do pomyślnego zakończenia.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Jeśli pole jest edytowalne, ustawić wymaganą wartość początkową.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>Wskazuje zmierzony odcinek drogi od pozycji początkowej do końcowej.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Jeśli pole jest edytowalne, ustawić wymaganą wartość końcową.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>Przycisk uruchamia przemieszczenie osi do uprzednio ustawionej pozycji końcowej.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>Wskazuje zmierzony odcinek drogi od pozycji początkowej do końcowej.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>Krok 1: pozycjonować oś na pozycji początkowej</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>Krok 2: pozycjonować oś na pozycji końcowej</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>Krok 3: Zaktualizować rozdzielczość do nowej wartości</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>Krok 4: ponowne pozycjonowanie osi i zamknięcie procedury</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>Pomoc Kalibracja Rozdzielczości Rzeczywista Rozdzielczość</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Wyświetla nową wartość rozdzielczości obliczoną przez procedurę.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Zastępuje poprzednią wartość rozdzielczości nowo obliczoną wartością.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Przywraca oś do jej pozycji wyjściowej.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Ustawić początek osi i zamknąć procedurę.</value>
+  </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>Wyświetla aktualny stan instalacji. Części, które zostały już wykonane, są zaznaczone na zielono, natomiast te, które mają być wykonane lub wykonane, są zaznaczone na szaro. Niektóre procedury są możliwe tylko po prawidłowym wykonaniu procedur przygotowawczych.</value>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>Szary wskaźnik oznacza procedurę, którą należy jeszcze wykonać</value>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>Zielony wskaźnik oznacza, że procedura została zakończona sukcesem.</value>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>Wskazanie stanu czujnika</value>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>Kolor szary oznacza nieaktywny stan czujnika.</value>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>Kolor zielony oznacza aktywny stan czujnika.</value>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>Kolor szary oznacza nieaktywny stan czujnika.</value>
+  </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>Ręczne sterowanie małą prędkością.</value>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>Pozwala na wykonywanie ruchów różnych osi z małą prędkością. Ustawiona jest niewielka przestrzeń ruchu w obu kierunkach. Tekst na przyciskach zmienia się w zależności od wymaganego ruchu. Po przetestowaniu maszyny możliwe będzie sterowanie wszystkimi różnymi osiami z niską prędkością bez blokad i dla nieograniczonych skoków.</value>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>Wskazuje aktualną pozycję lub status dla tych części, które mają tylko dyskretne pozycje.</value>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>Przycisk do ruchu do przodu, do góry lub otwarcia w zależności od wybranej części</value>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>Przycisk do ruchu do tyłu, w dół lub zamknięcia, zgodnie z wybraną częścią</value>
+  </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>Pozwala na przeprowadzenie serii powtarzających się testów dla przepustnicy zamykającej wybraną zatokę. Możliwe jest ustawienie czasu oczekiwania pomiędzy dwoma kolejnymi ruchami. Procedura kończy się po osiągnięciu ustawionej liczby cykli lub na wyjściu.</value>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>Ustawić wymaganą liczbę cykli.</value>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>Ustawić czas opóźnienia między dwoma kolejnymi cyklami.</value>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>Wskazuje liczbę aktualnie wykonanych cykli.</value>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>Stan czujnika A bariery.</value>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>Stan czujnika B bariery.</value>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>Uruchomić rozpoczęcie wymaganych testów. Przycisk jest aktywny, jeśli liczba wymaganych cykli jest większa od zera.</value>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>Zatrzymuje pętlę po zakończeniu bieżącego ruchu. Kolejne naciśnięcie przycisku start powoduje wznowienie testu od cyklu następującego po cyklu zatrzymanym.</value>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>Procedura umożliwia wykonanie początku osi pionowej, na końcu której ustawiana jest aktualna pozycja wskazywana przez wartość offsetu. Procedura ta jest przygotowaniem do realizacji innych funkcji wymagających ruchu osi na wysokość.</value>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>Dolna granica przemieszczenia.</value>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>Górna granica przemieszczenia.</value>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>Aktualna wartość offsetu. Na końcu początku osi zostaje ustawiony aktualny kontyngent na tę wartość.</value>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>Aktualna rozdzielczość osi.</value>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>Podać wynik końcowy procedury.</value>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>Rozpoczyna procedurę początku osi pionowej.</value>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>Zatrzymuje procedurę początku osi pionowej.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>Wartość początkowa aktualnej pozycji odczytanej przez miernik.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>Wartość końcowa aktualnej pozycji odczytanej przez miernik.</value>
+  </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>Procedura pozwala na sprawdzenie i ewentualną korektę wymiaru wybranej komórki. Korekta dotyczy tylko wybranej komórki.</value>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>Ustaw komórkę, której wymiar chcesz sprawdzić.</value>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>Wskazuje wymiar aktualnie wybranej komórki.</value>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>Wartość zmiany wysokości podczas fazy dopasowania.</value>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>Bieżąca wartość współrzędnej osi.</value>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>Całkowita wartość korekty, która ma zostać zastosowana.</value>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>Umieść oś pionową w wybranej komórce.</value>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>Zwiększa aktualną współrzędną osi o wartość wskazaną przez krok.</value>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>Zmniejsza aktualną współrzędną osi o wartość wskazaną przez krok.</value>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>Wartość kroku jest stosowana do aktualnej współrzędnej osi po każdym naciśnięciu przycisków ruchu.</value>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>Procedura umożliwia sprawdzenie poprawności ustawienia poszczególnych paneli drzwi regału. Ewentualna korekta dotyczy wszystkich komórek należących do testowanego panelu.</value>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>Wskazuje całkowitą liczbę paneli na stronie wybranej przez komórkę odniesienia.</value>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>Wskazuje aktualnie wybrany panel, który jest sprawdzany.</value>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>Wybrana komórka, z której pochodzi panel do kontroli. Numery nieparzyste lub parzyste wybierają stronę przednią lub tylną.</value>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>Wymiar wybranej komórki.</value>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>Wskazuje aktualną pozycję osi. Jest ona zmieniana przez działanie przycisków kroków.</value>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>Wartość kroku do wykorzystania przy modyfikacji wymiaru.</value>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>Całkowita wartość korekty, która zostanie zastosowana do wymiaru wybranej komórki.</value>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>Umożliwia przejście do następnego panelu w celu sprawdzenia.</value>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>Umieść oś w wybranej komórce.</value>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>Zwiększa aktualną współrzędną osi o wartość wskazaną przez krok.</value>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>Zmniejsza aktualną współrzędną osi o wartość wskazaną przez krok.</value>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>Zastosuj korektę do grupy komórek w aktualnie wybranym panelu.</value>
+  </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>Procedura umożliwia ustawienie bariery detekcji wysokości szuflady. Sygnał osiągniętej wysokości musi być również wykorzystywany w fazie wstępnego pozycjonowania szablonu testowego.</value>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>Ustawić prędkość, która będzie używana podczas fazy kalibracji.</value>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>Wskazuje błąd systemu wynikający z ustawionej prędkości kalibracji i czasu skanowania systemu. Zmniejszyć prędkość, aby zmniejszyć błąd.</value>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>Ustawia maksymalną tolerancję dopuszczalną podczas pomiaru. Test kończy się niepowodzeniem, jeśli wynik przekracza wymaganą wartość.</value>
+  </data>
+  <data name="HelpGHCHeightReached" xml:space="preserve">
+    <value>Wskazuje aktywację belki używanej jako element weryfikacji wysokości.</value>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>Zwraca aktualną pozycję osi łańcucha.</value>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>Wskazuje korektę, która ma być zastosowana do bariery. Znak plus wymaga podniesienia bariery, znak minus obniżenia jej o wskazaną wartość.</value>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>Podaje ostateczny wynik testu.</value>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>Przycisk uruchamia procedurę kontroli.</value>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>Przycisk zatrzymuje procedurę kontroli.</value>
+  </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>Procedura pozwala sprawdzić, czy pomiar masy mieści się w oczekiwanej tolerancji. Do pomiaru używane są odważniki próbne w ilości wskazanej w odpowiednim polu.</value>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>Wskazuje przebieg wykonywany z małą prędkością, podczas którego wykonywane są próbki dostarczanego prądu.</value>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>Wskazuje masę próbki wprowadzonej do badania.</value>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>Wskazuje tolerancję wymaganą przez pomiar.</value>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>Wskazuje masę zmierzoną przez system.</value>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>Podać wynik końcowy procedury. Wynik będzie pozytywny, jeśli zmierzona masa mieści się w ustalonej tolerancji.</value>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>Rozpocząć procedurę testu.</value>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>Zatrzymać procedurę testu.</value>
+  </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>Procedura umożliwia skorygowanie przesunięcia osi pionowej w celu wyrównania wysokości poszczególnych komórek z układem odniesienia osi pionowej.</value>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>Komórka wybrana do sprawdzenia.</value>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>Aktualna wysokość wybranej komórki</value>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>Wartość zmiany wysokości, która zostanie zastosowana po każdym naciśnięciu klawiszy przesuwania osi.</value>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>Bieżąca pozycja osi pionowej.</value>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>Bieżąca wartość przesunięcia osi pionowej.</value>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>Nowa wartość przesunięcia.</value>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>Przesuwa oś pionową w głąb wymiaru wybranej komórki.</value>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>Zwiększa aktualną wysokość osi pionowej o ustawioną wartość kroku.</value>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>Zmniejsza aktualną wysokość osi pionowej o ustawioną wartość kroku.</value>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>Aktualizuje przesunięcie osi pionowej do wskazanej wartości.</value>
+  </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>Procedura pozwala na modyfikację bloku komórek pomiędzy pierwszą a ostatnią zaznaczoną. Wybrana strona jest automatycznie wskazywana na podstawie numeru początkowego komórki w zależności od tego, czy jest ona nieparzysta czy parzysta.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Ustaw numer początkowej komórki bloku.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Ustaw numer ostatniej komórki bloku.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Ustaw żądaną wartość korekty, która zostanie zastosowana do wybranej grupy komórek.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Pokazuje stronę, na której odbywa się edycja. Strona jest określana automatycznie na podstawie wybranego numeru komórki początkowej, jeśli jest parzysta lub nieparzysta.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Zastosuj korektę do wybranej grupy komórek.</value>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>Wskazuje całkowitą liczbę komórek, które mają zostać przetestowane.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>Wskazuje liczbę komórek aktualnie testowanych.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>Numer aktualnie testowanej komórki.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>Numer wsuwanej szuflady.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>Maksymalna pojemność szuflady podczas załadunku.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Rozpocząć procedurę wkładania szuflady. Procedura kończy się po zakończeniu zaplanowanych cykli.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Przywołać szufladę użytą do badania w zatoce.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>Procedura umożliwia wykorzystanie szuflady wybranej w odpowiednim polu wprowadzania danych do przetestowania dolnych i górnych komórek urządzenia oraz komórek znajdujących się poniżej i powyżej bloków komórek oznaczonych jako wyłączone. Celem procedury jest sprawdzenie, czy w tych obszarach nie występują zakłócenia mechaniczne.</value>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>Procedura umożliwia włożenie pustych szuflad do wnętrza maszyny po zakończeniu procedury uruchamiania. Szuflady wkłada się do wolnych bloków, wybierając je według najniższego priorytetu.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>Całkowita liczba szuflad do włożenia.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>Szuflady już włożone do wózka.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>Numer wsuwanej szuflady. Można go wygenerować za pomocą odpowiedniego przycisku lub wpisać w odpowiednie pole.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>Wskazuje maksymalną dopuszczalną pojemność aktualnie wsuwanej szuflady.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>Przycisk ustawia następną szufladę do włożenia. Numer jest kolejnym po ostatnio wprowadzonym.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Uruchamia procedurę wsuwania wybranej szuflady.</value>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>Procedura umożliwia sprawdzenie i ewentualną korektę wysokości różnych możliwych pozycji na poszczególnych półkach. Procedura jest odpowiednia dla typu wnęki wskazanej w dokumencie opisującym konfigurację maszyny. W przypadku kilku pozycji na tej samej zatoce procedura pozwala na wielokrotne sprawdzanie.</value>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>Ustaw zatokę, której różnice chcesz sprawdzić.</value>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>Wskazuje pozycję wewnątrz wybranej zatoki, której wysokość chcesz sprawdzić. Jest ona ustawiana automatycznie.</value>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>Wyświetla wysokość wybranej pozycji w obrębie kontrolowanej zatoki.</value>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>Wartość kroku jest stosowana do aktualnej współrzędnej osi po każdym naciśnięciu przycisków ruchu.</value>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>Łączna wartość korekty, która zostanie zastosowana do wysokości wybranej zatoki.</value>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>Umieść oś pionową w wybranym położeniu zatoki.</value>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>Zwiększa aktualną współrzędną osi o wartość wskazaną przez krok.</value>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>Zmniejsza aktualną współrzędną osi o wartość wskazaną przez krok.</value>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>Koryguje aktualną wysokość położenia zatoki o wartość wskazaną w odpowiednim polu.</value>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>Jeżeli przycisk jest włączony, to umożliwia wybór kolejnej pozycji w aktualnie wybranej zatoce. Procedura musi zostać powtórzona dla nowej pozycji.</value>
+  </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>Menu główne umożliwia dostęp do wszystkich funkcji przewidzianych dla fazy uruchomienia maszyny.</value>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>Menu główne.</value>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>Wskazuje, gdy jest widoczny, obecność błędu. Naciśnięcie przycisku otwiera okno poświęcone przywróceniu sytuacji.</value>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>Stan wyłączenia tego przycisku oznacza wyłączenie ruchów maszyny.</value>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>Stan Włączony tego przycisku oznacza, że maszyna może się poruszać.</value>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>Wskazuje nazwę użytkownika, który jest aktualnie zalogowany. Po naciśnięciu umożliwia wylogowanie się z systemu.</value>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>Po naciśnięciu otwiera menu kontekstowe dla aktualnie wybranej funkcji.</value>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>Umożliwia przewijanie w górę listy przycisków dostępu do różnych funkcji.</value>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>Lista przycisków dostępu do funkcji instalacji.</value>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>Umożliwia przewijanie w dół listy przycisków dostępu do różnych funkcji.</value>
+  </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>Procedura umożliwia przeprowadzenie serii testów pobierania i odkładania szuflady przy użyciu zatoki wybranej w odpowiednich polach wprowadzania danych. W ramach testu możliwe jest zmienianie przyspieszenia, opóźnienia i prędkości posuwu zgodnie z tym, co zostało wskazane w odpowiednim polu. Test jest kontynuowany do momentu osiągnięcia wymaganej liczby cykli lub do momentu naciśnięcia przycisku Stop.</value>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>Wprowadzić numer pola, na którym ma zostać przeprowadzony test.</value>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>Wprowadzić pozycję wewnątrz zatoki, na której ma zostać przeprowadzony test.</value>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>Wprowadź prędkość posuwu wymaganą do przeprowadzenia testu. Redukcja ma również wpływ na wartości przyspieszenia i opóźnienia.</value>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>Zgłasza aktualne położenie osi łańcucha jako wartość względem wysokości początkowej.</value>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>Wprowadzić liczbę wymaganych cykli testowych.</value>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>Zgłasza liczbę aktualnie wykonanych pełnych cykli.</value>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>Przesuwa oś pionową do pozycji wewnątrz wybranej zatoki. Wysokość uwzględnia przesunięcie załadunku.</value>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>Rozpocząć procedurę testu. Przycisk jest aktywny dopiero wtedy, gdy oś pionowa znajdzie się w wymaganym położeniu w zatoki.</value>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>Zatrzymać cykl testu.</value>
+  </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>Informuje o aktualnie włączonym trybie dla poleceń ręcznych. Tryb rozszerzonego skoku jest ustawiany automatycznie po zakończeniu uruchamiania.</value>
+  </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>Anulować procedurę zapisu pliku.</value>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>Procedura ta umożliwia zapisanie lub odzyskanie plików konfiguracyjnych na urządzeniu zewnętrznym.</value>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>Procedura zapisywania konfiguracji.</value>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>Wskazuje automatycznie utworzony folder, w którym zostaną zapisane pliki konfiguracyjne.</value>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>Rozpocząć procedurę zapisu plików konfiguracyjnych. Wszystkie już istniejące pliki zostaną nadpisane.</value>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>Potwierdzić procedurę zapisu pliku.</value>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>Anulować procedurę zapisu pliku.</value>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>Procedura przywracania konfiguracji.</value>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>Rozpocząć procedurę przesyłania plików konfiguracyjnych. Wszystkie już istniejące pliki zostaną nadpisane.</value>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>Potwierdzić procedurę przesyłania pliku.</value>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>Anulować procedurę przesyłania pliku.</value>
+  </data>
+  <data name="HelpOpMainPageHeadr" xml:space="preserve">
+    <value>Pierwsza strona.</value>
+  </data>
+  <data name="HelpOpMainPageDescription" xml:space="preserve">
+    <value>Menu główne umożliwia sprawdzenie stanu maszyny za pomocą odpowiednich przycisków w górnej części ekranu. Po lewej stronie, za pomocą przycisków nawigacyjnych, można uzyskać dostęp do różnych funkcji.</value>
+  </data>
+  <data name="HelpOpMainManu" xml:space="preserve">
+    <value>Wskazuje stan ręczny. Cykl automatyczny jest zawieszony.</value>
+  </data>
+  <data name="HelpOpMainAuto" xml:space="preserve">
+    <value>Wskazuje stan automatyczny. Maszyna zarządza poleceniami pochodzącymi z systemu sterowania.</value>
+  </data>
+  <data name="HelpOpMainOff" xml:space="preserve">
+    <value>Zasilanie silników jest wyłączone. Ruchy nie są możliwe w żadnym trybie.</value>
+  </data>
+  <data name="HelpOpMainOn" xml:space="preserve">
+    <value>Zasilanie silników jest włączone. Maszyna jest w stanie wykonywać ruchy.</value>
+  </data>
+  <data name="HelpOpMainServiceAdvice" xml:space="preserve">
+    <value>System sygnalizuje, że zbliża się czas zaplanowanej konserwacji niektórych części maszyny.</value>
+  </data>
+  <data name="HelpOpMainServiceAllert" xml:space="preserve">
+    <value>System sygnalizuje, że niektóre części maszyny osiągnęły koniec zaplanowanego czasu pomiędzy dwoma przeglądami. Wymagana konserwacja!</value>
+  </data>
+  <data name="HelpOpMainError" xml:space="preserve">
+    <value>Podczas pracy urządzenia wystąpił błąd. Naciśnięcie tego przycisku otwiera stronę do zarządzania procedurami odzyskiwania.</value>
+  </data>
+  <data name="HelpOpMainUser" xml:space="preserve">
+    <value>Informuje o nazwie aktualnie zalogowanego operatora. Naciśnięcie przycisku umożliwia wylogowanie się.</value>
+  </data>
+  <data name="HelpOpMainHelp" xml:space="preserve">
+    <value>Przycisk otwiera stronę pomocy kontekstowej dla używanej procedury.</value>
+  </data>
+  <data name="HelpOpMainDrawerOp" xml:space="preserve">
+    <value>Przycisk otwiera stronę umożliwiającą zarządzanie operacjami zaplanowanymi na szufladzie w zatoce.</value>
+  </data>
+  <data name="HelpOpMainItem" xml:space="preserve">
+    <value>Przycisk otwiera stronę umożliwiającą wyszukanie kodu artykułu.</value>
+  </data>
+  <data name="HelpOpMainLists" xml:space="preserve">
+    <value>Przycisk otwiera stronę wyświetlania list oczekujących na wykonanie, zaplanowanych przez system WMS.</value>
+  </data>
+  <data name="HelpOpMainOther" xml:space="preserve">
+    <value>Umożliwia dostęp do dodatkowych funkcji.</value>
+  </data>
+  <data name="HelpDrawerWaitDescription" xml:space="preserve">
+    <value>Strona informuje, że system zakończył operacje zaplanowane na ostatniej szufladzie przybyłej do zatoki. Oczekuje na przybycie kolejnej szuflady, co spowoduje otwarcie strony poświęconej planowanym operacjom.</value>
+  </data>
+  <data name="HelpDrawerWaitNote" xml:space="preserve">
+    <value>Notatka informuje o aktualnej sytuacji systemu.</value>
+  </data>
+  <data name="HelpDrawerWaitScheduledOperations" xml:space="preserve">
+    <value>Pole informuje o liczbie operacji aktualnie zaplanowanych dla zatoki, na którym pracuje operator.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
+    <value>Procedura dostarcza wszystkich szczegółowych informacji związanych z operacją wycofania, zaplanowaną na szufladzie znajdującej się w zatoce, na którym pracuje użytkownik. Rysunek, jeśli jest obecny, pokazuje podział szuflady, a podświetlony obszar wskazuje przegródkę, na której należy wykonać operację. Jeżeli jest obecny, pokazany jest również obraz przedmiotu, który jest obsługiwany.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
+    <value>Wyświetlana jest ilość artykułu, który ma być wyjęty z podświetlonej przegródki.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
+    <value>Użytkownik może zmienić faktycznie pobraną ilość w przypadku, gdy stan magazynowy jest niewystarczający. W normalnych warunkach pole jest już wypełnione wymaganą ilością.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
+    <value>Okno wyświetla szereg dodatkowych informacji do tych, które są obecne w oknie kompletacji. Szczegółowe informacje wyświetlane są zarówno dla pobieranej pozycji, jak i dla każdej powiązanej listy opakowań. Jeśli obecny, wyświetlany jest również obraz artykułu.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
+    <value>Pokazuje wiersz listy, do którego odnosi się trwająca operacja wycofania.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Wskazana jest data produkcji pobieranej pozycji.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Jeśli obecna, wskazywana jest partia produkcyjna pobieranej pozycji.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Jeśli jest to wymagane, wskazywany jest stan materiału podlegającego wycofaniu.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
+    <value>Jeżeli ma to zastosowanie, wskazuje listę pakowania, na której gromadzone są informacje odnoszące się do różnych kompletowanych pozycji.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
+    <value>Jeżeli występuje, wskazuje opis listy pakowania, który łączy pobierane materiały.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
+    <value>Podaje rodzaj opakowania pobieranej pozycji.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Wyświetlana jest ilość artykułu, który ma być wyjęty z podświetlonej przegródki.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
+    <value>Na stronie wyświetlane są szczegóły aktualnie trwającej operacji odkładania. Więcej szczegółów na temat wykonywanych operacji znajduje się na stronie podstawowej.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Wskazuje wiersz listy, którego dotyczy trwająca operacja.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Raportuje datę produkcji pozycji.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Pokazuje status materialny opłacanej pozycji.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
+    <value>Wskazuje wiersz listy, którego dotyczy trwająca operacja.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
+    <value>Wskazuje rodzaj opakowania opłacanej pozycji.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
+    <value>Ilość, którą należy wsypać do wskazanej przegródki.</value>
+  </data>
+  <data name="HelpCommonList" xml:space="preserve">
+    <value>Wskazuje kod listy związanej z trwającą procedurą.</value>
+  </data>
+  <data name="HelpCommonListDescription" xml:space="preserve">
+    <value>Pokazuje opis listy związanej z trwającą operacją.</value>
+  </data>
+  <data name="HelpCommonItem" xml:space="preserve">
+    <value>Wskazuje kod pozycji związanej z trwającą operacją.</value>
+  </data>
+  <data name="HelpCommonItemDescription" xml:space="preserve">
+    <value>Wyświetla opis pozycji, która jest przedmiotem bieżącej operacji.</value>
+  </data>
+  <data name="HelpCommonPosition" xml:space="preserve">
+    <value>Pole wskazuje pozycję, w której znajduje się obiekt przedziału, będący przedmiotem trwającej operacji, odwzorowany zgodnie z przyjętym kodowaniem.</value>
+  </data>
+  <data name="HelpCommonNote" xml:space="preserve">
+    <value>Operatorowi wyświetlane są wszelkie uwagi związane z wykonywaną operacją.</value>
+  </data>
+  <data name="HelpCommonDetail" xml:space="preserve">
+    <value>Przycisk umożliwia wejście na stronę, na której wyświetlane są dalsze szczegóły związane z wykonywaną operacją.</value>
+  </data>
+  <data name="HelpCommonConfirm" xml:space="preserve">
+    <value>Potwierdzenie zakończenia bieżącej operacji.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
+    <value>Procedura umożliwia ponowne napełnienie przedziału, w którym znajduje się element o takich samych właściwościach jak ten, który jest w płatności. Procedura pozwala na aktualizację maksymalnej pojemności komory, jeżeli zapisana wartość jest błędna.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Ilość, którą należy wsypać do wybranej przegródki.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
+    <value>Otwiera stronę do zarządzania aktualizacją maksymalnej pojemności przegródki.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Umożliwia ustawienie ilości faktycznie wsypanej do wybranego przedziału.</value>
+  </data>
+  <data name="HelpCommonGridColumnHeader" xml:space="preserve">
+    <value>Opis kolumny w tabeli.</value>
+  </data>
+  <data name="HelpCommonUp" xml:space="preserve">
+    <value>Przesunięcie wskaźnika na poprzednią pozycję. Dwukrotne naciśnięcie powoduje przejście na początek listy.</value>
+  </data>
+  <data name="HelpCommonDown" xml:space="preserve">
+    <value>Przesunięcie wskaźnika na kolejną pozycję. Dwukrotne naciśnięcie powoduje przejście na koniec listy.</value>
+  </data>
+  <data name="HelpListsInWaitDescription" xml:space="preserve">
+    <value>Procedura umożliwia przeglądanie wszystkich list oczekujących na wykonanie przez system WMS. Dla każdej listy podane są maszyny biorące udział w jej realizacji. Możliwe jest wykonanie tylko tej części list, w których artykuł do pobrania znajduje się na maszynie, z której korzysta procedura.</value>
+  </data>
+  <data name="HelpListsInWaitGridList" xml:space="preserve">
+    <value>W kolumnie siatki prezentowane są kody list oczekujących na wykonanie.</value>
+  </data>
+  <data name="HelpListsInWaitGridDescription" xml:space="preserve">
+    <value>W kolumnie siatki znajduje się opis list oczekujących na wykonanie.</value>
+  </data>
+  <data name="HelpListsInWaitGridMachine" xml:space="preserve">
+    <value>Kolumna przedstawia, dla każdej listy, listę maszyn zaangażowanych do jej wykonania.</value>
+  </data>
+  <data name="HelpListsInWaitListsDetail" xml:space="preserve">
+    <value>Przycisk umożliwia przejście na stronę szczegółów listy, gdzie widoczna jest lista artykułów znajdujących się na liście.</value>
+  </data>
+  <data name="HelpListsInWaitListsExecute" xml:space="preserve">
+    <value>Przycisk, jeśli jest aktywny, umożliwia wykonanie aktualnie wybranej listy dla porcji występującej w maszynie, na której pracujesz.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
+    <value>Pokazuje numer wiersza wyświetlanej listy.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
+    <value>Podać kod artykułu.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
+    <value>Podaje opis artykułu.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
+    <value>Wskazuje wymaganą ilość danej pozycji.</value>
+  </data>
+  <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
+    <value>Strona pokazuje szczegóły wybranej listy. W ramach wszystkich wyświetlonych wierszy można wykonać tylko te, które są podświetlone, ponieważ artykuł znajduje się w maszynie, na której pracujesz. Przycisk „Uruchom listę” jest aktywny tylko wtedy, gdy w maszynie, na której pracujesz, znajduje się przynajmniej jeden wykonywalny wiersz.</value>
+  </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>Procedura umożliwia wyszukiwanie artykułu zarówno w kolumnie kod, jak i w kolumnie opis. Tekst wprowadzony w polu wyszukiwania jest automatycznie wykorzystywany do wyszukania żądanego artykułu na podstawie zawartości obu kolumn. Wynik wyświetlany jest w siatce.</value>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>Pokazuje listę kodów artykułów, które spełniają kryteria wyszukiwania.</value>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>Pokazuje opis kodów artykułów, które odpowiadają kryteriom wyszukiwania.</value>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>Wskazuje listę maszyn, które zawierają artykuł wskazany w wierszu. Artykuł może być obecny w jednej lub wielu maszynach.</value>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>Wpisz w polu ciąg znaków, który ma być wyszukany w polach kodu i opisu artykułu.</value>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>Wskazuje dostępną ilość wybranego artykułu w maszynie, na której pracujesz.</value>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>Pole jest aktywne tylko wtedy, gdy ilość dostępna dla wybranej pozycji jest większa od zera. Można wprowadzić wartość, która nie przekracza dostępnej ilości.</value>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>Umożliwia zażądanie wybranego artykułu w wymaganej ilości. Przycisk jest aktywny tylko wtedy, gdy artykuł jest dostępny na maszynie, na której pracujesz.</value>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>Na stronie wyświetlane są główne dane wybranego artykułu. Bardziej szczegółowe informacje możesz zobaczyć na poziomie zarządzania WMS.</value>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>Wskazuje sposób zarządzania artykułem.</value>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>Wskazuje okres Fifo artykułu, wyrażony we wskazanej jednostce miary.</value>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>Kategoria artykułu.</value>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>Klasa obsługi wybranej pozycji.</value>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>Jednostka miary wybrana dla danej pozycji.</value>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>Średnia waga jednostkowa wyrażona we wskazanej jednostce miary.</value>
+  </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>Umożliwia wykonanie podświetlonych wierszy listy. Przycisk jest aktywny tylko wtedy, gdy przynajmniej jeden wiersz wybranej listy może być wykonany na maszynie, na której pracujesz.</value>
+  </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>Kolumna pokazuje maszynę lub maszyny, na których dany artykuł aktualnie się znajduje.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Procedura umożliwia wywołanie wybranej szuflady w polu, na którym pracuje operator.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
+    <value>Wskazuje numer szuflady, do której odnoszą się dane siatki.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
+    <value>Bieżąca wysokość wybranej szuflady.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
+    <value>Wskazuje aktualną wagę wybranej szuflady.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
+    <value>Wskazuje komórkę, w której jest ona przechowywana w szufladzie.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
+    <value>Wskazuje stronę maszyny, na której znajduje się szuflada.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
+    <value>Informuje o aktualnym stanie szuflady. Kolor czerwony oznacza, że szuflada nie może być przywołana przez aktualnie podłączonego użytkownika.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
+    <value>Pokazuje numer szuflady, która ma zostać przywołana.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Przycisk umożliwia przywołanie szuflady aktualnie zaznaczonej w siatce. Przycisk jest aktywny, jeżeli szuflada może zostać przywołana przez aktualnie podłączonego użytkownika.</value>
+  </data>
+  <data name="HelpDrawerCompactingDescription" xml:space="preserve">
+    <value>Aktywuje procedurę zagęszczania dla tylnej strony maszyny. Przycisk jest aktywny, jeśli możliwe jest odzyskanie wymaganej przestrzeni.</value>
+  </data>
+  <data name="HelpDrawerCompactingSide" xml:space="preserve">
+    <value>Wskazuje stronę maszyny, do której odnoszą się podane dane.</value>
+  </data>
+  <data name="HelpDrawerCompactingFragment" xml:space="preserve">
+    <value>Wskazuje liczbę utraconych fragmentów obecnych na bieżącej stronie.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
+    <value>Informuje o maksymalnej ilości miejsca, które można odzyskać po aktualnej stronie.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Przestrzeń do odzyskania. Domyślnie ustawienie maksymalnej wartości przestrzeni możliwej do odzyskania.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
+    <value>Aktywuje procedurę zagęszczania dla przedniej strony maszyny. Przycisk jest aktywny, jeśli możliwe jest odzyskanie wymaganej przestrzeni.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
+    <value>Aktywuje procedurę zagęszczania dla tylnej strony maszyny. Przycisk jest aktywny, jeśli możliwe jest odzyskanie wymaganej przestrzeni.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>Przestrzeń do odzyskania. Domyślnie ustawienie maksymalnej wartości przestrzeni możliwej do odzyskania.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>Wskazuje numer szuflady.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>Wskazuje liczbę misji, którym poddana była szuflada.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>Wskazuje liczbę zmapowanych przedziałów, obecnych wewnątrz szuflady niezależnie od ich statusu.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>Informuje o całkowitej liczbie szuflad alokowanych w maszynie.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>Pokazuje wielkość szuflad przechowywanych w maszynie.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>Wskazuje, w formie graficznej i liczbowej, całkowity stopień zapełnienia maszyny.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>Umożliwia dostęp do procedury analizy statystycznej, dotyczącej wagi przypisanej do poszczególnych szuflad.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>Procedura ta dostarcza danych na temat wagi przypisanej do poszczególnych szuflad i ogólnie do maszyny. Dla każdej szuflady podawane są dalsze informacje, w tym aktualna wysokość, maksymalny ciężar, jaki można załadować do każdej szuflady, tara, aktualny ciężar całkowity, jak również procent aktualnego ciężaru w stosunku do maksymalnego, podany zarówno w formie graficznej, jak i liczbowej. Podawane jest również globalne wskazanie dla całej maszyny.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>Wskazuje numer szuflady.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>Aktualna wysokość szuflady.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>Wskazuje maksymalny ciężar dopuszczalny dla szuflady.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>Wskazuje wagę pustej szuflady.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>Podaje aktualny ciężar szuflady.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>Wskazuje procent wykorzystanego ciężaru w stosunku do maksymalnej możliwej wartości.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Wskazuje maksymalną liczbę szuflad przydzielonych w maszynie.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>Pokazuje maksymalną pojemność brutto maszyny.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>Wskazuje załadowaną masę brutto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>Maksymalny przepływ netto dozwolony przez maszynę.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>Wskazuje aktualnie załadowaną masę netto.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>Pokazuje aktualny procent załadowanej masy w odniesieniu do maksymalnej dopuszczalnej masy.</value>
+  </data>
+  <data name="HelpMachineStatisticsDescription" xml:space="preserve">
+    <value>Procedura dostarcza danych statystycznych dotyczących głównych części maszyny. Podane dane odnoszą się do tego, co maszyna zrobiła podczas swojego cyklu życia od momentu instalacji.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
+    <value>Wskazuje całkowitą liczbę cykli wykonanych przez oś pionową. Cykl jest równoważny przesunięciu pomiędzy dwoma punktami.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
+    <value>Podaje sumę Km. Przebytych przez oś pionową od momentu instalacji.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
+    <value>Podaje całkowitą liczbę cykli wykonanych przez migawkę, która wyposaża zatokę nr 1. Cykl jest całkowitą lub pośrednią operacją otwarcia lub zamknięcia.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
+    <value>Podaje całkowitą liczbę cykli wykonanych przez migawkę, która wyposaża zatokę nr 2. Cykl jest całkowitą lub pośrednią operacją otwarcia lub zamknięcia.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
+    <value>Podaje całkowitą liczbę cykli wykonanych przez migawkę, która wyposaża zatokę nr 3. Cykl jest całkowitą lub pośrednią operacją otwarcia lub zamknięcia.</value>
+  </data>
+  <data name="HelpMachineStatisticsHorizontalCycles" xml:space="preserve">
+    <value>Pole pokazuje całkowitą liczbę cykli wykonanych przez łańcuch na windzie maszynowej od momentu instalacji. Cykl to operacja załadunku lub rozładunku.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay1" xml:space="preserve">
+    <value>Pole pokazuje całkowitą liczbę szuflad, które weszły do zatoki nr 2. Liczba ta wzrasta, gdy szuflada jest wprowadzana do zatoki, a następnie zwracana do magazynu.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay2" xml:space="preserve">
+    <value>Pole pokazuje całkowitą liczbę szuflad, które weszły do zatoki nr 2. Liczba ta wzrasta, gdy szuflada jest wprowadzana do zatoki, a następnie zwracana do magazynu.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay3" xml:space="preserve">
+    <value>Pole pokazuje całkowitą liczbę szuflad, które weszły do zatoki nr 3. Liczba ta wzrasta, gdy szuflada jest wprowadzana do zatoki, a następnie zwracana do magazynu.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
+    <value>W kolumnie podany jest kod zestawu dla wybranego komponentu.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
+    <value>Kolumna przedstawia opis poszczególnych zestawów.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
+    <value>Kolumna wskazuje aktualny status zestawu. Kolor pomarańczowy oznacza zbliżającą się konserwację, kolor czerwony okres, który upłynął i w związku z tym wymagana jest konserwacja.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
+    <value>Kolumna wskazuje, że dla danego zestawu został już złożony wniosek o interwencję do personelu utrzymania ruchu.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
+    <value>Pokazać model maszyny.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
+    <value>Podanie numeru seryjnego maszyny.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
+    <value>Podaje datę instalacji maszyny.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
+    <value>Wskazuje datę wykonania ostatniej konserwacji.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
+    <value>Wskazuje przewidywaną datę następnej konserwacji.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
+    <value>Kolumna wskazuje aktualny status zestawu. Kolor pomarańczowy oznacza zbliżającą się konserwację, kolor czerwony okres, który upłynął i w związku z tym wymagana jest konserwacja.</value>
+  </data>
+  <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
+    <value>Strona umożliwia przeglądanie danych, na podstawie których przeprowadzana jest konserwacja wybranego zestawu. Wyświetlane są wszystkie informacje wykorzystywane przez system do określania planowanych czynności konserwacyjnych.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
+    <value>Pokazuje numer części używanej przez wybrany zestaw konserwacyjny.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
+    <value>Informuje o opisie elementu używanego w wybranym zestawie.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
+    <value>Wskazuje liczbę sztuk danego elementu wymaganą w wybranym zestawie</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
+    <value>Całkowita liczba cykli wykonanych od momentu zainstalowania maszyny.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
+    <value>Informuje o liczbie cykli wykonanych od czasu ostatniej konserwacji.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
+    <value>Wskazuje liczbę cykli, które mogą być wykonane pomiędzy dwiema czynnościami konserwacyjnymi.</value>
+  </data>
+  <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Raportuje status zestawu w ten sposób, że kolor pomarańczowy oznacza zbliżanie się konserwacji, a czerwony, że okres konserwacji upłynął.</value>
+  </data>
+  <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
+    <value>Wskazuje liczbę godzin potrzebnych do przeprowadzenia wymaganej operacji konserwacyjnej.</value>
+  </data>
+  <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Wskazuje, czy do wykonania czynności konserwacyjnych konieczne jest użycie platformy do pracy na wysokości.</value>
+  </data>
+  <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
+    <value>Umożliwia wysłanie wiadomości e-mail do biura pomocy technicznej z prośbą o skontaktowanie się z nim w celu umówienia interwencji konserwacyjnej.</value>
+  </data>
+  <data name="HelpGeneralInfoDescription" xml:space="preserve">
+    <value>Strona przedstawia szereg ogólnych informacji dotyczących maszyny, na której pracujesz. Wśród innych informacji, wyświetlana jest również data następnej konserwacji. W przypadku, gdy jest więcej przeglądów, wyświetlana jest najnowsza data.</value>
+  </data>
+  <data name="HelpGeneralInfoModel" xml:space="preserve">
+    <value>Pokazuje model maszyny, na której pracujesz.</value>
+  </data>
+  <data name="HelpGeneralInfoSerial" xml:space="preserve">
+    <value>Wskazuje numer seryjny urządzenia, na którym pracujesz.</value>
+  </data>
+  <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
+    <value>Pokazuje wersję SW aktualnie zainstalowaną w urządzeniu.</value>
+  </data>
+  <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
+    <value>Całkowita liczba szuflad włożonych do urządzenia.</value>
+  </data>
+  <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
+    <value>Podaje datę instalacji maszyny.</value>
+  </data>
+  <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Wskazuje datę ostatniej konserwacji.</value>
+  </data>
+  <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Wskazuje przewidywaną datę następnej konserwacji.</value>
+  </data>
+  <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
+    <value>Informuje o aktualnym stanie konserwacji urządzenia.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
+    <value>Na stronie wyświetlane są pewne informacje statystyczne dotyczące wykorzystania powierzchni szuflad i całkowitego załadowanego ciężaru w odniesieniu do charakterystyki urządzenia. Wyświetlane są również informacje dotyczące użytkowania maszyny.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
+    <value>Całkowita liczba szuflad przesuniętych od początku instalacji.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
+    <value>Wskazuje procent zajętej powierzchni wewnątrz maszyny w stosunku do całkowitej dostępnej przestrzeni.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
+    <value>Całkowita liczba szuflad przesuniętych od początku instalacji.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
+    <value>Podaje całkowity czas włączenia od momentu zainstalowania urządzenia.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
+    <value>Wskazuje stosunek pomiędzy całkowitym czasem, jaki upłynął w trybie automatycznym, a czasem włączenia od momentu instalacji.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
+    <value>Współczynnik wykorzystania wskazuje na stosunek czasu spędzonego w automatycznym ruchu szuflad do czasu uruchomienia.</value>
+  </data>
+  <data name="HelpCellsStatisticsDescription" xml:space="preserve">
+    <value>Procedura pokazuje dane statystyczne odnoszące się do komórek znajdujących się w maszynie. Oprócz danych globalnych odnoszących się do strony przedniej i tylnej, wyświetlane są dane odnoszące się do liczby komórek w różnych stanach, przewidzianych zarówno dla strony przedniej jak i tylnej.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
+    <value>Informuje o stanie komórki, do której odnoszą się dane wiersza.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
+    <value>Pokazuje sumę komórek, które mają status wskazany w pierwszej kolumnie siatki odnoszącej się do strony przedniej.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
+    <value>Wskazuje procent komórek, które mają status wskazany w pierwszej kolumnie siatki odnoszącej się do strony frontowej.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
+    <value>Pokazuje sumę komórek, które mają status wskazany w pierwszej kolumnie siatki odnoszącej się do strony przedniej.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
+    <value>Wskazuje procent komórek, które mają status wskazany w pierwszej kolumnie siatki odnoszącej się do strony tylnej.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
+    <value>Całkowita liczba komórek obecnych w maszynie.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
+    <value>Całkowita liczba komórek znajdujących się z przodu maszyny.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
+    <value>Całkowita liczba komórek znajdujących się z tyłu maszyny.</value>
+  </data>
+  <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
+    <value>Pokazuje procent zajętych komórek w stosunku do całkowitej liczby komórek obecnych w maszynie.</value>
+  </data>
+  <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
+    <value>Przycisk umożliwia dostęp do procedury zagęszczania przestrzeni magazynowej.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonCellsStatistics" xml:space="preserve">
+    <value>Uaktywnienie strony wyświetlania statystyk komórek.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonDrawersStatistics" xml:space="preserve">
+    <value>Wyświetla stronę z danymi statystycznymi różnych szuflad znajdujących się w urządzeniu.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonMachineStatistics" xml:space="preserve">
+    <value>Umożliwia dostęp do strony wyświetlania danych statystycznych maszyny.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonErrorsStatistics" xml:space="preserve">
+    <value>Aktywuje stronę wyświetlania danych statystycznych dotyczących błędów generowanych przez maszynę od momentu instalacji.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonDrawerCall" xml:space="preserve">
+    <value>Wyświetlenie strony poświęconej natychmiastowemu wywołaniu według szuflady.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonCompacting" xml:space="preserve">
+    <value>Umożliwia dostęp do strony zarządzania procedurami zagęszczania przestrzeni magazynowej.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonStastistics" xml:space="preserve">
+    <value>Umożliwia dostęp do sekcji poświęconej informacjom statystycznym dotyczącym maszyny, na której pracujesz.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonMaintenance" xml:space="preserve">
+    <value>Otwiera stronę poświęconą czynnościom konserwacyjnym przewidzianym dla maszyny, na której pracujesz.</value>
+  </data>
+  <data name="HelpErrorsStatisticsDescription" xml:space="preserve">
+    <value>Procedura umożliwia dostęp do strony wyświetlania statystyk błędów związanych z maszyną, na której pracujesz. Statystyka obejmuje cały okres od momentu instalacji do momentu konsultacji.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridError" xml:space="preserve">
+    <value>W kolumnie tabeli znajduje się lista kodów błędów generowanych przez maszynę, na której pracujesz.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridTotal" xml:space="preserve">
+    <value>Podana jest procentowa częstość występowania poszczególnych błędów w stosunku do ogółu zliczonych błędów.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridPercTotal" xml:space="preserve">
+    <value>HelpErrorsStatisticsGridPercTotal</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersMoved" xml:space="preserve">
+    <value>Pole pokazuje całkowitą liczbę szuflad obsłużonych od początku instalacji. Szuflada uznawana jest za przemieszczoną w momencie przemieszczenia jej ze źródła do miejsca docelowego.</value>
+  </data>
+  <data name="HelpErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Wyświetlany jest pełny opis wybranego w tabeli błędu.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotaleErrors" xml:space="preserve">
+    <value>Wyświetlana jest całkowita liczba błędów, które urządzenie zliczyło od momentu instalacji.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersNoError" xml:space="preserve">
+    <value>W polu wyświetlana jest obliczona przez system statystyka odnosząca się do średniej z szuflad przesuniętych bez błędów.</value>
+  </data>
+  <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
+    <value>System oblicza współczynnik niezawodności urządzenia jako stosunek liczby zliczonych błędów do sumy przesuniętych szuflad.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
+    <value>Strona przedstawia główne dane związane z operacją inwentaryzacji, którą należy przeprowadzić na poszczególnych pozycjach przydzielonych do szuflady we wnęce. Procedura, po wskazaniu przegródki zawierającej żądany towar, oczekuje na wprowadzenie przez operatora ilości sztuk aktualnie znajdujących się w magazynie.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Pole pokazuje zliczoną przez operatora ilość sztuk aktualnie znajdujących się w magazynie.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
+    <value>Strona dostarcza operatorowi dalszych szczegółów na temat aktualnie trwającej inwentaryzacji.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
+    <value>Podaje datę produkcji elementu aktualnie inwentaryzowanego.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
+    <value>Informuje o statusie materiałowym inwentaryzowanej pozycji.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
+    <value>Podaje partię produkcyjną pozycji w fazie inwentaryzacji.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
+    <value>Raportuje rodzaj opakowania zastosowanego dla inwentaryzowanej pozycji.</value>
+  </data>
+  <data name="HelpListsInWaitGridType" xml:space="preserve">
+    <value>Wskazuje typ zestawienia według następującego kodu: P: pobieranie V: odkładanie I: Inwentaryzacja</value>
+  </data>
+  <data name="HelpCommonListType" xml:space="preserve">
+    <value>Wskazuje typ listy wybranej wg następującego kodu: P: Pobieranie V: odkładanie I: Inwentaryzacja.</value>
+  </data>
+  <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
+    <value>Pole zgłasza aktualny status systemu WMS, jeśli jest obecny, który steruje maszyną, na której pracujesz.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
+    <value>Strona pokazuje postęp procedury zagęszczania. Wskazana jest szuflada, która jest przemieszczana, z której komórki jest wycofywana i do której komórki jest przeznaczona. Postęp procedury jest również pokazywany ze wskazaniem fragmentów i przestrzeni do odzyskania oprócz przestrzeni już odzyskanej.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Wskazuje kod szuflady, która jest aktualnie przenoszona.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Wskazuje komórkę źródłową, w której przechowywana była przenoszona szuflada.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Wskazuje numer komórki, do której szuflada zostanie przeniesiona podczas obsługi.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
+    <value>Informuje o aktualnej fazie cyklu obsługi poszczególnych szuflad.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Pokazuje aktualną pozycję osi pionowej.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Wskazuje aktualne położenie osi poziomej.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
+    <value>Wskazuje liczbę fragmentów, które pozostały do zapakowania.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Wskazuje całkowitą przestrzeń aktualnie odzyskaną.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Informuje o przestrzeni, po odzyskaniu której procedura zostanie zakończona.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter" xml:space="preserve">
+    <value>Podaje całkowitą liczbę cykli wykonanych przez migawkę, która wyposaża zatokę nr 1. Cykl jest całkowitą lub pośrednią operacją otwarcia lub zamknięcia.</value>
+  </data>
+  <data name="CarouselCalibrationFunctionDescription" xml:space="preserve">
+    <value>Funkcja kalibracji karuzeli pozwala na skalibrowanie poprawnej wartości poprzez wykonanie serii następujących po sobie automatycznych ruchów, a następnie uaktualnienie wartości domyślnej proponowanej przez system. Procedura obejmuje kolejne kroki, aż do poprawnego zakończenia.</value>
+  </data>
+  <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
+    <value>Funkcja kalibracji zewnętrznej zatoki pozwala na skalibrowanie poprawnej wartości poprzez wykonanie serii następujących po sobie automatycznych ruchów, a następnie uaktualnienie wartości domyślnej proponowanej przez system. Procedura obejmuje kolejne kroki, aż do poprawnego zakończenia.</value>
+  </data>
+  <data name="BayOperationsDescription" xml:space="preserve">
+    <value>Procedura pozwala na wyświetlenie rodzaju operacji możliwych do wykonania na bieżącym polu </value>
+  </data>
+  <data name="BayOperationsDescriptionWarning" xml:space="preserve">
+    <value>UWAGA: Jeśli dany typ operacji jest wyłączony, listy wysyłane przez system WMS będą odrzucane </value>
+  </data>
+</root>

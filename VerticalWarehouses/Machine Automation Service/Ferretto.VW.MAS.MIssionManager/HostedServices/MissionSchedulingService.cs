@@ -91,6 +91,14 @@ namespace Ferretto.VW.MAS.MissionManager
                 errorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, machineProvider.BayTestNumber);
                 return false;
             }
+            var loadingUnit = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>().GetById(loadUnitId.Value);
+            if (loadingUnit.Tare == 0.00)
+            {
+                this.Logger.LogError($"First Test error: Load Unit tare is zero!");
+                errorsProvider.RecordNew(MachineErrorCode.LoadUnitTareError, machineProvider.BayTestNumber);
+                return false;
+            }
+
             var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
             if (machineProvider.ExecutedCycles == 0)
             {
@@ -639,19 +647,22 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var bays = bayProvider.GetAll();
             var generated = false;
-            if (this.machineVolatileDataProvider.IsBayHomingExecuted.Any(x => !x.Value)
-                &&
-                bays.All(x => x.CurrentMission == null))
+            foreach (var bay in bays.Where(x =>
+                this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
+                    //&& !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
+                    && (x.Carousel != null || x.IsExternal)
+                    && x.CurrentMission == null
+                    && x.Positions.All(p => p.LoadingUnit == null)))
             {
-                var bayNumber = bays.FirstOrDefault(x =>
-                    this.machineVolatileDataProvider.IsBayHomingExecuted.ContainsKey(x.Number)
-                        && !this.machineVolatileDataProvider.IsBayHomingExecuted[x.Number]
-                        && (x.Carousel != null || x.IsExternal)
-                        && x.CurrentMission == null
-                        && x.Positions.All(p => p.LoadingUnit == null))?.Number ?? BayNumber.None;
-
-                if (bayNumber != BayNumber.None
-                    && !sensorsProvider.IsDrawerInBayBottom(bayNumber))
+                if ((bay.Carousel != null
+                        && !sensorsProvider.IsDrawerInBayBottom(bay.Number))
+                        && !this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number]
+                    || (bay.IsExternal
+                            && !sensorsProvider.IsDrawerInBayExternalPosition(bay.Number, bay.IsDouble)
+                            && (!this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number]
+                                || (!bay.IsDouble && !sensorsProvider.IsSensorZeroOnBay(bay.Number)))
+                                )
+                    )
                 {
                     IHomingMessageData homingData = new HomingMessageData(Axis.BayChain,
                         Calibration.FindSensor,
@@ -667,9 +678,10 @@ namespace Ferretto.VW.MAS.MissionManager
                                 MessageActor.DeviceManager,
                                 MessageActor.MissionManager,
                                 MessageType.Homing,
-                                bayNumber));
-                    this.Logger.LogDebug($"GenerateHoming: bay {bayNumber}");
+                                bay.Number));
+                    this.Logger.LogDebug($"GenerateHoming: bay {bay.Number}");
                     generated = true;
+                    break;
                 }
             }
 

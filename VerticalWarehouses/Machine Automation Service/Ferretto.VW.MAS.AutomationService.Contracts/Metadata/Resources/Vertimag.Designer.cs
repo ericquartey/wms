@@ -79,6 +79,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode automatic put.
+        /// </summary>
+        public static string BarcodeAutomaticPut {
+            get {
+                return ResourceManager.GetString("BarcodeAutomaticPut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay {0}.
         /// </summary>
         public static string Bay {

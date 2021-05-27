@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("AccessoriesId");
 
+                    b.Property<bool>("BarcodeAutomaticPut");
+
                     b.Property<int?>("CarouselId");
 
                     b.Property<double>("ChainOffset");
@@ -881,6 +883,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 85,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 86,
                             TotalErrors = 0
                         },
                         new

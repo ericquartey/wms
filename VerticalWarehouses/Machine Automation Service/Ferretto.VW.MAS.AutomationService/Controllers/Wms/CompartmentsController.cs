@@ -43,6 +43,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPut("{id}/compartment/percentage")]
+        public async Task<IActionResult> SetFillPercentageAsync(int id, int percentage)
+        {
+            await this.compartmentsWmsWebService.UpdateFillPercentageAsync(id, percentage);
+
+            await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
+
+            return this.Ok();
+        }
+
         [HttpPut("{id}/items/{itemId}/stock")]
         public async Task<IActionResult> UpdateItemStockAsync(int id, int itemId, double stock, ItemOptions itemOptions)
         {

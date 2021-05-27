@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var displacement = this.invertersProvider.ComputeDisplacement(this.VerticalPosition, grossWeight);
             displacement *= (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null) ? -1 : +1;
-            this.logger.LogDebug($"Combined movement: Vertical displacement: {displacement:0.00} mm [targetPosition: {this.VerticalPosition + displacement:0.00} mm], weight load unit: {grossWeight:0.00} kg");
+            this.logger.LogDebug($"Combined movement: Vertical displacement: {displacement:0.00} mm [targetPosition: {this.VerticalPosition + displacement:0.00} mm], gross weight load unit: {grossWeight:0.00} kg");
 
             var manualVerticalParameters = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
 
@@ -220,8 +220,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 LoadingUnitId = this.elevatorDataProvider.GetLoadingUnitOnBoard()?.Id,
                 FeedRate = (sender == MessageActor.AutomationService ? feedRate : 1),
                 ComputeElongation = false,
-                TargetBayPositionId = targetBayPositionId,
-                TargetCellId = targetCellId,
+                TargetBayPositionId = (isLoadingUnitOnBoard ? targetBayPositionId : sourceBayPositionId),
+                TargetCellId = (isLoadingUnitOnBoard ? targetCellId : sourceCellId),
                 WaitContinue = waitContinue,
                 IsPickupMission = false,
                 BypassConditions = true,
@@ -229,7 +229,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             this.logger.LogInformation($"MoveToVerticalPosition: {MovementMode.Position}; " +
                 $"manualMovement: {false}; " +
-                $"targetPosition: {this.VerticalPosition + displacement}; [displacement: {displacement}]" +
+                $"targetPosition: {this.VerticalPosition + displacement:0.00}; [displacement: {displacement:0.00}]" +
                 $"homing: {false}; " +
                 $"waitContinue: {waitContinue}; " +
                 $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
@@ -238,10 +238,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"deceleration: {decelerationVertical[0]:0.00}; " +
                 $"speed w/o feedRate: {movementVerticalParameters.Speed:0.00}; " +
                 $"Load Unit {horizontalMovementMessageData.LoadingUnitId.GetValueOrDefault()}; " +
-                $"Load Unit gross weight {grossWeight}; " +
+                $"Load Unit gross weight {grossWeight:0.00}; " +
                 $"Bypass condition {verticalMovementMessageData.BypassConditions}; " +
-                $"time to perform the movement: {time} s " +
-                $"vertical current position: {this.VerticalPosition} mm");
+                $"time to perform the movement: {time:0.000} s " +
+                $"vertical current position: {this.VerticalPosition:0.00} mm");
 
             // --------------------------
             // Combined movements message

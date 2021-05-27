@@ -135,7 +135,8 @@
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding MissionOperation.PackingListCode}"
-                                         LabelText="{resources:Loc OperatorApp.CommonPackingListCode}" />
+                                         LabelText="{resources:Loc OperatorApp.CommonPackingListCode}"
+                                         Visibility="{Binding IsPackingListCodeAvailable, Converter={StaticResource BTVC}}" />
 
                 <controls:PpcLabeledText Grid.Row="3"
                                          Grid.Column="1"
@@ -143,9 +144,10 @@
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding MissionOperation.PackingListDescription}"
-                                         LabelText="{resources:Loc OperatorApp.CommonPackingListDescription}" />
+                                         LabelText="{resources:Loc OperatorApp.CommonPackingListDescription}"
+                                         Visibility="{Binding IsPackingListDescriptionAvailable, Converter={StaticResource BTVC}}" />
 
-                <controls:PpcLabeledText Grid.Row="4"
+                <!--<controls:PpcLabeledText Grid.Row="4"
                                          Grid.Column="0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
@@ -157,10 +159,10 @@
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding MissionOperation.MaterialStatusId}"
-                                         LabelText="{resources:Loc OperatorApp.MaterialStatus}" />
+                                         LabelText="{resources:Loc OperatorApp.MaterialStatus}" />-->
 
                 <controls:PpcLabeledText Grid.Row="4"
-                                         Grid.Column="2"
+                                         Grid.Column="0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding Position}"

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,1738 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Confirm" xml:space="preserve">
+    <value>Potwierdzić</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Szczegóły</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Lista</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>Maszyny</value>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>Rodzaj opakowania</value>
+  </data>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>Data produkcji</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Ilość</value>
+  </data>
+  <data name="RequestedQuantity" xml:space="preserve">
+    <value>Żądana ilość [{0}]</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>Operacje szuflad</value>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>Listy oczekujących</value>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>Wyszukiwanie pozycji</value>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>Ustawienia</value>
+  </data>
+  <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Operacje kompletacji</value>
+  </data>
+  <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
+    <value>Żądana ilość</value>
+  </data>
+  <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
+    <value>Kompletowana ilość</value>
+  </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>Oczekiwanie na nową szufladę</value>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>Operacje zaplanowane:</value>
+  </data>
+  <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
+    <value>Szczegóły dotyczące kompletacji</value>
+  </data>
+  <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Data produkcji</value>
+  </data>
+  <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Partia</value>
+  </data>
+  <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Status materiału</value>
+  </data>
+  <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
+    <value>Rodzaj opakowania</value>
+  </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>Listy oczekujących na realizację</value>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>Szczegóły listy</value>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>Wykonaj listę</value>
+  </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>Wyszukiwanie pozycji według kodu lub opisu</value>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>Szukaj</value>
+  </data>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Dostępna ilość [{0}]</value>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>Wywołaj pozycję</value>
+  </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>Szczegóły pozycji</value>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>Typ zarządzania</value>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>Zakres czasu FIFO</value>
+  </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>Natychmiastowe wywołanie szuflady</value>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Wywołanie szuflady</value>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>Żądana szuflada</value>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>Informacje ogólne</value>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>Numer seryjny</value>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>Ilość szuflad</value>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>Wersja oprogramowania</value>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>Data odbioru</value>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Ostatni serwis</value>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Następny serwis</value>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>Stan roboczy maszyny</value>
+  </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>Procedura zagęszczania szuflady</value>
+  </data>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+  </data>
+  <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
+    <value>Ilość fragmentów</value>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>Maks. przestrzeń do odzyskania</value>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Przestrzeń do odzyskania</value>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>Kompaktowa strona przednia</value>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>Kompaktowa strona tylna</value>
+  </data>
+  <data name="OtherNavigationCompaction" xml:space="preserve">
+    <value>Kompaktowanie</value>
+  </data>
+  <data name="OtherNavigationStatistics" xml:space="preserve">
+    <value>Statystyka</value>
+  </data>
+  <data name="OtherNavigationMaintenance" xml:space="preserve">
+    <value>Konserwacja</value>
+  </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>StatisticsGeneralDataHeader</value>
+  </data>
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
+    <value>Przeniesiona jednostka</value>
+  </data>
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
+    <value>Całkowity czas włączenia zasilania</value>
+  </data>
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
+    <value>Zapełnienie powierzchni</value>
+  </data>
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
+    <value>Pojemność wagowa</value>
+  </data>
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
+    <value>Czas automatyczny</value>
+  </data>
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
+    <value>Czas użytkowania</value>
+  </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>Statystyka: nasycenie przestrzeni szuflady.</value>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>Razem jednostki</value>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>Wymiar szuflady (mm)</value>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>Maszyna napełniająca</value>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>Analiza przestrzeni</value>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>Statystyki: analiza ciężaru jednostek.</value>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Razem jednostki</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>Statystyki: analiza ciężaru jednostek.</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>Przepływ netto maks. (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>Waga netto załadowana (%)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>Waga netto załadowana (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>Waga netto załadowana (%)</value>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>Wykonalne linie listy</value>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>Statystyki: komórki.</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>Komórki ogółem</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>Ogółem komórki przednie</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>Ogółem komórki tylne</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>Ogółem komórki używane</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>Inne</value>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>Statystyki: analiza błędów.</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>Ogółem przeniesione jednostki</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>Błędy ogółem</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>Jednostki przeniesione bez błędów</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>Wskaźnik niezawodności</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Opis błędu</value>
+  </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>Konserwacja: Vertimag X</value>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>Numer seryjny</value>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>Data instalacji</value>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>Data ostatniej konserwacji</value>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>Data następnej konserwacji</value>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>Stan maszyny</value>
+  </data>
+  <data name="MaintenanceDetailHeader" xml:space="preserve">
+    <value>Szczegóły konserwacji</value>
+  </data>
+  <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
+    <value>Suma cykli</value>
+  </data>
+  <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
+    <value>Cykle pomiędzy dwoma przeglądami</value>
+  </data>
+  <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
+    <value>Cykle od ostatniej konserwacji</value>
+  </data>
+  <data name="MaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Status elementu</value>
+  </data>
+  <data name="MaintenanceDetailStopRequired" xml:space="preserve">
+    <value>Wymagany czas przestoju maszyny [godziny]</value>
+  </data>
+  <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Platforma</value>
+  </data>
+  <data name="MaintenanceDetailContactRequired" xml:space="preserve">
+    <value>Wyślij żądanie kontaktu</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>Wezwanie Szuflady</value>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>Statystyka jednostek</value>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>Statystyka komórek</value>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>Statystyka błędów</value>
+  </data>
+  <data name="DrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Operacja uzupełniania</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Żądana ilość [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Uzupełniona ilość [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
+    <value>Aktualizacja maksymalnej pojemności</value>
+  </data>
+  <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
+    <value>Wiersz listy</value>
+  </data>
+  <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Żądana ilość</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
+    <value>Szczegóły operacji uzupełniania</value>
+  </data>
+  <data name="Lot" xml:space="preserve">
+    <value>Partia</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Status materiału</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
+    <value>Rodzaj opakowania</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Data produkcji</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
+    <value>Żądana ilość</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Wiersz listy</value>
+  </data>
+  <data name="CommonItemCode" xml:space="preserve">
+    <value>Kod pozycji</value>
+  </data>
+  <data name="CommonItemDescription" xml:space="preserve">
+    <value>Opis pozycji</value>
+  </data>
+  <data name="CommonListCode" xml:space="preserve">
+    <value>Kod listy</value>
+  </data>
+  <data name="CommonListDescription" xml:space="preserve">
+    <value>Opis listy</value>
+  </data>
+  <data name="CommonPackingListCode" xml:space="preserve">
+    <value>Kod listy pakowania</value>
+  </data>
+  <data name="CommonPackingListDescription" xml:space="preserve">
+    <value>Opis listy pakowania</value>
+  </data>
+  <data name="CommonNote" xml:space="preserve">
+    <value>Uwaga:</value>
+  </data>
+  <data name="CommonUp" xml:space="preserve">
+    <value>Góra</value>
+  </data>
+  <data name="CommonDown" xml:space="preserve">
+    <value>W dół</value>
+  </data>
+  <data name="DrawerActivityInventoryHeader" xml:space="preserve">
+    <value>Operacja inwentaryzacji</value>
+  </data>
+  <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Ilość przechowywana</value>
+  </data>
+  <data name="CommonCompartmentPosition" xml:space="preserve">
+    <value>Pozycja:</value>
+  </data>
+  <data name="CommonButtonConfirm" xml:space="preserve">
+    <value>Potwierdzić</value>
+  </data>
+  <data name="CommonButtonDetail" xml:space="preserve">
+    <value>Szczegóły</value>
+  </data>
+  <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
+    <value>Szczegóły operacji inwentaryzacji</value>
+  </data>
+  <data name="ItemDetailCategory" xml:space="preserve">
+    <value>Kategoria</value>
+  </data>
+  <data name="ItemDetailClasse" xml:space="preserve">
+    <value>Klasa</value>
+  </data>
+  <data name="ItemDetailMeasurementUnity" xml:space="preserve">
+    <value>Jedność pomiaru</value>
+  </data>
+  <data name="ItemDetailWeight" xml:space="preserve">
+    <value>Średnia waga [gr]</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>Suma tył</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>Suma tył %</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>Suma Przód</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>Suma Przód %</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>Przedziały</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>Identyfikator szuflady</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>Napełnianie</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>Napełnianie %</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>Misje</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>Komórka</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>Szuflada</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>Wysokość</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>Strona</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>Masa</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>Błąd</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>Suma</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>Suma %</value>
+  </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>Lista</value>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>Maszyny</value>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>Kit</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>Żądanie</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>Aktualna waga</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>Szuflada</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>Wysokość</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>Maks. %</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>Max waga</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>Tara</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>Element</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Ilość</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>Pozycja</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>Urządzenie</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Ilość</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>Wiersz</value>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>Statystyka maszyny</value>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>Statystyki maszyny</value>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>Dane osi pionowej.</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Całkowita liczba kilometrów w osi pionowej</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>Całkowita liczba cykli osi pionowej</value>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>Dane o migawkach.</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>Całkowita liczba cykli migawki 1</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>Całkowita liczba cykli migawki 2</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>Całkowita liczba cykli migawki 3</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>Dane osi łańcucha.</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>Całkowita ilość cykli poziomych</value>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>Statystyka zatok</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>Szuflady przesunięte w zatoce 1</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>Szuflady przesunięte w zatoce 2</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>Szuflady przesunięte w zatoce 3</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>Pozycja</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>Opis pozycji</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>Maszyny</value>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>DrawerCompactingFront</value>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>Typ listy</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>Status WMS</value>
+  </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>Wyświetlenie szczegółów zagęszczania.</value>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Ruch szuflady</value>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Komórka źródłowa</value>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Komórka docelowa</value>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>Rzeczywisty krok</value>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Pozycja osi pionowej</value>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Pozycja osi poziomej</value>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>Pozostały fragment</value>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Odzyskana przestrzeń mm.</value>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Przestrzeń do odzyskania mm.</value>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>Zakończenie zagęszczania</value>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>DrawerCompactingProcedureStatus</value>
+  </data>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>Brak</value>
+  </data>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>Nieokreślone</value>
+  </data>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>Tylko przestrzeń</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>Zablokowana</value>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>Usługi WMS offline</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>Usługi WMS online</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Wygasły</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>Wygasa</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Nieznane</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Ważne</value>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>Jednostki ładunkowe do komórki</value>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>Analiza przestrzeni</value>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Objętość</value>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Nie określono</value>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Inwentaryzacja</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Podnieś</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Odłóż</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>Nieokreślone</value>
+  </data>
+  <data name="QuantityToPick" xml:space="preserve">
+    <value>Ilość do pobrania</value>
+  </data>
+  <data name="PickedQuantity" xml:space="preserve">
+    <value>Skompletowana ilość [{0}]</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Status materiału</value>
+  </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>Operacja inwentaryzacji.</value>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>Wykryta ilość [{0}]</value>
+  </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>Przyjęto zlecenie pobrania dla pozycji {0} (q.ty {1}).</value>
+  </data>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Dostępne</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Wiersz listy</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Identyfikator jednostki ładunkowej</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Jednostka ładunkowa</value>
+  </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>Potwierdź puste</value>
+  </data>
+  <data name="ConfirmOnFull" xml:space="preserve">
+    <value>Potwierdź pełne</value>
+  </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>Dostępność maszyn</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Operacja anulowana.</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>Operacja potwierdzona.</value>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>Brak jednostek ładunkowych do przemieszczenia w zatoce {0}</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>Do zatoki {1} wysłano {0} jednostek ładunkowych</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>Do zatoki {0} wysłano 1 jednostek ładunkowych</value>
+  </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Usunąć wszystkie rozsypane elementy z przedziału.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Jeśli zostały pobrane elementy, należy je umieścić z powrotem w oryginalnej przegródce.</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Anuluj odkładanie</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Anuluj pobieranie</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>Anulowanie operacji potwierdzone.</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>Operacja inwentaryzacji anulowana.</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Misje</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Lista misji</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Krok</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Zatoka</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>Wszystkie</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Zatoka podnośnika</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>Zatoka trzecia</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>Zatoka druga</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>Brak zatoki</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>Wykonywanie</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>Nowy</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>Oczekiwanie</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Ukończone</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>Przerwano</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>Kompletowanie</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>Zatoka pierwsza</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Rodzaj misji</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>Zatoka</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>1.Nowe</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>2.Uruchamianie</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>3.Załadować podnośnik</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>4.Do celu</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>5.Depozyt jednostki</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>6.Oczekiwanie na działanie operatora</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>7.Łańcuch zatoki</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>8.Zamknij migawkę</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>13.Koniec</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>101.Błąd</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>Brak typu</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Ręczny</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>Wms</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>W</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Wyj.</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Kompaktowe</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Nie określono</value>
+  </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>w zatoce</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Wycofaj szufladę</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>szt.</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Podnieś</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Odłóż</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>Regulacja</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Zapas</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Opis pozycji</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Kod pozycji</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Przedział</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Regulacja ilości [{0}]</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Ilość odkładana [{0}]</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Ilość pobierana [{0}]</value>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>Dostępne nowe operacje</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Potwierdzenie i nowe dostępne operacje</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Zapas</value>
+  </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>Jednostka ładunkowa obecna</value>
+  </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Wybór przedziału</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
+    <value>PICK</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
+    <value>Kompletacja</value>
+  </data>
+  <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
+    <value>ITEM</value>
+  </data>
+  <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
+    <value>Wyszukiwanie i żądanie artykułów</value>
+  </data>
+  <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
+    <value>LIST</value>
+  </data>
+  <data name="NavigationMainMenuListsDescription" xml:space="preserve">
+    <value>Wykonywanie / zawieszanie list</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
+    <value>DRAW</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Operacje szuflad</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Kompaktowanie</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>Potrzeba testu</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Kod</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>Nie jest dostępny żaden element z kodem '{0}'</value>
+  </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Start Aktualizacji</value>
+  </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Alarmy</value>
+  </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Trwa zagęszczanie</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>Diagnostyka</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Ogólne</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>Informacje ogólne</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Numer maszyny</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Numer seryjny</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statystyka</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Suma przejechanych kilometrów</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Masa całkowita maszyny</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Łącznie misje</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Razem jednostki</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Oczekiwanie</value>
+  </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Liczniki</value>
+  </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>Brak elementu w wybranym przedziale.</value>
+  </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>Pierwszy test</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>Pełny test WEW</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>Pełny test ZEW</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>Obsługa jednostki ładunkowej</value>
+  </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Partia</value>
+  </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>Lista alarmów maszyny</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Numer pola</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Kod szczegółu</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Oznaczenie</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>Indeks falownika</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>Data wystąpienia</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Data rozwiązania</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Numer seryjny</value>
+  </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Fragment z tyłu</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Fragment z przodu</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Całość fragmentu</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>Nie można wykonać Listy.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Nieprawidłowa operacja {0}</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Użytkownicy</value>
+  </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>poza zatoką</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>Jednostka</value>
+  </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Dodatkowe Informacje</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>Jednostka n.</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Wysokość</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Masa</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>Zbyt duża fragmentacja: proszę przeprowadzić procedurę Kompaktowania</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Trwa kalibracja karuzeli</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Trwa kalibracja pozioma</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>Dostępna ilość</value>
+  </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Pozycje filtrowane według kodu.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>Kod kreskowy '{0}' nie zawiera kodu pozycji.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>Kod kreskowy '{0}' nie zawiera ilości pozycji.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>Kod kreskowy '{0}' nie zawiera identyfikatora listy.</value>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>Nie znaleziono listy o identyfikatorze '{0}'.</value>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>Wykonanie listy '{0}' zostało zaakceptowane.</value>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>Zajęte komórki</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>Wolne komórki</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Wolne komórki do obsługi</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Komórki wolne tylko miejsce</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Zablokowane komórki</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Komórki ogółem</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Jednostki w zatoce</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Jednostki w komórce</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Jednostki na podnośniku</value>
+  </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>Potwierdzić serwis</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>Data instalacji</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>Data ostatniego serwisu</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>Data następnego serwisu</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>Status usługi</value>
+  </data>
+  <data name="IsDone" xml:space="preserve">
+    <value>IsDone</value>
+  </data>
+  <data name="IsToDo" xml:space="preserve">
+    <value>IsToDo</value>
+  </data>
+  <data name="MaxDays" xml:space="preserve">
+    <value>MaxDays</value>
+  </data>
+  <data name="MaxRelativeCount" xml:space="preserve">
+    <value>MaxRelativeCount</value>
+  </data>
+  <data name="MaxTotalCount" xml:space="preserve">
+    <value>MaxTotalCount</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>Całkowity czas aktywnej misji</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>Km Zatoki 1</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>Km Zatoki 2</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>Km Zatoki 3</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>Km osi poziomej podnośnika</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Km osi pionowej podnośnika</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>Jednostki w Zatoce 1</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>Jednostki w Zatoce 2</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>Jednostki w Zatoce 3</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(Dane są obliczane na podstawie ostatniej konserwacji w porównaniu do wartości całkowitej)</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Konserwacja:</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>Czas aktywnych misji</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Zatoka 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Zatoka 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Zatoka 3</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>Podnośnik oś pozioma</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>Podnośnik oś pionowa</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>Km zatoki od ostatniego przeglądu / ogółem</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>Km osi podnośnika od ostatniego przeglądu / ogółem</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>Całkowity czas aktywnych misji od ostatniego przeglądu / ogółem</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>Jednostki w zatokach od ostatniego przeglądu / ogółem</value>
+  </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>Żądana ilość</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Potwierdzić wiersz</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Oś</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>Nazwa licznika</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Stan wiersza</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Stan</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Wykonaj wiersz</value>
+  </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>Czy na pewno chcesz potwierdzić tę usługę?</value>
+  </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Cykle podnośnika od ostatniej konserwacji / ogółem</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Oś pozioma</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Oś pionowa</value>
+  </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>Wymienić</value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>Potwierdź Obecny</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Aktualna ilość</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Artykuł: </value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Jednostki</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Jednostka</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Ukończone</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Poniżej wagi</value>
+  </data>
+  <data name="TotalMissionsHeader" xml:space="preserve">
+    <value>Łącznie misje</value>
+  </data>
+  <data name="CloseLine" xml:space="preserve">
+    <value>Bliska linia</value>
+  </data>
+  <data name="UpdatedValue" xml:space="preserve">
+    <value>Wartość zaktualizowana</value>
+  </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Usuń misję</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>Miejsce jednostki ładunkowej</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>Źródło jednostki ładunkowej</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>Id Wms</value>
+  </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>Karuzela zatoki 1 w dół</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>Karuzela zatoki 1 w górę</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>Karuzela zatoki 2 w dół</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>Karuzela zatoki 2 w górę</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>Karuzela zatoki 3 w dół</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>Karuzela zatoki 3 w górę</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Komórka</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>W dół</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Podnośnik</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>Zewnętrzna zatoka 1 w dół</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>Zewnętrzna zatoka 1 w górę</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>Zewnętrzna zatoka 2 w dół</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>Zewnętrzna zatoka 2 w górę</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>Zewnętrzna zatoka 3 w dół</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>Zewnętrzna zatoka 3 w górę</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>Wewnętrzna zatoka 1 w dół</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>Wewnętrzna zatoka 1 w górę</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>Wewnętrzna zatoka 2 w dół</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>Wewnętrzna zatoka 2 w górę</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>Wewnętrzna zatoka 3 w dół</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>Wewnętrzna zatoka 3 w górę</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>Jednostka ładunku</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>Brak miejsca</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Nieznane</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Góra</value>
+  </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>Powrót do zatoki</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>Błąd odkładania</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>Błąd obciążenia</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>Zew. zatoka</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>Oczekiwanie na łańcuch</value>
+  </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>Jednostka obecna w zatoce nie może być zagęszczana</value>
+  </data>
+  <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
+    <value>Aktualizacja średniego ciężaru jednostkowego</value>
+  </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>Rzeczywisty średni ciężar jednostkowy [g]</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>Oryginalny średni ciężar jednostkowy [g]</value>
+  </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>Mierzenie wagi i liczenie sztuk</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>Zmierzona ilość</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>Zaktualizować masę jednostkową</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>Potwierdzenie ilości zmierzonej </value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>Potwierdzenie ilości żądanej</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Waga jednostkowa [g]</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>Operacja potwierdzona przez czytnik kodów kreskowych</value>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>Niektóre części kodu kreskowego '{0}' nie pasują do artykułu.</value>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>Niektóre części kodu kreskowego '{0}' nie pasują do artykułu. Ponowne uruchomienie.</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>Brakująca ilość przed potwierdzeniem.</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Kod kreskowy '{0}' nie został rozpoznany.</value>
+  </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>Żądanie odłożenia dla artykułu {0} (q.ty {1}) zostało przyjęte.</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Operacje pobrania na jednostce n.</value>
+  </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Operacja uzupełniania na jednostce n.</value>
+  </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Pobierz artykuł </value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Odłóż artykuł </value>
+  </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>Załadunek artykułów...</value>
+  </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>Operacje zatoki</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Widok</value>
+  </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>Maksymalna kolejna wolna przestrzeń z tyłu</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>Maksymalna kolejna wolna przestrzeń z przodu</value>
+  </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>Oznacz jako rozwiązane i przejdź do zagęszczania</value>
+  </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Kod skrzyni</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Pobierz skrzynię</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Odłóż skrzynię</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Skrzynia</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Wstaw skrzynię</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Usuń skrzynię</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Uwaga</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Wybierz powód</value>
+  </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Zaczekaj na depozyt w komórce</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Zaczekaj na depozyt w zatoce</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Nieprawidłowe informacje operacja w polu nie została potwierdzona</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Ostrzeżenie</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>To jest ostatnia operacja na tej szufladzie, umieść artykuł i naciśnij OK</value>
+  </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Karty sieciowe</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>IP dodatkowe</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>Maska podsieci dodatkowa</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Dodaj</value>
+  </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>Błąd obłożenia</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Przesunięcie lasera</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Ilość całkowita</value>
+  </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Dobra ilość przed uszkodzeniem</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>Ilość utracona</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>Sygnalizacja uszkodzenia</value>
+  </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Potwierdzić pobranie obłożenia</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Błąd sygnalizacji uszkodzenia</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Pozycja została usunięta</value>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Udana sygnalizacja uszkodzenia</value>
+  </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Kod kreskowy</value>
+  </data>
+  <data name="MissionStateDoubleExtBay" xml:space="preserve">
+    <value>Podwójna zatoka zewnętrzna</value>
+  </data>
+  <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
+    <value>Zaczekaj na depozyt w zewnętrznej zatoce</value>
+  </data>
+  <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
+    <value>Zaczekaj na depozyt w wewnętrznej zatoce</value>
+  </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Włączenie filtra Uwf</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Wyłączenie filtra Uwf</value>
+  </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>Pełny</value>
+  </data>
+  <data name="EmptyCompartment" xml:space="preserve">
+    <value>Pusty</value>
+  </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>Sprawdź produkt</value>
+  </data>
+  <data name="CheckOperationCancelled" xml:space="preserve">
+    <value>Operacja sprawdzania została anulowana</value>
+  </data>
+  <data name="ItemListType_Check" xml:space="preserve">
+    <value>Sprawdzić</value>
+  </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>Przyjęto żądanie sprawdzenia dla elementu {0} (jednostka ładunkowa {1}).</value>
+  </data>
+  <data name="LoadingDraperyItemPageHeader" xml:space="preserve">
+    <value>Załadunek elementów obłożenia</value>
+  </data>
+  <data name="DraperyArticleCode" xml:space="preserve">
+    <value>Artykuł/kod</value>
+  </data>
+  <data name="Drapery" xml:space="preserve">
+    <value>Obłożenie</value>
+  </data>
+  <data name="DraperyItemLoaded" xml:space="preserve">
+    <value>Załadowany element obłożenia</value>
+  </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>Brak zasłony</value>
+  </data>
+  <data name="StepTime" xml:space="preserve">
+    <value>Czas kroku</value>
+  </data>
+  <data name="LoadUnitCellSourceId" xml:space="preserve">
+    <value>Id celu komórki</value>
+  </data>
+  <data name="NeedMovingBackward" xml:space="preserve">
+    <value>Trzeba się cofnąć</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Aktywowany</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pauza</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Wznów</value>
+  </data>
+  <data name="Positioning" xml:space="preserve">
+    <value>Pozycjonowanie</value>
+  </data>
+  <data name="Homing" xml:space="preserve">
+    <value>Homing</value>
+  </data>
+  <data name="CombinedMovements" xml:space="preserve">
+    <value>Połączone ruchy</value>
+  </data>
+  <data name="CheckIntrusion" xml:space="preserve">
+    <value>Sprawdź wtargnięcie</value>
+  </data>
+  <data name="Backwards" xml:space="preserve">
+    <value>Wstecz</value>
+  </data>
+  <data name="StopReason" xml:space="preserve">
+    <value>Przyczyna zatrzymania</value>
+  </data>
+  <data name="NoReason" xml:space="preserve">
+    <value>Brak przyczyny</value>
+  </data>
+  <data name="FaultStateChanged" xml:space="preserve">
+    <value>Zmiana stanu błedu</value>
+  </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>Uruchomi ponownie usługę</value>
+  </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>Adres IP został osiągnięty</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>Adres IP nieosiągalny</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>Filtr UWF nie jest aktywny</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>Aktywuj filtr UWF</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Destynacja</value>
+  </data>
+  <data name="ShipmentDay" xml:space="preserve">
+    <value>Dzień wysyłki</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Dzień</value>
+  </data>
+  <data name="RunningStateChanged" xml:space="preserve">
+    <value>Stan pracy został zmieniony</value>
+  </data>
+  <data name="RestoreStep" xml:space="preserve">
+    <value>Przywróć krok</value>
+  </data>
+  <data name="Intermediate" xml:space="preserve">
+    <value>Pośredni</value>
+  </data>
+  <data name="RestoreConditions" xml:space="preserve">
+    <value>Przywróć warunki</value>
+  </data>
+  <data name="CloseShutterBayNumber" xml:space="preserve">
+    <value>Zamknij zasuwę zatoki</value>
+  </data>
+  <data name="BayNotifications" xml:space="preserve">
+    <value>Powiadomienia zatoki</value>
+  </data>
+  <data name="DeviceNotifications" xml:space="preserve">
+    <value>Powiadomienia urządzenia</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Akcja</value>
+  </data>
+  <data name="OpenShutterPosition" xml:space="preserve">
+    <value>Pozycja otwartej zasuwy</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Czas misji</value>
+  </data>
+  <data name="NeedHomingAxis" xml:space="preserve">
+    <value>Wymagany homing osi</value>
+  </data>
+  <data name="ErrorMovements" xml:space="preserve">
+    <value>Błędne ruchy</value>
+  </data>
+  <data name="EjectLoadUnit" xml:space="preserve">
+    <value>Usuń jednostkę ładunkową</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Kierunek</value>
+  </data>
+  <data name="CloseShutterPosition" xml:space="preserve">
+    <value>Pozycja zamkniętej zasuwy</value>
+  </data>
 </root>

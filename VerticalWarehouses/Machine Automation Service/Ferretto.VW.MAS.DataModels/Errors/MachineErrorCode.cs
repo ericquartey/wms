@@ -269,6 +269,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorCondition(typeof(IBayTelescopicZeroConditionEvaluator))]
         TelescopicBayError,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitTareError), 1)]
+        LoadUnitTareError,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 1000,
 

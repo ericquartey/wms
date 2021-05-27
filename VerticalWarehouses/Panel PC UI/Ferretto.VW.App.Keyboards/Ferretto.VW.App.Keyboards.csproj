@@ -35,6 +35,10 @@
     <None Remove="Resources\it-numeric.json" />
     <None Remove="Resources\it-numpad.json" />
     <None Remove="Resources\it-uppercase.json" />
+    <None Remove="Resources\pl-lowercase.json" />
+    <None Remove="Resources\pl-numeric.json" />
+    <None Remove="Resources\pl-numpad.json" />
+    <None Remove="Resources\pl-uppercase.json" />
     <None Remove="Resources\ru-lowercase.json" />
     <None Remove="Resources\ru-numeric.json" />
     <None Remove="Resources\ru-numpad.json" />
@@ -69,6 +73,10 @@
     <Resource Include="Resources\el-lowercase.json" />
     <Resource Include="Resources\el-numeric.json" />
     <Resource Include="Resources\el-numpad.json" />
+    <Resource Include="Resources\pl-lowercase.json" />
+    <Resource Include="Resources\pl-numeric.json" />
+    <Resource Include="Resources\pl-numpad.json" />
+    <Resource Include="Resources\pl-uppercase.json" />
     <Resource Include="Resources\ru-uppercase.json" />
     <Resource Include="Resources\ru-lowercase.json" />
     <Resource Include="Resources\ru-numeric.json" />
@@ -100,5 +108,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
   </ItemGroup>
-  
+
 </Project>

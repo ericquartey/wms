@@ -377,6 +377,45 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
+        public async Task AutoPickItem(string barcode)
+        {
+            this.ClearNotifications();
+            try
+            {
+                var item = await this.itemsWebService.GetByBarcodeAsync(barcode);
+                if (item is null)
+                {
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), barcode), Services.Models.NotificationSeverity.Warning);
+                }
+                else
+                {
+                    //var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Put);
+
+                    await this.wmsDataProvider.PutAsync(
+                            item.Id,
+                            1,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            userName: this.authenticationService.UserName);
+
+                    this.ShowNotification(
+                        string.Format(
+                            Resources.Localized.Get("OperatorApp.PutRequestWasAccepted"),
+                            item.Code,
+                            this.InputQuantity),
+                        Services.Models.NotificationSeverity.Success);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), barcode), Services.Models.NotificationSeverity.Warning);
+                this.logger.Error(ex.ToString());
+            }
+        }
+
         public async Task<bool> CheckReasonsAsync()
         {
             this.ReasonId = null;
@@ -426,7 +465,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             switch (userAction.UserAction)
             {
                 case UserAction.FilterItems:
-                    await this.ShowItemDetailsByBarcodeAsync(userAction);
+                    if (this.MachineService.Bay.BarcodeAutomaticPut)
+                    {
+                        await this.AutoPickItem(userAction.Code);
+                    }
+                    else
+                    {
+                        await this.ShowItemDetailsByBarcodeAsync(userAction);
+                    }
 
                     break;
 

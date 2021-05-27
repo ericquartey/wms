@@ -74,6 +74,7 @@
                  Margin="0,15"
                  HorizontalAlignment="Left"
                  FontSize="{StaticResource FontSize_High}"
+                 Foreground="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}"
                  Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                  Text="Operator" />
 
@@ -96,6 +97,7 @@
                  Margin="0,15"
                  HorizontalAlignment="Left"
                  FontSize="{StaticResource FontSize_High}"
+                 Foreground="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}"
                  Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                  Text="Installer" />
 
@@ -118,6 +120,7 @@
                  Margin="0,15"
                  HorizontalAlignment="Left"
                  FontSize="{StaticResource FontSize_High}"
+                 Foreground="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}"
                  Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                  Text="Service" />
 
@@ -140,6 +143,7 @@
                  Margin="0,15"
                  HorizontalAlignment="Left"
                  FontSize="{StaticResource FontSize_High}"
+                 Foreground="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}"
                  Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                  Text="Admin" />
 

@@ -2523,4 +2523,19 @@
   <data name="BayTelescopic" xml:space="preserve">
     <value>Bay telescopic</value>
   </data>
+  <data name="InvertersProgrammingStarted" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="CallUnitWeight" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ImportStructure" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="InternalDown" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="InternalUp" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
