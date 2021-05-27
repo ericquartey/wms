@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 &&
                 loadingUnitGrossWeight.HasValue)
             {
-                this.loadingUnitsDataProvider.SetWeight(loadingUnitId.Value, loadingUnitGrossWeight.Value);
+                this.loadingUnitsDataProvider.SetWeight(loadingUnitId.Value, loadingUnitGrossWeight.Value, isAdditionalCheck: false);
             }
 
             var sensors = this.sensorsProvider.GetAll();

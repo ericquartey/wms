@@ -503,7 +503,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetWeight(int id, double loadingUnitGrossWeight)
+        public void SetWeight(int id, double loadingUnitGrossWeight, bool isAdditionalCheck)
         {
             lock (this.dataContext)
             {
@@ -517,8 +517,17 @@ namespace Ferretto.VW.MAS.DataLayer
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == id);
 
-                // we limit the gross weight just to prevent mechanical crashes, errors for user are still active
-                if (loadingUnitGrossWeight < elevatorWeight)
+                if (isAdditionalCheck
+                    && loadingUnitGrossWeight < elevatorWeight + loadingUnit.Tare)
+                {
+                    this.logger.LogWarning($"Weight too low for LoadUnit {id}! Do not change weight to {loadingUnitGrossWeight - elevatorWeight}");
+                }
+                else if (isAdditionalCheck
+                    && loadingUnitGrossWeight > elevatorWeight + loadingUnit.Tare + loadingUnit.MaxNetWeight)
+                {
+                    this.logger.LogWarning($"Weight too high for LoadUnit {id}! Do not change weight to {loadingUnitGrossWeight - elevatorWeight}");
+                }
+                else if (loadingUnitGrossWeight < elevatorWeight)
                 {
                     loadingUnit.GrossWeight = 0;
                 }

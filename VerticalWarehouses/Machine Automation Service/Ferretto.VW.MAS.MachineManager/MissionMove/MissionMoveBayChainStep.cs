@@ -421,7 +421,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
 
             // set gross weight to the maximum that do not show this error again
-            this.LoadingUnitsDataProvider.SetWeight(this.Mission.LoadUnitId, position.LoadingUnit.MaxNetWeight + position.LoadingUnit.Tare + this.ElevatorDataProvider.GetWeight());
+            this.LoadingUnitsDataProvider.SetWeight(this.Mission.LoadUnitId, position.LoadingUnit.MaxNetWeight + position.LoadingUnit.Tare + this.ElevatorDataProvider.GetWeight(), isAdditionalCheck: false);
 
             this.Mission.ErrorCode = MachineErrorCode.LoadUnitWeightExceeded;
             this.Mission.RestoreStep = this.Mission.Step;
