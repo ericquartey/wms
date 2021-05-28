@@ -256,9 +256,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionStep.ElevatorBayUp:
-                    var newStepBayChain = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    this.Mission.StepTime = DateTime.UtcNow;
-                    newStepBayChain.OnEnter(null);
+                    var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                    if (bay.IsExternal &&
+                        bay.IsDouble)
+                    {
+                        var newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        newStep.OnEnter(null);
+                    }
+                    else
+                    {
+                        var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        newStep.OnEnter(null);
+                    }
 
                     this.Logger.LogWarning($"{this.GetType().Name}: Resume mission {this.Mission.Id} already executed!");
                     break;
@@ -501,6 +512,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     return;
 
                 case MissionStep.ElevatorBayUp:
+                    var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                    if (bay.IsExternal &&
+                        bay.IsDouble)
+                    {
+                        newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    }
+                    else
                     {
                         newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
