@@ -549,6 +549,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.IsAddItemVisible)
             {
+                var bIsAddItemParameterConfigured = await this.identityService.IsEnableAddItemAsync();
+
+                if (bIsAddItemParameterConfigured)
+                {
+                    await this.ShowItemDetailsByBarcode_DraperyItemStuff_Async(userAction);
+                    return;
+                }
+
                 await this.ShowItemDetailsByBarcodeAsync(userAction);
                 return;
             }
@@ -1420,6 +1428,70 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.currentItemIndex = 0;
                 this.maxKnownIndexSelection = 0;
+            }
+        }
+
+        private async Task ShowItemDetailsByBarcode_DraperyItemStuff_Async(UserActionEventArgs e)
+        {
+            var itemCode = e.GetItemCode();
+            if (itemCode is null)
+            {
+                this.ShowNotification(
+                    string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheItemCode"), e.Code),
+                    Services.Models.NotificationSeverity.Warning);
+
+                return;
+            }
+
+            try
+            {
+                this.ClearNotifications();
+
+                var items = await this.areasWebService.GetProductsAsync(
+                    this.areaId.Value,
+                    0,
+                    1,
+                    itemCode,
+                    false,
+                    false);
+
+                if (!items.Any())
+                {
+                    this.SearchItem = itemCode;
+                    this.products.AddRange(items.Select(i => new ItemInfo(i, this.machineService.Bay.Id)));
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
+                }
+                else
+                {
+                    try
+                    {
+                        var item = await this.itemsWebService.GetByBarcodeAsync(itemCode);
+                        if (item is null)
+                        {
+                            this.SearchItem = item.Code;
+                            this.products.Add(new ItemInfo(item, this.machineService.Bay.Id));
+
+                            this.logger.Debug($"GetByBarcodeAsync '{item.Code}'.");
+                            this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
+                        }
+                        else
+                        {
+                            this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.RaisePropertyChanged(nameof(this.Products));
             }
         }
 
