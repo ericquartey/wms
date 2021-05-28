@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 bay.IsDouble)
             {
                 if (machineResourcesProvider.IsDrawerInBayInternalPosition(this.Mission.TargetBay, true) != machineResourcesProvider.IsDrawerInBayExternalPosition(this.Mission.TargetBay, true)
-                    || (this.Mission.MissionType != MissionType.WMS && this.Mission.MissionType != MissionType.OUT))
+                    || (this.Mission.MissionType != MissionType.WMS && this.Mission.MissionType != MissionType.OUT && this.Mission.MissionType != MissionType.FullTestOUT))
                 {
                     var newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                     || !this.SensorsProvider.IsLoadingUnitInLocation(positionUp.Location)
-                    || (this.Mission.MissionType != MissionType.WMS && this.Mission.MissionType != MissionType.OUT)
+                    || (this.Mission.MissionType != MissionType.WMS && this.Mission.MissionType != MissionType.OUT && this.Mission.MissionType != MissionType.FullTestOUT)
                     )
                 {
                     var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
