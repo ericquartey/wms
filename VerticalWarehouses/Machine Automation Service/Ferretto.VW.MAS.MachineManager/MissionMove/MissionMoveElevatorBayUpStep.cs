@@ -118,10 +118,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 var positionUp = bay.Positions.SingleOrDefault(s => s.IsUpper);
-                var destination = this.Mission.LoadUnitDestination == LoadingUnitLocation.CarouselBay1Up ||
-                                  this.Mission.LoadUnitDestination == LoadingUnitLocation.CarouselBay2Up ||
-                                  this.Mission.LoadUnitDestination == LoadingUnitLocation.CarouselBay3Up ?
-                                  bay.Positions.SingleOrDefault(s => s.IsUpper) : bay.Positions.SingleOrDefault(s => !s.IsUpper);
+                var destination =bay.Positions.SingleOrDefault(s => !s.IsUpper);
 
                 if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                     || !this.SensorsProvider.IsLoadingUnitInLocation(positionUp.Location)
