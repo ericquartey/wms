@@ -95,10 +95,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var destinationPosition = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ?
-                                              bay.Positions.SingleOrDefault(s => s.IsUpper) : bay.Positions.SingleOrDefault(s => !s.IsUpper);
+                    var destinationPosition = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
 
                     this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationPosition.Height,
                                         BayNumber.None,
@@ -118,10 +115,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 var positionUp = bay.Positions.SingleOrDefault(s => s.IsUpper);
-                var destination = this.Mission.LoadUnitDestination == LoadingUnitLocation.CarouselBay1Up ||
-                                  this.Mission.LoadUnitDestination == LoadingUnitLocation.CarouselBay2Up ||
-                                  this.Mission.LoadUnitDestination == LoadingUnitLocation.CarouselBay3Up ?
-                                  bay.Positions.SingleOrDefault(s => s.IsUpper) : bay.Positions.SingleOrDefault(s => !s.IsUpper);
+                var destination =bay.Positions.SingleOrDefault(s => !s.IsUpper);
 
                 if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                     || !this.SensorsProvider.IsLoadingUnitInLocation(positionUp.Location)
@@ -208,10 +202,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                             this.MachineVolatileDataProvider.IsHomingExecuted = true;
 
-                            var destinationPosition = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ?
-                                              bay.Positions.SingleOrDefault(s => s.IsUpper) : bay.Positions.SingleOrDefault(s => !s.IsUpper);
+                            var destinationPosition = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
 
                             this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationPosition.Height,
                                                 BayNumber.None,
