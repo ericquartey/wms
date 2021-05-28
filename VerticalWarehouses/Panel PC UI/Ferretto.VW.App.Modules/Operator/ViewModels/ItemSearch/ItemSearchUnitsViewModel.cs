@@ -216,7 +216,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         {
                             LoadingUnitId = compartment.LoadingUnitId,
                             Stock = filteredCompartment.Stock,
-                            Id = compartment.Id,
+                            Id = filteredCompartment.Id,
                             Lot = filteredCompartment.Lot,
                             Sub1 = filteredCompartment.ItemSerialNumber,
                         };

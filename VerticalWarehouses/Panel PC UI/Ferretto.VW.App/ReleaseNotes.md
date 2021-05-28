@@ -22,21 +22,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.18 rispetto la 1.0.17
-- Aggiunto parametro di baia per generare automaticamente una lista di deposito con il barcode
-- Aggiunto allarme di tara cassetto a zero nella procedura di test celle limite
-- Aggiunta lingua polacca
-- Aggiunto Step ElevatorBayUp: dopo il deposito in giostra, posizione bassa, si porta in posizione alta
+## Nuove Funzionalità 1.0.19 rispetto la 1.0.18
+- Dopo il deposito in baia esterna doppia, se c'è anche un altro cassetto in baia si porta nell'altra posizione
 
 ## Bug Risolti
--  Corretto errore 82 - Timeout StartPositioningBlocked
--  Corretta quota verticale nel ripristino del prelievo da cella con macchine da 1000kg
--  Aggiunto controllo del sensore di zero catena nella BES nel movimento verso operatore
--  Aggiunto controllo del peso aggiornato dalle operazioni sul cassetto in baia
--  Nella pagina di versamento si può attivare cassetto "pieno" senza il "chiudi riga" 
+- Tendaggi paradiso: corretta gestione di inserimento nuove pezze
+- Corretto numero di scomparto in Ricerca articolo/Cassetti
 
-## Compatibile con adapter 0.4.20
+## Compatibile con adapter 0.4.21
 ***
+
+[Versione 1.0.18](#id1018)
 
 [Versione 1.0.17](#id1017)
 
@@ -73,6 +69,23 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1018"></a>
+## Nuove Funzionalità 1.0.18 rispetto la 1.0.17
+- Aggiunto parametro di baia per generare automaticamente una lista di deposito con il barcode
+- Aggiunto allarme di tara cassetto a zero nella procedura di test celle limite
+- Aggiunta lingua polacca
+- Aggiunto Step ElevatorBayUp: dopo il deposito in giostra, posizione bassa, si porta in posizione alta
+
+## Bug Risolti
+-  Corretto errore 82 - Timeout StartPositioningBlocked
+-  Corretta quota verticale nel ripristino del prelievo da cella con macchine da 1000kg
+-  Aggiunto controllo del sensore di zero catena nella BES nel movimento verso operatore
+-  Aggiunto controllo del peso aggiornato dalle operazioni sul cassetto in baia
+-  Nella pagina di versamento si può attivare cassetto "pieno" senza il "chiudi riga" 
+
+## Compatibile con adapter 0.4.20
 ***
 
 <a id="id1017"></a>
