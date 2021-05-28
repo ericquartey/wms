@@ -95,10 +95,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var destinationPosition = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Down ?
-                                              bay.Positions.SingleOrDefault(s => s.IsUpper) : bay.Positions.SingleOrDefault(s => !s.IsUpper);
+                    var destinationPosition = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
 
                     this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationPosition.Height,
                                         BayNumber.None,
@@ -205,10 +202,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                             this.MachineVolatileDataProvider.IsHomingExecuted = true;
 
-                            var destinationPosition = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Down ?
-                                              bay.Positions.SingleOrDefault(s => s.IsUpper) : bay.Positions.SingleOrDefault(s => !s.IsUpper);
+                            var destinationPosition = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
 
                             this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationPosition.Height,
                                                 BayNumber.None,
