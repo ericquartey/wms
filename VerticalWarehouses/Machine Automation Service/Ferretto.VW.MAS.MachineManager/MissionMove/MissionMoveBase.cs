@@ -326,7 +326,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             // double External bay movement
                             if ((this.isWaitingMissionOnThisBay(bay) || this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)) && this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
                             {
-                                newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                //newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                newStep = new MissionMoveElevatorBayUpStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
                             else
                             {
