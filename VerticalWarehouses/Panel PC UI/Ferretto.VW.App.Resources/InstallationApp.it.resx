@@ -2466,4 +2466,7 @@
   <data name="BayTelescopic" xml:space="preserve">
     <value>Baia telescopica in sede</value>
   </data>
+  <data name="MaxMessageLength" xml:space="preserve">
+    <value>Lunghezza massima messaggio</value>
+  </data>
 </root>

@@ -4165,6 +4165,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maximum message length.
+        /// </summary>
+        public static string MaxMessageLength {
+            get {
+                return ResourceManager.GetString("MaxMessageLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max net weight (kg).
         /// </summary>
         public static string MaxNetWeight {

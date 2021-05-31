@@ -32,7 +32,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         void ClearCommands();
 
-        void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false);
+        void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false, int maxMessageLength = 125);
 
         Task ConnectAsync();
 

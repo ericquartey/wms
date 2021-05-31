@@ -116,7 +116,7 @@ namespace Ferretto.VW.App.Services
 
                     var bay = await this.bayManager.GetBayAsync();
 
-                    this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal);
+                    this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal, alphaNumericBar.MaxMessageLength);
                     this.isEnabled = true;
                 }
                 else

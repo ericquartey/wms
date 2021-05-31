@@ -95,12 +95,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var destinationPosition = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Down ?
-                                              bay.Positions.SingleOrDefault(s => s.IsUpper) : bay.Positions.SingleOrDefault(s => !s.IsUpper);
+                    var position = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
+                    var destination = bay.Positions.SingleOrDefault(s => s.IsUpper != position.IsUpper);
 
-                    this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationPosition.Height,
+                    this.LoadingUnitMovementProvider.PositionElevatorToPosition(destination.Height,
                                         BayNumber.None,
                                         this.Mission.CloseShutterPosition,
                                         measure: false,
@@ -108,7 +106,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         this.Mission.TargetBay,
                                         this.Mission.RestoreConditions,
                                         this.Mission.LoadUnitId,
-                                        destinationPosition.Id,
+                                        destination.Id,
                                         null);
                 }
 
@@ -118,7 +116,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 var positionUp = bay.Positions.SingleOrDefault(s => s.IsUpper);
-                var destination =bay.Positions.SingleOrDefault(s => !s.IsUpper);
+                var destination = bay.Positions.SingleOrDefault(s => !s.IsUpper);
 
                 if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                     || !this.SensorsProvider.IsLoadingUnitInLocation(positionUp.Location)
@@ -205,12 +203,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                             this.MachineVolatileDataProvider.IsHomingExecuted = true;
 
-                            var destinationPosition = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Down ||
-                                              this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Down ?
-                                              bay.Positions.SingleOrDefault(s => s.IsUpper) : bay.Positions.SingleOrDefault(s => !s.IsUpper);
+                            var position = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
+                            var destination = bay.Positions.SingleOrDefault(s => s.IsUpper != position.IsUpper);
 
-                            this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationPosition.Height,
+                            this.LoadingUnitMovementProvider.PositionElevatorToPosition(destination.Height,
                                                 BayNumber.None,
                                                 this.Mission.CloseShutterPosition,
                                                 measure: false,
@@ -218,7 +214,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                                 this.Mission.TargetBay,
                                                 this.Mission.RestoreConditions,
                                                 this.Mission.LoadUnitId,
-                                                destinationPosition.Id,
+                                                destination.Id,
                                                 null);
                         }
                         else

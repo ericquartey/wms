@@ -8,9 +8,11 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -434,8 +436,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
+                    var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
                     if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
                         && !this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)
+                        && machineResourcesProvider.IsSensorZeroOnBay(bay.Number)
                         )
                     {
                         this.Logger.LogDebug($"3. Go to MissionMoveLoadElevatorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
@@ -455,8 +459,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Logger.LogDebug($"4. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
 
                         this.ErrorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, this.Mission.TargetBay);
-                        this.Mission.RestoreStep = this.Mission.Step;
-                        newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        throw new StateMachineException(ErrorDescriptions.MoveExtBayNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
             }
