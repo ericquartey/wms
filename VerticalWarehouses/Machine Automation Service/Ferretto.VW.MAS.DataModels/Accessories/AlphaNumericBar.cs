@@ -4,7 +4,7 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public int MaxMessageLength { get; set; } = 125;
+        public int MaxMessageLength { get; set; }
 
         public AlphaNumericBarSize Size { get; set; }
 

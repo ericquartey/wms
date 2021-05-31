@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20210531125421_MaxMessageLength")]
+    [Migration("20210531160542_MaxMessageLength")]
     partial class MaxMessageLength
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
