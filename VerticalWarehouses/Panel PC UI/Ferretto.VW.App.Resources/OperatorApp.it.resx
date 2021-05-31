@@ -1856,4 +1856,13 @@
   <data name="MissionStateElevatorBayUp" xml:space="preserve">
     <value>Elevatore in baia alta</value>
   </data>
+  <data name="DraperyWithCodeAlreadyAvailable" xml:space="preserve">
+    <value>Pezza già presente con codice '{0}'.</value>
+  </data>
+  <data name="DraperyAvailable" xml:space="preserve">
+    <value>Pezza disponibile.</value>
+  </data>
+  <data name="InvalidArgument" xml:space="preserve">
+    <value>Argomento non valido</value>
+  </data>
 </root>

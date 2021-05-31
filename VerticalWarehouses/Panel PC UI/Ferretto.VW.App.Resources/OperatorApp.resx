@@ -2229,4 +2229,14 @@
   <data name="MissionStateElevatorBayUp" xml:space="preserve">
     <value>Elevator in bay up</value>
   </data>
+  <data name="DraperyWithCodeAlreadyAvailable" xml:space="preserve">
+    <value>Drapery already available with code '{0}'.</value>
+  </data>
+  <data name="DraperyAvailable" xml:space="preserve">
+    <value>Drapery available.</value>
+  </data>
+  <data name="InvalidArgument" xml:space="preserve">
+    <value>Invalid argument</value>
+    <comment>Error Message</comment>
+  </data>
 </root>

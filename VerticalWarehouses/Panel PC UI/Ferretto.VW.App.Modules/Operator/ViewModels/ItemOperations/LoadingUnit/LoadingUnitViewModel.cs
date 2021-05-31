@@ -675,6 +675,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.OnAppearItem();
 
             this.IsAddItemFeatureAvailable = await this.identityService.IsEnableAddItemAsync();
+            if (this.isAddItemFeatureAvailable) { this.SearchItem = string.Empty; }
             this.Reasons = null;
             this.IsWaitingForReason = false;
 
@@ -1062,6 +1063,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (string.IsNullOrEmpty(this.SearchItem))
             {
                 this.Logger.Debug($"Invalid search item - barcode value");
+
+                this.ShowNotification(Localized.Get("OperatorApp.InvalidArgument"), Services.Models.NotificationSeverity.Error);
                 return;
             }
 
@@ -1431,6 +1434,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        /// <summary>
+        /// Show details for items via barcode data.
+        /// Only reserved for drapery items management.
+        /// </summary>
         private async Task ShowItemDetailsByBarcode_DraperyItemStuff_Async(UserActionEventArgs e)
         {
             var itemCode = e.GetItemCode();
@@ -1447,42 +1454,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ClearNotifications();
 
-                var items = await this.areasWebService.GetProductsAsync(
-                    this.areaId.Value,
-                    0,
-                    1,
-                    itemCode,
-                    false,
-                    false);
+                var draperyExists = await this.itemsWebService.IsDraperyExistByDraperyIdBarcodeAsync(itemCode);
 
-                if (!items.Any())
+                if (!draperyExists)
                 {
                     this.SearchItem = itemCode;
-                    this.products.AddRange(items.Select(i => new ItemInfo(i, this.machineService.Bay.Id)));
-                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.DraperyAvailable")),
+                        Services.Models.NotificationSeverity.Info);
                 }
                 else
                 {
-                    try
-                    {
-                        var item = await this.itemsWebService.GetByBarcodeAsync(itemCode);
-                        if (item is null)
-                        {
-                            this.SearchItem = item.Code;
-                            this.products.Add(new ItemInfo(item, this.machineService.Bay.Id));
-
-                            this.logger.Debug($"GetByBarcodeAsync '{item.Code}'.");
-                            this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
-                        }
-                        else
-                        {
-                            this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
-                    }
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.DraperyWithCodeAlreadyAvailable"), itemCode),
+                        Services.Models.NotificationSeverity.Warning);
                 }
             }
             catch (Exception ex)
@@ -1495,6 +1478,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        /// <summary>
+        /// Show details for items via barcode data.
+        /// </summary>
         private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
         {
             var itemCode = e.GetItemCode();
