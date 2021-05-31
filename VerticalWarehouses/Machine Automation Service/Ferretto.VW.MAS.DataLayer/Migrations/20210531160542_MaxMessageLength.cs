@@ -18,7 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.AddColumn<int>(
                 name: "MaxMessageLength",
                 table: "Accessories",
-                nullable: true);
+                nullable: true,
+                defaultValue: 125);
         }
 
         #endregion
