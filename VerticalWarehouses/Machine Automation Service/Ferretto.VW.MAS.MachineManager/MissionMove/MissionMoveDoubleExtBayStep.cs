@@ -480,7 +480,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (isLoadUnitDestinationInBay)
                 {
                     if ((destination.IsUpper && isLoadingUnitInExternalUpPosition && !isLoadingUnitInInternalUpPosition) ||
-                 (!destination.IsUpper && isLoadingUnitInExternalDownPosition && !isLoadingUnitInInternalDownPosition))
+                        (!destination.IsUpper && isLoadingUnitInExternalDownPosition && !isLoadingUnitInInternalDownPosition))
                     {
                         this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
                         var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
@@ -518,8 +518,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    if ((destination.IsUpper && isLoadingUnitInInternalUpPosition && !isLoadingUnitInExternalUpPosition) ||
-                        (!destination.IsUpper && isLoadingUnitInInternalDownPosition && !isLoadingUnitInExternalDownPosition))
+                    if ((destination.IsUpper && isLoadingUnitInInternalUpPosition && !isLoadingUnitInExternalUpPosition && this.machineResourcesProvider.IsSensorZeroTopOnBay(bay.Number)) ||
+                        (!destination.IsUpper && isLoadingUnitInInternalDownPosition && !isLoadingUnitInExternalDownPosition && this.machineResourcesProvider.IsSensorZeroOnBay(bay.Number)))
                     {
                         //this.Logger.LogDebug($"3. Go to MissionMoveLoadElevatorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
                         this.BaysDataProvider.IncrementCycles(bay.Number);
@@ -556,8 +556,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         //this.Logger.LogDebug($"4. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
 
                         this.ErrorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, this.Mission.TargetBay);
-                        this.Mission.RestoreStep = this.Mission.Step;
-                        newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        throw new StateMachineException(ErrorDescriptions.MoveExtBayNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                 }
             }
