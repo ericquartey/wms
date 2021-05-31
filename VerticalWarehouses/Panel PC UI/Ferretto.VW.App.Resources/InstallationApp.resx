@@ -2538,4 +2538,7 @@
   <data name="InternalUp" xml:space="preserve">
     <value></value>
   </data>
+  <data name="MaxMessageLength" xml:space="preserve">
+    <value>Maximum message length</value>
+  </data>
 </root>
