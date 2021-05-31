@@ -67,7 +67,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         {
                             this.RaiseCanExecuteChanged();
                         }
-                        else
+                        else if (old.HasValue &&
+                            value.HasValue &&
+                            Math.Abs(old.Value - value.Value) == 1)
                         {
                             var increment = !old.HasValue || old < this.destinationCellId;
                             if (increment)
@@ -96,9 +98,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                                 }
                                 else
                                 {
-                                    this.DestinationCellId = null;
+                                    this.DestinationCellId = 0;
                                 }
                             }
+                        }
+                        else
+                        {
+                            this.RaiseCanExecuteChanged();
                         }
                     }
                 }
