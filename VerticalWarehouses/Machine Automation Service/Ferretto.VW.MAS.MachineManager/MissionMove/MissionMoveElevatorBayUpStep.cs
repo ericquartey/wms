@@ -203,9 +203,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                             this.MachineVolatileDataProvider.IsHomingExecuted = true;
 
-                            var destinationPosition = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
+                            var position = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
+                            var destination = bay.Positions.SingleOrDefault(s => s.IsUpper != position.IsUpper);
 
-                            this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationPosition.Height,
+                            this.LoadingUnitMovementProvider.PositionElevatorToPosition(destination.Height,
                                                 BayNumber.None,
                                                 this.Mission.CloseShutterPosition,
                                                 measure: false,
@@ -213,7 +214,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                                 this.Mission.TargetBay,
                                                 this.Mission.RestoreConditions,
                                                 this.Mission.LoadUnitId,
-                                                destinationPosition.Id,
+                                                destination.Id,
                                                 null);
                         }
                         else
