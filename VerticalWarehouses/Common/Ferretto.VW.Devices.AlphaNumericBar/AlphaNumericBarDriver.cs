@@ -19,7 +19,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         public const int PORT_DEFAULT = 2020;
 
-        private const int MAX_MESSAGE_LENGTH = 125;
+        //private const int MAX_MESSAGE_LENGTH = 125;
 
         private const string NEW_LINE = "\r\n";
 
@@ -45,6 +45,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private double loadingUnitWidth;
 
+        private int maxMessageLength;
+
         private AlphaNumericBarSize size = AlphaNumericBarSize.ExtraLarge;
 
         private NetworkStream stream = null;
@@ -63,6 +65,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         public IPAddress IpAddress => this.ipAddress;
 
         public bool IsConnected => this.client?.Connected ?? false;
+
+        public int MaxMessageLength => this.maxMessageLength;
 
         public ConcurrentQueue<string> MessagesReceived => this.messagesReceivedQueue;
 
@@ -174,11 +178,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             this.SelectedMessage = null;
         }
 
-        public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false)
+        public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false, int maxMessageLength = 125)
         {
             this.ipAddress = ipAddress;
             this.Port = port;
             this.size = size;
+            this.maxMessageLength = maxMessageLength;
 
             switch (size)
             {
@@ -965,12 +970,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
                 case AlphaNumericBarCommands.Command.SET:                       // SET <offset> <string>
                     strCommand += " " + offset + " ";
-                    strCommand += this.Encode(message, MAX_MESSAGE_LENGTH - strCommand.Length);
+                    strCommand += this.Encode(message, this.maxMessageLength - strCommand.Length);
                     break;
 
                 case AlphaNumericBarCommands.Command.CUSTOM:                    // CUSTOM <index> <hexval>
                     strCommand += " ";
-                    strCommand += this.Encode(message, MAX_MESSAGE_LENGTH - strCommand.Length);
+                    strCommand += this.Encode(message, this.maxMessageLength - strCommand.Length);
                     break;
 
                 case AlphaNumericBarCommands.Command.CSTSET:                    // CSTSET <offset> <index>
@@ -979,7 +984,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
                 case AlphaNumericBarCommands.Command.SCROLL_ON:                 // TODO: must be cheked
                     strCommand = "SCROLL ON " + offset + " " + scrollEnd + " ";
-                    strCommand += this.Encode(message, MAX_MESSAGE_LENGTH - strCommand.Length);
+                    strCommand += this.Encode(message, this.maxMessageLength - strCommand.Length);
                     break;
 
                 case AlphaNumericBarCommands.Command.SCROLL_OFF:
