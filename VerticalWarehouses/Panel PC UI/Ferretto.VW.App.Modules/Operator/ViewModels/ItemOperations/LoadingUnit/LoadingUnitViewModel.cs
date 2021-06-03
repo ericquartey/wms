@@ -549,6 +549,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.IsAddItemVisible)
             {
+                var bIsAddItemParameterConfigured = await this.identityService.IsEnableAddItemAsync();
+
+                // Check the existence of drapery item for the adding operation
+                if (bIsAddItemParameterConfigured)
+                {
+                    await this.ShowItemDetailsByBarcode_DraperyItemStuff_Async(userAction);
+                    return;
+                }
+
                 await this.ShowItemDetailsByBarcodeAsync(userAction);
                 return;
             }
@@ -667,6 +676,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.OnAppearItem();
 
             this.IsAddItemFeatureAvailable = await this.identityService.IsEnableAddItemAsync();
+            if (this.isAddItemFeatureAvailable) { this.SearchItem = string.Empty; }
             this.Reasons = null;
             this.IsWaitingForReason = false;
 
@@ -1054,6 +1064,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (string.IsNullOrEmpty(this.SearchItem))
             {
                 this.Logger.Debug($"Invalid search item - barcode value");
+
+                this.ShowNotification(Localized.Get("OperatorApp.InvalidArgument"), Services.Models.NotificationSeverity.Error);
                 return;
             }
 
@@ -1423,6 +1435,54 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        /// <summary>
+        /// Show details for items via barcode data.
+        /// Only reserved for drapery items management.
+        /// </summary>
+        private async Task ShowItemDetailsByBarcode_DraperyItemStuff_Async(UserActionEventArgs e)
+        {
+            var itemCode = e.GetItemCode();
+            if (itemCode is null)
+            {
+                this.ShowNotification(
+                    string.Format(Resources.Localized.Get("OperatorApp.BarcodeDoesNotContainTheItemCode"), e.Code),
+                    Services.Models.NotificationSeverity.Warning);
+
+                return;
+            }
+
+            try
+            {
+                this.ClearNotifications();
+
+                var draperyExists = await this.itemsWebService.IsDraperyExistByDraperyIdBarcodeAsync(itemCode);
+
+                if (!draperyExists)
+                {
+                    this.SearchItem = itemCode;
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.DraperyAvailable")),
+                        Services.Models.NotificationSeverity.Info);
+                }
+                else
+                {
+                    this.SearchItem = string.Empty;
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.DraperyWithCodeAlreadyAvailable"), itemCode),
+                        Services.Models.NotificationSeverity.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.RaisePropertyChanged(nameof(this.Products));
+            }
+        }
+
+        /// <summary>
+        /// Show details for items via barcode data.
+        /// </summary>
         private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
         {
             var itemCode = e.GetItemCode();
