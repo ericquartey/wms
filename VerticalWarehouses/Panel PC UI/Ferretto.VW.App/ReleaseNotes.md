@@ -24,6 +24,7 @@
 
 ## Nuove Funzionalità 1.0.19 rispetto la 1.0.18
 - Dopo il deposito in baia esterna doppia, se c'è anche un altro cassetto in baia si porta nell'altra posizione
+- Aggiunto parametro di lunghezza messaggio nella Barra alfanumerica
 
 ## Bug Risolti
 - Tendaggi paradiso: corretta gestione di inserimento nuove pezze

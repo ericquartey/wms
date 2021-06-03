@@ -719,7 +719,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 messageResponse = "GET " + this.alphaNumericBar1Message;
             }
-            else if (messageReceived.StartsWith("CLEAR", StringComparison.Ordinal) || messageReceived.StartsWith("ENABLE", StringComparison.Ordinal) || messageReceived.StartsWith("TEST", StringComparison.Ordinal))
+            else if (messageReceived.StartsWith("TEST OFF", StringComparison.Ordinal))
             {
                 return;
             }
