@@ -551,6 +551,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 var bIsAddItemParameterConfigured = await this.identityService.IsEnableAddItemAsync();
 
+                // Check the existence of drapery item for the adding operation
                 if (bIsAddItemParameterConfigured)
                 {
                     await this.ShowItemDetailsByBarcode_DraperyItemStuff_Async(userAction);
@@ -1464,6 +1465,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
+                    this.SearchItem = string.Empty;
                     this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.DraperyWithCodeAlreadyAvailable"), itemCode),
                         Services.Models.NotificationSeverity.Warning);
                 }

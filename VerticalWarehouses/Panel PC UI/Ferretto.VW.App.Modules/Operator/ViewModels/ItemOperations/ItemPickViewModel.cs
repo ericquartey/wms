@@ -157,6 +157,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await base.CommandUserActionAsync(userAction);
                 return;
             }
+
+            // Handle the adding drapery item
+            var bIsAddItemParameterConfigured = await this.MachineIdentityWebService.IsEnableAddItemAsync();
+            if (bIsAddItemParameterConfigured && userAction.UserAction == UserAction.NotSpecified)
+            {
+                await base.CommandUserActionAsync(userAction);
+                return;
+            }
         }
 
         public override void Disappear()
