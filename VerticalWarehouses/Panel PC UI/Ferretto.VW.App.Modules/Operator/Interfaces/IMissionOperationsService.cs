@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Modules.Operator
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
         Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0);
 
+        Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId);
+
         bool IsRecallLoadingUnitId();
 
         /// <exception cref="MasWebApiException"></exception>

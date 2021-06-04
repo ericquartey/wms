@@ -417,6 +417,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsRequestConfirmForLastOperationOnLoadingUnit()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsRequestConfirmForLastOperationOnLoadingUnit ?? false;
+            }
+        }
+
         public async void SetMachineId(int newMachineId)
         {
             DataLayerContext dataContext;

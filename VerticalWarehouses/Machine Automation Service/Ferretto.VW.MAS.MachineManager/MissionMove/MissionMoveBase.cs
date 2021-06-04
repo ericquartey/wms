@@ -197,6 +197,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
+                    if (!this.SensorsProvider.IsLoadingUnitInLocation(bayPosition.Location))
+                    {
+                        transaction.Rollback();
+                        var error = bayPosition.IsUpper ? MachineErrorCode.TopLevelBayEmpty : MachineErrorCode.BottomLevelBayEmpty;
+                        var description = bayPosition.IsUpper ? ErrorDescriptions.TopLevelBayEmpty : ErrorDescriptions.BottomLevelBayEmpty;
+                        this.ErrorsProvider.RecordNew(error, this.Mission.TargetBay);
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
                 }
 
@@ -326,7 +334,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             // double External bay movement
                             if ((this.isWaitingMissionOnThisBay(bay) || this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)) && this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
                             {
-                                newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                //newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                newStep = new MissionMoveElevatorBayUpStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                             }
                             else
                             {

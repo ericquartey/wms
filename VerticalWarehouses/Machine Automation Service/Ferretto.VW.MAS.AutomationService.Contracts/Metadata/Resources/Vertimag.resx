@@ -585,4 +585,7 @@
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Barcode automatic put</value>
   </data>
+  <data name="Machine_IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>Request confirm for last operation on LU</value>
+  </data>
 </root>

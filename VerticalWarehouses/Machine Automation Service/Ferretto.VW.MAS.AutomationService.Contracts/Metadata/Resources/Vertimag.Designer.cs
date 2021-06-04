@@ -923,7 +923,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
                 return ResourceManager.GetString("Machine_IsEnableAddItem", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Request Confirm for last operation on LoadingUnit item.
+        /// </summary>
+        public static string Machine_IsRequestConfirmForLastOperationOnLoadingUnit
+        {
+            get
+            {
+                return ResourceManager.GetString("Machine_IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to HeartBeat in inverter communication .
         /// </summary>

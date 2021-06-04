@@ -2,7 +2,6 @@
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -47,70 +46,140 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
 
             var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
-            var positionUp = bay.Positions.SingleOrDefault(s => s.IsUpper);
-            var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
 
-            if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
-                || !this.SensorsProvider.IsLoadingUnitInLocation(positionUp.Location)
-                || (this.Mission.MissionType != MissionType.WMS && this.Mission.MissionType != MissionType.OUT)
-                )
+            if (bay.IsExternal &&
+                bay.IsDouble)
             {
-                var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                newStep.OnEnter(null);
-
-                return true;
-            }
-
-            if (this.Mission.NeedHomingAxis == Axis.None)
-            {
-                var machine = this.MachineProvider.GetMinMaxHeight();
-                if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
-                    || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal) >= machine.HorizontalCyclesToCalibrate
-                    )
+                if (machineResourcesProvider.IsDrawerInBayInternalPosition(this.Mission.TargetBay, true) != machineResourcesProvider.IsDrawerInBayExternalPosition(this.Mission.TargetBay, true)
+                    || (this.Mission.MissionType != MissionType.WMS && this.Mission.MissionType != MissionType.OUT && this.Mission.MissionType != MissionType.FullTestOUT))
                 {
-                    this.Mission.NeedHomingAxis = Axis.Horizontal;
-                }
-                this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.HorizontalPositionToCalibrate {machine.HorizontalPositionToCalibrate}. machine.HorizontalCyclesToCalibrate {machine.HorizontalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
+                    var newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
 
-                if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) <= 2000 &&
-                    this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= machine.VerticalCyclesToCalibrate &&
-                   !machineResourcesProvider.IsDrawerCompletelyOnCradle
-                   )
-                {
-                    this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                    return true;
                 }
 
-                this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.VerticalCyclesToCalibrate {machine.VerticalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
-            }
-            if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
-            {
-                if (this.Mission.CloseShutterBayNumber == BayNumber.None)
+                if (this.Mission.NeedHomingAxis == Axis.None)
                 {
-                    this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                    var machine = this.MachineProvider.GetMinMaxHeight();
+                    if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
+                        || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal) >= machine.HorizontalCyclesToCalibrate
+                        )
+                    {
+                        this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    }
+                    this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.HorizontalPositionToCalibrate {machine.HorizontalPositionToCalibrate}. machine.HorizontalCyclesToCalibrate {machine.HorizontalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
+
+                    if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) <= 2000 &&
+                        this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= machine.VerticalCyclesToCalibrate &&
+                       !machineResourcesProvider.IsDrawerCompletelyOnCradle
+                       )
+                    {
+                        this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                    }
+
+                    this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.VerticalCyclesToCalibrate {machine.VerticalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
+                }
+                if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                {
+                    if (this.Mission.CloseShutterBayNumber == BayNumber.None)
+                    {
+                        this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                    else
+                    {
+                        this.Logger.LogInformation($"{this.GetType().Name}: Shutter Close start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
+                    }
                 }
                 else
                 {
-                    this.Logger.LogInformation($"{this.GetType().Name}: Shutter Close start Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
+                    var position = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
+                    var destination = bay.Positions.SingleOrDefault(s => s.IsUpper != position.IsUpper);
+
+                    this.LoadingUnitMovementProvider.PositionElevatorToPosition(destination.Height,
+                                        BayNumber.None,
+                                        this.Mission.CloseShutterPosition,
+                                        measure: false,
+                                        MessageActor.MachineManager,
+                                        this.Mission.TargetBay,
+                                        this.Mission.RestoreConditions,
+                                        this.Mission.LoadUnitId,
+                                        destination.Id,
+                                        null);
                 }
+
+                this.Mission.Status = MissionStatus.Executing;
+                this.MissionsDataProvider.Update(this.Mission);
             }
             else
             {
-                this.LoadingUnitMovementProvider.PositionElevatorToPosition(positionUp.Height,
-                                    BayNumber.None,
-                                    this.Mission.CloseShutterPosition,
-                                    measure: false,
-                                    MessageActor.MachineManager,
-                                    this.Mission.TargetBay,
-                                    this.Mission.RestoreConditions,
-                                    this.Mission.LoadUnitId,
-                                    positionUp.Id,
-                                    null);
-            }
+                var positionUp = bay.Positions.SingleOrDefault(s => s.IsUpper);
+                var destination = bay.Positions.SingleOrDefault(s => !s.IsUpper);
 
-            this.Mission.Status = MissionStatus.Executing;
-            this.MissionsDataProvider.Update(this.Mission);
+                if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
+                    || !this.SensorsProvider.IsLoadingUnitInLocation(positionUp.Location)
+                    || (this.Mission.MissionType != MissionType.WMS && this.Mission.MissionType != MissionType.OUT && this.Mission.MissionType != MissionType.FullTestOUT)
+                    )
+                {
+                    var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+
+                    return true;
+                }
+
+                if (this.Mission.NeedHomingAxis == Axis.None)
+                {
+                    var machine = this.MachineProvider.GetMinMaxHeight();
+                    if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
+                        || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal) >= machine.HorizontalCyclesToCalibrate
+                        )
+                    {
+                        this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    }
+                    this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.HorizontalPositionToCalibrate {machine.HorizontalPositionToCalibrate}. machine.HorizontalCyclesToCalibrate {machine.HorizontalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
+
+                    if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) <= 2000 &&
+                        this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= machine.VerticalCyclesToCalibrate &&
+                       !machineResourcesProvider.IsDrawerCompletelyOnCradle
+                       )
+                    {
+                        this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                    }
+
+                    this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.VerticalCyclesToCalibrate {machine.VerticalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
+                }
+                if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                {
+                    if (this.Mission.CloseShutterBayNumber == BayNumber.None)
+                    {
+                        this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                    else
+                    {
+                        this.Logger.LogInformation($"{this.GetType().Name}: Shutter Close start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
+                    }
+                }
+                else
+                {
+                    this.LoadingUnitMovementProvider.PositionElevatorToPosition(positionUp.Height,
+                                        BayNumber.None,
+                                        this.Mission.CloseShutterPosition,
+                                        measure: false,
+                                        MessageActor.MachineManager,
+                                        this.Mission.TargetBay,
+                                        this.Mission.RestoreConditions,
+                                        this.Mission.LoadUnitId,
+                                        positionUp.Id,
+                                        null);
+                }
+
+                this.Mission.Status = MissionStatus.Executing;
+                this.MissionsDataProvider.Update(this.Mission);
+            }
 
             return true;
         }
@@ -122,31 +191,64 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (notification.Type == MessageType.Homing)
+                    var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+
+                    if (bay.IsExternal &&
+                        bay.IsDouble)
                     {
-                        this.Mission.NeedHomingAxis = Axis.None;
-                        this.MissionsDataProvider.Update(this.Mission);
+                        if (notification.Type == MessageType.Homing)
+                        {
+                            this.Mission.NeedHomingAxis = Axis.None;
+                            this.MissionsDataProvider.Update(this.Mission);
 
-                        this.MachineVolatileDataProvider.IsHomingExecuted = true;
+                            this.MachineVolatileDataProvider.IsHomingExecuted = true;
 
-                        var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
-                        var positionUp = bay.Positions.SingleOrDefault(s => s.IsUpper);
+                            var position = bay.Positions.SingleOrDefault(s => s.Location == this.Mission.LoadUnitDestination);
+                            var destination = bay.Positions.SingleOrDefault(s => s.IsUpper != position.IsUpper);
 
-                        this.LoadingUnitMovementProvider.PositionElevatorToPosition(positionUp.Height,
-                             BayNumber.None,
-                             this.Mission.CloseShutterPosition,
-                             measure: false,
-                             MessageActor.MachineManager,
-                             this.Mission.TargetBay,
-                             this.Mission.RestoreConditions,
-                             this.Mission.LoadUnitId,
-                             positionUp.Id,
-                             null);
+                            this.LoadingUnitMovementProvider.PositionElevatorToPosition(destination.Height,
+                                                BayNumber.None,
+                                                this.Mission.CloseShutterPosition,
+                                                measure: false,
+                                                MessageActor.MachineManager,
+                                                this.Mission.TargetBay,
+                                                this.Mission.RestoreConditions,
+                                                this.Mission.LoadUnitId,
+                                                destination.Id,
+                                                null);
+                        }
+                        else
+                        {
+                            var newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep.OnEnter(null);
+                        }
                     }
                     else
                     {
-                        var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
+                        if (notification.Type == MessageType.Homing)
+                        {
+                            this.Mission.NeedHomingAxis = Axis.None;
+                            this.MissionsDataProvider.Update(this.Mission);
+
+                            this.MachineVolatileDataProvider.IsHomingExecuted = true;
+                            var positionUp = bay.Positions.SingleOrDefault(s => s.IsUpper);
+
+                            this.LoadingUnitMovementProvider.PositionElevatorToPosition(positionUp.Height,
+                                 BayNumber.None,
+                                 this.Mission.CloseShutterPosition,
+                                 measure: false,
+                                 MessageActor.MachineManager,
+                                 this.Mission.TargetBay,
+                                 this.Mission.RestoreConditions,
+                                 this.Mission.LoadUnitId,
+                                 positionUp.Id,
+                                 null);
+                        }
+                        else
+                        {
+                            var newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            newStep.OnEnter(null);
+                        }
                     }
                     break;
 

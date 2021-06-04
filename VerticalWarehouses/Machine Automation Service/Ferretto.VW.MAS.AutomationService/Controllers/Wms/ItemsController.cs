@@ -60,6 +60,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(await this.itemsWmsWebService.GetCompartmentsAsync(id));
         }
 
+        [HttpGet("{barcode}/is-drapery-exist")]
+        public async Task<ActionResult<bool>> IsDraperyExistByDraperyIdBarcodeAsync(string barcode)
+        {
+            return this.Ok(await this.itemsWmsWebService.IsDraperyExistByDraperyIdBarcodeAsync(barcode));
+        }
+
         [HttpPost("{id}/pick")]
         public async Task<IActionResult> PickAsync(int id, ItemOptions itemOptions)
         {

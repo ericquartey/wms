@@ -2,24 +2,24 @@
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class EnableAddItem : Migration
+    public partial class MaxMessageLength : Migration
     {
         #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsEnableAddItem",
-                table: "Machines");
+                name: "MaxMessageLength",
+                table: "Accessories");
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsEnableAddItem",
-                table: "Machines",
-                nullable: false,
-                defaultValue: false);
+            migrationBuilder.AddColumn<int>(
+                name: "MaxMessageLength",
+                table: "Accessories",
+                nullable: true,
+                defaultValue: 125);
         }
 
         #endregion

@@ -57,6 +57,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsOneTonMachine();
 
+        bool IsRequestConfirmForLastOperationOnLoadingUnit();
+
         void SetMachineId(int newMachineId);
 
         void Update(Machine machine, DataLayerContext context);
