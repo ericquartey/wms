@@ -122,6 +122,97 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
+        public async Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId)
+        {
+            var retValue = true;
+            try
+            {
+                var newMachineMission = await this.RetrieveActiveMissionAsync();
+                MissionWithLoadingUnitDetails newWmsMission = null;
+                MissionOperationInfo newWmsOperationInfo = null;
+
+                if (newMachineMission != null && newMachineMission.WmsId.HasValue)
+                {
+                    this.logger.Debug($"Active mission has WMS id '{newMachineMission.WmsId}'.");
+
+                    newWmsMission = await this.missionsWebService.GetWmsDetailsByIdAsync(newMachineMission.WmsId.Value);
+
+                    var sortedOperations = newWmsMission.Operations.OrderBy(o => o.Priority)
+                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition))
+                                                                   .ThenBy(o => (o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition))
+                                                                   .ThenBy(o => o.CreationDate);
+
+                    newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.Executing);
+
+                    // detect if exists more executing mission except the specified one
+                    if (sortedOperations.Any(o => o.Status is MissionOperationStatus.Executing))
+                    {
+                        var detected = false;
+                        foreach (var op in sortedOperations.Where(o => o.Status is MissionOperationStatus.Executing))
+                        {
+                            if (op.Id != missionId && !detected)
+                            {
+                                // at least one different mission exists
+                                detected = true;
+                            }
+                        }
+
+                        if (!detected)
+                        {
+                            // make null the WmsOperation info, the only executing mission is the specified one
+                            newWmsOperationInfo = null;
+                        }
+                    }
+
+                    if (newWmsOperationInfo is null)
+                    {
+                        newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.New);
+                    }
+
+                    if (newWmsOperationInfo is null)
+                    {
+                        this.logger.Debug($"Active WMS mission '{newMachineMission.WmsId}' has no executable mission operation.");
+
+                        retValue = true;
+                    }
+                    else
+                    {
+                        this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}.");
+
+                        retValue = false;
+                    }
+
+                    newMachineMission = null;
+                    newWmsMission = null;
+                }
+                else
+                {
+                    this.logger.Trace($"No Active mission.");
+
+                    if (this.ActiveMachineMission?.LoadUnitId != null)
+                    {
+                        var machineMissions = await this.missionsWebService.GetAllAsync();
+                        if (this.ActiveMachineMission?.LoadUnitId != null &&
+                            !machineMissions.Any(m =>
+                                    m.LoadUnitId == this.ActiveMachineMission?.LoadUnitId &&
+                                    m.TargetBay == this.bayNumber &&
+                                    (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.Executing || m.Status == MissionStatus.New)))
+                        {
+                            this.logger.Debug($"Old WMS mission '{this.ActiveMachineMission?.Id}' was removed, but must be completed before proceeding: removing loading unit '{this.ActiveMachineMission?.LoadUnitId}'.");
+
+                            retValue = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+
+            return retValue;
+        }
+
         public bool IsRecallLoadingUnitId()
         {
             return this.isRecallUnit;

@@ -83,6 +83,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsHeartBeat { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsRequestConfirmForLastOperationOnLoadingUnit))]
+            [Id(25)]
+            public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ItemUniqueIdLength))]
             [Id(19)]
             public int ItemUniqueIdLength { get; set; }

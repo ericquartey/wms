@@ -582,4 +582,7 @@
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Versamento automatico con barcode</value>
   </data>
+  <data name="Machine_IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>Richiedi conferma per ultima operazione su cassetto</value>
+  </data>
 </root>

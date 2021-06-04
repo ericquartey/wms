@@ -56,6 +56,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsHeartBeat { get; set; }
 
         /// <summary>
+        /// Get/set a value indicating if it is requested a confirm on last operation to be performed in a loading unit.
+        /// </summary>
+        public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
+
+        /// <summary>
         /// When this value is greater than zero it is used to separate item barcode from serial number barcode (see Deima project)
         /// </summary>
         public int ItemUniqueIdLength { get; set; }

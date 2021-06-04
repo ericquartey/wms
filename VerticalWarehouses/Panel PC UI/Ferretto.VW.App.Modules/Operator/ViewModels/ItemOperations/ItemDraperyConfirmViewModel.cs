@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly Services.IDialogService dialogService;
+
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
@@ -53,7 +55,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public ItemDraperyConfirmViewModel(IMissionOperationsService missionOperationsService,
             IMachineItemsWebService itemsWebService,
-            IMachineLoadingUnitsWebService loadingUnitsWebService)
+            IMachineLoadingUnitsWebService loadingUnitsWebService,
+            IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
             this.Logger.Debug("Ctor ItemDraperyConfirmViewModel!");
@@ -61,6 +64,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.missionOperationsService = missionOperationsService;
             this.itemsWebService = itemsWebService;
             this.loadingUnitsWebService = loadingUnitsWebService;
+            this.dialogService = dialogService;
         }
 
         #endregion
@@ -276,6 +280,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.CanConfirmDraperyItemButton();
 
+                    // ----------------------------------------------------------
+                    // ADD Confirm for last operation in the current loading unit
+
+                    // 1. Check if parameter is enabled to wait the confirm for the last operation
+                    //    2. Check if no other waiting missions are reserved for current loading unit
+
+                    var isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
+                    if (isLastMissionOnCurrentLoadingUnit)
+                    {
+                        // Show the message dialog
+                        var messageBoxResult = this.dialogService.ShowMessage(
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            DialogType.Question,
+                            DialogButtons.OK);
+                        if (messageBoxResult is DialogResult.OK)
+                        {
+                            // go away...
+                        }
+                    }
+                    // ----------------------------------------------------------
+
                     if (this.CloseLine)
                     {
                         canComplete = await this.missionOperationsService.PartiallyCompleteAsync(this.MissionId, this.InputQuantity.Value, this.WastedDraperyQuantity, null, null, null);
@@ -325,6 +351,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var type = this.MissionOperationType;
 
                     this.CanConfirmDraperyItemButton();
+
+                    // ----------------------------------------------------------
+                    // ADD Confirm for last operation in the current loading unit
+
+                    // 1. Check if parameter is enabled to wait the confirm for the last operation
+                    //    2. Check if no other waiting missions are reserved for current loading unit
+
+                    var isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
+                    if (isLastMissionOnCurrentLoadingUnit)
+                    {
+                        // Show the message dialog
+                        var messageBoxResult = this.dialogService.ShowMessage(
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            DialogType.Question,
+                            DialogButtons.OK);
+                        if (messageBoxResult is DialogResult.OK)
+                        {
+                            // go away...
+                        }
+                    }
+                    // ----------------------------------------------------------
 
                     if (this.Barcode != null)
                     {

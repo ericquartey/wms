@@ -141,6 +141,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsEnableAddItem());
         }
 
+        [HttpPost("get/IsRequestConfirmForLastOperationOnLoadingUnit")]
+        public ActionResult<bool> IsRequestConfirmForLastOperationOnLoadingUnit()
+        {
+            return this.Ok(this.machineProvider.IsRequestConfirmForLastOperationOnLoadingUnit());
+        }
+
         [HttpPost("set/machine/id")]
         public IActionResult SetMachineId(int newMachineId)
         {
