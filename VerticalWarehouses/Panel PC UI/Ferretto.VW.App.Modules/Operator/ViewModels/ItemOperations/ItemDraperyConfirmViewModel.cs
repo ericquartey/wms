@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMissionOperationsService missionOperationsService;
 
         private double? availableQuantity;
@@ -56,15 +58,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ItemDraperyConfirmViewModel(IMissionOperationsService missionOperationsService,
             IMachineItemsWebService itemsWebService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
+            IMachineIdentityWebService machineIdentityWebService,
             IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
-            this.Logger.Debug("Ctor ItemDraperyConfirmViewModel!");
-
-            this.missionOperationsService = missionOperationsService;
-            this.itemsWebService = itemsWebService;
-            this.loadingUnitsWebService = loadingUnitsWebService;
-            this.dialogService = dialogService;
+            this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         #endregion
@@ -280,27 +282,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.CanConfirmDraperyItemButton();
 
-                    // ----------------------------------------------------------
-                    // ADD Confirm for last operation in the current loading unit
-
-                    // 1. Check if parameter is enabled to wait the confirm for the last operation
-                    //    2. Check if no other waiting missions are reserved for current loading unit
-
-                    var isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
-                    if (isLastMissionOnCurrentLoadingUnit)
+                    // Show the confirm message dialog, if requested
+                    var isRequestConfirm = await this.machineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
+                    if (isRequestConfirm)
                     {
-                        // Show the message dialog
-                        var messageBoxResult = this.dialogService.ShowMessage(
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            DialogType.Question,
-                            DialogButtons.OK);
-                        if (messageBoxResult is DialogResult.OK)
+                        var isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
+                        if (isLastMissionOnCurrentLoadingUnit)
                         {
-                            // go away...
+                            var messageBoxResult = this.dialogService.ShowMessage(
+                                Localized.Get("InstallationApp.ConfirmationOperation"),
+                                Localized.Get("InstallationApp.ConfirmationOperation"),
+                                DialogType.Question,
+                                DialogButtons.OK);
+                            if (messageBoxResult is DialogResult.OK)
+                            {
+                                // go away...
+                            }
                         }
                     }
-                    // ----------------------------------------------------------
 
                     if (this.CloseLine)
                     {
@@ -352,27 +351,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.CanConfirmDraperyItemButton();
 
-                    // ----------------------------------------------------------
-                    // ADD Confirm for last operation in the current loading unit
-
-                    // 1. Check if parameter is enabled to wait the confirm for the last operation
-                    //    2. Check if no other waiting missions are reserved for current loading unit
-
-                    var isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
-                    if (isLastMissionOnCurrentLoadingUnit)
+                    // Show the confirm message dialog, if requested
+                    var isRequestConfirm = await this.machineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
+                    if (isRequestConfirm)
                     {
-                        // Show the message dialog
-                        var messageBoxResult = this.dialogService.ShowMessage(
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            DialogType.Question,
-                            DialogButtons.OK);
-                        if (messageBoxResult is DialogResult.OK)
+                        var isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
+                        if (isLastMissionOnCurrentLoadingUnit)
                         {
-                            // go away...
+                            var messageBoxResult = this.dialogService.ShowMessage(
+                                Localized.Get("InstallationApp.ConfirmationOperation"),
+                                Localized.Get("InstallationApp.ConfirmationOperation"),
+                                DialogType.Question,
+                                DialogButtons.OK);
+                            if (messageBoxResult is DialogResult.OK)
+                            {
+                                // go away...
+                            }
                         }
                     }
-                    // ----------------------------------------------------------
 
                     if (this.Barcode != null)
                     {

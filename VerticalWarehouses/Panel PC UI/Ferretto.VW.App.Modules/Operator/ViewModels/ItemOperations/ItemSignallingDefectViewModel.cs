@@ -63,11 +63,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineLoadingUnitsWebService loadingUnitsWebService)
             : base(PresentationMode.Operator)
         {
-            this.Logger.Debug("Ctor ItemSignallingDefectViewModel!");
-
-            this.itemsWebService = itemsWebService;
-            this.missionOperationsService = missionOperationsService;
-            this.loadingUnitsWebService = loadingUnitsWebService;
+            this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
         }
 
         #endregion
