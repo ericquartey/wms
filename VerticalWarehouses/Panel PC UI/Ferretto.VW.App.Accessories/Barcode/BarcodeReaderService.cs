@@ -361,6 +361,11 @@ namespace Ferretto.VW.App.Accessories
                 return;
             }
 
+            if (!this.ruleSet.Any(r => r.Id != 0))
+            {
+                await this.LoadRuleSetAsync();
+            }
+
             var activeViewModel = this.GetActiveContext();
             var activeContext = activeViewModel as IOperationalContextViewModel;
             this.logger.Debug(

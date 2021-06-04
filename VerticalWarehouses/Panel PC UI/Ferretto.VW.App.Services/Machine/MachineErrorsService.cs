@@ -172,10 +172,13 @@ namespace Ferretto.VW.App.Services
                         screenshot = this.navigationService.TakeScreenshot(false);
                     });
 
-                    await this.telemetryHubClient.SendScreenShotAsync(
-                        (int)this.activeError.BayNumber,
-                        this.activeError.OccurrenceDate,
-                        screenshot);
+                    if (this.ActiveError != null && screenshot != null)
+                    {
+                        await this.telemetryHubClient.SendScreenShotAsync(
+                            (int)this.activeError.BayNumber,
+                            this.activeError.OccurrenceDate,
+                            screenshot);
+                    }
                 }
 
                 await this.NavigateToErrorPageAsync();

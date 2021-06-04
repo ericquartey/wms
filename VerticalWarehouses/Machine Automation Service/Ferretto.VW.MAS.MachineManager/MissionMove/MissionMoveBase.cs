@@ -197,6 +197,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
+                    if (!this.SensorsProvider.IsLoadingUnitInLocation(bayPosition.Location))
+                    {
+                        transaction.Rollback();
+                        var error = bayPosition.IsUpper ? MachineErrorCode.TopLevelBayEmpty : MachineErrorCode.BottomLevelBayEmpty;
+                        var description = bayPosition.IsUpper ? ErrorDescriptions.TopLevelBayEmpty : ErrorDescriptions.BottomLevelBayEmpty;
+                        this.ErrorsProvider.RecordNew(error, this.Mission.TargetBay);
+                        throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
                 }
 
