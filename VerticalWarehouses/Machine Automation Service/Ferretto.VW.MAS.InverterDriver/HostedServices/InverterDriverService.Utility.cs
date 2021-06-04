@@ -377,12 +377,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             else if (message.ParameterId == InverterParameterId.CurrentError)
             {
                 var error = message.UShortPayload;
+                this.Logger.LogDebug($"Inverter Fault: 0x{error:X4}; inverter={message.SystemIndex}; {InverterFaultCodes.GetErrorByCode(error)}");
                 if (error > 0
                     && error != 0x1454
                     )
                 {
-                    //this.Logger.LogError($"Inverter Fault: 0x{error:X4}; inverter={message.SystemIndex}; {InverterFaultCodes.GetErrorByCode(error)}");
-
                     using (var scope = this.ServiceScopeFactory.CreateScope())
                     {
                         // Retrieve the bay number related to the inverter index

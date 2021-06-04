@@ -390,10 +390,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     //var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Put);
-
+                    this.InputQuantity = 1;
                     await this.wmsDataProvider.PutAsync(
                             item.Id,
-                            1,
+                            this.InputQuantity.Value,
                             null,
                             null,
                             null,
@@ -467,7 +467,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case UserAction.FilterItems:
                     if (this.MachineService.Bay.BarcodeAutomaticPut)
                     {
-                        await this.AutoPickItem(userAction.Code);
+                        await this.AutoPickItem(userAction.GetItemCode());
                     }
                     else
                     {
