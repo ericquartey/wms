@@ -382,13 +382,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ClearNotifications();
             try
             {
-                var item = await this.itemsWebService.GetByBarcodeAsync(barcode);
-                if (item is null)
+                var itemProducts = await this.areasWebService.GetProductsAsync(
+                    this.areaId.Value,
+                    0,
+                    1,
+                    barcode,
+                    false,
+                    false);
+                if (itemProducts is null || !itemProducts.Any())
                 {
                     this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), barcode), Services.Models.NotificationSeverity.Warning);
                 }
                 else
                 {
+                    var item = itemProducts.First().Item;
                     //var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Put);
                     this.InputQuantity = 1;
                     await this.wmsDataProvider.PutAsync(
