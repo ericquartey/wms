@@ -331,4 +331,7 @@
   <data name="ForbiddenOperation" xml:space="preserve">
     <value>Forbidden operation</value>
   </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
 </root>

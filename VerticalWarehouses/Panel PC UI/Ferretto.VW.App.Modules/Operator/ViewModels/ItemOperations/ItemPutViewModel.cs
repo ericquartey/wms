@@ -239,6 +239,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
+                var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
+                if (isRequestConfirm)
+                {
+                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    if (isLastMissionOnCurrentLoadingUnit)
+                    {
+                        var messageBoxResult = this.DialogService.ShowMessage(
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            DialogType.Question,
+                            DialogButtons.OK);
+                        if (messageBoxResult is DialogResult.OK)
+                        {
+                            // go away...
+                        }
+                    }
+                }
+
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)//16 => lunghezza matrice
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
