@@ -900,6 +900,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
+                var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
+                if (isRequestConfirm)
+                {
+                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    if (isLastMissionOnCurrentLoadingUnit)
+                    {
+                        var messageBoxResult = this.DialogService.ShowMessage(
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            DialogType.Question,
+                            DialogButtons.OK);
+                        if (messageBoxResult is DialogResult.OK)
+                        {
+                            // go away...
+                        }
+                    }
+                }
+
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
@@ -1011,6 +1029,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var loadingUnitId = this.Mission.LoadingUnit.Id;
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
+
+                var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
+                if (isRequestConfirm)
+                {
+                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    if (isLastMissionOnCurrentLoadingUnit)
+                    {
+                        var messageBoxResult = this.DialogService.ShowMessage(
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            DialogType.Question,
+                            DialogButtons.OK);
+                        if (messageBoxResult is DialogResult.OK)
+                        {
+                            // go away...
+                        }
+                    }
+                }
 
                 if (this.closeLine)
                 {
@@ -1174,6 +1210,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 bool canComplete;
 
+                var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
+                if (isRequestConfirm)
+                {
+                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    if (isLastMissionOnCurrentLoadingUnit)
+                    {
+                        var messageBoxResult = this.DialogService.ShowMessage(
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            DialogType.Question,
+                            DialogButtons.OK);
+                        if (messageBoxResult is DialogResult.OK)
+                        {
+                            // go away...
+                        }
+                    }
+                }
                 if (this.closeLine)
                 {
                     canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
