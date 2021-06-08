@@ -1962,8 +1962,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (!draperyExists)
                 {
                     this.SearchItem = itemCode;
-                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.DraperyAvailable")),
-                        Services.Models.NotificationSeverity.Info);
                 }
                 else
                 {
