@@ -224,6 +224,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
                     if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) <= 2000 &&
+                        Math.Abs(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 500 &&
                         this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= machine.VerticalCyclesToCalibrate &&
                        !machineResourcesProvider.IsDrawerCompletelyOnCradle
                        )
