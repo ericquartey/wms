@@ -30,5 +30,7 @@
         OperationStepStop,
 
         OperationWaitResume,
+
+        OperationInverterFault,
     }
 }
