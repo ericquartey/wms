@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             if (this.Mission.ErrorMovements != MissionErrorMovements.None
                 || notification.Type == MessageType.Homing
+                || notification.Type == MessageType.ErrorStatusChanged
                 )
             {
                 var notificationStatus = this.LoadingUnitMovementProvider.MoveLoadingUnitStatus(notification);
@@ -175,6 +176,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
                             }
                         }
+                        break;
+
+                    case MessageStatus.OperationInverterFault:
+                        this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                        this.MissionsDataProvider.Update(this.Mission);
                         break;
                 }
             }
@@ -419,7 +425,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                 var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
 
-                if (bay.IsExternal &&
+                if (bay != null &&
+                    bay.IsExternal &&
                     !bay.IsDouble)
                 {
                     if (machineResourcesProvider.IsDrawerInBayInternalPosition(this.Mission.TargetBay, false)

@@ -26,6 +26,8 @@
 - Dopo il deposito in baia esterna doppia, se c'è anche un altro cassetto in baia si porta nell'altra posizione
 - Aggiunto parametro di lunghezza messaggio nella Barra alfanumerica
 - Aggiunto parametro per abilitare la conferma di rientro cassetto
+- Aggiunto controllo del sensore di zero in deposito su baia esterna
+- Aggiunto allarme di deposito in baia senza sensore di presenza
 
 ## Bug Risolti
 - Tendaggi paradiso: corretta gestione di inserimento nuove pezze

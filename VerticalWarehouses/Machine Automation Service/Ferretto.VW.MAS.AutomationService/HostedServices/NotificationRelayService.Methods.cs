@@ -167,10 +167,14 @@ namespace Ferretto.VW.MAS.AutomationService
                 data.BayPositionUpper);
         }
 
-        private async Task OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)
+        private async Task OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData, BayNumber requestingBay)
         {
             Contract.Requires(machineErrorMessageData != null);
 
+            if (requestingBay == BayNumber.ElevatorBay)
+            {
+                this.machineVolatileDataProvider.IsHomingExecuted = false;
+            }
             await this.operatorHub.Clients.All.ErrorStatusChanged(machineErrorMessageData.ErrorId);
         }
 

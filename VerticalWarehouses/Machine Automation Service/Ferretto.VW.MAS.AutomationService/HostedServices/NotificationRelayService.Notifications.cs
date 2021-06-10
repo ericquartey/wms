@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     break;
 
                 case MessageType.ErrorStatusChanged when message.Data is IErrorStatusMessageData:
-                    await this.OnErrorStatusChanged(message.Data as IErrorStatusMessageData);
+                    await this.OnErrorStatusChanged(message.Data as IErrorStatusMessageData, message.RequestingBay);
                     break;
 
                 case MessageType.InverterStatusWord:

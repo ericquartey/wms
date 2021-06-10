@@ -268,7 +268,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
-                 notification.Status == MessageStatus.OperationRunningStop);
+                 notification.Status == MessageStatus.OperationRunningStop ||
+                 notification.Status == MessageStatus.OperationInverterFault);
         }
 
         public BayNumber GetBayByCell(int cellId)
@@ -725,6 +726,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     return MessageStatus.OperationError;
                 }
+            }
+
+            if (message.Type == MessageType.ErrorStatusChanged
+                && message.RequestingBay == BayNumber.ElevatorBay)
+            {
+                return MessageStatus.OperationInverterFault;
             }
 
             return MessageStatus.NotSpecified;
