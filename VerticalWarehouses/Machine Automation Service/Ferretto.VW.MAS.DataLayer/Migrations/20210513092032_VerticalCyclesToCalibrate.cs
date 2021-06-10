@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "VerticalCyclesToCalibrate",
                 table: "Machines",
                 nullable: false,
-                defaultValue: 200);
+                defaultValue: 50);
         }
 
         #endregion
