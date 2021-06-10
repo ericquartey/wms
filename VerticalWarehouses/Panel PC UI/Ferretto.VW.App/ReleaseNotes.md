@@ -32,6 +32,7 @@
 ## Bug Risolti
 - Tendaggi paradiso: corretta gestione di inserimento nuove pezze
 - Corretto numero di scomparto in Ricerca articolo/Cassetti
+- Dopo ogni errore inverter dell'elevatore si fa la calibrazione completa
 
 ## Compatibile con adapter 0.4.21
 ***
