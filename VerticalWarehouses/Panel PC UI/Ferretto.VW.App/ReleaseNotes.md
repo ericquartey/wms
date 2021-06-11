@@ -33,6 +33,7 @@
 - Tendaggi paradiso: corretta gestione di inserimento nuove pezze
 - Corretto numero di scomparto in Ricerca articolo/Cassetti
 - Dopo ogni errore inverter dell'elevatore si fa la calibrazione completa
+- Nella BES l'Inserimento cassetti mostra i comandi di Muovi verso Operatore / Elevatore
 
 ## Compatibile con adapter 0.4.21
 ***
