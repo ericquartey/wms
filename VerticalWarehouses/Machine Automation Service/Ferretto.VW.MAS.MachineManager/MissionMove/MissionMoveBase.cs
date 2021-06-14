@@ -197,7 +197,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
                 {
                     var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
-                    if (!this.SensorsProvider.IsLoadingUnitInLocation(bayPosition.Location))
+                    if (!bayPosition.Bay.IsExternal
+                        && !this.SensorsProvider.IsLoadingUnitInLocation(bayPosition.Location)
+                        )
                     {
                         transaction.Rollback();
                         var error = bayPosition.IsUpper ? MachineErrorCode.TopLevelBayEmpty : MachineErrorCode.BottomLevelBayEmpty;
