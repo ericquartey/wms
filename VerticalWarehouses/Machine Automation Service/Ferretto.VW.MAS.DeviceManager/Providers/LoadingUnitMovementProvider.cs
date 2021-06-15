@@ -539,6 +539,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.carouselProvider.IsOnlyTopPositionOccupied(bayNumber);
         }
 
+        public bool IsVerticalPositionChanged(double position, bool isEmpty, int? loadUnitId)
+        {
+            var displacement = 0.0;
+            if (loadUnitId.HasValue)
+            {
+                var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId.Value);
+                displacement = this.invertersProvider.ComputeDisplacement(this.elevatorProvider.VerticalPosition, loadUnit.GrossWeight);
+                if (isEmpty)
+                {
+                    displacement /= 2;
+                }
+            }
+
+            return Math.Abs(position + displacement - this.elevatorProvider.VerticalPosition) > 4;
+        }
+
         public void MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
         {
             if (restore)

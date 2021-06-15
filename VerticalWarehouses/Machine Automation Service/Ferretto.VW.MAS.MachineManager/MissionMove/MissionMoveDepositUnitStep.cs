@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
 
                     var cell = this.CellsProvider.GetById(this.Mission.DestinationCellId.Value);
-                    if (Math.Abs(cell.Position - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 10)
+                    if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(cell.Position, isEmpty: false, this.Mission.LoadUnitId))
                     {
                         this.ErrorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.Mission.TargetBay);
                         throw new StateMachineException(ErrorDescriptions.VerticalPositionChanged, this.Mission.TargetBay, MessageActor.MachineManager);
@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         bayNumber = bay.Number;
                         var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination);
-                        if (Math.Abs(bayPosition.Height - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 10)
+                        if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(bayPosition.Height, isEmpty: false, this.Mission.LoadUnitId))
                         {
                             this.ErrorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.Mission.TargetBay);
                             throw new StateMachineException(ErrorDescriptions.VerticalPositionChanged, this.Mission.TargetBay, MessageActor.MachineManager);
