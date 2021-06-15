@@ -522,7 +522,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.RequiredCycles = procedureParameters.RequiredCycles;
                 this.PerformedCycles = procedureParameters.PerformedCycles;
 
-                if(this.RequiredCycles != 0)
+                if (this.RequiredCycles != 0)
                 {
                     this.CyclesPercent = (this.PerformedCycles / this.RequiredCycles) * 100;
                 }
@@ -736,8 +736,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToStartCalibration()
         {
-            return this.CanBaseExecute() &&
-                   this.SensorsService.Sensors.LUPresentInBay1; //this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
+            return this.CanBaseExecute();
+            //&& this.SensorsService.Sensors.LUPresentInBay1; //this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
         }
 
         private bool CanRepeat()

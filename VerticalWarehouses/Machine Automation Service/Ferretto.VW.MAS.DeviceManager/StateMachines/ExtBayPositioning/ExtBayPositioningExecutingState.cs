@@ -589,7 +589,20 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
                         MessageStatus status;
-                        if (this.IsInvalidSensorsCondition())
+                        var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards) ?
+                            ExternalBayMovementDirection.TowardOperator :
+                            ExternalBayMovementDirection.TowardMachine;
+                        bool failed;
+                        if (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator)
+                        {
+                            failed = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay);
+                        }
+                        else
+                        {
+                            failed = !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay);
+                        }
+
+                        if (failed)
                         {
                             this.Logger.LogError($"Invalid sensors condition. An error occurs");
 
@@ -616,11 +629,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                                 //var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
                                 //    ExternalBayMovementDirection.TowardOperator :
                                 //    ExternalBayMovementDirection.TowardMachine;
-
-                                // Retrieve the current external bay movement direction
-                                var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards) ?
-                                    ExternalBayMovementDirection.TowardOperator :
-                                    ExternalBayMovementDirection.TowardMachine;
 
                                 // Reverse the direction
                                 if (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator)

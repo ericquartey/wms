@@ -136,7 +136,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsExternalBayCalibrationCompleted => this.ExternalBayCalibration.IsCompleted && !this.ExternalBayCalibration.IsBypassed;
 
-        public bool IsExternalBayCalibrationVisible => false; //this.MachineService.Bays.Any(f => f.IsExternal); // TODO - decide how to perform an external bay calibration test
+        public bool IsExternalBayCalibrationVisible => this.MachineService.Bays.Any(f => f.IsExternal && !f.IsDouble); // TODO - decide how to perform an external bay calibration test
 
         public bool IsTestShutterBypassed => this.BayShutter.IsBypassed;
 
