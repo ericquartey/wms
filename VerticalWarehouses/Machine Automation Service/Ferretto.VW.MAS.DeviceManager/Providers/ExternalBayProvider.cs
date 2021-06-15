@@ -1104,7 +1104,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void StartTest(BayNumber bayNumber, MessageActor sender)
         {
-            var direction = this.IsInternalPositionOccupied(bayNumber) ?
+            var direction = this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) ?
                 ExternalBayMovementDirection.TowardOperator :
                 ExternalBayMovementDirection.TowardMachine;
 

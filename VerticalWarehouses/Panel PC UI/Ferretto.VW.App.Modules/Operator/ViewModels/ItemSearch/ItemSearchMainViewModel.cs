@@ -385,33 +385,33 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var itemProducts = await this.areasWebService.GetProductsAsync(
                     this.areaId.Value,
                     0,
-                    1,
+                    100,
                     barcode,
-                    false,
-                    false);
+                    this.IsGroupbyLot,
+                    this.isDistinctBySerialNumber);
                 if (itemProducts is null || !itemProducts.Any())
                 {
                     this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), barcode), Services.Models.NotificationSeverity.Warning);
                 }
                 else
                 {
-                    var item = itemProducts.First().Item;
+                    var item = itemProducts.OrderBy(o => Math.Abs(o.Item.Code.Length - barcode.Length)).First();
                     //var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Put);
                     this.InputQuantity = 1;
                     await this.wmsDataProvider.PutAsync(
-                            item.Id,
+                            item.Item.Id,
                             this.InputQuantity.Value,
                             null,
                             null,
                             null,
-                            null,
-                            null,
+                            item.Lot,
+                            item.SerialNumber,
                             userName: this.authenticationService.UserName);
 
                     this.ShowNotification(
                         string.Format(
                             Resources.Localized.Get("OperatorApp.PutRequestWasAccepted"),
-                            item.Code,
+                            item.Item.Code,
                             this.InputQuantity),
                         Services.Models.NotificationSeverity.Success);
                 }

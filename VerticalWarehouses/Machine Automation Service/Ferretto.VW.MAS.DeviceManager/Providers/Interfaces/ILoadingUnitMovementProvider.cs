@@ -58,6 +58,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsOnlyTopPositionOccupied(BayNumber bayNumber);
 
+        bool IsVerticalPositionChanged(double position, bool isEmpty, int? loadUnitId);
+
         void MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore);
 
         bool MoveDoubleExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore, bool isPositionUpper);
