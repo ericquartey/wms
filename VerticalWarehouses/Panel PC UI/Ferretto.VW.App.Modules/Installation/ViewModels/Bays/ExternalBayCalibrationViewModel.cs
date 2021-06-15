@@ -633,7 +633,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.completeCommand?.RaiseCanExecuteChanged();
             this.tuningBayCommand?.RaiseCanExecuteChanged();
 
-            this.RaisePropertyChanged(nameof(this.RemainingTime));
+            //this.RaisePropertyChanged(nameof(this.RemainingTime));
             this.RaisePropertyChanged(nameof(this.PerformedCycles));
             this.RaisePropertyChanged(nameof(this.CyclesPercent));
             this.RaisePropertyChanged(nameof(this.RequiredCycles));
@@ -656,18 +656,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     if (this.IsNewErrorValueVisible)
                     {
-                        var measuredCorrection = this.IsErrorNegative ? this.NewErrorValue : -this.NewErrorValue;
-                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
-                        newRaceDistance = (double)correctionForEachMovement + this.MachineService.Bay.External.Race;
+                        var measuredCorrection = this.IsErrorNegative ? -this.NewErrorValue : this.NewErrorValue;
+                        var correctionForEachMovement = (double)measuredCorrection / this.SessionPerformedCycles;
+                        newRaceDistance = correctionForEachMovement + this.MachineService.Bay.External.Race;
+                        //await this.machineExternalBayWebMachine.UpdateRaceDistanceAsync(newRaceDistance);
+                        await this.machineExternalBayWebMachine.UpdateResolutionAsync(newRaceDistance);
                     }
-                    else
-                    {
-                        var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
-                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
-                        newRaceDistance = (double)correctionForEachMovement + this.MachineService.Bay.External.Race;
-                    }
-
-                    await this.machineExternalBayWebMachine.UpdateRaceDistanceAsync(newRaceDistance);
+                    //else
+                    //{
+                    //    var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
+                    //    var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
+                    //    newRaceDistance = (double)correctionForEachMovement + this.MachineService.Bay.External.Race;
+                    //}
 
                     await this.MachineService.OnUpdateServiceAsync();
 

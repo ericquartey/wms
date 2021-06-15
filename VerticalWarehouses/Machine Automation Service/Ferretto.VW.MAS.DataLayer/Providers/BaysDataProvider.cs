@@ -1313,6 +1313,21 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateResolution(BayNumber bayNumber, double newRace)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.External)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+                if (bay.External != null)
+                {
+                    bay.Resolution = bay.Resolution * bay.External.Race / newRace;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         internal static string GetInverterIndexCacheKey(InverterIndex inverterIndex) => $"{nameof(GetByInverterIndex)}{inverterIndex}";
 
         /// <summary>
