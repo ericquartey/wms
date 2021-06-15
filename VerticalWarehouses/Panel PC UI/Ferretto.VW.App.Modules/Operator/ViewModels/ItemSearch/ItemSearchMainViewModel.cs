@@ -395,7 +395,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    var item = itemProducts.First();
+                    var item = itemProducts.OrderBy(o => Math.Abs(o.Item.Code.Length - barcode.Length)).First();
                     //var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Put);
                     this.InputQuantity = 1;
                     await this.wmsDataProvider.PutAsync(
