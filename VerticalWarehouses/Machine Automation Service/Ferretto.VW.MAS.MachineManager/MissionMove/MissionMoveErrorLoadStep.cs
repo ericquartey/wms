@@ -349,7 +349,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         var cell = this.CellsProvider.GetById(this.Mission.LoadUnitCellSourceId.Value);
                         if (this.SensorsProvider.IsSensorZeroOnCradle
-                            && Math.Abs(cell.Position - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 4)
+                            && this.LoadingUnitMovementProvider.IsVerticalPositionChanged(cell.Position, isEmpty: true, this.Mission.LoadUnitId))
                         {
                             this.Logger.LogDebug($"{this.GetType().Name}: Vertical position 2 has changed {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
@@ -380,7 +380,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                     var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
                     if (this.SensorsProvider.IsSensorZeroOnCradle
-                        && Math.Abs(bayPosition.Height - this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 4)
+                        && this.LoadingUnitMovementProvider.IsVerticalPositionChanged(bayPosition.Height, isEmpty: true, this.Mission.LoadUnitId))
                     {
                         this.Logger.LogDebug($"{this.GetType().Name}: Vertical position 3 has changed {this.Mission.RestoreStep} for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
 
