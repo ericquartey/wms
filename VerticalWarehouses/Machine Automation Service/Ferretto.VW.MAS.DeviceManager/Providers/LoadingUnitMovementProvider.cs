@@ -548,7 +548,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 displacement = this.invertersProvider.ComputeDisplacement(this.elevatorProvider.VerticalPosition, loadUnit.GrossWeight);
                 if (isEmpty)
                 {
-                    displacement /= 2;
+                    displacement = displacement <= 6 ? displacement / 2 : 3; // displacement with empty elevator is limited to 3mm
                 }
             }
 

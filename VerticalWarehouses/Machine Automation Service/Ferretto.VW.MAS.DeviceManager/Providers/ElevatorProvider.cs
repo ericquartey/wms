@@ -1613,7 +1613,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     var lu = this.loadingUnitsDataProvider.GetById(loadUnitId.Value);
                     var beltDisplacement = this.invertersProvider.ComputeDisplacement(targetPosition, lu.GrossWeight);
                     this.logger.LogInformation($"Vertical positioning with Belt elongation for height={targetPosition:0.00} and weight={lu.GrossWeight:0.00} is {beltDisplacement:0.00} [mm].");
-                    targetPosition += beltDisplacement / 2;
+                    targetPosition += beltDisplacement <= 6 ? beltDisplacement / 2 : 3; // displacement with empty elevator is limited to 3mm
                 }
                 else
                 {
