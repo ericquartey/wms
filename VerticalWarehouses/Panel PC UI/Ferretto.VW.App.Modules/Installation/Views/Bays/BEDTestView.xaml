@@ -48,7 +48,7 @@
           </TextBlock>
           <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                     Text="Inserisci il numero di cicli che vuoi effetuare ad ogni avvio quelli eseguiti precedentemente verranno azzerati" />
+                     Text="Inserisci il numero di cicli che vuoi effettuare. Ad ogni avvio quelli eseguiti precedentemente verranno azzerati" />
         </StackPanel>
 
         <controls:PpcButton Grid.Row="1"

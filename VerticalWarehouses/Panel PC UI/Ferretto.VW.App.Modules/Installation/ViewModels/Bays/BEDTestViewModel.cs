@@ -149,7 +149,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this[nameof(this.CurrentResolution)],
             this[nameof(this.NewErrorValue)]);
 
-        public bool HasCarousel => this.MachineService.HasCarousel;
+        public bool HasCarousel => this.MachineService.HasBayExternal;
 
         public bool HasShutter => this.MachineService.HasShutter;
 
@@ -410,7 +410,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.RequiredCycles = procedureParameters.RequiredCycles;
                 this.PerformedCycles = procedureParameters.PerformedCycles;
-                this.CyclesPercent = (this.performedCycles * 100) / this.requiredCycles;
+                if (this.RequiredCycles != 0)
+                {
+                    this.CyclesPercent = (this.performedCycles * 100) / this.requiredCycles;
+                }
             }
             catch (Exception ex)
             {
