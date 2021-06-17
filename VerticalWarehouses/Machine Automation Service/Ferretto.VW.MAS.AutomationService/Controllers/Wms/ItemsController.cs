@@ -66,6 +66,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(await this.itemsWmsWebService.IsDraperyExistByDraperyIdBarcodeAsync(barcode));
         }
 
+        [HttpGet("{id}/is-handled-by-lot")]
+        public async Task<ActionResult<bool>> IsItemHandledByLotAsync(int id)
+        {
+            return this.Ok(await this.itemsWmsWebService.IsItemHandledByLotAsync(id));
+        }
+
+        [HttpGet("{id}/is-handled-by-serial-number")]
+        public async Task<ActionResult<bool>> IsItemHandledBySerialNumberAsync(int id)
+        {
+            return this.Ok(await this.itemsWmsWebService.IsItemHandledBySerialNumberAsync(id));
+        }
+
         [HttpPost("{id}/pick")]
         public async Task<IActionResult> PickAsync(int id, ItemOptions itemOptions)
         {

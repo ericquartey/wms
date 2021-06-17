@@ -4,283 +4,283 @@
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Styles"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-  <sys:Double x:Key="VWAPP_TextBlock_Normal_FontSize">16</sys:Double>
+    <sys:Double x:Key="VWAPP_TextBlock_Normal_FontSize">16</sys:Double>
 
-  <Style x:Key="VWAPP_ViewErrorTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ErrorTextBlock_Foreground_Normal}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
-    <Setter Property="FontSize" Value="16" />
-  </Style>
+    <Style x:Key="VWAPP_ViewErrorTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ErrorTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
 
-  <Style x:Key="VWAPP_SplashScreenTitleTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_SSTitleViewTextBlock_Foreground_Normal}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="20" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-  </Style>
-  <Style x:Key="VWAPP_SplashScreenSubTitleTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_SSSubtitleTextBlock_Foreground_Normal}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
-    <Setter Property="FontSize" Value="20" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-  </Style>
-  <Style x:Key="VWAPP_ViewTitleTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <!--<Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />-->
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="Margin" Value="0,0,0,20" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-  </Style>
+    <Style x:Key="VWAPP_SplashScreenTitleTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_SSTitleViewTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="VWAPP_SplashScreenSubTitleTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_SSSubtitleTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="VWAPP_ViewTitleTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <!--<Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />-->
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="0,0,0,20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
 
-  <Style x:Key="VWAPP_ViewRadioButtonTitleTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <!--<Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />-->
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="40" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-  </Style>
-  <Style x:Key="VWAPP_ViewProcedureTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <!--<Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />-->
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="30" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="Margin" Value="0,0,0,20" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-  </Style>
-  <Style x:Key="VWAPP_ViewTimeTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="56" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="HorizontalAlignment" Value="Center" />
-  </Style>
-  <Style x:Key="VWAPP_ViewDateTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="24" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="HorizontalAlignment" Value="Center" />
-  </Style>
+    <Style x:Key="VWAPP_ViewRadioButtonTitleTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <!--<Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />-->
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="40" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="VWAPP_ViewProcedureTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <!--<Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />-->
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="0,0,0,20" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="VWAPP_ViewTimeTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="56" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="VWAPP_ViewDateTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
 
-  <Style x:Key="VWAPP_RadioButtonTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <!--<Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />-->
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="Margin" Value="0,25" />
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-  </Style>
+    <Style x:Key="VWAPP_RadioButtonTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <!--<Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />-->
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="0,25" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
 
-  <Style x:Key="VWAPP_WizardTitleTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="24" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="Margin" Value="0,0,0,20" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
+    <Style x:Key="VWAPP_WizardTitleTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="0,0,0,20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 
-  <Style x:Key="VWAPP_WizardDescriptionTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="Margin" Value="0,0,0,20" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
+    <Style x:Key="VWAPP_WizardDescriptionTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="0,0,0,20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 
-  <Style x:Key="VWAPP_Text_Foreground"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
-  </Style>
+    <Style x:Key="VWAPP_Text_Foreground"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
+    </Style>
 
-  <Style x:Key="VWAPP_CardSensor"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
-    <Setter Property="FontWeight" Value="Normal" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
-  </Style>
+    <Style x:Key="VWAPP_CardSensor"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource Text_Foreground}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
+    </Style>
 
-  <Style x:Key="VWAPP_CardSensor_Data"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
+    <Style x:Key="VWAPP_CardSensor_Data"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 
-  <Style x:Key="VWAPP_ProgressBar_Data"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-    <Setter Property="FontWeight" Value="Bold" />
-  </Style>
+    <Style x:Key="VWAPP_ProgressBar_Data"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Normal}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="FontWeight" Value="Bold" />
+    </Style>
 
-  <Style x:Key="VWAPP_ViewTitleTextWhiteBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="Margin" Value="0,0,0,20" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
-
-
-  <Style x:Key="VWAPP_ViewInformationTitleTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="36" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="Margin" Value="0,0,0,20" />
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="HorizontalAlignment" Value="Center" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
-
-  <Style x:Key="VWAPP_ViewInformationMediumTitleTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="22" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="Margin" Value="5" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
-
-  <Style x:Key="VWAPP_ViewInformationSmallTitleTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="16" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="Margin" Value="5,5,20,5" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
+    <Style x:Key="VWAPP_ViewTitleTextWhiteBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="0,0,0,20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 
 
-  <Style x:Key="VWAPP_ViewTitleHeaderTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="18" />
-    <Setter Property="FontWeight" Value="Light" />
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
+    <Style x:Key="VWAPP_ViewInformationTitleTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="36" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="0,0,0,20" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 
-  <Style x:Key="VWAPP_ViewTitleSmallTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
-    <Setter Property="FontSize" Value="{DynamicResource VWAPP_TextBlock_Normal_FontSize}" />
-    <Setter Property="Height" Value="22" />
-  </Style>
+    <Style x:Key="VWAPP_ViewInformationMediumTitleTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 
-  <Style x:Key="VWAPP_ViewTitleDescriptionTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
-    <Setter Property="Height" Value="22" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
+    <Style x:Key="VWAPP_ViewInformationSmallTitleTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="5,5,20,5" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 
-  <Style x:Key="VWAPP_ViewTitleSmallTextWhiteBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
-    <Setter Property="Foreground" Value="{DynamicResource GrayH}" />
-    <Setter Property="FontSize" Value="{DynamicResource VWAPP_TextBlock_Normal_FontSize}" />
-    <Setter Property="Height" Value="22" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
 
-  <Style x:Key="VWAPP_ViewInformationTitleSmallTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource InfoTextSmallForeground}" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
-    <Setter Property="Height" Value="22" />
-    <Setter Property="HorizontalAlignment" Value="Center" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-  </Style>
+    <Style x:Key="VWAPP_ViewTitleHeaderTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource InfoTextForeground}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 
-  <Style x:Key="VWAPP_ViewHelpDescriptionTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleViewTextBlock_Foreground_Normal}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="20" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-  </Style>
-  <Style x:Key="VWAPP_ViewHelpStepTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_HelpStepTextBlock_Foreground_Normal}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="14" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-  </Style>
-  <Style x:Key="VWAPP_ViewHelpGridColumnHeaderTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_HelpStepTextBlock_Foreground_Normal}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="16" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-  </Style>
-  <Style x:Key="VWAPP_ViewHelpTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_HelpTextBlock_Foreground_Normal}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="12" />
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="TextAlignment" Value="Justify" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
-  <Style x:Key="VWAPP_GeneralTextBlockStyle"
-         TargetType="{x:Type TextBlock}">
-    <Setter Property="Foreground" Value="{DynamicResource VWAPP_HelpTextBlock_Foreground_Normal}" />
-    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-    <Setter Property="FontSize" Value="18" />
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="TextAlignment" Value="Justify" />
-    <Setter Property="TextWrapping" Value="Wrap" />
-  </Style>
+    <Style x:Key="VWAPP_ViewTitleSmallTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
+        <Setter Property="FontSize" Value="{DynamicResource VWAPP_TextBlock_Normal_FontSize}" />
+        <Setter Property="Height" Value="22" />
+    </Style>
+
+    <Style x:Key="VWAPP_ViewTitleDescriptionTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Normal}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
+        <Setter Property="Height" Value="22" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="VWAPP_ViewTitleSmallTextWhiteBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource GrayH}" />
+        <Setter Property="FontSize" Value="{DynamicResource VWAPP_TextBlock_Normal_FontSize}" />
+        <Setter Property="Height" Value="22" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
+    <Style x:Key="VWAPP_ViewInformationTitleSmallTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource InfoTextSmallForeground}" />
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
+        <Setter Property="Height" Value="22" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="VWAPP_ViewHelpDescriptionTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleViewTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="VWAPP_ViewHelpStepTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_HelpStepTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="VWAPP_ViewHelpGridColumnHeaderTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_HelpStepTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style x:Key="VWAPP_ViewHelpTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_HelpTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="TextAlignment" Value="Justify" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style x:Key="VWAPP_GeneralTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_HelpTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="TextAlignment" Value="Justify" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
 
 
 </ResourceDictionary>

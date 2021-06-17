@@ -259,8 +259,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/immediate-additem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ImmediateAddItemAsync(int loadingUnitId, int itemId, int quantity, int compartmentId, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+        public async Task<IActionResult> ImmediateAddItemAsync(int id, int itemId, int quantity, int compartmentId, string lot, string serialNumber, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
+            //public async Task<IActionResult> ImmediateAddItemAsync(int id, int itemId, int quantity, int compartmentId, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
             if (loadingUnitsWmsWebService is null)
             {
                 throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
@@ -268,7 +269,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                await loadingUnitsWmsWebService.ImmediateAddItemAsync(loadingUnitId, itemId, quantity, compartmentId);
+                //await loadingUnitsWmsWebService.ImmediateAddItemAsync(id, itemId, quantity, compartmentId);
+                await loadingUnitsWmsWebService.ImmediateAddItemAsync(id, itemId, quantity, compartmentId, lot, serialNumber);
             }
             catch (WmsWebApiException ex)
             {

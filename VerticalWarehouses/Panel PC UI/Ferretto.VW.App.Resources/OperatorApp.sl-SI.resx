@@ -1731,4 +1731,7 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Invalid argument</value>
   </data>
+  <data name="ItemLoaded" xml:space="preserve">
+    <value>Item loaded</value>
+  </data>
 </root>

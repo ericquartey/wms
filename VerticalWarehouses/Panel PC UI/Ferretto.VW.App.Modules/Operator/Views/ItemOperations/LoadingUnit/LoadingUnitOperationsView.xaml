@@ -319,8 +319,10 @@
                                        VerticalAlignment="Center"
                                        FontSize="{DynamicResource FontSize_High}"
                                        Foreground="{DynamicResource FerrettoPureWhite}">
-                                <Run Text="{res:Loc OperatorApp.BarcodeLabel}" />
+                                <!--<Run Text="{res:Loc OperatorApp.BarcodeLabel}" /> -->
                                 <!--  ="{res:Loc OperatorApp.ItemSearchKeySearch}"  -->
+                                <!--<Run Text=":" /> -->
+                                <Run Text="{Binding ItemSearchKeyTitleName}" />
                                 <Run Text=":" />
                             </TextBlock>
 
@@ -395,7 +397,8 @@
                                   ItemsSource="{Binding Products}"
                                   RowHeight="50"
                                   SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
-                                  Visibility="Hidden">
+                                  Visibility="{Binding ProductsDataGridViewVisibility, Converter={StaticResource BTVC}}">
+                            <!--  Visibility="Hidden">  -->
                             <!--  Visibility="{Binding IsBusyLoading, Converter={StaticResource BTVC}}"  -->
                             <DataGrid.Resources>
                                 <ctrls:BindingProxy x:Key="proxy"
@@ -448,13 +451,14 @@
                                    VerticalAlignment="Center"
                                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                    Text="{res:Loc OperatorApp.ChargeItem}"
-                                   Visibility="Hidden" />
+                                   Visibility="{Binding ChargeItemTextViewVisibility, Converter={StaticResource BTVC}}" />
+                        <!--  Visibility="Hidden" />  -->
                         <!--  Visibility="{Binding IsBusyLoading, Converter={StaticResource BTVIC}}"  -->
 
                     </Grid>
 
 
-                    <controls:PpcButton Grid.Column="0"
+                    <controls:PpcButton Grid.Column="{Binding ConfirmButtonColumnIndexPosition}"
                                         Width="100"
                                         Margin="0,5"
                                         HorizontalAlignment="Center"
