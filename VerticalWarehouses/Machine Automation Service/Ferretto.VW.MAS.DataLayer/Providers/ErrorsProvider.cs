@@ -359,10 +359,11 @@ namespace Ferretto.VW.MAS.DataLayer
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
                 $"New error (code: {error.Code})",
-                MessageActor.AutomationService,
                 MessageActor.Any,
+                MessageActor.AutomationService,
                 MessageType.ErrorStatusChanged,
-                bayNumber);
+                bayNumber,
+                status: MessageStatus.OperationInverterFault);
 
             this.notificationEvent.Publish(message);
         }
@@ -372,8 +373,8 @@ namespace Ferretto.VW.MAS.DataLayer
             var message = new NotificationMessage(
                 new ErrorStatusMessageData(error.Id),
                 $"Resolved error (code: {error.Code})",
-                MessageActor.AutomationService,
                 MessageActor.Any,
+                MessageActor.AutomationService,
                 MessageType.ErrorStatusChanged,
                 BayNumber.None);
 

@@ -28,23 +28,21 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
 
         private readonly IBaysDataProvider baysDataProvider;
 
-        private readonly Timer delayTimer;
-
         private readonly IElevatorProvider elevatorProvider;
 
         private readonly IErrorsProvider errorsProvider;
 
-        //private readonly double[] findZeroPosition = new double[(int)HorizontalCalibrationStep.FindCenter];
-
         private readonly IExtBayPositioningMachineData machineData;
 
+        //private readonly double[] findZeroPosition = new double[(int)HorizontalCalibrationStep.FindCenter];
         private readonly IServiceScope scope;
-
-        //private readonly double secondPosition;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
+        //private readonly double secondPosition;
         private readonly IExtBayPositioningStateData stateData;
+
+        private Timer delayTimer;
 
         //private HorizontalCalibrationStep findZeroStep;
 
@@ -250,6 +248,87 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
             }
 
             this.isDisposed = true;
+        }
+
+        private void DelayExtBayElapsed(object state)
+        {
+            this.Logger.LogInformation($"Start another External Bay Calibration Test after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
+
+            // Retrieve the current external bay movement direction
+            var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards) ?
+                ExternalBayMovementDirection.TowardOperator :
+                ExternalBayMovementDirection.TowardMachine;
+
+            // Reverse the direction
+            if (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator)
+            {
+                externalBayMovementDirection = ExternalBayMovementDirection.TowardMachine;
+            }
+            else
+            {
+                externalBayMovementDirection = ExternalBayMovementDirection.TowardOperator;
+            }
+
+            // Carry out the target position
+            var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+            var race = bay.External.Race;
+
+            var distanceMovement = race;
+            switch (externalBayMovementDirection)
+            {
+                case ExternalBayMovementDirection.TowardOperator:
+                    distanceMovement = race - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.RequestingBay)) - bay.ChainOffset;
+                    break;
+
+                case ExternalBayMovementDirection.TowardMachine:
+                    distanceMovement = 0 - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.RequestingBay)) + bay.ChainOffset;
+                    break;
+            }
+
+            //var targetPosition = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ? race + bay.ChainOffset : bay.ChainOffset; // for .Absolute
+            var targetPosition = distanceMovement;
+
+            // Set target parameter and direction parameter
+            //this.machineData.MessageData.Direction = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ?
+            //    HorizontalMovementDirection.Forwards :
+            //    HorizontalMovementDirection.Backwards;
+            this.machineData.MessageData.Direction = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ?
+                HorizontalMovementDirection.Backwards :
+                HorizontalMovementDirection.Forwards;
+            this.machineData.MessageData.TargetPosition = targetPosition;
+
+            var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
+            var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
+
+            var commandMessage = new FieldCommandMessage(
+                positioningFieldMessageData,
+                $"External {this.machineData.MessageData.AxisMovement} Positioning State Started",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.Positioning,
+                inverterIndex);
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+
+            this.ParentStateMachine.PublishFieldCommandMessage(
+                new FieldCommandMessage(
+                    new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, DefaultStatusWordPollingInterval),
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.InverterSetTimer,
+                inverterIndex));
+
+            var notificationMessage = new NotificationMessage(
+                this.machineData.MessageData,
+                $"External Bay Calibration Test {this.machineData.ExecutedSteps} / {this.machineData.MessageData.RequiredCycles}",
+                MessageActor.AutomationService,
+                MessageActor.DeviceManager,
+                MessageType.Positioning,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                MessageStatus.OperationExecuting);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         private bool IsBracketSensorError()
@@ -589,7 +668,20 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
                         MessageStatus status;
-                        if (this.IsInvalidSensorsCondition())
+                        var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards) ?
+                            ExternalBayMovementDirection.TowardOperator :
+                            ExternalBayMovementDirection.TowardMachine;
+                        bool failed;
+                        if (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator)
+                        {
+                            failed = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay);
+                        }
+                        else
+                        {
+                            failed = !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay);
+                        }
+
+                        if (failed)
                         {
                             this.Logger.LogError($"Invalid sensors condition. An error occurs");
 
@@ -610,92 +702,16 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                             }
                             else
                             {
-                                this.Logger.LogInformation($"Start another External Bay Calibration Test after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
-
-                                // Retrieve the current external bay movement direction
-                                //var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
-                                //    ExternalBayMovementDirection.TowardOperator :
-                                //    ExternalBayMovementDirection.TowardMachine;
-
-                                // Retrieve the current external bay movement direction
-                                var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards) ?
-                                    ExternalBayMovementDirection.TowardOperator :
-                                    ExternalBayMovementDirection.TowardMachine;
-
-                                // Reverse the direction
-                                if (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator)
+                                if (this.machineData.MessageData.Delay > 0)
                                 {
-                                    externalBayMovementDirection = ExternalBayMovementDirection.TowardMachine;
+                                    this.delayTimer = new Timer(this.DelayExtBayElapsed, null, this.machineData.MessageData.Delay * 1000, Timeout.Infinite);
                                 }
                                 else
                                 {
-                                    externalBayMovementDirection = ExternalBayMovementDirection.TowardOperator;
+                                    this.DelayExtBayElapsed(null);
                                 }
-
-                                // Carry out the target position
-                                var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-                                var race = bay.External.Race;
-
-                                var distanceMovement = race;
-                                switch (externalBayMovementDirection)
-                                {
-                                    case ExternalBayMovementDirection.TowardOperator:
-                                        distanceMovement = race - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.RequestingBay)) - bay.ChainOffset;
-                                        break;
-
-                                    case ExternalBayMovementDirection.TowardMachine:
-                                        distanceMovement = 0 - Math.Abs(this.baysDataProvider.GetChainPosition(this.machineData.RequestingBay)) + bay.ChainOffset;
-                                        break;
-                                }
-
-                                //var targetPosition = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ? race + bay.ChainOffset : bay.ChainOffset; // for .Absolute
-                                var targetPosition = distanceMovement;
-
-                                // Set target parameter and direction parameter
-                                //this.machineData.MessageData.Direction = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ?
-                                //    HorizontalMovementDirection.Forwards :
-                                //    HorizontalMovementDirection.Backwards;
-                                this.machineData.MessageData.Direction = (externalBayMovementDirection == ExternalBayMovementDirection.TowardOperator) ?
-                                    HorizontalMovementDirection.Backwards :
-                                    HorizontalMovementDirection.Forwards;
-                                this.machineData.MessageData.TargetPosition = targetPosition;
-
-                                var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
-                                var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
-
-                                var commandMessage = new FieldCommandMessage(
-                                    positioningFieldMessageData,
-                                    $"External {this.machineData.MessageData.AxisMovement} Positioning State Started",
-                                    FieldMessageActor.InverterDriver,
-                                    FieldMessageActor.DeviceManager,
-                                    FieldMessageType.Positioning,
-                                    inverterIndex);
-                                this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
-
-                                this.ParentStateMachine.PublishFieldCommandMessage(
-                                    new FieldCommandMessage(
-                                        new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, DefaultStatusWordPollingInterval),
-                                    "Update Inverter status word status",
-                                    FieldMessageActor.InverterDriver,
-                                    FieldMessageActor.DeviceManager,
-                                    FieldMessageType.InverterSetTimer,
-                                    inverterIndex));
-
-                                status = MessageStatus.OperationExecuting;
                             }
                         }
-
-                        var notificationMessage = new NotificationMessage(
-                            this.machineData.MessageData,
-                            $"External Bay Calibration Test {this.machineData.ExecutedSteps} / {this.machineData.MessageData.RequiredCycles}",
-                            MessageActor.AutomationService,
-                            MessageActor.DeviceManager,
-                            MessageType.Positioning,
-                            this.machineData.RequestingBay,
-                            this.machineData.TargetBay,
-                            status);
-
-                        this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                     }
                     break;
             }

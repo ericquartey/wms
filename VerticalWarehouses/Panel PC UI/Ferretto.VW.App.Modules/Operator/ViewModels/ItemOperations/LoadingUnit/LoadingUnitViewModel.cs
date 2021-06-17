@@ -1184,10 +1184,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (!this.MachineService.Loadunits.Any(l => l.Id == this.LoadingUnit?.Id && l.Status == LoadingUnitStatus.InBay))
                 {
-                    this.navigationService.GoBackTo(
+                    this.navigationService.Appear(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.WAIT,
-                        "CheckUDC");
+                       null,
+                       trackCurrentView: false);
                     return false;
                 }
             }

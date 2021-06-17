@@ -201,6 +201,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this[nameof(this.CurrentResolution)],
             this[nameof(this.NewErrorValue)]);
 
+        public bool HasCarousel => this.MachineService.HasBayExternal;
+
         public bool HasStepCallUnit => this.currentStep is ExternalBayCalibrationStep.CallUnit;
 
         public bool HasStepConfirmAdjustment => this.currentStep is ExternalBayCalibrationStep.ConfirmAdjustment;
@@ -436,7 +438,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             return Localized.Get("InstallationApp.DataBePositive");
                         }
 
-                        if (this.NewErrorValue.HasValue && this.NewErrorValue > 9)
+                        if (this.NewErrorValue.HasValue && this.NewErrorValue > 29)
                         {
                             return Localized.Get("InstallationApp.MaxValue9");
                         }
@@ -503,6 +505,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.LoadingUnitId = 1;
             }
+            this.RequiredCycles = 200;
 
             this.UpdateStatusButtonFooter(true);
 
@@ -522,7 +525,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.RequiredCycles = procedureParameters.RequiredCycles;
                 this.PerformedCycles = procedureParameters.PerformedCycles;
 
-                if(this.RequiredCycles != 0)
+                if (this.RequiredCycles != 0)
                 {
                     this.CyclesPercent = (this.PerformedCycles / this.RequiredCycles) * 100;
                 }
@@ -633,7 +636,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.completeCommand?.RaiseCanExecuteChanged();
             this.tuningBayCommand?.RaiseCanExecuteChanged();
 
-            this.RaisePropertyChanged(nameof(this.RemainingTime));
+            //this.RaisePropertyChanged(nameof(this.RemainingTime));
             this.RaisePropertyChanged(nameof(this.PerformedCycles));
             this.RaisePropertyChanged(nameof(this.CyclesPercent));
             this.RaisePropertyChanged(nameof(this.RequiredCycles));
@@ -642,6 +645,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.NewErrorValue));
             this.RaisePropertyChanged(nameof(this.ChainOffset));
+            this.RaisePropertyChanged(nameof(this.HasCarousel));
         }
 
         private async Task ApplyCorrectionAsync()
@@ -649,29 +653,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ApplyCorrectionMessage"), Localized.Get("InstallationApp.CarouselCalibration"), DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ApplyCorrectionMessage"), Localized.Get("InstallationApp.ExtBayCalibration"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     double newRaceDistance = 0;
 
                     if (this.IsNewErrorValueVisible)
                     {
-                        var measuredCorrection = this.IsErrorNegative ? this.NewErrorValue : -this.NewErrorValue;
-                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
-                        newRaceDistance = (double)correctionForEachMovement + this.MachineService.Bay.External.Race;
+                        var measuredCorrection = this.IsErrorNegative ? -this.NewErrorValue : this.NewErrorValue;
+                        var correctionForEachMovement = (double)measuredCorrection / this.SessionPerformedCycles;
+                        newRaceDistance = correctionForEachMovement + this.MachineService.Bay.External.Race;
+                        //await this.machineExternalBayWebMachine.UpdateRaceDistanceAsync(newRaceDistance);
+                        await this.machineExternalBayWebMachine.UpdateResolutionAsync(newRaceDistance);
                     }
-                    else
-                    {
-                        var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
-                        var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
-                        newRaceDistance = (double)correctionForEachMovement + this.MachineService.Bay.External.Race;
-                    }
-
-                    await this.machineExternalBayWebMachine.UpdateRaceDistanceAsync(newRaceDistance);
+                    //else
+                    //{
+                    //    var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
+                    //    var correctionForEachMovement = measuredCorrection / this.SessionPerformedCycles;
+                    //    newRaceDistance = (double)correctionForEachMovement + this.MachineService.Bay.External.Race;
+                    //}
 
                     await this.MachineService.OnUpdateServiceAsync();
 
                     this.CurrentDistance = this.MachineService.Bay.External.Race;
+                    this.CurrentResolution = this.MachineService.Bay.Resolution;
 
                     this.ShowNotification(
                             VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
@@ -710,7 +715,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanApply()
         {
-            return this.CanBaseExecute();
+            //return this.CanBaseExecute();
+            return false;
         }
 
         private bool CanBaseExecute()
@@ -731,13 +737,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanComplete()
         {
-            return this.CanBaseExecute();
+            return this.CanBaseExecute()
+                && !this.IsCalibrationNotCompleted;
         }
 
         private bool CanMoveToStartCalibration()
         {
-            return this.CanBaseExecute() &&
-                   this.SensorsService.Sensors.LUPresentInBay1; //this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
+            return this.CanBaseExecute();
+            //&& this.SensorsService.Sensors.LUPresentInBay1; //this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
         }
 
         private bool CanRepeat()
@@ -770,10 +777,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanTuneBay()
         {
             return this.CanBaseExecute() &&
-                   !this.IsTuningBay &&
-                   this.MachineStatus.LoadingUnitPositionDownInBay is null &&
-                   this.MachineStatus.LoadingUnitPositionUpInBay is null &&
-                   this.SensorsService.BayZeroChain
+                   !this.IsTuningBay
                    ;
         }
 
@@ -782,7 +786,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmCalibrationProcedure"), Localized.Get("InstallationApp.CarouselCalibration"), DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmCalibrationProcedure"), Localized.Get("InstallationApp.ExtBayCalibration"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     this.IsExecutingStopInPhase = false;
@@ -833,7 +837,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingProcedure = false;
 
-                this.IsCalibrationNotCompleted = false;
+                this.IsCalibrationNotCompleted = this.requiredCycles != this.performedCycles;
 
                 this.CurrentStep = ExternalBayCalibrationStep.ConfirmAdjustment;
 
@@ -851,10 +855,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.Status == MessageStatus.OperationExecuting)
             {
                 // update cycle info
-                if (!this.IsExecutingStopInPhase)
-                {
-                    this.RequiredCycles = message.Data.RequiredCycles;
-                }
+                //if (!this.IsExecutingStopInPhase)
+                //{
+                //    this.RequiredCycles = message.Data.RequiredCycles;
+                //}
 
                 this.PerformedCycles = message.Data.ExecutedCycles;
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
@@ -873,10 +877,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.CompletedTest"), Services.Models.NotificationSeverity.Success);
                 }
 
-                this.IsCalibrationNotCompleted = false;
-
                 this.IsChainOffsetVisible = false;
-                this.IsNewErrorValueVisible = true;
+                //this.IsNewErrorValueVisible = true;
 
                 this.IsExecutingStopInPhase = false;
                 this.IsExecutingProcedure = false;
@@ -885,6 +887,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.PerformedCycles = message.Data.ExecutedCycles;
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
+                this.IsCalibrationNotCompleted = this.requiredCycles != this.performedCycles;
 
                 this.NewErrorValue = 0;
                 this.CurrentStep = ExternalBayCalibrationStep.ConfirmAdjustment;
@@ -912,6 +915,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingProcedure = false;
             }
+            this.CyclesPercent = (this.performedCycles * 100) / this.requiredCycles;
         }
 
         private async Task StartCalibrationAsync()
@@ -923,6 +927,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineExternalBayWebMachine.ResetCalibrationAsync();
+
+                    var procedureParameters = await this.machineExternalBayWebMachine.GetParametersAsync();
+                    if (procedureParameters.RequiredCycles != this.requiredCycles)
+                    {
+                        await this.machineExternalBayWebMachine.UpdateProcedureCycleAsync(this.requiredCycles);
+                    }
 
                     await this.RetrieveProcedureInformationAsync();
 

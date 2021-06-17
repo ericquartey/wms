@@ -268,7 +268,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
-                 notification.Status == MessageStatus.OperationRunningStop);
+                 notification.Status == MessageStatus.OperationRunningStop ||
+                 notification.Status == MessageStatus.OperationInverterFault);
         }
 
         public BayNumber GetBayByCell(int cellId)
@@ -538,6 +539,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.carouselProvider.IsOnlyTopPositionOccupied(bayNumber);
         }
 
+        public bool IsVerticalPositionChanged(double position, bool isEmpty, int? loadUnitId)
+        {
+            var displacement = 0.0;
+            if (loadUnitId.HasValue)
+            {
+                var loadUnit = this.loadingUnitsDataProvider.GetById(loadUnitId.Value);
+                displacement = this.invertersProvider.ComputeDisplacement(this.elevatorProvider.VerticalPosition, loadUnit.GrossWeight);
+                if (isEmpty)
+                {
+                    displacement = displacement <= 6 ? displacement / 2 : 3; // displacement with empty elevator is limited to 3mm
+                }
+            }
+
+            return Math.Abs(position + displacement - this.elevatorProvider.VerticalPosition) > 4;
+        }
+
         public void MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
         {
             if (restore)
@@ -725,6 +742,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     return MessageStatus.OperationError;
                 }
+            }
+
+            if (message.Type == MessageType.ErrorStatusChanged
+                && message.RequestingBay == BayNumber.ElevatorBay)
+            {
+                return MessageStatus.OperationInverterFault;
             }
 
             return MessageStatus.NotSpecified;

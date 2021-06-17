@@ -14,3 +14,6 @@ Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Session Manager" 
 
 #enable remote desktop with blank password
 Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Lsa" -Name "LimitBlankPasswordUse" -Value 0
+
+#disable UAC: administrators group has the same rights as administrator user
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value 0

@@ -353,37 +353,37 @@
       </TextBlock.Style>
     </TextBlock>
 
-    <StackPanel Grid.Row="6"
+        <StackPanel Grid.Row="6"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Orientation="Horizontal">
-      <StackPanel.Style>
-        <Style TargetType="{x:Type StackPanel}">
-          <Setter Property="Visibility" Value="Visible" />
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=MachineService.Bay.IsDouble}"
+            <StackPanel.Style>
+                <Style TargetType="{x:Type StackPanel}">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=MachineService.Bay.IsDouble}"
                          Value="false">
-              <Setter Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=MachineService.HasCarousel}"
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=MachineService.HasCarousel}"
                          Value="true">
-              <Setter Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=MachineService.Bay.IsExternal}"
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=MachineService.Bay.IsExternal}"
                          Value="true">
-              <Setter Property="Visibility" Value="Collapsed" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=HasExternalDouble}"
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=HasExternalDouble}"
                          Value="true">
-              <Setter Property="Visibility" Value="Visible" />
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </StackPanel.Style>
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
 
-      <controls:PpcButton Width="120"
+            <controls:PpcButton Width="120"
                           Margin="0,0,15,0"
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"
@@ -391,15 +391,19 @@
                           Content="{res:Loc InstallationApp.BayPositionDown}"
                           IsActive="{Binding IsPositionDownSelected}" />
 
-      <controls:PpcButton Width="120"
+            <controls:PpcButton Width="120"
                           Margin="0,0,15,0"
                           HorizontalAlignment="Center"
                           VerticalAlignment="Center"
                           Command="{Binding SelectBayPositionUpCommand}"
                           Content="{res:Loc InstallationApp.BayPositionUp}"
                           IsActive="{Binding IsPositionUpSelected}" />
+        </StackPanel>
 
-      <StackPanel HorizontalAlignment="Left"
+        <StackPanel Grid.Row="6"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Left"
                   VerticalAlignment="Bottom"
                   Orientation="Horizontal">
         <StackPanel.Style>
@@ -407,7 +411,7 @@
             <Setter Property="Visibility" Value="Visible" />
             <Style.Triggers>
               <DataTrigger Binding="{Binding Path=MachineService.Bay.IsExternal}"
-                           Value="false">
+                            Value="false">
                 <Setter Property="Visibility" Value="Collapsed" />
               </DataTrigger>
             </Style.Triggers>
@@ -415,7 +419,7 @@
         </StackPanel.Style>
 
         <controls:PpcButton Width="100"
-                            Margin="0,0,15,0"
+                            Margin="15,0,15,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding ExtBayTowardOperatorCommand}"
@@ -442,7 +446,6 @@
                             Content="{res:Loc InstallationApp.ExtBayMovementForExtraction}"
                             Visibility="Collapsed" />
 
-      </StackPanel>
     </StackPanel>
 
     <StackPanel Grid.Row="6"

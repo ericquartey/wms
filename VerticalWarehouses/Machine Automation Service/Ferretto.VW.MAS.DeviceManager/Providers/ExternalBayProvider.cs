@@ -1104,7 +1104,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void StartTest(BayNumber bayNumber, MessageActor sender)
         {
-            var direction = this.IsInternalPositionOccupied(bayNumber) ?
+            var direction = this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) ?
                 ExternalBayMovementDirection.TowardOperator :
                 ExternalBayMovementDirection.TowardMachine;
 
@@ -1148,7 +1148,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 procedureParameters.RequiredCycles,
                 lowerBound: 0,
                 upperBound: 0,
-                delay: 0,
+                delay: 5,
                 switchPosition,
                 direction is ExternalBayMovementDirection.TowardOperator ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
 

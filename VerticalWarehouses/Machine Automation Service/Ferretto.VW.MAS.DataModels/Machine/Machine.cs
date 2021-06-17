@@ -119,7 +119,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool Simulation { get; set; }
 
-        public int VerticalCyclesToCalibrate { get; set; } = 200;
+        public int VerticalCyclesToCalibrate { get; set; } = 50;
 
         #endregion
 

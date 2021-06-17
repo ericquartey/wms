@@ -576,6 +576,44 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
+        private void DelayExtBayElapsed(object state)
+        {
+            this.Logger.LogInformation($"Start another BayTest after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
+
+            var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
+            var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
+
+            var commandMessage = new FieldCommandMessage(
+                positioningFieldMessageData,
+                $"{this.machineData.MessageData.AxisMovement} Positioning State Started",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.Positioning,
+                inverterIndex);
+            this.ParentStateMachine.PublishFieldCommandMessage(commandMessage);
+
+            this.ParentStateMachine.PublishFieldCommandMessage(
+                new FieldCommandMessage(
+                    new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, DefaultStatusWordPollingInterval),
+                "Update Inverter status word status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.InverterSetTimer,
+                inverterIndex));
+
+            var notificationMessage = new NotificationMessage(
+                this.machineData.MessageData,
+                $"BayTest {this.machineData.ExecutedSteps} / {this.machineData.MessageData.RequiredCycles}",
+                MessageActor.AutomationService,
+                MessageActor.DeviceManager,
+                MessageType.Positioning,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                MessageStatus.OperationExecuting);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+        }
+
         private void FindZeroNextPosition(double targetPosition)
         {
             this.machineData.MessageData.TargetPosition = targetPosition;
