@@ -67,6 +67,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     instruction.InstructionStatus = MachineServiceStatus.Completed;
                     instruction.MaintenanceDate = DateTime.UtcNow;
                     instruction.IsDone = true;
+                    if (instruction.Definition.CounterName != null)
+                    {
+                        instruction.IntCounter = this.DiffCount(instruction);
+                    }
                     this.dataContext.Instructions.Update(instruction);
 
                     // Update record
@@ -154,14 +158,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     )
                 {
                     var lastStat = allStat.Last().MachineStatistics;
-                    var countedStat = allStat.LastOrDefault(s => s.Instructions != null && s.Instructions.Any(i => i.Id == ins.Id && i.IntCounter.HasValue));
+                    var countedStat = allStat.LastOrDefault(s => s.Instructions != null && s.Instructions.Any(i => i.Definition.Id == ins.Definition.Id && i.IntCounter.HasValue && i.IsDone));
                     switch (ins.Definition.CounterName)
                     {
                         case nameof(lastStat.AreaFillPercentage):
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.AreaFillPercentage);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -173,7 +177,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.AutomaticTimePercentage);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -185,7 +189,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         //    if (countedStat != null)
                         //    {
                         //        diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalAutomaticTime);
-                        //        diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                        //        diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                         //    }
                         //    else
                         //    {
@@ -197,7 +201,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers2);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -209,7 +213,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers3);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -221,7 +225,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalHorizontalAxisCycles);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -233,7 +237,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalHorizontalAxisKilometers);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -245,7 +249,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay1);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -257,7 +261,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay2);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -269,7 +273,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay3);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -281,7 +285,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         //    if (countedStat != null)
                         //    {
                         //        diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalMissionTime);
-                        //        diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                        //        diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                         //    }
                         //    else
                         //    {
@@ -293,7 +297,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         //    if (countedStat != null)
                         //    {
                         //        diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalPowerOnTime);
-                        //        diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                        //        diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                         //    }
                         //    else
                         //    {
@@ -305,7 +309,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalVerticalAxisCycles);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -317,7 +321,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalVerticalAxisKilometers);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -329,7 +333,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalWeightBack);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -341,7 +345,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalWeightFront);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -353,7 +357,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.UsageTimePercentage);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -365,7 +369,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.WeightCapacityPercentage);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -377,7 +381,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = (int)allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -389,7 +393,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (countedStat != null)
                             {
                                 diffCount = allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalMissions);
-                                diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Id == ins.Id)?.IntCounter.Value ?? 0;
+                                //diffCount -= countedStat.Instructions.FirstOrDefault(i => i.Definition.Id == ins.Definition.Id)?.IntCounter.Value ?? 0;
                             }
                             else
                             {
@@ -690,14 +694,16 @@ namespace Ferretto.VW.MAS.DataLayer
                                 var diffCount = this.DiffCount(ins);
                                 //var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
                                 var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
-                                if (diff.TotalDays <= ins.Definition.MaxDays || diffCount <= 0)
+                                if ((ins.Definition.MaxDays.HasValue && diff.TotalDays <= ins.Definition.MaxDays)
+                                    || diffCount <= 0
+                                    )
                                 {
                                     ins.InstructionStatus = MachineServiceStatus.Expired;
                                     this.dataContext.Instructions.Update(ins);
                                     //this.logger.LogWarning(Resources.General.MaintenanceStateExpiring);
                                 }
                             }
-                            else
+                            else if (ins.Definition.MaxDays.HasValue)
                             {
                                 var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
                                 if (diff.TotalDays <= ins.Definition.MaxDays)
@@ -717,14 +723,15 @@ namespace Ferretto.VW.MAS.DataLayer
                                 var diffCount = this.DiffCount(ins);
                                 var diffCountPercent = (diffCount * machine.ExpireCountPrecent) / 100;
                                 var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
-                                if (diff.TotalDays <= ins.Definition.MaxDays + machine.ExpireDays || diffCount >= diffCountPercent)
+                                if ((ins.Definition.MaxDays.HasValue && diff.TotalDays <= ins.Definition.MaxDays + machine.ExpireDays)
+                                    || diffCount >= diffCountPercent)
                                 {
                                     ins.InstructionStatus = MachineServiceStatus.Expiring;
                                     ins.IsToDo = true;
                                     this.dataContext.Instructions.Update(ins);
                                 }
                             }
-                            else
+                            else if (ins.Definition.MaxDays.HasValue)
                             {
                                 var diff = ins.MaintenanceDate.Value.Subtract(DateTime.UtcNow);
                                 if (diff.TotalDays <= ins.Definition.MaxDays + machine.ExpireDays)
@@ -755,10 +762,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     var instruction = new Instruction();
                     instruction.ServicingInfo = s;
                     instruction.Definition = definition;
-                    if (definition.MaxDays.HasValue)
-                    {
-                        instruction.MaintenanceDate = DateTime.UtcNow;
-                    }
+                    instruction.MaintenanceDate = DateTime.UtcNow;
                     this.dataContext.Instructions.Add(instruction);
                 }
             }
