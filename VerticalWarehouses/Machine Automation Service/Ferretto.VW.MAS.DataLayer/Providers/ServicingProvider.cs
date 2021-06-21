@@ -209,7 +209,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.AreaFillPercentage):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.AreaFillPercentage).Value;
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.AreaFillPercentage).Value;
                             }
                             else
                             {
@@ -220,7 +220,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.AutomaticTimePercentage):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.AutomaticTimePercentage);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.AutomaticTimePercentage);
                             }
                             else
                             {
@@ -243,7 +243,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalBayChainKilometers2):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers2);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers2);
                             }
                             else
                             {
@@ -254,7 +254,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalBayChainKilometers3):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers3);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers3);
                             }
                             else
                             {
@@ -265,7 +265,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalHorizontalAxisCycles):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalHorizontalAxisCycles);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalHorizontalAxisCycles);
                             }
                             else
                             {
@@ -276,7 +276,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalHorizontalAxisKilometers):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalHorizontalAxisKilometers);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalHorizontalAxisKilometers);
                             }
                             else
                             {
@@ -287,7 +287,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalLoadUnitsInBay1):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay1);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay1);
                             }
                             else
                             {
@@ -298,7 +298,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalLoadUnitsInBay2):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay2);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay2);
                             }
                             else
                             {
@@ -309,7 +309,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalLoadUnitsInBay3):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay3);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalLoadUnitsInBay3);
                             }
                             else
                             {
@@ -344,7 +344,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalVerticalAxisCycles):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalVerticalAxisCycles);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalVerticalAxisCycles);
                             }
                             else
                             {
@@ -355,7 +355,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalVerticalAxisKilometers):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalVerticalAxisKilometers);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalVerticalAxisKilometers);
                             }
                             else
                             {
@@ -366,7 +366,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalWeightBack):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalWeightBack);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalWeightBack);
                             }
                             else
                             {
@@ -377,7 +377,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalWeightFront):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalWeightFront);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalWeightFront);
                             }
                             else
                             {
@@ -388,7 +388,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.UsageTimePercentage):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.UsageTimePercentage);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.UsageTimePercentage);
                             }
                             else
                             {
@@ -399,7 +399,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.WeightCapacityPercentage):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.WeightCapacityPercentage);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.WeightCapacityPercentage);
                             }
                             else
                             {
@@ -410,7 +410,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalBayChainKilometers1):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalBayChainKilometers1);
                             }
                             else
                             {
@@ -421,7 +421,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case nameof(lastStat.TotalMissions):
                             if (countedStat != null)
                             {
-                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id >= countedStat.Id).Sum(s => s.MachineStatistics.TotalMissions);
+                                diffCount = ins.Definition.MaxRelativeCount.Value - this.allStat.Where(a => a.Id > countedStat.Id).Sum(s => s.MachineStatistics.TotalMissions);
                             }
                             else
                             {
