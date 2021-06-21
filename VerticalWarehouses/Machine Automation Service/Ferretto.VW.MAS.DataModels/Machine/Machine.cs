@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool EnabeNoteRules { get; set; }
 
-        public int ExpireCountPrecent { get; set; } = 10;
+        public int ExpireCountPrecent { get; set; } = 90;
 
         public int ExpireDays { get; set; } = 14;
 

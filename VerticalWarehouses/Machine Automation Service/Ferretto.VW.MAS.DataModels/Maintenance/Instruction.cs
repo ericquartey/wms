@@ -9,16 +9,25 @@ namespace Ferretto.VW.MAS.DataModels
 
         public InstructionDefinition Definition { get; set; }
 
+        /// <summary>
+        /// NOT USED
+        /// </summary>
         public double? DoubleCounter { get; set; }
 
         public MachineServiceStatus InstructionStatus { get; set; } = MachineServiceStatus.Valid;
 
+        /// <summary>
+        /// NOT USED
+        /// </summary>
         public int? IntCounter { get; set; }
 
         public bool IsDone { get; set; }
 
         public bool IsToDo { get; set; }
 
+        /// <summary>
+        /// NOT USED
+        /// </summary>
         public DateTime? MaintenanceDate { get; set; }
 
         [JsonIgnore]

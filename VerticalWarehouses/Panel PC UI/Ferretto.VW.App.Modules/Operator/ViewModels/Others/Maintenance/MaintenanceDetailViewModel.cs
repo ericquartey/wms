@@ -187,8 +187,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                var can = this.Instructions.Any()
-                    && !this.Instructions.Any(s => s.IsToDo && !s.IsDone)
+                var can = this.Instructions.Any(s => s.IsToDo && s.IsDone)
                     && this.Service.ServiceStatus != MachineServiceStatus.Completed;
                 return can;
             }

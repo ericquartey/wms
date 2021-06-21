@@ -130,6 +130,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 case Menu.Maintenance:
                     return
+                        this.MachineModeService.MachinePower == MachinePowerState.NotSpecified ||
                         this.MachineModeService.MachinePower == MachinePowerState.Unpowered ||
                         this.MachineModeService.MachineMode == MachineMode.Manual ||
                         this.MachineModeService.MachineMode == MachineMode.Manual2 ||
