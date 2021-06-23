@@ -23,10 +23,12 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.20 rispetto la 1.0.19
-- 
+- Aggiunta procedura di test per la BES
+- Aggiunta descrizione alla richiesta della causale nella ricerca articolo
 
 ## Bug Risolti
-- 
+- Corretta l'attivazione degli avvisi di manutenzioni scadute
+- Eliminato un caso di blocco delle missioni senza allarme con baie contrapposte
 
 ## Compatibile con adapter 0.4.21
 ***
