@@ -709,8 +709,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.itemToPickId = itemId;
             //this.itemToPickCode = itemCode;
 
+            this.NoteEnabled = false;
             // Notes textbox field for the reasons view in the UI is enabled
-            this.NoteEnabled = true;
+            //this.NoteEnabled = true;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
 
             var waitForReason = await this.CheckReasonsAsync();
@@ -731,8 +732,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.itemToPickId = itemId;
             //this.itemToPickCode = itemCode;
 
+            this.NoteEnabled = false;
             // Notes textbox field for the reasons view in the UI is enabled
-            this.NoteEnabled = true;
+            //this.NoteEnabled = true;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
 
             var waitForReason = await this.CheckReasonsAsync();
