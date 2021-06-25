@@ -117,49 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Conexión con los servicios establecidos</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Conexión al Servicio de Automatización perdida, reconexión en curso...</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>No se puede conectar al servicio de automatización</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Credenciales inválidas.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>Forma cargada.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>Introduzca la contraseña</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>La contraseña es demasiado corta.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>Hay que especificar la contraseña.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>Los servicios se están inicializando</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="TempKey" xml:space="preserve">
+    <value>Clave temporal: {0}</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>El código de barras no corresponde a un usuario registrado.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>Se debe especificar el nombre de usuario.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>La tarjeta no está asociada a un usuario registrado.</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Inicio de sesión de lectura de tarjeta ...</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Autenticación de usuario en curso ...</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Ficha insertada. Autenticación en curso ...</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Ficha eliminada.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Autentificación mediante ficha fallida.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>No se puede autenticar con el token porque el WMS no está localizable.</value>
+  </data>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>La sesión de usuario "servicio" ha expirado</value>
   </data>
 </root>

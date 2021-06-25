@@ -117,49 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Falta Automático</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>No se ha realizado la calibración de la bahía.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>No se puede realizar la calibración del carrusel. \r\n La cadena de la bahía no está en la posición cero.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Ocupado</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="CellFree" xml:space="preserve">
+    <value>Gratis</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>El regreso a casa ha fallado.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>Inconsistencia de los sensores de presencia del cajón en la bahía.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>Inconsistencia del estado de la carga y de los sensores.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Inconsistencia sensor de trinquete a cero y presencia del cajón.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Presencia cajón en el elevador.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>Cajón listo para funcionar.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>La solicitud de cajón {0} se ha completado con éxito.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>El cajón del elevador tiene una altura incorrecta</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>La máquina no está en manual...</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Máquina apagada</value>
+  </data>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Misiones por error...</value>
+  </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Misiones de Wms presentes pero Wms no activo</value>
+  </data>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Movimiento de la cadena de la bahía en curso...</value>
+  </data>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Movimiento del elevador en curso...</value>
+  </data>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>Movimiento horizontal en curso...</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Movimiento en curso... {0}</value>
+  </data>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Movimiento en curso... (Misión: {0}, Cajón: {1}, Estado: {2}, Movimiento: de {3} {4}, a {5} {6})</value>
+  </data>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Movimiento de cajones en curso...</value>
+  </data>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Movimiento de la compuerta en curso...</value>
+  </data>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>Movimiento vertical en curso...</value>
+  </data>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>No hay cajones presentes en la bahía.</value>
+  </data>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>No hay sensor de trinquete a cero o presencia de cajón.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Posición {0}</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>Compuerta abierta o en posición desconocida.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>Pruebas en curso...</value>
   </data>
 </root>

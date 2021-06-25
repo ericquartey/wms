@@ -117,49 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="AirFiltersCheck" xml:space="preserve">
+    <value>Comprobación de los filtros de aire</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="BearingsCheck" xml:space="preserve">
+    <value>Comprobación de rodamientos</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="BearingsGrease" xml:space="preserve">
+    <value>Engrase de rodamientos</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="BeltAdjust" xml:space="preserve">
+    <value>Tensión de la correa</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="BeltFasten" xml:space="preserve">
+    <value>Comprobación de la fijación del cinturón</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="BeltSubstitute" xml:space="preserve">
+    <value>Sustitución de la correa</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="CableChainCheck" xml:space="preserve">
+    <value>Control de la cadena portacables</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="CablesCheck" xml:space="preserve">
+    <value>Comprobación de cables</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="ChainAdjust" xml:space="preserve">
+    <value>Tensión de la cadena</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="ChainGrease" xml:space="preserve">
+    <value>Engrase de la cadena</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="ChainSubstitute" xml:space="preserve">
+    <value>Sustitución de la cadena</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
+  <data name="ContactorsSubstitute" xml:space="preserve">
+    <value>ContactorsSubstitute</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
+  <data name="ElectricalComponentsCheck" xml:space="preserve">
+    <value>Comprobación de los componentes eléctricos</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="FirstCellCheck" xml:space="preserve">
+    <value>Comprobar la primera celda</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="GuidesCheck" xml:space="preserve">
+    <value>Control de rieles</value>
+  </data>
+  <data name="GuidesSubstitute" xml:space="preserve">
+    <value>Sustitución de guías</value>
+  </data>
+  <data name="LampsCheck" xml:space="preserve">
+    <value>Comprobación de las luces de advertencia quemadas</value>
+  </data>
+  <data name="LinkCheck" xml:space="preserve">
+    <value>Control conjunto</value>
+  </data>
+  <data name="LinksGrease" xml:space="preserve">
+    <value>Engrase de juntas</value>
+  </data>
+  <data name="LinkSubstitute" xml:space="preserve">
+    <value>Sustitución de la articulación</value>
+  </data>
+  <data name="MicroSwitchesCheck" xml:space="preserve">
+    <value>Control de microinterruptores</value>
+  </data>
+  <data name="MicroSwitchesMount" xml:space="preserve">
+    <value>Fijación del microinterruptor</value>
+  </data>
+  <data name="MicroSwitchesSubstitute" xml:space="preserve">
+    <value>Sustitución del microinterruptor</value>
+  </data>
+  <data name="MotorChainAdjust" xml:space="preserve">
+    <value>Tensión de la cadena del motor</value>
+  </data>
+  <data name="MotorChainGrease" xml:space="preserve">
+    <value>Engrase de la cadena del motor</value>
+  </data>
+  <data name="MotorChainSubstitute" xml:space="preserve">
+    <value>Sustitución de la cadena del motor</value>
+  </data>
+  <data name="MotorGearOil" xml:space="preserve">
+    <value>Comprobación y reposición del nivel de aceite del motorreductor</value>
+  </data>
+  <data name="MotorGearSubstitute" xml:space="preserve">
+    <value>Sustitución del motorreductor</value>
+  </data>
+  <data name="OpticalSensorsClean" xml:space="preserve">
+    <value>Limpieza de sensores ópticos</value>
+  </data>
+  <data name="OpticalSensorsMount" xml:space="preserve">
+    <value>Fijación de los sensores ópticos</value>
+  </data>
+  <data name="PinPawlFastenersCheck" xml:space="preserve">
+    <value>Comprobación de los pernos de acoplamiento del trinquete</value>
+  </data>
+  <data name="PinPawlFastenersGrease" xml:space="preserve">
+    <value>Engrase de los pasadores del trinquete</value>
+  </data>
+  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
+    <value>Sustitución de los pernos de acoplamiento del trinquete</value>
+  </data>
+  <data name="PlasticCamsCheck" xml:space="preserve">
+    <value>Comprobación del estado de las levas de plástico</value>
+  </data>
+  <data name="RandomCellCheck" xml:space="preserve">
+    <value>Control de células aleatorias</value>
+  </data>
+  <data name="SensorCheck" xml:space="preserve">
+    <value>Pruebas de funcionamiento de los sensores</value>
+  </data>
+  <data name="SensorsClean" xml:space="preserve">
+    <value>Limpieza del sensor</value>
+  </data>
+  <data name="SensorsMount" xml:space="preserve">
+    <value>Fijación del sensor</value>
+  </data>
+  <data name="ShaftCheck" xml:space="preserve">
+    <value>Comprobar el eje de compuerta</value>
+  </data>
+  <data name="SupportsCheck" xml:space="preserve">
+    <value>Comprobación juegos soportes</value>
+  </data>
+  <data name="WheelsCheck" xml:space="preserve">
+    <value>Comprobación de la rueda de contraste</value>
+  </data>
+  <data name="WheelsSubstitute" xml:space="preserve">
+    <value>Sustitución de las ruedas de contraste</value>
   </data>
 </root>

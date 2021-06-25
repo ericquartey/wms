@@ -117,49 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="All" xml:space="preserve">
+    <value>Todo</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="AllDescription" xml:space="preserve">
+    <value>Permite acceder a la lista de todos los parámetros independientemente de la categoría.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="Empty" xml:space="preserve">
+    <value>No hay artículos que coincidan con el criterio de navegación.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Valor no válido</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="Machine" xml:space="preserve">
+    <value>Máquina</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="MachineDescription" xml:space="preserve">
+    <value>Permite acceder a la lista de todos los parámetros independientemente de la categoría.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="Root" xml:space="preserve">
+    <value>Root</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="Search" xml:space="preserve">
+    <value>Investigación:</value>
   </data>
 </root>

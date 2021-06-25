@@ -117,49 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="Abort" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>Instalación del software Vertimag</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="UnknownVersion" xml:space="preserve">
+    <value>Desconocida</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="VertimagSoftwareInstallation" xml:space="preserve">
+    <value>Instalación del software Vertimag</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="ServiceVersion" xml:space="preserve">
+    <value>Versión del servicio de fondo</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>Versión de la interfaz de usuario</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="SelectVertimagConfigurationFile" xml:space="preserve">
+    <value>Seleccione el archivo de configuración de Vertimag</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="VertimagConfigurationFiles" xml:space="preserve">
+    <value>Archivos de configuración de Vertimag</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Todos los archivos</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="MasterBay" xml:space="preserve">
+    <value>Bahía principal</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="SlaveBay" xml:space="preserve">
+    <value>Bahía secundaria</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
+  <data name="SelectedConfigurationFile" xml:space="preserve">
+    <value>Archivo de configuración</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>No se ha seleccionado ningún archivo</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Seleccione el archivo</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="MasterBayAddress" xml:space="preserve">
+    <value>Dirección Bahía Principal</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Carga</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continúa</value>
+  </data>
+  <data name="BaySelection" xml:space="preserve">
+    <value>Selección de la bahía</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Modelo</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Número de serie</value>
+  </data>
+  <data name="MaximumGrossCapacity" xml:space="preserve">
+    <value>Capacidad bruta máxima</value>
+  </data>
+  <data name="KilogramsValueFormat" xml:space="preserve">
+    <value>{0} kg</value>
+  </data>
+  <data name="SelectNumberOfThisBay" xml:space="preserve">
+    <value>Seleccione el número de esta bahía</value>
+  </data>
+  <data name="GoBack" xml:space="preserve">
+    <value>Volver</value>
   </data>
 </root>

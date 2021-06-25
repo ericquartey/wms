@@ -117,49 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Solicitud mal redactada.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="InternalServerErrorTitle" xml:space="preserve">
+    <value>Error interno del servidor.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="MaintenanceStateExpired" xml:space="preserve">
+    <value>Estado de mantenimiento expirado</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="MaintenanceStateExpiring" xml:space="preserve">
+    <value>Estado de mantenimiento que expira</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
+    <value>No hay ninguna entidad con el identificador "{0}" especificado.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Artículo no encontrado.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>El servicio se está inicializando.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>El servicio ha completado la fase de inicialización.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="UnprocessableEntityTitle" xml:space="preserve">
+    <value>No se puede procesar la solicitud, dado el estado actual.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>El valor no puede ser nulo ni contener solo espacios.</value>
   </data>
 </root>

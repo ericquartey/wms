@@ -117,49 +117,145 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Configuración y verificación de la barra alfanumérica</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Parámetros de configuración</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Prueba</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Barra alfanumérica</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Flecha</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Led</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>Mensaje</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Grupo Ferretto - mensaje de prueba -</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>Ubicación</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Texto</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>Configuración y verificación del lector de códigos de barras</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Lector de códigos de barras</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>Configuración y verificación del lector de tarjetas de identificación</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Lector de insignias</value>
+  </data>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>Dirección IP</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>Configuración y prueba de la impresora de etiquetas</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Impresora de etiquetas</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuDescription" xml:space="preserve">
+    <value>Gestión de la configuración del láser y pruebas de funcionalidad</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
+    <value>Puntero láser</value>
+  </data>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>Desplazamiento del eje X</value>
+  </data>
+  <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
+    <value>Desplazamiento del eje Y</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetLowerPosition" xml:space="preserve">
+    <value>Desplazamiento del eje Z (bahía baja)</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetUpperPosition" xml:space="preserve">
+    <value>Desplazamiento del eje Z (bahía alta)</value>
+  </data>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Menú de accesorios</value>
+  </data>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Apagado</value>
+  </data>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Encendido</value>
+  </data>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Puerta</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Tamaño</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>Configuración y verificación del lector de fichas</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Lector de fichas</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>Configuración y verificación de la balanza contadora</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Balanza contadora de piezas</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Bahía</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Menú Bahía</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Menú Celdas</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Confirmación de la prueba</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Menú Elevador</value>
   </data>
   <data name="Installation" xml:space="preserve">
     <value>Instalación</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="InstallationStatus" xml:space="preserve">
+    <value>Estado de la instalación</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="MenuAccessories" xml:space="preserve">
+    <value>Accesorios</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="MenuCells" xml:space="preserve">
+    <value>Celdas</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="MenuElevator" xml:space="preserve">
+    <value>Elevador</value>
+  </data>
+  <data name="MenuLoadingUnits" xml:space="preserve">
+    <value>Cajones</value>
   </data>
   <data name="Movements" xml:space="preserve">
     <value>Movimientos</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="Other" xml:space="preserve">
+    <value>Ajustes</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Menú de configuración</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Menú del cajón</value>
   </data>
 </root>

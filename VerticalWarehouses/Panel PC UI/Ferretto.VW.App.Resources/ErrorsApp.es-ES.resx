@@ -117,49 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="CalibrationBarierError" xml:space="preserve">
+    <value>El error no puede ser superior a 1 mm</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="CheckUnit" xml:space="preserve">
+    <value>Comprobación del cajón:</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Código Detalle</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>Una vez finalizado el procedimiento de identificación del cajón, pasa a ser automático.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>Una vez finalizado el procedimiento de identificación del cajón, pase a manual.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Selección de cajones</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Código de error</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Descripción del error</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Posibles causas</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Recuperación de errores</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Visto</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
+  <data name="Forwards" xml:space="preserve">
+    <value>Adelante</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
+  <data name="HighPosition" xml:space="preserve">
+    <value>Posición alta</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>Cajón inválido, inserte: </value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inversor</value>
+  </data>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Restablecimiento del fallo del inversor</value>
+  </data>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Posición baja</value>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Marca según lo resuelto</value>
+  </data>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>No se han cargado artículos en la página.</value>
+  </data>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Seleccione la identificación del cajón en el elevador.</value>
+  </data>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Cajón en el elevador</value>
+  </data>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Selección de cajones (Bahía 1):</value>
+  </data>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Selección de cajones (Bahía 2):</value>
+  </data>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Selección de cajones (Bahía 3):</value>
+  </data>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Seleccione el identificador del cajón o cajones en la bahía.</value>
+  </data>
+  <data name="MarkAsResolvedAndFindZero" xml:space="preserve">
+    <value>Marcar como resuelto y buscar el cero</value>
   </data>
 </root>

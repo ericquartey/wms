@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
 		Microsoft ResX Schema
 
 		Version 1.3
@@ -58,44 +58,508 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Aceleración</value>
+  </data>
+  <data name="AssistedMovements" xml:space="preserve">
+    <value>Movimientos guiados</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Bahía {0}</value>
+  </data>
+  <data name="BayCarousel" xml:space="preserve">
+    <value>Carrusel de la bahía {0}</value>
+  </data>
+  <data name="BayCarousel_Description" xml:space="preserve">
+    <value>Parámetros del carrusel</value>
+  </data>
+  <data name="BayInverter" xml:space="preserve">
+    <value>Bahía del inversor {0}</value>
+  </data>
+  <data name="BayIoDevice" xml:space="preserve">
+    <value>Bahía IoDevice {0}</value>
+  </data>
+  <data name="BayLaser" xml:space="preserve">
+    <value>Bahía láser {0}</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Número de la bahía</value>
+  </data>
+  <data name="BayNumber.BayOne" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayNumber.BayThree" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayNumber.BayTwo" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BayNumber.ElevatorBay" xml:space="preserve">
+    <value>cuna</value>
+  </data>
+  <data name="BayPosition_Height" xml:space="preserve">
+    <value>Altura</value>
+  </data>
+  <data name="BayPosition_IsBlocked" xml:space="preserve">
+    <value>Bloqueada</value>
+  </data>
+  <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
+    <value>Doble altura máxima</value>
+  </data>
+  <data name="BayPosition_MaxSingleHeight" xml:space="preserve">
+    <value>Altura máxima estándar</value>
+  </data>
+  <data name="BayPosition_ProfileOffset" xml:space="preserve">
+    <value>Control de la forma de desplazamiento</value>
+  </data>
+  <data name="BayShutter" xml:space="preserve">
+    <value>Compuerta de bahía {0}</value>
+  </data>
+  <data name="Bay_CategoryDescription" xml:space="preserve">
+    <value>Permite modificar los parámetros y dispositivos de la bahía.</value>
+  </data>
+  <data name="Bay_ChainOffset" xml:space="preserve">
+    <value>Desplazamiento de la cadena a cero</value>
+  </data>
+  <data name="Bay_IsActive" xml:space="preserve">
+    <value>Activar</value>
+  </data>
+  <data name="Bay_IsAdjustByWeight" xml:space="preserve">
+    <value>Reducir la cota de toma con cajones pesados en la bahía</value>
+  </data>
+  <data name="Bay_IsCheckIntrusion" xml:space="preserve">
+    <value>Control de intrusión con barrera de control de altura</value>
+  </data>
+  <data name="Bay_IsDouble" xml:space="preserve">
+    <value>Doble</value>
+  </data>
+  <data name="Bay_IsExternal" xml:space="preserve">
+    <value>Exterior</value>
+  </data>
+  <data name="Bay_IsFastDepositToBay" xml:space="preserve">
+    <value>Depósito rápido en la bahía</value>
+  </data>
+  <data name="Bay_Resolution" xml:space="preserve">
+    <value>Resolución</value>
+  </data>
+  <data name="Bay_Side" xml:space="preserve">
+    <value>Lado</value>
+  </data>
+  <data name="BeltRigidity" xml:space="preserve">
+    <value>Rigidez de la correa</value>
+  </data>
+  <data name="BeltSpacing" xml:space="preserve">
+    <value>Distancia entre los bloques tensores de la correa</value>
+  </data>
+  <data name="Carousel" xml:space="preserve">
+    <value>Carrusel</value>
+  </data>
+  <data name="Carousel_ElevatorDistance" xml:space="preserve">
+    <value>Distancia entre estantes</value>
+  </data>
+  <data name="Carousel_HomingCreepSpeed" xml:space="preserve">
+    <value>Velocidad de reposición</value>
+  </data>
+  <data name="Carousel_HomingFastSpeed" xml:space="preserve">
+    <value>Rápida velocidad de reposición</value>
+  </data>
+  <data name="CyclesToCalibrate" xml:space="preserve">
+    <value>Ciclos para calibrar</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Desaceleración</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Elevador</value>
+  </data>
+  <data name="ElevatorAxis" xml:space="preserve">
+    <value>Eje del elevador {0}</value>
+  </data>
+  <data name="ElevatorAxis_BrakeActivatePercent" xml:space="preserve">
+    <value>Porcentaje de frenado</value>
+  </data>
+  <data name="ElevatorAxis_BrakeReleaseTime" xml:space="preserve">
+    <value>Tiempo de liberación en la frenada</value>
+  </data>
+  <data name="ElevatorAxis_ChainOffset" xml:space="preserve">
+    <value>Desplazamiento de la cadena a cero</value>
+  </data>
+  <data name="ElevatorAxis_HomingCreepSpeed" xml:space="preserve">
+    <value>Velocidad de reposición</value>
+  </data>
+  <data name="ElevatorAxis_HomingFastSpeed" xml:space="preserve">
+    <value>Rápida velocidad de reposición</value>
+  </data>
+  <data name="ElevatorAxis_HorizontalCalibrateSpeed" xml:space="preserve">
+    <value>Velocidad de calibración horizontal</value>
+  </data>
+  <data name="ElevatorAxis_LowerBound" xml:space="preserve">
+    <value>Límite inferior del eje</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateLength" xml:space="preserve">
+    <value>Distancia máxima de calibración del perfil</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibratePosition" xml:space="preserve">
+    <value>Distancia de la lectura del perfil 6a ftc</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
+    <value>Velocidad de calibración del perfil</value>
+  </data>
+  <data name="ElevatorAxis_Profiles" xml:space="preserve">
+    <value>Perfiles</value>
+  </data>
+  <data name="ElevatorAxis_Resolution" xml:space="preserve">
+    <value>Resolución</value>
+  </data>
+  <data name="ElevatorAxis_UpperBound" xml:space="preserve">
+    <value>Límite superior del eje</value>
+  </data>
+  <data name="ElevatorAxis_VerticalDepositOffset" xml:space="preserve">
+    <value>Compensación Posicionamiento en el almacén</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupOffset" xml:space="preserve">
+    <value>Compensación Posicionamiento en toma</value>
+  </data>
+  <data name="ElevatorWeight" xml:space="preserve">
+    <value>Peso del elevador</value>
+  </data>
+  <data name="Elevator_CategoryDescription" xml:space="preserve">
+    <value>Permite modificar los parámetros del elevador y de los dos ejes asociados a él.</value>
+  </data>
+  <data name="EmptyLoadMovement" xml:space="preserve">
+    <value>Movimientos de vacío</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Bahía exterior {0}</value>
+  </data>
+  <data name="ExternalBay_Description" xml:space="preserve">
+    <value>Parámetros de la bahía exterior</value>
+  </data>
+  <data name="ExtraRace" xml:space="preserve">
+    <value>Carrera adicional para la inserción/extracción</value>
+  </data>
+  <data name="FeedRate" xml:space="preserve">
+    <value>Tasa de alimentación</value>
+  </data>
+  <data name="FeedRateAfterZero" xml:space="preserve">
+    <value>Tasa de alimentación después del eje cero</value>
+  </data>
+  <data name="FullLoadMovement" xml:space="preserve">
+    <value>Movimientos de carga completa</value>
+  </data>
+  <data name="HalfShaftLength" xml:space="preserve">
+    <value>Longitud del semieje</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inversor</value>
+  </data>
+  <data name="Inverter_Index" xml:space="preserve">
+    <value>Índice</value>
+  </data>
+  <data name="Inverter_IpAddress" xml:space="preserve">
+    <value>Inversor IP</value>
+  </data>
+  <data name="Inverter_TcpPort" xml:space="preserve">
+    <value>Puerta del inversor</value>
+  </data>
+  <data name="Inverter_Type" xml:space="preserve">
+    <value>Tipo de inversor</value>
+  </data>
+  <data name="IoDevice" xml:space="preserve">
+    <value>IoDevice</value>
+  </data>
+  <data name="IoDevice_Index" xml:space="preserve">
+    <value>Índice IoDevice</value>
+  </data>
+  <data name="IoDevice_IpAddress" xml:space="preserve">
+    <value>IP IoDevice</value>
+  </data>
+  <data name="IoDevice_TcpPort" xml:space="preserve">
+    <value>Puerto IoDevice</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Láser</value>
+  </data>
+  <data name="Laser_IpAddress" xml:space="preserve">
+    <value>Láser IP</value>
+  </data>
+  <data name="Laser_TcpPort" xml:space="preserve">
+    <value>Puerta láser</value>
+  </data>
+  <data name="LastCalibrationCycles" xml:space="preserve">
+    <value>Últimos ciclos de calibración</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Máquina</value>
+  </data>
+  <data name="Machine_CategoryDescription" xml:space="preserve">
+    <value>Permite modificar los parámetros estructurales de la máquina.</value>
+  </data>
+  <data name="Machine_ExpireCountPrecent" xml:space="preserve">
+    <value>Anticipo % de caducidad de los contadores de mantenimiento</value>
+  </data>
+  <data name="Machine_ExpireDays" xml:space="preserve">
+    <value>Anticipación de caducidad de los días de mantenimiento</value>
+  </data>
+  <data name="Machine_Height" xml:space="preserve">
+    <value>Altura</value>
+  </data>
+  <data name="Machine_HorizontalCyclesToCalibrate" xml:space="preserve">
+    <value>Ciclos del eje horizontal para el calibrado</value>
+  </data>
+  <data name="Machine_HorizontalPositionToCalibrate" xml:space="preserve">
+    <value>Posición del eje horizontal para la calibración</value>
+  </data>
+  <data name="Machine_Id" xml:space="preserve">
+    <value>Número de máquina</value>
+  </data>
+  <data name="Machine_LoadDepth" xml:space="preserve">
+    <value>Profundidad</value>
+  </data>
+  <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
+    <value>Altura máxima del cajón</value>
+  </data>
+  <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
+    <value>Peso neto máximo del cajón</value>
+  </data>
+  <data name="Machine_LoadUnitMinHeight" xml:space="preserve">
+    <value>Altura mínima del cajón</value>
+  </data>
+  <data name="Machine_LoadUnitTare" xml:space="preserve">
+    <value>Tara del cajón</value>
+  </data>
+  <data name="Machine_LoadUnitVeryHeavyPercent" xml:space="preserve">
+    <value>Peso neto por cajón muy pesado, 0 inutilizable</value>
+  </data>
+  <data name="Machine_LoadUnitWidth" xml:space="preserve">
+    <value>Anchura</value>
+  </data>
+  <data name="Machine_MaxGrossWeight" xml:space="preserve">
+    <value>Peso bruto máximo de la máquina</value>
+  </data>
+  <data name="Machine_ModelName" xml:space="preserve">
+    <value>Modelo</value>
+  </data>
+  <data name="Machine_SerialNumber" xml:space="preserve">
+    <value>Matrícula</value>
+  </data>
+  <data name="Machine_Simulation" xml:space="preserve">
+    <value>Simulación</value>
+  </data>
+  <data name="ManualMovements" xml:space="preserve">
+    <value>Movimientos manuales</value>
+  </data>
+  <data name="MeasureConst0" xml:space="preserve">
+    <value>Pesaje constante K0</value>
+  </data>
+  <data name="MeasureConst1" xml:space="preserve">
+    <value>Pesaje constante K1</value>
+  </data>
+  <data name="MeasureConst2" xml:space="preserve">
+    <value>Pesaje constante de K2</value>
+  </data>
+  <data name="MeasureSpeed" xml:space="preserve">
+    <value>Velocidad de pesaje</value>
+  </data>
+  <data name="MeasureTime" xml:space="preserve">
+    <value>Tiempo de pesaje</value>
+  </data>
+  <data name="MovementParameters" xml:space="preserve">
+    <value>MovementParameters</value>
+  </data>
+  <data name="MovementProfileType.LongDeposit" xml:space="preserve">
+    <value>Almacenamiento prolongado</value>
+  </data>
+  <data name="MovementProfileType.LongPickup" xml:space="preserve">
+    <value>Toma larga</value>
+  </data>
+  <data name="MovementProfileType.ShortDeposit" xml:space="preserve">
+    <value>Depósito corto</value>
+  </data>
+  <data name="MovementProfileType.ShortPickup" xml:space="preserve">
+    <value>Toma corta</value>
+  </data>
+  <data name="MovementProfileType.Undefined" xml:space="preserve">
+    <value>No definido</value>
+  </data>
+  <data name="NetworkConfiguration" xml:space="preserve">
+    <value>Configuración de la red</value>
+  </data>
+  <data name="Orientation.Horizontal" xml:space="preserve">
+    <value>horizontal</value>
+  </data>
+  <data name="Orientation.Vertical" xml:space="preserve">
+    <value>vertical</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Toma</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Posición {0}</value>
+  </data>
+  <data name="PulleyDiameter" xml:space="preserve">
+    <value>Diámetro primario de la polea</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Depósito</value>
+  </data>
+  <data name="Race" xml:space="preserve">
+    <value>Carrera</value>
+  </data>
+  <data name="SecondTermMultiplier" xml:space="preserve">
+    <value>Segundo factor de multiplicación de alargamiento correa</value>
+  </data>
+  <data name="ShaftDiameter" xml:space="preserve">
+    <value>Diámetro del eje</value>
+  </data>
+  <data name="ShaftElasticity" xml:space="preserve">
+    <value>Módulo de elasticidad</value>
+  </data>
+  <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
+    <value>Tasa de alimentación de la compuerta</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
+    <value>Tiempo de cierre de la compuerta</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
+    <value>Tiempo de apertura de la compuerta</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationClose" xml:space="preserve">
+    <value>Duración de cierre a mitad de compuerta</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationOpen" xml:space="preserve">
+    <value>Tiempo de apertura de la mitad de compuerta</value>
+  </data>
+  <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
+    <value>Velocidad máxima compuerta</value>
+  </data>
+  <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
+    <value>Velocidad mínima de la compuerta</value>
+  </data>
+  <data name="ShutterType.NotSpecified" xml:space="preserve">
+    <value>No se especifica</value>
+  </data>
+  <data name="ShutterType.ThreeSensors" xml:space="preserve">
+    <value>Tres sensores</value>
+  </data>
+  <data name="ShutterType.TwoSensors" xml:space="preserve">
+    <value>Dos sensores</value>
+  </data>
+  <data name="Shutter_AssistedMovements" xml:space="preserve">
+    <value>Movimiento guiado por la compuerta</value>
+  </data>
+  <data name="Shutter_ManualMovements" xml:space="preserve">
+    <value>Movimientos manuales de la compuerta</value>
+  </data>
+  <data name="Shutter_Type" xml:space="preserve">
+    <value>Tipo de compuerta</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Velocidad</value>
+  </data>
+  <data name="StepMovementParameters_AdjustAccelerationByWeight" xml:space="preserve">
+    <value>Corrige aceleración con peso</value>
+  </data>
+  <data name="StepMovementParameters_AdjustSpeedByWeight" xml:space="preserve">
+    <value>Corrige velocidad con peso</value>
+  </data>
+  <data name="StepMovementParameters_Number" xml:space="preserve">
+    <value>Número</value>
+  </data>
+  <data name="StepMovementParameters_Position" xml:space="preserve">
+    <value>Ubicación</value>
+  </data>
+  <data name="TargetDistance" xml:space="preserve">
+    <value>Espacio máximo para viajar con controles manuales</value>
+  </data>
+  <data name="TargetDistanceAfterZero" xml:space="preserve">
+    <value>Espacio máximo de desplazamiento con controles manuales después del eje cero</value>
+  </data>
+  <data name="TotalDistance" xml:space="preserve">
+    <value>Distancia total</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Visión</value>
+  </data>
+  <data name="Center" xml:space="preserve">
+    <value>Centro</value>
+  </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Longitud única ID del artículo</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Contenedor</value>
+  </data>
+  <data name="Machine_IsAxisChanged" xml:space="preserve">
+    <value>Eje cambiado</value>
+  </data>
+  <data name="Machine_IsHeartBeat" xml:space="preserve">
+    <value>Latidos del corazón</value>
+  </data>
+  <data name="EnabeNoteRules" xml:space="preserve">
+    <value>Habilitar reglas conocidas</value>
+  </data>
+  <data name="ShutterMaxSpeed" xml:space="preserve">
+    <value>Velocidad máxima</value>
+  </data>
+  <data name="ShutterMinSpeed" xml:space="preserve">
+    <value>Velocidad mínima</value>
+  </data>
+  <data name="ElevatorAxis_HomingAcceleration" xml:space="preserve">
+    <value>Aceleración de reposición</value>
+  </data>
+  <data name="Machine_VerticalCyclesToCalibrate" xml:space="preserve">
+    <value>Ciclos del eje vertical para el calibrado</value>
+  </data>
+  <data name="Bay_IsTelescopic" xml:space="preserve">
+    <value>Telescópico</value>
+  </data>
+  <data name="Machine_IsEnableAddItem" xml:space="preserve">
+    <value>Activar la adición de artículos</value>
+  </data>
+  <data name="BarcodeAutomaticPut" xml:space="preserve">
+    <value>Depósito automático con código de barras</value>
+  </data>
 </root>

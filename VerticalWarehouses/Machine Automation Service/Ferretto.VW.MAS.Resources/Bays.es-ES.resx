@@ -117,49 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
+    <value>La elevación de la bahía ({0}) debe estar en el rango [\1},\2}].</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
+    <value>La ubicación de la bahía especificada no es válida.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
+    <value>La bahía especificada no tiene un carrusel.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
+    <value>La bahía contiene al menos un cajón.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value>La bahía contiene un cajón en su posición superior.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
+    <value>La cadena de la bahía no está en la posición cero.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
+    <value>Axis.HorizontalAndVertical no es un eje válido para el método GetInverterIndexByMovementType ()</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
+    <value>La altura máxima del carro no es válida.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>La bahía contiene un cajón en su posición exterior</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
+    <value>La bahía especificada no es una bahía exterior</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
+    <value>La bahía exterior no puede ejecutar un movimiento inválido</value>
   </data>
 </root>

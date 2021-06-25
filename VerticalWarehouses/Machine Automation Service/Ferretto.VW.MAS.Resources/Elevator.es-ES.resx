@@ -117,49 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="ALoadingUnitIsAlreadyOnBoardOfTheElevator" xml:space="preserve">
+    <value>Ya hay un cajón en el elevador.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Ya hay un cajón en la posición de la bahía especificada.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="MovementDistanceCannotBeZero" xml:space="preserve">
+    <value>La distancia de movimiento no puede ser cero.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="NoLoadingUnitIsOnBoardOfTheElevator" xml:space="preserve">
+    <value>No hay cajones en el elevador.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>No hay cajones en la bahía especificada.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
+    <value>No hay ningún cajón presente en la celda especificada.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>No hay cajones esperando a ser arrastrados a la ubicación de la bahía especificada.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="OffsetOutOfBounds" xml:space="preserve">
+    <value>El desplazamiento ({0}mm) del eje vertical no es válido: debe estar dentro del rango [{1}mm; {2}mm].</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="TargetPositionOutOfBounds" xml:space="preserve">
+    <value>La posición del objetivo ({0}mm) debe estar dentro del rango [[{1}mm; {2}mm].</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>El elevador ya está delante de la posición de la bahía especificada.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>El elevador ya se encuentra frente a la celda especificada.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>El elevador no está vacío, pero el trinquete está en la posición cero.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>El elevador no está lleno, pero el trinquete no está en la posición cero.</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>El elevador no está situado frente a la ubicación de la bahía especificada.</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>El elevador no se encuentra frente a la celda especificada.</value>
+  </data>
+  <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
+    <value>No hay suficiente espacio disponible en la celda especificada para acomodar el cajón.</value>
+  </data>
+  <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
+    <value>La calibración del eje vertical debe realizarse antes de intentar cualquier movimiento absoluto del elevador.</value>
   </data>
 </root>

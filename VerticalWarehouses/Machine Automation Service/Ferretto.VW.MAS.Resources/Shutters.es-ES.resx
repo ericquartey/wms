@@ -117,49 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="TheDelayBetweenTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>El retraso entre dos rondas de pruebas debe ser estrictamente positivo.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="TheMinSpeedIsNotValid" xml:space="preserve">
+    <value>La velocidad baja de compuerta no es válida</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>El número de ciclos de prueba debe ser estrictamente positivo.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="ThePositionIsNotValid" xml:space="preserve">
+    <value>La posición inicial de la compuerta no es válida</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="TheShutterIsNotCompletelyOpen" xml:space="preserve">
+    <value>La compuerta no está completamente abierta.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="TheShutterTypeIsNotValid" xml:space="preserve">
+    <value>El tipo de compuerta no es válido</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="TheSpeedRateIsNotValid" xml:space="preserve">
+    <value>La velocidad de compuerta no es válida</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
-  </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
-  </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
+    <value>La compuerta de la bahía {0} no está completamente cerrada.</value>
   </data>
 </root>

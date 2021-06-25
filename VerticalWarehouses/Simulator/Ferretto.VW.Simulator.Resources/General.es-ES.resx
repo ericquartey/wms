@@ -117,49 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="ControlWord" xml:space="preserve">
+    <value>Palabra de control</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="Input" xml:space="preserve">
+    <value>Entrada</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="Inputs" xml:space="preserve">
+    <value>Entradas</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="Output" xml:space="preserve">
+    <value>Salida</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="Outputs" xml:space="preserve">
+    <value>Salidas</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="Safety" xml:space="preserve">
+    <value>Dispositivos de seguridad</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="ImportConfigurationCommand" xml:space="preserve">
+    <value>Configuración de la carga</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="SimulatorStarted" xml:space="preserve">
+    <value>Simulador iniciado</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="StartSimulatorCommand" xml:space="preserve">
+    <value>Iniciar la simulación</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="StatusWord" xml:space="preserve">
+    <value>Palabra de estado</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="StopSimulatorCommand" xml:space="preserve">
+    <value>Detener la simulación</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="Title" xml:space="preserve">
+    <value>Simulador VW</value>
   </data>
 </root>

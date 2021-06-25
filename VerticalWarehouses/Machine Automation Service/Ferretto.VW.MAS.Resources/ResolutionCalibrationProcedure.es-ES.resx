@@ -117,49 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="ExpectedDistanceMustBeStrictlyPositive" xml:space="preserve">
+    <value>La distancia debe ser estrictamente positiva.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="MeasuredDistanceMustBeStrictlyPositive" xml:space="preserve">
+    <value>La distancia medida debe ser estrictamente positiva.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
-  </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
-  </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
-  </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
-  </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
-  </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
-  </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
-  </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus" xml:space="preserve">
+    <value>El procedimiento no puede iniciarse debido al estado actual de la instalación.</value>
   </data>
 </root>

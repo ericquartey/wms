@@ -117,49 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="BayLightActivation" xml:space="preserve">
+    <value>Activación de la iluminación de la bahía</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="CarterSensorLeft" xml:space="preserve">
+    <value>Sensor del cárter protección IZQ</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="CarterSensorRight" xml:space="preserve">
+    <value>Sensor de cárter protección DER</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="EmergencyPB" xml:space="preserve">
+    <value>Seta de emergencia</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="EnableRunConsole" xml:space="preserve">
+    <value>Activación de la ejecución desde la consola</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
+    <value>Selección del motor de la cuna (retroalimentación)</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
+    <value>Selección del motor del elevador (retroalimentación)</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="Free" xml:space="preserve">
+    <value>Libre</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="HeightReadingActivation" xml:space="preserve">
+    <value>Activación de la lectura de la altura (barrera de medición)</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="InverterFaultSignal" xml:space="preserve">
+    <value>Acumulado Inversor en Fallo</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="IODeviceByID" xml:space="preserve">
+    <value>Dispositivo IO {0:00}</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
+  <data name="IODeviceName" xml:space="preserve">
+    <value>Nombre del dispositivo IO</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
+  <data name="LightCurtain" xml:space="preserve">
+    <value>Barrera óptica antintrusión</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="LightCurtainCalibration" xml:space="preserve">
+    <value>Calibración de la barrera</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
+    <value>Sensor de presencia de cajón inferior / bahía intermedia</value>
+  </data>
+  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Presencia de cajón en la cuna en lado máquina</value>
+  </data>
+  <data name="MotorElevatorChainSelection" xml:space="preserve">
+    <value>Selección del motor de la cuna</value>
+  </data>
+  <data name="MotorElevatorSelection" xml:space="preserve">
+    <value>Selección del motor del elevador</value>
+  </data>
+  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Presencia de cajón en la cuna en lado de operador</value>
+  </data>
+  <data name="ResetSafetyFunction" xml:space="preserve">
+    <value>Función de seguridad de restablecimiento (pulso de 300 ms)</value>
+  </data>
+  <data name="RobotEndPicking" xml:space="preserve">
+    <value>Opción robot - Tecla de fin de recogida (o fin de recogida robot)</value>
+  </data>
+  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
+    <value>Opción de Robot - Almacén de Misión Completa</value>
+  </data>
+  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
+    <value>Opción de Robot - Almacén de Listas/Fallas</value>
+  </data>
+  <data name="SafetyStatus" xml:space="preserve">
+    <value>Estado de la función de seguridad</value>
+  </data>
+  <data name="TrolleyHook" xml:space="preserve">
+    <value>Opción de carro - Accesorio de carro</value>
+  </data>
+  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
+    <value>Sensor de presencia de cajón en bahía</value>
   </data>
 </root>

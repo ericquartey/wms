@@ -117,49 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="TheCellAlreadyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>La celda ya contiene otro cajón.</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="TheCellIsUnexpectedlyFree" xml:space="preserve">
+    <value>La celda está inesperadamente vacía.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Información</value>
+  <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>La celda contiene inesperadamente otro cajón.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Estadísticas, alarmas, diagnósticos</value>
+  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
+    <value>El cajón no puede ocupar una celda cerrada.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Instalación</value>
+  <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
+    <value>El cajón ya está cargado en otra celda.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Procedimientos de instalación, movimientos manuales, otros</value>
+  <data name="TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights" xml:space="preserve">
+    <value>La altura especificada no reside entre alturas de celdas adyacentes.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Mantenimiento</value>
+  <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
+    <value>La altura especificada haría que el panel se solapara con otro existente.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
+    <value>La célula de destino es solo espacial, no puede soportar una unidad de carga.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Mantenimiento, compactación de cajones, actualización</value>
+  <data name="TheTargetCellIsBlocked" xml:space="preserve">
+    <value>La celda de destino está bloqueada.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Movimientos</value>
+  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>La celda especificada no se encuentra dentro de los límites verticales del elevador.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVER</value>
+  <data name="NoEmptyCellsAvailable" xml:space="preserve">
+    <value>No hay células disponibles en almacén.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Estado de los sensores, reinicio de la máquina, otros</value>
+  <data name="TheCellIsNotFree" xml:space="preserve">
+    <value>La célula no es libre</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Recogiendo</value>
+  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
+    <value>La celda especificada no puede contener el cajón del elevador</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>La altura especificada no se encuentra dentro de los límites verticales del elevador.</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Recogida, depósito, inventario</value>
+  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
+    <value>El cajón no puede colocarse delante de una célula desactivada.</value>
+  </data>
+  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
+    <value>La célula de destino está desactivada.</value>
+  </data>
+  <data name="TheTargetCellIsUnusable" xml:space="preserve">
+    <value>La célula de destino es inutilizable.</value>
   </data>
 </root>
