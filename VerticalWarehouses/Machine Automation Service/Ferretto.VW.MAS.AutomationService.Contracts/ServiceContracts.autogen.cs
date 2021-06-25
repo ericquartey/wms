@@ -5057,23 +5057,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Definition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public InstructionDefinition Definition { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("DoubleCounter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double? DoubleCounter { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("InstructionStatus", Required = Newtonsoft.Json.Required.Always)]
         public MachineServiceStatus InstructionStatus { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IntCounter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? IntCounter { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsDone", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDone { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsToDo", Required = Newtonsoft.Json.Required.Always)]
         public bool IsToDo { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("MaintenanceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? MaintenanceDate { get; set; }
     
         public string ToJson() 
         {

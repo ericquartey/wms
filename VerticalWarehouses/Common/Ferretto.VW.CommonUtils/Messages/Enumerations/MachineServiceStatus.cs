@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
     public enum MachineServiceStatus
     {

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -207,6 +208,37 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 await this.SendIOLogAsync(ioLog);
             }
+        }
+
+        private async Task OnServicingScheduleChangedAsync(ServicingScheduleMessageData messageData)
+        {
+            string text;
+            if (messageData.InstructionId > 0 && messageData.InstructionStatus != MachineServiceStatus.Undefined)
+            {
+                text = "Maintenance instruction " + messageData.InstructionId + " status " + messageData.InstructionStatus.ToString();
+            }
+            else if (messageData.ServiceStatus != MachineServiceStatus.Undefined)
+            {
+                text = "Maintenance service " + messageData.ServiceId + " status " + messageData.ServiceStatus.ToString();
+            }
+            else
+            {
+                return;
+            }
+
+            var errorLog = new ErrorLog
+            {
+                ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
+                AdditionalText = text,
+                BayNumber = 0,
+                Code = 0,
+                DetailCode = messageData.ServiceId,
+                InverterIndex = messageData.InstructionId,
+                OccurrenceDate = DateTimeOffset.Now,
+                ResolutionDate = null,
+            };
+
+            await this.SendErrorLogAsync(errorLog);
         }
 
         private async Task SendErrorLogAsync(ErrorLog errorLog)

@@ -1,9 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -12,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Fields
 
         private readonly DataLayerContext dataContext;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger<ServicingProvider> logger;
 
@@ -25,11 +32,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ServicingProvider(DataLayerContext dataContext,
             ILogger<ServicingProvider> logger,
-            IStatisticsDataProvider machineStatistics)
+            IStatisticsDataProvider machineStatistics,
+            IEventAggregator eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.machineStatistics = machineStatistics ?? throw new ArgumentNullException(nameof(machineStatistics));
+            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
         }
 
         #endregion
@@ -691,6 +700,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             service.ServiceStatus = MachineServiceStatus.Expired;
                             this.dataContext.ServicingInfo.Update(service);
+                            this.ScheduleNotification(service.Id, service.ServiceStatus, 0, MachineServiceStatus.Undefined);
                         }
                         this.logger.LogWarning(Resources.General.MaintenanceStateExpiring);
                     }
@@ -703,6 +713,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             service.ServiceStatus = MachineServiceStatus.Expiring;
                             this.dataContext.ServicingInfo.Update(service);
+                            this.ScheduleNotification(service.Id, service.ServiceStatus, 0, MachineServiceStatus.Undefined);
                         }
                     }
 
@@ -730,6 +741,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             {
                                 ins.InstructionStatus = MachineServiceStatus.Expired;
                                 this.dataContext.Instructions.Update(ins);
+                                this.ScheduleNotification(service.Id, service.ServiceStatus, ins.Id, ins.InstructionStatus);
                                 //this.logger.LogWarning(Resources.General.MaintenanceStateExpiring);
                             }
                         }
@@ -741,6 +753,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             {
                                 ins.InstructionStatus = MachineServiceStatus.Expired;
                                 this.dataContext.Instructions.Update(ins);
+                                this.ScheduleNotification(service.Id, service.ServiceStatus, ins.Id, ins.InstructionStatus);
                                 //this.logger.LogWarning(Resources.General.MaintenanceStateExpiring);
                             }
                         }
@@ -754,6 +767,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                 ins.InstructionStatus = MachineServiceStatus.Expiring;
                                 ins.IsToDo = true;
                                 this.dataContext.Instructions.Update(ins);
+                                this.ScheduleNotification(service.Id, service.ServiceStatus, ins.Id, ins.InstructionStatus);
                             }
                         }
                         if (ins.InstructionStatus == MachineServiceStatus.Valid
@@ -767,6 +781,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                 ins.InstructionStatus = MachineServiceStatus.Expiring;
                                 ins.IsToDo = true;
                                 this.dataContext.Instructions.Update(ins);
+                                this.ScheduleNotification(service.Id, service.ServiceStatus, ins.Id, ins.InstructionStatus);
                             }
                         }
                     }
@@ -793,6 +808,21 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.Instructions.Add(instruction);
                 }
             }
+        }
+
+        private void ScheduleNotification(int serviceId, MachineServiceStatus serviceStatus, int instructionId, MachineServiceStatus instructionStatus)
+        {
+            var notificationMessage = new NotificationMessage(
+                new ServicingScheduleMessageData(serviceId, serviceStatus, instructionId, instructionStatus),
+                $"Servicing status changed",
+                MessageActor.Any,
+                MessageActor.MissionManager,
+                MessageType.ServicingSchedule,
+                BayNumber.None);
+
+            this.eventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
         }
 
         #endregion
