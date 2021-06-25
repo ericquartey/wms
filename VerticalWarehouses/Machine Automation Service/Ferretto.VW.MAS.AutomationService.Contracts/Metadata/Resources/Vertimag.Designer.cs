@@ -583,11 +583,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vertical Deposit Compensation Delay.
+        /// </summary>
+        public static string ElevatorAxis_VerticalDepositCompensationDelay {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_VerticalDepositCompensationDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical Deposit Offset.
         /// </summary>
         public static string ElevatorAxis_VerticalDepositOffset {
             get {
                 return ResourceManager.GetString("ElevatorAxis_VerticalDepositOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Pickup Compensation Delay.
+        /// </summary>
+        public static string ElevatorAxis_VerticalPickupCompensationDelay {
+            get {
+                return ResourceManager.GetString("ElevatorAxis_VerticalPickupCompensationDelay", resourceCulture);
             }
         }
         
@@ -923,24 +941,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
                 return ResourceManager.GetString("Machine_IsEnableAddItem", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Request Confirm for last operation on LoadingUnit item.
-        /// </summary>
-        public static string Machine_IsRequestConfirmForLastOperationOnLoadingUnit
-        {
-            get
-            {
-                return ResourceManager.GetString("Machine_IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to HeartBeat in inverter communication .
         /// </summary>
         public static string Machine_IsHeartBeat {
             get {
                 return ResourceManager.GetString("Machine_IsHeartBeat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request confirm for last operation on LU.
+        /// </summary>
+        public static string Machine_IsRequestConfirmForLastOperationOnLoadingUnit {
+            get {
+                return ResourceManager.GetString("Machine_IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
             }
         }
         

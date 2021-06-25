@@ -24,8 +24,8 @@
 
 ## Nuove Funzionalità 1.0.20 rispetto la 1.0.19
 - Aggiunta procedura di test per la BES
-- Aggiunta descrizione alla richiesta della causale nella ricerca articolo 
 - Aggiunto messaggio "Maintenance" sulla telemetria quando scade una manutenzione
+- Aggiunti parametri per l'avvio ritardato della compensazione verticale
 
 ## Bug Risolti
 - Corretta l'attivazione degli avvisi di manutenzioni scadute

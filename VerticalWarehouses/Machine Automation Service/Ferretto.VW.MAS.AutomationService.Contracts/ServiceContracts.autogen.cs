@@ -4737,8 +4737,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("UpperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("VerticalDepositCompensationDelay", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? VerticalDepositCompensationDelay { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("VerticalDepositOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? VerticalDepositOffset { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("VerticalPickupCompensationDelay", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? VerticalPickupCompensationDelay { get; set; }
     
         [Newtonsoft.Json.JsonProperty("VerticalPickupOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? VerticalPickupOffset { get; set; }

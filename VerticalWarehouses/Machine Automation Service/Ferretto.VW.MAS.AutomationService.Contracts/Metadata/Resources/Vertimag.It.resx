@@ -585,4 +585,10 @@
   <data name="Machine_IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
     <value>Richiedi conferma per ultima operazione su cassetto</value>
   </data>
+  <data name="ElevatorAxis_VerticalDepositCompensationDelay" xml:space="preserve">
+    <value>Ritardo compensazione deposito</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupCompensationDelay" xml:space="preserve">
+    <value>Ritardo compensazione prelievo</value>
+  </data>
 </root>

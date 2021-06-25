@@ -1232,9 +1232,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         }
                         else
                         {
-                            if (this.machineData.MessageData.Delay > 0)
+                            if (this.machineData.MessageData.DelayEnd > 0)
                             {
-                                this.delayTimer = new Timer(this.DelayElapsed, null, this.machineData.MessageData.Delay * 1000, Timeout.Infinite);
+                                this.delayTimer = new Timer(this.DelayElapsed, null, this.machineData.MessageData.DelayEnd * 1000, Timeout.Infinite);
                             }
                             else
                             {
@@ -1487,9 +1487,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             }
                             else
                             {
-                                if (this.machineData.MessageData.Delay > 0)
+                                if (this.machineData.MessageData.DelayEnd > 0)
                                 {
-                                    this.delayTimer = new Timer(this.DelayDoubleExtBayElapsed, null, this.machineData.MessageData.Delay * 1000, Timeout.Infinite);
+                                    this.delayTimer = new Timer(this.DelayDoubleExtBayElapsed, null, this.machineData.MessageData.DelayEnd * 1000, Timeout.Infinite);
                                 }
                                 else
                                 {
