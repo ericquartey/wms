@@ -140,8 +140,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"waitContinue: {waitContinue}; " +
                 $"loadUnitId: {loadingUnitId}; " +
                 $"scalingFactor: {scalingFactor:0.0000}; " +
-                $"compensation: {compensation:0.00}" +
-                $"horizontal current position: {this.HorizontalPosition} mm");
+                $"compensation: {compensation:0.00}; ");
 
             // ---------------------------
             // Horizontal movement message
