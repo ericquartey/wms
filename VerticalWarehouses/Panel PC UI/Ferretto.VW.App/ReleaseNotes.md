@@ -32,6 +32,7 @@
 - Corretta l'attivazione degli avvisi di manutenzioni scadute
 - Eliminato un caso di blocco delle missioni senza allarme con baie contrapposte
 - Il ripristino delle missioni nella giostra riporta la serranda in posizione intermedia
+- La compattazione non muove i cassetti bloccati
 
 ## Compatibile con adapter 0.4.21
 ***

@@ -258,7 +258,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 try
                 {
-                    if (loadUnit.IsIntoMachine)
+                    if (loadUnit.IsIntoMachine && loadUnit.Status == DataModels.Enumerations.LoadingUnitStatus.InLocation)
                     {
                         cellId = this.cellsProvider.FindDownCell(loadUnit);
                         loadUnitOut = loadUnit;
@@ -286,7 +286,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 try
                 {
-                    if (loadUnit.IsIntoMachine)
+                    if (loadUnit.IsIntoMachine && loadUnit.Status == DataModels.Enumerations.LoadingUnitStatus.InLocation)
                     {
                         cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
                         loadUnitOut = loadUnit;
@@ -318,7 +318,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         try
                         {
-                            if (loadUnit.IsIntoMachine)
+                            if (loadUnit.IsIntoMachine && loadUnit.Status == DataModels.Enumerations.LoadingUnitStatus.InLocation)
                             {
                                 cellId = this.cellsProvider.FindTopCell(loadUnit);
                                 loadUnitOut = loadUnit;
