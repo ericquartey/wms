@@ -26,6 +26,7 @@
 - Aggiunta procedura di test per la BES
 - Aggiunto messaggio "Maintenance" sulla telemetria quando scade una manutenzione
 - Aggiunti parametri per l'avvio ritardato della compensazione verticale
+- Aggiunte traduzioni in lingua spagnola
 
 ## Bug Risolti
 - Corretta l'attivazione degli avvisi di manutenzioni scadute
