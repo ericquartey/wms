@@ -140,8 +140,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"waitContinue: {waitContinue}; " +
                 $"loadUnitId: {loadingUnitId}; " +
                 $"scalingFactor: {scalingFactor:0.0000}; " +
-                $"compensation: {compensation:0.00}" +
-                $"horizontal current position: {this.HorizontalPosition} mm");
+                $"compensation: {compensation:0.00}; ");
 
             // ---------------------------
             // Horizontal movement message
@@ -192,11 +191,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // Calculate time [s] to perform the horizontal movement
             var nItems = profileSteps.Count();
-            var time = 0.0d; var lastPosTmp = this.HorizontalPosition;
+            var time = 0.0d;
+            var lastPosTmp = this.HorizontalPosition;
             for (var i = 0; i < nItems; i++)
             {
                 time += Math.Abs(switchPosition[i] - lastPosTmp) / speed[i];
                 lastPosTmp = switchPosition[i];
+            }
+
+            var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+            var delay = 0;
+            if (isLoadingUnitOnBoard
+                && verticalAxis.VerticalDepositCompensationDelay.HasValue
+                && verticalAxis.VerticalDepositCompensationDelay.Value > 0
+                && time > verticalAxis.VerticalDepositCompensationDelay.Value / 10.0 + 1)
+            {
+                time -= verticalAxis.VerticalDepositCompensationDelay.Value / 10.0;
+                delay = verticalAxis.VerticalDepositCompensationDelay.Value * 100;
+            }
+            else if (!isLoadingUnitOnBoard
+                && verticalAxis.VerticalPickupCompensationDelay.HasValue
+                && verticalAxis.VerticalPickupCompensationDelay.Value > 0
+                && time > verticalAxis.VerticalPickupCompensationDelay.Value / 10.0 + 1)
+            {
+                time -= verticalAxis.VerticalPickupCompensationDelay.Value / 10.0;
+                delay = verticalAxis.VerticalPickupCompensationDelay.Value * 100;
             }
 
             const double MIN_SPEED_VALUE = 0.1d;
@@ -225,11 +244,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 WaitContinue = waitContinue,
                 IsPickupMission = false,
                 BypassConditions = true,
+                DelayStart = delay,
             };
 
             this.logger.LogInformation($"MoveToVerticalPosition: {MovementMode.Position}; " +
                 $"manualMovement: {false}; " +
-                $"targetPosition: {this.VerticalPosition + displacement:0.00}; [displacement: {displacement:0.00}]" +
+                $"targetPosition: {this.VerticalPosition + displacement:0.00}; [displacement: {displacement:0.00}]; " +
                 $"homing: {false}; " +
                 $"waitContinue: {waitContinue}; " +
                 $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
@@ -240,7 +260,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"Load Unit {horizontalMovementMessageData.LoadingUnitId.GetValueOrDefault()}; " +
                 $"Load Unit gross weight {grossWeight:0.00}; " +
                 $"Bypass condition {verticalMovementMessageData.BypassConditions}; " +
-                $"time to perform the movement: {time:0.000} s " +
+                $"time to perform the movement: {time:0.000} s; " +
+                $"delay start: {delay} ms; " +
                 $"vertical current position: {this.VerticalPosition:0.00} mm");
 
             // --------------------------

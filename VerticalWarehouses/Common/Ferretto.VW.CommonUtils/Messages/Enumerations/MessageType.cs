@@ -146,6 +146,11 @@
 
         InverterReading,
 
-        InverterParameters
+        InverterParameters,
+
+        /// <summary>
+        /// Servicing and maintenance status to Telemetry
+        /// </summary>
+        ServicingSchedule,
     }
 }

@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
             this.Logger.LogDebug($"2:Start Horizontal movement");
             this.ParentStateMachine.PublishCommandMessage(message);
 
-            //var verticalMessageData = this.machineData.MessageData.VerticalPositioningMessageData;
+            var verticalMessageData = this.machineData.MessageData.VerticalPositioningMessageData;
 
             //// Send message to move the vertical axis
             //message = new CommandMessage(
@@ -150,9 +150,17 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
 
             //this.ParentStateMachine.PublishCommandMessage(message);
 
-            this.timerElapsed = 0;
-            this.delayTimer = null;  // new Timer(this.DelayElapsed, null, TIMER_ELAPSED, Timeout.Infinite);
-            this.DelayElapsed(null);  // uncomment this line to get an instantaneous call
+            if (verticalMessageData.DelayStart > 0)
+            {
+                this.timerElapsed = verticalMessageData.DelayStart;
+                this.delayTimer = new Timer(this.DelayElapsed, null, this.timerElapsed, Timeout.Infinite);
+            }
+            else
+            {
+                this.timerElapsed = 0;
+                this.delayTimer = null;
+                this.DelayElapsed(null);
+            }
         }
 
         public override void Stop(StopRequestReason reason)

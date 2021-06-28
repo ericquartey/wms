@@ -57,6 +57,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.SensorsChanged when message.Data is SensorsChangedMessageData messageData:
                     await this.OnSensorsChanged(message, messageData);
                     break;
+
+                case MessageType.ServicingSchedule when message.Data is ServicingScheduleMessageData messageData:
+                    await this.OnServicingScheduleChangedAsync(messageData);
+                    break;
             }
         }
 

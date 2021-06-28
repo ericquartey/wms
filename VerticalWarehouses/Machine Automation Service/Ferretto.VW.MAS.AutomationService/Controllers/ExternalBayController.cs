@@ -240,6 +240,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("update-resolution")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult UpdateResolution(double newRace)
+        {
+            this.baysDataProvider.UpdateResolution(this.BayNumber, newRace);
+            return this.Accepted();
+        }
+
         #endregion
     }
 }

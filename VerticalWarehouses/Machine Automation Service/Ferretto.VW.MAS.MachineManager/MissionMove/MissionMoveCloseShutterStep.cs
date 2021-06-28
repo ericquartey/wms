@@ -70,6 +70,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (executeShutterClosing)
             {
                 // Close the shutter of specified bay
+                this.Logger.LogInformation($"{this.GetType().Name}: Shutter Close start Mission:Id={this.Mission.Id}");
                 this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
 
                 var machine = this.MachineProvider.GetMinMaxHeight();
@@ -116,7 +117,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else if (notification.Type == MessageType.ShutterPositioning)
                     {
-                        if (this.UpdateResponseList(notification.Type))
+                        this.Logger.LogDebug($"{this.GetType().Name}: Shutter positioning end Mission:Id={this.Mission.Id}");
+                        var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(notification.RequestingBay);
+                        var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                        if (this.Mission.CloseShutterPosition != ShutterPosition.NotSpecified
+                            && shutterPosition != this.Mission.CloseShutterPosition)
+                        {
+                            this.Logger.LogInformation($"{this.GetType().Name}: Shutter Close start Mission:Id={this.Mission.Id}");
+                            this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, restore: false, this.Mission.CloseShutterPosition);
+                        }
+                        else if (this.UpdateResponseList(notification.Type))
                         {
                             this.MissionsDataProvider.Update(this.Mission);
                             this.Logger.LogTrace($"UpdateResponseList: {notification.Type} Mission:Id={this.Mission.Id}");

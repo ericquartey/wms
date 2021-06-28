@@ -123,9 +123,21 @@ namespace Ferretto.VW.MAS.DataModels
         }
 
         /// <summary>
+        /// this parameter adds a delay before starting the vertical compensation for deposit mission in 1T machines.
+        /// Tenths of second
+        /// </summary>
+        public int? VerticalDepositCompensationDelay { get; set; }
+
+        /// <summary>
         /// this parameter is added to the belt elongation
         /// </summary>
         public double? VerticalDepositOffset { get; set; }
+
+        /// <summary>
+        /// this parameter adds a delay before starting the vertical compensation for pickup mission in 1T machines.
+        /// Tenths of second
+        /// </summary>
+        public int? VerticalPickupCompensationDelay { get; set; }
 
         /// <summary>
         /// this parameter is added when positioning for pickup mission

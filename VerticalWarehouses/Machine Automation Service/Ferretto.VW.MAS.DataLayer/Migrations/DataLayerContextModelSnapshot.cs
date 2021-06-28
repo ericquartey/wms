@@ -379,7 +379,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("UpperBound");
 
+                    b.Property<int?>("VerticalDepositCompensationDelay");
+
                     b.Property<double?>("VerticalDepositOffset");
+
+                    b.Property<int?>("VerticalPickupCompensationDelay");
 
                     b.Property<double?>("VerticalPickupOffset");
 

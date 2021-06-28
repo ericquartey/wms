@@ -1159,6 +1159,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drapery available..
+        /// </summary>
+        public static string DraperyAvailable {
+            get {
+                return ResourceManager.GetString("DraperyAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drapery defect.
         /// </summary>
         public static string DraperyDefectPageHeader {
@@ -1182,6 +1191,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DraperyItemNone {
             get {
                 return ResourceManager.GetString("DraperyItemNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drapery already available with code &apos;{0}&apos;..
+        /// </summary>
+        public static string DraperyWithCodeAlreadyAvailable {
+            get {
+                return ResourceManager.GetString("DraperyWithCodeAlreadyAvailable", resourceCulture);
             }
         }
         
@@ -2361,6 +2379,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InternalBay3Up {
             get {
                 return ResourceManager.GetString("InternalBay3Up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid argument.
+        /// </summary>
+        public static string InvalidArgument {
+            get {
+                return ResourceManager.GetString("InvalidArgument", resourceCulture);
             }
         }
         

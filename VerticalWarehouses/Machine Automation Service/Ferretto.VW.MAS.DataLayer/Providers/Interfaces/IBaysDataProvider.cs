@@ -155,6 +155,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateRace(BayNumber bayNumber, double race);
 
+        void UpdateResolution(BayNumber bayNumber, double newRace);
+
         #endregion
     }
 }

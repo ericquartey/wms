@@ -22,21 +22,21 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.19 rispetto la 1.0.18
-- Dopo il deposito in baia esterna doppia, se c'è anche un altro cassetto in baia si porta nell'altra posizione
-- Aggiunto parametro di lunghezza messaggio nella Barra alfanumerica
-- Aggiunto parametro per abilitare la conferma di rientro cassetto
-- Aggiunto controllo del sensore di zero in deposito su baia esterna
-- Aggiunto allarme di deposito in baia senza sensore di presenza
+## Nuove Funzionalità 1.0.20 rispetto la 1.0.19
+- Aggiunta procedura di test per la BES
+- Aggiunto messaggio "Maintenance" sulla telemetria quando scade una manutenzione
+- Aggiunti parametri per l'avvio ritardato della compensazione verticale
+- Aggiunte traduzioni in lingua spagnola
 
 ## Bug Risolti
-- Tendaggi paradiso: corretta gestione di inserimento nuove pezze
-- Corretto numero di scomparto in Ricerca articolo/Cassetti
-- Dopo ogni errore inverter dell'elevatore si fa la calibrazione completa
-- Nella BES l'Inserimento cassetti mostra i comandi di Muovi verso Operatore / Elevatore
+- Corretta l'attivazione degli avvisi di manutenzioni scadute
+- Eliminato un caso di blocco delle missioni senza allarme con baie contrapposte
+- Il ripristino delle missioni nella giostra riporta la serranda in posizione intermedia
 
 ## Compatibile con adapter 0.4.21
 ***
+
+[Versione 1.0.19](#id1019)
 
 [Versione 1.0.18](#id1018)
 
@@ -76,6 +76,24 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1019"></a>
+## Nuove Funzionalità 1.0.19 rispetto la 1.0.18
+- Dopo il deposito in baia esterna doppia, se c'è anche un altro cassetto in baia si porta nell'altra posizione
+- Aggiunto parametro di lunghezza messaggio nella Barra alfanumerica
+- Aggiunto parametro per abilitare la conferma di rientro cassetto
+- Aggiunto controllo del sensore di zero in deposito su baia esterna
+- Aggiunto allarme di deposito in baia senza sensore di presenza
+
+## Bug Risolti
+- Tendaggi paradiso: corretta gestione di inserimento nuove pezze
+- Corretto numero di scomparto in Ricerca articolo/Cassetti
+- Dopo ogni errore inverter dell'elevatore si fa la calibrazione completa
+- Nella BES l'Inserimento cassetti mostra i comandi di Muovi verso Operatore / Elevatore
+
+## Compatibile con adapter 0.4.21
+***
+
 
 <a id="id1018"></a>
 ## Nuove Funzionalità 1.0.18 rispetto la 1.0.17
