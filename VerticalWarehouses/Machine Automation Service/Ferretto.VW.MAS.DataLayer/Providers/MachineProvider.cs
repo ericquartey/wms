@@ -807,7 +807,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         machineStat.TotalWeightBack += l.GrossWeight;
                     }
-                    l.IsIntoMachine = true;
+                    l.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
                 }
             }
             );

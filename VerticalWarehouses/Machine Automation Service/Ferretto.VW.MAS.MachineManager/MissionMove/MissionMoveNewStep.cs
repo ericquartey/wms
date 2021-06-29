@@ -873,7 +873,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             unitToMove = sourceCell.LoadingUnit;
                             if (unitToMove != null
-                                && unitToMove.Status != DataModels.Enumerations.LoadingUnitStatus.InLocation
+                                && !unitToMove.IsIntoMachineOK
                                 )
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
@@ -941,7 +941,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
                                     return false;
                                 }
-                                else if (unitToMove.Status != DataModels.Enumerations.LoadingUnitStatus.InLocation)
+                                else if (!unitToMove.IsIntoMachineOK)
                                 {
                                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
                                     return false;

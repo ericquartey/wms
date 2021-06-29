@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels.Enumerations;
+﻿using System;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
@@ -66,7 +67,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsInFullTest { get; set; }
 
+        [Obsolete("Use the IsIntoMachineOK field instead.")]
+        [JsonIgnore]
         public bool IsIntoMachine { get; set; }
+
+        public bool IsIntoMachineOK => this.Status == LoadingUnitStatus.InLocation;
+
+        public bool IsIntoMachineOrBlocked => this.Status == LoadingUnitStatus.InLocation || this.Status == LoadingUnitStatus.Blocked;
 
         public bool IsLaserOffset => this.LaserOffset > 0;
 
