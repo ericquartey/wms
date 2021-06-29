@@ -4056,8 +4056,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsInFullTest", Required = Newtonsoft.Json.Required.Always)]
         public bool IsInFullTest { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("IsIntoMachine", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsIntoMachine { get; set; }
+        [Newtonsoft.Json.JsonProperty("IsIntoMachineOK", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsIntoMachineOK { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsIntoMachineOrBlocked", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsIntoMachineOrBlocked { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsLaserOffset", Required = Newtonsoft.Json.Required.Always)]
         public bool IsLaserOffset { get; set; }

@@ -206,7 +206,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
-                //this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
+                //this.TotalDrawers = unit.Count(n => n.IsIntoMachineOK);
                 this.UnitsInCell = unit.Count(n => n.Status == LoadingUnitStatus.InLocation);
                 this.UnitsInBay = unit.Count(n => n.Status == LoadingUnitStatus.InBay);
                 this.UnitsInElevator = unit.Count(n => n.Status == LoadingUnitStatus.InElevator);

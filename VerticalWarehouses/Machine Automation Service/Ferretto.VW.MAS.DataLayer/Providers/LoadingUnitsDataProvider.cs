@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     var totalWeight = this.dataContext
                         .LoadingUnits
-                        .Where(lu => lu.IsIntoMachine)
+                        .Where(lu => lu.IsIntoMachineOrBlocked)
                         .Sum(lu => lu.GrossWeight);
                     if (loadingUnit.GrossWeight + totalWeight > machine.MaxGrossWeight)
                     {
@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.LoadingUnits
-                    .Count(l => l.IsIntoMachine);
+                    .Count(l => l.IsIntoMachineOrBlocked);
             }
         }
 
@@ -383,7 +383,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 loadingUnit.Status == LoadingUnitStatus.InElevator))
             {
                 cellIdOld = luDb.CellId.Value;
-                luHeightOld = luDb.Height;
                 this.cellsProvider.SetLoadingUnit(luDb.CellId.Value, null);
 
                 lock (this.dataContext)
@@ -397,6 +396,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 (luDb.CellId != loadingUnit.CellId ||
                  luDb.Height != loadingUnit.Height))
             {
+                luHeightOld = luDb.Height;
+                lock (this.dataContext)
+                {
+                    luDb.Height = loadingUnit.Height;
+                    this.dataContext.SaveChanges();
+                }
                 if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
                 {
                     lock (this.dataContext)

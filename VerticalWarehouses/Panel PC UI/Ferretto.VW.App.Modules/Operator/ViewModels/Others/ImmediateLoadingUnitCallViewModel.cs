@@ -260,14 +260,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanCallLoadingUnit()
         {
-            return true;
-            //return this.SelectedLoadingUnit != null
-            //&&
-            //this.LoadingUnitId.HasValue
-            //&&
-            //!this.IsWaitingForResponse
-            //&&
-            //this.loadingUnits.Any(l => l.Id == this.loadingUnitId);
+            //return true;
+            return this.SelectedLoadingUnit != null
+            &&
+            this.LoadingUnitId.HasValue
+            &&
+            !this.IsWaitingForResponse
+            &&
+            this.SelectedLoadingUnit.IsIntoMachineOK;
         }
 
         private bool CanChangeLaserOffset()

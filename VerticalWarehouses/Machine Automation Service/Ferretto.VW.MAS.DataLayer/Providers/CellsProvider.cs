@@ -783,7 +783,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         return;
                     }
                     var loadingUnit = cell.LoadingUnit;
-                    loadingUnit.IsIntoMachine = false;
+                    //loadingUnit.IsIntoMachine = false;
 
                     var occupiedCells = this.dataContext.Cells
                         .Include(c => c.LoadingUnit)
@@ -909,7 +909,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
                     }
 
-                    loadingUnit.IsIntoMachine = true;
                     loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
                     //this.dataContext.SaveChanges();
                     //loadingUnit = this.dataContext.LoadingUnits

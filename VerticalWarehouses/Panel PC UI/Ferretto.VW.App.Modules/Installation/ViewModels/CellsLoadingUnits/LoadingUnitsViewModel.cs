@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.BlockUnlockAsync(),
                 () => !this.IsMoving &&
                 this.SelectedLU != null &&
-                (this.SelectedLU.Status == LoadingUnitStatus.InLocation || this.SelectedLU.Status == LoadingUnitStatus.Blocked) &&
+                this.SelectedLU.IsIntoMachineOrBlocked &&
                 !this.isBusyUpdateDrawer));
 
         public string BlockUnlockText
@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => !this.IsMoving &&
                 (this.isDrawerCurrentlyNotPresenceInUpperPositionBay() || this.isDrawerCurrentlyNotPresentInLowerPositionBay()) &&
                 this.SelectedLU != null &&
-                this.SelectedLU.Status == LoadingUnitStatus.InLocation &&
+                this.SelectedLU.IsIntoMachineOK &&
                 !this.isBusyUpdateDrawer));
 
         public ICommand ImmediateDrawerReturnCommand =>
