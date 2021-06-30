@@ -134,6 +134,17 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column12"
+                                            Width="100"
+                                            Binding="{Binding Path=Definition.IsShutter, Converter={StaticResource BTSC}}"
+                                            Header="{res:Loc InstallationApp.Shutter}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn x:Name="Column8"
                                             Width="100"
                                             Binding="{Binding Path=InstructionStatus, Converter={StaticResource MSSEC}}"
