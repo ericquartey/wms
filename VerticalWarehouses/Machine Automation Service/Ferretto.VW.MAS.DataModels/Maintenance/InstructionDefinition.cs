@@ -5,6 +5,28 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class InstructionDefinition : DataModel
     {
+        #region Constructors
+
+        public InstructionDefinition(InstructionType instructionType, string counterName, int? maxDays, int? maxRelativeCount, Axis axis, BayNumber bayNumber)
+        {
+            this.InstructionType = instructionType;
+            this.GetDescription(instructionType);
+            if (bayNumber == BayNumber.None)
+            {
+                this.CounterName = counterName;
+            }
+            else
+            {
+                this.SetCounterName(bayNumber);
+            }
+            this.MaxDays = maxDays;
+            this.MaxRelativeCount = maxRelativeCount;
+            this.Axis = axis;
+            this.BayNumber = bayNumber;
+        }
+
+        #endregion
+
         #region Properties
 
         public Axis Axis { get; set; }
