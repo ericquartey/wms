@@ -340,6 +340,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (value is null)
                 {
                     //this.RaisePropertyChanged();
+                    _ = this.SetProperty(ref this.selectedItem, value);
+
                     this.selectedItemTxt = Resources.Localized.Get("OperatorApp.RequestedQuantityBase");
                     this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                     return;
@@ -794,6 +796,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (!newItems.Any())
                 {
+                    this.SelectedItem = null;
+                    this.AvailableQuantity = null;
+                    this.InputQuantity = 0;
+
                     this.RaisePropertyChanged(nameof(this.Items));
                     return;
                 }
