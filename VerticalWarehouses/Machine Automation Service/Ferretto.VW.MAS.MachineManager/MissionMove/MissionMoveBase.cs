@@ -718,12 +718,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     if (this.Mission.Step == MissionStep.LoadElevator)
                     {
-                        this.Mission.NeedHomingAxis = Axis.Horizontal;
+                        if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
+                        {
+                            this.Mission.NeedHomingAxis = Axis.Horizontal;
+                        }
                         newStep = new MissionMoveErrorLoadStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                     else if (this.Mission.Step == MissionStep.DepositUnit)
                     {
-                        this.Mission.NeedHomingAxis = Axis.Horizontal;
+                        if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
+                        {
+                            this.Mission.NeedHomingAxis = Axis.Horizontal;
+                        }
                         newStep = new MissionMoveErrorDepositStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                     else
