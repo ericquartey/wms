@@ -57,6 +57,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                         if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(cell.Position, isEmpty: true, this.Mission.LoadUnitId))
                         {
+                            this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                            this.MissionsDataProvider.Update(this.Mission);
                             this.ErrorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.Mission.TargetBay);
                             throw new StateMachineException(ErrorDescriptions.VerticalPositionChanged, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
@@ -96,6 +98,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
                         if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(bayPosition.Height, isEmpty: true, this.Mission.LoadUnitId))
                         {
+                            this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                            this.MissionsDataProvider.Update(this.Mission);
                             this.ErrorsProvider.RecordNew(MachineErrorCode.VerticalPositionChanged, this.Mission.TargetBay);
                             throw new StateMachineException(ErrorDescriptions.VerticalPositionChanged, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
