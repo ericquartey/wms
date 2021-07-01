@@ -34,6 +34,7 @@
 - Il ripristino delle missioni nella giostra riporta la serranda in posizione intermedia
 - La compattazione non muove i cassetti bloccati
 - Eliminato un caso di mancata calibrazione verticale al riavvio della macchina
+- Corretto Test Celle Limite nella BED
 
 ## Compatibile con adapter 0.4.21
 ***
