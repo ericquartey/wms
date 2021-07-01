@@ -33,6 +33,7 @@
 - Eliminato un caso di blocco delle missioni senza allarme con baie contrapposte
 - Il ripristino delle missioni nella giostra riporta la serranda in posizione intermedia
 - La compattazione non muove i cassetti bloccati
+- Eliminato un caso di mancata calibrazione verticale al riavvio della macchina
 
 ## Compatibile con adapter 0.4.21
 ***
