@@ -836,11 +836,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
                     if (bay != null && bay.IsExternal && bay.IsDouble)
                     {
-                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source);
+                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
 
                         if (!returnValue)
                         {
-                            returnValue = this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number, messageData.Source);
+                            returnValue = this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number);
                         }
                     }
                     else if (bay != null && bay.IsExternal)
@@ -1075,8 +1075,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
 #if CHECK_BAY_SENSOR
                         if (!this.SensorsProvider.IsLoadingUnitInLocation(messageData.Source)
-                            && !(bay != null && bay.IsExternal && !bay.IsDouble && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
-                            && !(bay != null && bay.IsExternal && bay.IsDouble && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source)))
+                            && !(bay != null && bay.IsExternal && !bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)))
+                            && !(bay != null && bay.IsExternal && bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number, messageData.Source))))
                         {
                             unitToMove = null;
                             if (showErrors)
