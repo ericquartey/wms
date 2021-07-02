@@ -22,22 +22,16 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.20 rispetto la 1.0.19
-- Aggiunta procedura di test per la BES
-- Aggiunto messaggio "Maintenance" sulla telemetria quando scade una manutenzione
-- Aggiunti parametri per l'avvio ritardato della compensazione verticale
-- Aggiunte traduzioni in lingua spagnola
+## Nuove Funzionalità 1.0.21 rispetto la 1.0.20
 
 ## Bug Risolti
-- Corretta l'attivazione degli avvisi di manutenzioni scadute
-- Eliminato un caso di blocco delle missioni senza allarme con baie contrapposte
-- Il ripristino delle missioni nella giostra riporta la serranda in posizione intermedia
-- La compattazione non muove i cassetti bloccati
-- Eliminato un caso di mancata calibrazione verticale al riavvio della macchina
-- Corretto Test Celle Limite nella BED
+- La pagina di Ricerca Articolo azzera i dati al cambio della selezione
+- Aggiunto sensore di barriera di sicurezza intermedia nella BED
 
 ## Compatibile con adapter 0.4.21
 ***
+
+[Versione 1.0.20](#id1020)
 
 [Versione 1.0.19](#id1019)
 
@@ -78,6 +72,24 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1020"></a>
+## Nuove Funzionalità 1.0.20 rispetto la 1.0.19
+- Aggiunta procedura di test per la BES
+- Aggiunto messaggio "Maintenance" sulla telemetria quando scade una manutenzione
+- Aggiunti parametri per l'avvio ritardato della compensazione verticale
+- Aggiunte traduzioni in lingua spagnola
+
+## Bug Risolti
+- Corretta l'attivazione degli avvisi di manutenzioni scadute
+- Eliminato un caso di blocco delle missioni senza allarme con baie contrapposte
+- Il ripristino delle missioni nella giostra riporta la serranda in posizione intermedia
+- La compattazione non muove i cassetti bloccati
+- Eliminato un caso di mancata calibrazione verticale al riavvio della macchina
+- Corretto Test Celle Limite nella BED
+
+## Compatibile con adapter 0.4.21
 ***
 
 <a id="id1019"></a>

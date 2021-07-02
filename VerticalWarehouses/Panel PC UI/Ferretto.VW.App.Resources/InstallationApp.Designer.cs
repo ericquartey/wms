@@ -268,6 +268,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Anti intrusion gate internal.
+        /// </summary>
+        public static string AntiIntrusionGateInternal {
+            get {
+                return ResourceManager.GetString("AntiIntrusionGateInternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply Correction.
         /// </summary>
         public static string ApplyCorrection {

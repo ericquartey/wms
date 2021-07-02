@@ -2469,4 +2469,7 @@
   <data name="MaxMessageLength" xml:space="preserve">
     <value>Lunghezza massima messaggio</value>
   </data>
+  <data name="AntiIntrusionGateInternal" xml:space="preserve">
+    <value>Barriera anti intrusione interna</value>
+  </data>
 </root>
