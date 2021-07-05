@@ -27,6 +27,8 @@
 ## Bug Risolti
 - La pagina di Ricerca Articolo azzera i dati al cambio della selezione
 - Aggiunto sensore di barriera di sicurezza intermedia nella BED
+- I movimenti verticali dell'elevatore sono bloccati se manca la calibrazione
+- Aggiunto allarme di posizione con sensore di zero elevatore attivo
 
 ## Compatibile con adapter 0.4.21
 ***
