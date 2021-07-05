@@ -138,9 +138,6 @@
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
     <value>Wybrano silnik windy (sprzężenie zwrotne)</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value>Wolny</value>
-  </data>
   <data name="HeightReadingActivation" xml:space="preserve">
     <value>Aktywacja funkcji odczytu wysokości (kurtyna świetlna pomiaru)</value>
   </data>

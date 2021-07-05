@@ -138,9 +138,6 @@
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
     <value>Auswahl Hebebühnenmotor (Rückmeldung)</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value>Frei</value>
-  </data>
   <data name="HeightReadingActivation" xml:space="preserve">
     <value>Aktivierung der Höhenablesung (Messbarriere)</value>
   </data>

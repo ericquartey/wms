@@ -138,8 +138,8 @@
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
     <value>Elevator Motor selected (feedback)</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value>Free</value>
+  <data name="InnerLightCurtain" xml:space="preserve">
+    <value>Inner Safety Light Curtain</value>
   </data>
   <data name="HeightReadingActivation" xml:space="preserve">
     <value>Height reading function activation (measurement light curtain)</value>

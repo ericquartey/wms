@@ -99,7 +99,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.inputs.Add(new BitModel("10", false, IODevice.OperatorSideElevatorChainBoxPresence));
             this.inputs.Add(new BitModel("11", false, IODevice.MachineSideElevatorChainBoxPresence));
             this.inputs.Add(new BitModel("12", false, IODevice.LightCurtainCalibration));
-            this.inputs.Add(new BitModel("13", false, IODevice.Free));
+            this.inputs.Add(new BitModel("13", false, IODevice.InnerLightCurtain));
             this.inputs.Add(new BitModel("14", false, IODevice.TrolleyHook));
             this.inputs.Add(new BitModel("15", false, IODevice.RobotEndPicking));
 
