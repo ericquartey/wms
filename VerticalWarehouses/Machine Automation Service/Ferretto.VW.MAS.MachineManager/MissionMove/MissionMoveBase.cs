@@ -733,10 +733,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        if (this.ErrorsProvider.NeedsHoming())
-                        {
-                            this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
-                        }
                         newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                     newStep.OnEnter(null);

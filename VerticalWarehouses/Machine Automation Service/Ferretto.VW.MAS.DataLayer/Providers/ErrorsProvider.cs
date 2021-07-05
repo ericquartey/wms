@@ -136,7 +136,8 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return false;
             }
-            return error.Code == (int)MachineErrorCode.VerticalZeroError;
+            return error.Code == (int)MachineErrorCode.VerticalZeroHighError
+                || error.Code == (int)MachineErrorCode.VerticalZeroLowError;
         }
 
         // removes resolved errors older than 30 days
@@ -192,7 +193,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (existingUnresolvedError.Any())
                 {
                     // discard only the same error
-                    if (newError.Severity >= 2 && existingUnresolvedError.Any(e => e.Code == (int)code))
+                    if (newError.Severity >= (int)MachineErrorSeverity.High && existingUnresolvedError.Any(e => e.Code == (int)code))
                     {
                         this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
                         return existingUnresolvedError.First(e => e.Code == (int)code);
@@ -210,7 +211,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     //    }
                     //}
 
-                    if (newError.Severity < 2)
+                    if (newError.Severity < (int)MachineErrorSeverity.High)
                     {
                         // discard all subsequent errors
                         this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another error is already active.");
@@ -236,6 +237,15 @@ namespace Ferretto.VW.MAS.DataLayer
             this.NotifyErrorCreation(newError, bayNumber);
 
             this.logger.LogError($"Error: {code} ({(int)code}); Bay {bayNumber}; {newError.Description}");
+
+            if (newError.Severity == (int)MachineErrorSeverity.NeedsHoming)
+            {
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var machineVolatile = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+                    machineVolatile.IsHomingExecuted = false;
+                }
+            }
 
             return newError;
         }

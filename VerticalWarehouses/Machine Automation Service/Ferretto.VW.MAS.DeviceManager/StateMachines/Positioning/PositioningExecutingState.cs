@@ -741,14 +741,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             return false;
         }
 
-        private bool IsVerticalZeroError()
+        private bool IsVerticalZeroHighError()
         {
-            return (this.machineData.MessageData.MovementMode == MovementMode.Position
+            return this.machineData.MessageData.MovementMode == MovementMode.Position
                 && this.machineData.MessageData.AxisMovement == Axis.Vertical
                 && !this.machineData.MessageData.BypassConditions
                 && this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
-                && this.elevatorProvider.VerticalPosition > this.verticalBounds.Offset * 1.1
-                );
+                && this.elevatorProvider.VerticalPosition > this.verticalBounds.Offset * 1.1;
+        }
+
+        private bool IsVerticalZeroLowError()
+        {
+            return this.machineData.MessageData.MovementMode == MovementMode.Position
+                && this.machineData.MessageData.AxisMovement == Axis.Vertical
+                && !this.machineData.MessageData.BypassConditions
+                && !this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
+                && this.elevatorProvider.VerticalPosition < this.verticalBounds.Offset * 0.9;
         }
 
         private bool IsZeroSensorError()
@@ -953,10 +961,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.Stop(StopRequestReason.Error);
                         }
                         if (!this.machineData.MessageData.BypassConditions
-                            && this.IsVerticalZeroError()
+                            && this.IsVerticalZeroHighError()
                             )
                         {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroError, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroHighError, this.machineData.RequestingBay);
+
+                            this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Error);
+                        }
+                        if (!this.machineData.MessageData.BypassConditions
+                            && this.IsVerticalZeroLowError()
+                            )
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroLowError, this.machineData.RequestingBay);
 
                             this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Error);

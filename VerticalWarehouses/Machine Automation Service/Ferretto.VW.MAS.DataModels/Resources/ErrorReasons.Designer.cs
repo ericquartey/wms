@@ -961,11 +961,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The vertical zero sensor is active in a too high position.
+        ///   Looks up a localized string similar to The vertical zero sensor is active in a high position. Please perform an elevator homing.
         /// </summary>
-        public static string VerticalZeroError {
+        public static string VerticalZeroHighError {
             get {
-                return ResourceManager.GetString("VerticalZeroError", resourceCulture);
+                return ResourceManager.GetString("VerticalZeroHighError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The vertical zero sensor is not active in a low position. Please perform an elevator homing.
+        /// </summary>
+        public static string VerticalZeroLowError {
+            get {
+                return ResourceManager.GetString("VerticalZeroLowError", resourceCulture);
             }
         }
         

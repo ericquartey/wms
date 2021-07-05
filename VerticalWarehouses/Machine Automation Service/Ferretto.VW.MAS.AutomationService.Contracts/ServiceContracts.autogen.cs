@@ -3503,7 +3503,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitTareError = 86,
     
-        VerticalZeroError = 87,
+        VerticalZeroLowError = 87,
+    
+        VerticalZeroHighError = 88,
     
         InverterErrorBaseCode = 1000,
     
