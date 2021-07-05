@@ -1303,7 +1303,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         this.machineVolatileDataProvider.IsBayHomingExecuted[message.RequestingBay] = true;
                     }
-                    else
+                    else if (data.AxisToCalibrate == Axis.Vertical || data.AxisToCalibrate == Axis.HorizontalAndVertical)
                     {
                         this.machineVolatileDataProvider.IsHomingExecuted = true;
                     }

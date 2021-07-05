@@ -960,7 +960,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     measure,
                     targetBayPositionId,
                     targetCellId,
-                    checkHomingDone: false,
+                    checkHomingDone: true,
                     waitContinue,
                     isPickupMission: true,
                     loadUnitId,

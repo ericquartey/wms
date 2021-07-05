@@ -170,6 +170,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.Mission.NeedHomingAxis = Axis.None;
                                 this.MissionsDataProvider.Update(this.Mission);
                             }
+                            if (messageData.AxisToCalibrate == Axis.Vertical || messageData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                            {
+                                this.MachineVolatileDataProvider.IsHomingExecuted = true;
+                            }
 
                             var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
 

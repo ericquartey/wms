@@ -1590,7 +1590,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("TargetPositionOutOfBounds", CommonUtils.Culture.Actual), targetPosition, lowerBound, upperBound));
             }
 
-            var homingDone = (checkHomingDone ? this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay] : true);
+            var homingDone = !checkHomingDone || this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
+
+            if (!homingDone && !manualMovement)
+            {
+                throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("VerticalOriginCalibrationMustBePerformed", CommonUtils.Culture.Actual), verticalAxis.Offset, lowerBound, upperBound));
+            }
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =

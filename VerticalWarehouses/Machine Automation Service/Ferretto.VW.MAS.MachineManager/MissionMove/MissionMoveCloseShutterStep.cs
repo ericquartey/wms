@@ -74,17 +74,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
 
                 var machine = this.MachineProvider.GetMinMaxHeight();
-                if (this.Mission.NeedHomingAxis == Axis.Horizontal
-                    || (this.Mission.NeedHomingAxis == Axis.None
+                if (this.Mission.NeedHomingAxis == Axis.None
                         && (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
                             || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal) >= machine.HorizontalCyclesToCalibrate
                             )
                         )
-                    )
                 {
                     this.Mission.NeedHomingAxis = Axis.Horizontal;
-                    this.Logger.LogInformation($"Homing horizontal elevator start Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
 
                 this.Mission.RestoreConditions = false;
@@ -113,6 +109,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && notification.Data is HomingMessageData messageData
                         )
                     {
+                        this.UpdateResponseList(notification.Type);
                         this.OnHomingNotification(messageData);
                     }
                     else if (notification.Type == MessageType.ShutterPositioning)
@@ -128,12 +125,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else if (this.UpdateResponseList(notification.Type))
                         {
+                            if (this.Mission.NeedHomingAxis == Axis.Horizontal
+                                || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical
+                                )
+                            {
+                                this.Logger.LogInformation($"Homing elevator start Mission:Id={this.Mission.Id}");
+                                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                            }
                             this.MissionsDataProvider.Update(this.Mission);
                             this.Logger.LogTrace($"UpdateResponseList: {notification.Type} Mission:Id={this.Mission.Id}");
                         }
                     }
                     if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter)
-                        && this.Mission.NeedHomingAxis != Axis.Horizontal
+                        && (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Homing)
+                            || this.Mission.NeedHomingAxis != Axis.None
+                            )
                         )
                     {
                         this.CloseShutterEnd();

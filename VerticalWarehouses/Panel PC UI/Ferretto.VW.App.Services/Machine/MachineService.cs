@@ -1556,7 +1556,7 @@ namespace Ferretto.VW.App.Services
                         }
                         else if (!this.IsHoming)
                         {
-                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.HomingNotPerformed"), NotificationSeverity.Error);
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.HomingNotPerformed"), NotificationSeverity.Warning);
                         }
                         else if ((((this.MachineStatus.LoadingUnitPositionDownInBay != null && !this.sensorsService.IsLoadingUnitInMiddleBottomBay && (this.Bay.IsDouble || !this.BayFirstPositionIsUpper)) ||
                                    (this.MachineStatus.LoadingUnitPositionUpInBay != null && !this.sensorsService.IsLoadingUnitInBay && (this.Bay.IsDouble || this.BayFirstPositionIsUpper))) ||
