@@ -435,4 +435,7 @@
   <data name="LoadUnitTareError" xml:space="preserve">
     <value>Correggere il parametro tara del cassetto</value>
   </data>
+  <data name="VerticalZeroError" xml:space="preserve">
+    <value>Il sensore di zero dell'asse verticale risulta attivo in una posizione troppo alta. E' necessaria la calibrazione verticale</value>
+  </data>
 </root>

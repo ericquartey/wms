@@ -435,4 +435,7 @@
   <data name="LoadUnitTareError" xml:space="preserve">
     <value>Correct the tare parameter of the Loading Unit</value>
   </data>
+  <data name="VerticalZeroError" xml:space="preserve">
+    <value>The vertical zero sensor is active in a too high position</value>
+  </data>
 </root>

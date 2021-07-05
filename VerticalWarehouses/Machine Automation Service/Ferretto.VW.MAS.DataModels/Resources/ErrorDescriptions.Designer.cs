@@ -979,6 +979,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vertical positioning error.
+        /// </summary>
+        public static string VerticalZeroError {
+            get {
+                return ResourceManager.GetString("VerticalZeroError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warehouse is full.
         /// </summary>
         public static string WarehouseIsFull {

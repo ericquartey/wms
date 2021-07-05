@@ -3503,6 +3503,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitTareError = 86,
     
+        VerticalZeroError = 87,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -5645,6 +5647,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("Lower", Required = Newtonsoft.Json.Required.Always)]
         public double Lower { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Offset", Required = Newtonsoft.Json.Required.Always)]
+        public double Offset { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Upper", Required = Newtonsoft.Json.Required.Always)]
         public double Upper { get; set; }

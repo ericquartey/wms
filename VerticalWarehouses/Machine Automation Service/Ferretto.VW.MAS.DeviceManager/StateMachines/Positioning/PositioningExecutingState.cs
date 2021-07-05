@@ -75,6 +75,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private double targetPosition;
 
+        private AxisBounds verticalBounds;
+
         private double verticalStartingPosition;
 
         #endregion
@@ -227,6 +229,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         else if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
                         {
                             this.verticalStartingPosition = this.elevatorProvider.VerticalPosition;
+                            this.verticalBounds = this.elevatorProvider.GetVerticalBounds();
                         }
                         if (this.machineData.MessageData.MovementMode == MovementMode.BayChainManual)
                         {
@@ -738,6 +741,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             return false;
         }
 
+        private bool IsVerticalZeroError()
+        {
+            return (this.machineData.MessageData.MovementMode == MovementMode.Position
+                && this.machineData.MessageData.AxisMovement == Axis.Vertical
+                && !this.machineData.MessageData.BypassConditions
+                && this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
+                && this.elevatorProvider.VerticalPosition > this.verticalBounds.Offset * 1.1
+                );
+        }
+
         private bool IsZeroSensorError()
         {
             if (this.machineData.MessageData.MovementMode == MovementMode.Position
@@ -935,6 +948,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             )
                         {
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+
+                            this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Error);
+                        }
+                        if (!this.machineData.MessageData.BypassConditions
+                            && this.IsVerticalZeroError()
+                            )
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroError, this.machineData.RequestingBay);
 
                             this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Error);

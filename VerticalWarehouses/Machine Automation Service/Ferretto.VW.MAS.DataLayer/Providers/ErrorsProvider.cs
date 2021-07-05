@@ -128,6 +128,17 @@ namespace Ferretto.VW.MAS.DataLayer
                 || error.Code == (int)MachineErrorCode.ElevatorUnderrunDetected);
         }
 
+        public bool NeedsHoming()
+        {
+            var error = this.GetCurrent();
+
+            if (error is null)
+            {
+                return false;
+            }
+            return error.Code == (int)MachineErrorCode.VerticalZeroError;
+        }
+
         // removes resolved errors older than 30 days
         public int PurgeErrors()
         {

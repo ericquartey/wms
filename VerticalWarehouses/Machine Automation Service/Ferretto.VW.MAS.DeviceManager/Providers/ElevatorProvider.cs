@@ -621,7 +621,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
-            return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound };
+            return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound, Offset = verticalAxis.Offset };
         }
 
         public void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender)
