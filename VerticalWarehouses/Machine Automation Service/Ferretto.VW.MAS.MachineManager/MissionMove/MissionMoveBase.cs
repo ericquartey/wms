@@ -668,6 +668,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.NeedHomingAxis = Axis.None;
                 this.MissionsDataProvider.Update(this.Mission);
+                this.MachineVolatileDataProvider.IsHomingExecuted = true;
             }
             else if (messageData.AxisToCalibrate == Axis.BayChain
                     && this.Mission.NeedHomingAxis == Axis.BayChain
