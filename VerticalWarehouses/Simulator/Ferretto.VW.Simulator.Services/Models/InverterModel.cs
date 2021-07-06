@@ -1080,7 +1080,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 else
                 {
-                    this.DigitalIO[(int)InverterSensors.ANG_ZeroElevatorSensor].Value = false;
+                    if (this.InverterRole == InverterRole.Main)
+                    {
+                        this.DigitalIO[(int)InverterSensors.ANG_ZeroElevatorSensor].Value = false;
+                    }
                     this.AxisPosition = 0;
                 }
 
