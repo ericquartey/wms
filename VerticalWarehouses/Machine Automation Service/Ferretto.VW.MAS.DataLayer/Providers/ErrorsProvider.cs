@@ -211,10 +211,20 @@ namespace Ferretto.VW.MAS.DataLayer
                     //    }
                     //}
 
+                    if (newError.Severity == (int)MachineErrorSeverity.High)
+                    {
+                        // resolve low priority errors
+                        foreach (var activeError in existingUnresolvedError.Where(e => e.Severity == (int)MachineErrorSeverity.Low))
+                        {
+                            this.logger.LogTrace($"Machine error {activeError.Code} ({(int)activeError.Code}) for {bayNumber} was resolved by higher priority error {code}.");
+                            this.Resolve(activeError.Id, force: true);
+                        }
+                    }
+
                     if (newError.Severity < (int)MachineErrorSeverity.High)
                     {
                         // discard all subsequent errors
-                        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another error is already active.");
+                        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another high priority error is already active.");
                         return newError;
                     }
                 };

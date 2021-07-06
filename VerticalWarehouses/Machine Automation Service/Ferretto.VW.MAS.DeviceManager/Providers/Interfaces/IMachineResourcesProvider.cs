@@ -22,6 +22,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool[] DisplayedInputs { get; }
 
+        bool IsAntiIntrusionBarrier2Bay1 { get; }
+
+        bool IsAntiIntrusionBarrier2Bay2 { get; }
+
+        bool IsAntiIntrusionBarrier2Bay3 { get; }
+
         bool IsAntiIntrusionBarrierBay1 { get; }
 
         bool IsAntiIntrusionBarrierBay2 { get; }

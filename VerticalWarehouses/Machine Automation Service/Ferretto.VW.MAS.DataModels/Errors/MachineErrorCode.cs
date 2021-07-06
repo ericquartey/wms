@@ -262,7 +262,7 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterCommandTimeout), (int)MachineErrorSeverity.Normal)]
         InverterCommandTimeout,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceCommandTimeout), (int)MachineErrorSeverity.Normal)]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceCommandTimeout), (int)MachineErrorSeverity.Low)]
         IoDeviceCommandTimeout,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TelescopicBayError), (int)MachineErrorSeverity.Normal)]

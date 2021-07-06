@@ -194,38 +194,40 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         private bool AntiIntrusionBarrierDetect(BayNumber bay)
         {
             this.Logger.LogWarning($"Check {bay} anti intrusion barrier");
-            var errorCode = MachineErrorCode.SecurityWasTriggered;
+            var errorCode = MachineErrorCode.NoError;
             switch (bay)
             {
                 case BayNumber.BayOne:
-                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay1)
+                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay1
+                        || this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay1)
                     {
                         errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
-                        this.errorsProvider.RecordNew(errorCode, bay);
-                        return true;
                     }
                     break;
 
                 case BayNumber.BayTwo:
-                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay2)
+                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay2
+                        || this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay2)
                     {
                         errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
-                        this.errorsProvider.RecordNew(errorCode, bay);
-                        return true;
                     }
                     break;
 
                 case BayNumber.BayThree:
-                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay3)
+                    if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay3
+                        || this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay3)
                     {
                         errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
-                        this.errorsProvider.RecordNew(errorCode, bay);
-                        return true;
                     }
                     break;
 
                 default:
                     break;
+            }
+            if (errorCode != MachineErrorCode.NoError)
+            {
+                this.errorsProvider.RecordNew(errorCode, bay);
+                return true;
             }
             return false;
         }
