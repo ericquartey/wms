@@ -226,6 +226,11 @@ namespace Ferretto.VW.App.Modules.Operator
                 return;
             }
 
+            if (this.machineService.MachineStatus.LoadingUnitPositionUpInBay is null && this.machineService.MachineStatus.LoadingUnitPositionDownInBay is null)
+            {
+                await this.machineService.UpdateLoadUnitInBayAsync();
+            }
+
             this.logger.Debug($"Navigate 3 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, " +
                 $"machineMission {this.missionOperationsService.ActiveMachineMission?.Id}, " +
                 $"LU {this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id}, " +

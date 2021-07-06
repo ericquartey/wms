@@ -514,6 +514,36 @@ namespace Ferretto.VW.App.Services
             this.StopMoving();
         }
 
+        public async Task UpdateLoadUnitInBayAsync()
+        {
+            this.Bay = await this.bayManagerService.GetBayAsync();
+            if (this.Bay.IsDouble || this.BayFirstPositionIsUpper || this.Bay.Carousel != null)
+            {
+                if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
+                {
+                    this.MachineStatus.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
+                    if (bayPositionUp.LoadingUnit != null)
+                    {
+                        this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                        this.logger.Debug($"UpdateLoadUnitInBay({this.BayNumber}): position ({bayPositionUp.Location}), LU({bayPositionUp.LoadingUnit?.Id})");
+                    }
+                }
+            }
+
+            if (this.Bay.IsDouble || (!this.BayFirstPositionIsUpper))
+            {
+                if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
+                {
+                    this.MachineStatus.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                    if (bayPositionDown.LoadingUnit != null)
+                    {
+                        this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                        this.logger.Debug($"UpdateLoadUnitInBay({this.BayNumber}): position ({bayPositionDown.Location}), LU({bayPositionDown.LoadingUnit?.Id})");
+                    }
+                }
+            }
+        }
+
         private void CellsNotificationProperty()
         {
             this.eventAggregator
@@ -1397,36 +1427,6 @@ namespace Ferretto.VW.App.Services
                         pos.BayPositionUpper));
 
             this.NotifyMachineStatusChanged();
-        }
-
-        private async Task UpdateLoadUnitInBayAsync()
-        {
-            this.Bay = await this.bayManagerService.GetBayAsync();
-            if (this.Bay.IsDouble || this.BayFirstPositionIsUpper || this.Bay.Carousel != null)
-            {
-                if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
-                {
-                    this.MachineStatus.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                    if (bayPositionUp.LoadingUnit != null)
-                    {
-                        this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
-                        this.logger.Debug($"UpdateLoadUnitInBay({this.BayNumber}): position ({bayPositionUp.Location}), LU({bayPositionUp.LoadingUnit?.Id})");
-                    }
-                }
-            }
-
-            if (this.Bay.IsDouble || (!this.BayFirstPositionIsUpper))
-            {
-                if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
-                {
-                    this.MachineStatus.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                    if (bayPositionDown.LoadingUnit != null)
-                    {
-                        this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
-                        this.logger.Debug($"UpdateLoadUnitInBay({this.BayNumber}): position ({bayPositionDown.Location}), LU({bayPositionDown.LoadingUnit?.Id})");
-                    }
-                }
-            }
         }
 
         private void UpdateMachineStatusByElevatorPosition(EventArgs e)
