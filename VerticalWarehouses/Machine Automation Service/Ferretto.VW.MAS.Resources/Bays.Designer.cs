@@ -124,6 +124,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The bay position is blocked.
+        /// </summary>
+        public static string TheBayPositionIsBlocked {
+            get {
+                return ResourceManager.GetString("TheBayPositionIsBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The external bay cannot perform an invalid movement.
         /// </summary>
         public static string TheExtBayCannotPerformAnInvalidMovement {

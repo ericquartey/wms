@@ -150,4 +150,7 @@
   <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
     <value>The external bay cannot perform an invalid movement</value>
   </data>
+  <data name="TheBayPositionIsBlocked" xml:space="preserve">
+    <value>The bay position is blocked</value>
+  </data>
 </root>

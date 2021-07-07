@@ -460,11 +460,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             // If bay is not double or bay is carousel
                             // always check upper position first
-                            returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
+                            returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false /*|| messageData.Destination == upper*/);
                             if (returnValue)
                             {
                                 // upper position is empty. we can use it only if bottom is also free
-                                returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                                returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, false);
                                 if (returnValue
                                     || bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked
                                     )

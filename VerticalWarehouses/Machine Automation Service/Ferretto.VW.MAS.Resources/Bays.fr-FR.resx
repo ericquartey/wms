@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,40 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
-    <value>La quota della baia ({0}) deve essere nell'intervallo [{1},{2}].</value>
-  </data>
-  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
-    <value>La posizione di baia specificata non è valida.</value>
-  </data>
-  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
-    <value>La baia specificata non ha una giostra.</value>
-  </data>
-  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
-    <value>La baia contiene almeno un cassetto.</value>
-  </data>
-  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
-    <value>La baia contiene un cassetto nella sua posizione superiore.</value>
-  </data>
-  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
-    <value>La catena della baia non è in posizione di zero.</value>
-  </data>
-  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
-    <value>Axis.HorizontalAndVertical non è un asse valido per il metodo GetInverterIndexByMovementType ()</value>
-  </data>
-  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
-    <value>L'altezza massima del carrello non è valida.</value>
-  </data>
-  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
-    <value>La baia contiene un cassetto nella sua posizione esterna</value>
-  </data>
-  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
-    <value>La baia specificata non è una baia esterna</value>
-  </data>
-  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
-    <value>La baia esterna non può eseguire un movimento non valido</value>
-  </data>
-  <data name="TheBayPositionIsBlocked" xml:space="preserve">
-    <value>La posizione di baia è bloccata</value>
-  </data>
 </root>
