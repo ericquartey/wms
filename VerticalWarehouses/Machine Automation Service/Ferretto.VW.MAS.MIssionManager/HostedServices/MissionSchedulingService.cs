@@ -1399,7 +1399,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // loading unit to bay mission
                 {
                     baysDataProvider.AssignMission(mission.TargetBay, mission);
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
+                    this.NotifyAssignedMissionChanged(mission.TargetBay, mission.Id);
                 }
                 else if (mission.Status != MissionStatus.Waiting)
                 // any other mission type
@@ -1637,7 +1637,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             .GetRequiredService<IBaysDataProvider>()
                             .AssignMission(mission.TargetBay, mission);
 
-                        this.NotifyAssignedMissionChanged(mission.TargetBay, wmsMission.Id);
+                        this.NotifyAssignedMissionChanged(mission.TargetBay, mission.Id);
                     }
                 }
                 else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
