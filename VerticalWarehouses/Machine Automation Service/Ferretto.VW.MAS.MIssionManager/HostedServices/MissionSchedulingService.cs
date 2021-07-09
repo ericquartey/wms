@@ -513,7 +513,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             mission.LoadUnitId,
                             bayNumber,
                             MessageActor.MissionManager);
-                        this.NotifyAssignedMissionChanged(bayNumber, mission.Id);
+                        //this.NotifyAssignedMissionChanged(bayNumber, mission.Id);
                     }
                 }
                 else if (mission.IsMissionWaiting())
@@ -1386,7 +1386,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
 
                     missionsDataProvider.Complete(mission.Id);
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                    //this.NotifyAssignedMissionChanged(mission.TargetBay, null);
                 }
                 else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell
                     &&
@@ -1405,7 +1405,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // any other mission type
                 {
                     missionsDataProvider.Complete(mission.Id);
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                    //this.NotifyAssignedMissionChanged(mission.TargetBay, null);
 
                     //var bCreateAMissionForExceptionalCase = false;
                     //if (mission.Status == MissionStatus.Completed)

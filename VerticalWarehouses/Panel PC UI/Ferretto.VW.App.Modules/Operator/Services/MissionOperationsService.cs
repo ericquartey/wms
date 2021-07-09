@@ -488,7 +488,7 @@ namespace Ferretto.VW.App.Modules.Operator
                             m.Id == missionId.Value)
                         .OrderBy(o => o.LoadUnitDestination);
                 }
-                else if (bay.CurrentMission != null)
+                else
                 {
                     activeMissions = machineMissions.Where(m =>
                         m.Step is MissionStep.WaitPick
@@ -498,8 +498,7 @@ namespace Ferretto.VW.App.Modules.Operator
                         m.Status == MissionStatus.Waiting
                         &&
                         m.ErrorCode == MachineErrorCode.NoError
-                        &&
-                        m.Id == bay.CurrentMission.Id)
+                        )
                         .OrderBy(o => o.LoadUnitDestination);
 
                     //else
@@ -518,7 +517,21 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 if (activeMissions.Any())
                 {
-                    this.logger.Debug($"Active mission has id {activeMissions.FirstOrDefault().Id}");
+                    var loadUnitId = activeMissions.FirstOrDefault().LoadUnitId;
+                    if (machineMissions.Any(m => m.LoadUnitId == loadUnitId && m.MissionType == MissionType.IN)
+                        // BID must wait for second load unit to move away from bay
+                        || (bay.IsDouble && !bay.IsExternal && bay.Carousel == null
+                            && bay.Positions.Any(p => p.LoadingUnit != null && p.LoadingUnit.Id != loadUnitId)
+                            )
+                        )
+                    {
+                        this.logger.Trace("No active mission on bay - IN mission already present");
+                        activeMissions = null;
+                    }
+                    else
+                    {
+                        this.logger.Debug($"Active mission has id {activeMissions.FirstOrDefault().Id}");
+                    }
                 }
                 else
                 {
