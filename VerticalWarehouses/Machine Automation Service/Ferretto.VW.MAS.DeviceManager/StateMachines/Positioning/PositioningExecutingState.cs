@@ -747,7 +747,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 && this.machineData.MessageData.AxisMovement == Axis.Vertical
                 && !this.machineData.MessageData.BypassConditions
                 && this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
-                && this.elevatorProvider.VerticalPosition > this.verticalBounds.Offset * 1.3;
+                && this.elevatorProvider.VerticalPosition > this.verticalBounds.Offset * 1.4;
         }
 
         private bool IsVerticalZeroLowError()
@@ -756,7 +756,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 && this.machineData.MessageData.AxisMovement == Axis.Vertical
                 && !this.machineData.MessageData.BypassConditions
                 && !this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
-                && this.elevatorProvider.VerticalPosition < this.verticalBounds.Offset * 0.8;
+                && this.elevatorProvider.VerticalPosition < this.verticalBounds.Offset * 0.7;
         }
 
         private bool IsZeroSensorError()
