@@ -130,14 +130,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             switch (targetPosition)
             {
                 case ShutterPosition.Closed:
-                    if (position == ShutterPosition.Half || position == ShutterPosition.Opened || position == ShutterPosition.Closed)
+                    if (position == ShutterPosition.Half || position == ShutterPosition.Opened)
                     {
                         direction = ShutterMovementDirection.Down;
                     }
                     break;
 
                 case ShutterPosition.Half:
-                    if (position == ShutterPosition.Opened || position == ShutterPosition.Half)
+                    if (position == ShutterPosition.Opened)
                     {
                         direction = ShutterMovementDirection.Down;
                     }
@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 case ShutterPosition.Opened:
-                    if (position == ShutterPosition.Half || position == ShutterPosition.Closed || position == ShutterPosition.Opened)
+                    if (position == ShutterPosition.Half || position == ShutterPosition.Closed)
                     {
                         direction = ShutterMovementDirection.Up;
                     }
