@@ -114,6 +114,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 measure = false;
             }
+            if (this.Mission.NeedHomingAxis == Axis.None)
+            {
+                this.MachineVolatileDataProvider.IsHomingExecuted = this.MachineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
+                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.HorizontalAndVertical);
+            }
             if (this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
             {
                 if (this.Mission.CloseShutterBayNumber == BayNumber.None)
