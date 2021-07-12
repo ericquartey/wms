@@ -30,7 +30,7 @@
 
         ProfileCalibrationBay1 = 12,
 
-        Free2Bay1 = 13,
+        AntiIntrusionBarrier2Bay1 = 13,
 
         TrolleyOptionBay1 = 14,
 
@@ -62,7 +62,7 @@
 
         ProfileCalibrationBay2 = 28,
 
-        Free7Bay2 = 29,
+        AntiIntrusionBarrier2Bay2 = 29,
 
         TrolleyOptionBay2 = 30,
 
@@ -94,7 +94,7 @@
 
         ProfileCalibrationBay3 = 44,
 
-        Free7Bay3 = 45,
+        AntiIntrusionBarrier2Bay3 = 45,
 
         TrolleyOptionBay3 = 46,
 

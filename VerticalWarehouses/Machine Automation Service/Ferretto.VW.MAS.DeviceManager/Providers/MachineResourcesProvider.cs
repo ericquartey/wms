@@ -76,6 +76,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool[] DisplayedInputs => this.sensorStatus;
 
+        public bool IsAntiIntrusionBarrier2Bay1 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrier2Bay1];
+
+        public bool IsAntiIntrusionBarrier2Bay2 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrier2Bay2];
+
+        public bool IsAntiIntrusionBarrier2Bay3 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrier2Bay3];
+
         public bool IsAntiIntrusionBarrierBay1 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay1];
 
         public bool IsAntiIntrusionBarrierBay2 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay2];
@@ -614,7 +620,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     if (index == (int)IOMachineSensors.MushroomEmergencyButtonBay1
                                         || index == (int)IOMachineSensors.MicroCarterLeftSide
                                         || index == (int)IOMachineSensors.MicroCarterRightSide
-                                        || index == (int)IOMachineSensors.AntiIntrusionBarrierBay1)
+                                        || index == (int)IOMachineSensors.AntiIntrusionBarrierBay1
+                                        || index == (int)IOMachineSensors.AntiIntrusionBarrier2Bay1)
                                     {
                                         ioSecurityChange = true;
                                     }

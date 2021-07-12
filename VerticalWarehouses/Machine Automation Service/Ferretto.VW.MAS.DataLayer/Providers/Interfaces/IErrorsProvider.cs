@@ -16,8 +16,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ErrorStatisticsSummary GetStatistics();
 
-        bool IsErrorSmall();
+        //bool IsErrorSmall();
+        bool NeedsHoming();
+
         int PurgeErrors();
+
         MachineError RecordNew(int inverterIndex, ushort detailCode, BayNumber bayNumber = BayNumber.None, string detailText = null);
 
         MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None, string additionalText = null);

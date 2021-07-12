@@ -6,6 +6,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
 
@@ -536,9 +537,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
                 this.IsBusyConfirmingOperation = false;
                 this.IsOperationConfirmed = false;
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+
+                this.ShowNotification(ex);
             }
             finally
             {

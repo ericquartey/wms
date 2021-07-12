@@ -138,7 +138,7 @@
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
     <value>Izbira motorja dvigala (feedback)</value>
   </data>
-  <data name="Free" xml:space="preserve">
+  <data name="InnerLightCurtain" xml:space="preserve">
     <value>Prost</value>
   </data>
   <data name="HeightReadingActivation" xml:space="preserve">

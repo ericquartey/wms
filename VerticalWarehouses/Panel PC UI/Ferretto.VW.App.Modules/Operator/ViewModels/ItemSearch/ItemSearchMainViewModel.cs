@@ -340,6 +340,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (value is null)
                 {
                     //this.RaisePropertyChanged();
+                    _ = this.SetProperty(ref this.selectedItem, value);
+
                     this.selectedItemTxt = Resources.Localized.Get("OperatorApp.RequestedQuantityBase");
                     this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                     return;
@@ -523,6 +525,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.selectedItem = null;
+            this.AvailableQuantity = null;
             this.RaisePropertyChanged(nameof(this.SelectedItem));
         }
 
@@ -720,6 +723,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
+                this.AvailableQuantity = null;
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
         }
@@ -743,6 +747,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
+                this.AvailableQuantity = null;
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
         }
@@ -794,6 +799,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (!newItems.Any())
                 {
+                    this.SelectedItem = null;
+                    this.AvailableQuantity = null;
+                    this.InputQuantity = 0;
+
                     this.RaisePropertyChanged(nameof(this.Items));
                     return;
                 }

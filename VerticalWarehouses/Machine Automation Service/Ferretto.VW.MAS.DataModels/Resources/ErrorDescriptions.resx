@@ -441,4 +441,10 @@
   <data name="LoadUnitTareError" xml:space="preserve">
     <value>The tare of the Loading Unit is 0</value>
   </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Vertical positioning error</value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Vertical positioning error</value>
+  </data>
 </root>

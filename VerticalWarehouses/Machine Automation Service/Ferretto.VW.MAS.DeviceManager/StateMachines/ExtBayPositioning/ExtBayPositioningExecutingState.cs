@@ -667,7 +667,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
                         this.performedCycles = this.setupProceduresDataProvider.IncreasePerformedCycles(procedure).PerformedCycles;
                         this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
-                        MessageStatus status;
                         var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards) ?
                             ExternalBayMovementDirection.TowardOperator :
                             ExternalBayMovementDirection.TowardMachine;

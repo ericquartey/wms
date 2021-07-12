@@ -153,36 +153,58 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
             if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
             {
-                if (!this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle &&
-                   !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+                using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
-                    ok = false;
-                    errorText = ErrorDescriptions.InvalidPresenceSensors;
-                    errorCode = DataModels.MachineErrorCode.InvalidPresenceSensors;
-                }
-                else if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
-                {
-                    ok = false;
-                    errorText = ErrorDescriptions.MissingZeroSensorWithEmptyElevator;
-                    errorCode = DataModels.MachineErrorCode.MissingZeroSensorWithEmptyElevator;
-                }
-                else if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
-                        this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
-                        (this.machineData.MessageData.MovementMode == MovementMode.Position ||
-                            this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureWeight ||
-                            this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
-                    )
-                {
-                    ok = false;
-                    errorText = ErrorDescriptions.ZeroSensorActiveWithFullElevator;
-                    errorCode = DataModels.MachineErrorCode.ZeroSensorActiveWithFullElevator;
-                }
-                else if (this.machineData.MessageData.LoadingUnitId.HasValue &&
-                    !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
-                {
-                    ok = false;
-                    errorText = ErrorDescriptions.LoadUnitPresentOnEmptyElevator;
-                    errorCode = DataModels.MachineErrorCode.LoadUnitPresentOnEmptyElevator;
+                    var elevatorProvider = scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
+                    var verticalBounds = elevatorProvider.GetVerticalBounds();
+
+                    if (!this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle &&
+                        !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+                    {
+                        ok = false;
+                        errorText = ErrorDescriptions.InvalidPresenceSensors;
+                        errorCode = DataModels.MachineErrorCode.InvalidPresenceSensors;
+                    }
+                    else if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    {
+                        ok = false;
+                        errorText = ErrorDescriptions.MissingZeroSensorWithEmptyElevator;
+                        errorCode = DataModels.MachineErrorCode.MissingZeroSensorWithEmptyElevator;
+                    }
+                    else if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
+                            this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
+                            (this.machineData.MessageData.MovementMode == MovementMode.Position ||
+                                this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureWeight ||
+                                this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+                        )
+                    {
+                        ok = false;
+                        errorText = ErrorDescriptions.ZeroSensorActiveWithFullElevator;
+                        errorCode = DataModels.MachineErrorCode.ZeroSensorActiveWithFullElevator;
+                    }
+                    else if (this.machineData.MessageData.LoadingUnitId.HasValue &&
+                        !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+                    {
+                        ok = false;
+                        errorText = ErrorDescriptions.LoadUnitPresentOnEmptyElevator;
+                        errorCode = DataModels.MachineErrorCode.LoadUnitPresentOnEmptyElevator;
+                    }
+                    else if (this.machineData.MessageData.MovementMode == MovementMode.Position
+                        && this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
+                        && elevatorProvider.VerticalPosition > verticalBounds.Offset * 1.1)
+                    {
+                        ok = false;
+                        errorText = ErrorDescriptions.VerticalZeroHighError;
+                        errorCode = DataModels.MachineErrorCode.VerticalZeroHighError;
+                    }
+                    else if (this.machineData.MessageData.MovementMode == MovementMode.Position
+                        && !this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
+                        && elevatorProvider.VerticalPosition < verticalBounds.Offset * 0.9)
+                    {
+                        ok = false;
+                        errorText = ErrorDescriptions.VerticalZeroLowError;
+                        errorCode = DataModels.MachineErrorCode.VerticalZeroLowError;
+                    }
                 }
             }
             else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain ||

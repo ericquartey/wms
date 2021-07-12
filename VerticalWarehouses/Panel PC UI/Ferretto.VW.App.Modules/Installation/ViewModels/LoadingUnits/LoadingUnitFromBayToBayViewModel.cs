@@ -313,7 +313,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.GetLoadingUnits();
 
-            if (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)
+            if (this.MachineService.Bay.Positions.Any(p => p.IsUpper && !p.IsBlocked) &&
+                (this.MachineService.Bay.IsDouble || this.MachineService.BayFirstPositionIsUpper)
+                )
             {
                 this.SelectBayPositionUp();
             }

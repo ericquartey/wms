@@ -961,6 +961,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The vertical zero sensor is active in a high position. Please perform an elevator homing.
+        /// </summary>
+        public static string VerticalZeroHighError {
+            get {
+                return ResourceManager.GetString("VerticalZeroHighError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The vertical zero sensor is not active in a low position. Please perform an elevator homing.
+        /// </summary>
+        public static string VerticalZeroLowError {
+            get {
+                return ResourceManager.GetString("VerticalZeroLowError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The warehouse is full. It is not possible to find any free cell for the Load Unit..
         /// </summary>
         public static string WarehouseIsFull {

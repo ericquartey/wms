@@ -150,4 +150,7 @@
   <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
     <value>La baia esterna non può eseguire un movimento non valido</value>
   </data>
+  <data name="TheBayPositionIsBlocked" xml:space="preserve">
+    <value>La posizione di baia è bloccata</value>
+  </data>
 </root>

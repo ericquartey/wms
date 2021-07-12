@@ -138,6 +138,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsUpperPosition", CommonUtils.Culture.Actual) };
                     }
 
+                    if (movementCategory != MovementCategory.Manual && bay.Positions.Any(p => p.IsBlocked))
+                    {
+                        return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayPositionIsBlocked", CommonUtils.Culture.Actual) };
+                    }
+
                     break;
 
                 default:

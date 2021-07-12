@@ -138,8 +138,8 @@
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
     <value>Selezione motore elevatore (feedback)</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value>Libero</value>
+  <data name="InnerLightCurtain" xml:space="preserve">
+    <value>Barriera ottica interna</value>
   </data>
   <data name="HeightReadingActivation" xml:space="preserve">
     <value>Attivazione lettura altezza (barriera di misura)</value>

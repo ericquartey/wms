@@ -132,14 +132,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (this.Mission.NeedHomingAxis == Axis.None)
                 {
                     var machine = this.MachineProvider.GetMinMaxHeight();
-                    if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
-                        || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal) >= machine.HorizontalCyclesToCalibrate
-                        )
-                    {
-                        this.Mission.NeedHomingAxis = Axis.Horizontal;
-                    }
-                    this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.HorizontalPositionToCalibrate {machine.HorizontalPositionToCalibrate}. machine.HorizontalCyclesToCalibrate {machine.HorizontalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
-
                     if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) <= 2000 &&
                         this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= machine.VerticalCyclesToCalibrate &&
                        !machineResourcesProvider.IsDrawerCompletelyOnCradle
@@ -147,6 +139,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                     }
+
+                    if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical
+                        && (
+                            Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
+                            || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal) >= machine.HorizontalCyclesToCalibrate
+                            )
+                        )
+                    {
+                        this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    }
+                    this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.HorizontalPositionToCalibrate {machine.HorizontalPositionToCalibrate}. machine.HorizontalCyclesToCalibrate {machine.HorizontalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
 
                     this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.VerticalCyclesToCalibrate {machine.VerticalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
                 }

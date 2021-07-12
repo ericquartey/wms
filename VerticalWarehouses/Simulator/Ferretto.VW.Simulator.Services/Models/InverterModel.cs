@@ -1080,6 +1080,10 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
                 else
                 {
+                    if (this.InverterRole == InverterRole.Main)
+                    {
+                        this.DigitalIO[(int)InverterSensors.ANG_ZeroElevatorSensor].Value = false;
+                    }
                     this.AxisPosition = 0;
                 }
 
@@ -1504,6 +1508,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             //else
             {
                 this.HorizontalZeroSensor(false);
+                this.VerticalZeroSensor();
             }
             if (Math.Abs(target - this.AxisPosition) <= 0.1)
             {
@@ -1531,6 +1536,15 @@ namespace Ferretto.VW.Simulator.Services.Models
             else
             {
                 this.IsTargetReached = false;
+            }
+        }
+
+        private void VerticalZeroSensor()
+        {
+            if (this.OperationMode == InverterOperationMode.Position
+                && this.InverterRole == InverterRole.Main)
+            {
+                this.DigitalIO[(int)InverterSensors.ANG_ZeroElevatorSensor].Value = this.AxisPositionY < 0;
             }
         }
 

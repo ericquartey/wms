@@ -95,9 +95,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
         {
             if (message.IsError)
             {
-                this.Logger.LogError($"Inverter Reading Error State, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}, telegramError={message.TelegramErrorText}");
+                this.Logger.LogError($"Inverter Reading Error, message={message}, parameter={message.ParameterId}, dataset={message.DataSetIndex}, telegramError={message.TelegramErrorText}");
 
-                if (message.TelegramErrorText == "11 Unknown parameter")
+                if (message.TelegramErrorText == "11 Unknown parameter" || message.TelegramErrorText == "15 Unknown error")
                 {
                     this.Logger.LogDebug($"Inverter Reading: write parameter={message.ParameterId}, dataset={message.DataSetIndex}, shortPayload{message.ShortPayload}");
 

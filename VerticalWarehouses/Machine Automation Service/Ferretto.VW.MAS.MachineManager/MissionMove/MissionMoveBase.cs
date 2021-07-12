@@ -4,7 +4,6 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
@@ -669,6 +668,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.Mission.NeedHomingAxis = Axis.None;
                 this.MissionsDataProvider.Update(this.Mission);
+                this.MachineVolatileDataProvider.IsHomingExecuted = true;
             }
             else if (messageData.AxisToCalibrate == Axis.BayChain
                     && this.Mission.NeedHomingAxis == Axis.BayChain

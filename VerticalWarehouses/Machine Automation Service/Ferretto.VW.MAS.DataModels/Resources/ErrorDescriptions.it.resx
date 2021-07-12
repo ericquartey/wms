@@ -441,4 +441,10 @@
   <data name="LoadUnitTareError" xml:space="preserve">
     <value>La tara del cassetto è 0</value>
   </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Errore di posizione verticale</value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Errore di posizione verticale</value>
+  </data>
 </root>

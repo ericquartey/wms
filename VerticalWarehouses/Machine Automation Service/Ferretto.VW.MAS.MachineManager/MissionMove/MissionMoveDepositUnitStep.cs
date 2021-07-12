@@ -297,7 +297,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         {
                             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
-                            if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                            if (this.Mission.OpenShutterPosition == ShutterPosition.NotSpecified
+                                && (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                                )
                             {
                                 this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
                                 this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);

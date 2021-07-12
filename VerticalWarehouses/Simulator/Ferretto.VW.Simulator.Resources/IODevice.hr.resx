@@ -138,9 +138,6 @@
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
     <value>Odabir motora dizalice (povr.info)</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value>Slob.</value>
-  </data>
   <data name="HeightReadingActivation" xml:space="preserve">
     <value>Osposobljavanje čitanja visine (barijera mjere)</value>
   </data>

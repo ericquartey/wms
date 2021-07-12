@@ -2541,4 +2541,8 @@
   <data name="MaxMessageLength" xml:space="preserve">
     <value>Maximum message length</value>
   </data>
+  <data name="AntiIntrusionGateInternal" xml:space="preserve">
+    <value>Anti intrusion gate internal</value>
+    <comment>Sensor</comment>
+  </data>
 </root>

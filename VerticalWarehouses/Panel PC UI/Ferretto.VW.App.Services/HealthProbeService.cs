@@ -164,8 +164,10 @@ namespace Ferretto.VW.App.Services
                 this.logger.Debug(ex.ToString());
                 return ex.InnerException.ToString();
             }
-
-            sc.Dispose();
+            finally
+            {
+                sc.Dispose();
+            }
         }
 
         public void Start()

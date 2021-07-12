@@ -82,6 +82,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    this.LoadingUnitId.HasValue &&
                    this.MachineModeService.MachineMode == MachineMode.Manual &&
                    this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
+                   this.MachineService.Bay.Positions.Any(p => !p.IsBlocked) &&
                    (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
                     (!this.MachineService.HasCarousel && this.MachineStatus.LoadingUnitPositionDownInBay is null));
 
@@ -90,6 +91,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    this.LoadingUnitId.HasValue &&
                    this.MachineModeService.MachineMode == MachineMode.Manual2 &&
                    this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
+                   this.MachineService.Bay.Positions.Any(p => !p.IsBlocked) &&
                    (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
                     (!this.MachineService.HasCarousel && this.MachineStatus.LoadingUnitPositionDownInBay is null));
 
@@ -98,6 +100,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    this.LoadingUnitId.HasValue &&
                    this.MachineModeService.MachineMode == MachineMode.Manual3 &&
                    this.MachineService.Loadunits.Any(f => f.Id == this.LoadingUnitId && f.Status == LoadingUnitStatus.InLocation) &&
+                   this.MachineService.Bay.Positions.Any(p => !p.IsBlocked) &&
                    (this.MachineStatus.LoadingUnitPositionUpInBay is null ||
                     (!this.MachineService.HasCarousel && this.MachineStatus.LoadingUnitPositionDownInBay is null));
             }
@@ -156,7 +159,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.SensorsService.RefreshAsync(true);
 
-            if (this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
+            if (this.MachineService.Bay.Positions.Any(p => p.IsUpper && !p.IsBlocked) &&
+                (this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
+                )
             {
                 this.SelectBayPositionUp();
             }

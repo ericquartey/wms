@@ -621,7 +621,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
-            return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound };
+            return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound, Offset = verticalAxis.Offset };
         }
 
         public void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender)
@@ -1590,7 +1590,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("TargetPositionOutOfBounds", CommonUtils.Culture.Actual), targetPosition, lowerBound, upperBound));
             }
 
-            var homingDone = (checkHomingDone ? this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay] : true);
+            var homingDone = !checkHomingDone || this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
+
+            if (!homingDone && !manualMovement)
+            {
+                throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("VerticalOriginCalibrationMustBePerformed", CommonUtils.Culture.Actual), verticalAxis.Offset, lowerBound, upperBound));
+            }
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =

@@ -231,7 +231,7 @@ namespace Ferretto.VW.App.Services
                        }
                    }));
 
-                this.ViewErrorActive = null;
+                //this.ViewErrorActive = null;
             }
             else
             {

@@ -119,6 +119,12 @@ namespace Ferretto.VW.App.Services
 
         private bool aNGChainS6IND;
 
+        private bool antiIntrusionBarrier2Bay1;
+
+        private bool antiIntrusionBarrier2Bay2;
+
+        private bool antiIntrusionBarrier2Bay3;
+
         private bool antiIntrusionBarrierBay1;
 
         private bool antiIntrusionBarrierBay2;
@@ -344,6 +350,12 @@ namespace Ferretto.VW.App.Services
         public bool ANGChainS5IND { get => this.aNGChainS5IND; set => this.SetProperty(ref this.aNGChainS5IND, value); }
 
         public bool ANGChainS6IND { get => this.aNGChainS6IND; set => this.SetProperty(ref this.aNGChainS6IND, value); }
+
+        public bool AntiIntrusionBarrier2Bay1 { get => this.antiIntrusionBarrier2Bay1; set => this.SetProperty(ref this.antiIntrusionBarrier2Bay1, value); }
+
+        public bool AntiIntrusionBarrier2Bay2 { get => this.antiIntrusionBarrier2Bay2; set => this.SetProperty(ref this.antiIntrusionBarrier2Bay2, value); }
+
+        public bool AntiIntrusionBarrier2Bay3 { get => this.antiIntrusionBarrier2Bay3; set => this.SetProperty(ref this.antiIntrusionBarrier2Bay3, value); }
 
         public bool AntiIntrusionBarrierBay1 { get => this.antiIntrusionBarrierBay1; set => this.SetProperty(ref this.antiIntrusionBarrierBay1, value); }
 
