@@ -119,18 +119,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpPost("move-manual")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public IActionResult MoveManual(ExternalBayMovementDirection direction)
+        public IActionResult MoveManual(ExternalBayMovementDirection direction, bool bypass)
         {
-            this.externalBayProvider.MoveManual(direction, -1, null, true, this.BayNumber, MessageActor.AutomationService);
+            this.externalBayProvider.MoveManual(direction, -1, null, bypass, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
 
         [HttpPost("move-manual-double")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public IActionResult MoveManualExtDouble(ExternalBayMovementDirection direction)
+        public IActionResult MoveManualExtDouble(ExternalBayMovementDirection direction, bool bypass)
         {
-            this.externalBayProvider.MoveManualExtDouble(direction, -1, null, true, this.BayNumber, MessageActor.AutomationService);
+            this.externalBayProvider.MoveManualExtDouble(direction, -1, null, bypass, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }

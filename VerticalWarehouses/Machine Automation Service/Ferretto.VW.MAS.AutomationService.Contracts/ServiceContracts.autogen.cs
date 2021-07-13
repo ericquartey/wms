@@ -1009,18 +1009,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task MoveAssistedExternalBayAsync(ExternalBayMovementDirection direction, bool isPositionUpper, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction);
+        System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, bool bypass);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, bool bypass, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction);
+        System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, bool bypass);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, bool bypass, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MovementForExtractionAsync(bool isUpperPosition);
