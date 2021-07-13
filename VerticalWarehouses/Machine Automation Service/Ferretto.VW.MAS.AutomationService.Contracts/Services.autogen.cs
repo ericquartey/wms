@@ -10807,21 +10807,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction)
+        public System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, bool bypass)
         {
-            return MoveManualAsync(direction, System.Threading.CancellationToken.None);
+            return MoveManualAsync(direction, bypass, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, bool bypass, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
     
+            if (bypass == null)
+                throw new System.ArgumentNullException("bypass");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/external-bay/move-manual?");
             urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("bypass") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bypass, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -10874,21 +10878,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction)
+        public System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, bool bypass)
         {
-            return MoveManualExtDoubleAsync(direction, System.Threading.CancellationToken.None);
+            return MoveManualExtDoubleAsync(direction, bypass, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, bool bypass, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
     
+            if (bypass == null)
+                throw new System.ArgumentNullException("bypass");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/external-bay/move-manual-double?");
             urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("bypass") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bypass, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
