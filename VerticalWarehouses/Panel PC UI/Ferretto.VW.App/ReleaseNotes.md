@@ -30,6 +30,7 @@
 - I movimenti verticali dell'elevatore sono bloccati se manca la calibrazione
 - Aggiunto allarme di posizione verticale in confronto con il sensore di zero elevatore
 - Correzioni alla gestione delle posizioni di baia bloccate
+- I movimenti manuali della baia esterna controllano le quote minime e massime
 
 ## Compatibile con adapter 0.4.22
 ***
