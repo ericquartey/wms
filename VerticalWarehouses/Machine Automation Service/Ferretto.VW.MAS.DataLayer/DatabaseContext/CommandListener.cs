@@ -40,26 +40,26 @@ namespace Ferretto.VW.MAS.DataLayer
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable CA1801 // Remove unused parameter
 
-        [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandError")]
-        public void OnCommandError(
-                DbCommand command,
-                DbCommandMethod executeMethod,
-                Guid commandId,
-                Guid connectionId,
-                Exception exception,
-                bool async,
-                DateTimeOffset startTime,
-                TimeSpan duration)
-        {
-            lock (this.redundancyService)
-            {
-                if (this.redundancyService.IsEnabled)
-                {
-                    this.logger.LogError($"Database command error.");
-                    this.OnCommandOrConnectionError(exception);
-                }
-            }
-        }
+        //[DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandError")]
+        //public void OnCommandError(
+        //        DbCommand command,
+        //        DbCommandMethod executeMethod,
+        //        Guid commandId,
+        //        Guid connectionId,
+        //        Exception exception,
+        //        bool async,
+        //        DateTimeOffset startTime,
+        //        TimeSpan duration)
+        //{
+        //    lock (this.redundancyService)
+        //    {
+        //        if (this.redundancyService.IsEnabled)
+        //        {
+        //            this.logger.LogError($"Database command error.");
+        //            this.OnCommandOrConnectionError(exception);
+        //        }
+        //    }
+        //}
 
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandExecuting")]
         public void OnCommandExecuting(
@@ -112,10 +112,14 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             dbContext.Database.ExecuteSqlCommand(command.CommandText, parametersArray);
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            this.logger.LogWarning("Inhibiting database standby channel.");
-                            this.redundancyService.InhibitStandbyDb();
+                            //this.logger.LogWarning("Inhibiting database standby channel.");
+                            //this.redundancyService.InhibitStandbyDb();
+                            this.logger.LogError($"Error writing to standby database: {ex.Message}");
+                            this.writingOnStandby = false;
+                            // TODO this exception is not thrown!!!
+                            throw;
                         }
 
                         this.writingOnStandby = false;
@@ -124,26 +128,26 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Connection.ConnectionError")]
-        public void OnConnectionError(
-               DbCommand command,
-               DbCommandMethod executeMethod,
-               Guid commandId,
-               Guid connectionId,
-               Exception exception,
-               bool async,
-               DateTimeOffset startTime,
-               TimeSpan duration)
-        {
-            lock (this.redundancyService)
-            {
-                if (this.redundancyService.IsEnabled)
-                {
-                    this.logger.LogError($"Database connection error.");
-                    this.OnCommandOrConnectionError(null);
-                }
-            }
-        }
+        //[DiagnosticName("Microsoft.EntityFrameworkCore.Database.Connection.ConnectionError")]
+        //public void OnConnectionError(
+        //       DbCommand command,
+        //       DbCommandMethod executeMethod,
+        //       Guid commandId,
+        //       Guid connectionId,
+        //       Exception exception,
+        //       bool async,
+        //       DateTimeOffset startTime,
+        //       TimeSpan duration)
+        //{
+        //    lock (this.redundancyService)
+        //    {
+        //        if (this.redundancyService.IsEnabled)
+        //        {
+        //            this.logger.LogError($"Database connection error.");
+        //            this.OnCommandOrConnectionError(null);
+        //        }
+        //    }
+        //}
 
 #pragma warning restore IDE0060 // Remove unused parameter
 #pragma warning restore CA1801 // Remove unused parameter
@@ -169,7 +173,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void OnCommandOrConnectionError(Exception exception)
         {
-            // DO NOTHING!! please never swap manually a database
+            // DO NOTHING!! please never swap a database by software
 
             //lock (this.redundancyService)
             //{
