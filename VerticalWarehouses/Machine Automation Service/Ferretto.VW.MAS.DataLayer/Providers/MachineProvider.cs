@@ -313,6 +313,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetToteBarcodeLength()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().ToteBarcodeLength;
+            }
+        }
+
         public void Import(Machine machine, DataLayerContext context)
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));

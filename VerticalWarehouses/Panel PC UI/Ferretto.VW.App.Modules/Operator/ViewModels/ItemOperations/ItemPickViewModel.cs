@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private string barcodeItem;
+
         private bool canConfirm;
 
         private bool canConfirmOnEmpty;
@@ -510,8 +512,40 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (barcode != null)
                 {
-                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                    var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
+                    if (isToteBarcodeManaged)
+                    {
+                        if (barcode.Length == this.ToteBarcodeLength)
+                        {
+                            var toteBarcode = barcode;
+
+                            this.Logger.Debug($"Confirm operation for {this.barcodeItem} item, {toteBarcode} tote");
+                            this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + toteBarcode), Services.Models.NotificationSeverity.Success);
+
+                            // The flow of operation requires:
+                            // - acquisition of item barcode (first)
+                            // - acquisition of tote barcode
+                            // - complete the operation
+                            canComplete = await this.MissionOperationsService.CompleteAsync(
+                                this.MissionOperation.Id,
+                                this.InputQuantity.Value,
+                                this.barcodeItem,
+                                0,
+                                toteBarcode);
+                        }
+                        else
+                        {
+                            this.Logger.Debug($"Cache barcode item: {barcode}");
+                            this.barcodeItem = barcode;
+                        }
+                    }
+                    else
+                    {
+                        this.barcodeItem = barcode;
+
+                        this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                        canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem);
+                    }
                 }
                 else
                 {
@@ -542,6 +576,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (ex is MasWebApiException webEx
                     && webEx.StatusCode == StatusCodes.Status403Forbidden)
                 {
+                    this.barcodeItem = string.Empty;
                     throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
                 }
 
