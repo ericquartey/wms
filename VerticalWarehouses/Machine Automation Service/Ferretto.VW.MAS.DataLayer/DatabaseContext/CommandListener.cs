@@ -169,17 +169,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void OnCommandOrConnectionError(Exception exception)
         {
-            lock (this.redundancyService)
-            {
-                var dbContextOptions = this.writingOnStandby
-                ? this.redundancyService.StandbyDbContextOptions
-                : this.redundancyService.ActiveDbContextOptions;
+            // DO NOTHING!! please never swap manually a database
 
-                if (this.redundancyService.IsEnabled)
-                {
-                    this.redundancyService.HandleDbContextFault(dbContextOptions, exception);
-                }
-            }
+            //lock (this.redundancyService)
+            //{
+            //    var dbContextOptions = this.writingOnStandby
+            //    ? this.redundancyService.StandbyDbContextOptions
+            //    : this.redundancyService.ActiveDbContextOptions;
+
+            //    if (this.redundancyService.IsEnabled)
+            //    {
+            //        this.redundancyService.HandleDbContextFault(dbContextOptions, exception);
+            //    }
+            //}
         }
 
         #endregion
