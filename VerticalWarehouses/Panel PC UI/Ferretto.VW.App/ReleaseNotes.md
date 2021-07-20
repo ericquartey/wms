@@ -32,7 +32,7 @@
 - Correzioni alla gestione delle posizioni di baia bloccate
 - I movimenti manuali della baia esterna controllano le quote minime e massime
 
-## Compatibile con adapter 0.4.22
+## Compatibile con adapter 0.4.23
 ***
 
 [Versione 1.0.20](#id1020)
