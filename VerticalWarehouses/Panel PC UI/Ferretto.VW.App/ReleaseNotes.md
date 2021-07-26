@@ -22,18 +22,16 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.21 rispetto la 1.0.20
-- Aggiunto sensore di barriera di sicurezza intermedia nella BED
+## Nuove Funzionalità 1.0.22 rispetto la 1.0.21
+- Aggiunta possibilità di inserire le Note nella causale della Ricerca Articolo
 
 ## Bug Risolti
-- La pagina di Ricerca Articolo azzera i dati al cambio della selezione
-- I movimenti verticali dell'elevatore sono bloccati se manca la calibrazione
-- Aggiunto allarme di posizione verticale in confronto con il sensore di zero elevatore
-- Correzioni alla gestione delle posizioni di baia bloccate
-- I movimenti manuali della baia esterna controllano le quote minime e massime
+- Corretta gestione del database di backup
 
 ## Compatibile con adapter 0.4.23
 ***
+
+[Versione 1.0.21](#id1021)
 
 [Versione 1.0.20](#id1020)
 
@@ -76,6 +74,20 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1021"></a>
+## Nuove Funzionalità 1.0.21 rispetto la 1.0.20
+- Aggiunto sensore di barriera di sicurezza intermedia nella BED
+
+## Bug Risolti
+- La pagina di Ricerca Articolo azzera i dati al cambio della selezione
+- I movimenti verticali dell'elevatore sono bloccati se manca la calibrazione
+- Aggiunto allarme di posizione verticale in confronto con il sensore di zero elevatore
+- Correzioni alla gestione delle posizioni di baia bloccate
+- I movimenti manuali della baia esterna controllano le quote minime e massime
+
+## Compatibile con adapter 0.4.23
 ***
 
 <a id="id1020"></a>
