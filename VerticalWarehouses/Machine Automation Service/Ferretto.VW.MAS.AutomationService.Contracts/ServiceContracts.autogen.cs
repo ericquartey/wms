@@ -4628,6 +4628,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Simulation", Required = Newtonsoft.Json.Required.Always)]
         public bool Simulation { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("ToteBarcodeLength", Required = Newtonsoft.Json.Required.Always)]
+        public int ToteBarcodeLength { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("VerticalCyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int VerticalCyclesToCalibrate { get; set; }
     

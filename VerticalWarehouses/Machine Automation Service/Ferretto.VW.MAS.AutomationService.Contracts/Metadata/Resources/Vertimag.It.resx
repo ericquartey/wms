@@ -592,6 +592,6 @@
     <value>Ritardo compensazione prelievo</value>
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
-    <value>Lunghezza codice contenitore</value>
+    <value>Lunghezza codice contenitore esterno</value>
   </data>
 </root>

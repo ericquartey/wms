@@ -1865,4 +1865,13 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Argomento non valido</value>
   </data>
+  <data name="ToteBarcodeAcquired" xml:space="preserve">
+    <value>Il contenitore esterno è acquisito. Codice a barre: </value>
+  </data>
+  <data name="ItemBarcodeAcquired" xml:space="preserve">
+    <value>Articolo è acquisito. Codice a barre: </value>
+  </data>
+  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
+    <value>Operazione non valida. Articolo e contenitore esterno devono essere acquisiti.</value>
+  </data>
 </root>

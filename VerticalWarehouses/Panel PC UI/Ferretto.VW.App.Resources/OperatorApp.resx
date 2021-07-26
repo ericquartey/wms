@@ -2239,4 +2239,16 @@
     <value>Invalid argument</value>
     <comment>Error Message</comment>
   </data>
+  <data name="ToteBarcodeAcquired" xml:space="preserve">
+    <value>Tote is acquired. Barcode: </value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="ItemBarcodeAcquired" xml:space="preserve">
+    <value>Item is acquired. Barcode: </value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
+    <value>Invalid operation. Item and tote must be acquired.</value>
+    <comment>Error Message</comment>
+  </data>
 </root>
