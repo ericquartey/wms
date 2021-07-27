@@ -877,6 +877,7 @@ namespace Ferretto.VW.App.Services
                         }
 
                     case MessageStatus.OperationExecuting:
+                    case MessageStatus.OperationWaitResume:
                         {
                             //if (message?.Data is PositioningMessageData dataLog)
                             //{
@@ -971,6 +972,10 @@ namespace Ferretto.VW.App.Services
                                 else
                                 {
                                     this.logger.Debug(msg);
+                                    if (message.Status == MessageStatus.OperationWaitResume)
+                                    {
+                                        this.ClearNotifications();
+                                    }
                                 }
                                 //this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Missione: {this.MachineStatus?.CurrentMissionId}, " +
                                 //    $"Cassetto: {moveLoadingUnitMessageData.LoadUnitId}, " +
