@@ -254,6 +254,14 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case MessageType.CombinedMovements:
                         this.ProcessCombinedMovemets(command, serviceProvider);
                         break;
+
+                    case MessageType.EndMissionRobot:
+                        this.ProcessEndMissionRobot(command, serviceProvider);
+                        break;
+
+                    case MessageType.ReadyWarehouseRobot:
+                        this.ProcessReadyWarehouseRobot(command, serviceProvider);
+                        break;
                 }
 
                 var notificationMessageData = new MachineStatusActiveMessageData(
@@ -808,36 +816,36 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     case FieldMessageType.BayLight when receivedMessage.Source is FieldMessageActor.IoDriver &&
                                                         receivedMessage.Data is IBayLightFieldMessageData:
-
-                        this.Logger.LogTrace($"3:BayLight received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
-
-                        var enable = ((IBayLightFieldMessageData)receivedMessage.Data).Enable;
-
-                        if (receivedMessage.Status == MessageStatus.OperationEnd)
                         {
-                            if (this.machineVolatileDataProvider.IsBayLightOn.ContainsKey(bayNumber))
+                            this.Logger.LogTrace($"3:BayLight received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
+
+                            var enable = ((IBayLightFieldMessageData)receivedMessage.Data).Enable;
+
+                            if (receivedMessage.Status == MessageStatus.OperationEnd)
                             {
-                                this.machineVolatileDataProvider.IsBayLightOn[bayNumber] = enable;
+                                if (this.machineVolatileDataProvider.IsBayLightOn.ContainsKey(bayNumber))
+                                {
+                                    this.machineVolatileDataProvider.IsBayLightOn[bayNumber] = enable;
+                                }
+                                else
+                                {
+                                    this.machineVolatileDataProvider.IsBayLightOn.Add(bayNumber, enable);
+                                }
                             }
-                            else
-                            {
-                                this.machineVolatileDataProvider.IsBayLightOn.Add(bayNumber, enable);
-                            }
+
+                            this.EventAggregator
+                                .GetEvent<NotificationEvent>()
+                                .Publish(
+                                    new NotificationMessage(
+                                        null,
+                                        $"BayLight={enable} completed, Bay={bayNumber}",
+                                        MessageActor.Any,
+                                        MessageActor.DeviceManager,
+                                        MessageType.BayLight,
+                                        bayNumber,
+                                        bayNumber,
+                                        receivedMessage.Status));
                         }
-
-                        this.EventAggregator
-                            .GetEvent<NotificationEvent>()
-                            .Publish(
-                                new NotificationMessage(
-                                    null,
-                                    $"BayLight={enable} completed, Bay={bayNumber}",
-                                    MessageActor.Any,
-                                    MessageActor.DeviceManager,
-                                    MessageType.BayLight,
-                                    bayNumber,
-                                    bayNumber,
-                                    receivedMessage.Status));
-
                         break;
 
                     case FieldMessageType.MeasureProfile:
@@ -929,6 +937,74 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     bayNumber,
                                     receivedMessage.Status));
 
+                        break;
+
+                    case FieldMessageType.EndMissionRobot when receivedMessage.Source is FieldMessageActor.IoDriver &&
+                                                        receivedMessage.Data is IEndMissionRobotFieldMessageData:
+                        {
+                            this.Logger.LogTrace($"3:EndMissionRobot received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
+
+                            var enable = ((IEndMissionRobotFieldMessageData)receivedMessage.Data).Enable;
+
+                            if (receivedMessage.Status == MessageStatus.OperationEnd)
+                            {
+                                if (this.machineVolatileDataProvider.IsEndMissionRobotOn.ContainsKey(bayNumber))
+                                {
+                                    this.machineVolatileDataProvider.IsEndMissionRobotOn[bayNumber] = enable;
+                                }
+                                else
+                                {
+                                    this.machineVolatileDataProvider.IsEndMissionRobotOn.Add(bayNumber, enable);
+                                }
+                            }
+
+                            this.EventAggregator
+                                .GetEvent<NotificationEvent>()
+                                .Publish(
+                                    new NotificationMessage(
+                                        null,
+                                        $"EndMissionRobot={enable} completed, Bay={bayNumber}",
+                                        MessageActor.Any,
+                                        MessageActor.DeviceManager,
+                                        MessageType.EndMissionRobot,
+                                        bayNumber,
+                                        bayNumber,
+                                        receivedMessage.Status));
+                        }
+                        break;
+
+                    case FieldMessageType.ReadyWarehouseRobot when receivedMessage.Source is FieldMessageActor.IoDriver &&
+                                                        receivedMessage.Data is IReadyWarehouseRobotFieldMessageData:
+                        {
+                            this.Logger.LogTrace($"3:ReadyWarehouseRobot received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
+
+                            var enable = ((IReadyWarehouseRobotFieldMessageData)receivedMessage.Data).Enable;
+
+                            if (receivedMessage.Status == MessageStatus.OperationEnd)
+                            {
+                                if (this.machineVolatileDataProvider.IsReadyWarehouseRobotOn.ContainsKey(bayNumber))
+                                {
+                                    this.machineVolatileDataProvider.IsReadyWarehouseRobotOn[bayNumber] = enable;
+                                }
+                                else
+                                {
+                                    this.machineVolatileDataProvider.IsReadyWarehouseRobotOn.Add(bayNumber, enable);
+                                }
+                            }
+
+                            this.EventAggregator
+                                .GetEvent<NotificationEvent>()
+                                .Publish(
+                                    new NotificationMessage(
+                                        null,
+                                        $"ReadyWarehouseRobot={enable} completed, Bay={bayNumber}",
+                                        MessageActor.Any,
+                                        MessageActor.DeviceManager,
+                                        MessageType.ReadyWarehouseRobot,
+                                        bayNumber,
+                                        bayNumber,
+                                        receivedMessage.Status));
+                        }
                         break;
                 }
 

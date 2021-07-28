@@ -90,6 +90,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             //        return true;
             //    }
             //}
+            if (bay.IsRobot)
+            {
+                this.BaysDataProvider.EndMissionRobot(bay.Number, false);
+            }
             if (this.Mission.RestoreConditions)
             {
                 this.Mission.RestoreConditions = false;
@@ -387,7 +391,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 this.Logger.LogDebug($"Detect an error :: go to MissionMoveEndStep");
 
-                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
             //else if (this.Mission.MissionType == MissionType.OUT ||

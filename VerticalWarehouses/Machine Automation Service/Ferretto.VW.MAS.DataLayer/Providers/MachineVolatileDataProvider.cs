@@ -47,6 +47,8 @@ namespace Ferretto.VW.MAS.DataLayer
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
 
             this.IsBayLightOn = new Dictionary<BayNumber, bool>();
+            this.IsReadyWarehouseRobotOn = new Dictionary<BayNumber, bool>();
+            this.IsEndMissionRobotOn = new Dictionary<BayNumber, bool>();
 
             this.IsBayHomingExecuted = new Dictionary<BayNumber, bool>();
             this.IsBayHomingExecuted.Add(BayNumber.BayOne, false);
@@ -122,6 +124,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool IsDeviceManagerBusy { get; set; }
 
+        public Dictionary<BayNumber, bool> IsEndMissionRobotOn { get; set; }
+
         public bool IsHomingActive { get; set; }
 
         // this is a duplicate for IsBayHomingExecuted[BayNumber.ElevatorBay].
@@ -154,6 +158,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool IsMachineRunning => (this.MachinePowerState == MachinePowerState.Powered);
 
         public bool? IsOneTonMachine { get; set; }
+
+        public Dictionary<BayNumber, bool> IsReadyWarehouseRobotOn { get; set; }
 
         public Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
 

@@ -161,6 +161,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsProfileCalibratedBay3 => this.sensorStatus[(int)IOMachineSensors.ProfileCalibrationBay3];
 
+        public bool IsRobotReadyBay1 => this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1];
+
+        public bool IsRobotReadyBay2 => this.sensorStatus[(int)IOMachineSensors.RobotOptionBay2];
+
+        public bool IsRobotReadyBay3 => this.sensorStatus[(int)IOMachineSensors.RobotOptionBay3];
+
         public bool IsSensorZeroOnBay1 => this.sensorStatus[(int)IOMachineSensors.ACUBay1S3IND];
 
         public bool IsSensorZeroOnBay2 => this.sensorStatus[(int)IOMachineSensors.ACUBay2S3IND];
@@ -531,6 +537,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 case BayNumber.BayThree:
                     return this.IsProfileCalibratedBay3;
+            }
+        }
+
+        public bool IsRobotReady(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsRobotReadyBay1;
+
+                case BayNumber.BayTwo:
+                    return this.IsRobotReadyBay2;
+
+                case BayNumber.BayThree:
+                    return this.IsRobotReadyBay3;
             }
         }
 

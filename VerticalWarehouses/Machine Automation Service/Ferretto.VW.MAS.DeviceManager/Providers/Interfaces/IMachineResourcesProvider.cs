@@ -132,6 +132,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsProfileCalibratedBay(BayNumber bayNumber);
 
+        bool IsRobotReady(BayNumber bayNumber);
+
         bool IsSensorZeroOnBay(BayNumber bayNumber);
 
         bool IsSensorZeroTopOnBay(BayNumber bayNumber);

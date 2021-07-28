@@ -269,6 +269,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return ActionPolicy.Allowed;
             }
 
+            if (bay.IsRobot && !this.machineResourcesProvider.IsRobotReady(bayNumber))
+            {
+                this.logger.LogError(Resources.Bays.ResourceManager.GetString("TheRobotIsNotReady", CommonUtils.Culture.Actual));
+                return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheRobotIsNotReady", CommonUtils.Culture.Actual) };
+            }
+
             // Check the position of loading unit onto the bay and the given movement direction
             var isLoadingUnitInExternalPosition = this.machineResourcesProvider.IsDrawerInBayExternalPosition(bayNumber, bay.IsExternal && bay.IsDouble);
             var isLoadingUnitInInternalPosition = this.machineResourcesProvider.IsDrawerInBayInternalPosition(bayNumber, bay.IsDouble);
@@ -334,6 +340,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (bay.External is null)
             {
                 return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheSpecifiedBayIsNotAnExternalBay", CommonUtils.Culture.Actual) };
+            }
+            if (bay.IsRobot)
+            {
+                this.logger.LogError("Robot option is not available in double external bay!");
+                return new ActionPolicy { Reason = "Robot option is not available in double external bay!" };
             }
 
             // Always allow the manual movements

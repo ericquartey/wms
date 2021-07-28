@@ -74,6 +74,10 @@
 
         BayLight,
 
-        InverterReading
+        InverterReading,
+
+        EndMissionRobot,
+
+        ReadyWarehouseRobot
     }
 }

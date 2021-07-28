@@ -92,6 +92,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Logger.LogDebug($"Light bay {bay.Number} is true");
                 }
             }
+            else if (bay.IsRobot)
+            {
+                this.BaysDataProvider.EndMissionRobot(bay.Number, true);
+            }
             else
             {
                 // All others bay configuration
@@ -115,6 +119,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.EjectLoadUnit)
                         )
                     {
+                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                        if (bay != null && bay.IsRobot)
+                        {
+                            this.BaysDataProvider.EndMissionRobot(bay.Number, false);
+                        }
                         this.OnStop(StopRequestReason.Error);
                     }
                     break;
@@ -129,6 +138,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
                         )
                     {
+                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                        if (bay != null && bay.IsRobot)
+                        {
+                            this.BaysDataProvider.EndMissionRobot(bay.Number, false);
+                        }
                         this.OnStop(StopRequestReason.Error);
                     }
                     break;
@@ -143,6 +157,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var ejectBayLocation = this.Mission.LoadUnitDestination;
             var bayPosition = this.BaysDataProvider.GetPositionByLocation(ejectBayLocation);
+            if (bayPosition.Bay.IsRobot)
+            {
+                this.BaysDataProvider.EndMissionRobot(bayPosition.Bay.Number, false);
+            }
 #if CHECK_BAY_SENSOR
             if (this.SensorsProvider.IsLoadingUnitInLocation(ejectBayLocation))
 #endif

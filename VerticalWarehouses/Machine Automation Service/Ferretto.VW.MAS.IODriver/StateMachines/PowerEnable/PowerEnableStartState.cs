@@ -59,7 +59,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 
         public override void Start()
         {
-            var powerEnableIoMessage = new IoWriteMessage { BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
+            var powerEnableIoMessage = new IoWriteMessage
+            {
+                BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false,
+                EndMissionRobotOn = this.status.OutputData?[(int)IoPorts.EndMissionRobot] ?? false,
+                ReadyWarehouseRobotOn = this.status.OutputData?[(int)IoPorts.ReadyWarehouseRobot] ?? false,
+            };
 
             this.Logger.LogDebug($"1:Power Enable ={powerEnableIoMessage}");
 

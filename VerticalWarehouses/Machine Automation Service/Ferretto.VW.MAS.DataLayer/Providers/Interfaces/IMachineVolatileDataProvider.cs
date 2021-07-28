@@ -34,6 +34,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsDeviceManagerBusy { get; set; }
 
+        Dictionary<BayNumber, bool> IsEndMissionRobotOn { get; }
+
         bool IsHomingActive { get; set; }
 
         bool IsHomingExecuted { get; set; }
@@ -41,6 +43,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsMachineRunning { get; }
 
         bool? IsOneTonMachine { get; set; }
+
+        Dictionary<BayNumber, bool> IsReadyWarehouseRobotOn { get; }
 
         Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
 

@@ -379,8 +379,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 // Detect the error condition and add it to the errors list
                                 if (!this.CheckMissionShowError())
                                 {
-                                    // Set the light bay to ON
-                                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                    if (bay != null && !bay.IsRobot)
+                                    {
+                                        // Set the light bay to ON
+                                        this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                                    }
 
                                     if (this.Mission.MissionType != MissionType.Manual || this.Mission.MissionType != MissionType.ScaleCalibration)
                                     {
@@ -460,8 +463,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                 this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
-                this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
+                var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                if (!bay.IsRobot)
+                {
+                    this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                    this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
+                }
                 return true;
             }
             return false;

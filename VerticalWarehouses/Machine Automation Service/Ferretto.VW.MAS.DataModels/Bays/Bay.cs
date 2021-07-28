@@ -45,6 +45,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsFastDepositToBay { get; set; }
 
+        // available only for BES
+        public bool IsRobot { get; set; }
+
+        // available only for BIS
         public bool IsTelescopic { get; set; }
 
         public int LastCalibrationCycles { get; set; }

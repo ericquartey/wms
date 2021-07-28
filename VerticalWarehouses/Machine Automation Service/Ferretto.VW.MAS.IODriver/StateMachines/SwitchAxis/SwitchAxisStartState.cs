@@ -61,7 +61,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         public override void Start()
         {
-            var switchOffAxisIoMessage = new IoWriteMessage { PowerEnable = true, BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
+            var switchOffAxisIoMessage = new IoWriteMessage
+            {
+                PowerEnable = true,
+                BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false,
+                EndMissionRobotOn = this.status.OutputData?[(int)IoPorts.EndMissionRobot] ?? false,
+                ReadyWarehouseRobotOn = this.status.OutputData?[(int)IoPorts.ReadyWarehouseRobot] ?? false,
+            };
 
             this.Logger.LogDebug($"1:Switch axis start {this.axisToSwitchOn}. IO={switchOffAxisIoMessage}");
 

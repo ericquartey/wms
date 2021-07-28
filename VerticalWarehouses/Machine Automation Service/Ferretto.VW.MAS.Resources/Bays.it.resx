@@ -153,4 +153,7 @@
   <data name="TheBayPositionIsBlocked" xml:space="preserve">
     <value>La posizione di baia è bloccata</value>
   </data>
+  <data name="TheRobotIsNotReady" xml:space="preserve">
+    <value>Il robot non è pronto</value>
+  </data>
 </root>

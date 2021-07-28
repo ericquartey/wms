@@ -142,6 +142,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The robot is not ready.
+        /// </summary>
+        public static string TheRobotIsNotReady {
+            get {
+                return ResourceManager.GetString("TheRobotIsNotReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified bay has no carousel..
         /// </summary>
         public static string TheSpecifiedBayHasNoCarousel {

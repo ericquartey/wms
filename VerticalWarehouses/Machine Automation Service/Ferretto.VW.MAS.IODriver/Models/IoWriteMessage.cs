@@ -107,6 +107,12 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
 
+        public bool EndMissionRobotOn
+        {
+            get => this.outputs?[(int)IoPorts.EndMissionRobot] ?? false;
+            set => this.outputs[(int)IoPorts.EndMissionRobot] = value;
+        }
+
         public bool MeasureProfileOn => this.outputs?[(int)IoPorts.MeasureProfile] ?? false;
 
         public bool[] Outputs => this.outputs;
@@ -117,6 +123,12 @@ namespace Ferretto.VW.MAS.IODriver
         {
             get => this.outputs[(int)IoPorts.PowerEnable];
             set => this.outputs[(int)IoPorts.PowerEnable] = value;
+        }
+
+        public bool ReadyWarehouseRobotOn
+        {
+            get => this.outputs?[(int)IoPorts.ReadyWarehouseRobot] ?? false;
+            set => this.outputs[(int)IoPorts.ReadyWarehouseRobot] = value;
         }
 
         public bool ResetSecurity
@@ -265,10 +277,22 @@ namespace Ferretto.VW.MAS.IODriver
             return true;
         }
 
+        public bool SwitchEndMissionRobot(bool value)
+        {
+            this.outputs[(int)IoPorts.EndMissionRobot] = value;
+            return true;
+        }
+
         public bool SwitchMeasureProfile(bool switchOn)
         {
             this.outputs[(int)IoPorts.MeasureProfile] = switchOn;
 
+            return true;
+        }
+
+        public bool SwitchReadyWarehouseRobot(bool value)
+        {
+            this.outputs[(int)IoPorts.ReadyWarehouseRobot] = value;
             return true;
         }
 

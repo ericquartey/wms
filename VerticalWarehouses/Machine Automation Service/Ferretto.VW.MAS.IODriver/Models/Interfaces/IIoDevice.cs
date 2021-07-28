@@ -7,13 +7,19 @@ namespace Ferretto.VW.MAS.IODriver
 {
     internal interface IIoDevice
     {
-        #region Methods
+        #region Properties
 
         bool IsCommandExecuting { get; }
+
+        #endregion
+
+        #region Methods
 
         void DestroyStateMachine();
 
         void ExecuteBayLight(FieldCommandMessage receivedMessage);
+
+        void ExecuteEndMissionRobot(FieldCommandMessage receivedMessage);
 
         void ExecuteIoPowerUp();
 
@@ -22,6 +28,8 @@ namespace Ferretto.VW.MAS.IODriver
         void ExecuteMeasureProfile(FieldCommandMessage receivedMessage);
 
         void ExecutePowerEnable(FieldCommandMessage receivedMessage);
+
+        void ExecuteReadyWarehouseRobot(FieldCommandMessage receivedMessage);
 
         void ExecuteResetSecurity();
 

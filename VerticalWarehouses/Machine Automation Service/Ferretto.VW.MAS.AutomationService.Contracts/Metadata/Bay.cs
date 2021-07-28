@@ -87,6 +87,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(31)]
             public bool IsFastDepositToBay { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsRobot))]
+            [Id(35)]
+            public bool IsRobot { get; set; }
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_IsTelescopic))]
             [Id(34)]
             public bool IsTelescopic { get; set; }

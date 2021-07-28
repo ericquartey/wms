@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.DataLayer
         double ConvertProfileToHeight(ushort profile, int positionId);
 
         double ConvertProfileToHeightNew(ushort profile, int positionId);
-
+        void EndMissionRobot(BayNumber bayNumber, bool enable);
         void FindZero(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.DataLayer
         void Light(BayNumber bayNumber, bool enable);
 
         void PerformHoming(BayNumber bayNumber);
-
+        void ReadyWarehouseRobot(BayNumber bayNumber, bool enable);
         void RemoveLoadingUnit(int loadingUnitId);
 
         void ResetMachine();

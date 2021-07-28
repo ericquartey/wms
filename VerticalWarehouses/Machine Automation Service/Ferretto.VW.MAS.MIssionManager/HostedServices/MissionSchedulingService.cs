@@ -977,6 +977,10 @@ namespace Ferretto.VW.MAS.MissionManager
                                 if (bay.IsActive)
                                 {
                                     this.Logger.LogDebug($"Machine mode: {this.machineVolatileDataProvider.Mode}");
+                                    if (bay.IsRobot)
+                                    {
+                                        bayProvider.ReadyWarehouseRobot(bay.Number, true);
+                                    }
                                     await this.ScheduleMissionsOnBayAsync(bay.Number, serviceProvider);
                                 }
                                 else if (bay.Number < BayNumber.ElevatorBay)
@@ -1138,6 +1142,20 @@ namespace Ferretto.VW.MAS.MissionManager
                         this.Logger.LogDebug("Mission scheduling is not allowed: machine is not in automatic mode.");
                     }
                     break;
+            }
+
+            if (this.machineVolatileDataProvider.Mode != MachineMode.Automatic
+                && this.machineVolatileDataProvider.IsReadyWarehouseRobotOn != null
+                && this.machineVolatileDataProvider.IsReadyWarehouseRobotOn.Count > 0
+                )
+            {
+                foreach (var bay in bayProvider.GetAll())
+                {
+                    if (bay.IsRobot)
+                    {
+                        bayProvider.ReadyWarehouseRobot(bay.Number, false);
+                    }
+                }
             }
         }
 

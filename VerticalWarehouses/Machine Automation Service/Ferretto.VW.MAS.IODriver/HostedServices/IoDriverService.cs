@@ -116,6 +116,14 @@ namespace Ferretto.VW.MAS.IODriver
                 case FieldMessageType.BayLight:
                     ioDevice.ExecuteBayLight(command);
                     break;
+
+                case FieldMessageType.EndMissionRobot:
+                    ioDevice.ExecuteEndMissionRobot(command);
+                    break;
+
+                case FieldMessageType.ReadyWarehouseRobot:
+                    ioDevice.ExecuteReadyWarehouseRobot(command);
+                    break;
             }
 
             return Task.CompletedTask;

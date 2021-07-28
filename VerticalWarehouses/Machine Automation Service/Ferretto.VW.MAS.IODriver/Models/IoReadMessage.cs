@@ -86,6 +86,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
 
+        public bool EndMissionRobotOn => this.outputs?[(int)IoPorts.EndMissionRobot] ?? false;
+
         public ShdFormatDataOperation FormatDataOperation => this.formatDataOperation;
 
         public byte FwRelease => this.fwRelease;
@@ -99,6 +101,8 @@ namespace Ferretto.VW.MAS.IODriver
         public bool OutputsCleared => !this.outputs?.Any(o => o) ?? false;
 
         public bool PowerEnable => this.outputs?[(int)IoPorts.PowerEnable] ?? false;
+
+        public bool ReadyWarehouseRobotOn => this.outputs?[(int)IoPorts.ReadyWarehouseRobot] ?? false;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
 

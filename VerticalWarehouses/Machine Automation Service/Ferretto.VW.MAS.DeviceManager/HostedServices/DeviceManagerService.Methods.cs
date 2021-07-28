@@ -200,6 +200,28 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
         }
 
+        private void ProcessEndMissionRobot(CommandMessage message, IServiceProvider serviceProvider)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            if (message.Data is IEndMissionRobotMessageData data)
+            {
+                var bayDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var ioIndex = bayDataProvider.GetIoDevice(message.TargetBay);
+
+                // Send a field message to set End Mission Robot (via output line) to IoDevice
+                var bayLightDataMessage = new EndMissionRobotFieldMessageData(data.Enable);
+                var inverterMessage = new FieldCommandMessage(
+                    bayLightDataMessage,
+                    $"End Mission Robot={data.Enable}",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.EndMissionRobot,
+                    (byte)ioIndex);
+                this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
+            }
+        }
+
         private void ProcessHomingMessage(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("1:Method Start");
@@ -536,6 +558,28 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 }
+            }
+        }
+
+        private void ProcessReadyWarehouseRobot(CommandMessage message, IServiceProvider serviceProvider)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            if (message.Data is IReadyWarehouseRobotMessageData data)
+            {
+                var bayDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var ioIndex = bayDataProvider.GetIoDevice(message.TargetBay);
+
+                // Send a field message to set Ready Warehouse Robot (via output line) to IoDevice
+                var bayLightDataMessage = new ReadyWarehouseRobotFieldMessageData(data.Enable);
+                var inverterMessage = new FieldCommandMessage(
+                    bayLightDataMessage,
+                    $"Ready Warehouse Robot={data.Enable}",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.ReadyWarehouseRobot,
+                    (byte)ioIndex);
+                this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
             }
         }
 

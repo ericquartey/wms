@@ -461,7 +461,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 this.Logger.LogDebug($"Detect an error :: go to MissionMoveEndStep");
 
-                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
                 newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             }
             else

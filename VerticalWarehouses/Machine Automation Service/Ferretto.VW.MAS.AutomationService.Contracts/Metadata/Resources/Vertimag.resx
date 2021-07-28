@@ -594,4 +594,7 @@
   <data name="ElevatorAxis_VerticalPickupCompensationDelay" xml:space="preserve">
     <value>Vertical Pickup Compensation Delay</value>
   </data>
+  <data name="Bay_IsRobot" xml:space="preserve">
+    <value>Robot</value>
+  </data>
 </root>

@@ -3023,6 +3023,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsFastDepositToBay", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFastDepositToBay { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsRobot", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsRobot { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsTelescopic", Required = Newtonsoft.Json.Required.Always)]
         public bool IsTelescopic { get; set; }
     

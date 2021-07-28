@@ -346,6 +346,22 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void EndMissionRobot(BayNumber bayNumber, bool enable)
+        {
+            if (!this.machineVolatileDataProvider.IsEndMissionRobotOn.TryGetValue(bayNumber, out var isEndMissionOn)
+                || isEndMissionOn != enable
+                )
+            {
+                this.PublishCommand(
+                    new EndMissionRobotMessageData(enable),
+                    "Execute EndMissionRobot Command",
+                    MessageActor.DeviceManager,
+                    MessageType.EndMissionRobot,
+                    bayNumber,
+                    bayNumber);
+            }
+        }
+
         public void FindZero(BayNumber bayNumber)
         {
             this.PublishCommand(
@@ -928,6 +944,22 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageType.Homing,
                 bayNumber,
                 bayNumber);
+        }
+
+        public void ReadyWarehouseRobot(BayNumber bayNumber, bool enable)
+        {
+            if (!this.machineVolatileDataProvider.IsReadyWarehouseRobotOn.TryGetValue(bayNumber, out var isReadyWarehouseOn)
+                || isReadyWarehouseOn != enable
+                )
+            {
+                this.PublishCommand(
+                    new ReadyWarehouseRobotMessageData(enable),
+                    "Execute ReadyWarehouseRobot Command",
+                    MessageActor.DeviceManager,
+                    MessageType.ReadyWarehouseRobot,
+                    bayNumber,
+                    bayNumber);
+            }
         }
 
         public void RemoveLoadingUnit(int loadingUnitId)
