@@ -2545,4 +2545,7 @@
     <value>Anti intrusion gate internal</value>
     <comment>Sensor</comment>
   </data>
+  <data name="RobotReady" xml:space="preserve">
+    <value>Robot Ready</value>
+  </data>
 </root>

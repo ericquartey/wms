@@ -47,6 +47,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canShutterMoveUpCommand;
 
+        private DelegateCommand endMissionRobotCommand;
+
+        private string endMissionRobotIcon;
+
         private int? inputCellId;
 
         private double? inputHeight;
@@ -110,6 +114,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand moveToCellHeightCommand;
 
         private DelegateCommand moveToHeightCommand;
+
+        private DelegateCommand readyWarehouseRobotCommand;
+
+        private string readyWarehouseRobotIcon;
 
         private SubscriptionToken sensorsTokenManual;
 
@@ -197,6 +205,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canShutterMoveUpCommand;
             private set => this.SetProperty(ref this.canShutterMoveUpCommand, value);
+        }
+
+        public ICommand EndMissionRobotCommand =>
+            this.endMissionRobotCommand
+            ??
+            (this.endMissionRobotCommand = new DelegateCommand(async () => await this.EndMissionRobotAsync()));
+
+        public string EndMissionRobotIcon
+        {
+            get => this.endMissionRobotIcon;
+            private set => this.SetProperty(ref this.endMissionRobotIcon, value);
         }
 
         public int? InputCellId
@@ -390,6 +409,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                async () => await this.MoveToHeightAsync(),
                this.CanMoveToHeight));
 
+        public ICommand ReadyWarehouseRobotCommand =>
+                                                                                            this.readyWarehouseRobotCommand
+            ??
+            (this.readyWarehouseRobotCommand = new DelegateCommand(async () => await this.ReadyWarehouseRobotAsync()));
+
+        public string ReadyWarehouseRobotIcon
+        {
+            get => this.readyWarehouseRobotIcon;
+            private set => this.SetProperty(ref this.readyWarehouseRobotIcon, value);
+        }
+
         public ICommand ShutterMoveDownCommand =>
             this.shutterMoveDownCommand
             ??
@@ -408,6 +438,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.lastActiveCommand = "CloseCarousel";
             await this.StartMovementAsync(VerticalMovementDirection.Down);
+        }
+
+        public async Task EndMissionRobotAsync()
+        {
+            try
+            {
+                if (this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Admin || this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Support)
+                {
+                    await this.machineBaysWebService.SetEndMissionRobotAsync(!this.IsEndMissionRobotActive);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         public async Task LightAsync()
@@ -462,6 +507,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.lastActiveCommand = "MoveOpenCarousel";
             await this.StartMovementAsync(VerticalMovementDirection.Up);
+        }
+
+        public async Task ReadyWarehouseRobotAsync()
+        {
+            try
+            {
+                if (this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Admin || this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Support)
+                {
+                    await this.machineBaysWebService.SetReadyWarehouseRobotAsync(!this.IsReadyWarehouseRobotActive);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         public async Task ShutterMoveDownAsync()

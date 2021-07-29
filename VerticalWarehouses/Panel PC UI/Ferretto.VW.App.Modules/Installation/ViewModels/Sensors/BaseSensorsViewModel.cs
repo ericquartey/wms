@@ -36,12 +36,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bay2HasShutter;
 
-        private bool isBay1TelescopicPresent;
-
-        private bool isBay2TelescopicPresent;
-
-        private bool isBay3TelescopicPresent;
-
         private bool bay2ZeroChainIsVisible;
 
         private bool bay2ZeroChainUpIsVisible;
@@ -62,6 +56,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBay1PositionUpPresent;
 
+        private bool isBay1RobotPresent;
+
+        private bool isBay1TelescopicPresent;
+
         private bool isBay2ExternalDoublePresent;
 
         private bool isBay2ExternalPresent;
@@ -74,6 +72,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBay2Present;
 
+        private bool isBay2RobotPresent;
+
+        private bool isBay2TelescopicPresent;
+
         private bool isBay3ExternalDoublePresent;
 
         private bool isBay3ExternalPresent;
@@ -85,6 +87,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isBay3PositionUpPresent;
 
         private bool isBay3Present;
+
+        private bool isBay3RobotPresent;
+
+        private bool isBay3TelescopicPresent;
 
         private SubscriptionToken subscriptionToken;
 
@@ -131,12 +137,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsBay1ExternalDoublePresent { get => this.isBay1ExternalDoublePresent; private set => this.SetProperty(ref this.isBay1ExternalDoublePresent, value); }
 
-        public bool IsBay1TelescopicPresent { get => this.isBay1TelescopicPresent; private set => this.SetProperty(ref this.isBay1TelescopicPresent, value); }
-
-        public bool IsBay2TelescopicPresent { get => this.isBay2TelescopicPresent; private set => this.SetProperty(ref this.isBay2TelescopicPresent, value); }
-
-        public bool IsBay3TelescopicPresent { get => this.isBay3TelescopicPresent; private set => this.SetProperty(ref this.isBay3TelescopicPresent, value); }
-
         public bool IsBay1ExternalPresent { get => this.isBay1ExternalPresent; private set => this.SetProperty(ref this.isBay1ExternalPresent, value); }
 
         public bool IsBay1InternalPresent { get => this.isBay1InternalPresent; private set => this.SetProperty(ref this.isBay1InternalPresent, value); }
@@ -144,6 +144,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsBay1PositionDownPresent { get => this.isBay1PositionDownPresent; private set => this.SetProperty(ref this.isBay1PositionDownPresent, value); }
 
         public bool IsBay1PositionUpPresent { get => this.isBay1PositionUpPresent; private set => this.SetProperty(ref this.isBay1PositionUpPresent, value); }
+
+        public bool IsBay1RobotPresent { get => this.isBay1RobotPresent; private set => this.SetProperty(ref this.isBay1RobotPresent, value); }
+
+        public bool IsBay1TelescopicPresent { get => this.isBay1TelescopicPresent; private set => this.SetProperty(ref this.isBay1TelescopicPresent, value); }
 
         public bool IsBay2ExternalDoublePresent { get => this.isBay2ExternalDoublePresent; private set => this.SetProperty(ref this.isBay2ExternalDoublePresent, value); }
 
@@ -157,6 +161,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsBay2Present { get => this.isBay2Present; private set => this.SetProperty(ref this.isBay2Present, value); }
 
+        public bool IsBay2RobotPresent { get => this.isBay2RobotPresent; private set => this.SetProperty(ref this.isBay2RobotPresent, value); }
+
+        public bool IsBay2TelescopicPresent { get => this.isBay2TelescopicPresent; private set => this.SetProperty(ref this.isBay2TelescopicPresent, value); }
+
         public bool IsBay3ExternalDoublePresent { get => this.isBay3ExternalDoublePresent; private set => this.SetProperty(ref this.isBay3ExternalDoublePresent, value); }
 
         public bool IsBay3ExternalPresent { get => this.isBay3ExternalPresent; private set => this.SetProperty(ref this.isBay3ExternalPresent, value); }
@@ -168,6 +176,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsBay3PositionUpPresent { get => this.isBay3PositionUpPresent; private set => this.SetProperty(ref this.isBay3PositionUpPresent, value); }
 
         public bool IsBay3Present { get => this.isBay3Present; private set => this.SetProperty(ref this.isBay3Present, value); }
+
+        public bool IsBay3RobotPresent { get => this.isBay3RobotPresent; private set => this.SetProperty(ref this.isBay3RobotPresent, value); }
+
+        public bool IsBay3TelescopicPresent { get => this.isBay3TelescopicPresent; private set => this.SetProperty(ref this.isBay3TelescopicPresent, value); }
 
         public bool IsOneTonMachine => this.bayManager.Identity.IsOneTonMachine;
 
@@ -240,6 +252,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBay1ExternalDoublePresent = bay1.IsExternal && bay1.IsDouble;
                 this.IsBay1InternalPresent = !this.IsBay1ExternalPresent && !this.IsBay1ExternalDoublePresent;
                 this.IsBay1TelescopicPresent = bay1.IsTelescopic;
+                this.IsBay1RobotPresent = bay1.IsRobot;
             }
             if (!(bay2 is null))
             {
@@ -247,6 +260,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBay2ExternalDoublePresent = bay2.IsExternal && bay2.IsDouble;
                 this.IsBay2InternalPresent = !this.IsBay2ExternalPresent && !this.IsBay2ExternalDoublePresent;
                 this.IsBay2TelescopicPresent = bay2.IsTelescopic;
+                this.IsBay2RobotPresent = bay2.IsRobot;
             }
             if (!(bay3 is null))
             {
@@ -254,6 +268,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBay3ExternalDoublePresent = bay3.IsExternal && bay3.IsDouble;
                 this.IsBay3InternalPresent = !this.IsBay3ExternalPresent && !this.IsBay3ExternalDoublePresent;
                 this.IsBay3TelescopicPresent = bay3.IsTelescopic;
+                this.IsBay3RobotPresent = bay3.IsRobot;
             }
 
             this.IsBay2PositionDownPresent = (bay2?.IsDouble ?? false) || (!bay2?.Positions?.Any(o => o.IsUpper) ?? false);

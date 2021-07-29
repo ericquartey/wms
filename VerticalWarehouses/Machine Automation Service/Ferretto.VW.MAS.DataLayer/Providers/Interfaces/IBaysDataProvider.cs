@@ -28,7 +28,9 @@ namespace Ferretto.VW.MAS.DataLayer
         double ConvertProfileToHeight(ushort profile, int positionId);
 
         double ConvertProfileToHeightNew(ushort profile, int positionId);
+
         void EndMissionRobot(BayNumber bayNumber, bool enable);
+
         void FindZero(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();
@@ -75,6 +77,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double GetChainPosition(BayNumber bayNumber);
 
+        bool GetEndMissionRobotOn(BayNumber bayNumber);
+
         InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber);
 
         InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber);
@@ -106,6 +110,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         BayPosition GetPositionByLocation(LoadingUnitLocation destination);
 
+        bool GetReadyWarehouseRobotOn(BayNumber bayNumber);
+
         double GetResolution(InverterIndex inverterIndex);
 
         InverterIndex GetShutterInverterIndex(BayNumber bayNumber);
@@ -121,7 +127,9 @@ namespace Ferretto.VW.MAS.DataLayer
         void Light(BayNumber bayNumber, bool enable);
 
         void PerformHoming(BayNumber bayNumber);
+
         void ReadyWarehouseRobot(BayNumber bayNumber, bool enable);
+
         void RemoveLoadingUnit(int loadingUnitId);
 
         void ResetMachine();

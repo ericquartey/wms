@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Services
 
         bool HasBayExternal { get; }
 
+        bool HasBayRobot { get; set; }
+
         bool HasBayWithInverter { get; set; }
 
         bool HasCarousel { get; }

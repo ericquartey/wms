@@ -93,6 +93,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(bay);
         }
 
+        [HttpPost("get-end-mission-robot")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<bool> GetEndMissionRobot()
+        {
+            return this.Ok(this.baysDataProvider.GetEndMissionRobotOn(this.BayNumber));
+        }
+
         [HttpPost("get-light")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -100,6 +109,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> GetLight()
         {
             return this.Ok(this.baysDataProvider.GetLightOn(this.BayNumber));
+        }
+
+        [HttpPost("get-ready-warehouse-robot")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<bool> GetReadyWarehouseRobot()
+        {
+            return this.Ok(this.baysDataProvider.GetReadyWarehouseRobotOn(this.BayNumber));
         }
 
         [HttpPost("homing")]
@@ -131,6 +149,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("set-end-mission-robot")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetEndMissionRobot(bool enable)
+        {
+            this.baysDataProvider.EndMissionRobot(this.BayNumber, enable);
+
+            return this.Accepted();
+        }
+
         [HttpPost("set-light")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -147,6 +175,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SetLoadUnitOnBay(int bayPositionId, int loadingUnitId)
         {
             this.baysDataProvider.SetLoadingUnit(bayPositionId, loadingUnitId);
+            return this.Accepted();
+        }
+
+        [HttpPost("set-ready-warehouse-robot")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetReadyWarehouseRobot(bool enable)
+        {
+            this.baysDataProvider.ReadyWarehouseRobot(this.BayNumber, enable);
+
             return this.Accepted();
         }
 

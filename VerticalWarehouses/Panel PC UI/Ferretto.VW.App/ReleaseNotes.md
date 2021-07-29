@@ -23,7 +23,7 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.22 rispetto la 1.0.21
-- Aggiunta possibilità di inserire le Note nella causale della Ricerca Articolo
+- Aggiunta possibilità di inserire le Note nella causale della Ricerca Articolo, sia da tastiera che da barcode
 - Aggiunta gestione del Robot nella BES
 
 ## Bug Risolti

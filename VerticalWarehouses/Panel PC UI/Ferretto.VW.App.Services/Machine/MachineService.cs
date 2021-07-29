@@ -89,6 +89,8 @@ namespace Ferretto.VW.App.Services
 
         private bool hasBayExternal;
 
+        private bool hasBayRobot;
+
         private bool hasBayWithInverter;
 
         private bool hasCarousel;
@@ -238,6 +240,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.hasBayExternal;
             set => this.SetProperty(ref this.hasBayExternal, value);
+        }
+
+        public bool HasBayRobot
+        {
+            get => this.hasBayRobot;
+            set => this.SetProperty(ref this.hasBayRobot, value);
         }
 
         public bool HasBayWithInverter
@@ -666,6 +674,8 @@ namespace Ferretto.VW.App.Services
                 this.HasBayWithInverter = this.Bay.Inverter != null;
 
                 this.IsShutterThreeSensors = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors : false;
+
+                this.HasBayRobot = this.Bay.IsRobot;
 
                 await this.UpdateBay();
             }

@@ -181,6 +181,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasBayExternalDouble => this.MachineService.HasBayExternal && this.MachineService.Bay.IsDouble;
 
+        public bool HasBayRobot => this.MachineService.HasBayRobot;
+
         public bool HasCarousel => this.MachineService.HasCarousel;
 
         public bool HasShutter => this.MachineService.HasShutter;
@@ -324,6 +326,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.LightIcon = !this.IsLightActive ? "Brightness5" : "Brightness2";
 
+                this.EndMissionRobotIcon = this.IsEndMissionRobotActive ? "Robot" : "Walk";
+
+                this.ReadyWarehouseRobotIcon = this.IsReadyWarehouseRobotActive ? "ToggleSwitch" : "ToggleSwitchOff";
+
                 this.isManualMovementCompleted = false;
 
                 this.IsElevatorInBay = this.MachineStatus.ElevatorPositionType == CommonUtils.Messages.Enumerations.ElevatorPositionType.Bay;
@@ -373,6 +379,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.RaisePropertyChanged(nameof(this.SelectedBayPosition));
                 this.RaisePropertyChanged(nameof(this.HasShutter));
                 this.RaisePropertyChanged(nameof(this.BayIsShutterThreeSensors));
+                this.RaisePropertyChanged(nameof(this.HasBayRobot));
 
                 await base.OnAppearedAsync();
             }
@@ -385,6 +392,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override async Task OnDataRefreshAsync()
         {
             this.IsLightActive = await this.machineBaysWebService.GetLightAsync();
+            this.IsEndMissionRobotActive = await this.machineBaysWebService.GetEndMissionRobotAsync();
+            this.IsReadyWarehouseRobotActive = await this.machineBaysWebService.GetReadyWarehouseRobotAsync();
 
             await this.SensorsService.RefreshAsync(true);
         }
@@ -635,7 +644,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.Bay?.Number == e.BayNumber)
             {
                 this.IsEndMissionRobotActive = e.IsOn;
-                //this.LightIcon = !this.IsLightActive ? "Brightness5" : "Brightness2";
+                this.EndMissionRobotIcon = this.IsEndMissionRobotActive ? "Robot" : "Walk";
             }
         }
 
@@ -698,7 +707,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (this.Bay?.Number == e.BayNumber)
             {
                 this.IsReadyWarehouseRobotActive = e.IsOn;
-                //this.LightIcon = !this.IsLightActive ? "Brightness5" : "Brightness2";
+                this.ReadyWarehouseRobotIcon = this.IsReadyWarehouseRobotActive ? "ToggleSwitch" : "ToggleSwitchOff";
             }
         }
 

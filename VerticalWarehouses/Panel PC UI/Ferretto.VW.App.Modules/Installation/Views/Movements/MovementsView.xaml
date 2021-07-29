@@ -781,29 +781,76 @@
             <ColumnDefinition Width="2*" />
           </Grid.ColumnDefinitions>
 
-          <controls:PpcButton Grid.Row="6"
-                              Grid.Column="0"
+                    <StackPanel Grid.Row="6"
+                        Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                HorizontalAlignment="Left"
+                Orientation="Horizontal">
+                        <controls:PpcButton 
                               Margin="5,0,0,0"
                               HorizontalAlignment="Left"
                               Command="{Binding ResetCommand}"
                               Content="{res:Loc InstallationApp.ResetMachine}" />
 
-          <controls:PpcButton Grid.Row="6"
-                              Grid.Column="1"
-                              Grid.ColumnSpan="2"
-                              Margin="0"
+                    <controls:PpcButton 
+                              Margin="15,0,0,0"
                               HorizontalAlignment="Center"
                               Command="{Binding StopMovingCommand}"
                               Content="{res:Loc InstallationApp.Stop}" />
+                    </StackPanel>
+            
+                    <StackPanel Grid.Row="6"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="2"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+
+                        <controls:PpcButton Width="60"
+                                            Margin="15,0,0,0"
+                                HorizontalAlignment="Right"
+                                HorizontalContentAlignment="Center"
+                                Command="{Binding EndMissionRobotCommand}"
+                                Foreground="{StaticResource FerrettoPureWhite}"
+                                KindMaterial="{Binding EndMissionRobotIcon}"
+                                Visibility="{Binding HasBayRobot, Converter={StaticResource BTVC}}">
+                            <controls:PpcButton.Style>
+                                <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+                                    TargetType="{x:Type controls:PpcButton}">
+                                    <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="KindMaterial" Value="Robot">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:PpcButton.Style>
+                        </controls:PpcButton>
+
+                        <controls:PpcButton Width="60"
+                                Margin="15,0,0,0"
+                                HorizontalAlignment="Right"
+                                HorizontalContentAlignment="Center"
+                                Command="{Binding ReadyWarehouseRobotCommand}"
+                                Foreground="{StaticResource FerrettoPureWhite}"
+                                KindMaterial="{Binding ReadyWarehouseRobotIcon}"
+                                Visibility="{Binding HasBayRobot, Converter={StaticResource BTVC}}">
+                            <controls:PpcButton.Style>
+                                <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+                                    TargetType="{x:Type controls:PpcButton}">
+                                    <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="KindMaterial" Value="ToggleSwitch">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:PpcButton.Style>
+                        </controls:PpcButton>
 
 
-
-          <StackPanel Grid.Row="6"
-                      Grid.Column="3"
-                      HorizontalAlignment="Right"
-                      Orientation="Horizontal">
 
             <controls:PpcButton Width="60"
+                                Margin="15,0,0,0"
                                 HorizontalAlignment="Right"
                                 HorizontalContentAlignment="Center"
                                 Command="{Binding LightCommand}"

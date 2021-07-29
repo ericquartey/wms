@@ -98,8 +98,12 @@
         <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay1S3IND}"
                                    Text="{res:Loc InstallationApp.ZeroChain}"
                                    Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+          
+        <controls:PpcSensorControl SensorState="{Binding Sensors.RobotOptionBay1}"
+                                   Text="{res:Loc InstallationApp.RobotReady}"
+                                   Visibility="{Binding IsBay1RobotPresent, Converter={StaticResource BTVC}}" />
 
-      </StackPanel>
+            </StackPanel>
 
       <StackPanel Grid.Row="1"
                   Orientation="Vertical"
@@ -206,6 +210,10 @@
           <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay2S3IND}"
                                      Text="{res:Loc InstallationApp.ZeroChain}"
                                      Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+            
+          <controls:PpcSensorControl SensorState="{Binding Sensors.RobotOptionBay2}"
+                                    Text="{res:Loc InstallationApp.RobotReady}"
+                                    Visibility="{Binding IsBay2RobotPresent, Converter={StaticResource BTVC}}" />
 
         </StackPanel>
 
@@ -316,7 +324,11 @@
                                      Text="{res:Loc InstallationApp.ZeroChain}"
                                      Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
 
-        </StackPanel>
+          <controls:PpcSensorControl SensorState="{Binding Sensors.RobotOptionBay3}"
+                                    Text="{res:Loc InstallationApp.RobotReady}"
+                                    Visibility="{Binding IsBay3RobotPresent, Converter={StaticResource BTVC}}" />
+
+          </StackPanel>
 
         <StackPanel Grid.Row="1"
                     Orientation="Vertical"

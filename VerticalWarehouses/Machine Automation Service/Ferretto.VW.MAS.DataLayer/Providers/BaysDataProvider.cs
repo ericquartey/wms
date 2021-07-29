@@ -639,6 +639,11 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.machineVolatileDataProvider.GetBayEncoderPosition(bayNumber);
         }
 
+        public bool GetEndMissionRobotOn(BayNumber bayNumber)
+        {
+            return this.machineVolatileDataProvider.IsEndMissionRobotOn.GetValueOrDefault(bayNumber);
+        }
+
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber)
         {
@@ -865,6 +870,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return bayPosition;
+        }
+
+        public bool GetReadyWarehouseRobotOn(BayNumber bayNumber)
+        {
+            return this.machineVolatileDataProvider.IsReadyWarehouseRobotOn.GetValueOrDefault(bayNumber);
         }
 
         public double GetResolution(InverterIndex inverterIndex)
