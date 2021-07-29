@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void ContinueShutter(MessageActor sender, BayNumber requestingBay);
 
+        MessageStatus EnableRobotStatus(NotificationMessage message);
+
         MessageStatus ExternalBayStatus(NotificationMessage message);
 
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);

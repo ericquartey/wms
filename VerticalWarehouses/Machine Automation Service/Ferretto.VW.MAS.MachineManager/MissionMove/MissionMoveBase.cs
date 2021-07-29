@@ -345,8 +345,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else if (bay?.External != null)
                         {
-                            // External bay movement
-                            newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            if (this.ResetEndMissionRobot(bay))
+                            {
+                                newStep = new MissionMoveEnableRobotStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            }
+                            else
+                            {
+                                // External bay movement
+                                newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                            }
                         }
                         else
                         {
@@ -873,6 +880,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                 newStep.OnEnter(null);
             }
+        }
+
+        /// <summary>
+        /// return true if output signal EndMissionRobot is 1
+        /// </summary>
+        /// <param name="bay"></param>
+        /// <returns></returns>
+        public bool ResetEndMissionRobot(Bay bay)
+        {
+            return bay.IsRobot
+                && (this.Mission.MissionType == MissionType.OUT || this.Mission.MissionType == MissionType.WMS)
+                && (!this.MachineVolatileDataProvider.IsEndMissionRobotOn.TryGetValue(this.Mission.TargetBay, out var isEndMissionOn)
+                    || isEndMissionOn
+                );
         }
 
         #endregion

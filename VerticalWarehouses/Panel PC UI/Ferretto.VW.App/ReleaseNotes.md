@@ -24,6 +24,7 @@
 
 ## Nuove Funzionalità 1.0.22 rispetto la 1.0.21
 - Aggiunta possibilità di inserire le Note nella causale della Ricerca Articolo
+- Aggiunta gestione del Robot nella BES
 
 ## Bug Risolti
 - Corretta gestione del database di backup

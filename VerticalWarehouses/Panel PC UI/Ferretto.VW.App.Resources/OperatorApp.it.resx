@@ -1865,4 +1865,7 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Argomento non valido</value>
   </data>
+  <data name="MissionStateEnableRobot" xml:space="preserve">
+    <value>Abilita Robot</value>
+  </data>
 </root>

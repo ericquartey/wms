@@ -92,7 +92,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Logger.LogDebug($"Light bay {bay.Number} is true");
                 }
             }
-            else if (bay.IsRobot)
+            else if (bay.IsRobot
+                && (this.Mission.MissionType == MissionType.OUT || this.Mission.MissionType == MissionType.WMS)
+                )
             {
                 this.BaysDataProvider.EndMissionRobot(bay.Number, true);
             }

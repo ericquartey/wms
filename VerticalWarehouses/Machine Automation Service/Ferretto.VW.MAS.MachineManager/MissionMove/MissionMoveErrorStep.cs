@@ -214,6 +214,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MissionStep.WaitDepositExternalBay:
                 case MissionStep.WaitDepositInternalBay:
+                case MissionStep.EnableRobot:
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
                         this.Mission.StepTime = DateTime.UtcNow;
@@ -453,7 +454,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.RestoreStep = MissionStep.NotDefined;
                 this.Mission.NeedMovingBackward = false;
 
-                newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                if (this.ResetEndMissionRobot(bay))
+                {
+                    newStep = new MissionMoveEnableRobotStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
+                else
+                {
+                    newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
                 newStep.OnEnter(null);
             }
         }
@@ -518,15 +526,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     return;
 
                 case MissionStep.ElevatorBayUp:
-                    var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
-                    if (bay.IsExternal &&
-                        bay.IsDouble)
                     {
-                        newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    }
-                    else
-                    {
-                        newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                        if (bay.IsExternal &&
+                            bay.IsDouble)
+                        {
+                            newStep = new MissionMoveWaitDepositExternalBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        }
+                        else
+                        {
+                            newStep = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        }
                     }
                     break;
 
@@ -562,6 +572,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 case MissionStep.WaitDepositBay:
                     newStep = new MissionMoveWaitDepositBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    break;
+
+                case MissionStep.EnableRobot:
+                    {
+                        var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                        if (bay != null && this.ResetEndMissionRobot(bay))
+                        {
+                            newStep = new MissionMoveEnableRobotStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        }
+                        else
+                        {
+                            this.RestoreExtBay();
+                            return;
+                        }
+                    }
                     break;
 
                 default:

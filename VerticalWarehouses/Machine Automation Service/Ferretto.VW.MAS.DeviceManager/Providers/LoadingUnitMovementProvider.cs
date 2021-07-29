@@ -219,6 +219,36 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.shutterProvider.ContinuePositioning(requestingBay, sender);
         }
 
+        public MessageStatus EnableRobotStatus(NotificationMessage message)
+        {
+            if (message.Type == MessageType.EndMissionRobot)
+            {
+                return message.Status;
+            }
+            if (message.Type == MessageType.Stop && message.Status == MessageStatus.OperationEnd)
+            {
+                return MessageStatus.OperationStop;
+            }
+            if (message.Status == MessageStatus.OperationError
+                || message.Status == MessageStatus.OperationStop
+                || message.Status == MessageStatus.OperationRunningStop
+                || message.Status == MessageStatus.OperationFaultStop
+                )
+            {
+                return message.Status;
+            }
+            if (message.Type == MessageType.RunningStateChanged)
+            {
+                if (message.Data is StateChangedMessageData data
+                    && !data.CurrentState)
+                {
+                    return MessageStatus.OperationError;
+                }
+            }
+
+            return MessageStatus.NotSpecified;
+        }
+
         public MessageStatus ExternalBayStatus(NotificationMessage message)
         {
             if (message.Type == MessageType.Positioning

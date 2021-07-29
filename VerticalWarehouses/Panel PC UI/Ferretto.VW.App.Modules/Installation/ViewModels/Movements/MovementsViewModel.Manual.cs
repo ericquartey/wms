@@ -57,6 +57,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMoving;
 
+        private bool isEndMissionRobotActive;
+
         private bool isExternalBayManualMovementTowardMachine;
 
         private bool isExternalBayManualMovementTowardOperator;
@@ -76,6 +78,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isPolicyBypassed;
 
         private DelegateCommand isPolicyBypassedCommand;
+
+        private bool isReadyWarehouseRobotActive;
 
         private bool isShutterMovingDown;
 
@@ -225,6 +229,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isElevatorMoving, value);
         }
 
+        public bool IsEndMissionRobotActive
+        {
+            get => this.isEndMissionRobotActive;
+            private set => this.SetProperty(ref this.isEndMissionRobotActive, value);
+        }
+
         public bool IsExternalBayManualMovementTowardMachine
         {
             get => this.isExternalBayManualMovementTowardMachine;
@@ -294,6 +304,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
             ));
+
+        public bool IsReadyWarehouseRobotActive
+        {
+            get => this.isReadyWarehouseRobotActive;
+            private set => this.SetProperty(ref this.isReadyWarehouseRobotActive, value);
+        }
 
         public bool IsShutterMovingDown
         {

@@ -3499,6 +3499,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Robot.
+        /// </summary>
+        public static string MissionStateEnableRobot {
+            get {
+                return ResourceManager.GetString("MissionStateEnableRobot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 13.End.
         /// </summary>
         public static string MissionStateEnd {

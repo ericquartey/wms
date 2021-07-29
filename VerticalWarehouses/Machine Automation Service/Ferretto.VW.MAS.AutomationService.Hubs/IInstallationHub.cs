@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task ElevatorWeightCheck(IBaseNotificationMessageUI message);
 
+        Task EndMissionRobotChanged(bool isOn, BayNumber bayNumber);
+
         Task FsmException(IBaseNotificationMessageUI message);
 
         Task HomingProcedureStatusChanged(IBaseNotificationMessageUI message);
@@ -50,6 +52,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
         Task PowerEnableNotify(IBaseNotificationMessageUI message);
 
         Task ProfileCalibration(IBaseNotificationMessageUI message);
+
+        Task ReadyWarehouseRobotChanged(bool isOn, BayNumber bayNumber);
 
         Task RepetitiveHorizontalMovementsNotify(IBaseNotificationMessageUI message);
 

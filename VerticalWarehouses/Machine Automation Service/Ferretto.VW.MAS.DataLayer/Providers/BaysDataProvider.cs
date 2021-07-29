@@ -928,7 +928,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.PublishCommand(
                 new BayLightMessageData(enable),
-                "Execute BayLigth Command",
+                "Execute BayLight Command",
                 MessageActor.DeviceManager,
                 MessageType.BayLight,
                 bayNumber,

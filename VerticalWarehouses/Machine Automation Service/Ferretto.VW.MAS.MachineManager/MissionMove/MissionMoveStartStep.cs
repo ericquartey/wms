@@ -449,8 +449,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     if (isExternalBayMovementRequested)
                                     {
                                         // Move the external bay
-                                        var newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                                        newStep.OnEnter(null);
+                                        if (this.ResetEndMissionRobot(bay))
+                                        {
+                                            var newStep = new MissionMoveEnableRobotStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                            newStep.OnEnter(null);
+                                        }
+                                        else
+                                        {
+                                            var newStep = new MissionMoveExtBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                                            newStep.OnEnter(null);
+                                        }
                                     }
                                     else
                                     {

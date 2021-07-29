@@ -167,6 +167,15 @@ namespace Ferretto.VW.MAS.AutomationService
                 data.BayPositionUpper);
         }
 
+        private async Task OnEndMissionRobot(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Status == MessageStatus.OperationEnd
+                && this.machineVolatileDataProvider.IsEndMissionRobotOn.ContainsKey(receivedMessage.RequestingBay))
+            {
+                await this.installationHub.Clients.All.EndMissionRobotChanged(this.machineVolatileDataProvider.IsEndMissionRobotOn[receivedMessage.RequestingBay], receivedMessage.RequestingBay);
+            }
+        }
+
         private async Task OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData, BayNumber requestingBay)
         {
             Contract.Requires(machineErrorMessageData != null);
@@ -250,6 +259,15 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
                 await this.installationHub.Clients.All.ProfileCalibration(messageToUi);
+            }
+        }
+
+        private async Task OnReadyWarehouseRobot(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.Status == MessageStatus.OperationEnd
+                && this.machineVolatileDataProvider.IsReadyWarehouseRobotOn.ContainsKey(receivedMessage.RequestingBay))
+            {
+                await this.installationHub.Clients.All.ReadyWarehouseRobotChanged(this.machineVolatileDataProvider.IsReadyWarehouseRobotOn[receivedMessage.RequestingBay], receivedMessage.RequestingBay);
             }
         }
 

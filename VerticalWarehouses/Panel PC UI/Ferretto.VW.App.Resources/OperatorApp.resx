@@ -1861,18 +1861,23 @@
   </data>
   <data name="MissionStateBackToBay" xml:space="preserve">
     <value>Back to bay</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateErrorDeposit" xml:space="preserve">
     <value>Error deposit</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateErrorLoad" xml:space="preserve">
     <value>Error load</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateExtBay" xml:space="preserve">
     <value>Ext bay</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateWaitChain" xml:space="preserve">
     <value>Wait chain</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="UnitInBayWarning" xml:space="preserve">
     <value>Unit present in bay compaction not allowed</value>
@@ -1986,9 +1991,11 @@
   </data>
   <data name="MissionStateWaitDepositCell" xml:space="preserve">
     <value>Wait deposit in cell</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateWaitDepositBay" xml:space="preserve">
     <value>Wait deposit bay</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="NoteNotValid" xml:space="preserve">
     <value>Invalid notes field operation not confirmed</value>
@@ -2060,12 +2067,15 @@
   </data>
   <data name="MissionStateDoubleExtBay" xml:space="preserve">
     <value>Double external bay</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
     <value>Wait deposit in external bay</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
     <value>Wait deposit in internal bay</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="EnableUwf" xml:space="preserve">
     <value>Enable Uwf filter</value>
@@ -2228,6 +2238,7 @@
   </data>
   <data name="MissionStateElevatorBayUp" xml:space="preserve">
     <value>Elevator in bay up</value>
+    <comment>Label for Enumeration</comment>
   </data>
   <data name="DraperyWithCodeAlreadyAvailable" xml:space="preserve">
     <value>Drapery already available with code '{0}'.</value>
@@ -2238,5 +2249,9 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Invalid argument</value>
     <comment>Error Message</comment>
+  </data>
+  <data name="MissionStateEnableRobot" xml:space="preserve">
+    <value>Enable Robot</value>
+    <comment>Label for Enumeration</comment>
   </data>
 </root>

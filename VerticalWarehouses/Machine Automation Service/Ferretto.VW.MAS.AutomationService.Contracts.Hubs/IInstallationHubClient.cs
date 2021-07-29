@@ -13,11 +13,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         event EventHandler<ElevatorPositionChangedEventArgs> ElevatorPositionChanged;
 
+        event EventHandler<EndMissionRobotChangedEventArgs> EndMissionRobotChanged;
+
         event EventHandler<MachineModeChangedEventArgs> MachineModeChanged;
 
         event EventHandler<MachinePowerChangedEventArgs> MachinePowerChanged;
 
         event EventHandler<MessageNotifiedEventArgs> MessageReceived;
+
+        event EventHandler<ReadyWarehouseRobotChangedEventArgs> ReadyWarehouseRobotChanged;
 
         event EventHandler<SystemTimeChangedEventArgs> SystemTimeChanged;
 

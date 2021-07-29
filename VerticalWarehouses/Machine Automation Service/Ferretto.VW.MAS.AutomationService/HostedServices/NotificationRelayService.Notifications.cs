@@ -165,6 +165,14 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.InverterParameters:
                     await this.OnInverterParameterChanged(message);
                     break;
+
+                case MessageType.EndMissionRobot:
+                    await this.OnEndMissionRobot(message);
+                    break;
+
+                case MessageType.ReadyWarehouseRobot:
+                    await this.OnReadyWarehouseRobot(message);
+                    break;
             }
         }
 

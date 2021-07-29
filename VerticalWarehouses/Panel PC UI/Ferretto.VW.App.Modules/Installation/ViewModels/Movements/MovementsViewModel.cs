@@ -630,6 +630,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnEndMissionRobotChanged(object sender, EndMissionRobotChangedEventArgs e)
+        {
+            if (this.Bay?.Number == e.BayNumber)
+            {
+                this.IsEndMissionRobotActive = e.IsOn;
+                //this.LightIcon = !this.IsLightActive ? "Brightness5" : "Brightness2";
+            }
+        }
+
         private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
         {
             switch (message.Status)
@@ -682,6 +691,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.OnManualPositioningOperationChanged(message);
             this.OnGuidedPositioningOperationChanged(message);
+        }
+
+        private void OnReadyWarehouseRobotChanged(object sender, ReadyWarehouseRobotChangedEventArgs e)
+        {
+            if (this.Bay?.Number == e.BayNumber)
+            {
+                this.IsReadyWarehouseRobotActive = e.IsOn;
+                //this.LightIcon = !this.IsLightActive ? "Brightness5" : "Brightness2";
+            }
         }
 
         private async void OnSensorsChangedManual(NotificationMessageUI<SensorsChangedMessageData> message)
@@ -1004,6 +1022,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                              this.IsVisible);
 
             this.installationHubClient.BayLightChanged += this.OnBayLightChanged;
+            this.installationHubClient.EndMissionRobotChanged += this.OnEndMissionRobotChanged;
+            this.installationHubClient.ReadyWarehouseRobotChanged += this.OnReadyWarehouseRobotChanged;
         }
 
         #endregion

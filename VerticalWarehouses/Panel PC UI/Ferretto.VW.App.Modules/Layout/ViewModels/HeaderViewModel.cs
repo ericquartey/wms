@@ -188,7 +188,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             //this.barcodeReaderService.SimulateRead("TEST010000100001\r");
             //this.barcodeReaderService.SimulateRead("VMC1000001\r");
             //this.barcodeReaderService.SimulateRead("1805_B_F_01\r");
-            //this.barcodeReaderService.SimulateRead("STSEC5/08\r");
+            //this.barcodeReaderService.SimulateRead("ODB|00023|29/07/21|0845\r");
 
             // TEST linear regression
             //var measures = new Dictionary<double, double>() {

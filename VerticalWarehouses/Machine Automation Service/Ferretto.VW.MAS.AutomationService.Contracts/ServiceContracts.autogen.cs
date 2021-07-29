@@ -3702,7 +3702,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ElevatorBayUp = 17,
     
-        End = 18,
+        EnableRobot = 18,
+    
+        End = 19,
     
         Error = 101,
     

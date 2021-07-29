@@ -1,6 +1,8 @@
 ﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
-    // Warning: these names must match the class names, as they are used in GetStateByClassName
+    /// <summary>
+    /// Warning: these names must match the class names, as they are used in GetStateByClassName
+    /// </summary>
     public enum MissionStep
     {
         NotDefined = 0,
@@ -38,6 +40,8 @@
         ExtBay,
 
         ElevatorBayUp,
+
+        EnableRobot,
 
         End,
 

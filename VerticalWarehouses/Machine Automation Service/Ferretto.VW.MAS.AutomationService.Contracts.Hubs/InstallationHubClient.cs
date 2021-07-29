@@ -25,11 +25,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         public event EventHandler<ElevatorPositionChangedEventArgs> ElevatorPositionChanged;
 
+        public event EventHandler<EndMissionRobotChangedEventArgs> EndMissionRobotChanged;
+
         public event EventHandler<MachineModeChangedEventArgs> MachineModeChanged;
 
         public event EventHandler<MachinePowerChangedEventArgs> MachinePowerChanged;
 
         public event EventHandler<MessageNotifiedEventArgs> MessageReceived;
+
+        public event EventHandler<ReadyWarehouseRobotChangedEventArgs> ReadyWarehouseRobotChanged;
 
         public event EventHandler<SystemTimeChangedEventArgs> SystemTimeChanged;
 
@@ -125,6 +129,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<CombinedMovementsMessageData>>(
                 nameof(IInstallationHub.CombinedMovementsNotify), this.OnCombinedMovementsNotify);
+
+            connection.On<bool, BayNumber>(
+                nameof(IInstallationHub.EndMissionRobotChanged), this.OnEndMissionRobotChanged);
+
+            connection.On<bool, BayNumber>(
+                nameof(IInstallationHub.ReadyWarehouseRobotChanged), this.OnReadyWarehouseRobotChanged);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
@@ -157,6 +167,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.ElevatorPositionChanged?.Invoke(
                 this,
                 new ElevatorPositionChangedEventArgs(verticalPosition, horizontalPosition, cellId, bayPositionId, bayPositionUpper));
+        }
+
+        private void OnEndMissionRobotChanged(bool isOn, BayNumber bayNumber)
+        {
+            this.EndMissionRobotChanged?.Invoke(this, new EndMissionRobotChangedEventArgs(isOn, bayNumber));
         }
 
         private void OnFsmException(NotificationMessageUI<FsmExceptionMessageData> message)
@@ -232,6 +247,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         private void OnProfileCalibrationNotify(NotificationMessageUI<ProfileCalibrationMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnReadyWarehouseRobotChanged(bool isOn, BayNumber bayNumber)
+        {
+            this.ReadyWarehouseRobotChanged?.Invoke(this, new ReadyWarehouseRobotChangedEventArgs(isOn, bayNumber));
         }
 
         private void OnRepetitiveHorizontalMovementsNotify(NotificationMessageUI<RepetitiveHorizontalMovementsMessageData> message)
