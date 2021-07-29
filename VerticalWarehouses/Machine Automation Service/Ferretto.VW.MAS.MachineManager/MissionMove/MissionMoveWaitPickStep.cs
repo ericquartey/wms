@@ -63,10 +63,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
-
-            var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-            this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
+            this.SendMoveNotification(bay.Number, this.Mission.Step.ToString(), MessageStatus.OperationWaitResume);
 
             // Set the light ON for the target bay. Handle exceptional case, if exist already a waiting mission in the current internal double bay
             if (bay.IsDouble &&
