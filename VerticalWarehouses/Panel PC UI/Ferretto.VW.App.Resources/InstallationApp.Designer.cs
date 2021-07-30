@@ -5452,6 +5452,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to robot.
+        /// </summary>
+        public static string Robot {
+            get {
+                return ResourceManager.GetString("Robot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Robot Ready.
         /// </summary>
         public static string RobotReady {

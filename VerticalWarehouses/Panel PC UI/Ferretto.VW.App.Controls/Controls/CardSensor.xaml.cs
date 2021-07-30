@@ -136,6 +136,8 @@ namespace Ferretto.VW.App.Controls.Controls
             Position,
 
             Shutter,
+
+            Robot
         }
 
         #endregion

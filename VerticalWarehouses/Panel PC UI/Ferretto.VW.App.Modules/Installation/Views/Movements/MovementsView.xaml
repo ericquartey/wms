@@ -793,7 +793,7 @@
                               Content="{res:Loc InstallationApp.ResetMachine}" />
 
                     <controls:PpcButton 
-                              Margin="15,0,0,0"
+                              Margin="10,0,0,0"
                               HorizontalAlignment="Center"
                               Command="{Binding StopMovingCommand}"
                               Content="{res:Loc InstallationApp.Stop}" />

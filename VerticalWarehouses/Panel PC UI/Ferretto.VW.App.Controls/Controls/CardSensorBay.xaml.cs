@@ -77,6 +77,10 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(Sensor5), typeof(bool), typeof(CardSensorBay));
 
         [Browsable(false)]
+        public static readonly DependencyProperty Sensor6Property =
+            DependencyProperty.Register(nameof(Sensor6), typeof(bool), typeof(CardSensorBay));
+
+        [Browsable(false)]
         public static readonly DependencyProperty SensorsServiceProperty =
             DependencyProperty.Register(nameof(SensorsService), typeof(ISensorsService), typeof(CardSensorBay));
 
@@ -195,6 +199,12 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(Sensor5Property, value);
         }
 
+        public bool Sensor6
+        {
+            get => (bool)this.GetValue(Sensor6Property);
+            set => this.SetValue(Sensor6Property, value);
+        }
+
         public ISensorsService SensorsService
         {
             get => (ISensorsService)this.GetValue(SensorsServiceProperty);
@@ -289,13 +299,22 @@ namespace Ferretto.VW.App.Controls.Controls
 
                     this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
                 }
-                if (this.machineService.Bays.Any(f => f.IsExternal))
+                if (this.machineService.Bay.IsExternal)
                 {
                     this.CardSensorLabel3 = Localized.Get("InstallationApp.ExternalBayShort");
                     this.CardSensorLabel2 = Localized.Get("InstallationApp.InternalBayShort");
 
                     this.Sensor3 = this.sensorsService.IsLoadingUnitInBay;
                     this.Sensor2 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
+
+                    if (this.machineService.Bay.IsRobot)
+                    {
+                        this.CardSensorLabel4 = "OK";
+                        this.CardSensorLabel5 = null;
+                        this.CardSensorLabel6 = null;
+                        this.Sensor4 = this.sensorsService.BayRobotOption;
+                        this.Type = CardType.Robot;
+                    }
                 }
             }
         }

@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public DataTemplate EnumPosition { get; set; }
 
+        public DataTemplate EnumRobot { get; set; }
+
         public DataTemplate EnumShutter { get; set; }
 
         #endregion
@@ -45,6 +47,9 @@ namespace Ferretto.VW.App.Controls.Controls
 
                 case CardSensor.CardType.Shutter:
                     return this.EnumShutter;
+
+                case CardSensor.CardType.Robot:
+                    return this.EnumRobot;
             }
 
             return base.SelectTemplate(item, container);

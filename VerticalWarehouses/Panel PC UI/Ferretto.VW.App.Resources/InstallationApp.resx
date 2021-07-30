@@ -2548,4 +2548,7 @@
   <data name="RobotReady" xml:space="preserve">
     <value>Robot Ready</value>
   </data>
+  <data name="Robot" xml:space="preserve">
+    <value>robot</value>
+  </data>
 </root>
