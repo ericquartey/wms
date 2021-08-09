@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     },
                     ExternalBayCalibration = new SetupStepStatus
                     {
-                        IsCompleted = setup.Bay1ExternalCalibration.IsCompleted,
+                        IsCompleted = true, // setup.Bay1ExternalCalibration.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = true, // setup.Bay1ExternalCalibration.IsBypassed, TODO - decide how to perform an external bay calibration test
                     },
@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     },
                     ExternalBayCalibration = new SetupStepStatus
                     {
-                        IsCompleted = setup.Bay2ExternalCalibration.IsCompleted,
+                        IsCompleted = true, //setup.Bay2ExternalCalibration.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = true, //setup.Bay2ExternalCalibration.IsBypassed, TODO remove bypass
                     },
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     },
                     ExternalBayCalibration = new SetupStepStatus
                     {
-                        IsCompleted = setup.Bay3ExternalCalibration.IsCompleted,
+                        IsCompleted = true, // setup.Bay3ExternalCalibration.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
                         IsBypassed = true, // setup.Bay3ExternalCalibration.IsBypassed, TODO remove bypass
                     },
