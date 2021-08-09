@@ -633,7 +633,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
                     if (isToteBarcodeManaged)
                     {
-                        this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"));
+                        this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
                     }
                     else
                     {
