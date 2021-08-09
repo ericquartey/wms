@@ -630,7 +630,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     && webEx.StatusCode == StatusCodes.Status403Forbidden)
                 {
                     this.barcodeItem = string.Empty;
-                    this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"));
+                    var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
+                    if (isToteBarcodeManaged)
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"));
+                    }
+                    else
+                    {
+                        this.ShowNotification(ex);
+                    }
 
                     //throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
                 }
