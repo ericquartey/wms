@@ -25,6 +25,8 @@ namespace Ferretto.VW.TelemetryService
 
         Task SendScreenShotAsync(int bayNumber, string serialNumber, DateTimeOffset timeStamp, byte[] screenshot);
 
+        Task SendServicingInfoAsync(string serialNumber, ServicingInfo servicingInfo);
+
         #endregion
     }
 }

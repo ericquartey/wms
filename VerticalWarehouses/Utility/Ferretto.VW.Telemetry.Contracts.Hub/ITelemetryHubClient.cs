@@ -29,6 +29,8 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
         Task SendScreenShotAsync(int bayNumber, DateTimeOffset dateTime, byte[] screenShot);
 
+        Task SendServicingInfoAsync(IServicingInfo servicingInfo);
+
         #endregion
     }
 }

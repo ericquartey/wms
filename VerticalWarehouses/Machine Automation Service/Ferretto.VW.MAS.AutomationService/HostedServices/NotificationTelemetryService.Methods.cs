@@ -210,35 +210,52 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private async Task OnServicingScheduleChangedAsync(ServicingScheduleMessageData messageData)
+        private async Task OnServicingScheduleChangedAsync(ServicingScheduleMessageData messageData, IServiceProvider serviceProvider)
         {
-            string text;
-            if (messageData.InstructionId > 0 && messageData.InstructionStatus != MachineServiceStatus.Undefined)
-            {
-                text = "Maintenance instruction " + messageData.InstructionId + " status " + messageData.InstructionStatus.ToString();
-            }
-            else if (messageData.ServiceStatus != MachineServiceStatus.Undefined)
-            {
-                text = "Maintenance service " + messageData.ServiceId + " status " + messageData.ServiceStatus.ToString();
-            }
-            else
-            {
-                return;
-            }
+            //string text;
+            //if (messageData.InstructionId > 0 && messageData.InstructionStatus != MachineServiceStatus.Undefined)
+            //{
+            //    text = "Maintenance instruction " + messageData.InstructionId + " status " + messageData.InstructionStatus.ToString();
+            //}
+            //else if (messageData.ServiceStatus != MachineServiceStatus.Undefined)
+            //{
+            //    text = "Maintenance service " + messageData.ServiceId + " status " + messageData.ServiceStatus.ToString();
+            //}
+            //else
+            //{
+            //    return;
+            //}
 
-            var errorLog = new ErrorLog
+            //var errorLog = new ErrorLog
+            //{
+            //    ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
+            //    AdditionalText = text,
+            //    BayNumber = 0,
+            //    Code = 0,
+            //    DetailCode = messageData.ServiceId,
+            //    InverterIndex = messageData.InstructionId,
+            //    OccurrenceDate = DateTimeOffset.Now,
+            //    ResolutionDate = null,
+            //};
+
+            //await this.SendErrorLogAsync(errorLog);
+
+            var si = serviceProvider
+                .GetRequiredService<IServicingProvider>()
+                .GetById(messageData.ServiceId);
+
+            var servicingInfo = new ServicingInfo
             {
-                ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
-                AdditionalText = text,
-                BayNumber = 0,
-                Code = 0,
-                DetailCode = messageData.ServiceId,
-                InverterIndex = messageData.InstructionId,
-                OccurrenceDate = DateTimeOffset.Now,
-                ResolutionDate = null,
+                InstallationDate = si.InstallationDate,
+                IsHandOver = si.IsHandOver,
+                LastServiceDate = si.LastServiceDate,
+                NextServiceDate = si.NextServiceDate,
+                ServiceStatusId = (int)si.ServiceStatus,
+                TimeStamp = DateTimeOffset.Now,
+                TotalMissions = si.TotalMissions,
             };
 
-            await this.SendErrorLogAsync(errorLog);
+            await this.SendServicingInfoAsync(servicingInfo);
         }
 
         private async Task SendErrorLogAsync(ErrorLog errorLog)
@@ -314,6 +331,25 @@ namespace Ferretto.VW.MAS.AutomationService
             catch (Exception ex)
             {
                 this.Logger.LogWarning(ex, "Unable to send raw database content to telemetry service.");
+            }
+        }
+
+        private async Task SendServicingInfoAsync(ServicingInfo servicingInfo)
+        {
+            if (!this.telemetryHub.IsConnected)
+            {
+                this.Logger.LogWarning("Unable to send servicing info to telemetry service because the hub is not connected.");
+
+                return;
+            }
+
+            try
+            {
+                await this.telemetryHub.SendServicingInfoAsync(servicingInfo);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogWarning(ex, "Unable to send servicing info to telemetry service.");
             }
         }
 
