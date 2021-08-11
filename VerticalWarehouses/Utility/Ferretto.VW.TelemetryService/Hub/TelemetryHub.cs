@@ -204,6 +204,26 @@ namespace Ferretto.VW.TelemetryService
             await this.telemetryWebHubClient.SendScreenShotAsync(bayNumber, machine.SerialNumber, timeStamp, screenshot);
         }
 
+        public async Task SendServicingInfo(ServicingInfo servicingInfo)
+        {
+            if (servicingInfo is null)
+            {
+                return;
+            }
+
+            this.logger.LogDebug($"Received servicing info from client.");
+
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+            if (machine is null)
+            {
+                this.logger.LogWarning("Trying to send a servicing info with no machine defined in the local database.");
+                return;
+            }
+
+            await this.telemetryWebHubClient.SendServicingInfoAsync(machine.SerialNumber, servicingInfo);
+        }
+
         #endregion
     }
 }

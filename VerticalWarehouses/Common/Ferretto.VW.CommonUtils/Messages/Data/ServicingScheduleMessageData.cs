@@ -17,6 +17,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.ServiceStatus = serviceStatus;
             this.InstructionStatus = instructionStatus;
             this.InstructionId = instructionId;
+            this.Verbosity = verbosity;
         }
 
         #endregion

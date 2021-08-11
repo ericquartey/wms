@@ -94,6 +94,10 @@ namespace Ferretto.VW.TelemetryService
                        .GetRequiredService<IScreenShotProvider>()
                        .DeleteOldLogs(this.maximumLogTimespan);
 
+                    scope.ServiceProvider
+                        .GetRequiredService<IServicingInfoProvider>()
+                        .DeleteOldLogs(this.maximumLogTimespan);
+
                     this.logger.LogDebug("Database cleanup completed.");
                 }
                 catch (Exception ex) when (ex is OperationCanceledException)
