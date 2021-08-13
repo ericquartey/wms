@@ -1749,4 +1749,10 @@
   <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
     <value>Invalid operation. Item and tote must be acquired.</value>
   </data>
+  <data name="DraperyItemFullyRequested" xml:space="preserve">
+    <value>Drapery fully requested.</value>
+  </data>
+  <data name="SignallingDefectError" xml:space="preserve">
+    <value>Error on signalling defect operation.</value>
+  </data>
 </root>

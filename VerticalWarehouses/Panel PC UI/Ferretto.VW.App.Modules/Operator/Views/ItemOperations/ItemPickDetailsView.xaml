@@ -167,7 +167,7 @@
                                          Grid.Column="1"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
-                                         ContentText="{Binding MissionOperation.ItemNotes}"
+                                         ContentText="{Binding MissionOperation.Destination}"
                                          LabelText="{resources:Loc OperatorApp.Destination}"
                                          Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
                 <!--  Only reserved for TendaggiParadiso  -->

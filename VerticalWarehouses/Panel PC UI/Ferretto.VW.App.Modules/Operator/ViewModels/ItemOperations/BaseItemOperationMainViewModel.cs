@@ -1936,6 +1936,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     Barcode = barcode,
                     BarcodeLength = this.BarcodeLenght,
                     IsPartiallyCompleteOperation = isPartiallyConfirmOperation,
+                    FullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested,
                     CloseLine = this.closeLine,
                 },
                 trackCurrentView: true);

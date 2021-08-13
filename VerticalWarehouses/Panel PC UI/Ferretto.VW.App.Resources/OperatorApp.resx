@@ -2251,4 +2251,12 @@
     <value>Invalid operation. Item and tote must be acquired.</value>
     <comment>Error Message</comment>
   </data>
+  <data name="DraperyItemFullyRequested" xml:space="preserve">
+    <value>Drapery fully requested.</value>
+    <comment>Label</comment>
+  </data>
+  <data name="SignallingDefectError" xml:space="preserve">
+    <value>Error on signalling defect operation.</value>
+    <comment>Error Message</comment>
+  </data>
 </root>

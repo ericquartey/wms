@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Services
 
         public bool CloseLine { get; set; }
 
+        public bool FullyRequested { get; set; }
+
         public double? InputQuantity { get; set; }
 
         public bool IsPartiallyCompleteOperation { get; set; }

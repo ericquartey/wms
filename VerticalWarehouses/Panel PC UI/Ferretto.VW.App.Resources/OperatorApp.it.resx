@@ -1874,4 +1874,10 @@
   <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
     <value>Operazione non valida. Articolo e contenitore esterno devono essere acquisiti.</value>
   </data>
+  <data name="DraperyItemFullyRequested" xml:space="preserve">
+    <value>Pezza richiesta completamente</value>
+  </data>
+  <data name="SignallingDefectError" xml:space="preserve">
+    <value>Errore operazione segnalazione difetto.</value>
+  </data>
 </root>

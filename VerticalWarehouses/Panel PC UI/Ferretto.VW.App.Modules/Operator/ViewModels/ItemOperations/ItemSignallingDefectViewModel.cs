@@ -110,7 +110,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsConfirmSignallingDefectButtonEnabled = value.HasValue &&
                     (value + this.wastedDraperyQuantity <= this.availableQuantity) &&
-                    (this.wastedDraperyQuantity > 0);
+                    value >= 0 &&
+                    ((this.wastedDraperyQuantity > 0 && value >= 0) || (this.wastedDraperyQuantity == 0 && value > 0));
             });
         }
 
@@ -145,7 +146,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsConfirmSignallingDefectButtonEnabled = value.HasValue &&
                     (this.goodDraperyQuantity + value <= this.availableQuantity) &&
-                    (value > 0);
+                    value >= 0 &&
+                    ((this.goodDraperyQuantity > 0 && value >= 0) || (this.goodDraperyQuantity == 0 && value > 0));
             });
         }
 
@@ -212,6 +214,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var bResult = true;
 
+            this.ClearNotifications();
+
             try
             {
                 bResult = await this.itemsWebService.SignallingDefectOnDraperyItemAsync(
@@ -245,8 +249,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception exc)
             {
-                this.Logger.Debug($"Error: {exc}");
-                this.ShowNotification("Unknown error on signalling defect operation", Services.Models.NotificationSeverity.Error);
+                this.Logger.Debug($"Signalling defect operation. Error: {exc}");
+                this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectError"), Services.Models.NotificationSeverity.Error);
             }
         }
 

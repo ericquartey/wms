@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double? inputQuantity;
 
+        private bool isFullyRequested;
+
         private string measureUnitTxt;
 
         private double missionRequestedQuantity;
@@ -114,6 +116,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCurrentDraperyItemFullyRequested
+        {
+            get => this.isFullyRequested;
+            set => this.SetProperty(ref this.isFullyRequested, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsPartiallyCompleteOperation { get; set; }
@@ -191,6 +199,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Barcode = itemDraperyData.Barcode;
                 this.BarcodeLenght = itemDraperyData.BarcodeLength;
                 this.IsPartiallyCompleteOperation = itemDraperyData.IsPartiallyCompleteOperation;
+                this.IsCurrentDraperyItemFullyRequested = itemDraperyData.FullyRequested;
                 this.CloseLine = itemDraperyData.CloseLine;
             }
             else
@@ -209,6 +218,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Barcode = string.Empty;
                 this.BarcodeLenght = 0;
                 this.IsPartiallyCompleteOperation = false;
+                this.IsCurrentDraperyItemFullyRequested = false;
                 this.CloseLine = true;
             }
 
