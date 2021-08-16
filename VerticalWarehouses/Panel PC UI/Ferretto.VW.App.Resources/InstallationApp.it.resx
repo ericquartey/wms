@@ -2148,7 +2148,7 @@
     <value>Cassetti totali in baia 3</value>
   </data>
   <data name="TotalMissions" xml:space="preserve">
-    <value>Missioni totali</value>
+    <value>Cicli</value>
   </data>
   <data name="MountCamera" xml:space="preserve">
     <value>Montare telecamera</value>
