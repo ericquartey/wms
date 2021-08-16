@@ -916,13 +916,13 @@ namespace Ferretto.VW.MAS.DeviceManager
                         var dataMessageRead = receivedMessage.Data as IInverterReadingFieldMessageData;
                         var msgReading = new InverterReadingMessageData();
 
-                        if (dataMessageRead != null)
-                        {
-                            var parameterData = new InverterParametersData(dataMessageRead.InverterParametersData);
-                            var iparameterData = new List<InverterParametersData>();
-                            iparameterData.Add(parameterData);
-                            msgReading.InverterParametersData = iparameterData;
-                        }
+                        //if (dataMessageRead != null)
+                        //{
+                        //    var parameterData = new InverterParametersData(dataMessageRead.InverterParametersData);
+                        //    var iparameterData = new List<InverterParametersData>();
+                        //    iparameterData.Add(parameterData);
+                        //    msgReading.InverterParametersData = iparameterData;
+                        //}
 
                         this.EventAggregator
                             .GetEvent<NotificationEvent>()

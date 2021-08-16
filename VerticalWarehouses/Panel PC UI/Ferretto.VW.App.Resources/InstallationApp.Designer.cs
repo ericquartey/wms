@@ -6433,7 +6433,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total missions.
+        ///   Looks up a localized string similar to Cycles.
         /// </summary>
         public static string TotalMissions {
             get {

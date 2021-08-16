@@ -153,6 +153,16 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             var mainInverter = this.machineData.InverterParametersData.OrderBy(s => s.InverterIndex).FirstOrDefault();
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 10000);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter digital input status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.InverterSetTimer,
+                mainInverter.InverterIndex);
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
             var commandMessageData = new InverterReadingFieldMessageData(mainInverter);
             var commandMessage = new FieldCommandMessage(
                 commandMessageData,
@@ -169,6 +179,19 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterReading
         public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogDebug($"Stop with reason: {reason}");
+
+            if (reason != StopRequestReason.NoReason)
+            {
+                var stopMessage = new FieldCommandMessage(
+                    null,
+                    "Inverter reading Stopped",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.InverterStop,
+                    this.currentInverterIndex);
+
+                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            }
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new InverterReadingEndState(this.stateData, this.Logger));

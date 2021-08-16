@@ -1,9 +1,12 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.InverterProgramming.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
@@ -62,6 +65,17 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
                 ErrorLevel.Error);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+            var mainInverter = this.machineData.InverterParametersData.OrderBy(s => s.InverterIndex).FirstOrDefault();
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter digital input status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.InverterSetTimer,
+                mainInverter.InverterIndex);
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
         }
 
         public override void Stop(StopRequestReason reason)

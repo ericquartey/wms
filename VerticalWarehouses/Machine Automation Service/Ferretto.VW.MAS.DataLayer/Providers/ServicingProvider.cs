@@ -700,7 +700,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             service.ServiceStatus = MachineServiceStatus.Expired;
                             this.dataContext.ServicingInfo.Update(service);
-                            this.ScheduleNotification(service.Id, service.ServiceStatus, 0, MachineServiceStatus.Undefined);
+                            this.ScheduleNotification(service, 0, MachineServiceStatus.Undefined);
                         }
                         this.logger.LogWarning(Resources.General.MaintenanceStateExpiring);
                     }
@@ -713,7 +713,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             service.ServiceStatus = MachineServiceStatus.Expiring;
                             this.dataContext.ServicingInfo.Update(service);
-                            this.ScheduleNotification(service.Id, service.ServiceStatus, 0, MachineServiceStatus.Undefined);
+                            this.ScheduleNotification(service, 0, MachineServiceStatus.Undefined);
                         }
                     }
 
@@ -741,7 +741,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             {
                                 ins.InstructionStatus = MachineServiceStatus.Expired;
                                 this.dataContext.Instructions.Update(ins);
-                                this.ScheduleNotification(service.Id, service.ServiceStatus, ins.Id, ins.InstructionStatus);
+                                this.ScheduleNotification(service, ins.Id, ins.InstructionStatus);
                                 //this.logger.LogWarning(Resources.General.MaintenanceStateExpiring);
                             }
                         }
@@ -753,7 +753,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             {
                                 ins.InstructionStatus = MachineServiceStatus.Expired;
                                 this.dataContext.Instructions.Update(ins);
-                                this.ScheduleNotification(service.Id, service.ServiceStatus, ins.Id, ins.InstructionStatus);
+                                this.ScheduleNotification(service, ins.Id, ins.InstructionStatus);
                                 //this.logger.LogWarning(Resources.General.MaintenanceStateExpiring);
                             }
                         }
@@ -767,7 +767,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                 ins.InstructionStatus = MachineServiceStatus.Expiring;
                                 ins.IsToDo = true;
                                 this.dataContext.Instructions.Update(ins);
-                                this.ScheduleNotification(service.Id, service.ServiceStatus, ins.Id, ins.InstructionStatus);
+                                this.ScheduleNotification(service, ins.Id, ins.InstructionStatus);
                             }
                         }
                         if (ins.InstructionStatus == MachineServiceStatus.Valid
@@ -781,7 +781,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                 ins.InstructionStatus = MachineServiceStatus.Expiring;
                                 ins.IsToDo = true;
                                 this.dataContext.Instructions.Update(ins);
-                                this.ScheduleNotification(service.Id, service.ServiceStatus, ins.Id, ins.InstructionStatus);
+                                this.ScheduleNotification(service, ins.Id, ins.InstructionStatus);
                             }
                         }
                     }
@@ -810,10 +810,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private void ScheduleNotification(int serviceId, MachineServiceStatus serviceStatus, int instructionId, MachineServiceStatus instructionStatus)
+        private void ScheduleNotification(ServicingInfo servicingInfo, int instructionId, MachineServiceStatus instructionStatus)
         {
             var notificationMessage = new NotificationMessage(
-                new ServicingScheduleMessageData(serviceId, serviceStatus, instructionId, instructionStatus),
+                new ServicingScheduleMessageData(servicingInfo.Id, servicingInfo.ServiceStatus, instructionId, instructionStatus),
                 $"Servicing status changed",
                 MessageActor.Any,
                 MessageActor.MissionManager,

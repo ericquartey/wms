@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     if (inverterDb.Parameters.Any())
                     {
                         this.dataContext.InverterParameter.RemoveRange(inverterDb.Parameters);
-                        this.dataContext.SaveChanges();
+                        //this.dataContext.SaveChanges();
                     }
 
                     inverterDb.Parameters = inverter.Parameters;
@@ -273,28 +273,49 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (inverter.Parameters.Any())
                 {
-                    var listParameters = inverter.Parameters.ToList();
-
-                    this.dataContext.InverterParameter.RemoveRange(inverter.Parameters);
-                    this.dataContext.SaveChanges();
-
+                    var listParameters = new List<InverterParameter>();
                     foreach (var parameter in inverterParameters)
                     {
-                        if (listParameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
+                        if (inverter.Parameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
                         {
-                            var dbParameter = listParameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet);
-
-                            listParameters.Remove(dbParameter);
-                            listParameters.Add(parameter);
+                            //listParameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet).StringValue = parameter.StringValue;
+                            var dbValue = inverter.Parameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet);
+                            if (dbValue.StringValue != parameter.StringValue
+                                || dbValue.IsReadOnly != parameter.IsReadOnly
+                                || dbValue.Error != parameter.Error)
+                            {
+                                dbValue.StringValue = parameter.StringValue;
+                                dbValue.IsReadOnly = parameter.IsReadOnly;
+                                dbValue.Error = parameter.Error;
+                            }
                         }
-                        else
+                        else if (!listParameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
                         {
                             listParameters.Add(parameter);
+                            this.dataContext.InverterParameter.Add(parameter);
                         }
                     }
-
-                    inverter.Parameters = listParameters;
-                    this.dataContext.Inverters.Update(inverter);
+                    foreach (var parameter in inverterParameters)
+                    {
+                        if (inverter.Parameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
+                        {
+                            //listParameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet).StringValue = parameter.StringValue;
+                            var dbValue = inverter.Parameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet);
+                            if (dbValue.StringValue != parameter.StringValue
+                                || dbValue.IsReadOnly != parameter.IsReadOnly
+                                || dbValue.Error != parameter.Error)
+                            {
+                                dbValue.StringValue = parameter.StringValue;
+                                dbValue.IsReadOnly = parameter.IsReadOnly;
+                                dbValue.Error = parameter.Error;
+                            }
+                        }
+                        else if (!listParameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
+                        {
+                            listParameters.Add(parameter);
+                            this.dataContext.InverterParameter.Add(parameter);
+                        }
+                    }
                 }
                 else
                 {
@@ -312,9 +333,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
 
                     inverter.Parameters = listParameters;
-                    this.dataContext.Inverters.Update(inverter);
                 }
 
+                this.dataContext.Inverters.Update(inverter);
                 this.dataContext.SaveChanges();
 
                 this.logger.LogInformation("End save parameter");

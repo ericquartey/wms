@@ -22,15 +22,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.22 rispetto la 1.0.21
-- Aggiunta possibilità di inserire le Note nella causale della Ricerca Articolo, sia da tastiera che da barcode
-- Aggiunta gestione del Robot nella BES
+## Nuove Funzionalità 1.0.23 rispetto la 1.0.22
+- Aggiunti dati di manutenzione alla telemetria
 
 ## Bug Risolti
-- Corretta gestione del database di backup
+- Corretta lettura dei dati dall'inverter
+- E' obbligatiorio selezionare il lotto per le richieste di deposito di articoli con lotto
 
 ## Compatibile con adapter 0.4.23
 ***
+
+[Versione 1.0.22](#id1022)
 
 [Versione 1.0.21](#id1021)
 
@@ -75,6 +77,16 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1022"></a>
+## Nuove Funzionalità 1.0.22 rispetto la 1.0.21
+- Aggiunta possibilità di inserire le Note nella causale della Ricerca Articolo, sia da tastiera che da barcode
+
+## Bug Risolti
+- Corretta gestione del database di backup
+
+## Compatibile con adapter 0.4.23
 ***
 
 <a id="id1021"></a>
