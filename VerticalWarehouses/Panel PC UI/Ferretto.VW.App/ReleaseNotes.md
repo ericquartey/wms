@@ -24,6 +24,7 @@
 
 ## Nuove Funzionalità 1.0.23 rispetto la 1.0.22
 - Aggiunti dati di manutenzione alla telemetria
+- Aggiunta gestione del Robot nella BES
 
 ## Bug Risolti
 - Corretta lettura dei dati dall'inverter
