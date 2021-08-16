@@ -601,9 +601,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (receivedMessage.Data is IInverterProgrammingFieldMessageData inverterProgrammingData)
             {
-                this.Logger.LogTrace("1:Parse Message Data");
-                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 10000);
-
                 if (inverter.IsStarted)
                 {
                     this.Logger.LogError("Inverter is started");
@@ -613,7 +610,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.Logger.LogTrace("4:Starting InverterProgramming FSM");
 
                 this.Logger.LogTrace("Start the timer for update status word");
-                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
+                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 10000);
 
                 var inverterProgrammingFieldMessageData = new InverterProgrammingFieldMessageData(inverterProgrammingData.InverterParametersData);
                 var currentStateMachine = new InverterProgrammigState(
@@ -650,10 +647,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (receivedMessage.Data is IInverterReadingFieldMessageData inverterProgrammingData)
             {
-                this.Logger.LogTrace("1:Parse Message Data");
-
-                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 10000);
-
                 if (inverter.IsStarted)
                 {
                     this.Logger.LogError("Inverter is started");
@@ -664,7 +657,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.Logger.LogTrace("4:Starting InverterReading FSM");
 
                 this.Logger.LogTrace("Start the timer for update status word");
-                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 200);
+                this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 10000);
 
                 var inverterReadingFieldMessageData = new InverterReadingFieldMessageData(inverterProgrammingData.InverterParametersData);
                 var currentStateMachine = new InverterReadingState(

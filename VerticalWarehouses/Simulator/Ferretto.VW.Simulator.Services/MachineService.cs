@@ -1166,7 +1166,12 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 default:
-                    Debug.Assert(true);
+                    // simulate inverter programming
+                    var rxMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(0, 100)));
+                    result = client.Client.Send(rxMessage);
+
+                    // show unexpected messages
+                    // Debug.Assert(true);
                     break;
             }
         }

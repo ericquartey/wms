@@ -4,6 +4,34 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class InverterParameter : DataModel
     {
+        #region Constructors
+
+        public InverterParameter()
+        {
+        }
+
+        public InverterParameter(InverterParameter seed)
+        {
+            if (seed is null)
+            {
+                throw new ArgumentNullException(nameof(seed));
+            }
+            this.Id = seed.Id;
+            this.Code = seed.Code;
+            this.DataSet = seed.DataSet;
+            this.DecimalCount = seed.DecimalCount;
+            this.Description = seed.Description;
+            this.Error = seed.Error;
+            this.IsReadOnly = seed.IsReadOnly;
+            this.ReadCode = seed.ReadCode;
+            this.StringValue = seed.StringValue;
+            this.Type = seed.Type;
+            this.Um = seed.Um;
+            this.WriteCode = seed.WriteCode;
+        }
+
+        #endregion
+
         #region Properties
 
         public short Code { get; set; }
@@ -39,6 +67,10 @@ namespace Ferretto.VW.MAS.DataModels
                     else if (this.Type == "int")
                     {
                         return int.Parse(this.StringValue);
+                    }
+                    else if (this.Type == null)
+                    {
+                        return null;
                     }
                 }
                 catch (Exception ex)
