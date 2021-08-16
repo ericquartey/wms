@@ -262,20 +262,21 @@ namespace Ferretto.VW.App.Services
                             && !this.isAlreadyStarted)
                         {
                             var sc = new ServiceController();
-                            sc.ServiceName = this.masServiceName;
-                            if (sc.Status == ServiceControllerStatus.Stopped)
+                            try
                             {
-                                try
+                                sc.ServiceName = this.masServiceName;
+                                if (sc.Status == ServiceControllerStatus.Stopped)
                                 {
                                     sc.Start();
                                     this.logger.Debug($"Force starting of {sc.ServiceName} service.");
                                     this.isAlreadyStarted = true;
                                 }
-                                catch (InvalidOperationException)
-                                {
-                                    this.logger.Debug($"Could not start the {sc.ServiceName} service.");
-                                }
                             }
+                            catch (Exception)
+                            {
+                                this.logger.Debug($"Could not start the {sc.ServiceName} service.");
+                            }
+
                             sc.Dispose();
                         }
                     }
@@ -287,6 +288,7 @@ namespace Ferretto.VW.App.Services
 
                 await Task.Delay(this.pollInterval);
             }
+
             while (!cancellationToken.IsCancellationRequested);
         }
 

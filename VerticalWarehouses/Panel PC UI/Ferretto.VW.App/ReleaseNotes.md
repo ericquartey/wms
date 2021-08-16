@@ -24,9 +24,11 @@
 
 ## Nuove Funzionalità 1.0.22 rispetto la 1.0.21
 - Aggiunta possibilità di inserire le Note nella causale della Ricerca Articolo, sia da tastiera che da barcode
+- Aggiunti dati di manutenzione alla telemetria
 
 ## Bug Risolti
 - Corretta gestione del database di backup
+- Corretta lettura dei dati dall'inverter
 
 ## Compatibile con adapter 0.4.23
 ***

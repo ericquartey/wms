@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 this.digitalDevicesDataProvider.SaveInverterStructure(inverter);
                 var notificationMessage = new NotificationMessage(
                                new InverterParametersMessageData(MessageType.InverterParameters, 0, 0, $"Inverter {inverter.Index} structure updated", false),
-                               $"Starting save inverter structure",
+                               $"save inverter structure",
                                MessageActor.Any,
                                MessageActor.DeviceManager,
                                MessageType.InverterParameters,

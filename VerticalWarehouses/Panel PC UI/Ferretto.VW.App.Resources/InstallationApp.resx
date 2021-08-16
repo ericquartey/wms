@@ -2204,7 +2204,7 @@
     <value>Total load units in bay 3</value>
   </data>
   <data name="TotalMissions" xml:space="preserve">
-    <value>Total missions</value>
+    <value>Cycles</value>
   </data>
   <data name="MountCamera" xml:space="preserve">
     <value>Mount camera</value>

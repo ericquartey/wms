@@ -1436,7 +1436,7 @@
     <comment>Label</comment>
   </data>
   <data name="TotalMissions" xml:space="preserve">
-    <value>Total missions</value>
+    <value>Cycles</value>
     <comment>Label</comment>
   </data>
   <data name="TotalUnits" xml:space="preserve">
@@ -1764,7 +1764,7 @@
     <comment>Block Level</comment>
   </data>
   <data name="TotalMissionsHeader" xml:space="preserve">
-    <value>Total missions</value>
+    <value>Cycles</value>
   </data>
   <data name="CloseLine" xml:space="preserve">
     <value>Close line</value>

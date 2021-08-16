@@ -19,6 +19,8 @@ namespace Ferretto.ServiceDesk.Telemetry.Hubs
 
         Task SendScreenShot(int bayNumber, string serialNumber, DateTimeOffset timeStamp, byte[] screenshot);
 
+        Task SendServicingInfo(string serialNumber, ServicingInfo servicingInfo);
+
         #endregion
     }
 }

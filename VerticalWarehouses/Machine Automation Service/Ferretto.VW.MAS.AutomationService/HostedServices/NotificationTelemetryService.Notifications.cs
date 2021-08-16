@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     break;
 
                 case MessageType.ServicingSchedule when message.Data is ServicingScheduleMessageData messageData:
-                    await this.OnServicingScheduleChangedAsync(messageData);
+                    await this.OnServicingScheduleChangedAsync(messageData, serviceProvider);
                     break;
             }
         }
