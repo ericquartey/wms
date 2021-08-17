@@ -452,6 +452,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetBackupOnTelemetryAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetStandbyDbAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetStandbyDbAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetBackupOnServerAsync(bool enable);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
