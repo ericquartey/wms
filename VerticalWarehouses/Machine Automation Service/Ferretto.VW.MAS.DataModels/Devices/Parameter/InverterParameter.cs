@@ -1,37 +1,10 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class InverterParameter : DataModel
     {
-        #region Constructors
-
-        public InverterParameter()
-        {
-        }
-
-        public InverterParameter(InverterParameter seed)
-        {
-            if (seed is null)
-            {
-                throw new ArgumentNullException(nameof(seed));
-            }
-            this.Id = seed.Id;
-            this.Code = seed.Code;
-            this.DataSet = seed.DataSet;
-            this.DecimalCount = seed.DecimalCount;
-            this.Description = seed.Description;
-            this.Error = seed.Error;
-            this.IsReadOnly = seed.IsReadOnly;
-            this.ReadCode = seed.ReadCode;
-            this.StringValue = seed.StringValue;
-            this.Type = seed.Type;
-            this.Um = seed.Um;
-            this.WriteCode = seed.WriteCode;
-        }
-
-        #endregion
-
         #region Properties
 
         public short Code { get; set; }
@@ -43,6 +16,11 @@ namespace Ferretto.VW.MAS.DataModels
         public string Description { get; set; }
 
         public bool Error { get; set; }
+
+        [JsonIgnore]
+        public Inverter Inverter { get; set; }
+
+        public int? InverterId { get; set; }
 
         public bool IsReadOnly { get; set; }
 

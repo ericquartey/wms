@@ -195,7 +195,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
             else
             {
                 var par = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
-                var currentParameter = new InverterParameter(par);
+                var currentParameter = new InverterParameter()
+                {
+                    Id = par.Id,
+                    Code = par.Code,
+                    DataSet = par.DataSet,
+                    DecimalCount = par.DecimalCount,
+                    Description = par.Description,
+                    Error = par.Error,
+                    IsReadOnly = par.IsReadOnly,
+                    ReadCode = par.ReadCode,
+                    StringValue = par.StringValue,
+                    Type = par.Type,
+                    Um = par.Um,
+                    WriteCode = par.WriteCode
+                };
 
                 if (currentParameter.Code != message.ShortParameterId)
                 {

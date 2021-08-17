@@ -16,14 +16,6 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        private static void EnsureFolderExistence()
-        {
-            if (!System.IO.Directory.Exists("Database"))
-            {
-                System.IO.Directory.CreateDirectory("Database");
-            }
-        }
-
         private static string GetSeedFileName(string environmentName)
         {
             return environmentName is null
@@ -31,39 +23,56 @@ namespace Ferretto.VW.MAS.DataLayer
                 : $"configuration/seeds/seed.{environmentName}.sql";
         }
 
-        private async Task ApplyMigrationsAsync()
+        private async Task ApplyMigrationsAsync(IServiceScope scope)
         {
-            EnsureFolderExistence();
+            this.EnsureFolderExistence(scope);
 
-            using (var scope = this.ServiceScopeFactory.CreateScope())
+            var redundancyService = scope
+                .ServiceProvider
+                .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+
+            redundancyService.IsEnabled = false;
+
+            using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions, redundancyService))
             {
-                var redundancyService = scope
-                    .ServiceProvider
-                    .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
-
-                redundancyService.IsEnabled = false;
-
-                using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions, redundancyService))
+                var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
+                if (pendingMigrations.Any())
                 {
-                    var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
-                    if (pendingMigrations.Any())
-                    {
-                        this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to active database ...");
-                        await activeDbContext.Database.MigrateAsync();
-                    }
+                    this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to active database ...");
+                    await activeDbContext.Database.MigrateAsync();
                 }
+            }
 
-                using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions, redundancyService))
+            using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions, redundancyService))
+            {
+                var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
+                if (pendingMigrations.Any())
                 {
-                    var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
-                    if (pendingMigrations.Any())
-                    {
-                        this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to standby database ...");
-                        await standbyDbContext.Database.MigrateAsync();
-                    }
+                    this.Logger.LogInformation($"Applying {pendingMigrations.Count()} migrations to standby database ...");
+                    await standbyDbContext.Database.MigrateAsync();
                 }
+            }
 
-                redundancyService.IsEnabled = true;
+            redundancyService.IsEnabled = true;
+        }
+
+        private void EnsureFolderExistence(IServiceScope scope)
+        {
+            if (!System.IO.Directory.Exists("Database"))
+            {
+                System.IO.Directory.CreateDirectory("Database");
+            }
+
+            var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+            var primaryDb = configuration.GetDataLayerPrimaryConnectionString().Split('=')[1]?.Trim('\'');
+            var secondaryDb = configuration.GetDataLayerSecondaryConnectionString().Split('=')[1]?.Trim('\'');
+            if (!string.IsNullOrEmpty(primaryDb)
+                && !string.IsNullOrEmpty(secondaryDb)
+                && !System.IO.File.Exists(secondaryDb)
+                )
+            {
+                this.Logger.LogWarning($"No standby database. Copy database from [{primaryDb}] to [{secondaryDb}].");
+                System.IO.File.Copy(primaryDb, secondaryDb);
             }
         }
 
@@ -73,7 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
-                    await this.ApplyMigrationsAsync();
+                    await this.ApplyMigrationsAsync(scope);
 
                     var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
                     var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();

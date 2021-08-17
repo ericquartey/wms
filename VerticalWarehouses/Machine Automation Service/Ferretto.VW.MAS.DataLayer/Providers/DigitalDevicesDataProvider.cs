@@ -228,12 +228,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     if (inverterDb.Parameters.Any())
                     {
                         this.dataContext.InverterParameter.RemoveRange(inverterDb.Parameters);
-                        //this.dataContext.SaveChanges();
                     }
 
-                    inverterDb.Parameters = inverter.Parameters;
+                    foreach (var parameter in inverter.Parameters)
+                    {
+                        parameter.InverterId = inverterDb.Id;
+                        this.dataContext.InverterParameter.Add(parameter);
+                    }
 
-                    this.dataContext.Inverters.Update(inverterDb);
                     this.dataContext.SaveChanges();
                 }
             }
@@ -274,27 +276,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (inverter.Parameters.Any())
                 {
                     var listParameters = new List<InverterParameter>();
-                    foreach (var parameter in inverterParameters)
-                    {
-                        if (inverter.Parameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
-                        {
-                            //listParameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet).StringValue = parameter.StringValue;
-                            var dbValue = inverter.Parameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet);
-                            if (dbValue.StringValue != parameter.StringValue
-                                || dbValue.IsReadOnly != parameter.IsReadOnly
-                                || dbValue.Error != parameter.Error)
-                            {
-                                dbValue.StringValue = parameter.StringValue;
-                                dbValue.IsReadOnly = parameter.IsReadOnly;
-                                dbValue.Error = parameter.Error;
-                            }
-                        }
-                        else if (!listParameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
-                        {
-                            listParameters.Add(parameter);
-                            this.dataContext.InverterParameter.Add(parameter);
-                        }
-                    }
                     foreach (var parameter in inverterParameters)
                     {
                         if (inverter.Parameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
