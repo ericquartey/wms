@@ -230,11 +230,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         this.dataContext.InverterParameter.RemoveRange(inverterDb.Parameters);
                     }
 
-                    foreach (var parameter in inverter.Parameters)
-                    {
-                        parameter.InverterId = inverterDb.Id;
-                        this.dataContext.InverterParameter.Add(parameter);
-                    }
+                    inverterDb.Parameters = inverter.Parameters;
+
+                    this.dataContext.Inverters.Update(inverterDb);
 
                     this.dataContext.SaveChanges();
                 }
