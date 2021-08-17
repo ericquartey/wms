@@ -3900,6 +3900,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Error", Required = Newtonsoft.Json.Required.Always)]
         public bool Error { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("InverterId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? InverterId { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsReadOnly", Required = Newtonsoft.Json.Required.Always)]
         public bool IsReadOnly { get; set; }
     
