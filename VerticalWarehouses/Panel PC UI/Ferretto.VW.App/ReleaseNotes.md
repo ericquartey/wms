@@ -28,6 +28,7 @@
 ## Bug Risolti
 - Corretta lettura dei dati dall'inverter
 - E' obbligatiorio selezionare il lotto per le richieste di deposito di articoli con lotto
+- Se il database secondario non esiste viene duplicato il primario
 
 ## Compatibile con adapter 0.4.23
 ***
