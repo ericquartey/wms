@@ -1674,4 +1674,10 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Invalid argument</value>
   </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--bверх</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--bниз</value>
+  </data>
 </root>

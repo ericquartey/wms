@@ -1141,6 +1141,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to --down.
+        /// </summary>
+        public static string DownBlock {
+            get {
+                return ResourceManager.GetString("DownBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drapery.
         /// </summary>
         public static string Drapery {
@@ -5097,6 +5106,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Up {
             get {
                 return ResourceManager.GetString("Up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --up.
+        /// </summary>
+        public static string UpBlock {
+            get {
+                return ResourceManager.GetString("UpBlock", resourceCulture);
             }
         }
         

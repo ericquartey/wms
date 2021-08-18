@@ -1871,4 +1871,10 @@
   <data name="SupportType_Above" xml:space="preserve">
     <value>Sopra</value>
   </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--alta</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--bassa</value>
+  </data>
 </root>

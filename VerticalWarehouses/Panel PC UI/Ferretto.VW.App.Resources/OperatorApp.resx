@@ -2245,4 +2245,10 @@
   <data name="SupportType_Above" xml:space="preserve">
     <value>Above</value>
   </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--up</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--down</value>
+  </data>
 </root>

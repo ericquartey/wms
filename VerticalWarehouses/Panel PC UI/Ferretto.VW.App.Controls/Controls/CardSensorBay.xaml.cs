@@ -267,8 +267,23 @@ namespace Ferretto.VW.App.Controls.Controls
             }
             else if (this.machineService.Bay.IsDouble)
             {
-                this.CardSensorLabel2 = Localized.Get("OperatorApp.Up");
-                this.CardSensorLabel3 = Localized.Get("OperatorApp.Down");
+                if (this.machineService.Bay.Positions.Any(p => p.IsUpper && p.IsBlocked))
+                {
+                    this.CardSensorLabel2 = Localized.Get("OperatorApp.UpBlock");
+                }
+                else
+                {
+                    this.CardSensorLabel2 = Localized.Get("OperatorApp.Up");
+                }
+
+                if (this.machineService.Bay.Positions.Any(p => !p.IsUpper && p.IsBlocked))
+                {
+                    this.CardSensorLabel3 = Localized.Get("OperatorApp.DownBlock");
+                }
+                else
+                {
+                    this.CardSensorLabel3 = Localized.Get("OperatorApp.Down");
+                }
 
                 this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
                 this.Sensor3 = this.sensorsService.IsLoadingUnitInMiddleBottomBay;
