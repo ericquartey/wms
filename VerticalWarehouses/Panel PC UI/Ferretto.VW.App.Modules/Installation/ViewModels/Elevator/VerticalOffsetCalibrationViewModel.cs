@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     public enum VerticalOffsetCalibrationStep
     {
-        Start,
-
         CellMeasured,
 
         Confirm,
@@ -123,7 +121,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
-            this.CurrentStep = VerticalOffsetCalibrationStep.Start;
+            this.CurrentStep = VerticalOffsetCalibrationStep.CellMeasured;
         }
 
         #endregion
@@ -198,8 +196,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool HasStepConfirm => this.currentStep is VerticalOffsetCalibrationStep.Confirm;
 
         public bool HasStepOriginCalibration => this.currentStep is VerticalOffsetCalibrationStep.OriginCalibration;
-
-        public bool HasStepStart => this.currentStep is VerticalOffsetCalibrationStep.Start;
 
         public bool IsCanStartPosition => this.CanBaseExecute();
 
@@ -328,30 +324,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 switch (columnName)
                 {
-                    case nameof(this.StartPosition):
-                        if (this.CurrentStep == VerticalOffsetCalibrationStep.Start &&
-                            !this.IsMoving)
-                        {
-                            if (this.StartPosition < 0)
-                            {
-                                this.currentError = Localized.Get("InstallationApp.StartPositionMustBePositive");
-                                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                                return this.currentError;
-                            }
-
-                            if ((this.StartPosition < this.axisLowerBound ||
-                                this.StartPosition > this.axisUpperBound) &&
-                                this.axisLowerBound > 0 &&
-                                this.axisUpperBound > 0)
-                            {
-                                this.currentError = string.Format(Localized.Get("InstallationApp.StartPositionOutOfRangeAxis"), this.AxisLowerBound, this.AxisUpperBound); ;
-                                this.ShowNotification(this.currentError, NotificationSeverity.Warning);
-                                return this.currentError;
-                            }
-                        }
-
-                        break;
-
                     case nameof(this.CurrentCellId):
                         if (this.CurrentStep == VerticalOffsetCalibrationStep.CellMeasured &&
                             !this.IsMoving)
@@ -499,22 +471,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             switch (this.CurrentStep)
             {
-                case VerticalOffsetCalibrationStep.Start:
-                    if (e.Next)
-                    {
-                        this.CurrentStep = VerticalOffsetCalibrationStep.CellMeasured;
-                    }
-
-                    break;
-
                 case VerticalOffsetCalibrationStep.CellMeasured:
                     if (e.Next)
                     {
                         this.CurrentStep = VerticalOffsetCalibrationStep.Confirm;
-                    }
-                    else
-                    {
-                        this.CurrentStep = VerticalOffsetCalibrationStep.Start;
                     }
 
                     break;
@@ -720,7 +680,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         await this.verticalOffsetWebService.CompleteProcedureAsync();
 
-                        this.CurrentStep = VerticalOffsetCalibrationStep.Start;
+                        this.CurrentStep = VerticalOffsetCalibrationStep.CellMeasured;
 
                         this.ShowNotification(Localized.Get("InstallationApp.ProcedureCompleted"), Services.Models.NotificationSeverity.Success);
 
@@ -834,7 +794,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    .Subscribe(
                        (m) =>
                        {
-                           this.RaisePropertyChanged(nameof(this.HasStepStart));
                            this.RaisePropertyChanged(nameof(this.HasStepCellMeasured));
                            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
                            this.RaisePropertyChanged(nameof(this.HasStepOriginCalibration));
@@ -861,13 +820,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             switch (this.CurrentStep)
             {
-                case VerticalOffsetCalibrationStep.Start:
-                    this.ShowPrevStepSinglePage(true, false);
-                    this.ShowNextStepSinglePage(true, this.moveToCellPositioningCommand?.CanExecute() ?? false);
-                    break;
-
                 case VerticalOffsetCalibrationStep.CellMeasured:
-                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
+                    this.ShowPrevStepSinglePage(true, false);
                     this.ShowNextStepSinglePage(true, this.moveToConfirmCommand?.CanExecute() ?? false);
                     break;
 
@@ -884,7 +838,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.ShowAbortStep(true, !this.IsMoving);
 
-            this.RaisePropertyChanged(nameof(this.HasStepStart));
             this.RaisePropertyChanged(nameof(this.HasStepCellMeasured));
             this.RaisePropertyChanged(nameof(this.HasStepConfirm));
             this.RaisePropertyChanged(nameof(this.HasStepOriginCalibration));
