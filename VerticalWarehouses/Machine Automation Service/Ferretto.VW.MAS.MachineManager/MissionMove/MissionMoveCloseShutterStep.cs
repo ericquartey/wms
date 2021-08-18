@@ -81,6 +81,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         )
                 {
                     this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    this.Logger.LogDebug($"Generate Homing. Horizontal cycles {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal)} expired {machine.HorizontalCyclesToCalibrate} or position {Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()):0.00}, Mission:Id={this.Mission.Id}");
                 }
 
                 this.Mission.RestoreConditions = false;
