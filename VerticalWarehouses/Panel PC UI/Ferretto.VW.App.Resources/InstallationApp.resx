@@ -2168,7 +2168,7 @@
     <value>Free</value>
   </data>
   <data name="PanelId" xml:space="preserve">
-    <value>Panel Id</value>
+    <value>Panel</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priority</value>
@@ -2544,5 +2544,8 @@
   <data name="AntiIntrusionGateInternal" xml:space="preserve">
     <value>Anti intrusion gate internal</value>
     <comment>Sensor</comment>
+  </data>
+  <data name="SupportType" xml:space="preserve">
+    <value>Support</value>
   </data>
 </root>

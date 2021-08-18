@@ -230,11 +230,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         this.dataContext.InverterParameter.RemoveRange(inverterDb.Parameters);
                     }
 
-                    foreach (var parameter in inverter.Parameters)
-                    {
-                        parameter.InverterId = inverterDb.Id;
-                        this.dataContext.InverterParameter.Add(parameter);
-                    }
+                    inverterDb.Parameters = inverter.Parameters;
+
+                    this.dataContext.Inverters.Update(inverterDb);
 
                     this.dataContext.SaveChanges();
                 }
@@ -294,6 +292,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         else if (!listParameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
                         {
                             listParameters.Add(parameter);
+                            parameter.InverterId = inverter.Id;
                             this.dataContext.InverterParameter.Add(parameter);
                         }
                     }
@@ -303,6 +302,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     var listParameters = new List<InverterParameter>();
                     foreach (var parameter in inverterParameters)
                     {
+                        parameter.InverterId = inverter.Id;
                         if (listParameters.Any(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet))
                         {
                             listParameters.SingleOrDefault(s => s.Code == parameter.Code && s.DataSet == parameter.DataSet).StringValue = parameter.StringValue;
@@ -310,10 +310,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         else
                         {
                             listParameters.Add(parameter);
+                            this.dataContext.InverterParameter.Add(parameter);
                         }
                     }
-
-                    inverter.Parameters = listParameters;
                 }
 
                 this.dataContext.Inverters.Update(inverter);

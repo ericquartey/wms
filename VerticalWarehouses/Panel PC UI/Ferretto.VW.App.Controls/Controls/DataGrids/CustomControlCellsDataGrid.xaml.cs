@@ -85,7 +85,10 @@ namespace Ferretto.VW.App.Controls.Controls
             //To this point the default sort functionality is implemented
 
             //Now check the wanted columns and add multiple sort
-            if (cView.SortDescriptions.Count >= 2 || cView.SortDescriptions.Count == 0)
+            if (cView.SortDescriptions.Count >= 2
+                || cView.SortDescriptions.Count == 0
+                || e.Column.SortMemberPath == this.firstSort
+                )
             {
                 this.lastDirection = direction;
                 cView.SortDescriptions.Clear();
@@ -96,12 +99,6 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.firstSort = e.Column.SortMemberPath;
                 this.lastDirection = direction;
                 this.AddSortColumn((DataGrid)sender, this.firstSort, direction);
-            }
-            else if (e.Column.SortMemberPath == this.firstSort && this.lastDirection != direction)
-            {
-                this.lastDirection = direction;
-                cView.SortDescriptions.Clear();
-                this.AddSortColumn((DataGrid)sender, e.Column.SortMemberPath, direction);
             }
             e.Handled = true;
         }

@@ -1141,6 +1141,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to --down.
+        /// </summary>
+        public static string DownBlock {
+            get {
+                return ResourceManager.GetString("DownBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drapery.
         /// </summary>
         public static string Drapery {
@@ -4840,6 +4849,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Above.
+        /// </summary>
+        public static string SupportType_Above {
+            get {
+                return ResourceManager.GetString("SupportType_Above", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert.
+        /// </summary>
+        public static string SupportType_Insert {
+            get {
+                return ResourceManager.GetString("SupportType_Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total active mission time.
         /// </summary>
         public static string TotalActiveMissionTime {
@@ -5079,6 +5106,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Up {
             get {
                 return ResourceManager.GetString("Up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --up.
+        /// </summary>
+        public static string UpBlock {
+            get {
+                return ResourceManager.GetString("UpBlock", resourceCulture);
             }
         }
         

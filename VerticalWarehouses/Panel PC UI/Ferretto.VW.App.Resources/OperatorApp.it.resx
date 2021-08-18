@@ -1865,4 +1865,16 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Argomento non valido</value>
   </data>
+  <data name="SupportType_Insert" xml:space="preserve">
+    <value>Inserito</value>
+  </data>
+  <data name="SupportType_Above" xml:space="preserve">
+    <value>Sopra</value>
+  </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--alta</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--bassa</value>
+  </data>
 </root>

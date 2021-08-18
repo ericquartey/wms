@@ -1740,4 +1740,10 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Invalid argument</value>
   </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--hoch</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--niedr</value>
+  </data>
 </root>

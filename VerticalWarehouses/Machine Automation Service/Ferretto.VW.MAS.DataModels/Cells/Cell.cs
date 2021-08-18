@@ -33,9 +33,34 @@ namespace Ferretto.VW.MAS.DataModels
 
         public WarehouseSide Side => this.Panel?.Side ?? WarehouseSide.NotSpecified;
 
+        public SupportType SupportType => this.Support();
+
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// In some cells the LU support is inserted as a fork and the elevator top has the same level of the cell
+        /// In other cells the LU support lays above the cell and the elevator top is 25mm higher than the cell
+        ///
+        /// front fork cells are: 1,  5,  9, 13, 17 ...
+        /// back fork cells are: 14, 18, 22, 26, 30 ...
+        /// </summary>
+        /// <returns></returns>
+        public SupportType Support()
+        {
+            switch (this.Side)
+            {
+                case WarehouseSide.Front:
+                    return ((this.Id - 1) % 4 == 0) ? SupportType.Insert : SupportType.Above;
+
+                case WarehouseSide.Back:
+                    return ((this.Id - 2) % 4 == 0) ? SupportType.Insert : SupportType.Above;
+
+                default:
+                    return SupportType.Undefined;
+            }
+        }
 
         public void Validate()
         {

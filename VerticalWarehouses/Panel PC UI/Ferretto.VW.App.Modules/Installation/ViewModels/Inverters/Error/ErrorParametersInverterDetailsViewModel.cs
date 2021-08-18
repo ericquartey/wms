@@ -728,14 +728,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
+        private async Task OnInverterReadingMessageReceivedAsync(NotificationMessageUI<InverterReadingMessageData> message)
         {
             switch (message.Status)
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     this.IsBusy = false;
                     this.ShowNotification(Localized.Get("InstallationApp.InverterReadingSuccessfullyEnded"), Services.Models.NotificationSeverity.Success);
-                    this.LoadData();
+                    await this.RefreshAsync();
                     break;
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
@@ -865,7 +865,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                ?? this.EventAggregator
                    .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
                    .Subscribe(
-                       (m) => this.OnInverterReadingMessageReceived(m),
+                       async (m) => await this.OnInverterReadingMessageReceivedAsync(m),
                        ThreadOption.UIThread,
                        false);
 

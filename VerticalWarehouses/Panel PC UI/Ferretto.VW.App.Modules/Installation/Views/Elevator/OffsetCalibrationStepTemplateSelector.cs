@@ -14,20 +14,15 @@ namespace Ferretto.VW.App.Installation.Views
 
         public DataTemplate EnumOriginCalibration { get; set; }
 
-        public DataTemplate EnumStart { get; set; }
-
         #endregion
 
         #region Methods
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var value = (VerticalOffsetCalibrationStep)(item ?? VerticalOffsetCalibrationStep.Start);
+            var value = (VerticalOffsetCalibrationStep)(item ?? VerticalOffsetCalibrationStep.CellMeasured);
             switch (value)
             {
-                case VerticalOffsetCalibrationStep.Start:
-                    return this.EnumStart;
-
                 case VerticalOffsetCalibrationStep.CellMeasured:
                     return this.EnumCellMeasured;
 
