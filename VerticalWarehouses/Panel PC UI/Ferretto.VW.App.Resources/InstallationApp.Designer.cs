@@ -4840,7 +4840,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Panel Id.
+        ///   Looks up a localized string similar to Panel.
         /// </summary>
         public static string PanelId {
             get {
@@ -6132,6 +6132,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Support {
             get {
                 return ResourceManager.GetString("Support", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Support.
+        /// </summary>
+        public static string SupportType {
+            get {
+                return ResourceManager.GetString("SupportType", resourceCulture);
             }
         }
         

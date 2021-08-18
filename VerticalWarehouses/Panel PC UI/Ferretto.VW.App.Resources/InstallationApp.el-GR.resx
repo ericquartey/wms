@@ -2113,7 +2113,7 @@
     <value>Ελεύθερο</value>
   </data>
   <data name="PanelId" xml:space="preserve">
-    <value>Αναγνωριστικό πίνακα</value>
+    <value>Πίνακας</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Προτεραιότητα</value>

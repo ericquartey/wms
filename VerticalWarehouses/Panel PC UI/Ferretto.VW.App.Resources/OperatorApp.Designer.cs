@@ -4840,6 +4840,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Above.
+        /// </summary>
+        public static string SupportType_Above {
+            get {
+                return ResourceManager.GetString("SupportType_Above", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert.
+        /// </summary>
+        public static string SupportType_Insert {
+            get {
+                return ResourceManager.GetString("SupportType_Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total active mission time.
         /// </summary>
         public static string TotalActiveMissionTime {

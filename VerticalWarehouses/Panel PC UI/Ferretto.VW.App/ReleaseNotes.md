@@ -24,11 +24,14 @@
 
 ## Nuove Funzionalità 1.0.23 rispetto la 1.0.22
 - Aggiunti dati di manutenzione alla telemetria
+- Aggiunta segnalazione di database secondario non allineato
+- Aggiunto il tipo di supporto nelle celle: Inserito o Sopra
 
 ## Bug Risolti
 - Corretta lettura dei dati dall'inverter
 - E' obbligatorio selezionare il lotto per le richieste di deposito di articoli con lotto
 - Se il database secondario non esiste viene duplicato il primario
+- Nascosti alcuni dettagli per l'utente Operator nella pagina di manutenzione
 
 ## Compatibile con adapter 0.4.23
 ***

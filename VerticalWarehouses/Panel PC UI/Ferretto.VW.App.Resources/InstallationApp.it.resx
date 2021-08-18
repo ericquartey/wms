@@ -2112,7 +2112,7 @@
     <value>Libera</value>
   </data>
   <data name="PanelId" xml:space="preserve">
-    <value>Pannello Id</value>
+    <value>Pannello</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorità</value>
@@ -2471,5 +2471,8 @@
   </data>
   <data name="AntiIntrusionGateInternal" xml:space="preserve">
     <value>Barriera anti intrusione interna</value>
+  </data>
+  <data name="SupportType" xml:space="preserve">
+    <value>Sostegno</value>
   </data>
 </root>

@@ -285,7 +285,45 @@
                               Content="{res:Loc InstallationApp.MoveToQuote}"
                               Style="{DynamicResource WizardIntoButton}" />
 
-        </Grid>
+                    <Border Grid.Row="2"
+                        Grid.Column="6"
+                        Grid.ColumnSpan="3"
+                        Margin="50,15,0,0"
+                        Background="{DynamicResource PpcBackground}">
+                        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                            BorderThickness="{DynamicResource PpcBorderThickness}">
+                            <Grid Grid.Column="6"
+                              Grid.Row="2"
+                              Grid.ColumnSpan="3">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="0,10,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.SupportType}" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           Style="{StaticResource VWAPP_CardSensor_Data}"
+                                           Text="{Binding SelectedCell.SupportType, Converter={StaticResource ESTC}}"
+                                           TextWrapping="Wrap" />
+
+
+                            </Grid>
+                        </Border>
+                    </Border>
+                </Grid>
 
         <TextBlock Grid.Row="3"
                    Margin="0,20,0,0"
