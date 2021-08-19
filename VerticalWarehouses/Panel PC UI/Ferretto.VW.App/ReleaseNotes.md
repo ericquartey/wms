@@ -24,7 +24,7 @@
 
 ## Nuove Funzionalità 1.0.23 rispetto la 1.0.22
 - Aggiunti dati di manutenzione alla telemetria
-- Aggiunta segnalazione di database secondario non allineato
+- Aggiunta segnalazione di database secondario non allineato nella pagina di configurazione del backup
 - Aggiunto il tipo di supporto nelle celle: Inserito o Sopra
 
 ## Bug Risolti
@@ -32,6 +32,7 @@
 - E' obbligatorio selezionare il lotto per le richieste di deposito di articoli con lotto
 - Se il database secondario non esiste viene duplicato il primario
 - Nascosti alcuni dettagli per l'utente Operator nella pagina di manutenzione
+- La calibrazione verticale non parte più al rientro del cassetto da baia
 
 ## Compatibile con adapter 0.4.23
 ***
