@@ -195,7 +195,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                    )
                 {
                     var baySource = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
-                    if (!baySource.IsDouble
+                    if (!(baySource.IsDouble && (baySource.Carousel != null || baySource.IsExternal))
                         || baySource.Positions.Any(p => p.IsBlocked)
                         || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= (machine.VerticalCyclesToCalibrate * 1.5)
                         )

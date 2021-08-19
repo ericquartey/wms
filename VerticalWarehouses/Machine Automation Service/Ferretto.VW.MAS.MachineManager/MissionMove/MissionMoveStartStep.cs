@@ -242,7 +242,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         this.Logger.LogInformation($"{this.GetType().Name}: Shutter Close start Mission:Id={this.Mission.Id}");
-                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
+                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
                     }
                 }
                 else if (!disableIntrusion)

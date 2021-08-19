@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             //this.logger.LogWarning("Inhibiting database standby channel.");
                             //this.redundancyService.InhibitStandbyDb();
-                            this.logger.LogError($"Error writing to standby database: {ex.Message} {command.CommandText.Substring(0, 100)}");
+                            this.logger.LogError($"Error writing to standby database: {ex.Message}: {command.CommandText}");
                             this.writingOnStandby = false;
                             this.machineVolatile.IsStandbyDbOk = false;
 
