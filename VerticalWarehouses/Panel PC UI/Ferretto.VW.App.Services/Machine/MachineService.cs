@@ -232,6 +232,8 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.cells, value, this.CellsNotificationProperty);
         }
 
+        public List<CellPlus> CellsPlus { get; set; }
+
         public double FragmentTotalPercent { get; private set; }
 
         public bool HasBayExternal
@@ -396,6 +398,8 @@ namespace Ferretto.VW.App.Services
         public async Task GetCells()
         {
             this.cells = await this.machineCellsWebService.GetAllAsync();
+            this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
+            this.UpdateLoadUnitsId();
         }
 
         public async Task GetLoadUnits()
@@ -993,6 +997,8 @@ namespace Ferretto.VW.App.Services
 
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                             this.Cells = await this.machineCellsWebService.GetAllAsync();
+                            this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
+                            this.UpdateLoadUnitsId();
 
                             var embarkedLoadingUnit = await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
 
@@ -1022,6 +1028,8 @@ namespace Ferretto.VW.App.Services
 
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                             this.Cells = await this.machineCellsWebService.GetAllAsync();
+                            this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
+                            this.UpdateLoadUnitsId();
                             if (message?.Data is MoveLoadingUnitMessageData)
                             {
                                 var cellStat = await this.machineCellsWebService.GetStatisticsAsync();
@@ -1432,6 +1440,17 @@ namespace Ferretto.VW.App.Services
                         pos.BayPositionUpper));
 
             this.NotifyMachineStatusChanged();
+        }
+
+        private void UpdateLoadUnitsId()
+        {
+            foreach (var cell in this.CellsPlus.Where(c => c.LoadingUnit != null).OrderBy(c => c.Side).ThenBy(c => c.Position))
+            {
+                foreach (var LU in this.CellsPlus.Where(c => c.Side == cell.Side && c.Position >= cell.Position && c.Position <= cell.Position + cell.LoadingUnit.Height + 12.5))
+                {
+                    LU.LoadUnitId = cell.LoadingUnit.Id;
+                }
+            }
         }
 
         private void UpdateMachineStatusByElevatorPosition(EventArgs e)

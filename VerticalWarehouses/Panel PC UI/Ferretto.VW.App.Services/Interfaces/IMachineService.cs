@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Services
 
         IEnumerable<Cell> Cells { get; }
 
+        List<CellPlus> CellsPlus { get; }
+
         bool HasBayExternal { get; }
 
         bool HasBayWithInverter { get; set; }
