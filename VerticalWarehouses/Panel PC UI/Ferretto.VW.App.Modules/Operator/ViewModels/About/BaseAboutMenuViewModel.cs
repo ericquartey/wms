@@ -11,6 +11,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        public ISessionService sessionService;
+
         private DelegateCommand alarm;
 
         private DelegateCommand diagnosticsCommand;
@@ -30,8 +32,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isUserActive;
 
         private DelegateCommand networkAdaptersCommand;
-
-        private ISessionService sessionService;
 
         private DelegateCommand statisticsCommand;
 

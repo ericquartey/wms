@@ -899,9 +899,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var targetPosition = this.HorizontalPosition + 20;
+            var targetPosition = this.HorizontalPosition + 400;
 
-            var speed = new[] { axis.HorizontalCalibrateSpeed };
+            var speed = new[] { axis.HomingCreepSpeed };
             var acceleration = new[] { axis.FullLoadMovement.Acceleration };
             var deceleration = new[] { axis.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
