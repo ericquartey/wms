@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private const int DefaultStatusWordPollingInterval = 100;
 
+        private const int FindZeroLimit = 80;
+
         private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IElevatorProvider elevatorProvider;
@@ -886,13 +888,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Stop(StopRequestReason.Stop);
                                             this.Logger.LogDebug($"Horizontal Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
-                                        else if (data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition + 11 &&
-                                            data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition + 11)
+                                        else if ((data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition + FindZeroLimit + 1) &&
+                                            (data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition + FindZeroLimit + 1))
                                         {
-                                            this.Logger.LogDebug($"Horizontal Find Zero update destination position Value {this.horizontalStartingPosition - 20:0.0000}");
+                                            this.Logger.LogDebug($"Horizontal Find Zero update destination position Value {this.horizontalStartingPosition - (FindZeroLimit * 2):0.0000}");
 
                                             this.findZeroStep = HorizontalCalibrationStep.BackwardFindZeroSensor;
-                                            this.FindZeroNextPosition(this.horizontalStartingPosition - 20);
+                                            this.FindZeroNextPosition(this.horizontalStartingPosition - (FindZeroLimit * 2));
                                         }
                                         break;
 
@@ -902,8 +904,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Stop(StopRequestReason.Stop);
                                             this.Logger.LogDebug($"Horizontal Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
-                                        else if (data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition - 11 &&
-                                            data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition - 11)
+                                        else if ((data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition - FindZeroLimit - 1) &&
+                                            (data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition - FindZeroLimit - 1))
                                         {
                                             this.Logger.LogDebug($"Horizontal Find Zero update destination position Value {this.horizontalStartingPosition:0.0000}");
 
