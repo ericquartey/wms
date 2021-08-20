@@ -1208,7 +1208,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     foreach (var position in bay.Positions.OrderBy(b => b.Location))
                     {
-                        if (sensorProvider.IsLoadingUnitInLocation(position.Location)
+                        if ((sensorProvider.IsLoadingUnitInLocation(position.Location) && !position.IsBlocked)
                             || (!bay.IsDouble && bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
                             || (bay.IsDouble && bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
                         {

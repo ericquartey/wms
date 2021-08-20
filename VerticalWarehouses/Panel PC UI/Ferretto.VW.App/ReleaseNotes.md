@@ -25,7 +25,7 @@
 ## Nuove Funzionalità 1.0.23 rispetto la 1.0.22
 - Aggiunti dati di manutenzione alla telemetria
 - Aggiunta segnalazione di database secondario non allineato nella pagina di configurazione del backup
-- Aggiunto il tipo di supporto nelle celle: Inserito o Sopra
+- Aggiunti alla vista delle celle: il tipo di supporto (Inserito o Sopra) e il cassetto
 
 ## Bug Risolti
 - Corretta lettura dei dati dall'inverter
@@ -33,6 +33,7 @@
 - Se il database secondario non esiste viene duplicato il primario
 - Nascosti alcuni dettagli per l'utente Operator nella pagina di manutenzione
 - La calibrazione verticale non parte più al rientro del cassetto da baia
+- Aumentato lo spostamento del comando "Ricerca di Zero"
 
 ## Compatibile con adapter 0.4.23
 ***
