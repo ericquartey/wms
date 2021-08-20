@@ -33,6 +33,7 @@
 - Se il database secondario non esiste viene duplicato il primario
 - Nascosti alcuni dettagli per l'utente Operator nella pagina di manutenzione
 - La calibrazione verticale non parte più al rientro del cassetto da baia
+- Aumentato lo spostamento del comando "Ricerca di Zero"
 
 ## Compatibile con adapter 0.4.23
 ***
