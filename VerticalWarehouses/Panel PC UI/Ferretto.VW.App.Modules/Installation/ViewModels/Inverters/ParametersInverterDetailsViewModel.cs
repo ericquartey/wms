@@ -163,6 +163,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return !this.IsBusy &&
                 this.MachineService.MachinePower <= MachinePowerState.Unpowered &&
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin &&
                 this.InverterParameters != null &&
                 this.InverterParameters.Parameters.Any();
         }

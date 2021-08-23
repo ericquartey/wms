@@ -261,7 +261,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanRead()
         {
             return !this.IsBusy &&
-                this.MachineService.MachinePower <= MachinePowerState.Unpowered;
+                this.MachineService.MachinePower <= MachinePowerState.Unpowered &&
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 
         private bool CanRefresh()
