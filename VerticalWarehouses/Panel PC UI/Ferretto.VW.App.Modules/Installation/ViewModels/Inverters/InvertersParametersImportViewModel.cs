@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
+        private readonly ISessionService sessionService;
+
         private readonly IUsbWatcherService usbWatcher;
 
         private List<FileInfo> configurationFiles = new List<FileInfo>();
@@ -53,10 +55,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public InvertersParametersImportViewModel(
             IMachineIdentityWebService identityService,
+            ISessionService sessionService,
             IMachineDevicesWebService machineDevicesWebService,
             IUsbWatcherService usbWatcher)
             : base(identityService)
         {
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
             this.usbWatcher = usbWatcher;
         }
@@ -83,6 +87,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 {
                     this.IsBusy = true;
                     this.inverterStructureCount = this.selectedConfiguration.Count();
+                    this.parentConfiguration.SelectedFileConfiguration = this.selectedFile;
+                    this.parentConfiguration.VertimagInverterConfiguration = this.selectedConfiguration;
                     this.ShowNotification(Resources.Localized.Get("InstallationApp.CommandSent"), Services.Models.NotificationSeverity.Info);
                     this.machineDevicesWebService.ImportInvertersStructureAsync(this.selectedConfiguration);
                 }, this.CanImport));
@@ -161,7 +167,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return !this.IsBusy &&
                 !this.IsMoving &&
-                this.selectedConfiguration != null;
+                this.selectedConfiguration != null &&
+                this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
         }
 
         private void FindConfigurationFiles()
