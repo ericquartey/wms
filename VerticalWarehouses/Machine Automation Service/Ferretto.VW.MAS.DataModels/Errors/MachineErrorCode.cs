@@ -238,7 +238,7 @@ namespace Ferretto.VW.MAS.DataModels
         ElevatorOverrunDetected,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ElevatorUnderrunDetected), (int)MachineErrorSeverity.High)]
-        [ErrorCondition(typeof(IElevatorOverrunConditionEvaluator))]
+        [ErrorCondition(typeof(IElevatorUnderrunConditionEvaluator))]
         ElevatorUnderrunDetected,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ExternalBayEmpty), (int)MachineErrorSeverity.Normal)]

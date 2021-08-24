@@ -68,6 +68,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsElevatorOverrun { get; }
 
+        bool IsElevatorUnderrun { get; }
+
         bool IsMachineInEmergencyState { get; }
 
         bool IsMachineInFaultState { get; }

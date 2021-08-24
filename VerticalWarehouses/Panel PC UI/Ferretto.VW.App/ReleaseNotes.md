@@ -22,21 +22,16 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.23 rispetto la 1.0.22
-- Aggiunti dati di manutenzione alla telemetria
-- Aggiunta segnalazione di database secondario non allineato nella pagina di configurazione del backup
-- Aggiunti alla vista delle celle: il tipo di supporto (Inserito o Sopra) e il cassetto
+## Nuove Funzionalità 1.0.24 rispetto la 1.0.23
+- Aggiunto allarme di altezza troppo bassa
 
 ## Bug Risolti
-- Corretta lettura dei dati dall'inverter
-- E' obbligatorio selezionare il lotto per le richieste di deposito di articoli con lotto
-- Se il database secondario non esiste viene duplicato il primario
-- Nascosti alcuni dettagli per l'utente Operator nella pagina di manutenzione
-- La calibrazione verticale non parte più al rientro del cassetto da baia
-- Aumentato lo spostamento del comando "Ricerca di Zero"
+- Corretto allarme di extracorsa
 
 ## Compatibile con adapter 0.4.23
 ***
+
+[Versione 1.0.23](#id1023)
 
 [Versione 1.0.22](#id1022)
 
@@ -83,6 +78,23 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1023"></a>
+## Nuove Funzionalità 1.0.23 rispetto la 1.0.22
+- Aggiunti dati di manutenzione alla telemetria
+- Aggiunta segnalazione di database secondario non allineato nella pagina di configurazione del backup
+- Aggiunti alla vista delle celle: il tipo di supporto (Inserito o Sopra) e il cassetto
+
+## Bug Risolti
+- Corretta lettura dei dati dall'inverter
+- E' obbligatorio selezionare il lotto per le richieste di deposito di articoli con lotto
+- Se il database secondario non esiste viene duplicato il primario
+- Nascosti alcuni dettagli per l'utente Operator nella pagina di manutenzione
+- La calibrazione verticale non parte più al rientro del cassetto da baia
+- Aumentato lo spostamento del comando "Ricerca di Zero"
+
+## Compatibile con adapter 0.4.23
 ***
 
 <a id="id1022"></a>
