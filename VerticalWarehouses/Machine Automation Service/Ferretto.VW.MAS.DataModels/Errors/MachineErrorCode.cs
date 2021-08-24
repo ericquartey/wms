@@ -278,6 +278,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(VerticalZeroHighError), (int)MachineErrorSeverity.NeedsHoming)]
         VerticalZeroHighError,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitHeightFromBayTooLow), (int)MachineErrorSeverity.Normal)]
+        LoadUnitHeightFromBayTooLow,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), (int)MachineErrorSeverity.Normal)]
         InverterErrorBaseCode = 1000,
 

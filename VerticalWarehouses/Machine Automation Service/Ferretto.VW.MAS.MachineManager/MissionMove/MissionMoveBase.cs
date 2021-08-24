@@ -87,10 +87,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <param name="bayLocation"></param>
         /// <param name="mission"></param>
         /// <returns></returns>
-        public bool CheckBayHeight(Bay locationBay, LoadingUnitLocation bayLocation, Mission mission, out bool canRetry)
+        public bool CheckBayHeight(Bay locationBay, LoadingUnitLocation bayLocation, Mission mission, out bool canRetry, out MachineErrorCode errorCode)
         {
             var returnValue = false;
             canRetry = false;
+            errorCode = MachineErrorCode.NoError;
 #if CHECK_PROFILE
             var unitToMove = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
             if (unitToMove != null
@@ -104,10 +105,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (unitToMove.Height > machine.LoadUnitMaxHeight + tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
                 else if (unitToMove.Height < machine.LoadUnitMinHeight - tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    errorCode = MachineErrorCode.LoadUnitHeightFromBayTooLow;
                 }
                 else if (unitToMove.Height < bayPosition.MaxSingleHeight + tolerance)
                 {
@@ -131,16 +134,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than single {bayPosition.MaxSingleHeight} and upper position occupied: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                         canRetry = true;
+                        errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                     }
                 }
                 else if (bayPosition.MaxDoubleHeight == 0
                     && unitToMove.Height > bayPosition.MaxSingleHeight + tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
                 else
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than double {bayPosition.MaxDoubleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
                 if (returnValue
                     && mission.MissionType == MissionType.FirstTest
@@ -148,6 +154,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     returnValue = false;
                     this.Logger.LogWarning($"First test Load unit Height {unitToMove.Height:0.00} higher than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
             }
 #else
@@ -572,12 +579,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var sourceBay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
                 if (sourceBay != null
                     && (this.Mission.MissionType != MissionType.Manual || this.Mission.MissionType != MissionType.ScaleCalibration)
-                    && (!this.CheckBayHeight(sourceBay, this.Mission.LoadUnitSource, this.Mission, out var canRetry)
+                    && (!this.CheckBayHeight(sourceBay, this.Mission.LoadUnitSource, this.Mission, out var canRetry, out var errorCode)
                         //|| true    // TEST
                         )
                     )
                 {
-                    this.Mission.ErrorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
+                    this.Mission.ErrorCode = errorCode;
                     this.MoveBackToBay();
                     return;
                 }
@@ -849,6 +856,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         switch (this.Mission.ErrorCode)
                         {
                             case MachineErrorCode.LoadUnitHeightFromBayExceeded:
+                            case MachineErrorCode.LoadUnitHeightFromBayTooLow:
                                 var newStep1 = new MissionMoveBackToBayStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                                 newStep1.OnEnter(null);
                                 break;

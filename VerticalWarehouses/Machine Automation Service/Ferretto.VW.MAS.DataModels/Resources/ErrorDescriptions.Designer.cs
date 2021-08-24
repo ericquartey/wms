@@ -592,6 +592,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Height too low.
+        /// </summary>
+        public static string LoadUnitHeightFromBayTooLow {
+            get {
+                return ResourceManager.GetString("LoadUnitHeightFromBayTooLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid movement.
         /// </summary>
         public static string LoadUnitHeightToBayExceeded {

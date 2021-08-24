@@ -406,7 +406,7 @@
     <value>The WMS system has answerd with an error code</value>
   </data>
   <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
-    <value>The height of the load unit is too high for this bay. Send it to another bay or move it manually</value>
+    <value>The height of the load unit is too high or too low for this bay. Send it to another bay or move it manually</value>
   </data>
   <data name="ElevatorUnderrunDetected" xml:space="preserve">
     <value>The elevator is positioned on the overrun bottom sensor.</value>
@@ -440,5 +440,8 @@
   </data>
   <data name="VerticalZeroLowError" xml:space="preserve">
     <value>The vertical zero sensor is not active in a low position. Please perform an elevator homing</value>
+  </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>The height is lower than minimum. Please check alignment and cleaning of measuring devices</value>
   </data>
 </root>
