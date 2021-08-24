@@ -140,6 +140,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Shutter)
                         && (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Homing)
                             || this.Mission.NeedHomingAxis == Axis.None
+                            || this.Mission.NeedHomingAxis == Axis.BayChain
                             )
                         )
                     {

@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -85,7 +86,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var returnValue = this.CheckStartConditions(this.Mission, command, showErrors);
             if (returnValue)
             {
-                // Remove error mission, if exists, for a internal double bay
+                // Remove error mission, if exists, for an internal double bay
                 this.removeMissionWithErrorConditionExceededWeightOnBID();
 
                 this.Mission.Status = MissionStatus.New;
@@ -105,6 +106,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (this.IsLowerBayChainSource())
                 {
                     startState = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
+                else if (this.IsWarehouseFull(command))
+                {
+                    this.MissionsDataProvider.Reload(this.Mission);
+                    var notificationMessage = new NotificationMessage(
+                        null,
+                        $"Reload machine mission available for bay {this.Mission.TargetBay}.",
+                        MessageActor.MissionManager,
+                        MessageActor.MissionManager,
+                        MessageType.NewMachineMissionAvailable,
+                        this.Mission.TargetBay);
+
+                    this.EventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(notificationMessage);
+                    return true;
                 }
                 else
                 {
@@ -128,6 +145,34 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
 
             return returnValue;
+        }
+
+        private bool IsWarehouseFull(CommandMessage commandMessage)
+        {
+            if (commandMessage != null
+                && commandMessage.Data is IMoveLoadingUnitMessageData messageData
+                && messageData.InsertLoadUnit
+                && this.Mission.MissionType == MissionType.IN)
+            {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
+                if (bay != null && bay.IsDouble
+                    && bay.Positions.Any(p => p.LoadingUnit == null && !p.IsBlocked))
+                {
+                    var lastError = this.ErrorsProvider.GetLast();
+                    if (lastError != null
+                        && lastError.Code == (int)MachineErrorCode.WarehouseIsFull
+                        && this.MissionsDataProvider.GetAllActiveMissions()
+                            .Any(x => x.Status == MissionStatus.New
+                                && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS)
+                                && x.TargetBay == this.Mission.TargetBay
+                                )
+                        )
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private bool IsLowerBayChainSource()
