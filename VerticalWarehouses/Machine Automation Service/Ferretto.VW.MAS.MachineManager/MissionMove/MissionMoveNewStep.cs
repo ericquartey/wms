@@ -110,11 +110,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else if (this.IsWarehouseFull(command))
                 {
                     this.MissionsDataProvider.Reload(this.Mission);
+
+                    // the notification invokes the scheduler
                     var notificationMessage = new NotificationMessage(
                         null,
                         $"Reload machine mission available for bay {this.Mission.TargetBay}.",
                         MessageActor.MissionManager,
-                        MessageActor.MissionManager,
+                        MessageActor.MachineManager,
                         MessageType.NewMachineMissionAvailable,
                         this.Mission.TargetBay);
 
