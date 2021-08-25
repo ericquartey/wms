@@ -473,38 +473,30 @@
         <!--#endregion-->
 
         <!--#region Tails-->
-        <controls:CardSensorAxisVertical Grid.Row="2"
+        <controls:CardSensorPosition Grid.Row="2"
+                                     Grid.Column="3"
+                                     Width="230"
+                                     Height="90"
+                                     MinHeight="90"
+                                     Margin="0,15,15,0" />
+        <controls:CardSensorAxisVertical Grid.Row="3"
                                          Grid.Column="3"
                                          Width="230"
                                          Height="90"
                                          MinHeight="90"
                                          Margin="0,15,15,0" />
-        <controls:CardSensorAxisHorizontal Grid.Row="3"
+        <controls:CardSensorAxisHorizontal Grid.Row="4"
                                            Grid.Column="3"
                                            Width="230"
                                            Height="90"
                                            MinHeight="90"
                                            Margin="0,15,15,0" />
-        <controls:CardSensorShutter Grid.Row="4"
+        <controls:CardSensorShutter Grid.Row="5"
                                     Grid.Column="3"
                                     Width="230"
                                     Height="90"
                                     MinHeight="90"
                                     Margin="0,15,15,0" />
-        <controls:CardSensorDrawer Grid.Row="5"
-                                   Grid.Column="3"
-                                   Width="230"
-                                   Height="90"
-                                   MinHeight="90"
-                                   Margin="0,15,15,0" />
-
-        <controls:PpcButton Grid.Row="6"
-                            Grid.Column="3"
-                            Margin="0,0,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding StopCommand}"
-                            Content="{res:Loc General.Stop}" />
         <!--#endregion-->
 
         <!--#region Wizard-->

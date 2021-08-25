@@ -827,7 +827,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.targetTimerActive = false;
 
             this.DigitalIO[(int)InverterSensors.ACU_HardwareSensorSTO].Value = false;
-            this.StatusWord = 0;
+            this.StatusWord &= 0x0008;
         }
 
         public int GetDigitalIO()
@@ -1136,7 +1136,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private void InverterInFault()
         {
-            this.IsFault = !this.IsFault;
+            this.IsFault = true;
             if (this.IsFault)
             {
                 this.ioDeviceMain[(int)IoPorts.NormalState].Value = false;

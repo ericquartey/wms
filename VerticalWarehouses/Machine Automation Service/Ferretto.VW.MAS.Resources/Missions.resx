@@ -130,6 +130,6 @@
     <value>A recall mission for load unit {0} already exists.</value>
   </data>
   <data name="RemoveMaterialFromLoadUnit" xml:space="preserve">
-    <value>Please remove at least {0} kg from load unit {1}, weight {2}</value>
+    <value>Please remove at least {0} kg from load unit {1}, weight {2} to facilitate the lift </value>
   </data>
 </root>
