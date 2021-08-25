@@ -1,22 +1,25 @@
 ﻿<style>
     a:link {
-      color: red;
-      background-color: transparent;
-      text-decoration: none;
+        color: red;
+        background-color: transparent;
+        text-decoration: none;
     }
+
     a:visited {
-      color: coral;
-      background-color: transparent;
-      text-decoration: none;
+        color: coral;
+        background-color: transparent;
+        text-decoration: none;
     }
+
     a:hover, a:active {
-      color: red;
-      background-color: transparent;
-      text-decoration: underline;
+        color: red;
+        background-color: transparent;
+        text-decoration: underline;
     }
-    body{
-      background-color: #282828;
-      color: #C5C7C4;
+
+    body {
+        background-color: #282828;
+        color: #C5C7C4;
     }
 </style>
 
@@ -28,6 +31,7 @@
 
 ## Bug Risolti
 - Corretto allarme di extracorsa
+- Corretti allarmi di cassetto troppo pesante e troppo alto
 
 ## Compatibile con adapter 0.4.23
 ***
@@ -157,7 +161,6 @@
 ## Compatibile con adapter 0.4.21
 ***
 
-
 <a id="id1018"></a>
 ## Nuove Funzionalità 1.0.18 rispetto la 1.0.17
 - Aggiunto parametro di baia per generare automaticamente una lista di deposito con il barcode
@@ -170,7 +173,7 @@
 -  Corretta quota verticale nel ripristino del prelievo da cella con macchine da 1000kg
 -  Aggiunto controllo del sensore di zero catena nella BES nel movimento verso operatore
 -  Aggiunto controllo del peso aggiornato dalle operazioni sul cassetto in baia
--  Nella pagina di versamento si può attivare cassetto "pieno" senza il "chiudi riga" 
+-  Nella pagina di versamento si può attivare cassetto "pieno" senza il "chiudi riga"
 
 ## Compatibile con adapter 0.4.20
 ***
@@ -195,7 +198,7 @@
 
 ## Bug Risolti
 - Il cassetto sconosciuto a bordo elevatore viene depositato in baia
-- Eliminata la calibrazione di mezzanotte 
+- Eliminata la calibrazione di mezzanotte
 
 ## Compatibile con adapter 0.4.20
 ***
@@ -211,7 +214,7 @@
 - Il laser non memorizza l'ultimo punto
 - Corretta vista errori inverter nel menu Installazione
 - La baia esterna chiude la serranda dopo l'homing
-- Reso non bloccante l'errore di SQLite 'readonly database' 
+- Reso non bloccante l'errore di SQLite 'readonly database'
 
 ## Compatibile con adapter 0.4.19
 ***
@@ -312,7 +315,7 @@
 ### Bug Risolti
 - Migliorati tempi di cambio passo missione
 - Ripristino missione con BES da posizione intermedia
-- Ripristino missione con portata 990kg (fuga verticale con cassetto sporgente) 
+- Ripristino missione con portata 990kg (fuga verticale con cassetto sporgente)
 - Mancata pulizia dati giornalieri
 - Eliminati alcuni casi di "Nuove operazioni disponibili"
 
@@ -329,7 +332,7 @@
 - Il lettore barcode gestisce anche il carattere "_" (underscore)
 - Il testo Note delle causali si può leggere con il barcode
 - La procedura di calibrazione del peso accetta solo 3 pesate differenti
-- Nelle macchine da 1000kg i movimenti guidati non perdono più la posizione logica 
+- Nelle macchine da 1000kg i movimenti guidati non perdono più la posizione logica
 
 ### Compatibile con adapter 0.4.15 e 0.4.16
 ***
@@ -370,7 +373,6 @@
 ### Nuove Funzionalità 1.0.4 rispetto la 1.0.3
 - Aggiunti i sensori della Baia Esterna Doppia
 
-
 ### Bug Risolti
 - Aggiunta compattazione del database locale della telemetria
 - Il laser e la barra alfanumerica non chiudono sempre la connessione
@@ -386,7 +388,6 @@
 - La bilancia contapezzi visualizza anche i pezzi e può essere condivisa fra più baie
 - Il test completo può occupare celle casuali del magazzino
 - L'app del Panel PC attiva il servizio del MAS
-
 
 ### Bug Risolti
 - Nella ricerca articolo la quantità da prelevare è limitata alla quantità presente
@@ -420,7 +421,7 @@
 <a id="id101"></a>
 
 ### Nuove Funzionalità 1.0.1 rispetto la 1.0.0
-- Nessuna 
+- Nessuna
 
 ### Bug Risolti
 - Menu movimenti: corretta visualizzazione del pulsante di taratura baia esterna
@@ -434,7 +435,7 @@
 <a id="id100"></a>
 
 ### Nuove Funzionalità 1.0.0 rispetto la 0.28.39
-- Gestione parametri inverter: completata lettura e scrittura per l'inverter principale 
+- Gestione parametri inverter: completata lettura e scrittura per l'inverter principale
 
 ### Bug Risolti
 - Corretta gestione delle barriere di sicurezza nella Baia 2
@@ -443,4 +444,3 @@
 
 ### Compatibile con adapter 0.4.15 e 0.4.16
 ***
-
