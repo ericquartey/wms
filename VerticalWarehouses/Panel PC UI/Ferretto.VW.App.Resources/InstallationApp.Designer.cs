@@ -5749,7 +5749,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shutdown.
+        ///   Looks up a localized string similar to Shutdown panel.
         /// </summary>
         public static string Shutdown {
             get {
@@ -5758,7 +5758,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Perform elevator calibration and shutdown the system.
+        ///   Looks up a localized string similar to Perform elevator calibration and shutdown the panel.
         /// </summary>
         public static string ShutdownDescription {
             get {
@@ -5767,7 +5767,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shutdown the system.
+        ///   Looks up a localized string similar to Shutdown the panel.
         /// </summary>
         public static string ShutdownShortDescription {
             get {

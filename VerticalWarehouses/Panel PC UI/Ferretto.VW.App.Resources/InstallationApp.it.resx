@@ -2476,12 +2476,12 @@
     <value>Sostegno</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Arresta</value>
+    <value>spegni pannello</value>
   </data>
   <data name="ShutdownDescription" xml:space="preserve">
-    <value>Esegui la taratura elevatore e arresta il sistema</value>
+    <value>Esegui la taratura elevatore e spegni il pannello</value>
   </data>
   <data name="ShutdownShortDescription" xml:space="preserve">
-    <value>Arresta il sistema</value>
+    <value>Spegni il pannello</value>
   </data>
 </root>

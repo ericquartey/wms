@@ -13,12 +13,11 @@
         <controls:PpcButton x:Name="ButtonRoot"
                             Width="160"
                             Height="60"
-                            HorizontalAlignment="Stretch"
                             Command="{Binding ExecuteCommand}"
                             Content="{Binding UserName}"
-                            ImageSource="/Ferretto.VW.App.Controls;Component/Assets/baseline_account_circle_black_18dp.png"
+                            KindMaterial="AccountCircle"
                             IsActive="{Binding IsPopupOpen}"
-                            Style="{DynamicResource PpcHeaderButtonStyle}" />
+                            Style="{DynamicResource PpcIconTextButtonStyle}" />
 
         <Popup Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                Margin="0,20"
@@ -34,11 +33,15 @@
 
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding LogOutCommand}"
-                                    Content="{res:Loc InstallationApp.LogOff}" />
+                                    Style="{DynamicResource PpcIconTextButtonStyle}"                                     
+                                    Content="{res:Loc InstallationApp.LogOff}"
+                                    KindMaterial="AccountOff"/>
                 
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding ShutdownCommand}"
-                                    Content="{res:Loc InstallationApp.Shutdown}" />
+                                    Content="{res:Loc InstallationApp.Shutdown}"
+                                    Style="{DynamicResource PpcIconTextButtonStyle}"                                     
+                                    KindMaterial="KeyboardOffOutline"/>
             </StackPanel>
         </Popup>
     </Grid>

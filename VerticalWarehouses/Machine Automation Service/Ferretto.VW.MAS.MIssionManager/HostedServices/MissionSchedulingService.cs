@@ -1185,7 +1185,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             runningStateProvider.SetRunningState(false, BayNumber.BayOne, MessageActor.MissionManager);
                         }
                     }
-                    // wait for pc app to shutdown MAS and system
+                    // wait for ppc app to shutdown MAS and system
                     break;
 
                 default:

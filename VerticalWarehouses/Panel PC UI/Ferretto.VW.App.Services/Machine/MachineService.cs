@@ -1574,7 +1574,11 @@ namespace Ferretto.VW.App.Services
 
                     case WarningsArea.MovementsView:
                     case WarningsArea.Installation:
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        if (this.machineModeService.MachineMode == MachineMode.Shutdown || this.machineModeService.MachineMode == MachineMode.SwitchingToShutdown)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutdownInProgress"), NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
@@ -1671,7 +1675,11 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case WarningsArea.Picking:
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        if (this.machineModeService.MachineMode == MachineMode.Shutdown || this.machineModeService.MachineMode == MachineMode.SwitchingToShutdown)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutdownInProgress"), NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
@@ -1728,7 +1736,11 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case WarningsArea.Maintenance:
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        if (this.machineModeService.MachineMode == MachineMode.Shutdown || this.machineModeService.MachineMode == MachineMode.SwitchingToShutdown)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutdownInProgress"), NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
@@ -1766,7 +1778,11 @@ namespace Ferretto.VW.App.Services
 
                     case WarningsArea.Information:
                     case WarningsArea.Menu:
-                        if (this.IsMissionInError)
+                        if (this.machineModeService.MachineMode == MachineMode.Shutdown || this.machineModeService.MachineMode == MachineMode.SwitchingToShutdown)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutdownInProgress"), NotificationSeverity.Warning);
+                        }
+                        else if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
