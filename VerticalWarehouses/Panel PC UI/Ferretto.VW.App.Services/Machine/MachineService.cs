@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Models;
@@ -48,6 +49,8 @@ namespace Ferretto.VW.App.Services
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineModeService machineModeService;
+
+        private readonly IMachineModeWebService machineModeWebService;
 
         private readonly IMachinePowerWebService machinePowerWebService;
 
@@ -164,6 +167,7 @@ namespace Ferretto.VW.App.Services
             IMachineIdentityWebService machineIdentityWebService,
             IMachineSetupStatusWebService machineSetupStatusWebService,
             IMachineServicingWebService machineServicingWebService,
+            IMachineModeWebService machineModeWebService,
             ISessionService sessionService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
@@ -176,6 +180,7 @@ namespace Ferretto.VW.App.Services
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machinePowerWebService = machinePowerWebService ?? throw new ArgumentNullException(nameof(machinePowerWebService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
+            this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
@@ -482,6 +487,25 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(exception));
+        }
+
+        public async Task ShutdownAsync()
+        {
+            if (this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                await this.machineModeWebService.SetShutdownAsync();
+            }
+            else
+            {
+                this.logger.Warn("Shutdown pc");
+                var psi = new ProcessStartInfo("shutdown", "/s /t 4");
+                psi.CreateNoWindow = true;
+                psi.UseShellExecute = false;
+                Process.Start(psi);
+
+                this.logger.Warn("Close application");
+                System.Windows.Application.Current.Shutdown();
+            }
         }
 
         public async Task StartAsync()

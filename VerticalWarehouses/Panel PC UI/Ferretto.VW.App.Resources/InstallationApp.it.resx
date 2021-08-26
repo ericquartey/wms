@@ -2475,4 +2475,13 @@
   <data name="SupportType" xml:space="preserve">
     <value>Sostegno</value>
   </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Arresta</value>
+  </data>
+  <data name="ShutdownDescription" xml:space="preserve">
+    <value>Esegui la taratura elevatore e arresta il sistema</value>
+  </data>
+  <data name="ShutdownShortDescription" xml:space="preserve">
+    <value>Arresta il sistema</value>
+  </data>
 </root>

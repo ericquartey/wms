@@ -5749,6 +5749,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shutdown.
+        /// </summary>
+        public static string Shutdown {
+            get {
+                return ResourceManager.GetString("Shutdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Perform elevator calibration and shutdown the system.
+        /// </summary>
+        public static string ShutdownDescription {
+            get {
+                return ResourceManager.GetString("ShutdownDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutdown the system.
+        /// </summary>
+        public static string ShutdownShortDescription {
+            get {
+                return ResourceManager.GetString("ShutdownShortDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter.
         /// </summary>
         public static string Shutter {

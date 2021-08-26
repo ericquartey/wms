@@ -211,6 +211,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     case MachineMode.Compact:
                     case MachineMode.Compact2:
                     case MachineMode.Compact3:
+                    case MachineMode.Shutdown:
                         return this.Mode;
 
                     case MachineMode.FullTest:
@@ -229,6 +230,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     case MachineMode.SwitchingToManual:
                     case MachineMode.SwitchingToManual2:
                     case MachineMode.SwitchingToManual3:
+                    case MachineMode.SwitchingToShutdown:
                         return this.Mode;
 
                     case MachineMode.SwitchingToLoadUnitOperations:

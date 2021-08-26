@@ -28,6 +28,7 @@
 ## Nuove Funzionalità 1.0.24 rispetto la 1.0.23
 - Aggiunto allarme di altezza troppo bassa
 - Dopo un errore di magazzino pieno è possibile chiamare un cassetto nelle baie doppie
+- Aggiunto comando di spegnimento del pc
 
 ## Bug Risolti
 - Corretto allarme di extracorsa
