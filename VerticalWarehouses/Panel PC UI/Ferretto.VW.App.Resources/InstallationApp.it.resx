@@ -2481,7 +2481,7 @@
   <data name="ShutdownDescription" xml:space="preserve">
     <value>Esegui la taratura elevatore e spegni il pannello</value>
   </data>
-  <data name="ShutdownShortDescription" xml:space="preserve">
-    <value>Spegni il pannello</value>
+  <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
+    <value>Spegni il pannello (non è possibile adesso la taratura dell'elevatore)</value>
   </data>
 </root>

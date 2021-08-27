@@ -1145,12 +1145,15 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
-                            && m.Step > MissionStep.New)
+                                && m.Step > MissionStep.New)
                             && !this.machineVolatileDataProvider.IsHomingActive
                             )
                         {
                             var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
-                            if (errorsProvider.GetCurrent() == null)
+                            if (errorsProvider.GetCurrent() == null
+                                && !missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
+                                    && m.Step >= MissionStep.Error)
+                                )
                             {
                                 IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical,
                                     Calibration.FindSensor,

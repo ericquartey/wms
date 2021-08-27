@@ -5767,11 +5767,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shutdown the panel.
+        ///   Looks up a localized string similar to Shutdown the panel (elevator calibration not available now).
         /// </summary>
-        public static string ShutdownShortDescription {
+        public static string ShutdownDescriptionNoCalibration {
             get {
-                return ResourceManager.GetString("ShutdownShortDescription", resourceCulture);
+                return ResourceManager.GetString("ShutdownDescriptionNoCalibration", resourceCulture);
             }
         }
         
