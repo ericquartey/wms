@@ -2554,7 +2554,7 @@
   <data name="ShutdownDescription" xml:space="preserve">
     <value>Perform elevator calibration and shutdown the panel</value>
   </data>
-  <data name="ShutdownShortDescription" xml:space="preserve">
-    <value>Shutdown the panel</value>
+  <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
+    <value>Shutdown the panel (elevator calibration not available now)</value>
   </data>
 </root>

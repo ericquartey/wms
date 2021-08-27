@@ -260,7 +260,7 @@ namespace Ferretto.VW.App.Services
             }
 
             this.logger.Warn("Shutdown pc");
-            var psi = new ProcessStartInfo("shutdown", "/r /t 4");
+            var psi = new ProcessStartInfo("shutdown", "/s /t 5");
             psi.CreateNoWindow = true;
             psi.UseShellExecute = false;
             Process.Start(psi);

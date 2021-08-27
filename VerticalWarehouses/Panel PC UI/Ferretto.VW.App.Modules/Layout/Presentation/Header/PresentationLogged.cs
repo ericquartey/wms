@@ -180,13 +180,14 @@ namespace Ferretto.VW.App.Modules.Layout
             string description;
             if (this.machineService.MachinePower >= MachinePowerState.PoweringUp
                 && !this.machineService.MachineStatus.IsError
+                && !this.machineService.IsMissionInError
                 )
             {
                 description = Localized.Get("InstallationApp.ShutdownDescription");
             }
             else
             {
-                description = Localized.Get("InstallationApp.ShutdownShortDescription");
+                description = Localized.Get("InstallationApp.ShutdownDescriptionNoCalibration");
             }
             var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), description, DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult == DialogResult.Yes)
