@@ -130,6 +130,6 @@
     <value>Esiste già una missione di richiamo per il cassetto {0}.</value>
   </data>
   <data name="RemoveMaterialFromLoadUnit" xml:space="preserve">
-    <value>Rimuovere almeno {0} kg dal cassetto {1}, peso {2}</value>
+    <value>Rimuovere almeno {0} kg dal cassetto {1}, peso {2} per agevolare il sollevamento</value>
   </data>
 </root>

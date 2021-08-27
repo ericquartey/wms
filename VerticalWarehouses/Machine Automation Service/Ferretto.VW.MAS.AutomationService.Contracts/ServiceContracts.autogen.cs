@@ -1824,6 +1824,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetManualAsync(System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetShutdownAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetShutdownAsync(System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -3513,6 +3520,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         VerticalZeroLowError = 87,
     
         VerticalZeroHighError = 88,
+    
+        LoadUnitHeightFromBayTooLow = 89,
     
         InverterErrorBaseCode = 1000,
     
@@ -7007,37 +7016,41 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         FirstTest3 = 19,
     
-        SwitchingToAutomatic = 20,
+        Shutdown = 20,
     
-        SwitchingToManual = 21,
+        SwitchingToAutomatic = 21,
     
-        SwitchingToManual2 = 22,
+        SwitchingToManual = 22,
     
-        SwitchingToManual3 = 23,
+        SwitchingToManual2 = 23,
     
-        SwitchingToLoadUnitOperations = 24,
+        SwitchingToManual3 = 24,
     
-        SwitchingToLoadUnitOperations2 = 25,
+        SwitchingToLoadUnitOperations = 25,
     
-        SwitchingToLoadUnitOperations3 = 26,
+        SwitchingToLoadUnitOperations2 = 26,
     
-        SwitchingToCompact = 27,
+        SwitchingToLoadUnitOperations3 = 27,
     
-        SwitchingToCompact2 = 28,
+        SwitchingToCompact = 28,
     
-        SwitchingToCompact3 = 29,
+        SwitchingToCompact2 = 29,
     
-        SwitchingToFullTest = 30,
+        SwitchingToCompact3 = 30,
     
-        SwitchingToFullTest2 = 31,
+        SwitchingToFullTest = 31,
     
-        SwitchingToFullTest3 = 32,
+        SwitchingToFullTest2 = 32,
     
-        SwitchingToFirstTest = 33,
+        SwitchingToFullTest3 = 33,
     
-        SwitchingToFirstTest2 = 34,
+        SwitchingToFirstTest = 34,
     
-        SwitchingToFirstTest3 = 35,
+        SwitchingToFirstTest2 = 35,
+    
+        SwitchingToFirstTest3 = 36,
+    
+        SwitchingToShutdown = 37,
     
     }
     

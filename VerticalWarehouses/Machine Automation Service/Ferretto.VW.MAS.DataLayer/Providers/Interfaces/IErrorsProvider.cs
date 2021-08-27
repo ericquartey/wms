@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         List<MachineError> GetErrors();
 
+        MachineError GetLast();
+
         ErrorStatisticsSummary GetStatistics();
 
         //bool IsErrorSmall();

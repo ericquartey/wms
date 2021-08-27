@@ -2548,4 +2548,13 @@
   <data name="SupportType" xml:space="preserve">
     <value>Support</value>
   </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Shutdown panel</value>
+  </data>
+  <data name="ShutdownDescription" xml:space="preserve">
+    <value>Perform elevator calibration and shutdown the panel</value>
+  </data>
+  <data name="ShutdownShortDescription" xml:space="preserve">
+    <value>Shutdown the panel</value>
+  </data>
 </root>

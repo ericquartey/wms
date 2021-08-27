@@ -71,6 +71,8 @@ namespace Ferretto.VW.App.Services
 
         Task OnUpdateServiceAsync();
 
+        Task ShutdownAsync();
+
         Task StartAsync();
 
         Task StopMovingByAllAsync();

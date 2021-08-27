@@ -174,7 +174,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                             this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
                             this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                            this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+                            var loadUnit = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
+                            this.ErrorsProvider.RecordNew(this.Mission.ErrorCode,
+                                this.Mission.TargetBay,
+                                string.Format(Resources.Missions.ErrorMissionDetails,
+                                    this.Mission.LoadUnitId,
+                                    Math.Round(loadUnit.GrossWeight - loadUnit.Tare),
+                                    Math.Round(loadUnit.Height),
+                                    this.Mission.WmsId ?? 0));
                             this.BaysDataProvider.Light(this.Mission.TargetBay, true);
 
                             // End (forced) the current mission

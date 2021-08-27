@@ -2475,4 +2475,13 @@
   <data name="SupportType" xml:space="preserve">
     <value>Sostegno</value>
   </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>spegni pannello</value>
+  </data>
+  <data name="ShutdownDescription" xml:space="preserve">
+    <value>Esegui la taratura elevatore e spegni il pannello</value>
+  </data>
+  <data name="ShutdownShortDescription" xml:space="preserve">
+    <value>Spegni il pannello</value>
+  </data>
 </root>

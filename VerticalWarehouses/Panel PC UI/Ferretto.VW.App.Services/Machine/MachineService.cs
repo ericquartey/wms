@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Models;
@@ -48,6 +49,8 @@ namespace Ferretto.VW.App.Services
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineModeService machineModeService;
+
+        private readonly IMachineModeWebService machineModeWebService;
 
         private readonly IMachinePowerWebService machinePowerWebService;
 
@@ -164,6 +167,7 @@ namespace Ferretto.VW.App.Services
             IMachineIdentityWebService machineIdentityWebService,
             IMachineSetupStatusWebService machineSetupStatusWebService,
             IMachineServicingWebService machineServicingWebService,
+            IMachineModeWebService machineModeWebService,
             ISessionService sessionService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
@@ -176,6 +180,7 @@ namespace Ferretto.VW.App.Services
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machinePowerWebService = machinePowerWebService ?? throw new ArgumentNullException(nameof(machinePowerWebService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
+            this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
@@ -482,6 +487,25 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(exception));
+        }
+
+        public async Task ShutdownAsync()
+        {
+            if (this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                await this.machineModeWebService.SetShutdownAsync();
+            }
+            else
+            {
+                this.logger.Warn("Shutdown pc");
+                var psi = new ProcessStartInfo("shutdown", "/s /t 4");
+                psi.CreateNoWindow = true;
+                psi.UseShellExecute = false;
+                Process.Start(psi);
+
+                this.logger.Warn("Close application");
+                System.Windows.Application.Current.Shutdown();
+            }
         }
 
         public async Task StartAsync()
@@ -1550,7 +1574,11 @@ namespace Ferretto.VW.App.Services
 
                     case WarningsArea.MovementsView:
                     case WarningsArea.Installation:
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        if (this.machineModeService.MachineMode == MachineMode.Shutdown || this.machineModeService.MachineMode == MachineMode.SwitchingToShutdown)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutdownInProgress"), NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
@@ -1647,7 +1675,11 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case WarningsArea.Picking:
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        if (this.machineModeService.MachineMode == MachineMode.Shutdown || this.machineModeService.MachineMode == MachineMode.SwitchingToShutdown)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutdownInProgress"), NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
@@ -1704,7 +1736,11 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case WarningsArea.Maintenance:
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        if (this.machineModeService.MachineMode == MachineMode.Shutdown || this.machineModeService.MachineMode == MachineMode.SwitchingToShutdown)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutdownInProgress"), NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
                         }
@@ -1742,7 +1778,11 @@ namespace Ferretto.VW.App.Services
 
                     case WarningsArea.Information:
                     case WarningsArea.Menu:
-                        if (this.IsMissionInError)
+                        if (this.machineModeService.MachineMode == MachineMode.Shutdown || this.machineModeService.MachineMode == MachineMode.SwitchingToShutdown)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutdownInProgress"), NotificationSeverity.Warning);
+                        }
+                        else if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }

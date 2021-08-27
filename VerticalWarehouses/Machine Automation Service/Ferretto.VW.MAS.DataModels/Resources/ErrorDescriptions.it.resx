@@ -447,4 +447,7 @@
   <data name="VerticalZeroLowError" xml:space="preserve">
     <value>Errore di posizione verticale</value>
   </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>Altezza troppo bassa</value>
+  </data>
 </root>

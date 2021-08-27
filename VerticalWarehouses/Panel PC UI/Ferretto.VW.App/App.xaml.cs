@@ -82,6 +82,7 @@ namespace Ferretto.VW.App
 
         protected override void OnExit(ExitEventArgs e)
         {
+            this.logger.Info("*** Closing application ***");
             AppCheck.End();
 
             this.DeactivateBay();

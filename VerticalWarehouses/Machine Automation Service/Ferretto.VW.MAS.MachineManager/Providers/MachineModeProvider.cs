@@ -149,6 +149,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.machineVolatileDataProvider.StopTest = false;
                     break;
 
+                case MachineMode.Shutdown:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToShutdown;
+                    break;
+
                 default:
                     throw new ArgumentException($"The requested machine mode '{machineMode}' cannot be handled.", nameof(machineMode));
             }

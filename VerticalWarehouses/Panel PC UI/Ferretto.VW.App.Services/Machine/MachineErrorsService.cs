@@ -204,6 +204,7 @@ namespace Ferretto.VW.App.Services
             }
             if ((activeErrorCode == (int)MachineErrorCode.MoveBayChainNotAllowed) ||
                 (activeErrorCode == (int)MachineErrorCode.LoadUnitHeightFromBayExceeded) ||
+                (activeErrorCode == (int)MachineErrorCode.LoadUnitHeightFromBayTooLow) ||
                 (activeErrorCode == (int)MachineErrorCode.LoadUnitWeightExceeded))
             {
                 viewDesc = Utils.Modules.Errors.ERRORLOADUNITERRORS;
