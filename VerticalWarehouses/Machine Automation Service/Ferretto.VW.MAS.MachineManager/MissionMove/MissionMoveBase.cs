@@ -50,6 +50,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public IEventAggregator EventAggregator { get; }
 
+        public IMachineProvider MachineProvider { get; }
+
+        public IMachineVolatileDataProvider MachineVolatileDataProvider { get; }
+
         public Mission Mission { get; set; }
 
         public IServiceProvider ServiceProvider { get; }
@@ -66,15 +70,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         internal ILoadingUnitsDataProvider LoadingUnitsDataProvider { get; }
 
-        public IMachineVolatileDataProvider MachineVolatileDataProvider { get; }
-
         internal ILogger<MachineManagerService> Logger { get; }
 
         internal IMissionsDataProvider MissionsDataProvider { get; }
 
         internal ISensorsProvider SensorsProvider { get; }
-
-        public IMachineProvider MachineProvider { get; }
 
         #endregion
 
@@ -92,7 +92,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var returnValue = false;
             canRetry = false;
             errorCode = MachineErrorCode.NoError;
-#if CHECK_PROFILE
             var unitToMove = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
             if (unitToMove != null
                 && locationBay != null
@@ -107,8 +106,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than machine max {machine.LoadUnitMaxHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                     errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
-                else if (unitToMove.Height < machine.LoadUnitMinHeight - tolerance)
+                else if (unitToMove.Height < machine.LoadUnitMinHeight - tolerance
+                    && mission.LoadUnitDestination >= LoadingUnitLocation.Cell
+                    )
                 {
+                    // only when loading from bay
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} lower than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                     errorCode = MachineErrorCode.LoadUnitHeightFromBayTooLow;
                 }
@@ -157,10 +159,53 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
             }
-#else
-            returnValue = true;
-#endif
             return returnValue;
+        }
+
+        public bool CheckMissionShowError()
+        {
+            if (this.Mission.ErrorCode != MachineErrorCode.NoError)
+            {
+                var loadUnit = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
+                this.ErrorsProvider.RecordNew(this.Mission.ErrorCode,
+                    this.Mission.TargetBay,
+                    string.Format(Resources.Missions.ErrorMissionDetails,
+                        this.Mission.LoadUnitId,
+                        Math.Round(loadUnit.GrossWeight - loadUnit.Tare),
+                        Math.Round(loadUnit.Height),
+                        this.Mission.WmsId ?? 0));
+
+                //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
+                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
+                this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
+                return true;
+            }
+            return false;
+        }
+
+        public bool CheckMissionShowError(Mission mission)
+        {
+            if (mission.ErrorCode != MachineErrorCode.NoError)
+            {
+                var loadUnit = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
+                this.ErrorsProvider.RecordNew(mission.ErrorCode,
+                    mission.TargetBay,
+                    string.Format(Resources.Missions.ErrorMissionDetails,
+                        mission.LoadUnitId,
+                        Math.Round(loadUnit.GrossWeight - loadUnit.Tare),
+                        Math.Round(loadUnit.Height),
+                        mission.WmsId ?? 0));
+
+                //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
+                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                this.BaysDataProvider.Light(mission.TargetBay, true);
+                this.BaysDataProvider.CheckIntrusion(mission.TargetBay, true);
+                return true;
+            }
+            return false;
         }
 
         public bool DepositUnitChangePosition()
@@ -221,29 +266,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             this.SendPositionNotification($"Load Unit {this.Mission.LoadUnitId} position changed");
             return bayShutter;
-        }
-
-        private bool isWaitingMissionOnThisBay(Bay bay)
-        {
-            var retValue = false;
-
-            if (bay != null)
-            {
-                if (bay.IsDouble)
-                {
-                    // List of waiting mission on the bay
-                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
-                        .Where(
-                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
-                            m.Id != this.Mission.Id &&
-                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
-                        );
-
-                    retValue = waitMissions.Any();
-                }
-            }
-
-            return retValue;
         }
 
         public void DepositUnitEnd(bool restore = false)
@@ -415,86 +437,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
             }
             newStep.OnEnter(null);
-        }
-
-        /// <summary>
-        /// Check if exist at least a waiting mission (step == MissionStep.WaitPick) in the current bay.
-        /// Applied only for double bay.
-        /// </summary>
-        /// <returns>
-        ///     <c>true</c> if exists at least a waiting mission,
-        ///     <c>false</c> otherwise.
-        /// </returns>
-        private bool isWaitingMissionOnThisBay()
-        {
-            var retValue = false;
-
-            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-            if (bay != null)
-            {
-                // Only applied for internal double bay
-                if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
-                {
-                    // List of waiting mission on the bay
-                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
-                        .Where(
-                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
-                            m.Id != this.Mission.Id &&
-                            ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
-                            || (m.Status == MissionStatus.New && bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)))
-                        );
-
-                    retValue = waitMissions.Any();
-                }
-            }
-
-            return retValue;
-        }
-
-        public bool CheckMissionShowError()
-        {
-            if (this.Mission.ErrorCode != MachineErrorCode.NoError)
-            {
-                var loadUnit = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
-                this.ErrorsProvider.RecordNew(this.Mission.ErrorCode,
-                    this.Mission.TargetBay,
-                    string.Format(Resources.Missions.ErrorMissionDetails,
-                        this.Mission.LoadUnitId,
-                        Math.Round(loadUnit.GrossWeight - loadUnit.Tare),
-                        Math.Round(loadUnit.Height),
-                        this.Mission.WmsId ?? 0));
-
-                //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
-                this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
-                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                this.BaysDataProvider.Light(this.Mission.TargetBay, true);
-                this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
-                return true;
-            }
-            return false;
-        }
-
-        public bool CheckMissionShowError(Mission mission)
-        {
-            if (mission.ErrorCode != MachineErrorCode.NoError)
-            {
-                var loadUnit = this.LoadingUnitsDataProvider.GetById(mission.LoadUnitId);
-                this.ErrorsProvider.RecordNew(mission.ErrorCode,
-                    mission.TargetBay,
-                    string.Format(Resources.Missions.ErrorMissionDetails,
-                        mission.LoadUnitId,
-                        Math.Round(loadUnit.GrossWeight - loadUnit.Tare),
-                        Math.Round(loadUnit.Height),
-                        mission.WmsId ?? 0));
-
-                //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
-                this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
-                this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                this.BaysDataProvider.Light(mission.TargetBay, true);
-                this.BaysDataProvider.CheckIntrusion(mission.TargetBay, true);
-                return true;
-            }
-            return false;
         }
 
         public bool EnterErrorState(MissionStep errorState)
@@ -833,6 +775,63 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
             }
             return update;
+        }
+
+        private bool isWaitingMissionOnThisBay(Bay bay)
+        {
+            var retValue = false;
+
+            if (bay != null)
+            {
+                if (bay.IsDouble)
+                {
+                    // List of waiting mission on the bay
+                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                        );
+
+                    retValue = waitMissions.Any();
+                }
+            }
+
+            return retValue;
+        }
+
+        /// <summary>
+        /// Check if exist at least a waiting mission (step == MissionStep.WaitPick) in the current bay.
+        /// Applied only for double bay.
+        /// </summary>
+        /// <returns>
+        ///     <c>true</c> if exists at least a waiting mission,
+        ///     <c>false</c> otherwise.
+        /// </returns>
+        private bool isWaitingMissionOnThisBay()
+        {
+            var retValue = false;
+
+            var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            if (bay != null)
+            {
+                // Only applied for internal double bay
+                if (bay.IsDouble && bay.Carousel == null && !bay.IsExternal)
+                {
+                    // List of waiting mission on the bay
+                    var waitMissions = this.MissionsDataProvider.GetAllMissions()
+                        .Where(
+                            m => m.LoadUnitId != this.Mission.LoadUnitId &&
+                            m.Id != this.Mission.Id &&
+                            ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            || (m.Status == MissionStatus.New && bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)))
+                        );
+
+                    retValue = waitMissions.Any();
+                }
+            }
+
+            return retValue;
         }
 
         private void MoveBackToBay()
