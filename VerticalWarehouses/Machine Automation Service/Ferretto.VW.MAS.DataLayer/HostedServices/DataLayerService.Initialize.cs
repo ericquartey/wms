@@ -67,12 +67,20 @@ namespace Ferretto.VW.MAS.DataLayer
             var primaryDb = configuration.GetDataLayerPrimaryConnectionString().Split('=')[1]?.Trim('\'');
             var secondaryDb = configuration.GetDataLayerSecondaryConnectionString().Split('=')[1]?.Trim('\'');
             if (!string.IsNullOrEmpty(primaryDb)
+                && System.IO.File.Exists(primaryDb)
                 && !string.IsNullOrEmpty(secondaryDb)
                 && !System.IO.File.Exists(secondaryDb)
                 )
             {
                 this.Logger.LogWarning($"No standby database. Copy database from [{primaryDb}] to [{secondaryDb}].");
-                System.IO.File.Copy(primaryDb, secondaryDb);
+                try
+                {
+                    System.IO.File.Copy(primaryDb, secondaryDb);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex.Message);
+                }
             }
         }
 
