@@ -25,17 +25,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.24 rispetto la 1.0.23
-- Aggiunto allarme di altezza troppo bassa
-- Dopo un errore di magazzino pieno è possibile chiamare un cassetto nelle baie doppie
-- Aggiunto comando di spegnimento del pc
+## Nuove Funzionalità 1.0.25 rispetto la 1.0.24
+- Nessuna
 
 ## Bug Risolti
-- Corretto allarme di extracorsa
-- Corretti allarmi di cassetto troppo pesante e troppo alto
+- Il fine lista di EjLog non cancella le missioni in esecuzione
+- Corretto errore in caso di mancanza di entrambi i database
 
 ## Compatibile con adapter 0.4.23
 ***
+
+[Versione 1.0.24](#id1024)
 
 [Versione 1.0.23](#id1023)
 
@@ -84,6 +84,19 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1024"></a>
+## Nuove Funzionalità 1.0.24 rispetto la 1.0.23
+- Aggiunto allarme di altezza troppo bassa
+- Dopo un errore di magazzino pieno è possibile chiamare un cassetto nelle baie doppie
+- Aggiunto comando di spegnimento del pc
+
+## Bug Risolti
+- Corretto allarme di extracorsa
+- Corretti allarmi di cassetto troppo pesante e troppo alto
+
+## Compatibile con adapter 0.4.23
 ***
 
 <a id="id1023"></a>
