@@ -1716,7 +1716,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         this.NotifyAssignedMissionChanged(mission.TargetBay, mission.Id);
                     }
                 }
-                else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
+                else if (mission.Status is MissionStatus.New || mission.Status is MissionStatus.Waiting)
                 {
                     // wms mission is finished
                     mission.Status = MissionStatus.Completed;
