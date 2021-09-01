@@ -93,8 +93,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0"
-                            HorizontalAlignment="Right"
-                            IsEnabled="{Binding SelectedItemCompartment, Converter={StaticResource RTBIC}}">
+                            HorizontalAlignment="Right">
                     <controls:PpcButton Margin="15,0,15,0"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Top"
@@ -103,6 +102,7 @@
                                         Foreground="{DynamicResource FerrettoPureWhite}"
                                         Kind="Grid"
                                         TextBlock.TextAlignment="Center"
+                                        IsEnabled="{Binding SelectedItemCompartment, Converter={StaticResource RTBIC}}"
                                         Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVC}}" />
 
                     <controls:PpcButton Margin="15,0,15,0"
@@ -113,7 +113,27 @@
                                         Foreground="{DynamicResource FerrettoPureWhite}"
                                         Kind="Table"
                                         TextBlock.TextAlignment="Center"
+                                        IsEnabled="{Binding SelectedItemCompartment, Converter={StaticResource RTBIC}}"
                                         Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVIC}}" />
+
+                    <controls:PpcButton Margin="15,0,15,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding LaserOnCommand}"
+                                        Content="{res:Loc InstallationApp.Laser}"
+                                        Foreground="{DynamicResource FerrettoPureWhite}"
+                                        KindMaterial="ArrowBottomLeft"
+                                        TextBlock.TextAlignment="Center"
+                                        Visibility="{Binding IsLaserOnEnabled, Converter={StaticResource BTVC}}" />
+                    <controls:PpcButton Margin="15,0,15,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding LaserOffCommand}"
+                                        Content="{res:Loc InstallationApp.Laser}"
+                                        Foreground="{DynamicResource FerrettoPureWhite}"
+                                        KindMaterial="Cancel"
+                                        TextBlock.TextAlignment="Center"
+                                        Visibility="{Binding IsLaserOffEnabled, Converter={StaticResource BTVC}}" />
 
                 </StackPanel>
 
