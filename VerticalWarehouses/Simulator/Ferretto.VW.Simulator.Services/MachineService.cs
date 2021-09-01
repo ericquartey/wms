@@ -724,13 +724,16 @@ namespace Ferretto.VW.Simulator.Services
         private void ReplyLaser(TcpClient client, byte[] message, int index)
         {
             var messageText = Encoding.ASCII.GetString(message).Trim();
-            switch (messageText)
+            if (messageText.StartsWith("TEST ON", StringComparison.Ordinal)
+                || messageText.StartsWith("TEST OFF", StringComparison.Ordinal)
+                || messageText.StartsWith("LASER ON", StringComparison.Ordinal)
+                || messageText.StartsWith("LASER OFF", StringComparison.Ordinal)
+                || messageText.StartsWith("MOVE", StringComparison.Ordinal)
+                )
             {
-                case "LASER ON":
-                case "LASER OFF":
-                    System.Diagnostics.Debug.WriteLine($"Simulation *** {messageText}");
-                    client.Client.Send(Encoding.ASCII.GetBytes("OK\r\n"));
-                    break;
+                System.Diagnostics.Debug.WriteLine($"Simulation *** {messageText}");
+                client.Client.Send(Encoding.ASCII.GetBytes("OK\r\n"));
+
             }
         }
 
