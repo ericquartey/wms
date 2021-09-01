@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please remove at least {0} kg from load unit {1}, weight {2}.
+        ///   Looks up a localized string similar to Please remove at least {0} kg from load unit {1}, weight {2} to facilitate the lift .
         /// </summary>
         public static string RemoveMaterialFromLoadUnit {
             get {

@@ -132,7 +132,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsDrawerPartiallyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSide] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSide];
 
-        public bool IsElevatorOverrun => this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun];
+        public bool IsElevatorOverrun => this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun] && !this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
+
+        public bool IsElevatorUnderrun => this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun] && this.sensorStatus[(int)IOMachineSensors.ZeroVerticalSensor];
 
         public bool IsInverterInFault => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
@@ -690,28 +692,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                             if (requiredUpdate)
                             {
-                                if (this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun] != newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
-                                    && newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
+                                if (newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
+                                    //&& this.sensorStatus[(int)IOMachineSensors.ElevatorOverrun] != newSensorStatus[(int)InverterSensors.ANG_ElevatorOverrunSensor]
                                     && this.digitalDevicesDataProvider.GetInverterTypeByIndex((InverterIndex)ioIndex) == InverterType.Ang
                                     )
                                 {
                                     var errorCode = (newSensorStatus[(int)InverterSensors.ANG_ZeroElevatorSensor]) ? MachineErrorCode.ElevatorUnderrunDetected : MachineErrorCode.ElevatorOverrunDetected;
                                     using (var scope = this.serviceScopeFactory.CreateScope())
                                     {
-                                        scope.ServiceProvider
-                                            .GetRequiredService<IErrorsProvider>()
-                                            .RecordNew(errorCode);
-                                    }
-                                    if (this.machineVolatileDataProvider.Mode == MachineMode.Manual ||
-                                        this.machineVolatileDataProvider.Mode == MachineMode.Manual2 ||
-                                        this.machineVolatileDataProvider.Mode == MachineMode.Manual3)
-                                    {
-                                        this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                                    }
-                                    else
-                                    {
-                                        this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(BayNumber.All);//to fix
-                                        this.logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                                        var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                        var current = errorProvider.GetCurrent();
+                                        if (current == null || current.Code != (int)errorCode)
+                                        {
+                                            errorProvider.RecordNew(errorCode);
+                                            if (this.machineVolatileDataProvider.Mode == MachineMode.Manual ||
+                                                this.machineVolatileDataProvider.Mode == MachineMode.Manual2 ||
+                                                this.machineVolatileDataProvider.Mode == MachineMode.Manual3)
+                                            {
+                                                this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                            }
+                                            else
+                                            {
+                                                this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(BayNumber.All);//to fix
+                                                this.logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                                            }
+                                        }
                                     }
                                 }
 

@@ -23,66 +23,6 @@
     <!--#endregion-->
 
     <!--#region DataTemplate Body-->
-    <DataTemplate x:Key="DataTemplateStart">
-      <Grid Margin="20"
-            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto" />
-          <RowDefinition />
-          <RowDefinition Height="Auto" />
-          <RowDefinition />
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Grid.ColumnSpan="2">
-          <TextBlock Style="{DynamicResource VWAPP_WizardTitleTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.PlaceMeter}" /><Run Text=":" />
-
-          </TextBlock>
-
-          <TextBlock Grid.ColumnSpan="2"
-                     Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                     Text="{res:Loc InstallationApp.MoveElevatorToPlaceMeter}" />
-        </StackPanel>
-
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="0,-15,15,0"
-                            VerticalAlignment="Center"
-                            Command="{Binding MoveToStartPositionCommand}"
-                            Content="{res:Loc InstallationApp.MoveToQuote}"
-                            Style="{DynamicResource WizardIntoButton}"
-                            Visibility="Hidden"/>
-
-        <ctrls:PpcSpinEdit Grid.Row="1"
-                           Width="250"
-                           Height="90"
-                           Margin="0,-15,15,0"
-                           VerticalAlignment="Center"
-                           EditValue="{Binding StartPosition, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsCanStartPosition}"
-                           LabelText="{res:Loc InstallationApp.StartQuote}"
-                           MaxValue="{Binding AxisUpperBound}"
-                           MinValue="{Binding AxisLowerBound}"
-                           Visibility="Hidden" />
-
-        <TextBlock Grid.Row="2"
-                   Grid.ColumnSpan="2"
-                   Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.RemoveCarterRestore}" />
-
-        <controls:PpcButton Grid.Row="3"
-                            Grid.ColumnSpan="2"
-                            Command="{Binding MoveToCellPositioningCommand}"
-                            Content="{res:Loc InstallationApp.Forwards}"
-                            Style="{StaticResource WizardConfirmButton}" />
-
-      </Grid>
-    </DataTemplate>
 
     <DataTemplate x:Key="DataTemplateCellMeasured">
       <Grid Margin="20"
@@ -285,7 +225,45 @@
                               Content="{res:Loc InstallationApp.MoveToQuote}"
                               Style="{DynamicResource WizardIntoButton}" />
 
-        </Grid>
+                    <Border Grid.Row="2"
+                        Grid.Column="6"
+                        Grid.ColumnSpan="3"
+                        Margin="50,15,0,0"
+                        Background="{DynamicResource PpcBackground}">
+                        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                            BorderThickness="{DynamicResource PpcBorderThickness}">
+                            <Grid Grid.Column="6"
+                              Grid.Row="2"
+                              Grid.ColumnSpan="3">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="0,10,0,0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Style="{StaticResource VWAPP_CardSensor}"
+                                           Text="{res:Loc InstallationApp.SupportType}" />
+
+                                <TextBlock Grid.Row="1"
+                                           Margin="0"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           Style="{StaticResource VWAPP_CardSensor_Data}"
+                                           Text="{Binding SelectedCell.SupportType, Converter={StaticResource ESTC}}"
+                                           TextWrapping="Wrap" />
+
+
+                            </Grid>
+                        </Border>
+                    </Border>
+                </Grid>
 
         <TextBlock Grid.Row="3"
                    Margin="0,20,0,0"
@@ -427,8 +405,7 @@
     <local:OffsetCalibrationStepTemplateSelector x:Key="selector"
                                                  EnumCellMeasured="{StaticResource DataTemplateCellMeasured}"
                                                  EnumConfirm="{StaticResource DataTemplateConfirm}"
-                                                 EnumOriginCalibration="{StaticResource DataTemplateOriginCalibration}"
-                                                 EnumStart="{StaticResource DataTemplateStart}" />
+                                                 EnumOriginCalibration="{StaticResource DataTemplateOriginCalibration}" />
     <!--#endregion-->
   </ctrls:View.Resources>
 
@@ -587,29 +564,12 @@
               Style="{DynamicResource BorderTimeLine}" />
 
       <Grid Grid.Row="1">
-        <Border Background="{Binding HasStepStart, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+        <Border Background="{Binding HasStepCellMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                 Style="{DynamicResource BorderTimeLineCirle}" />
         <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                    Text="1" />
       </Grid>
       <Grid Grid.Row="1"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Visibility="{Binding HasStepStart, Converter={StaticResource BTVC}, Mode=OneWay}">
-        <Path Height="24"
-              VerticalAlignment="Center"
-              StrokeThickness="0"
-              Style="{DynamicResource BorderTimeLinePath}" />
-        <Path Style="{DynamicResource BorderTimeLinePath}" />
-      </Grid>
-
-      <Grid Grid.Row="2">
-        <Border Background="{Binding HasStepCellMeasured, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
-                Style="{DynamicResource BorderTimeLineCirle}" />
-        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="2" />
-      </Grid>
-      <Grid Grid.Row="2"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Visibility="{Binding HasStepCellMeasured, Converter={StaticResource BTVC}, Mode=OneWay}">
@@ -620,13 +580,13 @@
         <Path Style="{DynamicResource BorderTimeLinePath}" />
       </Grid>
 
-      <Grid Grid.Row="3">
+      <Grid Grid.Row="2">
         <Border Background="{Binding HasStepConfirm, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                 Style="{DynamicResource BorderTimeLineCirle}" />
         <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="3" />
+                   Text="2" />
       </Grid>
-      <Grid Grid.Row="3"
+      <Grid Grid.Row="2"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Visibility="{Binding HasStepConfirm, Converter={StaticResource BTVC}, Mode=OneWay}">
@@ -637,13 +597,13 @@
         <Path Style="{DynamicResource BorderTimeLinePath}" />
       </Grid>
 
-      <Grid Grid.Row="4">
+      <Grid Grid.Row="3">
         <Border Background="{Binding HasStepOriginCalibration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                 Style="{DynamicResource BorderTimeLineCirle}" />
         <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
-                   Text="4" />
+                   Text="3" />
       </Grid>
-      <Grid Grid.Row="4"
+      <Grid Grid.Row="3"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Visibility="{Binding HasStepOriginCalibration, Converter={StaticResource BTVC}, Mode=OneWay}">

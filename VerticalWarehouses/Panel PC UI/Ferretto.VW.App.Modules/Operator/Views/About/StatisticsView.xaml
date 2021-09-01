@@ -648,7 +648,8 @@
         </Border>
       </Border>
 
-      <Border Margin="0,15,15,5">
+      <Border Margin="0,15,15,5"
+              Visibility="{Binding IsVisibleDetails, Converter={StaticResource BTVC}}">
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition />

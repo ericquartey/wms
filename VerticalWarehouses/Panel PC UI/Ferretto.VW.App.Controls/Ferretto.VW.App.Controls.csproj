@@ -42,6 +42,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\baseline_accountoff_black_18dp.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.App.Accessories.Interfaces\Ferretto.VW.App.Accessories.Interfaces.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Keyboards\Ferretto.VW.App.Keyboards.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />

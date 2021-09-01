@@ -527,6 +527,11 @@
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
         <Setter Property="Content" Value="{res:Loc InstallationApp.Restore}" />
       </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInShutdown}"
+                Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Shutdown}" />
+      </DataTrigger>
     </Style.Triggers>
   </Style>
 

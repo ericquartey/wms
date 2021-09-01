@@ -81,6 +81,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.CanExecuteCommand() &&
                       (this.CellPanelsCheck.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
+        /// <summary>
+        /// obsolete
+        /// </summary>
         public ICommand CellsBlockTuningCommand =>
             this.cellsBlockTuningCommand
             ??
@@ -99,6 +102,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private SetupStepStatus CellsHeightCheck => this.SetupStatusCapabilities?.CellsHeightCheck ?? new SetupStepStatus();
 
+        /// <summary>
+        /// obsolete
+        /// </summary>
         public ICommand CellsHeightCheckCommand =>
             this.cellsHeightCheckCommand
             ??

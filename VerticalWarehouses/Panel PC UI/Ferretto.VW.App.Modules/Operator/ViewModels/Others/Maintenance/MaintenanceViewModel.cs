@@ -17,13 +17,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineServicingWebService machineServicingWebService;
 
         private readonly ISessionService sessionService;
 
         private DelegateCommand confirmServiceCommand;
 
+        private bool isBay2;
+
+        private bool isBay2Operator;
+
+        private bool isBay3;
+
+        private bool isBay3Operator;
+
         private bool isConfirmServiceVisible;
+
+        private bool isOperator;
 
         private string machineModel;
 
@@ -45,11 +57,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public MaintenanceViewModel(
             ISessionService sessionService,
-            IMachineServicingWebService machineServicingWebService)
+            IMachineServicingWebService machineServicingWebService,
+            IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Operator)
         {
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineServicingWebService = machineServicingWebService ?? throw new ArgumentNullException(nameof(machineServicingWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new System.ArgumentNullException(nameof(machineBaysWebService));
         }
 
         #endregion
@@ -64,10 +78,40 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool IsBay2
+        {
+            get => this.isBay2;
+            set => this.SetProperty(ref this.isBay2, value);
+        }
+
+        public bool IsBay2Operator
+        {
+            get => this.isBay2Operator;
+            set => this.SetProperty(ref this.isBay2Operator, value);
+        }
+
+        public bool IsBay3
+        {
+            get => this.isBay3;
+            set => this.SetProperty(ref this.isBay3, value);
+        }
+
+        public bool IsBay3Operator
+        {
+            get => this.isBay3Operator;
+            set => this.SetProperty(ref this.isBay3Operator, value);
+        }
+
         public bool IsConfirmServiceVisible
         {
             get => this.isConfirmServiceVisible;
             set => this.SetProperty(ref this.isConfirmServiceVisible, value);
+        }
+
+        public bool IsOperator
+        {
+            get => this.isOperator;
+            set => this.SetProperty(ref this.isOperator, value);
         }
 
         public string MachineModel
@@ -160,6 +204,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.IsOperator = this.sessionService.UserAccessLevel == UserAccessLevel.Operator;
+            var bays = await this.machineBaysWebService.GetAllAsync();
+
+            this.IsBay2 = bays.Any(b => b.Number == BayNumber.BayTwo);
+            this.IsBay3 = bays.Any(b => b.Number == BayNumber.BayThree);
+
+            this.IsBay2Operator = this.IsBay2 && !this.IsOperator;
+            this.IsBay3Operator = this.IsBay3 && !this.IsOperator;
 
             await this.machineServicingWebService.UpdateServiceStatusAsync();
 

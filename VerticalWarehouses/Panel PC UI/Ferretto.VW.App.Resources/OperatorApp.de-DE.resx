@@ -1743,6 +1743,12 @@
   <data name="ToteBarcodeAcquired" xml:space="preserve">
     <value>Tote is acquired. Barcode: </value>
   </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--hoch</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--niedr</value>
+  </data>
   <data name="ItemBarcodeAcquired" xml:space="preserve">
     <value>Item is acquired. Barcode: </value>
   </data>

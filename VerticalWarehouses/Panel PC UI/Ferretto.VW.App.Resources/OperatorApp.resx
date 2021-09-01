@@ -1436,7 +1436,7 @@
     <comment>Label</comment>
   </data>
   <data name="TotalMissions" xml:space="preserve">
-    <value>Total missions</value>
+    <value>Cycles</value>
     <comment>Label</comment>
   </data>
   <data name="TotalUnits" xml:space="preserve">
@@ -1764,7 +1764,7 @@
     <comment>Block Level</comment>
   </data>
   <data name="TotalMissionsHeader" xml:space="preserve">
-    <value>Total missions</value>
+    <value>Cycles</value>
   </data>
   <data name="CloseLine" xml:space="preserve">
     <value>Close line</value>
@@ -2238,6 +2238,18 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Invalid argument</value>
     <comment>Error Message</comment>
+  </data>
+  <data name="SupportType_Insert" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="SupportType_Above" xml:space="preserve">
+    <value>Above</value>
+  </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--up</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--down</value>
   </data>
   <data name="ToteBarcodeAcquired" xml:space="preserve">
     <value>Tote is acquired. Barcode: </value>

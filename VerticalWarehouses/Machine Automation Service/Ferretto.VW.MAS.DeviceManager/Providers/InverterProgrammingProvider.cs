@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //send command
             this.PublishCommand(
                 new InverterReadingMessageData(inverterParametersData),
-                $"Bay {requestingBay} requested Inverter programming runnning State",
+                $"Bay {requestingBay} requested Inverter reading runnning State",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.InverterReading,

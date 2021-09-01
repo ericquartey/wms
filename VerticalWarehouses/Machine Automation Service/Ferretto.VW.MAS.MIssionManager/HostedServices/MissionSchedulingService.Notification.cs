@@ -50,6 +50,10 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.OnMachineModeChangedAsync(serviceProvider);
                     break;
 
+                case MessageType.ChangeRunningState:
+                    await this.OnChangeRunningState(serviceProvider);
+                    break;
+
                 case MessageType.MoveLoadingUnit when message.Status is MessageStatus.OperationEnd || message.Status is MessageStatus.OperationWaitResume:
                     await this.OnLoadingUnitMovedAsync(message, serviceProvider);
                     break;

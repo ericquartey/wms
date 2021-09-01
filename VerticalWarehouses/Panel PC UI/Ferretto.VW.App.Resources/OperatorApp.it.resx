@@ -1102,7 +1102,7 @@
     <value>Totale peso macchina</value>
   </data>
   <data name="TotalMissions" xml:space="preserve">
-    <value>Totale missioni</value>
+    <value>Cicli</value>
   </data>
   <data name="TotalUnits" xml:space="preserve">
     <value>Totale cassetti</value>
@@ -1416,7 +1416,7 @@
     <comment>Block Level</comment>
   </data>
   <data name="TotalMissionsHeader" xml:space="preserve">
-    <value>Missioni totali</value>
+    <value>Cicli</value>
   </data>
   <data name="CloseLine" xml:space="preserve">
     <value>Salda riga</value>
@@ -1864,6 +1864,18 @@
   </data>
   <data name="InvalidArgument" xml:space="preserve">
     <value>Argomento non valido</value>
+  </data>
+  <data name="SupportType_Insert" xml:space="preserve">
+    <value>Inserito</value>
+  </data>
+  <data name="SupportType_Above" xml:space="preserve">
+    <value>Sopra</value>
+  </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--alta</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--bassa</value>
   </data>
   <data name="ToteBarcodeAcquired" xml:space="preserve">
     <value>Il contenitore esterno è acquisito. Codice a barre: </value>

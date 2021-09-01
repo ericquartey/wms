@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly ILogger<DataLayerContext> logger;
 
+        private readonly IMachineVolatileDataProvider machineVolatile;
+
         private readonly IDbContextRedundancyService<TDbContext> redundancyService;
 
         private bool writingOnStandby;
@@ -27,10 +29,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public CommandListener(
             IDbContextRedundancyService<TDbContext> redundancyService,
-            ILogger<DataLayerContext> logger)
+            ILogger<DataLayerContext> logger,
+            IMachineVolatileDataProvider machineVolatile)
         {
             this.redundancyService = redundancyService ?? throw new ArgumentNullException(nameof(redundancyService));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.machineVolatile = machineVolatile ?? throw new ArgumentNullException(nameof(machineVolatile));
         }
 
         #endregion
@@ -111,15 +115,18 @@ namespace Ferretto.VW.MAS.DataLayer
                         try
                         {
                             dbContext.Database.ExecuteSqlCommand(command.CommandText, parametersArray);
+                            //this.machineVolatile.IsStandbyDbOk = true;
                         }
                         catch (Exception ex)
                         {
                             //this.logger.LogWarning("Inhibiting database standby channel.");
                             //this.redundancyService.InhibitStandbyDb();
-                            this.logger.LogError($"Error writing to standby database: {ex.Message}");
+                            this.logger.LogError($"Error writing to standby database: {ex.Message}: {command.CommandText}");
                             this.writingOnStandby = false;
-                            // TODO this exception is not thrown!!!
-                            throw;
+                            this.machineVolatile.IsStandbyDbOk = false;
+
+                            // TODO - please enable the following instruction to make standby database errors blocking
+                            //throw new InvalidOperationException($"Error writing to standby database: {ex.Message}");
                         }
 
                         this.writingOnStandby = false;

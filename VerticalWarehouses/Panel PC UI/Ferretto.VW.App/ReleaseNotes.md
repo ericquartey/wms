@@ -1,35 +1,45 @@
 ﻿<style>
     a:link {
-      color: red;
-      background-color: transparent;
-      text-decoration: none;
+        color: red;
+        background-color: transparent;
+        text-decoration: none;
     }
+
     a:visited {
-      color: coral;
-      background-color: transparent;
-      text-decoration: none;
+        color: coral;
+        background-color: transparent;
+        text-decoration: none;
     }
+
     a:hover, a:active {
-      color: red;
-      background-color: transparent;
-      text-decoration: underline;
+        color: red;
+        background-color: transparent;
+        text-decoration: underline;
     }
-    body{
-      background-color: #282828;
-      color: #C5C7C4;
+
+    body {
+        background-color: #282828;
+        color: #C5C7C4;
     }
 </style>
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.22 rispetto la 1.0.21
-- Aggiunta possibilità di inserire le Note nella causale della Ricerca Articolo, sia da tastiera che da barcode
+## Nuove Funzionalità 1.0.25 rispetto la 1.0.24
+- Nessuna
 
 ## Bug Risolti
-- Corretta gestione del database di backup
+- Il fine lista di EjLog non cancella le missioni in esecuzione
+- Corretto errore in caso di mancanza di entrambi i database
 
 ## Compatibile con adapter 0.4.23
 ***
+
+[Versione 1.0.24](#id1024)
+
+[Versione 1.0.23](#id1023)
+
+[Versione 1.0.22](#id1022)
 
 [Versione 1.0.21](#id1021)
 
@@ -74,6 +84,46 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1024"></a>
+## Nuove Funzionalità 1.0.24 rispetto la 1.0.23
+- Aggiunto allarme di altezza troppo bassa
+- Dopo un errore di magazzino pieno è possibile chiamare un cassetto nelle baie doppie
+- Aggiunto comando di spegnimento del pc
+
+## Bug Risolti
+- Corretto allarme di extracorsa
+- Corretti allarmi di cassetto troppo pesante e troppo alto
+
+## Compatibile con adapter 0.4.23
+***
+
+<a id="id1023"></a>
+## Nuove Funzionalità 1.0.23 rispetto la 1.0.22
+- Aggiunti dati di manutenzione alla telemetria
+- Aggiunta segnalazione di database secondario non allineato nella pagina di configurazione del backup
+- Aggiunti alla vista delle celle: il tipo di supporto (Inserito o Sopra) e il cassetto
+
+## Bug Risolti
+- Corretta lettura dei dati dall'inverter
+- E' obbligatorio selezionare il lotto per le richieste di deposito di articoli con lotto
+- Se il database secondario non esiste viene duplicato il primario
+- Nascosti alcuni dettagli per l'utente Operator nella pagina di manutenzione
+- La calibrazione verticale non parte più al rientro del cassetto da baia
+- Aumentato lo spostamento del comando "Ricerca di Zero"
+
+## Compatibile con adapter 0.4.23
+***
+
+<a id="id1022"></a>
+## Nuove Funzionalità 1.0.22 rispetto la 1.0.21
+- Aggiunta possibilità di inserire le Note nella causale della Ricerca Articolo, sia da tastiera che da barcode
+
+## Bug Risolti
+- Corretta gestione del database di backup
+
+## Compatibile con adapter 0.4.23
 ***
 
 <a id="id1021"></a>
@@ -125,7 +175,6 @@
 ## Compatibile con adapter 0.4.21
 ***
 
-
 <a id="id1018"></a>
 ## Nuove Funzionalità 1.0.18 rispetto la 1.0.17
 - Aggiunto parametro di baia per generare automaticamente una lista di deposito con il barcode
@@ -138,7 +187,7 @@
 -  Corretta quota verticale nel ripristino del prelievo da cella con macchine da 1000kg
 -  Aggiunto controllo del sensore di zero catena nella BES nel movimento verso operatore
 -  Aggiunto controllo del peso aggiornato dalle operazioni sul cassetto in baia
--  Nella pagina di versamento si può attivare cassetto "pieno" senza il "chiudi riga" 
+-  Nella pagina di versamento si può attivare cassetto "pieno" senza il "chiudi riga"
 
 ## Compatibile con adapter 0.4.20
 ***
@@ -163,7 +212,7 @@
 
 ## Bug Risolti
 - Il cassetto sconosciuto a bordo elevatore viene depositato in baia
-- Eliminata la calibrazione di mezzanotte 
+- Eliminata la calibrazione di mezzanotte
 
 ## Compatibile con adapter 0.4.20
 ***
@@ -179,7 +228,7 @@
 - Il laser non memorizza l'ultimo punto
 - Corretta vista errori inverter nel menu Installazione
 - La baia esterna chiude la serranda dopo l'homing
-- Reso non bloccante l'errore di SQLite 'readonly database' 
+- Reso non bloccante l'errore di SQLite 'readonly database'
 
 ## Compatibile con adapter 0.4.19
 ***
@@ -280,7 +329,7 @@
 ### Bug Risolti
 - Migliorati tempi di cambio passo missione
 - Ripristino missione con BES da posizione intermedia
-- Ripristino missione con portata 990kg (fuga verticale con cassetto sporgente) 
+- Ripristino missione con portata 990kg (fuga verticale con cassetto sporgente)
 - Mancata pulizia dati giornalieri
 - Eliminati alcuni casi di "Nuove operazioni disponibili"
 
@@ -297,7 +346,7 @@
 - Il lettore barcode gestisce anche il carattere "_" (underscore)
 - Il testo Note delle causali si può leggere con il barcode
 - La procedura di calibrazione del peso accetta solo 3 pesate differenti
-- Nelle macchine da 1000kg i movimenti guidati non perdono più la posizione logica 
+- Nelle macchine da 1000kg i movimenti guidati non perdono più la posizione logica
 
 ### Compatibile con adapter 0.4.15 e 0.4.16
 ***
@@ -338,7 +387,6 @@
 ### Nuove Funzionalità 1.0.4 rispetto la 1.0.3
 - Aggiunti i sensori della Baia Esterna Doppia
 
-
 ### Bug Risolti
 - Aggiunta compattazione del database locale della telemetria
 - Il laser e la barra alfanumerica non chiudono sempre la connessione
@@ -354,7 +402,6 @@
 - La bilancia contapezzi visualizza anche i pezzi e può essere condivisa fra più baie
 - Il test completo può occupare celle casuali del magazzino
 - L'app del Panel PC attiva il servizio del MAS
-
 
 ### Bug Risolti
 - Nella ricerca articolo la quantità da prelevare è limitata alla quantità presente
@@ -388,7 +435,7 @@
 <a id="id101"></a>
 
 ### Nuove Funzionalità 1.0.1 rispetto la 1.0.0
-- Nessuna 
+- Nessuna
 
 ### Bug Risolti
 - Menu movimenti: corretta visualizzazione del pulsante di taratura baia esterna
@@ -402,7 +449,7 @@
 <a id="id100"></a>
 
 ### Nuove Funzionalità 1.0.0 rispetto la 0.28.39
-- Gestione parametri inverter: completata lettura e scrittura per l'inverter principale 
+- Gestione parametri inverter: completata lettura e scrittura per l'inverter principale
 
 ### Bug Risolti
 - Corretta gestione delle barriere di sicurezza nella Baia 2
@@ -411,4 +458,3 @@
 
 ### Compatibile con adapter 0.4.15 e 0.4.16
 ***
-

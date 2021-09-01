@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
 
                 if (currentParameter.Code != message.ShortParameterId)
                 {
-                    return true;
+                    return false;
                 }
 
                 this.Logger.LogDebug($"Inverter Reading: write parameter={message.ParameterId}, dataset={message.DataSetIndex}");
@@ -167,7 +167,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 this.NextParameter(currentParameter, false);
             }
 
-            return !message.IsError;
+            return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
@@ -182,7 +182,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                     var currentParameter = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
                     currentParameter.Error = true;
 
-                    this.NextParameter(currentParameter, true);
+                    this.NextParameter(currentParameter, false);
 
                     return true;
                 }
@@ -194,8 +194,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
             }
             else
             {
-                //check Id
-                var currentParameter = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
+                var par = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition);
+                var currentParameter = new InverterParameter()
+                {
+                    Id = par.Id,
+                    Code = par.Code,
+                    DataSet = par.DataSet,
+                    DecimalCount = par.DecimalCount,
+                    Description = par.Description,
+                    Error = par.Error,
+                    IsReadOnly = par.IsReadOnly,
+                    ReadCode = par.ReadCode,
+                    StringValue = par.StringValue,
+                    Type = par.Type,
+                    Um = par.Um,
+                    WriteCode = par.WriteCode
+                };
 
                 if (currentParameter.Code != message.ShortParameterId)
                 {
@@ -227,7 +241,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 }
 
                 var dataset = default(int);
-                if (currentParameter.ReadCode != 0)
+                if (currentParameter.ReadCode == 1)
+                {
+                    dataset = int.Parse(currentParameter.StringValue);
+                }
+                else if (currentParameter.ReadCode > 1)
                 {
                     var datasetString = (InverterParameter)this.inverterReadingFieldMessageData.InverterParametersData.Parameters.ElementAt(this.currentParametersPosition - 1);
                     dataset = int.Parse(datasetString.StringValue);
@@ -241,7 +259,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 currentParameter.StringValue = result;
                 currentParameter.Error = false;
 
-                this.Logger.LogDebug($"Inverter Reading parameter={message.ParameterId}, dataset={dataset}, messageDataset={message.DataSetIndex}");
+                this.Logger.LogDebug($"Inverter Reading parameter={message.ParameterId}, dataset={dataset}, messageDataset={message.DataSetIndex}, readCode={currentParameter.ReadCode}, result={result}");
 
                 var notificationMessage = new NotificationMessage(
                               new InverterParametersMessageData(MessageType.InverterReading, message.ShortParameterId, dataset, result, true),
@@ -254,7 +272,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                               MessageStatus.OperationStepEnd);
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
-                this.NextParameter(currentParameter, true);
+                this.NextParameter(currentParameter, !string.IsNullOrEmpty(result) && currentParameter.ReadCode != 1);
             }
 
             return true;
@@ -264,7 +282,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
         {
             if (decimalCount > value.Length)
             {
-                this.Logger.LogWarning("Fix decimal count");
+                this.Logger.LogTrace("Fix decimal count");
                 if (decimalCount == 1)
                 {
                     value = "0" + value;
@@ -302,11 +320,32 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                     this.localParameter.Add(currentParameter);
                 }
 
+                try
+                {
+                    if (this.localParameter.Any())
+                    {
+                        this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameters(this.localParameter, this.inverterReadingFieldMessageData.InverterParametersData.InverterIndex);
+                    }
+
+                    var notificationMessage = new NotificationMessage(
+                                   new InverterParametersMessageData(MessageType.InverterParameters, 0, 0, $"Inverter {this.InverterStatus.SystemIndex} values updated", false),
+                                   $"save inverter structure",
+                                   MessageActor.Any,
+                                   MessageActor.DeviceManager,
+                                   MessageType.InverterParameters,
+                                   BayNumber.All,
+                                   BayNumber.All,
+                                   MessageStatus.OperationUpdateData);
+                    this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, ex.Message);
+                }
+                this.localParameter.Clear();
+
                 this.ParentStateMachine.ChangeState(
                      new InverterReadingEndState(this.ParentStateMachine, this.inverterReadingFieldMessageData, this.InverterStatus, this.Logger));
-
-                this.ParentStateMachine.GetRequiredService<IDigitalDevicesDataProvider>().UpdateInverterParameters(this.localParameter, this.inverterReadingFieldMessageData.InverterParametersData.InverterIndex);
-                this.localParameter.Clear();
             }
             else
             {
@@ -321,7 +360,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.InverterReading
                 var data = this.GetNewInverterMessage(parameter, isWriteMessage);
 
                 if ((currentParameter.Code != parameter.ReadCode ||
-                    currentParameter.Code == 0) &&
+                        currentParameter.Code == 0) &&
                     addParameter)
                 {
                     this.localParameter.Add(currentParameter);

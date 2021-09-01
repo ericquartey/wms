@@ -103,8 +103,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand saveParametersCommand;
 
-        private ISessionService sessionService = null;
-
         private SubscriptionToken stepChangedToken;
 
         private DelegateCommand stopCommand;
@@ -131,9 +129,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.CurrentStep = ProfileCheckStep.Initialize;
 
-            this.sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+            var sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
 
-            if (this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Admin)
+            if (sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Admin)
             {
                 this.AdminCalibration = "Visible";
             }
@@ -814,7 +812,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.MeasuredSx = data.Measured;
 
-                if(this.HasShutter)
+                if (this.HasShutter)
                 {
                     this.CurrentStep = ProfileCheckStep.ResultCheck;
                     var bay = this.MachineService.Bay;
@@ -825,8 +823,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.CurrentStep = ProfileCheckStep.ResultCheck;
                 }
-
-                
             }
         }
 

@@ -28,6 +28,16 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        public static string GetAutomationServiceName(this NameValueCollection appSettings)
+        {
+            if (appSettings is null)
+            {
+                throw new ArgumentNullException(nameof(appSettings));
+            }
+
+            return appSettings.Get("MAS:Service:Name");
+        }
+
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="System.Security.SecurityException"></exception>
         public static BayNumber GetBayNumber(this NameValueCollection appSettings)

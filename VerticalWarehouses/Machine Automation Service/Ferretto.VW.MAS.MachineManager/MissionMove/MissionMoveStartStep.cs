@@ -214,25 +214,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (this.Mission.NeedHomingAxis == Axis.None)
                 {
                     var machine = this.MachineProvider.GetMinMaxHeight();
-                    if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
-                        || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal) >= machine.HorizontalCyclesToCalibrate
-                        )
-                    {
-                        this.Mission.NeedHomingAxis = Axis.Horizontal;
-                    }
-                    this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.HorizontalPositionToCalibrate {machine.HorizontalPositionToCalibrate}. machine.HorizontalCyclesToCalibrate {machine.HorizontalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
-
-                    var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
-                    if (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) <= 2000 &&
-                        Math.Abs(this.LoadingUnitMovementProvider.GetCurrentVerticalPosition()) > 500 &&
-                        this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= machine.VerticalCyclesToCalibrate &&
-                       !machineResourcesProvider.IsDrawerCompletelyOnCradle
+                    if (this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= (machine.VerticalCyclesToCalibrate * 2)
+                       && !this.machineResourcesProvider.IsDrawerCompletelyOnCradle
                        )
                     {
                         this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                        this.Logger.LogDebug($"Generate Homing. Vertical cycles {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical)} expired {machine.VerticalCyclesToCalibrate}, Mission:Id={this.Mission.Id}");
                     }
-
-                    this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. machine.VerticalCyclesToCalibrate {machine.VerticalCyclesToCalibrate}. this.LoadingUnitMovementProvider.GetCyclesFromCalibration {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical)}. this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition {this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()}. Mission:Id={this.Mission.Id}");
+                    if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical
+                        && (Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()) >= machine.HorizontalPositionToCalibrate
+                            || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal) >= machine.HorizontalCyclesToCalibrate
+                            )
+                        )
+                    {
+                        this.Mission.NeedHomingAxis = Axis.Horizontal;
+                        this.Logger.LogDebug($"Generate Homing. Horizontal cycles {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Horizontal)} expired {machine.HorizontalCyclesToCalibrate} or position {Math.Abs(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition()):0.00}, Mission:Id={this.Mission.Id}");
+                    }
                 }
 
                 if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
@@ -245,7 +242,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         this.Logger.LogInformation($"{this.GetType().Name}: Shutter Close start Mission:Id={this.Mission.Id}");
-                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
+                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, this.Mission.RestoreConditions, this.Mission.CloseShutterPosition);
                     }
                 }
                 else if (!disableIntrusion)

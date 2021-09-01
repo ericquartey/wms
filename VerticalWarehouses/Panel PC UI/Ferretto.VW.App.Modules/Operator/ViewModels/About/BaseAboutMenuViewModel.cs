@@ -11,6 +11,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        public ISessionService sessionService;
+
         private DelegateCommand alarm;
 
         private DelegateCommand diagnosticsCommand;
@@ -30,8 +32,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isUserActive;
 
         private DelegateCommand networkAdaptersCommand;
-
-        private ISessionService sessionService;
 
         private DelegateCommand statisticsCommand;
 
@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.diagnosticsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.Diagnostics),
-                this.CanExecuteCommand));
+                this.CanExecuteDiagnosticCommand));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -217,6 +217,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanExecuteCommand()
         {
             return true; // temp 20200212 : prevent to display empty pages alarms, diagnostics and statistics
+        }
+
+        private bool CanExecuteDiagnosticCommand()
+        {
+            return this.sessionService.UserAccessLevel != MAS.AutomationService.Contracts.UserAccessLevel.Operator;
         }
 
         private bool CanExecuteUserCommand()

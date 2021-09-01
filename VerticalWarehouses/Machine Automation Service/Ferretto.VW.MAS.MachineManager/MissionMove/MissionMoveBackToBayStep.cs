@@ -200,16 +200,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var otherPosition = bay.Positions.FirstOrDefault(p => p.IsUpper == !destination.IsUpper);
             if (destination.IsUpper
                 && otherPosition != null
-                && this.SensorsProvider.IsLoadingUnitInLocation(otherPosition.Location)
-                )
-            {
-                // destination is upper and lower position is busy: we must wait
-                ok = false;
-            }
-            if (destination.IsUpper
-                && otherPosition != null
                 && !this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
-                && this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id)
+                && this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id && m.Status != MissionStatus.Waiting)
                 )
             {
                 // destination is upper and baychain is moving: we must wait
@@ -217,6 +209,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else if (destination.IsUpper
                 && otherPosition != null
+                && !this.SensorsProvider.IsLoadingUnitInLocation(otherPosition.Location)
                 && this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                 )
             {

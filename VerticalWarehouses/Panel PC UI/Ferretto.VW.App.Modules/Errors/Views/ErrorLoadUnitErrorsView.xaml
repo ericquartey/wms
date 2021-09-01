@@ -51,9 +51,6 @@
             <TextBlock Margin="0"
                        Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
                        Text="{res:Loc ErrorsApp.ErrorCode}" />
-            <TextBlock Margin="0"
-                       Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                       Text="Viao" />
             <TextBlock Height="26"
                        Background="{DynamicResource FerrettoRed}"
                        Style="{DynamicResource VWAPP_CustomLabel_ContentTextBlockStyle}"
@@ -66,6 +63,7 @@
 
         <Grid Grid.Row="1">
           <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
           </Grid.RowDefinitions>
@@ -97,6 +95,13 @@
                                    HorizontalAlignment="Left"
                                    ContentText="{Binding MachineError.Reason}"
                                    LabelText="{res:Loc ErrorsApp.ErrorReason}" />
+            
+          <controls:PpcLabeledText Grid.Row="2"
+                        Grid.ColumnSpan="3"
+                        Margin="0,15,0,0"
+                        HorizontalAlignment="Left"
+                        ContentText="{Binding MachineError.AdditionalText}"
+                        LabelText="{res:Loc OperatorApp.AdditionalText}" />
         </Grid>
 
         <Image Grid.Row="2"
@@ -457,38 +462,38 @@
     <!--#endregion-->
 
     <!--#region Tails-->
-    <controls:CardSensorAxisVertical Grid.Row="2"
+        <controls:CardSensorPosition Grid.Row="2"
                                      Grid.Column="3"
                                      Width="230"
                                      Height="90"
                                      MinHeight="90"
                                      Margin="0,15,15,0" />
-    <controls:CardSensorAxisHorizontal Grid.Row="3"
+        <controls:CardSensorAxisVertical Grid.Row="3"
+                                     Grid.Column="3"
+                                     Width="230"
+                                     Height="85"
+                                     MinHeight="85"
+                                     Margin="0,15,15,0" />
+    <controls:CardSensorAxisHorizontal Grid.Row="4"
                                        Grid.Column="3"
                                        Width="230"
                                        Height="90"
                                        MinHeight="90"
                                        Margin="0,15,15,0" />
-    <controls:CardSensorShutter Grid.Row="4"
+    <controls:CardSensorShutter Grid.Row="5"
                                 Grid.Column="3"
                                 Width="230"
-                                Height="90"
-                                MinHeight="90"
+                                Height="80"
+                                MinHeight="80"
                                 Margin="0,15,15,0" />
-    <controls:CardSensorDrawer Grid.Row="5"
+    <controls:CardSensorDrawer Grid.Row="6"
                                Grid.Column="3"
                                Width="230"
                                Height="90"
                                MinHeight="90"
-                               Margin="0,15,15,0" />
+                               Margin="0,15,15,0"
+                               Visibility="Collapsed"/>
 
-    <controls:PpcButton Grid.Row="6"
-                        Grid.Column="3"
-                        Margin="0,0,15,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Command="{Binding StopCommand}"
-                        Content="{res:Loc General.Stop}" />
     <!--#endregion-->
 
     <!--#region Wizard-->

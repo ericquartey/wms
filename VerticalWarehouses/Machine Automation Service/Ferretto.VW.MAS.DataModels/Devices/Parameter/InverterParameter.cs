@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -15,6 +16,11 @@ namespace Ferretto.VW.MAS.DataModels
         public string Description { get; set; }
 
         public bool Error { get; set; }
+
+        [JsonIgnore]
+        public Inverter Inverter { get; set; }
+
+        public int? InverterId { get; set; }
 
         public bool IsReadOnly { get; set; }
 
@@ -39,6 +45,10 @@ namespace Ferretto.VW.MAS.DataModels
                     else if (this.Type == "int")
                     {
                         return int.Parse(this.StringValue);
+                    }
+                    else if (this.Type == null)
+                    {
+                        return null;
                     }
                 }
                 catch (Exception ex)
