@@ -122,7 +122,7 @@
                                         Command="{Binding LaserOnCommand}"
                                         Content="{res:Loc InstallationApp.Laser}"
                                         Foreground="{DynamicResource FerrettoPureWhite}"
-                                        KindMaterial="ArrowBottomLeft"
+                                        KindModern="Laser"
                                         TextBlock.TextAlignment="Center"
                                         Visibility="{Binding IsLaserOnEnabled, Converter={StaticResource BTVC}}" />
                     <controls:PpcButton Margin="15,0,15,0"

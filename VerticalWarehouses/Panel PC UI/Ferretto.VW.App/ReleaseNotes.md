@@ -26,7 +26,7 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.25 rispetto la 1.0.24
-- Nessuna
+- Aggiunto comando per puntare il laser sullo scomparto selezionato
 
 ## Bug Risolti
 - Il fine lista di EjLog non cancella le missioni in esecuzione

@@ -40,8 +40,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             ILaserPointerDriver laserPointerDriver,
+            ISessionService sessionService,
             IWmsDataProvider wmsDataProvider)
-            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, bayManager, laserPointerDriver, wmsDataProvider)
+            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, bayManager, laserPointerDriver, sessionService, wmsDataProvider)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.operatorNavigationService = operatorNavigationService ?? throw new ArgumentNullException(nameof(operatorNavigationService));

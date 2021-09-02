@@ -43,8 +43,11 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty KindMaterialProperty =
             DependencyProperty.Register(nameof(KindMaterial), typeof(PackIconMaterialKind?), typeof(PpcButton), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty KindModernProperty =
+            DependencyProperty.Register(nameof(KindModern), typeof(PackIconModernKind?), typeof(PpcButton), new PropertyMetadata(null));
+
         public static readonly DependencyProperty KindProperty =
-            DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
+                    DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty PermissionProperty = DependencyProperty.Register(
             nameof(Permission), typeof(UserAccessLevel), typeof(PpcButton), new PropertyMetadata(UserAccessLevel.NoAccess, new PropertyChangedCallback(PermissionChanged)));
@@ -105,6 +108,8 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public bool HasKindMaterial => !(this.KindMaterial is null);
 
+        public bool HasKindModern => !(this.KindModern is null);
+
         public ImageSource ImageSource
         {
             get => (ImageSource)this.GetValue(ImageSourceProperty);
@@ -151,6 +156,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (PackIconMaterialKind?)this.GetValue(KindMaterialProperty);
             set => this.SetValue(KindMaterialProperty, value);
+        }
+
+        public PackIconModernKind? KindModern
+        {
+            get => (PackIconModernKind?)this.GetValue(KindModernProperty);
+            set => this.SetValue(KindModernProperty, value);
         }
 
         protected bool NoAccess => this.sessionService.UserAccessLevel == UserAccessLevel.NoAccess;

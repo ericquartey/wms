@@ -167,9 +167,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             ILaserPointerDriver laserPointerDriver,
+            ISessionService sessionService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService)
-            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, bayManager, laserPointerDriver, wmsDataProvider)
+            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, bayManager, laserPointerDriver, sessionService, wmsDataProvider)
         {
             this.deviceService = deviceService ?? throw new ArgumentNullException(nameof(deviceService));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));

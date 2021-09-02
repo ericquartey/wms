@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
 
+        private readonly ISessionService sessionService;
+
         private DelegateCommand changeModeListCommand;
 
         private DelegateCommand changeModeLoadingUnitCommand;
@@ -104,6 +106,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             ILaserPointerDriver laserPointerDriver,
+            ISessionService sessionService,
             IWmsDataProvider wmsDataProvider)
             : base(PresentationMode.Operator)
         {
@@ -115,6 +118,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => this.itemsCompartments?.Any(ic => ic.Id == compartment.Id && ic.ItemId != null) == true ? "#444444" : "#222222";
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.laserPointerDriver = laserPointerDriver ?? throw new ArgumentNullException(nameof(laserPointerDriver));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
         #endregion
@@ -404,7 +408,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isUpperPosition,
                 this.IsBaySideBack ? WarehouseSide.Back : WarehouseSide.Front
                 );
-            this.Logger.Info($"Move and switch on laser pointer to compartment {this.selectedCompartment.Id}");
+            this.Logger.Info($"Move and switch on laser pointer to compartment {this.selectedCompartment.Id}, upper Position {this.isUpperPosition}");
             await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
             this.IsLaserOnEnabled = false;
             this.IsLaserOffEnabled = true;
@@ -448,7 +452,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var accessories = await this.bayManager.GetBayAccessoriesAsync();
             this.isLaserEnabled = accessories?.LaserPointer?.IsEnabledNew ?? false;
-            this.IsLaserOnEnabled = this.isLaserEnabled;
+            this.IsLaserOnEnabled = this.isLaserEnabled && this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
             this.IsLaserOffEnabled = false;
 
             if (this.Data is int loadingUnitId)
