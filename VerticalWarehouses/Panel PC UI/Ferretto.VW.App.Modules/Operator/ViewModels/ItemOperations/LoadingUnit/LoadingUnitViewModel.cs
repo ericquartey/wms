@@ -9,6 +9,7 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Microsoft.AspNetCore.Http;
@@ -164,9 +165,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IOperatorNavigationService operatorNavigationService,
             IMachineMissionOperationsWebService missionOperationsWebService,
             IEventAggregator eventAggregator,
+            IBayManager bayManager,
+            ILaserPointerDriver laserPointerDriver,
+            ISessionService sessionService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService)
-            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, wmsDataProvider)
+            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, bayManager, laserPointerDriver, sessionService, wmsDataProvider)
         {
             this.deviceService = deviceService ?? throw new ArgumentNullException(nameof(deviceService));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));

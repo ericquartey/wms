@@ -7,6 +7,7 @@ using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Commands;
@@ -20,9 +21,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public readonly IEventAggregator eventAggregator;
 
+        private readonly IBayManager bayManager;
+
+        private readonly ILaserPointerDriver laserPointerDriver;
+
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
+
+        private readonly ISessionService sessionService;
 
         private DelegateCommand changeModeListCommand;
 
@@ -42,9 +49,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyConfirmingRecallOperation;
 
+        private bool isLaserEnabled;
+
+        private bool isLaserOffEnabled;
+
+        private bool isLaserOnEnabled;
+
         private bool isListModeEnabled;
 
         private bool isNewOperationAvailable;
+
+        private bool isUpperPosition;
 
         private DelegateCommand itemCompartmentDownCommand;
 
@@ -61,6 +76,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool itemSerialNumberVisibility;
 
         private DelegateCommand itemUpCommand;
+
+        private DelegateCommand laserOffCommand;
+
+        private DelegateCommand laserOnCommand;
 
         private double loadingUnitDepth;
 
@@ -85,6 +104,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
+            IBayManager bayManager,
+            ILaserPointerDriver laserPointerDriver,
+            ISessionService sessionService,
             IWmsDataProvider wmsDataProvider)
             : base(PresentationMode.Operator)
         {
@@ -94,6 +116,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
             this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => this.itemsCompartments?.Any(ic => ic.Id == compartment.Id && ic.ItemId != null) == true ? "#444444" : "#222222";
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.laserPointerDriver = laserPointerDriver ?? throw new ArgumentNullException(nameof(laserPointerDriver));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
         #endregion
@@ -140,6 +165,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isBusyConfirmingRecallOperation;
             set => this.SetProperty(ref this.isBusyConfirmingRecallOperation, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsLaserOffEnabled
+        {
+            get => this.isLaserOffEnabled;
+            set => this.SetProperty(ref this.isLaserOffEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsLaserOnEnabled
+        {
+            get => this.isLaserOnEnabled;
+            set => this.SetProperty(ref this.isLaserOnEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsListModeEnabled
@@ -227,9 +264,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public ICommand ItemUpCommand =>
-                    this.itemUpCommand
+            this.itemUpCommand
             ??
             (this.itemUpCommand = new DelegateCommand(() => this.ChangeSelectedItem(true), this.CanSelectPreviousItem));
+
+        public ICommand LaserOffCommand =>
+            this.laserOffCommand
+            ??
+            (this.laserOffCommand = new DelegateCommand(async () => await this.LaserOffAsync(), this.CanLaser));
+
+        public ICommand LaserOnCommand =>
+                    this.laserOnCommand
+            ??
+            (this.laserOnCommand = new DelegateCommand(async () => await this.LaserOnAsync(), this.CanLaser));
 
         public LoadingUnit LoadingUnit { get; set; }
 
@@ -340,6 +387,33 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public async Task LaserOffAsync()
+        {
+            this.Logger.Info($"Switch off laser pointer");
+            await this.laserPointerDriver.EnabledAsync(false, false);
+            this.IsLaserOnEnabled = true;
+            this.IsLaserOffEnabled = false;
+        }
+
+        public async Task LaserOnAsync()
+        {
+            var point = this.laserPointerDriver.CalculateLaserPoint(
+                this.loadingUnitWidth,
+                this.loadingUnitDepth,
+                this.selectedCompartment.Width.Value,
+                this.selectedCompartment.Depth.Value,
+                this.selectedCompartment.XPosition.Value,
+                this.selectedCompartment.YPosition.Value,
+                this.LoadingUnit.LaserOffset,
+                this.isUpperPosition,
+                this.IsBaySideBack ? WarehouseSide.Back : WarehouseSide.Front
+                );
+            this.Logger.Info($"Move and switch on laser pointer to compartment {this.selectedCompartment.Id}, upper Position {this.isUpperPosition}");
+            await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
+            this.IsLaserOnEnabled = false;
+            this.IsLaserOffEnabled = true;
+        }
+
         public async Task LoadCompartmentsAsync()
         {
             if (!this.IsWmsEnabledAndHealthy)
@@ -375,6 +449,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
 
             this.IsBoxEnabled = await this.machineIdentityWebService.GetBoxEnableAsync();
+
+            var accessories = await this.bayManager.GetBayAccessoriesAsync();
+            this.isLaserEnabled = accessories?.LaserPointer?.IsEnabledNew ?? false;
+            this.IsLaserOnEnabled = this.isLaserEnabled && this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
+            this.IsLaserOffEnabled = false;
 
             if (this.Data is int loadingUnitId)
             {
@@ -483,6 +562,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.itemCompartmentUpCommand?.RaiseCanExecuteChanged();
             this.itemDownCommand?.RaiseCanExecuteChanged();
             this.itemUpCommand?.RaiseCanExecuteChanged();
+            this.laserOnCommand?.RaiseCanExecuteChanged();
+            this.laserOffCommand?.RaiseCanExecuteChanged();
 
             base.RaiseCanExecuteChanged();
 
@@ -514,6 +595,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     Barcode = c.First().Barcode,
                 });
         }
+
+        private bool CanLaser() =>
+            this.isLaserEnabled
+            && this.selectedCompartment != null
+            && this.selectedCompartment.Width.HasValue
+            && this.selectedCompartment.Depth.HasValue
+            && this.selectedCompartment.XPosition.HasValue
+            && this.selectedCompartment.YPosition.HasValue;
 
         private bool CanSelectNextItem() =>
             this.items != null
@@ -616,6 +705,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //        Utils.Modules.Operator.ItemOperations.WAIT);
 
             //}
+
+            this.isUpperPosition = this.MachineService.Bay.Positions.Any(p => p.IsUpper && p.LoadingUnit?.Id == this.LoadingUnit?.Id);
         }
 
         private void SelectItemCompartment()

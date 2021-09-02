@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
@@ -126,17 +127,22 @@ namespace Ferretto.VW.App.Modules.Operator
                     this.navigationService.GoBackTo(
                               nameof(Utils.Modules.Operator),
                               Utils.Modules.Operator.OPERATOR_MENU,
-                              "NavigateToOperatorMenu");
+                              "NavigateToOperatorMenuAsync");
                 }
             }
         }
 
-        public void NavigateToOperatorMenu()
+        public async void NavigateToOperatorMenuAsync()
         {
             this.logger.Debug($"Navigate 2 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, " +
                 $"machineMission {this.missionOperationsService.ActiveMachineMission?.Id}, " +
                 $"LU {this.machineService.MachineStatus.LoadingUnitPositionUpInBay?.Id}, " +
                 $"Type {this.missionOperationsService.ActiveWmsOperation?.Type}");
+
+            if (this.machineService.MachineStatus.LoadingUnitPositionUpInBay is null && this.machineService.MachineStatus.LoadingUnitPositionDownInBay is null)
+            {
+                await this.machineService.UpdateLoadUnitInBayAsync();
+            }
 
             if (this.missionOperationsService.ActiveWmsOperation != null &&
                 this.missionOperationsService.ActiveWmsMission != null &&
