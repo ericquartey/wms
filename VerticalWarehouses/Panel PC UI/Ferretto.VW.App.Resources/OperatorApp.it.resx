@@ -1877,4 +1877,7 @@
   <data name="DownBlock" xml:space="preserve">
     <value>--bassa</value>
   </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>Manca il sensore di presenza del cassetto in baia</value>
+  </data>
 </root>

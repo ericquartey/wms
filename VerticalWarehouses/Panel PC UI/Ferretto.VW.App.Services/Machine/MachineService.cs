@@ -430,6 +430,11 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        public bool IsSensorMissing()
+        {
+            return !this.sensorsService.IsLoadingUnitInBay && this.Bay.CurrentMission != null;
+        }
+
         public async Task OnInitializationServiceAsync()
         {
             if (this.healthProbeService.HealthMasStatus is HealthStatus.Healthy
@@ -970,6 +975,7 @@ namespace Ferretto.VW.App.Services
                                     this.MachineStatus.CurrentMission = moveLoadingUnitMessageData;
                                     this.MachineStatus.CurrentMissionId = moveLoadingUnitMessageData.MissionId;
                                     this.MachineStatus.CurrentMissionDescription = message.Description;
+                                    this.MachineStatus.IsMovingLoadingUnit = moveLoadingUnitMessageData.MissionStep != CommonUtils.Messages.Enumerations.MissionStep.WaitPick;
                                 }
 
                                 this.NotifyMachineStatusChanged();
@@ -1699,15 +1705,19 @@ namespace Ferretto.VW.App.Services
                         }
                         else if (this.isHomingStarted[Axis.Horizontal])
                         {
-                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), NotificationSeverity.Info);
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), NotificationSeverity.Info);
                         }
                         else if (this.isHomingStarted[Axis.Vertical] || this.isHomingStarted[Axis.HorizontalAndVertical])
                         {
-                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.VerticalHomingStarted"), NotificationSeverity.Info);
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.VerticalHomingStarted"), NotificationSeverity.Info);
                         }
                         else if (this.isHomingStarted[Axis.BayChain])
                         {
-                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
+                        }
+                        else if (this.IsSensorMissing())
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.LoadUnitInBaySensorMissing"), NotificationSeverity.Warning);
                         }
                         else if (!this.isBayHoming[this.bay.Number])
                         {

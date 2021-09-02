@@ -2251,4 +2251,7 @@
   <data name="DownBlock" xml:space="preserve">
     <value>--down</value>
   </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>LoadUnit in bay sensor missing</value>
+  </data>
 </root>

@@ -10,11 +10,14 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
+    [Warning(WarningsArea.Picking)]
     public class BaseLoadingUnitViewModel : BaseOperatorViewModel
     {
         #region Fields
