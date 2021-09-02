@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private string barcodeItem;
+
         private bool canConfirm;
 
         private bool canConfirmOnEmpty;
@@ -159,6 +161,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
+            // Handle the tote devices
+            var bIsToteManaged = this.ToteBarcodeLength > 0;
+            if (bIsToteManaged && userAction.UserAction == UserAction.NotSpecified)
+            {
+                await this.PickBoxAsync(userAction.Code);
+                return;
+            }
+
             // Handle the adding drapery item
             var bIsAddItemParameterConfigured = await this.MachineIdentityWebService.IsEnableAddItemAsync();
             if (bIsAddItemParameterConfigured && userAction.UserAction == UserAction.NotSpecified)
@@ -203,6 +213,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsAddItemFeatureAvailable = await this.MachineIdentityWebService.IsEnableAddItemAsync() &&
                 this.IsCurrentDraperyItem;
+
+            this.barcodeItem = string.Empty;
 
             //this.SetLastQuantity();
         }
@@ -510,26 +522,101 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (barcode != null)
                 {
-                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                    var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
+                    if (isToteBarcodeManaged)
+                    {
+                        if (barcode.Length == this.ToteBarcodeLength &&
+                            !string.IsNullOrEmpty(this.barcodeItem))
+                        {
+                            var toteBarcode = barcode;
+
+                            this.Logger.Debug($"Confirm operation for: {this.barcodeItem} item, {toteBarcode} tote");
+                            this.ShowNotification(Localized.Get("OperatorApp.ToteBarcodeAcquired") + toteBarcode);
+
+                            // The flow of operation requires:
+                            // - acquisition of item barcode (first)
+                            // - acquisition of tote barcode
+                            // - complete the operation
+                            canComplete = await this.MissionOperationsService.CompleteAsync(
+                                this.MissionOperation.Id,
+                                this.InputQuantity.Value,
+                                this.barcodeItem,
+                                0,
+                                toteBarcode);
+
+                            if (canComplete)
+                            {
+                                this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                            }
+                            else
+                            {
+                                this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                                this.NavigationService.GoBackTo(
+                                    nameof(Utils.Modules.Operator),
+                                    Utils.Modules.Operator.ItemOperations.WAIT,
+                                    "PickBoxAsync");
+                            }
+                        }
+                        else
+                        {
+                            this.Logger.Debug($"Cache barcode item: {barcode}");
+
+                            this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + barcode);
+
+                            this.barcodeItem = barcode;
+                        }
+                    }
+                    else
+                    {
+                        this.barcodeItem = barcode;
+
+                        this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                        canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem);
+
+                        if (canComplete)
+                        {
+                            this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                        }
+                        else
+                        {
+                            this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                            this.NavigationService.GoBackTo(
+                                nameof(Utils.Modules.Operator),
+                                Utils.Modules.Operator.ItemOperations.WAIT,
+                                "PickBoxAsync");
+                        }
+                    }
                 }
                 else
                 {
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+
+                    if (canComplete)
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                    }
+                    else
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                        this.NavigationService.GoBackTo(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.WAIT,
+                            "PickBoxAsync");
+                    }
                 }
 
-                if (canComplete)
-                {
-                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
-                }
-                else
-                {
-                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
-                    this.NavigationService.GoBackTo(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT,
-                        "PickBoxAsync");
-                }
+                //if (canComplete)
+                //{
+                //    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                //}
+                //else
+                //{
+                //    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                //    this.NavigationService.GoBackTo(
+                //        nameof(Utils.Modules.Operator),
+                //        Utils.Modules.Operator.ItemOperations.WAIT,
+                //        "PickBoxAsync");
+                //}
 
                 //this.navigationService.GoBackTo(
                 //    nameof(Utils.Modules.Operator),
@@ -542,10 +629,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (ex is MasWebApiException webEx
                     && webEx.StatusCode == StatusCodes.Status403Forbidden)
                 {
-                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
-                }
+                    this.barcodeItem = string.Empty;
+                    var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
+                    if (isToteBarcodeManaged)
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        this.ShowNotification(ex);
+                    }
 
-                this.ShowNotification(ex);
+                    //throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {

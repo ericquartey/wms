@@ -562,4 +562,7 @@
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Depósito automático con código de barras</value>
   </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Tote barcode length</value>
+  </data>
 </root>

@@ -119,6 +119,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool Simulation { get; set; }
 
+        /// <summary>
+        /// Gets or sets the tote barcode length.
+        /// </summary>
+        public int ToteBarcodeLength { get; set; }
+
         public int VerticalCyclesToCalibrate { get; set; } = 50;
 
         #endregion

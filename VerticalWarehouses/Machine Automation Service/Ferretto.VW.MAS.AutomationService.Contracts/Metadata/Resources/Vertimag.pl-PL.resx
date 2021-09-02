@@ -562,4 +562,7 @@
   <data name="Machine_IsEnableAddItem" xml:space="preserve">
     <value>Jednostka ładująca nie jest w pełni załadowana.</value>
   </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Tote barcode length</value>
+  </data>
 </root>

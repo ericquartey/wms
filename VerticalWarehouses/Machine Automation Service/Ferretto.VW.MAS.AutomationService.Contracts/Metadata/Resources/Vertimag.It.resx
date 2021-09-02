@@ -591,4 +591,7 @@
   <data name="ElevatorAxis_VerticalPickupCompensationDelay" xml:space="preserve">
     <value>Ritardo compensazione prelievo</value>
   </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Lunghezza codice contenitore esterno</value>
+  </data>
 </root>
