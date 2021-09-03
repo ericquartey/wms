@@ -1895,7 +1895,7 @@ namespace Ferretto.VW.App.Services
                                     case "Error":
                                     case "ErrorLoad":
                                     case "ErrorDeposit":
-                                        this.ShowNotification("Errore.", NotificationSeverity.Error);
+                                        this.ShowNotification("Error.", NotificationSeverity.Error);
                                         break;
                                 }
                             }
