@@ -327,6 +327,12 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.loadingUnits, value, this.LoadUnitsNotificationProperty);
         }
 
+        internal bool LUPresentInBay1 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay1 || this.sensorsService.Sensors.LUPresentMiddleBottomBay1) : this.sensorsService.Sensors.LUPresentInBay1;
+
+        internal bool LUPresentInBay2 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay2 || this.sensorsService.Sensors.LUPresentMiddleBottomBay2) : this.sensorsService.Sensors.LUPresentInBay2;
+
+        internal bool LUPresentInBay3 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay3 || this.sensorsService.Sensors.LUPresentMiddleBottomBay3) : this.sensorsService.Sensors.LUPresentInBay3;
+
         public MachineMode MachineMode => this.machineModeService.MachineMode;
 
         public MachinePowerState MachinePower => this.machineModeService.MachinePower;
@@ -427,6 +433,17 @@ namespace Ferretto.VW.App.Services
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+        }
+
+        public bool IsSensorMissing()
+        {
+            switch (this.Bay.Number)
+            {
+                case MAS.AutomationService.Contracts.BayNumber.BayOne: return !this.LUPresentInBay1 && this.Bay.CurrentMission != null;
+                case MAS.AutomationService.Contracts.BayNumber.BayTwo: return !this.LUPresentInBay2 && this.Bay.CurrentMission != null;
+                case MAS.AutomationService.Contracts.BayNumber.BayThree: return !this.LUPresentInBay3 && this.Bay.CurrentMission != null;
+                default: return false;
             }
         }
 
@@ -678,6 +695,8 @@ namespace Ferretto.VW.App.Services
                 this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
 
                 this.IsMissionWms = missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
+
+                this.MachineStatus.IsMovingLoadingUnit = missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
@@ -970,6 +989,7 @@ namespace Ferretto.VW.App.Services
                                     this.MachineStatus.CurrentMission = moveLoadingUnitMessageData;
                                     this.MachineStatus.CurrentMissionId = moveLoadingUnitMessageData.MissionId;
                                     this.MachineStatus.CurrentMissionDescription = message.Description;
+                                    this.MachineStatus.IsMovingLoadingUnit = moveLoadingUnitMessageData.MissionStep != CommonUtils.Messages.Enumerations.MissionStep.WaitPick;
                                 }
 
                                 this.NotifyMachineStatusChanged();
@@ -1071,6 +1091,7 @@ namespace Ferretto.VW.App.Services
                                 this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
 
                                 this.IsMissionWms = missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
+                                this.MachineStatus.IsMovingLoadingUnit = missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
                             }
 
                             var embarkedLoadingUnit = await this.GetLodingUnitOnBoardAsync();
@@ -1413,6 +1434,8 @@ namespace Ferretto.VW.App.Services
 
             this.IsMissionWms = missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
 
+            this.MachineStatus.IsMovingLoadingUnit = missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
+
             // Devo aggiornare i dati delle posizioni della baia
             this.Bay = await this.bayManagerService.GetBayAsync();
 
@@ -1699,15 +1722,19 @@ namespace Ferretto.VW.App.Services
                         }
                         else if (this.isHomingStarted[Axis.Horizontal])
                         {
-                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), NotificationSeverity.Info);
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.HorizontalHomingStarted"), NotificationSeverity.Info);
                         }
                         else if (this.isHomingStarted[Axis.Vertical] || this.isHomingStarted[Axis.HorizontalAndVertical])
                         {
-                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.VerticalHomingStarted"), NotificationSeverity.Info);
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.VerticalHomingStarted"), NotificationSeverity.Info);
                         }
                         else if (this.isHomingStarted[Axis.BayChain])
                         {
-                            this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
+                        }
+                        else if (this.IsSensorMissing())
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.LoadUnitInBaySensorMissing"), NotificationSeverity.Warning);
                         }
                         else if (!this.isBayHoming[this.bay.Number])
                         {

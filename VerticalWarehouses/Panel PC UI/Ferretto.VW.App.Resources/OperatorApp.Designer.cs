@@ -2932,6 +2932,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LoadUnit in bay sensor missing.
+        /// </summary>
+        public static string LoadUnitInBaySensorMissing {
+            get {
+                return ResourceManager.GetString("LoadUnitInBaySensorMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LoadUnit source.
         /// </summary>
         public static string LoadUnitSource {

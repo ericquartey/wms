@@ -220,7 +220,7 @@
     <value>Invalid sensors</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>Inconsistenza stato sensori elevatore</value>
+    <value>Invalid elevator presence sensors.</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
     <value>Inconsistenza stato sensori</value>

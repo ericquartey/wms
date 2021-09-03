@@ -2263,4 +2263,7 @@
     <value>Invalid operation. Item and tote must be acquired.</value>
     <comment>Error Message</comment>
   </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>LoadUnit in bay sensor missing</value>
+  </data>
 </root>
