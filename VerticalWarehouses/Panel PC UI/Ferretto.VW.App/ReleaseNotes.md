@@ -29,7 +29,7 @@
 - Aggiunta gestione del contenitore esterno in prelievo (Kohler)
 
 ## Bug Risolti
-- Nessuno
+- Avviso in caso di perdita del sensore di presenza del cassetto in baia
 
 ## Compatibile con adapter 0.4.23 e 0.4.24
 ***
