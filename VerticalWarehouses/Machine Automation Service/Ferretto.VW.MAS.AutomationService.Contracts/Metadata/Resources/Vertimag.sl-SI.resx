@@ -526,4 +526,7 @@
   <data name="ShutterMinSpeed" xml:space="preserve">
     <value>Najmanjša hitrost </value>
   </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Tote barcode length</value>
+  </data>
 </root>

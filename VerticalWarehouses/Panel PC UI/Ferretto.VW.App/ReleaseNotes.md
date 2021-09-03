@@ -25,15 +25,16 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.25 rispetto la 1.0.24
-- Aggiunto comando per puntare il laser sullo scomparto selezionato
+## Nuove Funzionalità 1.0.26 rispetto la 1.0.25
+- Aggiunta gestione del contenitore esterno in prelievo (Kohler)
 
 ## Bug Risolti
-- Il fine lista di EjLog non cancella le missioni in esecuzione
-- Corretto errore in caso di mancanza di entrambi i database
+- Nessuno
 
-## Compatibile con adapter 0.4.23
+## Compatibile con adapter 0.4.23 e 0.4.24
 ***
+
+[Versione 1.0.25](#id1025)
 
 [Versione 1.0.24](#id1024)
 
@@ -84,6 +85,17 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1025"></a>
+## Nuove Funzionalità 1.0.25 rispetto la 1.0.24
+- Aggiunto comando per puntare il laser sullo scomparto selezionato
+
+## Bug Risolti
+- Il fine lista di EjLog non cancella le missioni in esecuzione
+- Corretto errore in caso di mancanza di entrambi i database
+
+## Compatibile con adapter 0.4.23
 ***
 
 <a id="id1024"></a>

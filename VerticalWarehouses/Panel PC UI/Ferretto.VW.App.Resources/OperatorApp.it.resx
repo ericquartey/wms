@@ -1877,6 +1877,15 @@
   <data name="DownBlock" xml:space="preserve">
     <value>--bassa</value>
   </data>
+  <data name="ToteBarcodeAcquired" xml:space="preserve">
+    <value>Il contenitore esterno è acquisito. Codice a barre: </value>
+  </data>
+  <data name="ItemBarcodeAcquired" xml:space="preserve">
+    <value>Articolo è acquisito. Codice a barre: </value>
+  </data>
+  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
+    <value>Operazione non valida. Articolo e contenitore esterno devono essere acquisiti.</value>
+  </data>
   <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
     <value>Manca il sensore di presenza del cassetto in baia</value>
   </data>

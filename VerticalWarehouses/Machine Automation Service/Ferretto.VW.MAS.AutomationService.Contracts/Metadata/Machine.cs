@@ -155,6 +155,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool Simulation { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ToteBarcodeLength))]
+            [Id(26)]
+            public int ToteBarcodeLength { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_VerticalCyclesToCalibrate))]
             [Id(23)]
             public int VerticalCyclesToCalibrate { get; set; }
