@@ -449,6 +449,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         // bay to bay movement
                         bay = destinationBay;
                     }
+                    if (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic)
+                    {
+                        foreach (var position in bay.Positions.Where(p => p.LoadingUnit is null && !p.IsBlocked))
+                        {
+                            if (this.SensorsProvider.IsLoadingUnitInLocation(position.Location)
+                                || (!bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                                || (bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
+                            {
+                                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+                                return false;
+                            }
+                        }
+                    }
+
                     if (bay.Positions.Count() == 1)
                     {
                         // always check upper position

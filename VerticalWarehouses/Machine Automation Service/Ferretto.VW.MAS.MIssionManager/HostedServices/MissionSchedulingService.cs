@@ -1715,6 +1715,21 @@ namespace Ferretto.VW.MAS.MissionManager
 
                         this.NotifyAssignedMissionChanged(mission.TargetBay, mission.Id);
                     }
+                    else if (mission.Status is MissionStatus.Waiting && mission.Step == MissionStep.BayChain)
+                    {
+                        var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+                        var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
+
+                        this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Resume waiting.", mission.TargetBay, mission.Id);
+                        moveLoadingUnitProvider.ResumeMoveLoadUnit(
+                            mission.Id,
+                            loadingUnitSource,
+                            LoadingUnitLocation.Cell,
+                            bayNumber,
+                            null,
+                            mission.MissionType,
+                            MessageActor.MissionManager);
+                    }
                 }
                 else if (mission.Status is MissionStatus.New || mission.Status is MissionStatus.Waiting)
                 {
