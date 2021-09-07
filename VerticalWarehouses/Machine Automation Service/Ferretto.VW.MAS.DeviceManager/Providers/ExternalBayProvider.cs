@@ -361,6 +361,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         {
                             return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", CommonUtils.Culture.Actual) };
                         }
+                        if (!isLoadingUnitInExternalDownPosition && bay.Positions.Any(p => !p.IsUpper && p.LoadingUnit != null))
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("LoadUnitInBaySensorMissing", CommonUtils.Culture.Actual) };
+                        }
                     }
                     else
                     {
@@ -397,6 +401,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (!isLoadingUnitInInternalDownPosition && isLoadingUnitInExternalDownPosition)
                         {
                             return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", CommonUtils.Culture.Actual) };
+                        }
+                        if (!isLoadingUnitInExternalUpPosition && bay.Positions.Any(p => p.IsUpper && p.LoadingUnit != null))
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("LoadUnitInBaySensorMissing", CommonUtils.Culture.Actual) };
                         }
                     }
 

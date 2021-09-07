@@ -153,4 +153,7 @@
   <data name="TheBayPositionIsBlocked" xml:space="preserve">
     <value>La posizione di baia è bloccata</value>
   </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>Manca il sensore di presenza del cassetto in baia</value>
+  </data>
 </root>

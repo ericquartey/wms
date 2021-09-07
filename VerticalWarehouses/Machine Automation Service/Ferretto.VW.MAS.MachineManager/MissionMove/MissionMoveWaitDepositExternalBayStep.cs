@@ -80,8 +80,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             this.SendMoveNotification(bay.Number, this.Mission.Step.ToString(), MessageStatus.OperationWaitResume);
 
-            var isLoadingUnitInExternalUpPosition = this.machineResourcesProvider.IsDrawerInBayTop(bay.Number);
-            var isLoadingUnitInExternalDownPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
+            var isLoadingUnitInExternalUpPosition = this.machineResourcesProvider.IsDrawerInBayTop(bay.Number) || bay.Positions.Any(p => p.IsUpper && p.LoadingUnit != null);
+            var isLoadingUnitInExternalDownPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bay.Number) || bay.Positions.Any(p => !p.IsUpper && p.LoadingUnit != null);
 
             bool isDestinationUp = this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay1Up ||
                 this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    var description = $"Deposit in external bay not possible because there is a LU in external position. Wait for resume";
+                    var description = $"Deposit in external bay not possible because there is a LU in external position. Wait for resume. Mission:Id={this.Mission.Id}";
                     this.Logger.LogInformation(description);
                     return true;
                 }
@@ -156,17 +156,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay2Up ||
                 this.Mission.LoadUnitDestination == LoadingUnitLocation.InternalBay3Up;
 
-            if ((isDestinationUp && isLoadingUnitInExternalDownPosition) ||
-                (!isDestinationUp && isLoadingUnitInExternalUpPosition))
+            if ((isDestinationUp && isLoadingUnitInExternalUpPosition) ||
+                (!isDestinationUp && isLoadingUnitInExternalDownPosition))
             {
-                var description = $"Deposit in external bay not possible because there is a LU in external position. Wait for resume";
-                this.Logger.LogInformation(description);
-                return;
+                this.Mission.RestoreConditions = false;
+                // no need to wait
+                var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                newStep.OnEnter(null);
             }
-            this.Mission.RestoreConditions = false;
-            // no need to wait
-            var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-            newStep.OnEnter(null);
+            else if ((isDestinationUp && bay.Positions.Any(p => p.LoadingUnit == null && !p.IsUpper) && this.machineResourcesProvider.IsSensorZeroOnBay(bay.Number)) ||
+                (!isDestinationUp && bay.Positions.Any(p => p.LoadingUnit == null && p.IsUpper) && this.machineResourcesProvider.IsSensorZeroTopOnBay(bay.Number))
+                )
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.MoveExtBayNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
+
+            var description = $"Load unit not arrived in external position. Wait for resume. Mission:Id={this.Mission.Id}";
+            this.Logger.LogInformation(description);
         }
 
         private bool isWaitingMissionOnThisBay(Bay bay)
